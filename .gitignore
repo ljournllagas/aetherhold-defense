@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.dev.vars
+.wrangler/
+artifacts/
+.code-review-graph/
+.sdd/
+*.tsbuildinfo
+({label
+String(i+153).padStart(4)+'
+['Cinzel'

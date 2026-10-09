@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "verify": {
+    "build": "npm run build",
+    "test": "npm test",
+    "lint": null,
+    "typecheck": "npm run typecheck",
+    "format": null,
+    "testOne": "npm test -- {target}"
+  }
+}

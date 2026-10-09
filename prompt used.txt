@@ -1,0 +1,1037 @@
+You are a senior JavaScript/TypeScript game developer, game designer, and Cloudflare full-stack architect.
+
+Build a complete browser-based fantasy Tower Defense game inspired by the classic feel, pacing, strategy, progression, and atmosphere of Warcraft III custom Tower Defense maps.
+
+The game must be completely original.
+
+DO NOT copy or reuse Warcraft, Blizzard, Warcraft III, World of Warcraft, or other copyrighted:
+- characters
+- unit names
+- tower names
+- maps
+- artwork
+- icons
+- models
+- music
+- sounds
+- UI assets
+- lore
+- trademarks
+
+Create an original fantasy universe with its own names, artwork, enemies, towers, effects, UI, and game identity.
+
+# 1. Technology Stack
+
+Use:
+
+Frontend / Game Engine:
+- Phaser 4
+- TypeScript
+- Vite
+- HTML5 Canvas / WebGL through Phaser
+
+Backend:
+- Cloudflare Workers
+- TypeScript
+
+Hosting:
+- Cloudflare Workers Static Assets
+
+Database:
+- Cloudflare D1
+
+Testing:
+- Vitest for game/business logic
+- appropriate integration tests for the Cloudflare Worker API
+
+Do not use React unless there is a compelling technical reason.
+
+Phaser should control the main game UI and game loop.
+
+Keep the architecture simple and maintainable.
+
+# 2. Game Concept
+
+Create a fantasy Tower Defense game where waves of creatures travel through a fixed path toward the player's stronghold.
+
+The player earns gold by defeating enemies and spends that gold to build and upgrade defensive towers.
+
+The objective is to survive as many waves as possible while achieving the highest score.
+
+The game should capture the satisfying progression of classic Warcraft III custom Tower Defense games:
+
+- increasingly difficult waves
+- tower upgrades
+- different enemy types
+- different tower roles
+- strategic tower placement
+- gold/resource management
+- occasional powerful random bonuses
+- increasingly hectic late-game waves
+- high-score chasing
+
+The initial version should be a polished single-map game that can later support additional maps.
+
+# 3. Main Game Flow
+
+Main Menu
+
+→ Select Difficulty
+
+→ Enter Player Name
+
+→ Start Game
+
+→ Build Towers
+
+→ Start / survive enemy waves
+
+→ Earn Gold
+
+→ Upgrade or build more towers
+
+→ Occasionally receive Power-Ups
+
+→ Continue until player lives reach zero
+
+→ Calculate final score
+
+→ Save score
+
+→ Display results and leaderboard
+
+→ Play Again
+
+# 4. Difficulty Modes
+
+Provide three difficulty modes:
+
+## Easy
+
+Designed for new or casual players.
+
+Example balancing:
+
+- Starting Gold: 700
+- Starting Lives: 25
+- Enemy HP multiplier: 0.80
+- Enemy speed multiplier: 0.90
+- Gold reward multiplier: 1.15
+- Difficulty score multiplier: 1.0x
+
+## Medium
+
+Normal intended experience.
+
+- Starting Gold: 600
+- Starting Lives: 20
+- Enemy HP multiplier: 1.00
+- Enemy speed multiplier: 1.00
+- Gold reward multiplier: 1.00
+- Difficulty score multiplier: 1.5x
+
+## Hard
+
+For experienced Tower Defense players.
+
+- Starting Gold: 500
+- Starting Lives: 15
+- Enemy HP multiplier: 1.30
+- Enemy speed multiplier: 1.10
+- Gold reward multiplier: 0.90
+- Difficulty score multiplier: 2.0x
+
+Keep these values centralized in configuration rather than hardcoding them throughout the game.
+
+Difficulty must affect both gameplay and final scoring.
+
+# 5. Wave System
+
+Create an endless or long-running wave system.
+
+Each wave becomes progressively harder.
+
+Enemy scaling should consider:
+
+- wave number
+- difficulty
+- enemy HP
+- movement speed
+- armor/resistance
+- number of enemies
+- enemy variety
+
+Example:
+
+Wave 1-5:
+Basic enemies
+
+Wave 6-10:
+Faster enemies introduced
+
+Wave 11-15:
+Armored enemies
+
+Wave 16-20:
+Magic-resistant enemies
+
+Wave 20:
+Boss wave
+
+Continue this progression with stronger combinations.
+
+Every 5 waves should feel like a noticeable increase in difficulty.
+
+Every 10 waves should include a boss or major challenge.
+
+Do not simply increase HP forever. Introduce enemy mechanics that force players to change strategies.
+
+# 6. Enemy Types
+
+Create at least these enemy archetypes:
+
+## Grunt
+
+Basic enemy.
+
+Balanced HP and speed.
+
+## Runner
+
+Low HP but very fast.
+
+## Brute
+
+Slow movement but very high HP.
+
+## Armored Enemy
+
+Reduced physical damage.
+
+## Arcane Enemy
+
+Reduced magical damage.
+
+## Regenerator
+
+Slowly regenerates HP.
+
+## Swarm Enemy
+
+Weak individually but appears in large groups.
+
+## Boss
+
+Extremely powerful enemy appearing periodically.
+
+Bosses can have special abilities such as:
+
+- temporary movement speed increase
+- temporary damage resistance
+- regeneration
+- summoning smaller enemies
+
+Use original fantasy names for the final enemy designs.
+
+# 7. Tower System
+
+Start with at least five tower archetypes.
+
+## Archer Tower
+
+Fast physical attacks.
+
+Good against basic enemies.
+
+## Cannon Tower
+
+Slow attack speed.
+
+Area-of-effect damage.
+
+Good against groups.
+
+## Frost Tower
+
+Low/moderate damage.
+
+Slows enemy movement.
+
+## Arcane Tower
+
+High magical damage.
+
+Good against armored enemies.
+
+## Storm Tower
+
+Chain attack capable of hitting multiple enemies.
+
+Give every tower:
+
+- build cost
+- range
+- damage
+- attack speed
+- damage type
+- target priority
+- upgrade levels
+- sell value
+
+Allow at least 3 upgrade levels per tower.
+
+Example:
+
+Level 1
+→ Level 2
+→ Level 3
+→ Ultimate Upgrade
+
+Upgrades should meaningfully change statistics rather than simply adding tiny numerical bonuses.
+
+Store tower balancing data in configuration files.
+
+# 8. Tower Targeting
+
+Allow the player to change the targeting strategy of a tower.
+
+Support:
+
+- First
+- Last
+- Strongest
+- Weakest
+- Closest
+
+The selected strategy should visibly appear when the tower is selected.
+
+# 9. Power-Up System
+
+Implement random Power-Ups.
+
+Power-Ups should feel exciting but should not completely remove the strategic nature of Tower Defense.
+
+Power-Ups may be granted:
+
+- after certain waves
+- by defeating bosses
+- through a low random drop chance from enemies
+
+When a Power-Up becomes available, clearly notify the player.
+
+Suggested Power-Ups:
+
+## Gold Rush
+
+Instantly receive bonus gold.
+
+## Meteor Strike
+
+Player selects an area.
+
+A meteor deals massive AOE damage.
+
+## Time Freeze
+
+Freeze all enemies for several seconds.
+
+## Battle Cry
+
+All towers gain increased attack speed for 10 seconds.
+
+## Arcane Surge
+
+All towers gain increased damage temporarily.
+
+## Emergency Repair
+
+Restore several lost lives.
+
+Do not allow lives to exceed the configured maximum unless explicitly designed as an upgrade.
+
+## Treasure Goblin
+
+Spawn a special bonus enemy.
+
+Killing it before it escapes gives a large gold reward.
+
+## Double Bounty
+
+Enemies provide double gold for a limited duration.
+
+## Tower Overcharge
+
+Randomly select one existing tower and dramatically increase its power temporarily.
+
+## Ancient Blessing
+
+Randomly choose between several smaller positive effects.
+
+Power-Ups should have rarity:
+
+- Common
+- Uncommon
+- Rare
+- Legendary
+
+Example drop probabilities:
+
+Common: 55%
+Uncommon: 28%
+Rare: 13%
+Legendary: 4%
+
+The rarity system and probabilities must be configurable.
+
+Prevent the Power-Up system from becoming pay-to-win or dependent on real money.
+
+# 10. Random Power-Up Presentation
+
+When the player earns a random Power-Up:
+
+1. Pause or slow the game appropriately.
+2. Display a small fantasy-style reward animation.
+3. Reveal the Power-Up.
+4. Explain the effect.
+5. Allow the player to activate it immediately or store it if appropriate.
+
+Limit stored Power-Ups to avoid hoarding.
+
+Suggested inventory limit:
+
+3 Power-Ups.
+
+# 11. Economy
+
+The player earns gold by defeating enemies.
+
+Gold can be spent on:
+
+- building towers
+- upgrading towers
+
+Players may also sell towers.
+
+Suggested sell refund:
+
+70% of the total gold invested into that tower.
+
+All economy values must be configurable.
+
+# 12. Lives
+
+Enemies reaching the end of the path reduce player lives.
+
+Normal enemy:
+-1 life
+
+Elite:
+-2 lives
+
+Boss:
+configurable, potentially -5 lives
+
+Game ends when lives reach 0.
+
+# 13. Scoring
+
+Create a scoring system that rewards both survival and performance.
+
+Score should consider:
+
+- enemies defeated
+- waves completed
+- bosses defeated
+- remaining lives
+- difficulty level
+- possibly unused gold at game completion
+
+Example concept:
+
+Enemy Kill Score
++
+Wave Completion Bonus
++
+Boss Bonus
++
+Remaining Lives Bonus
+=
+Base Score
+
+Base Score × Difficulty Multiplier
+=
+Final Score
+
+Do not allow easy-mode farming to dominate the global leaderboard.
+
+Difficulty multipliers should reward harder modes.
+
+Keep the scoring algorithm centralized and unit-tested.
+
+# 14. High Score System
+
+Store high scores permanently in Cloudflare D1.
+
+For each completed game record:
+
+- id
+- playerName
+- difficulty
+- highestWave
+- finalScore
+- enemiesKilled
+- bossesKilled
+- remainingLives
+- gameDuration
+- createdAt
+
+Do NOT trust a score supplied directly by the browser.
+
+Implement reasonable server-side validation for submitted scores.
+
+At minimum validate:
+
+- valid difficulty
+- realistic wave number
+- non-negative values
+- valid player name
+- maximum player-name length
+- realistic score boundaries
+- payload structure
+
+Structure the backend so stronger anti-cheat validation can be added later.
+
+# 15. Leaderboard
+
+Create a leaderboard accessible from the main menu and game-over screen.
+
+Allow:
+
+Overall Leaderboard
+
+and filtering by:
+
+- Easy
+- Medium
+- Hard
+
+Display:
+
+Rank
+Player
+Difficulty
+Wave
+Score
+Date
+
+Ranking priority:
+
+1. Highest wave reached
+2. Highest score
+3. Earlier achievement as tie-breaker
+
+Show at least the Top 20.
+
+Highlight the player's submitted score if it appears in the ranking.
+
+# 16. Local Best Score
+
+In addition to the online leaderboard, maintain the player's personal best locally when practical.
+
+If the online API temporarily fails, gameplay must still function.
+
+Leaderboard/API failure must NEVER prevent the player from playing the game.
+
+# 17. Map
+
+For MVP, create one polished map.
+
+The map should have:
+
+- enemy spawn
+- clearly visible route
+- player stronghold/base
+- multiple tower placement areas
+- environmental decoration
+- strategic placement locations
+
+Use a grid or placement-zone approach so towers cannot block the enemy path.
+
+Tower placement must clearly show:
+
+Green:
+Valid placement
+
+Red:
+Invalid placement
+
+When placing a tower, show its attack radius.
+
+# 18. Pathfinding
+
+For the first version, enemies should follow a predetermined waypoint path.
+
+Do not implement complicated dynamic pathfinding unless necessary.
+
+Design the architecture so maps can define their own waypoint paths later.
+
+# 19. Game Speed
+
+Provide:
+
+1x
+2x
+
+Optionally:
+
+3x
+
+Also include:
+
+Pause
+
+Make sure timers, tower attacks, status effects, Power-Ups, enemies, and waves behave correctly when game speed changes.
+
+# 20. Game UI
+
+Create a polished fantasy-inspired interface without copying Warcraft's UI.
+
+During gameplay display:
+
+Top area:
+- Wave
+- Gold
+- Lives
+- Score
+- Difficulty
+
+Tower panel:
+- tower selection
+- cost
+- short description
+
+Selected tower panel:
+- damage
+- attack speed
+- range
+- upgrade
+- sell
+- targeting mode
+
+Other controls:
+- Pause
+- Game Speed
+- Start Next Wave
+- Power-Up inventory
+- Settings
+
+Prioritize clarity over excessive decorative UI.
+
+The player should be able to understand critical information at a glance.
+
+# 21. Visual Direction
+
+Create an original colorful fantasy strategy-game aesthetic.
+
+Visual themes may include:
+
+- medieval fantasy
+- magical forests
+- stone pathways
+- defensive keeps
+- magical crystals
+- ancient ruins
+- elemental towers
+- fantasy creatures
+
+The overall feeling can evoke classic early-2000s fantasy RTS custom maps, but must remain an original visual identity.
+
+Do not use Warcraft assets.
+
+Placeholder artwork may be used during development if necessary, but organize assets so they can easily be replaced by production assets later.
+
+# 22. Audio
+
+Support:
+
+- background music
+- tower attack sounds
+- enemy death sounds
+- boss arrival sound
+- Power-Up sound
+- building sound
+- upgrade sound
+- game-over sound
+
+Include:
+
+Music On/Off
+Sound Effects On/Off
+
+Do not use copyrighted Warcraft or Blizzard audio.
+
+# 23. Responsive Design
+
+Primary target:
+
+Desktop browsers
+
+Also make the game reasonably playable on:
+
+- tablets
+- landscape mobile devices
+
+Support:
+
+Mouse
+Touch input
+
+The game canvas should scale while maintaining the intended aspect ratio.
+
+# 24. Architecture
+
+Do not put the entire game inside one large Phaser Scene.
+
+Separate responsibilities appropriately.
+
+Suggested structure:
+
+src/
+  game/
+    scenes/
+      BootScene.ts
+      PreloadScene.ts
+      MainMenuScene.ts
+      GameScene.ts
+      GameOverScene.ts
+
+    entities/
+      Enemy.ts
+      Tower.ts
+      Projectile.ts
+
+    systems/
+      WaveSystem.ts
+      TowerSystem.ts
+      CombatSystem.ts
+      PowerUpSystem.ts
+      ScoreSystem.ts
+      EconomySystem.ts
+
+    config/
+      towers.ts
+      enemies.ts
+      difficulties.ts
+      waves.ts
+      powerUps.ts
+
+    ui/
+      HUD.ts
+      TowerPanel.ts
+      TowerInfoPanel.ts
+      PowerUpPanel.ts
+
+    maps/
+      map1.ts
+
+  shared/
+    types.ts
+
+  api/
+    leaderboardClient.ts
+
+worker/
+  index.ts
+  routes/
+    leaderboard.ts
+
+migrations/
+  0001_initial.sql
+
+tests/
+
+The exact structure may be improved if there is a clear reason.
+
+# 25. Cloudflare Architecture
+
+Use:
+
+Browser
+↓
+Cloudflare Worker
+├── Static game assets
+├── API endpoints
+└── Cloudflare D1
+
+Create API endpoints similar to:
+
+GET /api/leaderboard
+
+GET /api/leaderboard?difficulty=hard
+
+POST /api/scores
+
+GET /api/health
+
+Use prepared/bound SQL statements.
+
+Never expose privileged database credentials to the browser.
+
+# 26. D1 Schema
+
+Create proper D1 migrations.
+
+Example table:
+
+scores
+
+- id
+- player_name
+- difficulty
+- highest_wave
+- final_score
+- enemies_killed
+- bosses_killed
+- remaining_lives
+- game_duration_seconds
+- created_at
+
+Create indexes needed for efficient leaderboard retrieval.
+
+# 27. Security
+
+Protect the score submission endpoint against obvious abuse.
+
+Include:
+
+- input validation
+- sanitization
+- maximum lengths
+- reasonable numerical limits
+- prepared SQL statements
+- rate limiting strategy or reasonable anti-spam protection
+- appropriate security headers
+
+Never trust client input.
+
+Do not place secrets inside frontend code.
+
+# 28. Performance
+
+Target smooth gameplay at approximately 60 FPS on normal desktop hardware.
+
+Avoid unnecessary object creation inside the main update loop.
+
+Use Phaser object pooling where beneficial, especially for:
+
+- projectiles
+- particle effects
+- frequently spawned enemies
+
+Avoid unnecessary DOM updates during gameplay.
+
+# 29. Accessibility / User Experience
+
+Include:
+
+- readable text
+- sufficiently large buttons
+- clear hover/selected states
+- keyboard-accessible menus when reasonable
+- volume controls
+- visual indication of important events
+- confirmation before quitting an active game
+
+Do not rely exclusively on color to communicate critical information.
+
+# 30. Saving Settings
+
+Persist non-sensitive local settings such as:
+
+- music volume
+- sound volume
+- preferred game speed
+- last selected difficulty
+- player name
+
+Do not store anything sensitive in client storage.
+
+# 31. Testing
+
+Write automated tests for important deterministic logic.
+
+At minimum test:
+
+Difficulty modifiers
+
+Score calculation
+
+Wave scaling
+
+Tower upgrade calculations
+
+Gold calculations
+
+Power-Up rarity selection
+
+Power-Up effects where practical
+
+Leaderboard ranking
+
+Score validation
+
+API input validation
+
+Do not attempt to unit-test Phaser rendering itself unless useful.
+
+Separate gameplay calculations from rendering so important logic can be tested independently.
+
+# 32. MVP Acceptance Criteria
+
+The MVP is complete when a player can:
+
+1. Open the deployed game.
+2. Enter a player name.
+3. Select Easy, Medium, or Hard.
+4. Start a match.
+5. Build towers.
+6. Upgrade towers.
+7. Sell towers.
+8. Change tower targeting.
+9. Fight progressively harder waves.
+10. Earn gold.
+11. Lose lives when enemies escape.
+12. Receive random Power-Ups.
+13. Activate Power-Ups.
+14. Fight boss waves.
+15. Change game speed.
+16. Pause the game.
+17. Reach Game Over.
+18. Receive a final score.
+19. Submit the score to Cloudflare D1.
+20. View the global leaderboard.
+21. Filter leaderboard scores by difficulty.
+22. Restart and play another match.
+
+# 33. Development Approach
+
+Do NOT attempt to implement everything in one giant file or one uncontrolled coding pass.
+
+Work incrementally.
+
+Phase 1:
+Project architecture and Cloudflare configuration.
+
+Phase 2:
+Playable map and basic enemy movement.
+
+Phase 3:
+Tower placement and combat.
+
+Phase 4:
+Wave and difficulty systems.
+
+Phase 5:
+Tower upgrades and economy.
+
+Phase 6:
+Enemy variety and bosses.
+
+Phase 7:
+Power-Up system.
+
+Phase 8:
+Scoring.
+
+Phase 9:
+Cloudflare Worker API and D1 leaderboard.
+
+Phase 10:
+Menus and game-over experience.
+
+Phase 11:
+Audio, effects, animation, and polish.
+
+Phase 12:
+Automated testing and balancing.
+
+Phase 13:
+Cloudflare production deployment.
+
+At the end of each phase:
+
+- make sure the application builds
+- run applicable tests
+- fix errors before continuing
+- do not leave placeholder TODO implementations for required functionality
+
+# 34. Code Quality
+
+Use:
+
+- TypeScript strict mode
+- clear interfaces/types
+- modular systems
+- configuration-driven balancing
+- descriptive naming
+- minimal duplication
+- small focused classes/modules where practical
+
+Avoid:
+
+- unnecessary abstractions
+- premature enterprise architecture
+- giant classes
+- magic numbers
+- excessive third-party dependencies
+
+The goal is a maintainable indie-game architecture, not an enterprise application.
+
+# 35. Documentation
+
+Create:
+
+README.md
+
+Include:
+
+- game overview
+- technology stack
+- architecture
+- installation
+- local development
+- testing
+- Cloudflare setup
+- D1 setup
+- migrations
+- deployment
+- configuration
+- balancing instructions
+- adding towers
+- adding enemies
+- adding Power-Ups
+- adding maps
+
+Also document all required Cloudflare configuration and commands.
+
+# 36. Final Goal
+
+The finished result should feel like a modern browser interpretation of the fun found in classic fantasy RTS Tower Defense custom maps:
+
+Easy to understand.
+
+Strategic.
+
+Satisfying tower progression.
+
+Lots of enemies on screen.
+
+Exciting Power-Ups.
+
+Increasingly intense waves.
+
+Strong replayability.
+
+A leaderboard that makes players want to try one more run.
+
+Above all, prioritize FUN, stability, maintainability, and smooth browser performance.

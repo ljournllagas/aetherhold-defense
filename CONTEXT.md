@@ -1,0 +1,27 @@
+# Domain glossary
+
+- **Run:** One game session from difficulty selection until defeat, siege failure, finishing at victory, restart, or quit; endless continuation remains part of the same run.
+- **Battlefield:** The Ancient Border Keep map containing the enemy route, build plots, and stronghold.
+- **Build plot:** A predefined clearing where one tower can be built.
+- **Overview:** A camera view showing the entire battlefield without cropping.
+- **View transform:** The mapping between battlefield world coordinates and screen coordinates.
+- **Touch preview:** An uncommitted build plot or Meteor target selected by a completed tap.
+- **Control sheet:** An expandable screen-space panel for build, selected-tower, relic, or next-wave controls.
+- **Relic:** A Power-Up that is stored, offered as a reward, or activated.
+- **Pending reward:** A relic awaiting its existing use, store, replace, or discard decision.
+- **Background pause:** A pause imposed when the page becomes hidden; returning requires Resume.
+- **Siege:** The first thirty waves of a run, ending with the final boss and a victory decision.
+- **Evolution:** A tower's committed specialization after its foundation upgrades.
+- **Evolution branch:** One of a tower archetype's two specialization paths.
+- **Evolution rank:** Progress along a branch, from its initial evolution through three further upgrades.
+- **Mastery:** Repeatable tower development available after completing an evolution in endless play.
+- **Branch achievement:** A tower-specific accomplishment that permanently unlocks its alternative evolution branch.
+- **Unlock profile:** The collection of branch achievements retained between runs in this browser.
+- **Endless:** Optional continuation of a victorious siege beyond wave thirty.
+- **Starter branch:** The evolution branch of an archetype available from the first run.
+- **Alternative branch:** The evolution branch of an archetype that becomes available only after its branch achievement.
+- **Victory decision:** The frozen phase after the siege is won, in which pending rewards are resolved and the player chooses Finish Run or Continue Endless.
+- **Siege failure:** A terminal result caused by a required boss (wave 10 or wave 30) escaping while lives remain.
+- **Score era:** The set of scores sharing one score version; rankings and personal-best comparisons use only the current era.
+- **Terminal result:** The single end-of-run record, created only by a lives-zero defeat, a siege failure or Finish Run; only a terminal result can be submitted as a score.
+- **Discarded run:** A run ended by Restart or Quit; it creates no terminal result and no score submission.
