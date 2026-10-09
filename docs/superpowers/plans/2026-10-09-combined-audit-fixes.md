@@ -1173,7 +1173,7 @@ browser screenshots/request/error logs and final era-3 balance traces.
 SavedSubmission schema, final BALANCE_RUNS/terminalPayloads, and native local Worker.
 Produces checked evidence, not new application interfaces or runtime debugging hooks.
 
-- [ ] **Step 1: Run full prerequisites and produce current balance traces.**
+- [x] **Step 1: Run full prerequisites and produce current balance traces.**
 `rtk npm run typecheck`, `rtk npm test`, `rtk npm run build` must pass. Extend the
 explicit opt-in report writer to use BALANCE_RUNS/final era-3 source configuration
 and output each trace under artifacts/audit-fixes/balance/traces. It asserts the
@@ -1183,7 +1183,7 @@ the previous shipped evidence as history. Record the build's existing bundle war
 if it remains; this scope changes image loading, not the Phaser bundle architecture.
 The exact report writer/test command and terminal producers are in Appendix C.
 
-- [ ] **Step 2: Start isolated local services with owned process/session IDs.**
+- [x] **Step 2: Start isolated local services with owned process/session IDs.**
 Use a new `.scratch/audit-fixes-d1` state directory; do not delete another local DB
 or stop unrelated servers. Check ports 8877/5191 are free before starting. If occupied
 by unrelated work, select free ports and change only this verification config/runner
@@ -1207,7 +1207,7 @@ Start `rtk proxy npx vite --config artifacts/audit-fixes/vite.config.ts` separat
 Stop only the process/session IDs created by this task after verification. These
 servers never use `--remote` or write production scores.
 
-- [ ] **Step 3: Write real local API assertions, including a preserved legacy row.**
+- [x] **Step 3: Write real local API assertions, including a preserved legacy row.**
 legacy-fixture.sql is a single era-2 INSERT with fixed test run_id
 `audit-legacy-row-0001`, player `Legacy Audit`, difficulty medium, highest_wave 8,
 final_score 6000, enemies_killed 200, bosses_killed 0, remaining_lives 0,
@@ -1250,7 +1250,7 @@ D1 to assert the legacy row still exists. Appendix E supplies the additional loc
 API bodies and browser runner bodies/commands. Keep native-limiter evidence
 distinct from its fake unit tests; no production quota precision claim.
 
-- [ ] **Step 4: Build the browser harness with native input and request evidence.**
+- [x] **Step 4: Build the browser harness with native input and request evidence.**
 Reuse the installed Playwright path observed in artifacts/auto-mode/check.cjs; do
 not install another package. Create a fresh browser context for each cold-load case.
 Read-only development instrumentation exposes the Phaser Game as `window.__auditGame`
@@ -1312,7 +1312,7 @@ Save each case's input actions, image requests, POST bodies/statuses and screens
 Tests explicitly allow only their injected failures; an unrelated request/error is
 a failure. On failure write evidence before throwing and close contexts in finally.
 
-- [ ] **Step 5: Execute the browser matrix with concrete assertions.**
+- [x] **Step 5: Execute the browser matrix with concrete assertions.**
 
 Use the executable cases in Appendix E; the table below is their evidence checklist.
 
@@ -1351,7 +1351,7 @@ assertions in tests that are not explicitly about submission. Native audio requi
 a user gesture; inspect the runtime AudioContext and volume routing after native
 Play, and record that speaker output/physical hardware is not measured.
 
-- [ ] **Step 6: Write verified current documentation and run a complete cold review.**
+- [x] **Step 6: Write verified current documentation and run a complete cold review.**
 SPEC.md updates actual final coefficient tables/prices/mastery, era/current-best
 keys, both legacy records, saved submission rules, name policy, staged/recovery
 entry and native protection. Preserve its historical exceptions as history in the
@@ -1364,7 +1364,7 @@ the implementation against the approved spec and baseline 06938d9. Address actio
 findings and rerun only affected checks plus the final release gate. No skill-
 required reviewer is given production file ownership in this Light route.
 
-- [ ] **Step 7: Commit verified evidence and documentation.** Run typecheck,
+- [x] **Step 7: Commit verified evidence and documentation.** Run typecheck,
 default tests and build with final configs and no candidate mutations. Verify
 tracked old score/profile fixtures and unrelated files were preserved. Commit the
 hand-off/evidence/current documentation as `Verify the combined audit release end to end`.
