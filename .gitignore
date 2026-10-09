@@ -8,4 +8,4 @@ artifacts/
 *.tsbuildinfo
 ({label
 String(i+153).padStart(4)+'
-['Cinzel'
+\['Cinzel'
