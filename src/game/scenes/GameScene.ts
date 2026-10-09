@@ -10,6 +10,7 @@ import type { QAAction, QAStatus } from '../qa.ts';
 import { GAME_VERSION, SCORE_VERSION } from '../../shared/version.ts';
 import { buildWave, scheduleWave, enemyHpForWave, enemySpeedForWave, type SpawnEvent } from '../systems/WaveSystem.ts';
 import { RelicVault, advanceFlights } from '../systems/RunSimulation.ts';
+import { AutoSystem, chooseAutoRelic, type AutoContext, type AutoRelicIntent } from '../systems/AutoSystem.ts';
 import { gameLayout, sheetBounds, viewportToWorld, worldToViewport, type GameLayout } from '../ui/layout.ts';
 import { button, panel, statRow } from '../ui/components.ts';
 import { calculateScore } from '../systems/ScoreSystem.ts';
@@ -104,6 +105,7 @@ export class GameScene extends Phaser.Scene {
   private battleCryUntil = 0;
   private surgeUntil = 0;
   private vault = new RelicVault();
+  private auto = new AutoSystem();
   private get powerups(): PowerUpId[] { return this.vault.stored; }
   private get pendingMeteor(): boolean { return this.vault.target !== null; }
   private flights: Flight[] = [];
@@ -285,6 +287,7 @@ export class GameScene extends Phaser.Scene {
     this.battleCryUntil = 0;
     this.surgeUntil = 0;
     this.vault = new RelicVault();
+    this.auto = new AutoSystem();
     this.flights = [];
     this.effects = [];
     this.ended = false;
@@ -442,7 +445,7 @@ export class GameScene extends Phaser.Scene {
     } else if (kind === 'next') {
       const status = this.waveActive ? `Wave ${this.wave} · In battle` : this.compositionSummary(this.wave + 1, true);
       const text = sheet.text(0, status, C.gold);
-      const reason = this.waveActive ? 'Finish this wave before starting another.' : this.pendingMeteor ? 'Confirm or cancel the Meteor target first.' : this.vault.pending.length ? 'Resolve the pending reward first.' : this.pauseState.blocked ? 'Resume the run to start a wave.' : 'Ready when you are.';
+      const reason = this.nextWaveReason();
       sheet.text(text.height + 16, reason);
     }
     sheet.scrollTo(scrollOffset);
@@ -920,6 +923,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private updateHUD(): void {
+    if (this.autoSnapshot().blocked) this.auto.suspend();
     this.refreshProgressionActions?.();
     const d = getDifficulty(this.difficultyId);
     const bossNow = this.waveActive && this.currentWaveIsBoss;
@@ -975,7 +979,7 @@ export class GameScene extends Phaser.Scene {
       panel(this, this.uiRoot!, 0, y, width, tray);
       button(this, this.uiRoot!, 8, y + 8, 68, 'Build', () => { if (!this.pendingMeteor) this.openSheet('build'); }, 'secondary', 44);
       const wave = button(this, this.uiRoot!, 84, y + 8, width - 168, '', () => {
-        if (this.waveActive || this.pauseState.blocked || this.pendingMeteor || this.vault.pending.length) { this.openSheet('next'); return; }
+        if (this.waveActive || this.pauseState.blocked || this.pendingMeteor || (!this.auto.enabled && this.vault.pending.length)) { this.openSheet('next'); return; }
         this.startNextWave();
       }, 'primary', 44);
       this.startBtn = wave.box; this.startBtnLabel = wave.text;
@@ -1055,6 +1059,7 @@ export class GameScene extends Phaser.Scene {
 
   private updateNextPreview(): void {
     this.nextPreview?.setText(this.waveActive ? `Hold the line — Wave ${this.wave}.` : this.compositionSummary(this.wave + 1));
+    if (this.sheetKind === 'next') this.drawSheet(this.sheet?.scrollOffset ?? 0);
   }
 
   private drawControls(): void {
@@ -1335,11 +1340,65 @@ export class GameScene extends Phaser.Scene {
   }
 
   // ---------- waves ----------
-  private startNextWave(): void {
-    if (this.ended || this.waveActive || this.paused || this.pausedByModal || this.pendingMeteor || this.vault.pending.length) return;
+  private nextWaveReason(): string {
+    if (this.waveActive) return 'Finish this wave before starting another.';
+    if (this.pendingMeteor) return 'Confirm or cancel the Meteor target first.';
+    if (!this.auto.enabled && this.vault.pending.length) return 'Resolve the pending reward first.';
+    if (this.pauseState.blocked) return 'Resume the run to start a wave.';
+    if (this.auto.enabled && this.vault.pending.length) return `Auto retains ${this.vault.pending.length} queued rewards. Manual Start skips the countdown.`;
+    return 'Ready when you are.';
+  }
+
+  private autoSnapshot(): AutoContext {
+    return { phase: this.siege.phase, wave: this.wave, waveActive: this.waveActive,
+      blocked: this.isRunBlocked() || this.lives <= 0 || this.modal !== null || this.pendingMeteor,
+      nowMs: this.gameTimeMs, lives: this.lives, maxLives: this.maxLives, enemies: this.enemies, towers: this.towers,
+      freezeUntil: this.freezeUntil, battleCryUntil: this.battleCryUntil, surgeUntil: this.surgeUntil, doubleBountyUntil: this.doubleBountyUntil };
+  }
+
+  private setAutoEnabled(value: boolean): void {
+    if (this.ended || this.siege.phase === 'terminal') return;
+    this.auto.setEnabled(value); this.updateHUD();
+    if (this.siege.phase === 'victory') this.renderVictory();
+    if (!value) this.presentReward();
+  }
+
+  private performAutoRelic(intent: AutoRelicIntent, expectedRunId: string, expectedAutoRevision: number): boolean {
+    if (!this.auto.enabled || expectedRunId !== this.runId || expectedAutoRevision !== this.auto.revision) return false;
+    const fresh = chooseAutoRelic(this.autoSnapshot(), this.vault);
+    if (!fresh || fresh.source !== intent.source || fresh.index !== intent.index || fresh.id !== intent.id || fresh.revision !== intent.revision) return false;
+    if (intent.id === 'meteor_strike' && (!fresh.meteorTarget || !intent.meteorTarget ||
+      fresh.meteorTarget.enemyId !== intent.meteorTarget.enemyId || fresh.meteorTarget.x !== intent.meteorTarget.x || fresh.meteorTarget.y !== intent.meteorTarget.y)) return false;
+    const result = this.vault.beginSelectedUse(fresh, this.towers.length > 0);
+    if (result.kind === 'apply') this.applyPowerup(result.id);
+    else if (result.kind === 'target' && fresh.meteorTarget) {
+      const reservation = this.vault.target;
+      try { this.castMeteor(fresh.meteorTarget.x, fresh.meteorTarget.y, true); }
+      finally { if (this.vault.target === reservation) this.vault.cancelTarget(); }
+    } else return false;
+    this.drawPowerupBar(); this.updateHUD(); return true;
+  }
+
+  private tickAuto(realDeltaMs: number, frameWasWaiting: boolean): void {
+    const before = this.autoSnapshot();
+    if (before.blocked) { this.auto.advance(0, before); return; }
+    if (!this.auto.enabled) return;
+    const expectedRunId = this.runId, expectedAutoRevision = this.auto.revision;
+    const intent = chooseAutoRelic(before, this.vault);
+    if (intent) this.performAutoRelic(intent, expectedRunId, expectedAutoRevision);
+    this.checkWaveClear();
+    const after = this.autoSnapshot();
+    const charge = frameWasWaiting && !after.waveActive ? realDeltaMs : 0;
+    if (this.auto.advance(charge, after)) this.startNextWave('auto', expectedRunId, expectedAutoRevision);
+  }
+
+  private startNextWave(source: 'manual' | 'auto' = 'manual', expectedRunId = this.runId, expectedAutoRevision = this.auto.revision): void {
+    if (source === 'auto' && (!this.auto.enabled || expectedRunId !== this.runId || expectedAutoRevision !== this.auto.revision)) return;
+    if (this.ended || this.waveActive || this.paused || this.pausedByModal || this.modal || this.pendingMeteor || (!this.auto.enabled && this.vault.pending.length)) return;
     if (this.isRunBlocked()) return;
     // Last: startWave records siege state, so it only runs once the scene will start the wave.
     if (!this.siege.startWave(this.wave + 1)) return;
+    this.auto.cancelCountdown();
     this.wave++;
     const d = getDifficulty(this.difficultyId); const cfg = buildWave(this.wave, d.enemyCountMultiplier);
     this.currentWaveIsBoss = cfg.isBossWave;
@@ -1519,12 +1578,12 @@ export class GameScene extends Phaser.Scene {
     if (this.ended) return;
     const stored = this.vault.offer(id, reason, wantModal);
     this.drawPowerupBar();
-    if (stored) { this.floatText(520, 140, `${reason}: ${POWERUPS[id].name}`, C.gold, 14); SoundManager.get().powerup(); }
+    if (stored || this.auto.enabled) { this.floatText(520, 140, `${reason}: ${POWERUPS[id].name}`, C.gold, 14); SoundManager.get().powerup(); }
     this.presentReward(); this.updateHUD();
   }
 
   private presentReward(): void {
-    if (this.ended || this.modal || this.pendingMeteor || this.paused || !this.vault.pending.length) return;
+    if (this.auto.enabled || this.ended || this.modal || this.pendingMeteor || this.paused || !this.vault.pending.length) return;
     const reward = this.vault.pending[0];
     if (reward.reveal && this.waveActive) return;
     if (this.siege.phase === 'victory') { this.showVictoryReward(reward.id, reward.reason); return; }
@@ -1753,7 +1812,7 @@ export class GameScene extends Phaser.Scene {
     this.updateHUD();
   }
 
-  private castMeteor(x: number, y: number): void {
+  private castMeteor(x: number, y: number, automatic = false): void {
     if (this.siege.phase === 'victory' || this.siege.phase === 'terminal') return;
     if (this.ended || this.vault.commitTarget() !== 'meteor_strike') return;
     const labelTarget = this.enemies.filter(e => e.alive && Math.hypot(e.x - x, e.y - y) <= POWERUP_EFFECTS.meteor.radius)
@@ -1763,9 +1822,12 @@ export class GameScene extends Phaser.Scene {
     const blast = this.world(this.add.circle(x, y, POWERUP_EFFECTS.meteor.radius, 0xde8742, 0.25).setDepth(7));
     this.addEffect(blast, 450); SoundManager.get().cannon();
     for (const e of this.enemies) if (e.alive && Math.hypot(e.x - x, e.y - y) <= POWERUP_EFFECTS.meteor.radius) this.damageEnemy(e, POWERUP_EFFECTS.meteor.damage + this.wave * POWERUP_EFFECTS.meteor.perWave, 'arcane');
-    if (this.storeAfterTarget) this.vault.resolve('store');
-    this.storeAfterTarget = false;
-    this.touchPreview = null; this.hideGhost(); this.showTouchPreview(); this.drawPowerupBar(); this.presentReward(); this.updateHUD();
+    if (!automatic) {
+      if (this.storeAfterTarget) this.vault.resolve('store');
+      this.storeAfterTarget = false;
+      this.touchPreview = null; this.hideGhost(); this.showTouchPreview();
+    }
+    this.drawPowerupBar(); this.presentReward(); this.updateHUD();
   }
 
   // ---------- projectiles + impacts (bible §47-48: one identity per family) ----------
@@ -2113,8 +2175,13 @@ export class GameScene extends Phaser.Scene {
 
   // ---------- main loop (delta-driven; never frame-rate dependent) ----------
   override update(_time: number, deltaMs: number): void {
+    const beforeAuto = this.autoSnapshot();
+    const frameWasWaiting = this.auto.enabled && !beforeAuto.blocked && !beforeAuto.waveActive &&
+      (beforeAuto.phase === 'siege' || beforeAuto.phase === 'endless');
     if (!this.pauseState.has('background')) this.updateAchievementNotices(deltaMs);
-    if (this.ended || this.paused || this.pausedByModal || this.siege.phase === 'victory' || this.siege.phase === 'terminal') return;
+    if (this.ended || this.paused || this.pausedByModal || this.siege.phase === 'victory' || this.siege.phase === 'terminal') {
+      this.auto.advance(0, this.autoSnapshot()); return;
+    }
     this.runningDurationMs += deltaMs;
     const dt = (deltaMs / 1000) * this.speed;
     this.gameTimeMs += deltaMs * this.speed;
@@ -2229,6 +2296,7 @@ export class GameScene extends Phaser.Scene {
     this.fireTowers(dt);
 
     this.checkWaveClear();
+    this.tickAuto(deltaMs, frameWasWaiting);
 
     this.presentReward();
     this.updateBossBar();
@@ -2290,6 +2358,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private enterVictory(): void {
+    this.auto.cancelCountdown();
     this.vault.cancelTarget(); this.storeAfterTarget = false;
     this.placingTowerId = null; this.selectedTower = null;
     this.hideGhost(); this.renderVictory(); this.presentReward(); this.updateHUD();
@@ -2308,7 +2377,7 @@ export class GameScene extends Phaser.Scene {
     c.add(this.add.text(width / 2, 50, `Score ${this.scoreSoFar()} · Lives ${this.lives}/${this.maxLives}`, style(14, C.textPrimary, true)).setOrigin(0.5, 0));
     const unlocked = this.unlocksEarnedThisRun.length ? `Unlocked: ${this.unlocksEarnedThisRun.map((id) => EVOLUTIONS[id].name).join(', ')}` : '';
     c.add(this.add.text(width / 2, 74, unlocked, style(12, C.textSecondary)).setOrigin(0.5, 0).setWordWrapWidth(width - 32));
-    const resolved = victoryRewardsResolved(this.vault, this.modal !== null);
+    const resolved = victoryRewardsResolved(this.vault, this.modal !== null, this.auto.enabled);
     const suffix = resolved ? '' : ' · Resolve rewards first';
     const kind = resolved ? 'primary' : 'secondary';
     button(this, c, 16, 104, width - 32, `Finish Run${suffix}`, () => this.chooseVictory('finish'), kind, 44);
@@ -2317,7 +2386,7 @@ export class GameScene extends Phaser.Scene {
 
   private chooseVictory(action: 'finish' | 'continue'): void {
     if (this.siege.phase !== 'victory' || this.pauseState.blocked) return;
-    if (!this.siege.choose(action, victoryRewardsResolved(this.vault, this.modal !== null))) return;
+    if (!this.siege.choose(action, victoryRewardsResolved(this.vault, this.modal !== null, this.auto.enabled))) return;
     this.victoryPanel?.destroy(true); this.victoryPanel = null;
     if (action === 'finish') this.finishRun('victory');
     else { this.updateNextPreview(); this.updateHUD(); }
@@ -2374,6 +2443,7 @@ export class GameScene extends Phaser.Scene {
 
   /** Idempotent; restart/quit discard the run without creating a result. */
   private cleanupProgression(): void {
+    this.auto.reset();
     this.evolutionCombat.clear();
     this.syncFieldViews();
     this.scheduledBossIds.clear();

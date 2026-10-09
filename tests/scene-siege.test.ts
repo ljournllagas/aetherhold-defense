@@ -9,6 +9,7 @@ import { submitScore } from '../src/api/leaderboardClient.ts';
 import { saveBest } from '../src/game/systems/Settings.ts';
 import type { EvolutionCombat } from '../src/game/systems/EvolutionCombat.ts';
 import type { RelicVault } from '../src/game/systems/RunSimulation.ts';
+import type { AutoSystem } from '../src/game/systems/AutoSystem.ts';
 import type { RunOutcome } from '../src/shared/progression.ts';
 import type { BranchId } from '../src/shared/progression.ts';
 import { UnlockRepository } from '../src/game/systems/UnlockSystem.ts';
@@ -146,4 +147,13 @@ describe('discarded runs', () => {
     expect(run.scene.start).not.toHaveBeenCalled();
     expect([run.scheduledBossIds.size, run.evolutionCombat.activeFieldCount]).toEqual([0, 0]);
   });
+});
+
+it.each(['finish','continue'] as const)('Auto %s leaves score submission manual',(action)=>{
+  const {run}=sceneFixture();run.siege=advanceSiege(30);run.wave=30;run.wavesCompleted=30;
+  const automatic=run as unknown as {auto:AutoSystem;setAutoEnabled(value:boolean):void};
+  automatic.setAutoEnabled(true);run.vault.offer('emergency_repair','retained',true);
+  run.chooseVictory(action);
+  expect(run.siege.phase).toBe(action==='finish'?'terminal':'endless');
+  expect(submitScore).not.toHaveBeenCalled();
 });
