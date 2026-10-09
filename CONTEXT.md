@@ -27,3 +27,5 @@
 - **Discarded run:** A run ended by Restart or Quit; it creates no terminal result and no score submission.
 - **Auto mode:** A player-controlled mode with one switch that jointly enables automatic wave starts and situational relic use.
 - **Situational relic use:** Automatic activation when a relic can provide its intended benefit in the current run state.
+- **Saved submission:** The latest terminal-result payload the player explicitly attempted to submit, retained for manual retry without resuming the run.
+- **Legacy best:** A personal-best record from an earlier score era, retained separately from the current era's best.
