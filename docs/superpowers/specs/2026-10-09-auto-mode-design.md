@@ -2,7 +2,8 @@
 
 Date: 2026-10-09
 Tier: Full
-Status: shared understanding approved; written spec awaits review and approval
+Status: shared understanding approved; written spec awaits user approval
+Review: round 1 cleared at 9/10, zero blockers and zero advisory items.
 Workflow route: Light; main agent owns design and eventual implementation, with the skill-required cold reviews.
 
 ## Purpose and agreed choices
