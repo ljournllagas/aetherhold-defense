@@ -96,6 +96,20 @@ describe('saved score retry repository', () => {
     expect(bytes.get(SCORE_RETRY_KEY)).toBe(futureRaw);
   });
 
+  it('never clears a retained earlier-era record when settling', async () => {
+    const { bytes, store } = memoryStore();
+    const retired = JSON.stringify({
+      version: 1,
+      attemptedAt: '2026-10-09T00:00:00.000Z',
+      payload: { ...payload('retry-era-two-keep-01'), scoreVersion: 2, gameVersion: '0.2.0' }
+    });
+    bytes.set(SCORE_RETRY_KEY, retired);
+    const view = await new ScoreRetryRepository(store, serialLock()).settle('retry-era-two-keep-01');
+    expect(view.status).toBe('incompatible');
+    expect(view.persisted).toBe(true);
+    expect(bytes.get(SCORE_RETRY_KEY)).toBe(retired);
+  });
+
   it.each(['read', 'write', 'lock', 'no-lock', 'no-store'] as const)('falls back safely on %s failure', async (failure) => {
     const { store, bytes } = memoryStore(), before = JSON.stringify({ version: 2 });
     bytes.set(SCORE_RETRY_KEY, before);

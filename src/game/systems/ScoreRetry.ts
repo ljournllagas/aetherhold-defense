@@ -237,7 +237,9 @@ export class ScoreRetryRepository {
     if (c.protectedBytes) {
       return sessionOnlyAttempt ? { status: 'empty', record: null, persisted: false, warning: RETRY_WARNINGS.protected } : this.viewFrom(raw);
     }
-    if (!c.record || c.record.payload.runId !== runId) return this.viewFrom(raw);
+    // Only a current-era ready record may be cleared: retained earlier-era bytes are kept
+    // even if a run id ever collided with them.
+    if (c.status !== 'ready' || !c.record || c.record.payload.runId !== runId) return this.viewFrom(raw);
     try { this.storage.removeItem(SCORE_RETRY_KEY); }
     catch { return { status: 'ready', record: c.record, persisted: true, warning: RETRY_WARNINGS.removed }; }
     return this.viewFrom(null);
@@ -257,9 +259,10 @@ function browserStore(): RetryStore | null {
 
 function browserLock(): RetryLock | null {
   try {
-    return typeof navigator !== 'undefined' && navigator.locks
-      ? (work) => navigator.locks.request(SCORE_RETRY_KEY, () => work()) as Promise<never>
-      : null;
+    const locks = typeof navigator === 'undefined' ? undefined : navigator.locks;
+    if (!locks) return null;
+    // The DOM signature returns Promise<any>; state the repository's own contract instead.
+    return <T>(work: () => T | Promise<T>): Promise<T> => locks.request(SCORE_RETRY_KEY, () => work()) as Promise<T>;
   } catch { return null; }
 }
 

@@ -35,8 +35,7 @@ describe('tower progression view', () => {
   });
   it('enables evolve after the boss with the captured intent and revision', () => {
     const action = towerProgressionView(tower(null), ctx({ evolutionOpen: true })).actions[0];
-    expect(action).toMatchObject({ label: 'Evolve: Marksman · 510 gold', reason: null, intent: { kind: 'evolve', branchId: 'marksman' }, revision: 0 });
-    expect(action.nextStats).toEqual({ ...EVOLUTIONS.marksman.stats[0] });
+    expect(action).toEqual({ label: 'Evolve: Marksman · 510 gold', reason: null, intent: { kind: 'evolve', branchId: 'marksman' }, revision: 0, nextStats: EVOLUTIONS.marksman.stats[0] });
   });
   it('offers the foundation upgrade and asks for level 4 below it', () => {
     const t = tower(null); t.progression = { ...t.progression, foundationLevel: 2, invested: 190 };
@@ -47,8 +46,7 @@ describe('tower progression view', () => {
   it('reports insufficient gold and paused or ended runs', () => {
     const view = towerProgressionView(tower('marksman', 1), ctx({ gold: 10, evolutionOpen: true }));
     expect(view.title).toBe('Marksman · Rank 1');
-    expect(view.actions).toMatchObject([{ label: 'Marksman rank 2 · 935 gold', reason: 'Not enough gold', intent: { kind: 'evolution-rank' }, revision: 0 }]);
-    expect(view.actions[0].nextStats).toEqual(EVOLUTIONS.marksman.stats[2]);
+    expect(view.actions).toEqual([{ label: 'Marksman rank 2 · 935 gold', reason: 'Not enough gold', intent: { kind: 'evolution-rank' }, revision: 0, nextStats: EVOLUTIONS.marksman.stats[2] }]);
     expect(towerProgressionView(tower('marksman', 1), ctx({ blocked: true, evolutionOpen: true })).actions[0].reason).toBe('Unavailable while paused or ended');
   });
   it('offers mastery only in endless and shows the numeric limit', () => {

@@ -6,14 +6,17 @@ Baseline for the whole-change review: `06938d9`. Branch: `main`.
 
 ## Status
 
-Tasks 1–10 are implemented, committed and green. Task 11 is implemented and evidenced except the
-`?qa=` preview browser cases. Task 12 (deploy, live verification, push) is **blocked** on the
-single issue in "Unresolved blocker" below.
+Tasks 1–11 are implemented, committed and green, including the whole-change cold review (verdict: PASS
+WITH FINDINGS, advisory only, no blocker) and its two actionable fixes. Task 12 (publish, live
+verification, branch synchronization) is in progress.
 
 Commits (newest first):
 
 | Commit | Task |
 |---|---|
+| `2d2fbbd` | Task 11 — QA game fixtures route through the real staged entry |
+| `e669ddd` | Plan execution record |
+| `3f37eeb` | Task 11 — verification harness, two defect fixes, SPEC.md, handoff |
 | `ac910f0` | Task 10 — preview next rank/mastery before purchase |
 | `5e6e951` | Task 9 — saved-score UI and truthful offline messaging |
 | `2fbb04a` | Task 8 — retained manual submissions across reload and tabs |
@@ -24,6 +27,24 @@ Commits (newest first):
 | `ebacccb` | Task 3 — combat independent of rendered frames |
 | `ea55ea8` | Task 2 — bounded fixed-step simulation clock |
 | `c84b90e` | Task 1 — shared Unicode name policy and settings validation |
+
+### Cold review outcome
+
+One fresh read-only reviewer compared `06938d9..HEAD` against the approved spec and plan and re-ran
+typecheck, the full suite, the build and the balance acceptance itself (all green). Verdict: PASS WITH
+FINDINGS, no blockers, no major findings. All five plan Review-Focus items were judged PASS with code and
+test evidence. Two actionable advisory findings were fixed in this release:
+
+- `browserLock` no longer casts `navigator.locks.request` to `Promise<never>`; it states the repository's
+  own `RetryLock` contract instead.
+- `settleLocked` now clears only a **current-era ready** record, so a retained era-1/2 record can never be
+  removed even if a run id collided (regression test added).
+
+Remaining advisories are recorded, not silently dropped: the `simulation-bot` tick-divisibility tolerance
+(justified by non-representable `1000/60` ticks), the dev-only `?qa=` scene-stop change in this release
+(harness-driven, mirrors the real entry flow), and the pre-existing unreachable compact-inspector branch
+in `GameScene.refreshInfoPanel` caused by `layout.ts` making a non-zero inspector imply non-compact. R10
+stays genuinely covered by the ScrollSheet paths and the six-size browser preview cases.
 
 ## Requirement coverage
 
