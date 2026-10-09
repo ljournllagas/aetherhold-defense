@@ -150,6 +150,10 @@ export class GameScene extends Phaser.Scene {
   private hudScoreValue: Phaser.GameObjects.Text | null = null;
   private hudDiff: Phaser.GameObjects.Text | null = null;
   private hudStatus: Phaser.GameObjects.Text | null = null;
+  private autoButton: ReturnType<typeof button> | null = null;
+  private pauseAutoButton: ReturnType<typeof button> | null = null;
+  private autoStatusText: Phaser.GameObjects.Text | null = null;
+  private autoDetailText: Phaser.GameObjects.Text | null = null;
   private startBtn: Phaser.GameObjects.Rectangle | null = null;
   private startBtnLabel: Phaser.GameObjects.Text | null = null;
   private nextPreview: Phaser.GameObjects.Text | null = null;
@@ -229,11 +233,11 @@ export class GameScene extends Phaser.Scene {
     const intent = this.gesture.up(ptr.id);
     if (intent?.type === 'tap') this.selectBattlefield(intent.point, true);
   };
-  private readonly cancelGesture = (): void => { this.gesture.cancel(); };
-  private readonly captureLost = (event: PointerEvent): void => { if (event.buttons !== 0) this.gesture.cancel(); };
+  private readonly cancelGesture = (): void => { this.gesture.cancel(); this.cancelAutoPress(); };
+  private readonly captureLost = (event: PointerEvent): void => { if (event.buttons !== 0) this.cancelGesture(); };
   private readonly visibilityChanged = (): void => {
     if (!document.hidden) return;
-    this.gesture.cancel(); this.pauseState.set('background', true);
+    this.cancelGesture(); this.pauseState.set('background', true);
     SoundManager.get().suspend(); this.updateHUD(); this.drawBackgroundPause();
   };
 
@@ -243,6 +247,11 @@ export class GameScene extends Phaser.Scene {
   };
   private readonly handlePauseKey = (): void => {
     if (!this.modal || this.modal.getData('pauseMenu') === true) this.togglePauseMenu();
+  };
+  private readonly handleAutoKey = (event: KeyboardEvent): void => {
+    const target = event.target as HTMLElement | null;
+    if (event.repeat || target?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target?.tagName ?? '')) return;
+    this.setAutoEnabled(!this.auto.enabled);
   };
 
   constructor() {
@@ -332,6 +341,7 @@ export class GameScene extends Phaser.Scene {
     this.hudScoreValue = null;
     this.hudDiff = null;
     this.hudStatus = null;
+    this.autoButton = null; this.pauseAutoButton = null; this.autoStatusText = null; this.autoDetailText = null;
     this.startBtn = null;
     this.startBtnLabel = null;
     this.nextPreview = null;
@@ -369,6 +379,7 @@ export class GameScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-ESC', this.handleEscapeKey);
     this.input.keyboard?.on('keydown-SPACE', this.handleSpaceKey);
     this.input.keyboard?.on('keydown-P', this.handlePauseKey);
+    this.input.keyboard?.on('keydown-A', this.handleAutoKey);
     this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.shutdownRun, this);
     if (import.meta.env.DEV) this.events.on('qa:action', this.handleQAAction, this);
@@ -401,6 +412,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private drawSheet(restoreOffset?: number): void {
+    this.autoDetailText = null;
     const context = this.sheetKind === 'tower' || this.sheetKind === 'evolve' ? `${this.sheetKind}:${this.selectedTower?.id}` : null;
     const scrollOffset = restoreOffset ?? (context && this.sheet?.root.getData('progressionContext') === context ? this.sheet.scrollOffset : 0);
     this.refreshProgressionActions = null;
@@ -431,10 +443,12 @@ export class GameScene extends Phaser.Scene {
       sheet.text(y, 'Targeting'); y += 28;
       TARGET_MODES.forEach((mode, i) => sheet.action(y + i * 52, `${t.targeting === mode ? '✓ ' : ''}${mode[0].toUpperCase() + mode.slice(1)}`, () => { t.targeting = mode; this.drawSheet(); }));
     } else if (kind === 'more') {
-      sheet.action(0, 'Relics', () => this.openSheet('relics'));
-      sheet.action(52, 'Next Wave', () => this.openSheet('next'));
-      sheet.pair(104, 'Zoom In', 'Zoom Out', () => this.changeZoom(1.25), () => this.changeZoom(.8));
-      sheet.action(156, 'Reset View', () => { this.cameraView.reset(); this.applyView(); });
+      this.autoDetailText = sheet.text(0, this.autoDetail());
+      const y = this.autoDetailText.height + 12;
+      sheet.action(y, 'Relics', () => this.openSheet('relics'));
+      sheet.action(y + 52, 'Next Wave', () => this.openSheet('next'));
+      sheet.pair(y + 104, 'Zoom In', 'Zoom Out', () => this.changeZoom(1.25), () => this.changeZoom(.8));
+      sheet.action(y + 156, 'Reset View', () => { this.cameraView.reset(); this.applyView(); });
     } else if (kind === 'relics') {
       let rowY = 0;
       for (let i = 0; i < 3; i++) {
@@ -446,7 +460,7 @@ export class GameScene extends Phaser.Scene {
       const status = this.waveActive ? `Wave ${this.wave} · In battle` : this.compositionSummary(this.wave + 1, true);
       const text = sheet.text(0, status, C.gold);
       const reason = this.nextWaveReason();
-      sheet.text(text.height + 16, reason);
+      this.autoDetailText = sheet.text(text.height + 16, reason);
     }
     sheet.scrollTo(scrollOffset);
   }
@@ -544,7 +558,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   private readonly handleResize = (): void => {
-    this.gesture.cancel();
+    this.cancelGesture();
+    this.pauseAutoButton = null;
     this.layout = gameLayout(this.scale.width, this.scale.height);
     this.cameraView.resize(this.layout.field);
     const render = this.modalRenderer;
@@ -556,6 +571,7 @@ export class GameScene extends Phaser.Scene {
   };
 
   private drawShell(): void {
+    this.autoButton = null; this.autoStatusText = null; this.autoDetailText = null;
     const scrollOffset = this.sheetKind === 'tower' || this.sheetKind === 'evolve' ? this.sheet?.scrollOffset ?? 0 : 0;
     this.refreshProgressionActions = null;
     this.sheet?.destroy(); this.sheet = null;
@@ -580,6 +596,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private shutdownRun(): void {
+    this.autoButton = null; this.pauseAutoButton = null; this.autoStatusText = null; this.autoDetailText = null;
     this.refreshProgressionActions = null;
     this.sheet?.destroy(); this.sheet = null; this.modalSheet?.destroy(); this.modalSheet = null;
     document.removeEventListener('visibilitychange', this.visibilityChanged);
@@ -638,6 +655,7 @@ export class GameScene extends Phaser.Scene {
     this.input.keyboard?.off('keydown-ESC', this.handleEscapeKey);
     this.input.keyboard?.off('keydown-SPACE', this.handleSpaceKey);
     this.input.keyboard?.off('keydown-P', this.handlePauseKey);
+    this.input.keyboard?.off('keydown-A', this.handleAutoKey);
   }
 
   private handleQAAction(action: QAAction): void {
@@ -730,6 +748,8 @@ export class GameScene extends Phaser.Scene {
       lives: this.lives,
       speed: this.speed,
       paused: this.paused || this.pausedByModal,
+      autoEnabled: this.auto.enabled,
+      autoRemainingMs: this.auto.remainingMs,
       waveActive: this.waveActive,
       towers: this.towers.length,
       enemies: this.enemies.filter((enemy) => enemy.alive).length,
@@ -743,7 +763,7 @@ export class GameScene extends Phaser.Scene {
       target: this.pendingMeteor,
       gameTimeMs: Math.round(this.gameTimeMs),
       activeBuffs: [this.freezeUntil, this.doubleBountyUntil, this.battleCryUntil, this.surgeUntil, ...this.towers.map(t => t.overchargeUntil)].filter(until => until > this.gameTimeMs).length,
-      inputListeners: this.input.listenerCount('pointerdown') + this.input.listenerCount('pointermove') + ['keydown-ESC', 'keydown-SPACE', 'keydown-P'].reduce((n, event) => n + (this.input.keyboard?.listenerCount(event) ?? 0), 0),
+      inputListeners: this.input.listenerCount('pointerdown') + this.input.listenerCount('pointermove') + ['keydown-ESC', 'keydown-SPACE', 'keydown-P', 'keydown-A'].reduce((n, event) => n + (this.input.keyboard?.listenerCount(event) ?? 0), 0),
       timers: this.revealTimer?.getRemaining() ? 1 : 0,
       tweens: this.tweens.getTweens().length,
       selected: !!this.selectedTower,
@@ -890,6 +910,7 @@ export class GameScene extends Phaser.Scene {
       this.hudWaveValue = this.add.text(8, 24, '', style(16, C.textPrimary, true)); this.uiRoot!.add(this.hudWaveValue);
       this.hudGoldValue = metric(1, 'GOLD', C.gold); this.hudLivesValue = metric(2, 'LIVES', C.textPrimary); this.hudScoreValue = metric(3, 'SCORE', C.textPrimary);
       this.hudDiff = this.add.text(8, 62, '', style(14, C.textSecondary, true)); this.uiRoot!.add(this.hudDiff);
+      this.autoStatusText = this.add.text(8, 82, '', style(12, C.gold)).setWordWrapWidth(w - 272); this.uiRoot!.add(this.autoStatusText);
       this.hudStatus = this.add.text(8, this.layout.hud + 4, '', style(12, C.gold)).setWordWrapWidth(w - 16); this.uiRoot!.add(this.hudStatus);
       return;
     }
@@ -900,15 +921,16 @@ export class GameScene extends Phaser.Scene {
       this.uiRoot!.add(this.add.image(32, 28, emblemKey()).setDisplaySize(40, 40));
       this.uiRoot!.add(this.add.text(60, 8, 'Aegis of the\nBorderkeep', style(16, C.goldBright, true, FONT_DISPLAY)));
     }
-    const step = Math.max(96, Math.min(144, (w - offset - 168) / 5));
+    const step = Math.max(96, Math.min(144, (w - offset - 264) / 5));
     this.hudWaveValue = this.hudMetric(offset, 'hud_wave', 'WAVE', 22, C.textPrimary);
     this.hudWaveLabel = this.uiRoot!.list[this.uiRoot!.list.length - 2] as Phaser.GameObjects.Text;
     this.hudGoldValue = this.hudMetric(offset + step, 'hud_gold', 'GOLD', 18, C.gold);
     this.hudLivesValue = this.hudMetric(offset + step * 2, 'hud_lives', 'LIVES', 18, C.textPrimary);
     this.hudScoreValue = this.hudMetric(offset + step * 3, 'hud_score', 'SCORE', 18, C.textPrimary);
     this.uiRoot!.add(this.add.text(offset + step * 4, 6, 'DIFFICULTY', style(12, C.textSecondary, true)));
-    this.hudDiff = this.add.text(offset + step * 4, 28, '', style(14, C.textPrimary, true));
+    this.hudDiff = this.add.text(offset + step * 4, 22, '', style(14, C.textPrimary, true));
     this.uiRoot!.add(this.hudDiff);
+    this.autoStatusText = this.add.text(offset + step * 4, 40, '', style(12, C.gold)).setWordWrapWidth(step - 8); this.uiRoot!.add(this.autoStatusText);
     this.hudStatus = this.add.text(this.layout.compact ? 512 : 544, this.layout.height - this.layout.tray + 12, '', style(12, C.gold)).setWordWrapWidth(Math.max(160, this.layout.field.width - 560));
     this.uiRoot!.add(this.hudStatus);
   }
@@ -969,6 +991,7 @@ export class GameScene extends Phaser.Scene {
       if (this.paused || this.pausedByModal || this.gameTimeMs < this.freezeUntil) visual.sprite.anims.pause();
       else visual.sprite.anims.resume();
     }
+    this.refreshAutoDisplay();
     this.publishQAStatus();
   }
 
@@ -1065,11 +1088,49 @@ export class GameScene extends Phaser.Scene {
   private drawControls(): void {
     const w = this.layout.width;
     const y = this.layout.narrow ? 54 : 6;
+    this.autoButton = button(this, this.uiRoot!, w - 248, y, 88, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => this.setAutoEnabled(!this.auto.enabled));
     this.speedBtnLabel = button(this, this.uiRoot!, w - 152, y, 64, `${this.speed}×`, () => this.cycleSpeed()).text;
     button(this, this.uiRoot!, w - 80, y, 68, 'Pause', () => this.togglePauseMenu());
   }
 
   private speedBtnLabel: Phaser.GameObjects.Text | null = null;
+
+  private autoShortStatus(): string {
+    if (!this.auto.enabled) return '';
+    if (this.siege.phase === 'victory') return 'Victory';
+    if (this.paused || this.pauseState.has('background')) return 'Paused';
+    if (this.pendingMeteor) return 'Wait target';
+    if (this.modal || this.pausedByModal) return 'Wait dialog';
+    if (!this.waveActive) return this.auto.remainingMs === 0 ? 'Starting' : `${Math.max(1, Math.ceil((this.auto.remainingMs ?? 5000) / 1000))}s`;
+    return 'In battle';
+  }
+
+  private autoDetail(): string {
+    const base = this.auto.enabled ? `Auto ON · ${this.autoShortStatus()}` : 'Auto OFF';
+    return `${base} · ${this.vault.pending.length} queued · A toggles Auto`;
+  }
+
+  private refreshAutoDisplay(): void {
+    const label = this.auto.enabled ? 'Auto ON' : 'Auto OFF';
+    for (const control of [this.autoButton, this.pauseAutoButton]) {
+      control?.text.setText(label);
+      control?.box.setStrokeStyle(this.auto.enabled ? 2 : 1, this.auto.enabled ? 0xd7aa4e : 0x445564);
+    }
+    this.autoStatusText?.setText(this.autoShortStatus());
+    if (this.autoDetailText && this.sheet) {
+      const height = this.autoDetailText.height;
+      this.autoDetailText.setText(this.sheetKind === 'next' ? this.nextWaveReason() : this.autoDetail());
+      if (this.autoDetailText.height !== height) this.drawSheet(this.sheet.scrollOffset);
+    }
+    if (!this.waveActive && this.auto.enabled) {
+      const status = this.autoSnapshot().blocked ? 'waiting' : this.autoShortStatus();
+      this.startBtnLabel?.setText(`Start Wave ${this.wave + 1} · ${status}`);
+    }
+  }
+
+  private cancelAutoPress(): void {
+    this.autoButton?.box.emit('pointerout'); this.pauseAutoButton?.box.emit('pointerout');
+  }
 
   private pauseMenuAvailable(): boolean {
     if (this.pauseState.has('background')) return false;
@@ -1083,12 +1144,13 @@ export class GameScene extends Phaser.Scene {
     this.paused = true;
     this.gesture.cancel();
     this.modalRenderer = () => { this.paused = false; this.togglePauseMenu(); };
-    const c = this.modalFrame(Math.min(320, this.layout.width - 24), 296); this.modal!.setData('pauseMenu', true);
+    const c = this.modalFrame(Math.min(320, this.layout.width - 24), 348); this.modal!.setData('pauseMenu', true);
     c.add(this.add.text(160, 20, 'Paused', style(22, C.textPrimary, true, FONT_DISPLAY)).setOrigin(0.5,0));
     button(this, c, 24, 68, 272, 'Resume', () => this.togglePauseMenu(), 'primary');
     button(this, c, 24, 120, 272, 'Settings', () => this.showPauseSettings());
-    button(this, c, 24, 172, 272, 'Restart Run', () => this.scene.restart({ difficulty: this.difficultyId, playerName: this.playerName }));
-    button(this, c, 24, 224, 272, 'Quit to Menu', () => { SoundManager.get().stopMusic(); this.scene.start('MainMenu'); }, 'danger');
+    this.pauseAutoButton = button(this, c, 24, 172, 272, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => this.setAutoEnabled(!this.auto.enabled));
+    button(this, c, 24, 224, 272, 'Restart Run', () => this.scene.restart({ difficulty: this.difficultyId, playerName: this.playerName }));
+    button(this, c, 24, 276, 272, 'Quit to Menu', () => { SoundManager.get().stopMusic(); this.scene.start('MainMenu'); }, 'danger');
     this.updateHUD();
   }
 
@@ -1136,6 +1198,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private closeModal(): void {
+    this.pauseAutoButton = null;
     this.modalError = '';
     this.modalSheet?.destroy(); this.modalSheet = null; this.modalRenderer = null;
     this.revealTimer?.remove(false); this.revealTimer = null;
@@ -2180,7 +2243,7 @@ export class GameScene extends Phaser.Scene {
       (beforeAuto.phase === 'siege' || beforeAuto.phase === 'endless');
     if (!this.pauseState.has('background')) this.updateAchievementNotices(deltaMs);
     if (this.ended || this.paused || this.pausedByModal || this.siege.phase === 'victory' || this.siege.phase === 'terminal') {
-      this.auto.advance(0, this.autoSnapshot()); return;
+      this.auto.advance(0, this.autoSnapshot()); this.refreshAutoDisplay(); return;
     }
     this.runningDurationMs += deltaMs;
     const dt = (deltaMs / 1000) * this.speed;
@@ -2297,6 +2360,7 @@ export class GameScene extends Phaser.Scene {
 
     this.checkWaveClear();
     this.tickAuto(deltaMs, frameWasWaiting);
+    this.refreshAutoDisplay();
 
     this.presentReward();
     this.updateBossBar();

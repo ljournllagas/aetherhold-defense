@@ -1,7 +1,7 @@
 import {vi} from 'vitest';
 import type Phaser from 'phaser';
 vi.mock('phaser',()=>({default:{Scene:class{constructor(_key?:string){}},Scenes:{Events:{SHUTDOWN:'shutdown'}},Scale:{Events:{RESIZE:'resize'}}}}));
-import {EventEmitter} from 'node:events';
+import {EventEmitter} from 'eventemitter3';
 import {GameScene} from '../../src/game/scenes/GameScene.ts';
 import {SoundManager} from '../../src/game/systems/SoundManager.ts';
 import {AutoSystem,type AutoContext,type AutoRelicIntent} from '../../src/game/systems/AutoSystem.ts';

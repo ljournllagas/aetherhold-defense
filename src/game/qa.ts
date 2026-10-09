@@ -36,6 +36,8 @@ export interface QAStatus {
   lives: number;
   speed: number;
   paused: boolean;
+  autoEnabled: boolean;
+  autoRemainingMs: number | null;
   waveActive: boolean;
   towers: number;
   enemies: number;

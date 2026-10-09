@@ -184,7 +184,7 @@ describe('GameScene replay lifecycle', () => {
     internals.detachInputListeners();
 
     expect(off.mock.calls.map(([event]) => event)).toEqual(['pointerup', 'pointerupoutside', 'pointerdown', 'pointermove']);
-    expect(keyboardOff.mock.calls.map(([event]) => event)).toEqual(['keydown-ESC', 'keydown-SPACE', 'keydown-P']);
+    expect(keyboardOff.mock.calls.map(([event]) => event)).toEqual(['keydown-ESC', 'keydown-SPACE', 'keydown-P', 'keydown-A']);
   });
 });
 
@@ -225,6 +225,7 @@ describe('progression QA fixtures', () => {
     expect([run.wave, run.waveActive, run.siege.highestWave, run.debugAssisted]).toEqual([10, true, 10, true]);
     const calls = run.events.emit.mock.calls, status = calls[calls.length - 1][1] as QAStatus;
     expect(status).toMatchObject({ phase: 'siege', wavesCompleted: 9, fields: 0, debugAssisted: true, unsavedUnlocks: [] });
+    expect(status.autoEnabled).toBe(false); expect(status.autoRemainingMs).toBeNull();
     expect(status.progression[0]).toMatchObject({ towerId: 'longbow', branchId: null, masteryRank: 0 });
   });
   it('does not treat speed changes as debug assistance', () => {
