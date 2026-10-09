@@ -100,11 +100,12 @@ export class MainMenuScene extends Phaser.Scene {
     const best = loadBest();
     const legacy = loadLegacyBest();
     const bestY = compact ? H * 0.515 : H * 0.545;
+    const bestWrap = Math.max(220, W - 32);
     if (best) {
-      this.add.text(W / 2, bestY, `Personal best  ·  ${best.score.toLocaleString('en-US')} pts  ·  Wave ${best.wave}`, style(12, C.textSecondary)).setOrigin(0.5);
+      this.add.text(W / 2, bestY, `Personal best  ·  ${best.score.toLocaleString('en-US')} pts  ·  Wave ${best.wave}`, style(12, C.textSecondary)).setOrigin(0.5).setWordWrapWidth(bestWrap);
     }
     if (legacy) {
-      this.add.text(W / 2, best ? bestY + 16 : bestY, `Legacy best  ·  ${legacy.score.toLocaleString('en-US')} pts  ·  Wave ${legacy.wave}`, style(12, C.textSecondary)).setOrigin(0.5);
+      this.add.text(W / 2, best ? bestY + 16 : bestY, `Legacy era ${legacy.scoreVersion} best  ·  ${legacy.score.toLocaleString('en-US')} pts  ·  Wave ${legacy.wave}`, style(12, C.textSecondary)).setOrigin(0.5).setWordWrapWidth(bestWrap);
     }
 
     if (narrowCompact) {

@@ -94,9 +94,9 @@ describe('worker api', () => {
     ]) expect((await post(env, body)).status).toBe(201);
     expect(db.queries.some((q) => q.includes('waves_completed') && q.includes('siege_bosses_defeated') && q.startsWith('INSERT'))).toBe(true);
     const body = (await (await worker.fetch(req('/api/leaderboard?difficulty=medium'), env)).json()) as { scoreVersion: number; scores: Array<Record<string, unknown>> };
-    expect(SCORE_VERSION).toBe(2); expect(body.scoreVersion).toBe(SCORE_VERSION);
+    expect(SCORE_VERSION).toBe(3); expect(body.scoreVersion).toBe(SCORE_VERSION);
     expect(body.scores.map((s) => [s.runId, s.highestWave, s.wavesCompleted, s.outcome, s.siegeBossesDefeated, s.scoreVersion])).toEqual([
-      ['progress-endless-01', 31, 30, 'defeat', 7, 2], ['progress-victory-01', 30, 30, 'victory', 7, 2], ['progress-failed-01', 10, 9, 'siege-failed', 0, 2]
+      ['progress-endless-01', 31, 30, 'defeat', 7, 3], ['progress-victory-01', 30, 30, 'victory', 7, 3], ['progress-failed-01', 10, 9, 'siege-failed', 0, 3]
     ]);
   });
   it('rejects forged progress and legacy-era payloads', async () => {

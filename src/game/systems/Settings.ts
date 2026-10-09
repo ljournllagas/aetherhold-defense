@@ -13,8 +13,12 @@ export interface Settings {
 }
 
 const KEY = 'aetherhold-settings-v1';
-const BEST_KEY = 'aetherhold-best-score-v2';
-const LEGACY_BEST_KEY = 'aetherhold-best-v1';
+const BEST_KEY = 'aetherhold-best-score-v3';
+/** Retained legacy bests, newest era first. Only these keys may infer their era when the field is absent. */
+const LEGACY_BEST_KEYS: ReadonlyArray<readonly [key: string, era: number]> = [
+  ['aetherhold-best-score-v2', 2],
+  ['aetherhold-best-v1', 1]
+];
 
 const DEFAULTS: Settings = {
   masterVolume: 1,
@@ -71,32 +75,45 @@ export interface LocalBest {
   scoreVersion: number;
 }
 
-function parseBest(key: string, legacy: boolean): LocalBest | null {
+/**
+ * Reads one stored best. `expectedEra` must match the record's era; only a retained
+ * legacy record whose `scoreVersion` field is absent may fall back to `implicitEra`.
+ * Malformed records are treated as absent and never rewritten.
+ */
+function parseBest(key: string, expectedEra: number, implicitEra?: number): LocalBest | null {
   try {
     const raw = localStorage.getItem(key);
     if (!raw) return null;
     const v = JSON.parse(raw) as Partial<LocalBest> | null;
-    if (!v || typeof v !== 'object' || typeof v.score !== 'number' || !Number.isFinite(v.score)) return null;
-    const scoreVersion = typeof v.scoreVersion === 'number' ? v.scoreVersion : (legacy ? 1 : NaN);
-    if (!legacy && scoreVersion !== SCORE_VERSION) return null;
-    return {
-      score: v.score,
-      wave: typeof v.wave === 'number' ? v.wave : 0,
-      difficulty: typeof v.difficulty === 'string' ? v.difficulty : '',
-      date: typeof v.date === 'string' ? v.date : '',
-      scoreVersion
-    };
+    if (!v || typeof v !== 'object' || Array.isArray(v)) return null;
+    const scoreVersion = typeof v.scoreVersion === 'number' ? v.scoreVersion : implicitEra;
+    if (scoreVersion !== expectedEra) return null;
+    if (typeof v.score !== 'number' || !Number.isSafeInteger(v.score) || v.score < 0) return null;
+    if (typeof v.wave !== 'number' || !Number.isSafeInteger(v.wave) || v.wave < 0) return null;
+    if (v.difficulty !== 'easy' && v.difficulty !== 'medium' && v.difficulty !== 'hard') return null;
+    if (typeof v.date !== 'string' || !Number.isFinite(Date.parse(v.date))) return null;
+    return { score: v.score, wave: v.wave, difficulty: v.difficulty, date: v.date, scoreVersion };
   } catch {
     return null;
   }
 }
 
 export function loadBest(): LocalBest | null {
-  return parseBest(BEST_KEY, false);
+  return parseBest(BEST_KEY, SCORE_VERSION);
+}
+
+/** Both retained legacy bests, newest era first; malformed or other-era records are omitted. */
+export function loadLegacyBests(): LocalBest[] {
+  const records: LocalBest[] = [];
+  for (const [key, era] of LEGACY_BEST_KEYS) {
+    const record = parseBest(key, era, era);
+    if (record) records.push(record);
+  }
+  return records;
 }
 
 export function loadLegacyBest(): LocalBest | null {
-  return parseBest(LEGACY_BEST_KEY, true);
+  return loadLegacyBests()[0] ?? null;
 }
 
 export function saveBest(b: Omit<LocalBest, 'scoreVersion'>): void {

@@ -17,16 +17,21 @@ const best = (score: number, scoreVersion: number) => ({ score, wave: 12, diffic
 describe('progression panel', () => {
   it('lists achievements, saved state, both branches and both bests without run qualification', () => {
     const repo = new UnlockRepository(null, () => '2026-10-08T00:00:00Z'); repo.earn(['volley']);
-    const lines = progressionPanelLines(repo.view(), best(900, 2), best(100000, 1));
+    const lines = progressionPanelLines(repo.view(), best(900, 3), [best(5, 2), best(100000, 1)]);
     expect(lines[0]).toBe(repo.view().warning);
     expect(lines).toEqual(expect.arrayContaining([
       'Ranger: Marksman (starter) / Volley',
       'Unlocked · not saved · Keep a Marksman tower at evolution rank 2 or higher when wave 20 is completed.',
       'Locked · Keep a Siegebreaker tower at evolution rank 2 or higher when wave 20 is completed.',
-      'Personal best · 900 pts', 'Legacy best · 100,000 pts'
+      'Personal best · 900 pts', 'Legacy era 2 best · 5 pts', 'Legacy era 1 best · 100,000 pts'
     ]));
+    // Each era keeps its own number: no cross-era numeric comparison or merging.
+    expect(lines.some((l) => l.includes('Legacy era 2 best · 900'))).toBe(false);
+    expect(lines.some((l) => l.includes('Legacy era 1 best · 900'))).toBe(false);
+    expect(lines.some((l) => l.includes('Personal best · 100,000'))).toBe(false);
     expect(lines.some((l) => l.includes('On track'))).toBe(false);
-    expect(progressionPanelLines(new UnlockRepository(null).view(), null, null)).toContain('Personal best · none yet');
+    expect(progressionPanelLines(new UnlockRepository(null).view(), null, [])).toContain('Personal best · none yet');
+    expect(progressionPanelLines(new UnlockRepository(null).view(), null, []).some((l) => l.startsWith('Legacy era'))).toBe(false);
   });
   it('returns to the main menu', () => {
     new ProgressionScene().create();

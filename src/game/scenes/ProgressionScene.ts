@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { TOWERS } from '../config/towers.ts';
-import { loadBest, loadLegacyBest } from '../systems/Settings.ts';
+import { loadBest, loadLegacyBests } from '../systems/Settings.ts';
 import type { LocalBest } from '../systems/Settings.ts';
 import { unlockRepository } from '../systems/UnlockSystem.ts';
 import type { UnlockView } from '../systems/UnlockSystem.ts';
@@ -10,7 +10,7 @@ import { C } from '../ui/tokens.ts';
 
 const STATE_PREFIX = /^(Locked|Unlocked) · /;
 
-export function progressionPanelLines(view: UnlockView, currentBest: LocalBest | null, legacyBest: LocalBest | null): string[] {
+export function progressionPanelLines(view: UnlockView, currentBest: LocalBest | null, legacyBests: readonly LocalBest[]): string[] {
   const lines: string[] = [];
   if (view.warning) lines.push(view.warning);
   for (const a of achievementViews(view, [], 0)) {
@@ -19,7 +19,7 @@ export function progressionPanelLines(view: UnlockView, currentBest: LocalBest |
     lines.push(`${state} · ${a.requirement}`);
   }
   lines.push(currentBest ? `Personal best · ${currentBest.score.toLocaleString('en-US')} pts` : 'Personal best · none yet');
-  if (legacyBest) lines.push(`Legacy best · ${legacyBest.score.toLocaleString('en-US')} pts`);
+  for (const record of legacyBests) lines.push(`Legacy era ${record.scoreVersion} best · ${record.score.toLocaleString('en-US')} pts`);
   return lines;
 }
 
@@ -41,7 +41,7 @@ export class ProgressionScene extends Phaser.Scene {
     this.sheet = sheet;
     const view = unlockRepository.view();
     let y = 0;
-    for (const line of progressionPanelLines(view, loadBest(), loadLegacyBest())) {
+    for (const line of progressionPanelLines(view, loadBest(), loadLegacyBests())) {
       const requirement = STATE_PREFIX.test(line);
       const color = line === view.warning ? C.dangerBright : requirement ? C.textSecondary : C.textPrimary;
       const text = sheet.text(y, line, color, requirement ? 12 : 14);

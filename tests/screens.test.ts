@@ -262,7 +262,7 @@ describe('screen lifecycle and leaderboard states', () => {
   it('lists unlocks and labels a retained legacy best separately', () => {
     screenMocks.legacyBest = { score: 100000, wave: 40, difficulty: 'hard', date: '2026-01-01T00:00:00.000Z', scoreVersion: 1 };
     new GameOverScene().create(resultData({ unlocksEarned: [{ branchId: 'volley', saved: true }, { branchId: 'thunderlord', saved: false }] }));
-    expect(texts()).toEqual(expect.arrayContaining(['Legacy best · 100,000', 'Unlocked: Volley, Thunderlord (not saved)']));
+    expect(texts()).toEqual(expect.arrayContaining(['Legacy era 1 best · 100,000', 'Unlocked: Volley, Thunderlord (not saved)']));
   });
 
   it('opens the full filtered Hall of Legends for the completed run', async () => {

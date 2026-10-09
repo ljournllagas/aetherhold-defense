@@ -205,7 +205,7 @@ export class GameOverScene extends Phaser.Scene {
     const livesLine = `Lives remaining · ${Math.max(0, Math.floor(data.remainingLives))}`;
     const unlocksLine = this.unlocksLine(data);
     const legacy = loadLegacyBest();
-    const legacyLine = legacy ? `Legacy best · ${number(legacy.score)}` : null;
+    const legacyLine = legacy ? `Legacy era ${legacy.scoreVersion} best · ${number(legacy.score)}` : null;
     if (W < 768) {
       const sheet = new ScrollSheet(this, panel, { x: 12, y: 8, width: W - 24, height: H - 16 }, title, () => this.scene.start('MainMenu')); this.phoneSheet = sheet;
       let y = 0;
