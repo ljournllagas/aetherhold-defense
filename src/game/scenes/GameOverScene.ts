@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import type { LoadingRequest } from './PreloadScene.ts';
 import type { DifficultyId, EnemyArchetype, GameResultPayload, ScoreBreakdown } from '../../shared/types.ts';
 import type { BranchId, EvolutionRank, RunOutcome } from '../../shared/progression.ts';
-import { submitScore } from '../../api/leaderboardClient.ts';
+import { scoreRetryRepository, submitRetainedScore, type SavedSubmission } from '../systems/ScoreRetry.ts';
 import { loadBest, loadLegacyBest } from '../systems/Settings.ts';
 import { EVOLUTIONS } from '../config/evolutions.ts';
 import { SoundManager } from '../systems/SoundManager.ts';
@@ -71,6 +71,9 @@ export class GameOverScene extends Phaser.Scene {
   private runGeneration = 0;
   private activeRunId: string | null = null;
   private runData: Data | null = null;
+  /** The retained attempt this screen owns; it keeps later retries conditional across tabs. */
+  private scoreAttempt: SavedSubmission | null = null;
+  private retryNotice: string | null = null;
   private backgroundRoot: Phaser.GameObjects.Container | null = null;
   private shadeRoot: Phaser.GameObjects.Container | null = null;
   private panelRoot: Phaser.GameObjects.Container | null = null;
@@ -110,6 +113,8 @@ export class GameOverScene extends Phaser.Scene {
       scoreVersion: data.scoreVersion
     });
     this.submitMessage = IDLE_MESSAGE;
+    this.scoreAttempt = null;
+    this.retryNotice = null;
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.phoneSheet?.destroy(); this.phoneSheet = null;
       if (this.runGeneration === generation && this.activeRunId === data.runId) {
@@ -123,6 +128,30 @@ export class GameOverScene extends Phaser.Scene {
     SoundManager.get().stopMusic();
     this.drawBackground(data);
     this.drawPanel(data);
+    void this.refreshRetryNotice(generation);
+  }
+
+  /**
+   * Reads the retained retry view under a generation guard. Opening results never
+   * stages anything; the notice only explains what an explicit Submit will do.
+   */
+  private async refreshRetryNotice(generation: number): Promise<void> {
+    const view = await scoreRetryRepository.view();
+    const current = this.payload;
+    if (!current || !this.runData || this.runGeneration !== generation || this.activeRunId !== current.runId) return;
+    const other = view.record && view.record.payload.runId !== current.runId ? view.record : null;
+    if (other) {
+      this.retryNotice = view.persisted
+        ? 'Submitting replaces the previous saved score retry.'
+        : 'Submitting replaces a saved score retry that is available in this session only.';
+    } else if (view.status === 'unreadable') {
+      this.retryNotice = view.warning;
+    } else if (view.status === 'incompatible' && view.record) {
+      this.retryNotice = `A saved score from era ${view.record.payload.scoreVersion} is kept and cannot be replaced.`;
+    } else {
+      this.retryNotice = null;
+    }
+    if (this.runData) this.drawPanel(this.runData);
   }
 
   private drawBackground(data: Data): void {
@@ -213,6 +242,7 @@ export class GameOverScene extends Phaser.Scene {
       if (unlocksLine) lines.push(unlocksLine);
       if (legacyLine) lines.push(legacyLine);
       lines.push(this.scoreSummary(data), this.submitMessage);
+      if (this.retryNotice) lines.push(this.retryNotice);
       for (const line of lines) { const t = sheet.text(y, line, C.textPrimary, 14); y += t.height + 16; }
       sheet.action(y, this.submitLabel(), () => this.requestSubmit(data), this.canSubmit() ? 'primary' : 'secondary');
       sheet.action(y + 52, 'Play Again', () => this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: data.difficulty, playerName: data.playerName } } satisfies LoadingRequest), 'primary');
@@ -240,6 +270,7 @@ export class GameOverScene extends Phaser.Scene {
       const extras = [unlocksLine, legacyLine].filter((line): line is string => line !== null).join('  ·  ');
       if (extras) text(this, panel, centerX, y + 206, extras, 12, C.textPrimary, true).setWordWrapWidth(width - 38).setAlign('center');
       text(this, panel, centerX, y + 224, this.submitMessage, 12, this.submitMessage.startsWith('Score saved') ? C.health : C.textSecondary, true);
+      if (this.retryNotice) text(this, panel, centerX, y + 240, this.retryNotice, 11, C.goldBright, true).setWordWrapWidth(width - 38).setAlign('center');
       const actionY = H - 58;
       const gap = 10;
       const actionWidth = (width - 32 - gap * 3) / 4;
@@ -270,6 +301,7 @@ export class GameOverScene extends Phaser.Scene {
       if (unlocksLine) text(this, panel, W / 2, y + 480, unlocksLine, 13, C.goldBright, true).setWordWrapWidth(width - 84).setAlign('center');
       text(this, panel, W / 2, y + 508, this.submitMessage, 12, this.submitMessage.startsWith('Score saved') ? C.health : C.textSecondary, true);
       if (legacyLine) text(this, panel, W / 2, y + 530, legacyLine, 12, C.textSecondary, true);
+      if (this.retryNotice) text(this, panel, W / 2, y + 552, this.retryNotice, 12, C.goldBright, true).setWordWrapWidth(width - 84).setAlign('center');
       this.addActions(panel, data, x + 36, y + height - 64, (width - 72 - 36) / 4, 46, 12);
     }
   }
@@ -358,29 +390,38 @@ export class GameOverScene extends Phaser.Scene {
   }
 
   private async submit(data: Data): Promise<void> {
-    if (this.submitState === 'submitting' || this.submitState === 'submitted' || !this.payload) return;
+    if (this.submitState === 'submitting' || this.submitState === 'submitted') return;
+    const payload = this.payload;
+    if (!payload || !this.canSubmit()) return;
     const generation = this.runGeneration;
     this.submitState = 'submitting';
     this.submitMessage = 'Submitting score...';
     this.drawPanel(data);
     try {
-      const result = await submitScore(this.payload);
+      const completed = await submitRetainedScore(payload, scoreRetryRepository, this.scoreAttempt ?? undefined);
       if (!this.isRunCurrent(data, generation)) return;
-      if (result.ok) {
-        this.submitState = 'submitted';
-        this.submitMessage = `Score saved to the Hall of Legends${result.id ? `  ·  #${result.id}` : ''}`;
-      } else if (result.duplicate) {
-        this.submitState = 'submitted';
-        this.submitMessage = 'This run was already recorded.';
-      } else {
-        this.submitState = 'failed';
-        this.submitMessage = `Could not save online (${result.error ?? 'offline'}). Your best is kept locally. Try again.`;
-      }
+      if (completed.attempted) this.scoreAttempt = completed.attempted;
+      const result = completed.result;
+      this.submitState = result.ok || result.duplicate ? 'submitted' : 'failed';
+      const retained = completed.retry.record?.payload.runId === payload.runId;
+      this.submitMessage = result.ok ? 'Score saved to the Hall of Legends.'
+        : result.duplicate ? 'This run was already recorded.'
+        : retained && completed.retry.persisted ? `Could not save online (${result.error ?? 'offline'}). Saved for manual retry from the menu.`
+        : retained ? `Could not save online (${result.error ?? 'offline'}). Retry is available in this session only.`
+        : `Could not save online (${result.error ?? 'offline'}). A newer attempt replaced this saved retry.`;
+      // Success still reports a storage warning when the saved duplicate could not be cleared.
+      if ((result.ok || result.duplicate) && completed.retry.warning) this.submitMessage += ` ${completed.retry.warning}`;
+      const other = completed.retry.record && completed.retry.record.payload.runId !== payload.runId ? completed.retry.record : null;
+      this.retryNotice = other
+        ? (completed.retry.persisted
+          ? 'Submitting replaces the previous saved score retry.'
+          : 'Submitting replaces a saved score retry that is available in this session only.')
+        : completed.retry.status === 'unreadable' ? completed.retry.warning : null;
     } catch (error) {
       if (!this.isRunCurrent(data, generation)) return;
       this.submitState = 'failed';
-      this.submitMessage = `Could not save online (${error instanceof Error && error.message ? error.message : 'offline'}). Your best is kept locally. Try again.`;
+      this.submitMessage = error instanceof Error ? error.message : 'This score could not be submitted.';
     }
-    this.drawPanel(data);
+    if (this.isRunCurrent(data, generation)) this.drawPanel(data);
   }
 }

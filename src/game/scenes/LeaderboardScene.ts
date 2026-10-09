@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { fetchLeaderboard } from '../../api/leaderboardClient.ts';
+import { scoreRetryRepository } from '../systems/ScoreRetry.ts';
 import type { DifficultyId, ScoreRecord } from '../../shared/types.ts';
 import { SoundManager } from '../systems/SoundManager.ts';
 import { C, FONT_DISPLAY, style } from '../ui/tokens.ts';
@@ -249,7 +250,9 @@ export class LeaderboardScene extends Phaser.Scene {
       const result = await fetchLeaderboard(difficulty, ROWS);
       if (this.loadGeneration !== generation || this.requestGeneration !== request || !this.scene.isActive('Leaderboard')) return;
       if (!result.ok) {
-        this.statusText?.setText(`Leaderboard unavailable.\n${result.message}\nYour run remains saved locally.`).setVisible(true);
+        const suffix = await this.failureSuffix(generation, request);
+        if (!suffix) return;
+        this.statusText?.setText(`Leaderboard unavailable.\n${result.message}\n${suffix}`).setVisible(true);
         this.retryBox?.setVisible(true);
         this.retryLabel?.setVisible(true);
         return;
@@ -263,11 +266,29 @@ export class LeaderboardScene extends Phaser.Scene {
       this.renderRows();
     } catch (error) {
       if (this.loadGeneration !== generation || this.requestGeneration !== request || !this.scene.isActive('Leaderboard')) return;
+      const suffix = await this.failureSuffix(generation, request);
+      if (!suffix) return;
       const message = error instanceof Error ? error.message : 'The archives could not be reached.';
-      this.statusText?.setText(`Leaderboard unavailable.\n${message}\nYour run remains saved locally.`).setVisible(true);
+      this.statusText?.setText(`Leaderboard unavailable.\n${message}\n${suffix}`).setVisible(true);
       this.retryBox?.setVisible(true);
       this.retryLabel?.setVisible(true);
     }
+  }
+
+  /**
+   * Local progress is never affected by a leaderboard failure; a saved-retry or
+   * session-only notice is added only when the repository view establishes it.
+   * Returns null when the request is no longer current.
+   */
+  private async failureSuffix(generation: number, request: number): Promise<string | null> {
+    const base = 'Local progress is unaffected.';
+    const view = await scoreRetryRepository.view();
+    if (this.loadGeneration !== generation || this.requestGeneration !== request || !this.scene.isActive('Leaderboard')) return null;
+    if (view.status === 'ready' || view.status === 'incompatible') {
+      return view.persisted ? `${base}\nA saved score retry is ready from the main menu.` : `${base}\nA saved score retry is available in this session only.`;
+    }
+    if (view.status === 'unreadable' && view.warning) return `${base}\n${view.warning}`;
+    return base;
   }
 
   private renderRows(): void {

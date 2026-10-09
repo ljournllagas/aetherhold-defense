@@ -1,10 +1,15 @@
 import Phaser from 'phaser';
 import { loadBest, loadLegacyBest, loadSettings } from '../systems/Settings.ts';
+import { scoreRetryRepository, submitRetainedScore, type RetryView, type SavedSubmission } from '../systems/ScoreRetry.ts';
 import { SoundManager } from '../systems/SoundManager.ts';
 import { C, FONT_DISPLAY, style } from '../ui/tokens.ts';
 import { etchedFrame } from '../ui/components.ts';
+import { ScrollSheet } from '../ui/ScrollSheet.ts';
 import { emblemKey } from '../art/artkit.ts';
 import { paintVista } from '../art/menubg.ts';
+
+/** Reserved band for the saved-score footer action, in the existing responsive footer region. */
+const SAVED_BAND_HEIGHT = 52;
 
 function addButton(
   scene: Phaser.Scene,
@@ -54,15 +59,31 @@ function addButton(
 }
 
 export class MainMenuScene extends Phaser.Scene {
-  private readonly handleResize = (): void => { this.scene.restart(); };
+  private savedSheet: ScrollSheet | null = null;
+  private savedRoot: Phaser.GameObjects.Container | null = null;
+  private savedRetryAction: { update(label: string, available: boolean): void } | null = null;
+  private savedView: RetryView | null = null;
+  private savedSubmitting = false;
+  private openSaved = false;
+  private sceneGeneration = 0;
+  private readonly handleResize = (): void => { this.scene.restart({ openSaved: this.openSaved }); };
 
   constructor() {
     super('MainMenu');
   }
 
+  init(data?: { openSaved?: boolean }): void {
+    this.openSaved = data?.openSaved === true;
+  }
+
   create(): void {
     const W = this.scale.width;
     const H = this.scale.height;
+    const generation = ++this.sceneGeneration;
+    this.savedSheet = null;
+    this.savedRoot = null;
+    this.savedRetryAction = null;
+    this.savedSubmitting = false;
     const compact = H < 520 || W < 780;
     const narrowCompact = compact && W < 720;
     paintVista(this, 'menu');
@@ -108,11 +129,16 @@ export class MainMenuScene extends Phaser.Scene {
       this.add.text(W / 2, best ? bestY + 16 : bestY, `Legacy era ${legacy.scoreVersion} best  ·  ${legacy.score.toLocaleString('en-US')} pts  ·  Wave ${legacy.wave}`, style(12, C.textSecondary)).setOrigin(0.5).setWordWrapWidth(bestWrap);
     }
 
+    // The saved-score action lives in the footer band: above the button stack on the
+    // narrow phone layout, and below it everywhere else, so it never overlaps the
+    // legacy bests or Play.
+    let savedY = H - SAVED_BAND_HEIGHT;
     if (narrowCompact) {
       const width = Math.min(360, W - 32);
       const height = 44;
       const gap = 8;
-      const startY = Math.max(H * 0.52, H - (height * 4 + gap * 3) - 18);
+      const startY = Math.max(H * 0.52 + SAVED_BAND_HEIGHT, H - (height * 4 + gap * 3) - 18);
+      savedY = startY - SAVED_BAND_HEIGHT;
       addButton(this, (W - width) / 2, startY, width, height, 'Play', true, () => this.scene.start('Difficulty'), 'hud_wave');
       addButton(this, (W - width) / 2, startY + height + gap, width, height, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score');
       addButton(this, (W - width) / 2, startY + (height + gap) * 2, width, height, 'Settings', false, () => this.scene.start('Settings'));
@@ -150,6 +176,101 @@ export class MainMenuScene extends Phaser.Scene {
     }
 
     this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.scale.off(Phaser.Scale.Events.RESIZE, this.handleResize, this));
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.scale.off(Phaser.Scale.Events.RESIZE, this.handleResize, this);
+      this.destroySavedSheet();
+      if (this.sceneGeneration === generation) {
+        this.sceneGeneration++;
+        this.openSaved = false;
+      }
+    });
+    // Opening the menu never stages anything; this only reads the retained retry view.
+    void this.loadSavedScore(generation, savedY, W);
+  }
+
+  private destroySavedSheet(): void {
+    this.savedSheet?.destroy();
+    this.savedSheet = null;
+    this.savedRoot?.destroy(true);
+    this.savedRoot = null;
+    this.savedRetryAction = null;
+  }
+
+  private async loadSavedScore(generation: number, savedY: number, W: number): Promise<void> {
+    const view = await scoreRetryRepository.view();
+    if (this.sceneGeneration !== generation) return;
+    this.savedView = view;
+    if (view.status === 'ready' || view.status === 'incompatible') {
+      const width = Math.min(320, W - 48);
+      addButton(this, (W - width) / 2, savedY, width, 44, 'Saved Score', false, () => { void this.openSavedScore(); });
+    } else if (view.status === 'unreadable' && view.warning) {
+      this.add.text(W / 2, savedY + 22, view.warning, style(11, C.dangerBright, true)).setOrigin(0.5).setWordWrapWidth(Math.min(440, W - 32)).setAlign('center');
+    }
+    if (this.openSaved) this.drawSavedScore(view, null);
+  }
+
+  /** Explicit user action: read the retained attempt fresh under a scene generation guard. */
+  async openSavedScore(): Promise<void> {
+    const generation = this.sceneGeneration;
+    this.openSaved = true;
+    const view = await scoreRetryRepository.view();
+    if (this.sceneGeneration !== generation) return;
+    this.savedView = view;
+    this.drawSavedScore(view, null);
+  }
+
+  private drawSavedScore(view: RetryView, message: string | null): void {
+    this.destroySavedSheet();
+    const W = this.scale.width, H = this.scale.height;
+    const root = this.add.container(0, 0).setDepth(60);
+    this.savedRoot = root;
+    const sheet = new ScrollSheet(this, root, { x: 12, y: 12, width: W - 24, height: H - 24 }, 'Saved Score', () => this.closeSavedScore());
+    this.savedSheet = sheet;
+    const record = view.record;
+    let y = 0;
+    const lines = message ? [message] : [];
+    if (record) {
+      const p = record.payload;
+      lines.push(p.playerName, `${p.difficulty.toUpperCase()} · ${p.outcome}`, `Wave ${p.highestWave} · Score ${p.finalScore.toLocaleString('en-US')}`);
+      if (view.status === 'incompatible') lines.push('This saved score belongs to an earlier leaderboard era and cannot be submitted to the current board.');
+      else lines.push(view.warning ?? (view.persisted ? 'Saved in this browser.' : 'Available in this session only.'));
+    } else if (!message) {
+      lines.push(view.warning ?? 'No saved score retry to submit.');
+    }
+    for (const line of lines) { const text = sheet.text(y, line); y += text.height + 12; }
+    if (record) {
+      // Ready records retry; a retired-era record shows the same control disabled.
+      this.savedRetryAction = sheet.action(y, 'Retry Submission', () => { void this.retrySavedScore(record); }, 'primary', view.status === 'ready');
+      sheet.action(y + 52, 'Back', () => this.closeSavedScore());
+    } else {
+      sheet.action(y, 'Back', () => this.closeSavedScore());
+    }
+  }
+
+  /**
+   * Menu counterpart of the results submission: the held action is disabled
+   * synchronously before the first await, and the claim is conditional on the
+   * displayed attempt, so a newer tab attempt is never silently replaced.
+   */
+  async retrySavedScore(record: SavedSubmission): Promise<void> {
+    if (this.savedSubmitting) return;
+    this.savedSubmitting = true;
+    this.savedRetryAction?.update('Retry Submission', false);
+    const generation = this.sceneGeneration;
+    try {
+      const completed = await submitRetainedScore(record.payload, scoreRetryRepository, record);
+      if (this.sceneGeneration !== generation) return;
+      const message = completed.result.ok ? 'Score saved to the Hall of Legends.'
+        : completed.result.duplicate ? 'This run was already recorded.'
+        : completed.result.error ?? 'This score could not be submitted.';
+      this.drawSavedScore(completed.retry, message);
+    } finally {
+      this.savedSubmitting = false;
+    }
+  }
+
+  private closeSavedScore(): void {
+    this.openSaved = false;
+    this.destroySavedSheet();
   }
 }

@@ -3,8 +3,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 const screenMocks = vi.hoisted(() => ({
   displays: [] as Array<Record<string, any>>,
   submitScore: vi.fn(),
+  submitRetainedScore: vi.fn(),
+  scoreRetryRepository: null as any,
+  realSubmitRetainedScore: null as any,
   fetchLeaderboard: vi.fn(),
-  sound: { stopMusic: vi.fn(), click: vi.fn() },
+  sound: { stopMusic: vi.fn(), click: vi.fn(), unlock: vi.fn() },
   refreshStronghold: vi.fn(),
   legacyBest: null as null | { score: number; wave: number; difficulty: string; date: string; scoreVersion: number }
 }));
@@ -26,6 +29,12 @@ vi.mock('phaser', () => {
     setDisplaySize() { return this; }
     setStrokeStyle() { return this; }
     setStroke() { return this; }
+    setShadow() { return this; }
+    setFontSize() { return this; }
+    setCrop() { return this; }
+    emit() { return this; }
+    getBounds() { return { x: this.x, y: this.y, centerX: this.x, centerY: this.y, width: this.width, height: this.height }; }
+    getWorldTransformMatrix() { return { tx: this.x, ty: this.y }; }
     setInteractive() { return this; }
     setFillStyle() { return this; }
     setPosition() { return this; }
@@ -57,10 +66,11 @@ vi.mock('phaser', () => {
     fillRect() { return this; }
     strokeRect() { return this; }
     createGeometryMask() { return {}; }
-    removeAll() { return this; }
+    list: FakeDisplay[] = [];
+    add(items: unknown) { this.list.push(...(Array.isArray(items) ? items : [items]) as FakeDisplay[]); return this; }
+    removeAll() { this.list.length = 0; return this; }
     destroy() { this.destroyed = true; return this; }
     on(event: string, callback: (...args: any[]) => void) { this.handlers.set(event, callback); return this; }
-    add() { return this; }
     fire(event: string) { this.handlers.get(event)?.(); }
   }
 
@@ -81,6 +91,7 @@ vi.mock('phaser', () => {
     tweens = { getTweens: () => [], killAll: vi.fn() };
     children = { list: [] as FakeDisplay[] };
     make = { graphics: () => this.makeDisplay('graphics', []) };
+    game = { canvas: { addEventListener: vi.fn(), removeEventListener: vi.fn() } };
     scene = { isActive: () => true, start: vi.fn(), restart: vi.fn() };
     add = {
       text: (...args: unknown[]) => this.makeDisplay('text', args),
@@ -127,7 +138,23 @@ vi.mock('../src/api/leaderboardClient.ts', () => ({
   submitScore: screenMocks.submitScore,
   fetchLeaderboard: screenMocks.fetchLeaderboard
 }));
-vi.mock('../src/game/systems/Settings.ts', () => ({ loadBest: () => null, loadLegacyBest: () => screenMocks.legacyBest }));
+// The pure repository class stays real; only the exported singleton is injected per test
+// so each test gets its own store and the service can be observed or delegated.
+vi.mock('../src/game/systems/ScoreRetry.ts', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../src/game/systems/ScoreRetry.ts')>();
+  screenMocks.realSubmitRetainedScore = actual.submitRetainedScore;
+  return {
+    ...actual,
+    get scoreRetryRepository() { return screenMocks.scoreRetryRepository; },
+    submitRetainedScore: (...args: unknown[]) => screenMocks.submitRetainedScore(...args)
+  };
+});
+vi.mock('../src/game/systems/Settings.ts', () => ({
+  loadBest: () => null,
+  loadLegacyBest: () => screenMocks.legacyBest,
+  loadLegacyBests: () => (screenMocks.legacyBest ? [screenMocks.legacyBest] : []),
+  loadSettings: () => ({ masterVolume: 1, musicVolume: 0.5, sfxVolume: 0.7, musicOn: true, sfxOn: true, gameSpeed: 1, difficulty: 'medium', playerName: '' })
+}));
 vi.mock('../src/game/systems/SoundManager.ts', () => ({ SoundManager: { get: () => screenMocks.sound } }));
 vi.mock('../src/game/ui/tokens.ts', () => ({
   C: {
@@ -154,28 +181,44 @@ vi.mock('../src/game/art/terrain.ts', () => ({
 
 import { GameOverScene } from '../src/game/scenes/GameOverScene.ts';
 import { LeaderboardScene } from '../src/game/scenes/LeaderboardScene.ts';
+import { MainMenuScene } from '../src/game/scenes/MainMenuScene.ts';
+import { ScoreRetryRepository, SCORE_RETRY_KEY, type RetryLock, type RetryStore } from '../src/game/systems/ScoreRetry.ts';
+import { resultFixture } from './helpers/progressionResult.ts';
+import { SCORE_VERSION } from '../src/shared/version.ts';
 
-const gameOverData = (runId: string) => ({
-  difficulty: 'medium' as const,
-  playerName: 'Warden',
-  highestWave: 4,
-  wavesCompleted: 3,
-  outcome: 'defeat' as const,
-  siegeBossesDefeated: 0,
-  finalScore: 900,
-  enemiesKilled: 12,
-  bossesKilled: 0,
-  remainingLives: 0,
-  gameDurationSeconds: 75,
-  runId,
-  gameVersion: '1.0.0',
-  scoreVersion: 1,
-  isPersonalBest: false,
-  breakdown: {
-    killScore: 120, waveBonus: 400, bossBonus: 0, livesBonus: 0,
-    baseScore: 520, difficultyMultiplier: 1.5, finalScore: 900
-  }
-});
+function serialLock(): RetryLock {
+  let tail: Promise<unknown> = Promise.resolve();
+  return work => {
+    const result = tail.then(work);
+    tail = result.catch(() => {});
+    return result;
+  };
+}
+
+function memoryStore() {
+  const bytes = new Map<string, string>();
+  const store: RetryStore = {
+    getItem: (key: string) => bytes.get(key) ?? null,
+    setItem: (key: string, value: string) => { bytes.set(key, value); },
+    removeItem: (key: string) => { bytes.delete(key); }
+  };
+  return { bytes, store };
+}
+
+/** A valid era-3 terminal payload for repository and submission tests. */
+const retryPayload = (runId: string) => resultFixture({ highestWave: 30, wavesCompleted: 30, outcome: 'victory', siegeBossesDefeated: 7 }, 10, { runId });
+
+const gameOverData = (runId: string) => {
+  const payload = resultFixture({ highestWave: 4, wavesCompleted: 3, outcome: 'defeat', siegeBossesDefeated: 0 }, 0, { runId });
+  return {
+    ...payload,
+    isPersonalBest: false,
+    breakdown: {
+      killScore: 120, waveBonus: 400, bossBonus: 0, livesBonus: 0,
+      baseScore: 520, difficultyMultiplier: 1.5, finalScore: payload.finalScore
+    }
+  };
+};
 
 const deferred = <T,>() => {
   let resolve!: (value: T) => void;
@@ -184,17 +227,23 @@ const deferred = <T,>() => {
 };
 
 const flushPromises = async () => {
-  await Promise.resolve();
-  await Promise.resolve();
+  for (let i = 0; i < 20; i++) await Promise.resolve();
 };
 
 describe('screen lifecycle and leaderboard states', () => {
+  let retryBytes: Map<string, string>;
   beforeEach(() => {
     screenMocks.displays.length = 0;
     screenMocks.submitScore.mockReset().mockResolvedValue({ ok: true, id: 1 });
     screenMocks.fetchLeaderboard.mockReset().mockResolvedValue({ ok: true, scores: [] });
     screenMocks.refreshStronghold.mockClear();
     screenMocks.legacyBest = null;
+    const memory = memoryStore();
+    retryBytes = memory.bytes;
+    screenMocks.scoreRetryRepository = new ScoreRetryRepository(memory.store, serialLock());
+    screenMocks.submitRetainedScore.mockReset().mockImplementation(
+      (payload: unknown, repository: unknown, expected: unknown) => screenMocks.realSubmitRetainedScore(payload, repository, expected)
+    );
   });
 
   afterEach(() => vi.clearAllMocks());
@@ -219,6 +268,7 @@ describe('screen lifecycle and leaderboard states', () => {
     const pending = deferred<{ ok: boolean; id: number }>(); screenMocks.submitScore.mockReturnValueOnce(pending.promise);
     new GameOverScene().create({ ...gameOverData('run-submit-0001'), worldSnapshot: { mapId: 'ancient-border-keep', strongholdRatio: 0, towers: [], enemies: [] } } as ReturnType<typeof gameOverData>);
     press('Submit Score'); press('Submit Score');
+    await flushPromises();
     expect(screenMocks.submitScore).toHaveBeenCalledTimes(1);
     const payload = screenMocks.submitScore.mock.calls[0][0] as Record<string, unknown>;
     expect(Object.keys(payload).sort()).toEqual(['playerName', 'difficulty', 'highestWave', 'finalScore', 'enemiesKilled', 'bossesKilled', 'remainingLives', 'gameDurationSeconds', 'runId', 'gameVersion', 'scoreVersion', 'wavesCompleted', 'outcome', 'siegeBossesDefeated'].sort());
@@ -226,6 +276,7 @@ describe('screen lifecycle and leaderboard states', () => {
     pending.resolve({ ok: true, id: 7 }); await flushPromises();
     expect(texts().some((t) => t.startsWith('Score saved to the Hall of Legends'))).toBe(true);
     press('Score Submitted'); press('Submit Score');
+    await flushPromises();
     expect(screenMocks.submitScore).toHaveBeenCalledTimes(1);
   });
   it('shows the failure reason and retries the identical snapshot', async () => {
@@ -250,6 +301,63 @@ describe('screen lifecycle and leaderboard states', () => {
     first.resolve({ ok: true, id: 1 }); await flushPromises();
     expect(texts().some((t) => t.startsWith('Score saved'))).toBe(false); expect(screenMocks.fetchLeaderboard).not.toHaveBeenCalled();
   });
+  it('settles after results navigation but never redraws the closed screen', async () => {
+    const pending = deferred<{ result: { ok: boolean; id: number }; retry: { status: 'empty'; record: null; persisted: boolean; warning: null }; attempted: null }>();
+    screenMocks.submitRetainedScore.mockReturnValueOnce(pending.promise);
+    const scene = new GameOverScene();
+    scene.create(gameOverData('retained-navigation-0001'));
+    press('Submit Score');
+    scene.events.emit('shutdown');
+    const draws = screenMocks.displays.length;
+    pending.resolve({ result: { ok: true, id: 1 }, retry: { status: 'empty', record: null, persisted: false, warning: null }, attempted: null });
+    await flushPromises();
+    expect(screenMocks.displays.length).toBe(draws);
+  });
+  it('shows the explicit replacement note when another saved run is retained', async () => {
+    await screenMocks.scoreRetryRepository.stage(retryPayload('retry-previous-0001'));
+    screenMocks.submitRetainedScore.mockImplementation(() => new Promise(() => {}));
+    new GameOverScene().create(gameOverData('retry-current-0001'));
+    await flushPromises();
+    expect(texts()).toContain('Submitting replaces the previous saved score retry.');
+    expect(screenMocks.submitScore).not.toHaveBeenCalled();
+  });
+  it('guards repeated menu retry clicks synchronously while the repository claim awaits a lock', async () => {
+    const { store } = memoryStore(), lock = serialLock(), repo = new ScoreRetryRepository(store, lock);
+    const saved = (await repo.stage(retryPayload('retry-doubleclick-0001'))).record!;
+    let release!: () => void;
+    const held = lock(() => new Promise<void>((resolve) => { release = resolve; }));
+    await Promise.resolve();
+    screenMocks.scoreRetryRepository = repo;
+    const scene = new MainMenuScene(); scene.create();
+    const menu = scene as unknown as { retrySavedScore(record: typeof saved): Promise<void> };
+    screenMocks.submitScore.mockReset().mockResolvedValue({ ok: true, id: 1 });
+    const one = menu.retrySavedScore(saved), two = menu.retrySavedScore(saved);
+    await Promise.resolve();
+    expect(screenMocks.submitScore).not.toHaveBeenCalled();
+    release(); await held; await Promise.all([one, two]);
+    expect(screenMocks.submitScore).toHaveBeenCalledTimes(1);
+  });
+  it('keeps the A attempt identity after B replaces it and refuses a stale results retry', async () => {
+    const { bytes, store } = memoryStore(), repo = new ScoreRetryRepository(store, serialLock());
+    screenMocks.scoreRetryRepository = repo;
+    let failA!: (result: { ok: boolean; error: string }) => void;
+    screenMocks.submitScore.mockReset();
+    screenMocks.submitScore.mockImplementation(() => new Promise((resolve) => { failA = resolve; }));
+    const first = retryPayload('retry-result-A-0001'), second = retryPayload('retry-result-B-0001');
+    const scene = new GameOverScene(); scene.create({ ...gameOverData(first.runId), ...first });
+    press('Submit Score');
+    for (let i = 0; i < 20 && !failA; i++) await Promise.resolve();
+    expect(screenMocks.submitScore).toHaveBeenCalledTimes(1);
+    const stagedA = JSON.parse(bytes.get(SCORE_RETRY_KEY)!);
+    await repo.stage(second); const rawB = bytes.get(SCORE_RETRY_KEY);
+    failA({ ok: false, error: 'offline' });
+    await flushPromises();
+    expect((scene as unknown as { scoreAttempt: unknown }).scoreAttempt).toEqual(stagedA);
+    press('Submit Score');
+    await flushPromises();
+    expect(screenMocks.submitScore).toHaveBeenCalledTimes(1); expect(bytes.get(SCORE_RETRY_KEY)).toBe(rawB);
+    expect(screenMocks.displays.some((d) => String(d.currentText || d.initialText).includes('newer attempt'))).toBe(true);
+  });
   it.each([
     [{ outcome: 'victory', highestWave: 30, wavesCompleted: 30, remainingLives: 12, siegeBossesDefeated: 7 }, 'SIEGE COMPLETE', 'The Borderkeep stands. The siege is won.', 12],
     [{ outcome: 'siege-failed', highestWave: 10, wavesCompleted: 9, remainingLives: 15 }, 'SIEGE FAILED', 'Siege failed: the first boss escaped', 15],
@@ -263,6 +371,30 @@ describe('screen lifecycle and leaderboard states', () => {
     screenMocks.legacyBest = { score: 100000, wave: 40, difficulty: 'hard', date: '2026-01-01T00:00:00.000Z', scoreVersion: 1 };
     new GameOverScene().create(resultData({ unlocksEarned: [{ branchId: 'volley', saved: true }, { branchId: 'thunderlord', saved: false }] }));
     expect(texts()).toEqual(expect.arrayContaining(['Legacy era 1 best · 100,000', 'Unlocked: Volley, Thunderlord (not saved)']));
+  });
+
+  it('reports local progress truthfully and names a saved retry only when one exists', async () => {
+    screenMocks.fetchLeaderboard.mockResolvedValueOnce({ ok: false, message: 'Worker unavailable.' });
+    const scene = new LeaderboardScene();
+    scene.init({ filter: 'overall' });
+    scene.create();
+    await flushPromises();
+    const status = screenMocks.displays.find((display) => display.initialText === 'Consulting the archives...')!;
+    expect(status.currentText).toContain('Local progress is unaffected.');
+    expect(status.currentText).not.toContain('Your run remains saved locally.');
+    expect(status.currentText).not.toContain('saved score retry');
+  });
+
+  it('names a retained saved retry in the leaderboard failure text', async () => {
+    await screenMocks.scoreRetryRepository.stage(retryPayload('retry-board-0001'));
+    screenMocks.fetchLeaderboard.mockResolvedValueOnce({ ok: false, message: 'Worker unavailable.' });
+    const scene = new LeaderboardScene();
+    scene.init({ filter: 'overall' });
+    scene.create();
+    await flushPromises();
+    const status = screenMocks.displays.find((display) => display.initialText === 'Consulting the archives...')!;
+    expect(status.currentText).toContain('Local progress is unaffected.');
+    expect(status.currentText).toContain('saved score retry is ready from the main menu');
   });
 
   it('opens the full filtered Hall of Legends for the completed run', async () => {
