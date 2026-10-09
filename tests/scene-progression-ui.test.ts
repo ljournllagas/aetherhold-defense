@@ -21,6 +21,10 @@ import { Tower } from '../src/game/entities/Tower.ts';
 import { SoundManager } from '../src/game/systems/SoundManager.ts';
 import { SiegeSystem } from '../src/game/systems/SiegeSystem.ts';
 import { gameLayout } from '../src/game/ui/layout.ts';
+import { formatStat, towerProgressionView } from '../src/game/ui/progressionView.ts';
+import { previewPurchaseStats } from '../src/game/systems/EvolutionSystem.ts';
+import { TOWERS } from '../src/game/config/towers.ts';
+import { EVOLUTIONS } from '../src/game/config/evolutions.ts';
 import type { BranchId } from '../src/shared/progression.ts';
 import type { PauseState } from '../src/game/systems/PauseState.ts';
 
@@ -50,7 +54,7 @@ function liveSheetFixture(kind: 'tower' | 'evolve') {
   const fixture = sceneFixture(kind === 'tower' ? 390 : 1280, kind === 'tower' ? 844 : 720);
   fixture.loose.add = { text: () => ui.anyStub(), container: () => {
     const data = new Map<string, unknown>();
-    return { list: [], add: () => {}, destroy: () => {}, getWorldTransformMatrix: () => ({ tx: 0, ty: 0 }),
+    return { list: [], y: 0, add: () => {}, destroy: () => {}, getWorldTransformMatrix: () => ({ tx: 0, ty: 0 }),
       setData(key: string, value: unknown) { data.set(key, value); return this; }, getData: (key: string) => data.get(key) };
   } };
   fixture.loose.updateHUD = (GameScene.prototype as unknown as { updateHUD(): void }).updateHUD.bind(fixture.run);
@@ -145,5 +149,120 @@ describe('progression controls', () => {
     run.siege = advanceSiege(29); run.wave = 29; run.wavesCompleted = 29; run.startNextWave();
     expect(run.showBanner.mock.calls[0][0]).toContain('Siege finale');
     run.siege.phase = 'endless'; expect(run.compositionSummary(31)).toContain('Wave 31 · Endless');
+  });
+});
+
+describe('next purchase preview in the sheet', () => {
+  const sheetInput = () => {
+    const handlers = new Map<string, (p: unknown, over?: unknown, dx?: number, dy?: number) => void>();
+    const input: Record<string, unknown> = {
+      on(event: string, handler: (p: unknown, over?: unknown, dx?: number, dy?: number) => void) { handlers.set(event, handler); return input; },
+      off(event: string) { handlers.delete(event); return input; }
+    };
+    return { handlers, input };
+  };
+  const REAL_SHEET_ACTION = ScrollSheet.prototype.action;
+  function captureSheet(fixture: ReturnType<typeof sceneFixture>, kind: 'tower' | 'evolve') {
+    const content: Array<{ kind: 'text' | 'action'; value: string }> = [];
+    const recorder = textRecorder();
+    vi.spyOn(ScrollSheet.prototype, 'text').mockImplementation((_y, value) => { content.push({ kind: 'text', value }); return { height: 20 } as never; });
+    vi.spyOn(ScrollSheet.prototype, 'action').mockImplementation(function (this: ScrollSheet, y, label, action, kind2 = 'secondary', enabled = true) {
+      content.push({ kind: 'action', value: label });
+      return REAL_SHEET_ACTION.call(this, y, label, action, kind2, enabled);
+    });
+    fixture.loose.add = recorder.add;
+    fixture.run.sheetKind = kind; fixture.run.drawSheet();
+    return content;
+  }
+  function textRecorder() {
+    const values: string[] = [];
+    return { values, add: {
+      text: (_x: number, _y: number, value: string) => { values.push(value); const view = { height: 20, width: 100, setWordWrapWidth: () => view, setOrigin: () => view, setText: () => view, setAlpha: () => view, setVisible: () => view, setCrop: () => view, setColor: () => view }; return view; },
+      image: () => ({ setDisplaySize: () => undefined }),
+      container: () => {
+        const data = new Map<string, unknown>();
+        return { list: [], y: 0, add: () => {}, destroy: () => {}, getWorldTransformMatrix: () => ({ tx: 0, ty: 0 }),
+          setData(key: string, value: unknown) { data.set(key, value); return this; }, getData: (key: string) => data.get(key) };
+      }
+    } };
+  }
+  const findLast = (prefix: string) => [...ui.buttons].reverse().find((b) => b.label.startsWith(prefix));
+  const previewLine = (content: Array<{ kind: 'text' | 'action'; value: string }>) => content.find((e) => e.kind === 'text' && e.value.startsWith('Next:'));
+  it.each([['evolve', 1280, 720], ['tower', 390, 844]] as const)('shows current-to-next damage, attack and range before the action in the %s sheet', (kind, width, height) => {
+    const fixture = sceneFixture(width, height);
+    fixture.t.progression = { ...fixture.t.progression, foundationLevel: 1, invested: 100 };
+    fixture.loose.input = sheetInput().input;
+    const content = captureSheet(fixture, kind);
+    const before = structuredClone(fixture.run.towers[0]);
+    const line = previewLine(content);
+    const button = content.find((e) => e.kind === 'action' && e.value.startsWith('Upgrade to level 2'));
+    expect(line).toBeDefined(); expect(button).toBeDefined();
+    const next = TOWERS.longbow.levels[1];
+    expect(line!.value).toContain(`Damage ${formatStat('damage', 12)} → ${formatStat('damage', next.damage)}`);
+    expect(line!.value).toContain(`Attack ${formatStat('attackInterval', 0.55)}s → ${formatStat('attackInterval', next.attackInterval)}s`);
+    expect(line!.value).toContain(`Range ${formatStat('range', 150)} → ${formatStat('range', next.range)}`);
+    expect(content.indexOf(line!)).toBeLessThan(content.indexOf(button!));
+    expect(fixture.run.towers[0]).toEqual(before);
+  });
+  it('keeps the preview visible while the action is disabled, then grows it after the committed rank', () => {
+    const fixture = liveSheetFixture('evolve');
+    const { handlers, input } = sheetInput();
+    fixture.loose.input = input;
+    const t = fixture.t;
+    t.progression = { ...t.progression, branchId: 'marksman', rank: 1, masteryRank: 0, revision: 4 };
+    fixture.run.gold = 0;
+    let line = previewLine(captureSheet(fixture, 'evolve'));
+    expect(line!.value).toContain('Damage 178 → 298');
+    const disabled = findLast('Marksman rank 2')!;
+    expect(disabled.label).toContain('Not enough gold'); disabled.action();
+    expect(fixture.run.purchaseSelected).not.toHaveBeenCalled();
+    const before = structuredClone(fixture.run.towers[0]);
+    fixture.run.gold = 1000000; fixture.run.updateHUD();
+    expect(findLast('Marksman rank 2')!.label).toBe('Marksman rank 2 · 935 gold');
+    fixture.run.sheet!.scrollTo(-60); handlers.get('wheel')!({ x: 20, y: 200 }, null, 0, 80);
+    expect(fixture.run.purchaseSelected).not.toHaveBeenCalled();
+    expect(fixture.run.towers[0]).toEqual(before); expect(fixture.run.gold).toBe(1000000);
+    findLast('Marksman rank 2')!.action();
+    expect(fixture.run.purchaseSelected).toHaveBeenCalledWith({ kind: 'evolution-rank' }, t.id, 4);
+    t.progression = { ...t.progression, rank: 2, revision: 5 };
+    line = previewLine(captureSheet(fixture, 'evolve'));
+    expect(line!.value).toContain('Damage 298 → 388');
+    findLast('Marksman rank 3')!.action();
+    expect(fixture.run.purchaseSelected).toHaveBeenLastCalledWith({ kind: 'evolution-rank' }, t.id, 5);
+  });
+  it('reports the numeric limit instead of an infinite or NaN preview', () => {
+    const fixture = liveSheetFixture('evolve');
+    const t = fixture.t;
+    t.progression = { ...t.progression, branchId: 'marksman', rank: 3, masteryRank: 100000, revision: 2 };
+    fixture.run.siege.phase = 'endless';
+    const content = captureSheet(fixture, 'evolve');
+    expect(previewLine(content)!.value).toBe('Next: Numeric limit reached');
+    expect(content.filter((e) => e.kind === 'action').some((e) => e.value === 'Mastery 100001 · limit · Numeric limit reached')).toBe(true);
+    for (const entry of content) expect(entry.value).not.toMatch(/NaN|Infinity/);
+  });
+  it('shows the same preview values in the inspector without touching the model', () => {
+    const fixture = sceneFixture(1280, 720);
+    fixture.t.progression = { ...fixture.t.progression, branchId: 'marksman', rank: 0, masteryRank: 0 };
+    fixture.t.cooldown = 0.5; fixture.t.counter = { successes: 7 };
+    const before = { progression: structuredClone(fixture.t.progression), gold: fixture.run.gold, cooldown: fixture.t.cooldown, counter: structuredClone(fixture.t.counter) };
+    const realRefresh = (GameScene.prototype as unknown as { refreshInfoPanel(): void }).refreshInfoPanel;
+    const recorder = textRecorder();
+    fixture.loose.input = sheetInput().input;
+    fixture.loose.refreshInfoPanel = () => {};
+    fixture.loose.add = recorder.add;
+    const drawInspector = () => { recorder.values.length = 0; realRefresh.call(fixture.run); return recorder.values.slice(); };
+    const desktop = drawInspector();
+    const view = towerProgressionView(fixture.t, (fixture.run as unknown as { purchaseContext(): Parameters<typeof towerProgressionView>[1] }).purchaseContext(), 0, fixture.run.towers);
+    const model = view.actions.find((a) => a.intent.kind === 'evolution-rank')!;
+    const next = model.nextStats!;
+    expect(next).toEqual(previewPurchaseStats('longbow', fixture.t.progression, { kind: 'evolution-rank' }));
+    expect([next.damage, next.range, next.attackInterval]).toEqual([EVOLUTIONS.marksman.stats[1].damage, EVOLUTIONS.marksman.stats[1].range, EVOLUTIONS.marksman.stats[1].attackInterval]);
+    // The inspector derives its current-to-next row from the same model action as the sheet.
+    expect(desktop.some((value) => value.includes(`Damage ${formatStat('damage', view.stats.damage)} → ${formatStat('damage', next.damage)}   Range ${formatStat('range', view.stats.range)} → ${formatStat('range', next.range)}`))).toBe(true);
+    expect(desktop.some((value) => value.includes(`Attack ${formatStat('attackInterval', view.stats.attackInterval)}s → ${formatStat('attackInterval', next.attackInterval)}s`))).toBe(true);
+    expect(fixture.run.gold).toBe(before.gold);
+    expect(fixture.t.cooldown).toBe(before.cooldown); expect(fixture.t.counter).toEqual(before.counter);
+    expect(fixture.t.progression).toEqual(before.progression);
+    expect(fixture.t.progression.revision).toBe(0);
   });
 });

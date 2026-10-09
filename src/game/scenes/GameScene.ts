@@ -486,6 +486,12 @@ export class GameScene extends Phaser.Scene {
     line(view.title, C.gold);
     line(view.role, C.textSecondary, 12);
     line(`Damage ${formatStat('damage', st.damage)} · Range ${formatStat('range', st.range)} · Attack ${formatStat('attackInterval', st.attackInterval)}s · ${st.damageType}`);
+    const next = view.actions[0]?.nextStats ?? null;
+    if (next) {
+      line(`Next: Damage ${formatStat('damage', st.damage)} → ${formatStat('damage', next.damage)} · Attack ${formatStat('attackInterval', st.attackInterval)}s → ${formatStat('attackInterval', next.attackInterval)}s · Range ${formatStat('range', st.range)} → ${formatStat('range', next.range)}`, C.textSecondary, 12);
+    } else if (view.actions.length) {
+      line(`Next: ${PURCHASE_REASON_TEXT['numeric limit reached']}`, C.textMuted, 12);
+    }
     if (view.commitment) line(view.commitment, C.textMuted, 12);
     if (view.branches.length) line('Base stats · Current → Evolved', C.textMuted, 12);
     const controls = view.actions.map(action => {
@@ -1261,12 +1267,14 @@ export class GameScene extends Phaser.Scene {
     const selectedPoint = this.cameraView.project(t);
     const aboveTower = selectedPoint.y >= this.layout.field.y + this.layout.field.height / 2;
     const y = compact ? (aboveTower ? this.layout.hud + 8 : this.layout.height - this.layout.tray - height - 8) : this.layout.hud;
+    const view = towerProgressionView(t, this.purchaseContext(), this.wavesCompleted, this.towers);
     const c = this.add.container(x, y); this.uiRoot!.add(c); this.infoPanel = c;
     panel(this, c, 0, 0, width, height).setInteractive().on('pointerdown', (_p: unknown, _x: number, _y: number, e: Phaser.Types.Input.EventData) => e.stopPropagation());
     if (compact) {
-      const st = t.stats; const next = t.cfg.levels[t.level];
+      const st = t.stats;
+      const next = view.actions[0]?.nextStats ?? null;
       c.add(this.add.image(28, 28, towerPortraitKey(t.towerId)).setDisplaySize(40, 40));
-      c.add(this.add.text(60, 6, towerProgressionView(t, this.purchaseContext(), this.wavesCompleted, this.towers).title, style(14, C.textPrimary, true, FONT_DISPLAY)));
+      c.add(this.add.text(60, 6, view.title, style(14, C.textPrimary, true, FONT_DISPLAY)));
       c.add(this.add.text(60, 28, `Damage ${formatStat('damage', st.damage)} · Attack ${formatStat('attackInterval', st.attackInterval)}s · Range ${formatStat('range', st.range)} · Type ${st.damageType}`, style(14, C.textSecondary)));
       if (next) c.add(this.add.text(width - 60, 8, `Next: ${formatStat('damage', next.damage)} damage · ${formatStat('range', next.range)} range · ${formatStat('attackInterval', next.attackInterval)}s`, style(12, C.gold)).setOrigin(1, 0));
       button(this, c, width - 52, 4, 44, '×', () => { this.selectedTower = null; this.refreshInfoPanel(); });
@@ -1284,7 +1292,7 @@ export class GameScene extends Phaser.Scene {
     }
     c.add(this.add.image(40, 40, towerPortraitKey(t.towerId)).setDisplaySize(56, 56));
     c.add(this.add.text(76, 12, t.cfg.name, style(18, C.textPrimary, true, FONT_DISPLAY)));
-    const progressionTitle = this.add.text(76, 36, towerProgressionView(t, this.purchaseContext(), this.wavesCompleted, this.towers).title, style(12, C.gold, true)).setWordWrapWidth(width - 130);
+    const progressionTitle = this.add.text(76, 36, view.title, style(12, C.gold, true)).setWordWrapWidth(width - 130);
     c.add(progressionTitle);
     const detailsY = Math.max(80, 36 + progressionTitle.height + 8);
     const detailsOffset = detailsY - 80;
@@ -1306,7 +1314,7 @@ export class GameScene extends Phaser.Scene {
       button(this, c, bx, by, bw - 4, mode[0].toUpperCase() + mode.slice(1), () => { t.targeting = mode; this.refreshInfoPanel(); }, t.targeting === mode ? 'primary' : 'secondary');
     });
     const upgradeY = compact ? 184 : modesY + 152;
-    const next = t.cfg.levels[t.level];
+    const next = view.actions[0]?.nextStats ?? null;
     if (next) {
       const preview = `Damage ${formatStat('damage', st.damage)} → ${formatStat('damage', next.damage)}   Range ${formatStat('range', st.range)} → ${formatStat('range', next.range)}\nAttack ${formatStat('attackInterval', st.attackInterval)}s → ${formatStat('attackInterval', next.attackInterval)}s`;
       if (!compact) c.add(this.add.text(16, upgradeY, preview, style(12, C.textSecondary)).setWordWrapWidth(width - 32));

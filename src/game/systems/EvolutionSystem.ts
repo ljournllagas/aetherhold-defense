@@ -163,3 +163,16 @@ export function purchaseEvolution(id: TowerId, state: EvolutionState, intent: Pu
 export function investedRefund(state: EvolutionState): number {
   return refundForInvested(state.invested);
 }
+
+/**
+ * Dry-runs the purchase reducer with maximum safe gold and permissive prerequisites to
+ * quote the stats a commit would produce. The quoted state is validated and never changed;
+ * a null result means the intent would fail its numeric or structural checks.
+ */
+export function previewPurchaseStats(id: TowerId, state: EvolutionState, intent: PurchaseIntent): EffectiveTowerStats | null {
+  const result = purchaseEvolution(id, state, intent, {
+    gold: Number.MAX_SAFE_INTEGER, evolutionOpen: true, endless: true, blocked: false,
+    unlocked: new Set<BranchId>(Object.keys(EVOLUTIONS) as BranchId[])
+  }, state.revision);
+  return result.ok ? result.stats : null;
+}

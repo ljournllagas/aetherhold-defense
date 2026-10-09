@@ -5,7 +5,8 @@ import type { PurchaseContext } from '../src/game/systems/EvolutionSystem.ts';
 import type { BranchId } from '../src/shared/progression.ts';
 import { tower } from './helpers/evolutionFixtures.ts';
 import { EVOLUTIONS } from '../src/game/config/evolutions.ts';
-import { effectiveStats } from '../src/game/systems/EvolutionSystem.ts';
+import { TOWERS } from '../src/game/config/towers.ts';
+import { effectiveStats, previewPurchaseStats, purchaseEvolution } from '../src/game/systems/EvolutionSystem.ts';
 
 const ctx = (patch: Partial<PurchaseContext> = {}): PurchaseContext => ({ gold: 1000, evolutionOpen: false, endless: false, blocked: false, unlocked: new Set<BranchId>(), ...patch });
 
@@ -33,7 +34,9 @@ describe('tower progression view', () => {
     expect(towerProgressionView(tower('marksman'), ctx()).branches).toEqual([]);
   });
   it('enables evolve after the boss with the captured intent and revision', () => {
-    expect(towerProgressionView(tower(null), ctx({ evolutionOpen: true })).actions[0]).toEqual({ label: 'Evolve: Marksman · 510 gold', reason: null, intent: { kind: 'evolve', branchId: 'marksman' }, revision: 0 });
+    const action = towerProgressionView(tower(null), ctx({ evolutionOpen: true })).actions[0];
+    expect(action).toMatchObject({ label: 'Evolve: Marksman · 510 gold', reason: null, intent: { kind: 'evolve', branchId: 'marksman' }, revision: 0 });
+    expect(action.nextStats).toEqual({ ...EVOLUTIONS.marksman.stats[0] });
   });
   it('offers the foundation upgrade and asks for level 4 below it', () => {
     const t = tower(null); t.progression = { ...t.progression, foundationLevel: 2, invested: 190 };
@@ -44,7 +47,8 @@ describe('tower progression view', () => {
   it('reports insufficient gold and paused or ended runs', () => {
     const view = towerProgressionView(tower('marksman', 1), ctx({ gold: 10, evolutionOpen: true }));
     expect(view.title).toBe('Marksman · Rank 1');
-    expect(view.actions).toEqual([{ label: 'Marksman rank 2 · 935 gold', reason: 'Not enough gold', intent: { kind: 'evolution-rank' }, revision: 0 }]);
+    expect(view.actions).toMatchObject([{ label: 'Marksman rank 2 · 935 gold', reason: 'Not enough gold', intent: { kind: 'evolution-rank' }, revision: 0 }]);
+    expect(view.actions[0].nextStats).toEqual(EVOLUTIONS.marksman.stats[2]);
     expect(towerProgressionView(tower('marksman', 1), ctx({ blocked: true, evolutionOpen: true })).actions[0].reason).toBe('Unavailable while paused or ended');
   });
   it('offers mastery only in endless and shows the numeric limit', () => {
@@ -57,6 +61,41 @@ describe('tower progression view', () => {
     const qualifying = tower('marksman', 2, 5);
     expect(towerProgressionView(tower(null), ctx(), 15, [tower(null), qualifying]).branches.find((b) => b.id === 'volley')?.qualifiesNow).toBe(true);
     expect(towerProgressionView(tower(null), ctx(), 20, [qualifying]).branches.find((b) => b.id === 'volley')?.qualifiesNow).toBe(false);
+  });
+});
+
+describe('next purchase stats', () => {
+  it('puts the next stats on every action even when the purchase itself is unavailable', () => {
+    const t = tower(null); t.progression = { ...t.progression, foundationLevel: 1, invested: 100 };
+    const view = towerProgressionView(t, ctx({ gold: 0 }));
+    expect(view.actions.map((a) => a.nextStats)).toEqual([effectiveStats('longbow', { ...t.progression, foundationLevel: 2 }), null, null]);
+    expect(view.actions.map((a) => a.reason)).toEqual(['Not enough gold', 'Reach level 4', 'Reach level 4']);
+    const ready = towerProgressionView(tower(null), ctx({ gold: 0 }));
+    expect(ready.actions.map((a) => a.nextStats)).toEqual([{ ...EVOLUTIONS.marksman.stats[0] }, { ...EVOLUTIONS.volley.stats[0] }]);
+    expect(ready.actions.map((a) => a.reason)).toEqual(['Defeat the wave-10 boss', 'Complete the branch achievement']);
+    const open = towerProgressionView(tower(null), ctx({ gold: 0, evolutionOpen: true }));
+    expect(open.actions.map((a) => a.reason)).toEqual(['Not enough gold', 'Complete the branch achievement']);
+    expect(open.actions.map((a) => a.nextStats)).toEqual(ready.actions.map((a) => a.nextStats));
+  });
+  it.each([['marksman', 0], ['marksman', 1], ['marksman', 2], ['volley', 2]] as const)('matches the committed stats for %s rank %i', (branch, rank) => {
+    const t = tower(branch, rank), state = structuredClone(t.progression), preview = previewPurchaseStats(t.towerId, state, { kind: 'evolution-rank' });
+    const bought = purchaseEvolution(t.towerId, state, { kind: 'evolution-rank' }, { ...ctx(), gold: 1000000, evolutionOpen: true }, state.revision);
+    expect(bought.ok).toBe(true);
+    if (!bought.ok) throw Error(bought.reason);
+    expect(preview).toEqual(bought.stats);
+    expect(towerProgressionView(t, ctx()).actions[0]).toMatchObject({ nextStats: preview, revision: state.revision });
+    expect(t.progression).toEqual(state);
+  });
+  it('keeps attack and range unchanged through mastery while damage grows', () => {
+    const t = tower('marksman', 3), view = towerProgressionView(t, ctx({ gold: 0, evolutionOpen: true, endless: true }));
+    const next = view.actions[0].nextStats!;
+    expect(view.actions[0].reason).toBe('Not enough gold');
+    expect([next.attackInterval, next.range]).toEqual([EVOLUTIONS.marksman.stats[3].attackInterval, EVOLUTIONS.marksman.stats[3].range]);
+    expect(next.damage).toBe(Math.round(EVOLUTIONS.marksman.stats[3].damage * 1.05));
+  });
+  it('reports no next stats at the numeric limit', () => {
+    const huge = tower('marksman', 3); huge.progression = { ...huge.progression, masteryRank: 100000 };
+    expect(towerProgressionView(huge, ctx({ evolutionOpen: true, endless: true })).actions[0]).toMatchObject({ nextStats: null, reason: 'Numeric limit reached' });
   });
 });
 

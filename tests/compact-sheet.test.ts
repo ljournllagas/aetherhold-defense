@@ -55,6 +55,35 @@ describe('sheet bounds', () => {
     (scene as unknown as { drawSheet(): void }).drawSheet();
     expect((loose.sheet as ScrollSheet).bounds.height).toBe(sheetBounds(gameLayout(844, 390), 'evolve', false).height);
   });
+  it('keeps every action reachable in the 844x390 sheet with the taller wrapped preview', () => {
+    vi.spyOn(SoundManager, 'get').mockReturnValue(ui.anyStub());
+    const scene = new GameScene(); scene.init({ difficulty: 'medium' });
+    const run = scene as unknown as { gold: number; sheet: ScrollSheet | null; wave: number; wavesCompleted: number; towers: Tower[]; sheetKind: string | null; drawSheet(): void };
+    const loose = scene as unknown as Record<string, unknown>;
+    for (const name of ['updateHUD', 'refreshInfoPanel', 'showTouchPreview', 'updateNextPreview', 'floatText']) loose[name] = () => {};
+    const texts: Array<{ text: string; y: number; height: number }> = [];
+    const textStub = (value: string, y: number) => {
+      const view = { type: 'Text', text: value, y, height: 20, setWordWrapWidth: () => view, setCrop: () => view, setVisible: () => view };
+      texts.push(view); return view;
+    };
+    loose.add = {
+      text: (x: number, y: number, value: string) => x === 12 ? textStub(value, y) : ui.anyStub(),
+      container: () => ({ list: [], add: () => {}, destroy: () => {}, getWorldTransformMatrix: () => ({ tx: 0, ty: 0 }), setData() { return this; }, getData: () => undefined })
+    };
+    loose.uiRoot = { add: () => {} }; loose.game = ui.anyStub(); loose.layout = gameLayout(844, 390);
+    loose.input = { on() { return this; }, off() { return this; } };
+    (scene as unknown as { siege: { bossKilled(wave: number): void } }).siege.bossKilled(10);
+    const t = new Tower('longbow', 100, 100, 0); t.progression = { ...t.progression, foundationLevel: 4, invested: 710 };
+    run.towers = [t]; run.sheetKind = 'evolve'; (loose as { selectedTower: Tower }).selectedTower = t; run.gold = 2000;
+    run.drawSheet();
+    const sheet = run.sheet!;
+    const preview = texts.find((view) => view.text.startsWith('Next:'));
+    const startedAt = sheet.scrollOffset;
+    expect(preview).toBeDefined();
+    expect(preview!.text).toContain('·');
+    sheet.scrollTo(sheet.bounds.height);
+    expect(sheet.scrollOffset).toBeGreaterThan(startedAt);
+  });
 });
 
 describe('QA seed HUD refresh', () => {
