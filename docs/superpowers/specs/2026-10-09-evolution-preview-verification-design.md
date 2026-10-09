@@ -3,6 +3,7 @@
 Date: 2026-10-09
 Tier: Spec-only
 Status: awaiting written-spec approval
+Review: round 1 cleared at 9/10 with zero blockers and zero advisory items.
 
 ## Intent and agreed scope
 
