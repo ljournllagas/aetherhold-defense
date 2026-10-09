@@ -13,7 +13,7 @@
 - [x] P3: new campaign battle/maps/asset modules and targeted shared-engine adapters. Own campaign wave profiles, twelve canonical map families with authored level variants, support enemies and boss mechanics, campaign tower appearance, actual specialization combat effects, gated campaign Power-Up pool and one non-identical reward reroll per level at 45 stars. Reuse fixed-step simulation, existing projectile/effect snapshots, pause/speed/restart cleanup and scoring. Preserve classic behavior with regression checks.
 - [x] V1: independent progression/save verification, including every unlock transition, replay star union, Level 10→11 and 20→21, Level30 completion, milestones and specialization threshold. Test storage denial, corrupt/future versions and reload.
 - [x] V2: independent combat/restart and screenshot QA across three worlds, normal/boss detail, all bosses and rewards. Cover responsive UI at 1440×900, 1280×720, 1024×768, 844×390, 390×844 and 360×640, including rotation and actionable controls.
-- [ ] Release: Executor runs final typecheck/full tests/build, then authorized `npm run deploy`; verify live HTML/current JavaScript and `/api/health`, native campaign entry and classic smoke, commit only task-owned changes and push current branch. Verify local/remote HEAD equality. Archivist closes verified documentation and token report.
+- [x] Release: Executor runs final typecheck/full tests/build, then authorized `npm run deploy`; verify live HTML/current JavaScript and `/api/health`, native campaign entry and classic smoke, commit only task-owned changes and push current branch. Verify local/remote HEAD equality. Archivist closes verified documentation and token report.
 
 ## Acceptance gates
 

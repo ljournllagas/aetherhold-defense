@@ -10,7 +10,7 @@ Final whole-project gates: typecheck/build PASS, 893 tests passed / 11 configure
 
 Published at https://aetherhold-defense.ljournllagas.workers.dev/ with Worker version `62eadfc5-a3bd-4f69-8b21-89947401dbbc`. Live HTML and `/assets/index-DusJeCBx.js` are byte-identical to local dist; JavaScript SHA-256 `6f7746638afdd959e493a5e3dfb0628bd5bd86e13fd69987ac701f51584d5568`. `/api/health` returns 200 `{ok:true,scoreVersion:3}`. Unmodified production Menu→Campaign→Classic Siege→Difficulty→gameplay passed with zero page/JS errors, zero failed application requests, 49 GETs and zero POSTs. Implicit `/favicon.ico` returns 404 and produced two console warnings; recorded as nonblocking. No migration or binding change ran.
 
-Documentation closure and commit/push are the remaining delivery steps. All 43 new production art targets remain `final_required`; procedural fallback rendering does not establish final-art approval. Human balance and physical-device input remain UNVERIFIED. Raw verification is local under gitignored `artifacts/campaign/` and `artifacts/campaign-w1-w3-20261009/`.
+Implementation and documentation are committed and pushed to `main` as `8fe3619a9a0ef6644f520d46ed4f2d23060f3bf5`; local/remote HEAD equality was verified. The final handoff status is a documentation-only update; the tested/published application bytes are unchanged. Unrelated `.scratch/` files remain untracked. All 43 new production art targets remain `final_required`; procedural fallback rendering does not establish final-art approval. Human balance and physical-device input remain UNVERIFIED. Raw verification is local under gitignored `artifacts/campaign/` and `artifacts/campaign-w1-w3-20261009/`.
 
 ## Historical records (superseded by the current release above)
 
