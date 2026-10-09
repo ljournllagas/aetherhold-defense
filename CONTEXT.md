@@ -25,3 +25,5 @@
 - **Score era:** The set of scores sharing one score version; rankings and personal-best comparisons use only the current era.
 - **Terminal result:** The single end-of-run record, created only by a lives-zero defeat, a siege failure or Finish Run; only a terminal result can be submitted as a score.
 - **Discarded run:** A run ended by Restart or Quit; it creates no terminal result and no score submission.
+- **Auto mode:** A player-controlled mode with one switch that jointly enables automatic wave starts and situational relic use.
+- **Situational relic use:** Automatic activation when a relic can provide its intended benefit in the current run state.
