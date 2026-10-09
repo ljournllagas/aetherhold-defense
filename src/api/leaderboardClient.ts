@@ -97,7 +97,9 @@ export function newRunId(): string {
   return `run-${Date.now().toString(36)}-${Math.floor(Math.random() * 0xffffff).toString(36)}`;
 }
 
-export async function submitScore(payload: GameResultPayload): Promise<{ ok: boolean; id?: number; error?: string; duplicate?: boolean }> {
+export type SubmitScoreResult = { ok: boolean; id?: number; error?: string; duplicate?: boolean };
+
+export async function submitScore(payload: GameResultPayload): Promise<SubmitScoreResult> {
   try {
     const r = await fetchJson<{ ok: boolean; id?: number; error?: unknown }>(`${API_BASE}/api/scores`, {
       method: 'POST',
