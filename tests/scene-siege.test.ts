@@ -1,53 +1,18 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { GameScene } from '../src/game/scenes/GameScene.ts';
 import { Tower } from '../src/game/entities/Tower.ts';
 import { Enemy } from '../src/game/entities/Enemy.ts';
-import { SoundManager } from '../src/game/systems/SoundManager.ts';
-import { SiegeSystem } from '../src/game/systems/SiegeSystem.ts';
 import { waveClearBonus } from '../src/game/systems/EconomySystem.ts';
 import { submitScore } from '../src/api/leaderboardClient.ts';
 import { saveBest } from '../src/game/systems/Settings.ts';
-import type { EvolutionCombat } from '../src/game/systems/EvolutionCombat.ts';
-import type { RelicVault } from '../src/game/systems/RunSimulation.ts';
-import type { AutoSystem } from '../src/game/systems/AutoSystem.ts';
-import type { RunOutcome } from '../src/shared/progression.ts';
-import type { BranchId } from '../src/shared/progression.ts';
+import { validateScorePayload } from '../src/shared/validation.ts';
 import { UnlockRepository } from '../src/game/systems/UnlockSystem.ts';
+import { advanceSiege, anyStub, atWave, sceneFixture, terminalRulePayload, warlord } from './helpers/terminalRuleFixtures.ts';
+import type { BranchId } from '../src/shared/progression.ts';
+import type { AutoSystem } from '../src/game/systems/AutoSystem.ts';
 
 vi.mock('phaser', () => ({ default: { Scene: class { constructor(_key?: string) {} }, Scenes: { Events: { SHUTDOWN: 'shutdown' } }, Scale: { Events: { RESIZE: 'resize' } } } }));
 vi.mock('../src/api/leaderboardClient.ts', async (importOriginal) => ({ ...(await importOriginal<typeof import('../src/api/leaderboardClient.ts')>()), submitScore: vi.fn() }));
 vi.mock('../src/game/systems/Settings.ts', async (importOriginal) => ({ ...(await importOriginal<typeof import('../src/game/systems/Settings.ts')>()), saveBest: vi.fn() }));
-function anyStub(): any {
-  const proxy: any = new Proxy(function () { return proxy; }, { get: (_t, key) => (key === 'then' ? undefined : key === Symbol.toPrimitive ? () => 0 : proxy), apply: () => proxy });
-  return proxy;
-}
-function advanceSiege(to: number): SiegeSystem {
-  const siege = new SiegeSystem();
-  for (let wave = 1; wave <= to; wave++) { siege.startWave(wave); if (wave % 10 === 0) siege.bossKilled(wave); siege.completeWave({ wave, lives: 10, spawns: 0, enemies: 0, flights: 0, fields: 0 }); }
-  return siege;
-}
-interface Run {
-  wave: number; wavesCompleted: number; waveActive: boolean; currentWaveIsBoss: boolean; lives: number; gold: number; runId: string; paused: boolean; modal: unknown;
-  towers: Tower[]; enemies: Enemy[]; siege: SiegeSystem; evolutionCombat: EvolutionCombat; vault: RelicVault; scheduledBossIds: Map<number, number>;
-  scene: { start: ReturnType<typeof vi.fn>; restart: ReturnType<typeof vi.fn> };
-  handleLeak(e: Enemy): boolean; killEnemy(e: Enemy): void; checkWaveClear(): void; enterVictory(): void; renderVictory(): void;
-  chooseVictory(action: 'finish' | 'continue'): void; pauseMenuAvailable(): boolean; togglePauseMenu(): void;
-  finishRun(outcome: RunOutcome): void; cleanupProgression(): void; startNextWave(): void; tryBuild(id: string, plot: number): void;
-}
-const PRESENTATION = ['updateHUD', 'refreshInfoPanel', 'drawSheet', 'drawPowerupBar', 'refreshPlots', 'refreshPlacePanel', 'hideGhost', 'showBanner', 'floatText', 'floatTextForEnemy', 'impactAt', 'impactBurst', 'startDeathAnim', 'drawCatalog', 'refreshTowerVisual', 'updateNextPreview', 'destroyView', 'renderVictory', 'showTouchPreview'];
-function sceneFixture() {
-  vi.spyOn(SoundManager, 'get').mockReturnValue(anyStub());
-  const scene = new GameScene(); scene.init({ difficulty: 'medium', playerName: 'Test Warden' });
-  const run = scene as unknown as Run, loose = scene as unknown as Record<string, unknown>;
-  for (const name of PRESENTATION) loose[name] = () => {};
-  run.scene = { start: vi.fn(), restart: vi.fn() };
-  return { run, loose };
-}
-function atWave(run: Run, wave: number): void {
-  run.siege = advanceSiege(wave - 1); run.siege.startWave(wave);
-  run.wave = wave; run.wavesCompleted = wave - 1; run.waveActive = true; run.currentWaveIsBoss = wave % 10 === 0;
-}
-const warlord = () => new Enemy('warlord', 5000, 40, 150);
 afterEach(() => { vi.restoreAllMocks(); vi.mocked(submitScore).mockClear(); vi.mocked(saveBest).mockClear(); });
 
 describe('boss milestones and terminal events', () => {
@@ -157,3 +122,19 @@ it.each(['finish','continue'] as const)('Auto %s leaves score submission manual'
   expect(run.siege.phase).toBe(action==='finish'?'terminal':'endless');
   expect(submitScore).not.toHaveBeenCalled();
 });
+
+describe('final-configuration terminal rule integration', () => {
+  it.each(['siege-failed', 'endless-defeat'] as const)('validates the final %s scene-produced payload', (kind) => {
+    const progress = kind === 'siege-failed'
+      ? { highestWave: 10, wavesCompleted: 9, outcome: 'siege-failed', siegeBossesDefeated: 0 }
+      : { highestWave: 31, wavesCompleted: 30, outcome: 'defeat', siegeBossesDefeated: 7 };
+    const { payload, startKey } = terminalRulePayload(kind);
+    // Lives remain in a siege failure, so results load directly; a zero-life endless
+    // defeat needs the defeat art and routes through the defeat-stage Preload request.
+    expect(startKey).toBe(kind === 'siege-failed' ? 'GameOver' : 'Preload');
+    expect(payload).toMatchObject(progress);
+    expect(validateScorePayload(payload).errors).toEqual([]);
+    expect(submitScore).not.toHaveBeenCalled();
+  });
+});
+

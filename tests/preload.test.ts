@@ -23,7 +23,7 @@ function loaderFixture() {
   loose.time = { delayedCall: (_ms: number, callback: () => void) => { timers.push(callback); return { remove: vi.fn() }; } };
   loose.drawLoading = vi.fn();
   vi.stubGlobal('document', { fonts: { ready: Promise.resolve() } });
-  return { scene, loose, loaded, queued, load, start, timers, activate: () => { active = true; }, stop: () => { active = false; loose.events.emit('shutdown'); } };
+  return { scene, loose, loaded, queued, load, start, timers, activate: () => { active = true; }, deactivate: () => { active = false; }, stop: () => { active = false; loose.events.emit('shutdown'); } };
 }
 it('waits through a failed atlas and retries only missing assets', async () => {
   const f = loaderFixture();
@@ -61,6 +61,22 @@ it('reuses warm cache without queueing and starts its destination once', async (
   f.scene.init({ stage: 'gameplay', destination: 'Game', data }); f.scene.preload(); f.scene.create(); f.load.emit('complete');
   await Promise.resolve(); await Promise.resolve(); for (const timer of f.timers) timer();
   expect(f.queued).toEqual([]); expect(f.start).toHaveBeenCalledTimes(1); expect(f.start).toHaveBeenCalledWith('Game', data);
+});
+it('transitions after create even though Phaser marks the scene running only afterwards', () => {
+  // SceneManager.create calls scene.create() and assigns CONST.RUNNING after it returns,
+  // so a synchronous isActive('Preload') guard is false during create in a real game.
+  const f = loaderFixture();
+  for (const asset of requiredAssets('gameplay')) f.loaded.add(asset.key);
+  const data = { difficulty: 'medium' as const, playerName: 'Late Active' };
+  f.scene.init({ stage: 'gameplay', destination: 'Game', data });
+  f.scene.preload();
+  f.deactivate();
+  f.scene.create();
+  expect(f.start).not.toHaveBeenCalled();
+  f.activate();
+  for (const timer of f.timers) timer();
+  expect(f.start).toHaveBeenCalledTimes(1);
+  expect(f.start).toHaveBeenCalledWith('Game', data);
 });
 it('preserves the exact terminal result through a failed defeat asset retry', async () => {
   const f = loaderFixture(), data = { runId: 'terminal-retained-0001', finalScore: 123 } as any;

@@ -160,6 +160,10 @@ export class ScoreRetryRepository {
   private viewFrom(raw: string | null): RetryView {
     const c = classify(raw);
     if (c.status === 'empty') return this.sessionView(null);
+    // Protected bytes are never rewritten, so an attempt that is only held in memory is the
+    // most truthful description of what a retry would use. This keeps failure messaging
+    // session-only instead of claiming the stored data was replaced.
+    if (c.protectedBytes && this.session) return this.sessionView(RETRY_WARNINGS.protected);
     if (c.status === 'unreadable') return { status: 'unreadable', record: null, persisted: true, warning: RETRY_WARNINGS.protected };
     const incompatible = c.status === 'incompatible';
     return {

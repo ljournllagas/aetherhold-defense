@@ -75,7 +75,14 @@ export class PreloadScene extends Phaser.Scene {
       if (generation !== this.generation || !this.scene.isActive('Preload') || this.state !== 'ready' || this.destinationStarted) return;
       this.destinationStarted = true; this.scene.start(this.request.destination, this.request.data);
     };
-    if (this.request.stage !== 'menu') { transition(); return; }
+    if (this.request.stage !== 'menu') {
+      // Phaser's SceneManager.create() runs scene.create() and only assigns CONST.RUNNING
+      // after it returns, so the isActive guard is false while this runs during create.
+      // Defer by one tick so the guard evaluates against the real running state.
+      if (this.scene.isActive('Preload')) transition();
+      else this.time.delayedCall(0, transition);
+      return;
+    }
     const fontsReady = typeof document !== 'undefined' ? document.fonts?.ready ?? Promise.resolve() : Promise.resolve();
     void fontsReady.then(transition, transition);
     this.fontTimer?.remove(); this.fontTimer = this.time.delayedCall(2500, transition);

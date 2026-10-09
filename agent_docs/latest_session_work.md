@@ -1,6 +1,27 @@
 # Latest session work
 
-## Auto mode (2026-10-09) — current
+## Combined audit fixes (2026-10-09) — in progress, not published
+
+Tasks 1–10 of `docs/superpowers/plans/2026-10-09-combined-audit-fixes.md` are committed and green:
+fixed-step simulation clock, shared Unicode name/settings policy, staged assets with recoverable loading,
+tuned balance gates (rank-3 price factor 8 plus the ×1.3 late-rank damage multiplier; nine recorded traces
+with empty gate lists), score era 3 with both legacy bests retained, native score throttling and static
+response headers, one retained manual submission with cross-tab settlement, the saved-score menu sheet,
+and the next rank/mastery purchase preview.
+
+Verified: `npm run typecheck` clean, `npm test` 728 passed / 11 skipped / 0 failed, `npm run build` green
+(pre-existing large-bundle warning), isolated local Worker API evidence (201/409/400/413/native 429, the
+era-2 row survives) and 19 browser case groups against the isolated services. Two real defects were found
+and fixed by that verification: a Phaser `create()` ordering bug that blocked every gameplay/defeat
+loading transition in a real browser, and misleading offline messaging after a failed submit against
+protected storage.
+
+Not published yet: the `?qa=` preview browser cases fail in the development-only QA harness with a Phaser
+WebGL render error (`Cannot read properties of null (reading 'resolution')`) while both `Preload` and
+`MainMenu` run, so `Game` never starts and Task 12 is blocked. Full record, evidence and the exact
+blocker: `agent_docs/audit_fixes_2026-10-09.md`.
+
+## Auto mode (2026-10-09) — previous release
 
 Single Auto mode is live: HUD/Pause switch and A shortcut, five eligible real seconds between waves, situational relic use, retained overflow rewards, and OFF on new/restarted runs. Continue Endless retains Auto and the queue; victory remains a manual choice. No combat coefficients, score era, API, bindings or database changed.
 

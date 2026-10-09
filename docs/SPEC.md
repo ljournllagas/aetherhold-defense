@@ -209,6 +209,29 @@ The Worker provides:
 - input validation;
 - score plausibility checks.
 
+### Score request protection
+
+Score submission is throttled by the native Cloudflare rate-limit binding
+(`[[ratelimits]] name = "SCORE_RATE_LIMITER"`, namespace `3867429103`, 10 attempts per 60
+seconds), keyed on the trusted platform client address (`scores:<CF-Connecting-IP>`, or
+`scores:anon` when absent). A client-supplied forwarding header is never trusted for the
+key. Native counters are per-location and eventually consistent, so the limit is a throttle,
+not an exact quota.
+
+- Denial answers `429 RATE_LIMITED` with `Retry-After: 60` and writes nothing.
+- A missing or failing binding answers `503 SCORE_API_UNAVAILABLE` before any database work.
+- `GET` and preflight requests never consult the limiter.
+
+### Response policy
+
+Static responses are served with the `public/_headers` policy: `X-Content-Type-Options:
+nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, `Permissions-Policy:
+camera=(), microphone=(), geolocation=()` and a `Content-Security-Policy` of
+`default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self';
+img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; frame-ancestors
+'none'; object-src 'none'; base-uri 'self'`. JSON API responses repeat the security headers
+in the Worker. No new CDN route or database migration is involved.
+
 ## 5.3 Hosting
 
 Deploy compiled static game assets and API through Cloudflare.
@@ -690,8 +713,9 @@ continue into endless, paused/ended, numeric limit reached.
 Branch stats are derived from the archetype's level-4 stats by evolution rank 0–3. They are
 never compounded by mutating the current stats.
 
-- **Rank factors.** Raw damage × [1.20, 1.55, 2.00, 2.60], attack interval × [1.00, 0.97,
-  0.94, 0.90] and range × [1.00, 1.03, 1.06, 1.10].
+- **Rank factors.** Raw damage × [1.20, 1.55, 2.60, 3.38], attack interval × [1.00, 0.97,
+  0.94, 0.90] and range × [1.00, 1.03, 1.06, 1.10]. Ranks 2–3 carry the approved 1.3
+  late-rank damage multiplier over the original seed values 2.00 and 2.60.
 - **Branch modifiers.** The branch modifiers in the table below are then applied.
 - **Preserved stats.** Splash, slow and chain stats that a branch does not override are
   kept.
@@ -772,16 +796,17 @@ never compounded by mutating the current stats.
 
 ## 12.6 Evolution prices
 
-The price of evolution rank r is ceil(level-4 upgrade cost × [1.50, 2.00, 2.75, 3.75][r]).
-Both branches of an archetype have the same prices.
+The price of evolution rank r is ceil(level-4 upgrade cost × [1.50, 2.00, 2.75, 8.00][r]).
+Both branches of an archetype have the same prices. Rank 3 carries the approved factor 8,
+the smallest factor whose eight-run acceptance matrix passes every Medium gate.
 
 | Archetype | Level-4 upgrade cost | Rank 0 | Rank 1 | Rank 2 | Rank 3 | Foundation + ranks 0–3 |
 |---|---|---|---|---|---|---|
-| Ranger | 340 | 510 | 680 | 935 | 1275 | 710 + 3400 = 4110 |
-| Bombard | 480 | 720 | 960 | 1320 | 1800 | 1020 + 4800 = 5820 |
-| Frost | 420 | 630 | 840 | 1155 | 1575 | 870 + 4200 = 5070 |
-| Arcane | 460 | 690 | 920 | 1265 | 1725 | 975 + 4600 = 5575 |
-| Tempest | 520 | 780 | 1040 | 1430 | 1950 | 1110 + 5200 = 6310 |
+| Ranger | 340 | 510 | 680 | 935 | 2720 | 710 + 4845 = 5555 |
+| Bombard | 480 | 720 | 960 | 1320 | 3840 | 1020 + 6840 = 7860 |
+| Frost | 420 | 630 | 840 | 1155 | 3360 | 870 + 5985 = 6855 |
+| Arcane | 460 | 690 | 920 | 1265 | 3680 | 975 + 6555 = 7530 |
+| Tempest | 520 | 780 | 1040 | 1430 | 4160 | 1110 + 7410 = 8520 |
 
 ## 12.7 Mastery
 
@@ -793,8 +818,8 @@ an active playable run.
   aura strength, penetration, vulnerability, control strength or duration, range or attack
   rate.
 - **Cost.** The next rank m+1 costs ceil(rank3PurchaseCost × 1.25^(m+1)), with m starting at
-  0. First mastery ranks cost: Ranger 1594, Bombard 2250, Frost 1969, Arcane 2157,
-  Tempest 2438.
+  0. First mastery ranks cost: Ranger 3400, Bombard 4800, Frost 4200, Arcane 4600,
+  Tempest 5200.
 - **Inspector.** It shows the mastery rank, next damage and cost.
 - **Numeric limit.** When the next price or stat is numerically unsafe or
   unrepresentable, the purchase is disabled with the reason "numeric limit reached". NaN,
@@ -808,28 +833,28 @@ live in typed configuration (`src/game/config/evolutions.ts`, `src/game/config/w
 Tuning may change these values. Branch identities, purchase stages, unlock requirements and
 wave 30's single-Warlord finale stay fixed.
 
-The shipped values are the approved seed values. No coefficient was tuned. The simulated
-balance runs in `artifacts/progression/balance/playtests.md` record the evidence. Those runs
-come from a scripted bot, not from human playtests. Their AC-128 to AC-133 timing,
-economy and duration results are simulated pass/fail, unverified by human play.
+The shipped values are the approved seed values plus the approved audit-fixes tuning: the
+rank-3 price factor moved from 3.75 to 8 and ranks 2–3 damage carry a ×1.3 late-rank
+multiplier over the seed factors. Both changes were selected by the bounded candidate search
+recorded in `artifacts/audit-fixes/balance/candidates.json`, and the final configuration
+passes every Medium and Easy/Hard gate over the eight-scenario matrix in
+`tests/balance-acceptance.test.ts`. Traces are recorded under
+`artifacts/audit-fixes/balance/traces/`. The runs come from a scripted bot, not from human
+playtests: their timing, economy and duration results are simulated pass/fail, unverified by
+human play.
 
-Two gates did not pass with these values. The user accepted the conflicts as recorded, and
-the values were not tuned for them:
-
-- **Fully evolved towers at victory (AC-131).** The gate is 2–5 fully evolved towers in a
-  representative mixed build. All five simulated runs ended the siege with 7–8.
-- **Branch parity (AC-127).** The equal-investment branch comparison found that
-  Winterguard beats Brittle Ice, and Spellbreaker beats Arcane Beacon, in every tested
-  role.
-
-These gates are not claimed as passed.
+The earlier shipped seed values failed the fully-evolved-tower gate (AC-131): every
+simulated run ended the siege with 7–8 fully evolved towers against an approved 2–5. That
+conflict is resolved by the tuning above; the historical failure record stays in the older
+evidence files. Branch parity (AC-127) remains a known, accepted limitation and is not
+claimed as passed.
 
 | Coefficient | Shipped value |
 |---|---|
-| Rank damage factors (ranks 0–3) | 1.20, 1.55, 2.00, 2.60 |
+| Rank damage factors (ranks 0–3) | 1.20, 1.55, 2.60, 3.38 (ranks 2–3 = seed × 1.3) |
 | Rank attack-interval factors | 1.00, 0.97, 0.94, 0.90 |
 | Rank range factors | 1.00, 1.03, 1.06, 1.10 |
-| Evolution price factors (× level-4 upgrade cost, rounded up) | 1.50, 2.00, 2.75, 3.75 |
+| Evolution price factors (× level-4 upgrade cost, rounded up) | 1.50, 2.00, 2.75, 8.00 |
 | Marksman | damage ×1.35, interval ×1.25, boss damage ×1.50 |
 | Volley | damage ×0.55 per arrow, 3 targets |
 | Siegebreaker | physical armor scale 0.50 |
@@ -1323,11 +1348,13 @@ Field rules:
 
 ## 28.2 Score era
 
-`GAME_VERSION` is `0.2.0` and `SCORE_VERSION` is `2` (`src/shared/version.ts`). Score
-version 2 is the current score era.
+`GAME_VERSION` is `0.3.0` and `SCORE_VERSION` is `3` (`src/shared/version.ts`). Score
+version 3 is the current score era.
 
 - Stored scores from earlier eras are retained. They are excluded from current rankings.
 - Personal-best comparisons use only current-era scores (§32).
+- The retained local bests keep both earlier eras: `aetherhold-best-score-v2` (era 2) and
+  `aetherhold-best-v1` (era 1). Both are labelled and neither is converted.
 
 ---
 
@@ -1359,7 +1386,7 @@ Store:
 - created timestamp.
 
 The ordering is unchanged in the new score era: highest wave, then final score, then
-earliest timestamp. Rankings use only the current score version (2).
+earliest timestamp. Rankings use only the current score version (3).
 
 `run id` must uniquely identify one completed run and prevent accidental duplicate submission.
 
@@ -1466,7 +1493,15 @@ retryable).
   one request.
 - **Failure and retry.** A failure (offline, network or server error) shows the reason and
   leaves Submit Score available. A retry resends the same snapshot from the same screen.
+  The retained attempt is claimed before sending, so a newer attempt from another tab is
+  never silently replaced.
 - **After success.** The action cannot submit again.
+- **Offline persistence.** A failed attempt is reported truthfully: stored in this browser
+  and retryable from the menu's Saved Score sheet, or available in this session only when
+  storage or locks are unavailable. See §32.2a and §32.1.
+- **Leaderboard failure text.** A leaderboard failure states that local progress is
+  unaffected, and names a retained saved retry only when the repository view establishes
+  one.
 - **Reused handling.** The existing player-name entry, duplicate-run handling and offline
   behavior are reused.
 - **API unavailable.** If the score API is unavailable, victory and endless stay playable
@@ -1495,19 +1530,40 @@ Leaderboard failure must not prevent play.
 | Key | Contents | Written by this version |
 |---|---|---|
 | `aetherhold-settings-v1` | Settings | Yes; key and data format unchanged |
-| `aetherhold-best-score-v2` | Current-era personal best | Yes; only when a terminal result is created |
-| `aetherhold-best-v1` | Legacy personal best | Never; its bytes stay unchanged |
+| `aetherhold-best-score-v3` | Current-era (3) personal best | Yes; only when a terminal result is created |
+| `aetherhold-best-score-v2` | Retained era-2 personal best | Never; its bytes stay unchanged |
+| `aetherhold-best-v1` | Retained era-1 legacy personal best | Never; its bytes stay unchanged |
+| `aetherhold-score-retry-v1` | One saved manual score submission | Yes, only for an explicit Submit; cleared only when its own run settles |
 | `aetherhold-unlocks-v1` | Unlock profile | Yes, subject to the rules below |
 
 ## 32.2 Personal best
 
 - **Scope.** Personal-best comparisons use only current-era scores. The first current-era
-  score becomes the current best even if it is lower than the legacy best.
-- **Legacy best.** A retained legacy best is shown separately, labelled "Legacy", wherever
-  the personal best is displayed. It is never compared with, ranked against or replaced by
-  current-era scores. It is not shown when no legacy record exists.
+  score becomes the current best even if it is lower than a retained best.
+- **Retained eras.** Both earlier records are read separately and shown with an explicit era
+  label ("Legacy era 2 best", "Legacy era 1 best"). Neither is compared with, ranked
+  against or replaced by current-era scores, and neither is converted.
 - **Discarded runs.** A run discarded by Restart or Quit leaves the personal best
   unchanged.
+
+## 32.2a Saved manual submission
+
+Exactly one submitted attempt is retained so a failed submission can be retried manually.
+
+- **Explicit only.** No score is submitted or retried automatically. Opening the results
+  screen or the menu's Saved Score sheet never posts anything.
+- **One record.** A new explicit Submit replaces the previous retained record. A recognized
+  earlier-era record is visible but cannot be submitted to the current board; its bytes are
+  preserved.
+- **Protected data.** Malformed, unknown-version, oversized or newer-era stored data is
+  never overwritten or removed, and is reported as a storage warning. A valid explicit
+  submission still proceeds from a session-only snapshot.
+- **Cross-tab safety.** Every read, write and removal happens under the Web Locks lock, and
+  settlement clears only the run that was actually sent. An older tab's late response can
+  never erase a newer tab's retained record, and a stale displayed retry is refused without
+  a POST.
+- **Failure.** A failed network attempt leaves the retained bytes byte-identical and reports
+  truthfully whether the retry is stored in this browser or only in this session.
 
 ## 32.3 Unlock profile
 
@@ -1739,7 +1795,7 @@ alongside the existing fields:
 - remainingLives, gameDurationSeconds;
 - gameVersion, scoreVersion, createdAt.
 
-The per-row and top-level `scoreVersion` report the current score era (2).
+The per-row and top-level `scoreVersion` report the current score era (3).
 
 ---
 
@@ -1957,3 +2013,69 @@ The finished game should feel like a purpose-built fantasy strategy game, not:
 The battlefield is the hero.
 
 UI exists to support decisions, not compete with the battlefield.
+
+---
+
+# 48. Player Name Policy
+
+One shared policy (`src/shared/playerName.ts`) is used by every name entry point, so the
+client and the Worker agree exactly.
+
+- **Length.** At most 20 UTF-16 code units, counted in code points: a supplementary
+  character is never split into a lone surrogate.
+- **Allowed characters.** Unicode letters and digits, space, `_`, `-`, `'` and `.`.
+  Anything else is removed while typing.
+- **Normalization.** Input is normalized to NFC and runs of spaces collapse to one. A
+  composed name such as `José A.` is stored as one spelling on every surface.
+- **IME.** While an IME composition is active, no intermediate value is truncated or
+  rewritten; the committed value is normalized when composition ends.
+- **Run boundary.** A blank or invalid name becomes `Warden` at run start. Validation
+  rejects a name that is empty, longer than 20 code units, or contains disallowed
+  characters.
+- **Settings.** Stored settings are validated field by field; an unrecognized or malformed
+  field falls back to its default without discarding the fields that are still valid, and
+  refused storage never throws.
+
+---
+
+# 49. Staged Asset Loading and Recovery
+
+Source images are grouped into three stages in one manifest
+(`src/game/art/assetManifest.ts`): `menu` (6 images), `gameplay` (15) and `defeat` (1).
+
+- **Cold menu.** The first load requests exactly the six menu sources; no gameplay or defeat
+  source is requested before it is needed. Menu-required procedural HUD symbols are the only
+  art generated at menu readiness.
+- **Progressive entry.** Play, Retry and every results entry route through the gameplay
+  stage; the defeat stage is used only for a same-map terminal defeat. A warm cache queues
+  nothing and re-enters the same destination.
+- **Readiness.** A stage is ready only when every required key exists and every spritesheet
+  has its third frame. Art derivation for that stage runs at readiness, and gameplay
+  readiness derives the atlas-based icons and tower portraits.
+- **Failure.** A failed required image never starts the destination. The loading surface
+  states the failure and offers Retry (44 px, house button) and Back to Keep; Retry
+  re-requests only missing assets.
+- **Cancellation and generations.** Every font, loader and timer completion is bound to the
+  generation that requested it. A canceled load, a late font promise or a timer from a
+  previous request can never start a scene.
+- **Resize.** The loading surface follows the live viewport and keeps its request, so
+  rotating or resizing never discards progress or restarts the load.
+
+---
+
+# 50. Fixed-Step Simulation Clock
+
+Combat advances on a logical clock (`src/game/systems/SimulationClock.ts`), not on rendered
+frames.
+
+- **Step.** `1000 / 60` game milliseconds per tick, at most 60 ticks per visible frame; the
+  fractional remainder and any excess debt are retained across frames.
+- **Equivalence.** Attack, kill, reward and Auto outcomes are identical across frame
+  partitions (60 fps, 30 fps, 10 fps and irregular frames) at every speed. One Auto action
+  per visible update still counts five eligible real seconds.
+- **Terminal runs.** A large frame that ends the run stops catch-up immediately: no later
+  tick, attack, reward or Auto action runs, and settlement happens once.
+- **Reward dialogs.** Reward presentation is deferred while a tick is executing, so an
+  impact or field batch completes before any modal opens; deferral never suppresses reward
+  creation or resolution.
+- **Reset.** A new run, Restart and cleanup reset the clock and its debt.
