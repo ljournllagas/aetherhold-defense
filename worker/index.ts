@@ -2,6 +2,8 @@ import { SCORE_VERSION, validateScorePayload } from '../src/shared/validation.ts
 
 export interface Env {
   DB: D1Database;
+  /** Native per-location score limiter binding (`[[ratelimits]]` in wrangler.toml). */
+  SCORE_RATE_LIMITER: RateLimit;
 }
 
 const SECURITY_HEADERS: Record<string, string> = {
@@ -39,21 +41,10 @@ async function readBoundedBody(request: Request): Promise<BoundedBody> {
   }
 }
 
-// Simple in-memory token-bucket per IP for POST /api/scores (per isolate).
-const buckets = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 10; // submissions
-const WINDOW_MS = 60_000;
-
-function rateLimited(ip: string): boolean {
-  const now = Date.now();
-  const b = buckets.get(ip);
-  if (!b || now > b.resetAt) {
-    buckets.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return false;
-  }
-  b.count++;
-  return b.count > RATE_LIMIT;
-}
+// Scores are throttled by the native rate-limit binding, whose counters are
+// per-location and eventually consistent; the trusted client address is the
+// platform-provided CF-Connecting-IP header (client-supplied X-Forwarded-For is
+// never trusted for the key).
 
 function json(data: unknown, status = 200): Response {
   const res = new Response(JSON.stringify(data), {
@@ -129,9 +120,17 @@ export default {
       }
 
       if (path === '/api/scores' && request.method === 'POST') {
-        const ip = request.headers.get('CF-Connecting-IP') ?? request.headers.get('X-Forwarded-For') ?? 'anon';
-        if (rateLimited(ip)) {
-          return apiError('RATE_LIMITED', 'Rate limit exceeded. Slow down, warden.', 429);
+        let quota: RateLimitOutcome | undefined;
+        try {
+          quota = await env.SCORE_RATE_LIMITER?.limit({ key: `scores:${request.headers.get('CF-Connecting-IP') ?? 'anon'}` });
+        } catch {
+          return apiError('SCORE_API_UNAVAILABLE', 'Score submission is temporarily unavailable. Please retry.', 503);
+        }
+        if (!quota) return apiError('SCORE_API_UNAVAILABLE', 'Score submission is temporarily unavailable. Please retry.', 503);
+        if (!quota.success) {
+          const response = apiError('RATE_LIMITED', 'Rate limit exceeded. Slow down, warden.', 429);
+          response.headers.set('Retry-After', '60');
+          return response;
         }
         const contentType = request.headers.get('Content-Type') ?? '';
         if (!contentType.includes('application/json')) {

@@ -73,6 +73,24 @@ function req(path: string, init?: RequestInit): Request {
   return new Request(`https://game.local${path}`, init);
 }
 
+interface LimiterSpy {
+  calls: Array<{ key: string }>;
+  limit(options: { key: string }): Promise<{ success: boolean }>;
+}
+
+/** Records every `limit` key and always allows, so a configured denial is an explicit test. */
+function allowLimiter(): LimiterSpy {
+  const calls: Array<{ key: string }> = [];
+  return { calls, limit: async (options) => { calls.push(options); return { success: true }; } };
+}
+
+/** Fresh in-memory DB plus a fresh allow limiter; pass `null` to omit the binding entirely. */
+function makeEnv(limiter: LimiterSpy | null = allowLimiter()): { db: ReturnType<typeof makeDb>; env: Env } {
+  const db = makeDb();
+  const env = (limiter === null ? { DB: db } : { DB: db, SCORE_RATE_LIMITER: limiter }) as unknown as Env;
+  return { db, env };
+}
+
 function validPayload(overrides: Record<string, unknown> = {}) {
   return {
     playerName: 'TestWarden', difficulty: 'medium', highestWave: 8,
@@ -86,7 +104,7 @@ function validPayload(overrides: Record<string, unknown> = {}) {
 describe('worker api', () => {
   const post = (env: Env, body: unknown) => worker.fetch(req('/api/scores', { method: 'POST', headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': `ip-${Math.random()}` }, body: JSON.stringify(body) }), env);
   it('round-trips victory, siege failure and endless defeat with progress fields', async () => {
-    const db = makeDb(), env = { DB: db } as unknown as Env;
+    const { db, env } = makeEnv();
     for (const body of [
       resultFixture({ highestWave: 30, wavesCompleted: 30, outcome: 'victory', siegeBossesDefeated: 7 }, 10, { runId: 'progress-victory-01' }),
       resultFixture({ highestWave: 10, wavesCompleted: 9, outcome: 'siege-failed', siegeBossesDefeated: 0 }, 15, { runId: 'progress-failed-01' }),
@@ -100,14 +118,14 @@ describe('worker api', () => {
     ]);
   });
   it('rejects forged progress and legacy-era payloads', async () => {
-    const env = { DB: makeDb() } as unknown as Env;
+    const { env } = makeEnv();
     const victory = resultFixture({ highestWave: 30, wavesCompleted: 30, outcome: 'victory', siegeBossesDefeated: 7 }, 10, { runId: 'progress-forged-01' });
     for (const body of [{ ...victory, siegeBossesDefeated: 3 }, { ...victory, wavesCompleted: 29 }, { ...victory, scoreVersion: 1 }, { ...victory, remainingLives: 0 }]) {
       expect((await post(env, body)).status).toBe(400);
     }
   });
   it('health returns ok', async () => {
-    const env = { DB: makeDb() } as unknown as Env;
+    const { env } = makeEnv();
     const res = await worker.fetch(req('/api/health'), env);
     expect(res.status).toBe(200);
     const j = (await res.json()) as { ok: boolean };
@@ -115,7 +133,7 @@ describe('worker api', () => {
   });
 
   it('rejects invalid score payloads', async () => {
-    const env = { DB: makeDb() } as unknown as Env;
+    const { env } = makeEnv();
     const res = await worker.fetch(req('/api/scores', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ playerName: '', difficulty: 'nope', highestWave: -1, finalScore: 99999999, enemiesKilled: 0, bossesKilled: 0, remainingLives: 0, gameDurationSeconds: 0 })
@@ -126,7 +144,7 @@ describe('worker api', () => {
   });
 
   it('accepts valid score and lists it on leaderboard', async () => {
-    const env = { DB: makeDb() } as unknown as Env;
+    const { env } = makeEnv();
     const payload = validPayload();
     const post = await worker.fetch(req('/api/scores', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
@@ -140,7 +158,7 @@ describe('worker api', () => {
   });
 
   it('rejects duplicate run_id with 409', async () => {
-    const env = { DB: makeDb() } as unknown as Env;
+    const { env } = makeEnv();
     const payload = validPayload({ runId: 'dup-run-1' });
     const first = await worker.fetch(req('/api/scores', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
@@ -155,12 +173,62 @@ describe('worker api', () => {
   });
 
   it('rejects unsupported score versions', async () => {
-    const env = { DB: makeDb() } as unknown as Env;
+    const { env } = makeEnv();
     const res = await worker.fetch(req('/api/scores', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(validPayload({ scoreVersion: SCORE_VERSION + 1 }))
     }), env);
     expect(res.status).toBe(400);
+  });
+
+  it('does not write when native quota denies the request', async () => {
+    const db = makeDb();
+    const env = { DB: db, SCORE_RATE_LIMITER: { limit: async () => ({ success: false }) } } as unknown as Env;
+    const response = await post(env, validPayload());
+    expect(response.status).toBe(429);
+    expect(response.headers.get('Retry-After')).toBe('60');
+    expect(((await response.json()) as { error: { code: string } }).error.code).toBe('RATE_LIMITED');
+    expect(db.rows).toEqual([]);
+    expect(db.queries).toEqual([]);
+  });
+
+  it('keys the native limiter on the trusted address and ignores a spoofed forwarding header', async () => {
+    const trusted = allowLimiter();
+    await worker.fetch(req('/api/scores', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '198.51.100.7' },
+      body: JSON.stringify(validPayload())
+    }), { DB: makeDb(), SCORE_RATE_LIMITER: trusted } as unknown as Env);
+    expect(trusted.calls).toEqual([{ key: 'scores:198.51.100.7' }]);
+
+    const anonymous = allowLimiter();
+    await worker.fetch(req('/api/scores', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Forwarded-For': '203.0.113.9' },
+      body: JSON.stringify(validPayload())
+    }), { DB: makeDb(), SCORE_RATE_LIMITER: anonymous } as unknown as Env);
+    expect(anonymous.calls).toEqual([{ key: 'scores:anon' }]);
+  });
+
+  it('never consults the limiter for reads or preflight', async () => {
+    const limiter = allowLimiter();
+    const env = { DB: makeDb(), SCORE_RATE_LIMITER: limiter } as unknown as Env;
+    expect((await worker.fetch(req('/api/leaderboard'), env)).status).toBe(200);
+    expect((await worker.fetch(req('/api/health'), env)).status).toBe(200);
+    expect((await worker.fetch(req('/api/scores', { method: 'OPTIONS' }), env)).status).toBe(204);
+    expect(limiter.calls).toEqual([]);
+  });
+
+  it.each(['missing', 'throwing'] as const)('returns 503 without a database call when the binding is %s', async (kind) => {
+    const db = makeDb();
+    const env = (kind === 'missing'
+      ? { DB: db }
+      : { DB: db, SCORE_RATE_LIMITER: { limit: async () => { throw new Error('binding failed'); } } }) as unknown as Env;
+    const response = await post(env, validPayload());
+    expect(response.status).toBe(503);
+    expect(((await response.json()) as { error: { code: string } }).error.code).toBe('SCORE_API_UNAVAILABLE');
+    expect(db.queries).toEqual([]);
+    expect(db.rows).toEqual([]);
   });
 
   it('keeps prior score eras out of the active leaderboard', async () => {
@@ -172,13 +240,13 @@ describe('worker api', () => {
       gameDurationSeconds: 10000, gameVersion: GAME_VERSION, scoreVersion: SCORE_VERSION - 1,
       createdAt: '2026-01-01T00:00:00.000Z'
     });
-    const res = await worker.fetch(req('/api/leaderboard?difficulty=hard'), { DB: db } as unknown as Env);
+    const res = await worker.fetch(req('/api/leaderboard?difficulty=hard'), { DB: db, SCORE_RATE_LIMITER: allowLimiter() } as unknown as Env);
     expect(res.status).toBe(200);
     expect(((await res.json()) as { scores: unknown[] }).scores).toEqual([]);
   });
 
   it('bounds the UTF-8 request stream before decoding the body', async () => {
-    const env = { DB: makeDb() } as unknown as Env;
+    const { env } = makeEnv();
     const oversized = JSON.stringify(validPayload({ playerName: 'é'.repeat(2200) }));
     expect(new TextEncoder().encode(oversized).byteLength).toBeGreaterThan(4096);
     const res = await worker.fetch(req('/api/scores', {
@@ -189,7 +257,7 @@ describe('worker api', () => {
   });
 
   it('rejects malformed JSON and declared oversized requests safely', async () => {
-    const env = { DB: makeDb() } as unknown as Env;
+    const { env } = makeEnv();
     const malformed = await worker.fetch(req('/api/scores', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{invalid'
     }), env);
@@ -204,7 +272,7 @@ describe('worker api', () => {
 
   it('uses prepared statements (bind) — no string interpolation of input', async () => {
     // Attempt SQL injection via name; stub stores literally, and validation rejects quotes anyway for names with ';--'
-    const env = { DB: makeDb() } as unknown as Env;
+    const { env } = makeEnv();
     const evil = validPayload({ playerName: "x'; DROP TABLE scores;--", highestWave: 3, wavesCompleted: 2, finalScore: 500, enemiesKilled: 50 });
     const post = await worker.fetch(req('/api/scores', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(evil)
