@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import type { GameOverData } from './GameOverScene.ts';
+import type { LoadingRequest } from './PreloadScene.ts';
 import { MAP1, HUD_HEIGHT } from '../maps/map1.ts';
 import { TOWER_LIST, towerTotalInvested } from '../config/towers.ts';
 import { ENEMIES, BOSS_BEHAVIOR, BONUS_TARGET_HP_PER_WAVE } from '../config/enemies.ts';
@@ -2502,7 +2504,7 @@ export class GameScene extends Phaser.Scene {
     const duration = Math.floor(this.runningDurationMs / 1000);
     const isPersonalBest = breakdown.finalScore > (loadBest()?.score ?? -1);
     saveBest({ score: breakdown.finalScore, wave: progress.highestWave, difficulty: this.difficultyId, date: new Date().toISOString() });
-    this.scene.start('GameOver', {
+    const result: GameOverData = {
       difficulty: this.difficultyId,
       playerName: this.playerName,
       highestWave: progress.highestWave,
@@ -2526,7 +2528,10 @@ export class GameScene extends Phaser.Scene {
         towers: this.towers.map(t => ({ towerId: t.towerId, level: t.level, x: t.x, y: t.y, branchId: t.progression.branchId, rank: t.progression.rank, masteryRank: t.progression.masteryRank })),
         enemies: this.enemies.filter(e => e.alive).map(e => ({ archetype: e.archetype, x: e.x, y: e.y, hpFraction: Math.max(0, e.hp / e.maxHp) }))
       }
-    });
+    };
+    if (result.worldSnapshot && result.worldSnapshot.strongholdRatio <= .02) {
+      this.scene.start('Preload', { stage: 'defeat', destination: 'GameOver', data: result } satisfies LoadingRequest);
+    } else this.scene.start('GameOver', result);
     this.cleanupProgression();
   }
 

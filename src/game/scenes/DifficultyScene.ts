@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import type { LoadingRequest } from './PreloadScene.ts';
 import { DIFFICULTY_LIST } from '../config/difficulties.ts';
 import type { DifficultyId } from '../../shared/types.ts';
 import { loadSettings, saveSettings } from '../systems/Settings.ts';
@@ -285,6 +286,6 @@ export class DifficultyScene extends Phaser.Scene {
     settings.playerName = name;
     settings.difficulty = this.selectedDiff;
     saveSettings(settings);
-    this.scene.start('Game', { difficulty: this.selectedDiff, playerName: name });
+    this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: this.selectedDiff, playerName: name } } satisfies LoadingRequest);
   }
 }

@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import type { LoadingRequest } from './PreloadScene.ts';
 import type { DifficultyId, EnemyArchetype, GameResultPayload, ScoreBreakdown } from '../../shared/types.ts';
 import type { BranchId, EvolutionRank, RunOutcome } from '../../shared/progression.ts';
 import { submitScore } from '../../api/leaderboardClient.ts';
@@ -20,7 +21,7 @@ interface WorldSnapshot {
   enemies: Array<{ archetype: EnemyArchetype; x: number; y: number; hpFraction: number }>;
 }
 
-interface Data {
+export interface GameOverData {
   difficulty: DifficultyId;
   playerName: string;
   highestWave: number;
@@ -42,6 +43,7 @@ interface Data {
 }
 
 const IDLE_MESSAGE = 'Submit your score to the Hall of Legends.';
+type Data = GameOverData;
 
 const number = (value: number): string => Math.max(0, Math.floor(Number.isFinite(value) ? value : 0)).toLocaleString('en-US');
 
@@ -213,7 +215,7 @@ export class GameOverScene extends Phaser.Scene {
       lines.push(this.scoreSummary(data), this.submitMessage);
       for (const line of lines) { const t = sheet.text(y, line, C.textPrimary, 14); y += t.height + 16; }
       sheet.action(y, this.submitLabel(), () => this.requestSubmit(data), this.canSubmit() ? 'primary' : 'secondary');
-      sheet.action(y + 52, 'Play Again', () => this.scene.start('Game', { difficulty: data.difficulty, playerName: data.playerName }), 'primary');
+      sheet.action(y + 52, 'Play Again', () => this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: data.difficulty, playerName: data.playerName } } satisfies LoadingRequest), 'primary');
       sheet.action(y + 104, 'Leaderboard', () => this.scene.start('Leaderboard', { filter: data.difficulty, highlightRunId: data.runId }));
       sheet.action(y + 156, 'Main Menu', () => this.scene.start('MainMenu'));
       return;
@@ -338,7 +340,7 @@ export class GameOverScene extends Phaser.Scene {
   private addActions(parent: Phaser.GameObjects.Container, data: Data, x: number, y: number, width: number, height: number, gap: number): void {
     button(this, parent, x, y, width, height, this.submitLabel(), this.canSubmit(), () => this.requestSubmit(data));
     button(this, parent, x + width + gap, y, width, height, 'Play Again', true, () => {
-      this.scene.start('Game', { difficulty: data.difficulty, playerName: data.playerName });
+      this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: data.difficulty, playerName: data.playerName } } satisfies LoadingRequest);
     });
     button(this, parent, x + (width + gap) * 2, y, width, height, 'Leaderboard', false, () => {
       this.scene.start('Leaderboard', { filter: data.difficulty, highlightRunId: data.runId });

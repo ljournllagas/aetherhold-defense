@@ -8,6 +8,6 @@ export class BootScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.scene.start('Preload');
+    this.scene.start('Preload', { stage: 'menu', destination: 'MainMenu' });
   }
 }

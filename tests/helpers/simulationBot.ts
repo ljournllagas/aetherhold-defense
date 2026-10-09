@@ -153,7 +153,8 @@ function simulate(options: SimulationOptions): SimulationTrace {
   for (const name of PRESENTATION) loose[name] = () => {};
   loose.add = anyStub(); loose.world = (value: unknown) => value; run.speed = 1;
   let result: { outcome: RunOutcome } | null = null;
-  run.scene = { start: (key, data) => { if (key === 'GameOver') result = data as { outcome: RunOutcome }; }, restart: () => {} };
+  run.scene = { start: (key, data) => { if (key === 'GameOver') result = data as { outcome: RunOutcome };
+      else if (key === 'Preload' && (data as any)?.destination === 'GameOver') result = (data as any).data as { outcome: RunOutcome }; }, restart: () => {} };
   const relics: ProgressionTrace['relics'] = [];
   const grant = run.grantPowerup.bind(instance);
   run.grantPowerup = (id, reason, wantModal) => { relics.push({ wave: run.wave, id, used: false }); grant(id, reason, wantModal); };

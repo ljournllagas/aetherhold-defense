@@ -1,0 +1,30 @@
+import { expect, it, vi } from 'vitest';
+vi.mock('phaser', () => ({ default: { Math: { Vector2: class { constructor(public x: number, public y: number) {} } } } }));
+import { ensureArtTextures, ensureMenuTextures } from '../src/game/art/artkit.ts';
+import { STAGE_ASSETS, missingAssets } from '../src/game/art/assetManifest.ts';
+it('assigns all source assets once and keeps cold menu small', () => {
+  expect(STAGE_ASSETS.menu).toHaveLength(6);
+  expect(STAGE_ASSETS.gameplay).toHaveLength(15);
+  expect(STAGE_ASSETS.defeat).toHaveLength(1);
+  const all = Object.values(STAGE_ASSETS).flat();
+  expect(new Set(all.map(a => a.key)).size).toBe(22);
+  expect(STAGE_ASSETS.menu.some(a => a.path.includes('/enemies/'))).toBe(false);
+  expect(missingAssets('gameplay', () => true)).toEqual([]);
+});
+it('generates only menu icons, then promotes them to painted atlas icons once', () => {
+  const textures = new Map<string, any>();
+  function graphics(): any {
+    const g: any = new Proxy({}, { get: (_obj, method) => method === 'generateTexture'
+      ? (key: string) => { textures.set(key, { fallback: true }); }
+      : () => g }); return g;
+  }
+  const scene: any = { make: { graphics }, textures: {
+    exists: (key: string) => textures.has(key), get: (key: string) => textures.get(key), remove: (key: string) => textures.delete(key),
+    createCanvas: (key: string) => { const value = { painted: true, getContext: () => ({ clearRect() {}, drawImage() {} }), refresh() {} }; textures.set(key, value); return value; }
+  } };
+  ensureMenuTextures(scene); expect([...textures.keys()].sort()).toEqual(['hud_score', 'hud_wave']);
+  const fallback = textures.get('hud_wave'); textures.set('hud_icons_atlas', { getSourceImage: () => ({}) });
+  ensureArtTextures(scene); const painted = textures.get('hud_wave');
+  expect(painted).not.toBe(fallback); expect(painted.painted).toBe(true);
+  ensureMenuTextures(scene); ensureArtTextures(scene); expect(textures.get('hud_wave')).toBe(painted);
+});

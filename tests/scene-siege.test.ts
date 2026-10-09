@@ -69,7 +69,7 @@ describe('boss milestones and terminal events', () => {
     const { run } = sceneFixture(); atWave(run, 10); run.lives = 5;
     const boss = warlord(); run.scheduledBossIds.set(boss.id, 10);
     run.handleLeak(boss);
-    expect(run.scene.start).toHaveBeenCalledWith('GameOver', expect.objectContaining({ outcome: 'defeat', remainingLives: 0, highestWave: 10, wavesCompleted: 9 }));
+    expect(run.scene.start).toHaveBeenCalledWith('Preload', expect.objectContaining({ stage: 'defeat', destination: 'GameOver', data: expect.objectContaining({ outcome: 'defeat', remainingLives: 0, highestWave: 10, wavesCompleted: 9 }) }));
   });
   it('opens evolution only when the scheduled wave-10 boss dies', () => {
     const { run } = sceneFixture(); atWave(run, 10);

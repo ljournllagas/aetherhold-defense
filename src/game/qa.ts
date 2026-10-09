@@ -1,4 +1,6 @@
 import type Phaser from 'phaser';
+import type { GameOverData } from './scenes/GameOverScene.ts';
+import type { LoadingRequest } from './scenes/PreloadScene.ts';
 import type { DifficultyId, PowerUpId } from '../shared/types.ts';
 
 export const QA_STATES = [
@@ -134,7 +136,7 @@ export function installQA(game: Phaser.Game): void {
       return;
     }
     if (request.state === 'gameover') {
-      game.scene.start('GameOver', {
+      const data: GameOverData = {
         difficulty: 'medium' satisfies DifficultyId,
         playerName: 'QA Warden',
         highestWave: 25,
@@ -149,6 +151,7 @@ export function installQA(game: Phaser.Game): void {
         runId: 'qa-fixture-gameover',
         gameVersion: 'qa-fixture',
         scoreVersion: 1,
+        isPersonalBest: false,
         breakdown: {
           killScore: 3100,
           waveBonus: 8500,
@@ -158,7 +161,8 @@ export function installQA(game: Phaser.Game): void {
           difficultyMultiplier: 1.5,
           finalScore: 18900
         }
-      });
+      };
+      game.scene.start('Preload', { stage: 'gameplay', destination: 'GameOver', data } satisfies LoadingRequest);
       return;
     }
     startGameFixture(game, request.state);
@@ -173,7 +177,7 @@ function startGameFixture(game: Phaser.Game, state: QAState): void {
   scene.events.once('create', () => {
     scene.events.emit('qa:action', { type: 'seed', state } satisfies QAAction);
   });
-  game.scene.start(GAME_SCENE_KEY, { difficulty: 'medium', playerName: 'QA Warden' });
+  game.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: 'QA Warden' } } satisfies LoadingRequest);
 }
 
 function isQAState(value: string | null): value is QAState {
