@@ -2,9 +2,10 @@
 
 Date: 2026-10-09
 Tier: Full
-Status: implemented and verified; publication pending
+Status: implemented, verified and published
 Approval: user approved the written spec on 2026-10-09.
 Execution: user approved inline implementation on 2026-10-09. Fresh final code review cleared with zero findings.
+Release: Worker `185c9635-6d15-4f92-bd6e-626d417605bd`; tests/build and live HTML/bundle/health/native controls verified. Full record: `agent_docs/auto_mode_2026-10-09.md`.
 Review: round 1 cleared at 9/10, zero blockers and zero advisory items.
 Workflow route: Light; main agent owns design and eventual implementation, with the skill-required cold reviews.
 

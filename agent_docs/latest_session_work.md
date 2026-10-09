@@ -1,6 +1,16 @@
 # Latest session work
 
-## Progression UI reliability (2026-10-09) — current
+## Auto mode (2026-10-09) — current
+
+Single Auto mode is live: HUD/Pause switch and A shortcut, five eligible real seconds between waves, situational relic use, retained overflow rewards, and OFF on new/restarted runs. Continue Endless retains Auto and the queue; victory remains a manual choice. No combat coefficients, score era, API, bindings or database changed.
+
+Verified: isolated 548-test suite and build, 24 native Chromium cases at six sizes, boss controls, actual relic/Meteor behavior, natural clear→next start after 5005 ms, and a fresh whole-change review with zero findings. Deployment ran 565 passing tests / six optional balance tests skipped and a successful build. The existing large-bundle warning remains.
+
+Published Worker `185c9635-6d15-4f92-bd6e-626d417605bd` at https://aetherhold-defense.ljournllagas.workers.dev/. Live HTML/bundle/health returned 200, current JS matches the build, and unmodified production native controls/restart passed with no browser errors, failed requests or POSTs. Full record and execution rulings: `agent_docs/auto_mode_2026-10-09.md`; evidence: `artifacts/auto-mode/`.
+
+Limits: headless Chromium with labeled visibility-event integration; physical touch, other browsers, human balance and extreme endless performance unverified. Coarse-frame firing, upgrade previews and staged loading remain separate work.
+
+## Progression UI reliability (2026-10-09) — previous release
 
 The repository is now initialized with Git on `main`, remote `origin` is `https://github.com/ljournllagas/aetherhold-defense.git`, and production serves score era 2. Open progression actions now refresh affordability and pause restrictions in place; same-tower sheet redraws preserve scrolling and resize clamps it to the new bounds. Purchase validation, balance and database behavior are unchanged.
 
