@@ -106,6 +106,8 @@ export class GameScene extends Phaser.Scene {
   private surgeUntil = 0;
   private vault = new RelicVault();
   private auto = new AutoSystem();
+  private autoLastUpdateAt: number | null = null;
+  private autoLastKeyAt = -Infinity;
   private get powerups(): PowerUpId[] { return this.vault.stored; }
   private get pendingMeteor(): boolean { return this.vault.target !== null; }
   private flights: Flight[] = [];
@@ -251,6 +253,9 @@ export class GameScene extends Phaser.Scene {
   private readonly handleAutoKey = (event: KeyboardEvent): void => {
     const target = event.target as HTMLElement | null;
     if (event.repeat || target?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target?.tagName ?? '')) return;
+    // Phaser may replay queued keydowns before the frame queue is cleared.
+    if (event.timeStamp <= this.autoLastKeyAt) return;
+    this.autoLastKeyAt = event.timeStamp;
     this.setAutoEnabled(!this.auto.enabled);
   };
 
@@ -297,6 +302,8 @@ export class GameScene extends Phaser.Scene {
     this.surgeUntil = 0;
     this.vault = new RelicVault();
     this.auto = new AutoSystem();
+    this.autoLastUpdateAt = null;
+    this.autoLastKeyAt = -Infinity;
     this.flights = [];
     this.effects = [];
     this.ended = false;
@@ -2237,7 +2244,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   // ---------- main loop (delta-driven; never frame-rate dependent) ----------
-  override update(_time: number, deltaMs: number): void {
+  override update(time: number, deltaMs: number): void {
+    // Combat delta is smoothed by Phaser; Auto counts real time between visible frames.
+    const autoDeltaMs = this.autoLastUpdateAt === null ? 0 : time - this.autoLastUpdateAt;
+    if (Number.isFinite(time) && (this.autoLastUpdateAt === null || time >= this.autoLastUpdateAt)) this.autoLastUpdateAt = time;
     const beforeAuto = this.autoSnapshot();
     const frameWasWaiting = this.auto.enabled && !beforeAuto.blocked && !beforeAuto.waveActive &&
       (beforeAuto.phase === 'siege' || beforeAuto.phase === 'endless');
@@ -2359,7 +2369,7 @@ export class GameScene extends Phaser.Scene {
     this.fireTowers(dt);
 
     this.checkWaveClear();
-    this.tickAuto(deltaMs, frameWasWaiting);
+    this.tickAuto(autoDeltaMs, frameWasWaiting);
     this.refreshAutoDisplay();
 
     this.presentReward();
@@ -2508,6 +2518,8 @@ export class GameScene extends Phaser.Scene {
   /** Idempotent; restart/quit discard the run without creating a result. */
   private cleanupProgression(): void {
     this.auto.reset();
+    this.autoLastUpdateAt = null;
+    this.autoLastKeyAt = -Infinity;
     this.evolutionCombat.clear();
     this.syncFieldViews();
     this.scheduledBossIds.clear();

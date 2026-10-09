@@ -7,6 +7,21 @@ import { GameScene } from '../src/game/scenes/GameScene.ts';
 import type { ScrollSheet } from '../src/game/ui/ScrollSheet.ts';
 afterEach(() => vi.restoreAllMocks());
 
+it('uses visible frame timestamps instead of smoothed combat deltas for Auto', () => {
+  const { run } = autoScene(); run.setAutoEnabled(true);
+  run.update(1000, 16); expect(run.auto.remainingMs).toBe(5000);
+  run.update(5499, 6000); expect(run.waveActive).toBe(false); expect(run.auto.remainingMs).toBe(501);
+  run.update(5999, 6000); expect(run.waveActive).toBe(false); expect(run.auto.remainingMs).toBe(1);
+  run.update(6000, 1); expect(run.wave).toBe(1); expect(run.waveActive).toBe(true);
+});
+
+it.each([2000, NaN, Infinity])('rejects invalid visible frame %s without shifting the last valid time', (invalid) => {
+  const { run } = autoScene(); run.setAutoEnabled(true);
+  run.update(1000, 16); run.update(4000, 16); expect(run.auto.remainingMs).toBe(2000);
+  run.update(invalid, 16); expect(run.auto.remainingMs).toBe(2000);
+  run.update(5000, 16); expect(run.waveActive).toBe(false); expect(run.auto.remainingMs).toBe(1000);
+});
+
 function combat(run:AutoRun):void {
   run.siege.startWave(1);run.wave=1;run.waveActive=true;
   const e=new Enemy('thornling',1_000_000,0,8);e.x=300;e.y=300;run.enemies=[e];

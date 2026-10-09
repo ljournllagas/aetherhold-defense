@@ -6,6 +6,16 @@ import type { ScrollSheet } from '../src/game/ui/ScrollSheet.ts';
 import type { QAStatus } from '../src/game/qa.ts';
 afterEach(() => vi.restoreAllMocks());
 
+it('does not toggle again when Phaser replays an older keydown from its frame queue', () => {
+  const { run } = autoScene();
+  const press = { repeat: false, target: null, timeStamp: 100 } as KeyboardEvent;
+  run.handleAutoKey(press); expect(run.auto.enabled).toBe(true);
+  run.handleAutoKey({ ...press, repeat: true, timeStamp: 101 } as KeyboardEvent);
+  run.handleAutoKey(press); expect(run.auto.enabled).toBe(true);
+  run.handleAutoKey({ ...press, timeStamp: 102 } as KeyboardEvent); expect(run.auto.enabled).toBe(false);
+  run.handleAutoKey(press); expect(run.auto.enabled).toBe(false);
+});
+
 it('ignores repeats/editable targets, and the Auto key never starts a wave directly',()=>{
   const {run}=autoScene();
   const key=(patch:Partial<KeyboardEvent>={})=>({repeat:false,target:null,...patch} as KeyboardEvent);
