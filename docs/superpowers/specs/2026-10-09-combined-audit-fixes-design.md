@@ -3,10 +3,13 @@
 Date: 2026-10-09
 Tier: Full
 Workflow route: Light; main agent owns the work, with skill-required cold reviews.
-Status: reviewed specification awaiting user approval
+Status: approved specification; reviewed implementation plan awaiting user handoff
+Written-spec approval: user approved on 2026-10-09.
 Review: round 1 cleared at 9/10, zero blockers and zero advisory items.
 Scope approval: user confirmed all eleven audit items as one release.
 Score-era decision: user selected era 3 with preserved legacy records.
+Implementation plan: [combined audit fixes](../plans/2026-10-09-combined-audit-fixes.md),
+cleared cold review round 3 at 9/10 with zero blockers/advisory findings.
 
 ## Purpose and scope
 
