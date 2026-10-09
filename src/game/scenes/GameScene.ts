@@ -85,6 +85,7 @@ export class GameScene extends Phaser.Scene {
   private touchPreview: { point: Point; plot: number | null } | null = null;
   private touchMode = false;
   private sheet: ScrollSheet | null = null;
+  private refreshProgressionActions: (() => void) | null = null;
   private sheetKind: 'build' | 'tower' | 'more' | 'relics' | 'next' | 'evolve' | null = null;
   private confirmStrip: Phaser.GameObjects.Container | null = null;
   private modalRenderer: (() => void) | null = null;
@@ -287,6 +288,7 @@ export class GameScene extends Phaser.Scene {
     this.flights = [];
     this.effects = [];
     this.ended = false;
+    this.refreshProgressionActions = null;
     this.siege = new SiegeSystem(); this.evolutionCombat = new EvolutionCombat(); this.runUnlocks = this.unlockRepository.snapshotForRun(); this.unlocksEarnedThisRun = []; this.debugAssisted = false;
     this.achievementNotices = []; this.notifiedAchievements = new Set(); this.achievementNoticeView = null;
     this.scheduledBossIds = new Map(); this.victoryPanel = null;
@@ -395,13 +397,17 @@ export class GameScene extends Phaser.Scene {
     this.sheetKind = this.sheetKind === kind ? null : kind; this.drawSheet(); this.showTouchPreview();
   }
 
-  private drawSheet(): void {
+  private drawSheet(restoreOffset?: number): void {
+    const context = this.sheetKind === 'tower' || this.sheetKind === 'evolve' ? `${this.sheetKind}:${this.selectedTower?.id}` : null;
+    const scrollOffset = restoreOffset ?? (context && this.sheet?.root.getData('progressionContext') === context ? this.sheet.scrollOffset : 0);
+    this.refreshProgressionActions = null;
     this.sheet?.destroy(); this.sheet = null;
     if ((this.layout.inspector && this.sheetKind !== 'more' && this.sheetKind !== 'next' && this.sheetKind !== 'evolve') || !this.sheetKind || !this.uiRoot) return;
     const kind = this.sheetKind;
     const bounds = sheetBounds(this.layout, kind, this.touchPreview !== null);
     const title = { build: 'Build Towers', tower: 'Selected Tower', more: 'Battle Controls', relics: 'Relics', next: 'Next Wave', evolve: 'Tower Progression' }[kind];
     const sheet = new ScrollSheet(this, this.uiRoot, bounds, title, () => { this.sheetKind = null; this.drawSheet(); this.showTouchPreview(); }); this.sheet = sheet;
+    sheet.root.setData('progressionContext', context);
     if (kind === 'build') {
       let rowY = 0;
       TOWER_LIST.forEach(cfg => {
@@ -439,6 +445,7 @@ export class GameScene extends Phaser.Scene {
       const reason = this.waveActive ? 'Finish this wave before starting another.' : this.pendingMeteor ? 'Confirm or cancel the Meteor target first.' : this.vault.pending.length ? 'Resolve the pending reward first.' : this.pauseState.blocked ? 'Resume the run to start a wave.' : 'Ready when you are.';
       sheet.text(text.height + 16, reason);
     }
+    sheet.scrollTo(scrollOffset);
   }
 
   private drawProgressionModel(sheet: ScrollSheet, t: Tower, startY: number): number {
@@ -451,7 +458,7 @@ export class GameScene extends Phaser.Scene {
     line(`Damage ${formatStat('damage', st.damage)} · Range ${formatStat('range', st.range)} · Attack ${formatStat('attackInterval', st.attackInterval)}s · ${st.damageType}`);
     if (view.commitment) line(view.commitment, C.textMuted, 12);
     if (view.branches.length) line('Base stats · Current → Evolved', C.textMuted, 12);
-    for (const action of view.actions) {
+    const controls = view.actions.map(action => {
       if (action.intent.kind === 'evolve') {
         const branchId = action.intent.branchId;
         const branch = view.branches.find(b => b.id === branchId)!;
@@ -459,11 +466,22 @@ export class GameScene extends Phaser.Scene {
         line(`Damage ${formatStat('damage', st.damage)} → ${formatStat('damage', branch.stats.damage)} · Attack ${formatStat('attackInterval', st.attackInterval)}s → ${formatStat('attackInterval', branch.stats.attackInterval)}s · Range ${formatStat('range', st.range)} → ${formatStat('range', branch.stats.range)}`, C.textSecondary, 12);
         if (branch.locked) line(`Locked · ${branch.requirement}${branch.qualifiesNow ? ' · On track this run' : ''}`, C.textMuted, 12);
       }
-      sheet.action(y, action.reason ? `${action.label} · ${action.reason}` : action.label, () => {
+      const control = sheet.action(y, action.reason ? `${action.label} · ${action.reason}` : action.label, () => {
         if (!action.reason) { this.purchaseSelected(action.intent, t.id, action.revision); this.drawSheet(); }
       }, 'primary', action.reason === null);
       y += 52;
-    }
+      return { action, control };
+    });
+    this.refreshProgressionActions = () => {
+      const context = this.purchaseContext();
+      for (const { action, control } of controls) {
+        const result = purchaseEvolution(t.towerId, t.progression, action.intent, context, action.revision);
+        const reason = result.ok ? null : PURCHASE_REASON_TEXT[result.reason];
+        if (reason === action.reason) continue;
+        action.reason = reason;
+        control.update(reason ? `${action.label} · ${reason}` : action.label, reason === null);
+      }
+    };
     return y + 8;
   }
 
@@ -535,6 +553,8 @@ export class GameScene extends Phaser.Scene {
   };
 
   private drawShell(): void {
+    const scrollOffset = this.sheetKind === 'tower' || this.sheetKind === 'evolve' ? this.sheet?.scrollOffset ?? 0 : 0;
+    this.refreshProgressionActions = null;
     this.sheet?.destroy(); this.sheet = null;
     this.achievementNoticeView?.destroy(); this.achievementNoticeView = null;
     this.uiRoot?.destroy(true);
@@ -551,12 +571,13 @@ export class GameScene extends Phaser.Scene {
     for (const view of [...this.towers.map(t => t.view), ...this.enemies.map(e => e.view), this.ghost]) if (view) this.projectEntity(view);
     this.drawHUD(); this.drawTowerPanel(); this.drawControls(); this.drawPowerupBar(); this.drawBossBar();
     this.refreshInfoPanel(); this.refreshPlacePanel(); this.updateNextPreview(); this.updateHUD();
-    this.drawSheet(); this.showTouchPreview();
+    this.drawSheet(scrollOffset); this.showTouchPreview();
     if (this.siege.phase === 'victory') this.renderVictory();
     this.drawAchievementNotice();
   }
 
   private shutdownRun(): void {
+    this.refreshProgressionActions = null;
     this.sheet?.destroy(); this.sheet = null; this.modalSheet?.destroy(); this.modalSheet = null;
     document.removeEventListener('visibilitychange', this.visibilityChanged);
     this.game.canvas.removeEventListener('touchcancel', this.cancelGesture);
@@ -899,6 +920,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private updateHUD(): void {
+    this.refreshProgressionActions?.();
     const d = getDifficulty(this.difficultyId);
     const bossNow = this.waveActive && this.currentWaveIsBoss;
     const bossNext = !this.waveActive && buildWave(this.wave + 1, 1).isBossWave;

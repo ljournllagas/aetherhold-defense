@@ -1,14 +1,18 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 const ui = vi.hoisted(() => {
   function anyStub(): any {
-    const proxy: any = new Proxy(function () { return proxy; }, { get: (_t, key) => (key === 'then' ? undefined : key === Symbol.toPrimitive ? () => 0 : proxy), apply: () => proxy });
+    const proxy: any = new Proxy(function () { return proxy; }, { get: (target, key) => Reflect.has(target, key) ? Reflect.get(target, key) : (key === 'then' ? undefined : key === Symbol.toPrimitive ? () => 0 : proxy), apply: () => proxy });
     return proxy;
   }
   return { anyStub, buttons: [] as Array<{ label: string; action: () => void; kind: string }> };
 });
 vi.mock('phaser', () => ({ default: { Scene: class { constructor(_key?: string) {} }, Scenes: { Events: { SHUTDOWN: 'shutdown' } }, Scale: { Events: { RESIZE: 'resize' } } } }));
 vi.mock('../src/game/ui/components.ts', () => ({
-  button: (_s: unknown, _p: unknown, _x: number, _y: number, _w: number, label: string, action: () => void, kind = 'secondary') => { ui.buttons.push({ label, action, kind }); return { box: ui.anyStub(), text: ui.anyStub() }; },
+  button: (_s: unknown, _p: unknown, _x: number, _y: number, _w: number, label: string, action: () => void, kind = 'secondary') => {
+    const entry = { label, action, kind }, text = ui.anyStub();
+    text.setText = (value: string) => { entry.label = value; return text; };
+    ui.buttons.push(entry); return { box: ui.anyStub(), text };
+  },
   panel: () => ui.anyStub(), statRow: () => undefined, etchedFrame: () => ui.anyStub()
 }));
 import { GameScene } from '../src/game/scenes/GameScene.ts';
@@ -18,6 +22,7 @@ import { SoundManager } from '../src/game/systems/SoundManager.ts';
 import { SiegeSystem } from '../src/game/systems/SiegeSystem.ts';
 import { gameLayout } from '../src/game/ui/layout.ts';
 import type { BranchId } from '../src/shared/progression.ts';
+import type { PauseState } from '../src/game/systems/PauseState.ts';
 
 function advanceSiege(to: number): SiegeSystem {
   const siege = new SiegeSystem();
@@ -25,6 +30,7 @@ function advanceSiege(to: number): SiegeSystem {
   return siege;
 }
 interface Run { sheetKind: string | null; selectedTower: Tower | null; towers: Tower[]; gold: number; wave: number; wavesCompleted: number; siege: SiegeSystem; runUnlocks: ReadonlySet<BranchId>;
+  sheet: ScrollSheet | null; pauseState: PauseState; updateHUD(): void;
   purchaseSelected: ReturnType<typeof vi.fn>; showBanner: ReturnType<typeof vi.fn>; drawSheet(): void; inspectorPrimaryAction(): void; compositionSummary(wave: number, complete?: boolean): string; startNextWave(): void; }
 function sceneFixture(width = 1280, height = 720, level = 4) {
   vi.spyOn(SoundManager, 'get').mockReturnValue(ui.anyStub());
@@ -40,9 +46,56 @@ function sceneFixture(width = 1280, height = 720, level = 4) {
   return { run, loose, t };
 }
 const find = (prefix: string) => ui.buttons.find((b) => b.label.startsWith(prefix));
+function liveSheetFixture(kind: 'tower' | 'evolve') {
+  const fixture = sceneFixture(kind === 'tower' ? 390 : 1280, kind === 'tower' ? 844 : 720);
+  fixture.loose.add = { text: () => ui.anyStub(), container: () => {
+    const data = new Map<string, unknown>();
+    return { list: [], add: () => {}, destroy: () => {}, getWorldTransformMatrix: () => ({ tx: 0, ty: 0 }),
+      setData(key: string, value: unknown) { data.set(key, value); return this; }, getData: (key: string) => data.get(key) };
+  } };
+  fixture.loose.updateHUD = (GameScene.prototype as unknown as { updateHUD(): void }).updateHUD.bind(fixture.run);
+  fixture.loose.publishQAStatus = () => {};
+  fixture.loose.tweens = {}; fixture.loose.time = {};
+  fixture.run.sheetKind = kind;
+  return fixture;
+}
 afterEach(() => vi.restoreAllMocks());
 
 describe('progression controls', () => {
+  it.each(['tower', 'evolve'] as const)('updates affordability in the open %s sheet without rebuilding it', (kind) => {
+    const { run, t } = liveSheetFixture(kind);
+    run.gold = 509; run.drawSheet();
+    const sheet = run.sheet!, action = find('Evolve: Marksman')!;
+    sheet.scrollTo(100); const offset = sheet.scrollOffset;
+    expect(action.label).toContain('Not enough gold'); action.action();
+    expect(run.purchaseSelected).not.toHaveBeenCalled();
+    run.gold = 517; run.updateHUD();
+    expect(run.sheet).toBe(sheet); expect(sheet.scrollOffset).toBe(offset);
+    expect(action.label).toBe('Evolve: Marksman · 510 gold');
+    action.action(); expect(run.purchaseSelected).toHaveBeenCalledWith({ kind: 'evolve', branchId: 'marksman' }, t.id, 0);
+  });
+  it('disables an open action when gold falls and keeps the locked alternative inert', () => {
+    const { run } = liveSheetFixture('evolve'); run.drawSheet();
+    const action = find('Evolve: Marksman')!, locked = find('Evolve: Volley')!;
+    run.gold = 0; run.updateHUD();
+    expect(action.label).toContain('Not enough gold'); action.action(); locked.action();
+    expect(locked.label).toContain('Complete the branch achievement'); expect(run.purchaseSelected).not.toHaveBeenCalled();
+  });
+  it.each(['user', 'modal', 'background'] as const)('refreshes availability across %s pause and resume', (reason) => {
+    const { run } = liveSheetFixture('evolve'); run.drawSheet(); const action = find('Evolve: Marksman')!;
+    run.pauseState.set(reason, true); run.updateHUD();
+    expect(action.label).toContain('Unavailable while paused or ended'); action.action(); expect(run.purchaseSelected).not.toHaveBeenCalled();
+    run.pauseState.set(reason, false); run.updateHUD();
+    expect(action.label).toBe('Evolve: Marksman · 510 gold'); action.action(); expect(run.purchaseSelected).toHaveBeenCalledTimes(1);
+  });
+  it('preserves same-tower scroll on readiness rebuild and resets it for a different tower or sheet', () => {
+    const { run } = liveSheetFixture('tower'); run.siege = new SiegeSystem(); run.drawSheet();
+    run.sheet!.scrollTo(100); const offset = run.sheet!.scrollOffset; expect(offset).toBe(100);
+    run.siege.bossKilled(10); run.drawSheet(); expect(run.sheet!.scrollOffset).toBe(offset);
+    const other = new Tower('longbow', 200, 200, 1); run.selectedTower = other; run.towers.push(other);
+    run.drawSheet(); expect(run.sheet!.scrollOffset).toBe(0);
+    run.sheet!.scrollTo(100); run.sheetKind = 'evolve'; run.drawSheet(); expect(run.sheet!.scrollOffset).toBe(0);
+  });
   it.each([['evolve', 1280, 720], ['tower', 390, 844]] as const)('groups branch comparisons before their actions in the %s sheet', (kind, width, height) => {
     const { run } = sceneFixture(width, height);
     const content: string[] = [];

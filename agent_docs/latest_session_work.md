@@ -1,10 +1,20 @@
 # Latest session work
 
-## Progression and evolutions (2026-10-08 to 2026-10-09) — current
+## Progression UI reliability (2026-10-09) — current
 
-Plan: docs/sdd/plans/20261008-progression-evolutions.md. No Git repository; plan "Commit" lines are checkpoint labels only. Version 0.2.0, score era 2. Implemented locally; **not deployed yet**. The live site still serves the earlier release below (era 1).
+The repository is now initialized with Git on `main`, remote `origin` is `https://github.com/ljournllagas/aetherhold-defense.git`, and production serves score era 2. Open progression actions now refresh affordability and pause restrictions in place; same-tower sheet redraws preserve scrolling and resize clamps it to the new bounds. Purchase validation, balance and database behavior are unchanged.
 
-State: T1–T26 and T29–T35 done. Next: T27 (final release gates, artifacts/progression/check-live.ps1), then T28 (remote migration 0004, `npm run deploy`, live checks, Release section of artifacts/progression/verification.md).
+Verification: deployment ran 485 passing tests / six opt-in balance tests skipped and a successful production build. Rendered Chromium checks passed at six viewport sizes, including native clicks, held-press cancellation, dragging, reward sources, pause/resume, readiness changes and rotation. Physical touch and human balance playtests were not checked.
+
+Published Worker version `4a7e0d26-8f7c-401f-af41-297cbc3ef5ae` at https://aetherhold-defense.ljournllagas.workers.dev/. Live HTML, current JavaScript and `/api/health` returned 200; the bundle matches the local build and the unmodified live page has no browser errors or failed requests. Full record: `agent_docs/progression_ui_fixes_2026-10-09.md`; evidence: `artifacts/progression-ui-fixes/`.
+
+Remaining follow-ups: coarse-frame attack scheduling, next-upgrade previews, realistic branch/economy balance validation and staged asset loading. The evolution preview/readiness change preceding this batch is documented in `docs/superpowers/specs/2026-10-09-evolution-preview-verification-design.md`.
+
+## Progression and evolutions (2026-10-08 to 2026-10-09) — earlier implementation handoff
+
+Plan: docs/sdd/plans/20261008-progression-evolutions.md. This handoff predates Git initialization and the completed era-2 releases. Its original plan "Commit" lines were checkpoint labels. Version 0.2.0, score era 2; production now serves this era, as verified in the current section above.
+
+State at the earlier handoff: T1–T26 and T29–T35 done, with T27/T28 release work still pending then. The later evolution-preview release and current live checks supersede that deployment status.
 
 Verified on 2026-10-09: `npm test` 34 files passed / 2 skipped, 465 tests passed / 6 skipped (skips are the BALANCE_SIM-gated runners); `npm run typecheck` and `npm run build` pass (large-chunk warning remains). Record: artifacts/progression/verification.md. Handoff and full file list: agent_docs/progression_implementation_2026-10-08.md.
 

@@ -31,13 +31,20 @@ export class ScrollSheet {
     const text = this.scene.add.text(12, y, value, style(size, color)).setWordWrapWidth(this.bounds.width - 24);
     this.content.add(text); this.texts.push(text); this.contentHeight = Math.max(this.contentHeight, y + text.height + 12); this.clipControls(); return text;
   }
-  action(y: number, label: string, action: () => void, kind: 'primary' | 'secondary' | 'danger' = 'secondary', enabled = true): { box: Phaser.GameObjects.Rectangle; text: Phaser.GameObjects.Text } {
-    const control = button(this.scene, this.content, 12, y, this.bounds.width - 24, label, enabled ? action : () => {}, enabled ? kind : 'secondary', 44);
+  action(y: number, label: string, action: () => void, kind: 'primary' | 'secondary' | 'danger' = 'secondary', enabled = true): { box: Phaser.GameObjects.Rectangle; text: Phaser.GameObjects.Text; update(label: string, available: boolean): void } {
+    const control = button(this.scene, this.content, 12, y, this.bounds.width - 24, label, () => { if (enabled) action(); }, enabled ? kind : 'secondary', 44);
     if (!enabled) control.text.setAlpha(0.6);
     control.box.on('pointerdown', this.down);
     this.controls.push({ y, ...control }); this.clipControls();
     this.contentHeight = Math.max(this.contentHeight, y + 56);
-    return control;
+    return { ...control, update: (value, available) => {
+      // Cancel a held press when eligibility changes, before enabling a formerly disabled action.
+      control.box.emit('pointerout');
+      enabled = available;
+      const edge = enabled ? kind : 'secondary';
+      control.box.setStrokeStyle(edge === 'primary' ? 2 : 1, edge === 'primary' ? 0xd7aa4e : edge === 'danger' ? 0xd85f59 : 0x445564);
+      control.text.setText(value).setAlpha(enabled ? 1 : 0.6).setColor(edge === 'danger' ? C.dangerBright : C.textPrimary);
+    } };
   }
   pair(y: number, left: string, right: string, first: () => void, second: () => void): void {
     const width = (this.bounds.width - 32) / 2;
