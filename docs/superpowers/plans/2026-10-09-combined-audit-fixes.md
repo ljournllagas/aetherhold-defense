@@ -73,7 +73,7 @@ export function validatePlayerName(value: unknown): { ok: boolean; name: string;
 export function normalizeSettings(value: unknown): Settings; // exported from Settings.ts
 ```
 
-- [ ] **Step 1: Add pure regression cases and malformed-settings coverage.** Use these imports in the new files and the current localStorage Map approach from audio.test.ts:
+- [x] **Step 1: Add pure regression cases and malformed-settings coverage.** Use these imports in the new files and the current localStorage Map approach from audio.test.ts:
 
 ```ts
 import { afterEach, expect, it, vi } from 'vitest';
@@ -100,8 +100,8 @@ it('defaults invalid fields independently and retains valid values', () => {
 The remaining settings/name test bodies are in Appendix A. These snippets go into
 their named test files; do not place duplicate imports in one file.
 
-- [ ] **Step 2: Run RED.** `rtk proxy npx vitest run tests/player-name.test.ts tests/settings.test.ts tests/game.test.ts tests/audio.test.ts`; expect absent exports or the reproduced malformed-setting/name behavior.
-- [ ] **Step 3: Implement pure name normalization and settings selection.** Keep only recognized fields. The name core is:
+- [x] **Step 2: Run RED.** `rtk proxy npx vitest run tests/player-name.test.ts tests/settings.test.ts tests/game.test.ts tests/audio.test.ts`; expect absent exports or the reproduced malformed-setting/name behavior.
+- [x] **Step 3: Implement pure name normalization and settings selection.** Keep only recognized fields. The name core is:
 
 ```ts
 const NAME_ALLOWED = /^[\p{L}\p{N} _\-'.]+$/u;
@@ -128,7 +128,7 @@ export function validatePlayerName(value: unknown): { ok: boolean; name: string;
 
 In `normalizeSettings`, guard `typeof value === 'object' && value !== null && !Array.isArray(value)`; build the returned Settings field-by-field from DEFAULTS, clampVolume, typeof-boolean checks, enum checks and editPlayerName. Both loadSettings and saveSettings call this function. validation.ts uses validatePlayerName's error/name instead of its private regex/truncation block; keep all other rejection logic.
 
-- [ ] **Step 4: Wire both inputs and the run boundary.** In each DifficultyScene input setup:
+- [x] **Step 4: Wire both inputs and the run boundary.** In each DifficultyScene input setup:
 
 ```ts
 let composing = false;
@@ -149,14 +149,14 @@ runPlayerName. GameScene.init normalizes the chosen difficulty through getDiffic
 and assigns its returned `.id`, and uses runPlayerName on data/saved name; keep the
 existing speed/default and complete transient reset.
 
-- [ ] **Step 5: Run GREEN and commit.** Re-run Step 2 plus `rtk npm run typecheck`; verify all existing score rejection and audio cases remain asserted. Stage only Task 1 files; commit `Fix saved settings and share Unicode player names`.
+- [x] **Step 5: Run GREEN and commit.** Re-run Step 2 plus `rtk npm run typecheck`; verify all existing score rejection and audio cases remain asserted. Stage only Task 1 files; commit `Fix saved settings and share Unicode player names`.
 
 ### Task 2: Add the bounded fixed-step clock
 
 **Files:** Create `src/game/systems/SimulationClock.ts`, `tests/simulation-clock.test.ts`.
 **Interfaces:** Consumes game milliseconds already scaled by speed. Produces `SIMULATION_STEP_MS`, `MAX_SIMULATION_STEPS`, and `SimulationClock` with readonly `pendingMs`, `advance(gameDeltaMs: number, step: (stepMs: number) => boolean): number`, `reset(): void`. Return value is the number of ticks consumed; false from step stops immediately. Zero/invalid additions can still drain existing active debt; the scene does not call advance while blocked.
 
-- [ ] **Step 1: Add clock assertions.**
+- [x] **Step 1: Add clock assertions.**
 
 ```ts
 import { expect, it, vi } from 'vitest';
@@ -182,8 +182,8 @@ it.each([-1, NaN, Infinity])('does not add invalid delta %s', value => {
 Also partition 1000 milliseconds into 60, 30, 10 and irregular frames; assert 60
 ticks and equal remainder. Test reset invoked inside step without another callback.
 
-- [ ] **Step 2: Run RED.** `rtk proxy npx vitest run tests/simulation-clock.test.ts`; expected missing module.
-- [ ] **Step 3: Implement the clock.**
+- [x] **Step 2: Run RED.** `rtk proxy npx vitest run tests/simulation-clock.test.ts`; expected missing module.
+- [x] **Step 3: Implement the clock.**
 
 ```ts
 export const SIMULATION_STEP_MS = 1000 / 60;
@@ -208,14 +208,14 @@ export class SimulationClock {
 The epsilon only reconciles floating-point boundary noise; it must not discard
 substantial debt or grant an extra tick in the partition tests.
 
-- [ ] **Step 4: Run GREEN and commit.** Step 2 plus typecheck. Commit the two files as `Add bounded fixed-step simulation clock`.
+- [x] **Step 4: Run GREEN and commit.** Step 2 plus typecheck. Commit the two files as `Add bounded fixed-step simulation clock`.
 
 ### Task 3: Integrate logical ticks while retaining the visible-frame contract
 
 **Files:** Modify `src/game/scenes/GameScene.ts`, `tests/helpers/autoScene.ts`, `tests/helpers/simulationBot.ts`, existing combat/Auto/siege/QA tests; create `tests/scene-timing.test.ts`.
 **Interfaces:** Consumes SimulationClock from Task 2. Produces private `simulateTick(stepMs: number): boolean`, `moveEnemies(stepMs: number): void`, `renderFrame(processedGameMs: number): void`, and a per-run `simulationClock`. Preserve existing public update and private updateFlights/fireTowers signatures because tests exercise them directly.
 
-- [ ] **Step 1: Add the actual-scene cadence regression.** Reuse autoScene (which mocks presentation, not combat), with this complete fixture:
+- [x] **Step 1: Add the actual-scene cadence regression.** Reuse autoScene (which mocks presentation, not combat), with this complete fixture:
 
 ```ts
 import { afterEach, expect, it, vi } from 'vitest';
@@ -249,8 +249,8 @@ catch-up spy on simulateTick; arrange a real last-life enemy at the route end;
 call update with 2500 ms and assert one result scene start, no later tick/Auto
 transaction and a reset clock. Keep existing chain/field snapshot tests unchanged.
 
-- [ ] **Step 2: Run RED.** `rtk proxy npx vitest run tests/scene-timing.test.ts tests/scene-combat.test.ts tests/scene-auto.test.ts tests/scene-siege.test.ts tests/qa.test.ts`; expected differing attack counts, not mock-method errors.
-- [ ] **Step 3: Extract only the simulation work from update.** Keep spawn/kill/leak rules in the scene. Move enemy regeneration, waypoint movement/heading and summons into moveEnemies; move their sprite/bar/ring/bob/shadow updates into renderFrame. Preserve the movement loop's guard and life-loss precedence. Each summon boundary compares the prior tick time (`gameTimeMs - stepMs`) with the new time. The tick body is:
+- [x] **Step 2: Run RED.** `rtk proxy npx vitest run tests/scene-timing.test.ts tests/scene-combat.test.ts tests/scene-auto.test.ts tests/scene-siege.test.ts tests/qa.test.ts`; expected differing attack counts, not mock-method errors.
+- [x] **Step 3: Extract only the simulation work from update.** Keep spawn/kill/leak rules in the scene. Move enemy regeneration, waypoint movement/heading and summons into moveEnemies; move their sprite/bar/ring/bob/shadow updates into renderFrame. Preserve the movement loop's guard and life-loss precedence. Each summon boundary compares the prior tick time (`gameTimeMs - stepMs`) with the new time. The tick body is:
 
 ```ts
 private simulationClock = new SimulationClock();
@@ -296,7 +296,7 @@ its still-flying view position/rotation loop moves into renderFrame. Move crown
 recoil and field-view synchronization there too. Heading is simulation state;
 render facing uses its sine/cosine and current effective movement status.
 
-- [ ] **Step 4: Wire visible update and resets.** Retain Auto's timestamp validation and pre-update waiting snapshot. The unblocked core becomes:
+- [x] **Step 4: Wire visible update and resets.** Retain Auto's timestamp validation and pre-update waiting snapshot. The unblocked core becomes:
 
 ```ts
 const validDelta = Number.isFinite(deltaMs) && deltaMs > 0 ? deltaMs : 0;
@@ -317,7 +317,7 @@ unscaled delta for achievement notices; reset the clock in init and cleanup.
 Stop movement immediately after handleLeak ends the run. Publish QA once per
 visible frame at its existing game-time interval, not once per tick.
 
-- [ ] **Step 5: Update simulation presentation stubs and run GREEN.** Stub the new renderFrame in simulationBot; do not stub simulateTick/moveEnemies/clock. Its existing 50-ms unscaled updates now consume three ticks. Add the clock accessor to AutoRun only for tests using it. Preserve the existing real-time Auto timestamp tests and current reward policies. Run Step 2 plus `rtk npm test` and typecheck; commit only Task 3 files as `Make combat advance independently of rendered frames`.
+- [x] **Step 5: Update simulation presentation stubs and run GREEN.** Stub the new renderFrame in simulationBot; do not stub simulateTick/moveEnemies/clock. Its existing 50-ms unscaled updates now consume three ticks. Add the clock accessor to AutoRun only for tests using it. Preserve the existing real-time Auto timestamp tests and current reward policies. Run Step 2 plus `rtk npm test` and typecheck; commit only Task 3 files as `Make combat advance independently of rendered frames`.
 
 ### Task 4: Stage current images and make all loading gates recoverable
 
@@ -338,7 +338,7 @@ methods. PreloadScene.init defaults to menu/MainMenu. Consumers route via
 exports `ensureMenuTextures(scene: Phaser.Scene): void` for the existing procedural
 menu wave/score icons; atlas-derived game icons are generated only at gameplay readiness.
 
-- [ ] **Step 1: Pin stage membership and cold/warm gates.**
+- [x] **Step 1: Pin stage membership and cold/warm gates.**
 
 ```ts
 import { expect, it } from 'vitest';
@@ -415,8 +415,8 @@ setter for reinit: stop the first request, reinit another incomplete request, re
 the old font promise and invoke its captured timer, and assert no start call. For
 result retry, pass a GameOverData fixture and assert exact object identity at start.
 
-- [ ] **Step 2: Run RED.** `rtk proxy npx vitest run tests/assets.test.ts tests/preload.test.ts tests/qa.test.ts tests/screens.test.ts tests/scene-siege.test.ts`; expected absent stages or failed-load fall-through.
-- [ ] **Step 3: Move the literal image list into the manifest.** AssetSpec is a discriminated image/sheet record:
+- [x] **Step 2: Run RED.** `rtk proxy npx vitest run tests/assets.test.ts tests/preload.test.ts tests/qa.test.ts tests/screens.test.ts tests/scene-siege.test.ts`; expected absent stages or failed-load fall-through.
+- [x] **Step 3: Move the literal image list into the manifest.** AssetSpec is a discriminated image/sheet record:
 
 ```ts
 export type AssetSpec = { key: string; path: string } &
@@ -457,7 +457,7 @@ portraits in the menu stage; do not remove already painted textures on menu repl
 Use existing tex/swords/star helpers, not a new icon design or dependency. Test this
 promotion and warm-menu retention in assets.test.ts with the fake texture manager.
 
-- [ ] **Step 4: Implement the request-owned loading state machine.** Store request,
+- [x] **Step 4: Implement the request-owned loading state machine.** Store request,
 generation, state (`loading | failed | ready`), current error and destination-started
 flag. Queue missingAssets using load.image/load.spritesheet. Bind one owned set of
 progress/error/complete listeners; remove it on shutdown and before Retry. On
@@ -481,7 +481,7 @@ always gates it. Reuse the existing resize loading root and retain result/reques
 data. Successful gameplay readiness calls ensureArtTextures/ensureTowerPortraits;
 menu readiness calls only ensureMenuTextures.
 
-- [ ] **Step 5: Route every current entry point.** Difficulty beginSiege and both
+- [x] **Step 5: Route every current entry point.** Difficulty beginSiege and both
 GameOver Play Again controls go through gameplay Preload. GameScene finishRun builds
 one `const result: GameOverData` before navigation; use defeat Preload only when its
 same-map snapshot has strongholdRatio <= .02, otherwise navigate GameOver directly
@@ -493,14 +493,14 @@ defeat Preload's destination/data as the result, without running a mocked loader
 Update the screenshot harness to wait for the requested stage rather than all 22
 images. The next task changes era constants; use imported constants for new fixtures.
 
-- [ ] **Step 6: Run GREEN and commit.** Step 2 plus `rtk npm test`/typecheck. Check cold-menu requests and result-art failure in Task 11's browser suite. Commit only Task 4 files as `Stage game assets and recover failed loading transitions`.
+- [x] **Step 6: Run GREEN and commit.** Step 2 plus `rtk npm test`/typecheck. Check cold-menu requests and result-art failure in Task 11's browser suite. Commit only Task 4 files as `Stage game assets and recover failed loading transitions`.
 
 ### Task 5: Enforce and tune the corrected balance
 
 **Files:** Create `tests/balance-acceptance.test.ts`, `tests/helpers/balanceRuns.ts`, `artifacts/audit-fixes/balance/candidates.test.ts`; modify `tests/helpers/simulationBot.ts`, `tests/helpers/progressionTrace.ts`, `src/game/config/evolutions.ts` (and only evidence-required existing typed balance config), relevant price/mastery assertions, and the old opt-in report runner.
 **Interfaces:** Extend SimulationOptions with `goldRelics?: 'normal' | 'disabled'` (default normal). Extend SimulationTrace with `terminalPayload: GameResultPayload | null`, taken from the actual scene result/Preload request, and `goldRelics: 'normal' | 'disabled'`. Preserve runSimulation signature and strategy/seed behavior. Export `BALANCE_RUNS: readonly SimulationOptions[]` from `tests/helpers/balanceRuns.ts` (new shared test-data file) with eight scenarios: five existing labels/seeds plus three Medium no-gold variants of seeds 1/2/3. This file is test data, not runtime configuration.
 
-- [ ] **Step 1: Fix only the evidence plumbing and add failing acceptance.** In
+- [x] **Step 1: Fix only the evidence plumbing and add failing acceptance.** In
 simulationBot prevent goldRushIndex use when disabled; filter bossRelicsToActivate
 through `!GOLD_RELICS.has(id)` in that mode. Retain reward rolls, inventory resolution,
 buy strategy, no selling, targeting and 10s preparation. Capture actual terminal
@@ -542,8 +542,8 @@ tracked report JSON. The explicit report tool saves every successful and failing
 trace under `artifacts/audit-fixes/balance/traces/`. Keep synthetic reporter tests,
 but do not use them as evidence of gameplay acceptance.
 
-- [ ] **Step 2: Run RED and record the corrected baseline.** `rtk proxy npx vitest run tests/balance-acceptance.test.ts tests/progression-balance.test.ts tests/simulation-bot.test.ts`; expected real gate failures, including the reported excess rank-3 towers. Fix only fixture/trace wiring before evaluating coefficients.
-- [ ] **Step 3: Search late-price candidates with the fixed strategy.** candidates.test.ts
+- [x] **Step 2: Run RED and record the corrected baseline.** `rtk proxy npx vitest run tests/balance-acceptance.test.ts tests/progression-balance.test.ts tests/simulation-bot.test.ts`; expected real gate failures, including the reported excess rank-3 towers. Fix only fixture/trace wiring before evaluating coefficients.
+- [x] **Step 3: Search late-price candidates with the fixed strategy.** candidates.test.ts
 is opt-in (`BALANCE_TUNE=1`), shares BALANCE_RUNS, imports EVOLUTIONS/TOWERS, and
 temporarily changes only each branch's `stats[3].cost`, restoring costs in finally.
 The trial body is:
@@ -576,7 +576,7 @@ same Phaser mock as Step 1. Run with PowerShell:
 Select the smallest factor satisfying all gates, then commit that factor in the
 real EVOLUTION_COST_FACTORS rank-3 literal. Do not leave test-only mutation as the fix.
 
-- [ ] **Step 4: Resolve a genuinely empty feasible set without changing the gates.**
+- [x] **Step 4: Resolve a genuinely empty feasible set without changing the gates.**
 If no rank-3 factor passes, use the recorded failed gates to expand the same explicit
 candidate evaluator to rank-1/rank-2 factors, preserving rank-0 `1.5` initially:
 rank 1 in `[2, 2.5, 3]`, rank 2 in `[2.75, 3.5, 4.5]`, rank 3 in `[6, 8, 10, 12]`.
@@ -590,7 +590,7 @@ each chosen change's evidence and keep existing armor/score plausibility tests.
 If these bounded trials cannot meet all approved gates, stop with concrete traces
 and request a spec adjustment; never silently relax assertions or change strategy.
 
-- [ ] **Step 5: Verify final source coefficients and commit.** Run the acceptance
+- [x] **Step 5: Verify final source coefficients and commit.** Run the acceptance
 test using untouched imports (no trial mutation), ordinary-income affordability/
 nine-plot checks and evolution/config/system/scene purchase/combat tests. Update
 old seed-price assertions to the newly chosen documented prices or shared formula;
@@ -611,7 +611,7 @@ personal-best/progression-scene/worker/client/result tests and current-era fixtu
 returning that list's first record. `loadBest/saveBest` target v3. Change
 `progressionPanelLines(view: UnlockView, currentBest: LocalBest | null, legacyBests: readonly LocalBest[]): string[]`.
 
-- [ ] **Step 1: Add retention/label tests before changing versions.** Extend
+- [x] **Step 1: Add retention/label tests before changing versions.** Extend
 personal-best.test.ts using its current storage Map:
 
 ```ts
@@ -636,8 +636,8 @@ assert both explicit era labels and no cross-era numeric comparison. In worker.t
 retain current filtering, old POST rejection and duplicate cases; change its exact
 active-era assertion from 2 to 3. Assert existing fake DB legacy rows stay present.
 
-- [ ] **Step 2: Run RED.** `rtk proxy npx vitest run tests/personal-best.test.ts tests/progression-scene.test.ts tests/worker.test.ts tests/progression-results.test.ts`; expect absent legacy-list interface and era-2 storage mismatch.
-- [ ] **Step 3: Change versions and readers.**
+- [x] **Step 2: Run RED.** `rtk proxy npx vitest run tests/personal-best.test.ts tests/progression-scene.test.ts tests/worker.test.ts tests/progression-results.test.ts`; expect absent legacy-list interface and era-2 storage mismatch.
+- [x] **Step 3: Change versions and readers.**
 
 ```ts
 // shared/version.ts
@@ -659,7 +659,7 @@ legacy record stays unchanged. Current save retains the existing higher-score po
 Run `rtk proxy npm version 0.3.0 --no-git-tag-version` to update package metadata
 without a tag or dependency upgrade. Keep shared/version as client/Worker truth.
 
-- [ ] **Step 4: Wire labels and all current fixtures.** Progression displays
+- [x] **Step 4: Wire labels and all current fixtures.** Progression displays
 `Legacy era ${record.scoreVersion} best` for both retained records; menu/results
 display the newest available legacy era with the same label and measured wrapping.
 Pass loadLegacyBests to progressionPanelLines. Update partial Settings mocks to expose
@@ -668,7 +668,7 @@ Search `rtk proxy rg -n 'scoreVersion.*2|SCORE_VERSION.*2|best-score-v2|Legacy b
 and inspect each hit: old-era rejection/retention cases remain 2, current-era cases
 become 3 or use the canonical constant. Preserve historical release evidence/scripts.
 
-- [ ] **Step 5: Run GREEN and commit.** Re-run Step 2, current client/validation
+- [x] **Step 5: Run GREEN and commit.** Re-run Step 2, current client/validation
 tests, Task 5 acceptance and typecheck. Keep forged-result rejection assertions
 unchanged. Commit Task 6 files as `Start score era 3 and preserve both legacy bests`.
 
@@ -681,7 +681,7 @@ types. Existing fetch/API envelope stays compatible; denial is 429 RATE_LIMITED
 with Retry-After 60, binding failure is 503 SCORE_API_UNAVAILABLE. Assets policy
 is copied by the existing Vite public-directory mechanism.
 
-- [ ] **Step 1: Add denied/missing/failing binding checks.** In worker.test.ts add
+- [x] **Step 1: Add denied/missing/failing binding checks.** In worker.test.ts add
 a per-test factory attaching a fresh allow limiter to makeDb; update all existing
 Env fixtures to use it. A configured fake denial is an explicit behavior test,
 not a substitute for local native integration:
@@ -703,8 +703,8 @@ X-Forwarded-For, no limiter calls on GET/OPTIONS, and missing/throwing binding -
 503 without a DB call. Existing bounded-stream, invalid JSON, forged score and SQL
 binding tests still run with an allow limiter; denial cannot conceal them.
 
-- [ ] **Step 2: Run RED.** `rtk proxy npx vitest run tests/worker.test.ts tests/static-headers.test.ts`; expect no native call/headers, not stale score-era fixtures.
-- [ ] **Step 3: Configure and wire the native limiter.** Add:
+- [x] **Step 2: Run RED.** `rtk proxy npx vitest run tests/worker.test.ts tests/static-headers.test.ts`; expect no native call/headers, not stale score-era fixtures.
+- [x] **Step 3: Configure and wire the native limiter.** Add:
 
 ```toml
 [[ratelimits]]
@@ -737,7 +737,7 @@ Keep the original validation/readBoundedBody/prepared INSERT and generic error
 handling. Unit fixtures missing the newly required binding must be fixed, except
 the deliberate missing-binding case.
 
-- [ ] **Step 4: Add the actual static policy and checks.** public/_headers:
+- [x] **Step 4: Add the actual static policy and checks.** public/_headers:
 
 ```text
 /*
@@ -767,7 +767,7 @@ it('protects HTML while allowing the current local assets and styles', () => {
 Worker JSON headers remain in worker/index.ts; `_headers` is not a replacement
 for those. Do not add a new CDN route or DB migration.
 
-- [ ] **Step 5: Run GREEN, build/dry-run and commit.** Step 2, full API tests,
+- [x] **Step 5: Run GREEN, build/dry-run and commit.** Step 2, full API tests,
 `rtk npm run build`, `rtk proxy npx wrangler deploy --dry-run --outdir artifacts/audit-fixes/worker-dry-run`.
 Confirm dist/_headers equals source and dry-run includes the binding. Task 11
 exercises it through local Wrangler. Commit Task 7 files as `Use native score throttling and protect static game responses`.
@@ -814,7 +814,7 @@ and asynchronous settlement; it is not gameplay configuration. Payload
 projection uses validateScorePayload's returned `value`, retaining only the API
 fields. Malformed or retired records are never rewritten as era 3.
 
-- [ ] **Step 1: Build storage/lock test fixtures and RED tests.** A Map implements
+- [x] **Step 1: Build storage/lock test fixtures and RED tests.** A Map implements
 get/set/remove; two repository instances share that Map and this serialized lock:
 
 ```ts
@@ -853,8 +853,8 @@ stage/settle order, and reload of a staged unknown-outcome request. Validate inp
 before storing; invalid fresh submissions throw a readable validation error and
 never invoke send.
 
-- [ ] **Step 2: Run RED.** `rtk proxy npx vitest run tests/score-retry.test.ts tests/score-submission.test.ts tests/leaderboard-client.test.ts`; expected missing repository/service exports.
-- [ ] **Step 3: Implement the bounded reader/repository.** classify raw records
+- [x] **Step 2: Run RED.** `rtk proxy npx vitest run tests/score-retry.test.ts tests/score-submission.test.ts tests/leaderboard-client.test.ts`; expected missing repository/service exports.
+- [x] **Step 3: Implement the bounded reader/repository.** classify raw records
 using 4096 UTF-8 bytes maximum, object/version/timestamp/payload schema, exact
 current/retired era, and shared validation. For retired payloads validate structural
 fields/result consistency without current-era score-envelope conversion; show
@@ -936,7 +936,7 @@ is still conditional on current runId. Fresh Submit is stage; every Retry uses
 claimRetry. A result-screen retry after its first attempt also passes its retained
 SavedSubmission as expected, so it cannot silently replace a newer tab's attempt.
 
-- [ ] **Step 4: Implement shared submission ownership and exception cases.**
+- [x] **Step 4: Implement shared submission ownership and exception cases.**
 
 ```ts
 export async function submitRetainedScore(payload: GameResultPayload,
@@ -965,7 +965,7 @@ stage never erases it. A corrupted/future storage record does not block a valid
 explicit POST, but the returned retry must say session-only. No function here
 invokes network on construction, view, stage or reload.
 
-- [ ] **Step 5: Run GREEN and commit.** Step 2 plus personal-best/unlocks/result
+- [x] **Step 5: Run GREEN and commit.** Step 2 plus personal-best/unlocks/result
 validation tests and typecheck. Commit Task 8 files as `Retain manual score submissions safely across reload and tabs`.
 
 ### Task 9: Wire saved-score UI and truthful offline messaging
@@ -981,7 +981,7 @@ retains `scoreAttempt: SavedSubmission | null` from RetainedScoreResult.attempte
 All service mocks include attempted, and only retry view controls current storage
 messages; the owned attempt controls subsequent conditional submission.
 
-- [ ] **Step 1: Add scene tests with a real repository fake-store seam.** Extend
+- [x] **Step 1: Add scene tests with a real repository fake-store seam.** Extend
 screens mocks to expose repository/service functions and complete Settings exports;
 prefer injected repository instances in service tests rather than silently allowing
 all persistence. Verify no send on open/Back/restart, explicit replacement note,
@@ -1008,8 +1008,8 @@ add the service mock to its hoisted object. Task 8's tests separately establish
 actual settlement. Use an actually valid resultFixture-backed payload for tests
 that exercise the real validation. Do not reduce assertions to counts alone.
 
-- [ ] **Step 2: Run RED.** `rtk proxy npx vitest run tests/screens.test.ts tests/saved-score-ui.test.ts tests/score-submission.test.ts`; expect missing Saved Score action/wrong offline claims or stale UI behavior.
-- [ ] **Step 3: Update results submission without losing ownership.** Capture the
+- [x] **Step 2: Run RED.** `rtk proxy npx vitest run tests/screens.test.ts tests/saved-score-ui.test.ts tests/score-submission.test.ts`; expect missing Saved Score action/wrong offline claims or stale UI behavior.
+- [x] **Step 3: Update results submission without losing ownership.** Capture the
 existing frozen payload in a local const before awaiting anything. Mark submitting
 immediately and call submitRetainedScore; its persistence/settlement runs to
 completion even if results closes. Add `private scoreAttempt: SavedSubmission | null = null`
@@ -1053,7 +1053,7 @@ If protected bytes prevent replacement, show the session-only warning instead.
 The same exact payload/runId is reused after failure. Present returned clearing/
 storage warnings on success too when storage could not remove the saved duplicate.
 
-- [ ] **Step 4: Add a reachable saved-score sheet to the menu.** Keep current Play,
+- [x] **Step 4: Add a reachable saved-score sheet to the menu.** Keep current Play,
 Hall, Settings and Progression layout. A small 44px Saved Score action is placed
 in the existing footer region when ready/incompatible; unreadable storage gets
 the explanatory footer warning. At compact sizes reserve its height and use the
@@ -1090,13 +1090,13 @@ without fabricating GameOverData or restarting Game. Incompatible records show
 to the current board.` Unreadable records show a storage warning and Back only.
 No reset/discard/history/scheduler UI is added.
 
-- [ ] **Step 5: Correct leaderboard failure text.** Remove `Your run remains saved
+- [x] **Step 5: Correct leaderboard failure text.** Remove `Your run remains saved
 locally.` in both branches. Show `Local progress is unaffected.` plus a confirmed
 saved-retry/session-only notice only when the repository view actually establishes
 it. Async repository text uses the same load/request-generation guard as board
 fetching. Preserve Retry/filter/scroll/highlight behavior and no implicit POST.
 
-- [ ] **Step 6: Run GREEN and commit.** Step 2 plus full screens/progression/
+- [x] **Step 6: Run GREEN and commit.** Step 2 plus full screens/progression/
 personal-best/leaderboard/repository tests and typecheck. Commit Task 9 files as
 `Expose saved manual retries and report offline persistence accurately`.
 
@@ -1107,7 +1107,7 @@ tests/evolution-system.test.ts, tests/progression-ui.test.ts,
 tests/scene-progression-ui.test.ts and compact-sheet tests.
 **Interfaces:** Export `previewPurchaseStats(id: TowerId, state: EvolutionState, intent: PurchaseIntent): EffectiveTowerStats | null` from EvolutionSystem; add `nextStats: EffectiveTowerStats | null` to ProgressionAction. Existing labels/reasons/revision/branches stay compatible.
 
-- [ ] **Step 1: Add preview-vs-purchase and disabled-state tests.**
+- [x] **Step 1: Add preview-vs-purchase and disabled-state tests.**
 
 ```ts
 it('previews a rank without requiring gold and matches its committed stats', () => {
@@ -1131,8 +1131,8 @@ and numeric mastery overflow -> null. Scene text assertions must find current-to
 next labels before the matching action and confirm the model fields do not mutate
 gold/cooldown/counters/shot snapshots. Retain existing branch comparisons.
 
-- [ ] **Step 2: Run RED.** `rtk proxy npx vitest run tests/evolution-system.test.ts tests/progression-ui.test.ts tests/scene-progression-ui.test.ts tests/compact-sheet.test.ts`; expected missing preview/nextStats.
-- [ ] **Step 3: Derive the preview using the existing purchase reducer.** It can
+- [x] **Step 2: Run RED.** `rtk proxy npx vitest run tests/evolution-system.test.ts tests/progression-ui.test.ts tests/scene-progression-ui.test.ts tests/compact-sheet.test.ts`; expected missing preview/nextStats.
+- [x] **Step 3: Derive the preview using the existing purchase reducer.** It can
 dry-run purchaseEvolution with maximum safe gold, permissive prerequisites and
 all available branches; the source state is still validated and never changed:
 
@@ -1156,7 +1156,7 @@ reason with no NaN/infinite value. Desktop and compact inspector use the same
 model action rather than `t.cfg.levels[t.level]` as the sole preview. Word-wrap and
 derive action y positions from measured text height, keeping ScrollSheet reachability.
 
-- [ ] **Step 4: Refresh and verify.** Existing affordability refresh only changes
+- [x] **Step 4: Refresh and verify.** Existing affordability refresh only changes
 availability; a committed purchase refreshes model/values while retaining captured
 identity/revision semantics. Check held/stale controls remain inert and scrolling
 does not buy anything. Run Step 2 plus purchase/combat/stat-format tests and
@@ -2259,3 +2259,20 @@ The main implements these dependent tasks sequentially under Native/inline execu
 if chosen. A different user-selected method must keep these interfaces and ordering.
 This plan is documentation until its cold review clears and the user approves its
 execution; approved scope/spec alone does not authorize skipping that plan gate.
+
+## Execution record (2026-10-09)
+
+Tasks 1-10 are complete and committed; Task 11 is complete except the cold review and its follow-up; Task 12 is in progress.
+
+| Task | Commit | Notes |
+|---|---|---|
+| 1-4 | `c84b90e`, `ea55ea8`, `ebacccb`, `98c80af` | Completed in the earlier session before it stopped at the Task 5 boundary |
+| 5 | `0741ba1` | Rank-3 cost factor 8 and the x1.3 late-rank damage multiplier; nine recorded traces with empty gate lists |
+| 6 | `af8664e` | Score era 3, `aetherhold-best-score-v3`, both legacy eras retained and labelled |
+| 7 | `d7f94d1` | Native rate-limit binding, 503 on a missing binding, `public/_headers` |
+| 8 | `2fbb04a` | Retained manual submission, Web Locks settlement, protected bytes |
+| 9 | `5e6e951` | Results retry, menu Saved Score sheet, truthful offline messaging |
+| 10 | `ac910f0` | `previewPurchaseStats` and current-to-next preview lines |
+| 11 | `3f37eeb`, `2d2fbbd` | Evidence harness, report runner, two real defect fixes, SPEC.md and handoff docs; 34 browser cases pass |
+
+Verification at the Task 11 gate: `npm run typecheck` clean, `npm test` 728 passed / 11 skipped / 0 failed, `npm run build` green (pre-existing large-bundle warning), isolated local Worker API evidence, and 34 browser cases with 0 failures. Full detail: `agent_docs/audit_fixes_2026-10-09.md`.
