@@ -80,8 +80,8 @@ describe('atomic purchases', () => {
     expect(purchaseEvolution('longbow', huge, { kind: 'mastery' }, { ...context, endless: true }, 0)).toEqual({ ok: false, reason: 'numeric limit reached' });
     expect(huge).toEqual(before);
     const r3 = tower('marksman', 3).progression;
-    expect(nextPurchaseCost('longbow', r3, { kind: 'mastery' })).toBe(Math.ceil(1275 * 1.25));
-    expect(nextPurchaseCost('longbow', { ...r3, masteryRank: 1 }, { kind: 'mastery' })).toBe(Math.ceil(1275 * 1.25 ** 2));
+    expect(nextPurchaseCost('longbow', r3, { kind: 'mastery' })).toBe(Math.ceil(EVOLUTIONS.marksman.stats[3].cost * 1.25));
+    expect(nextPurchaseCost('longbow', { ...r3, masteryRank: 1 }, { kind: 'mastery' })).toBe(Math.ceil(EVOLUTIONS.marksman.stats[3].cost * 1.25 ** 2));
     expect(effectiveStats('longbow', { ...r3, masteryRank: 2 }).damage).toBe(Math.round(EVOLUTIONS.marksman.stats[3].damage * 1.1));
     expect(effectiveStats('longbow', { ...r3, masteryRank: 2 }).range).toBe(EVOLUTIONS.marksman.stats[3].range);
   });

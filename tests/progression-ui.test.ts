@@ -48,7 +48,7 @@ describe('tower progression view', () => {
     expect(towerProgressionView(tower('marksman', 1), ctx({ blocked: true, evolutionOpen: true })).actions[0].reason).toBe('Unavailable while paused or ended');
   });
   it('offers mastery only in endless and shows the numeric limit', () => {
-    expect(towerProgressionView(tower('marksman', 3), ctx({ evolutionOpen: true })).actions[0]).toMatchObject({ label: `Mastery 1 · ${Math.ceil(1275 * 1.25)} gold`, reason: 'Continue into endless for mastery' });
+    expect(towerProgressionView(tower('marksman', 3), ctx({ evolutionOpen: true })).actions[0]).toMatchObject({ label: `Mastery 1 · ${Math.ceil(EVOLUTIONS.marksman.stats[3].cost * 1.25)} gold`, reason: 'Continue into endless for mastery' });
     expect(towerProgressionView(tower('marksman', 3), ctx({ evolutionOpen: true, endless: true, gold: 5000 })).actions[0].reason).toBe(null);
     const huge = tower('marksman', 3); huge.progression = { ...huge.progression, masteryRank: 100000 };
     expect(towerProgressionView(huge, ctx({ evolutionOpen: true, endless: true })).actions[0]).toMatchObject({ label: 'Mastery 100001 · limit', reason: 'Numeric limit reached' });

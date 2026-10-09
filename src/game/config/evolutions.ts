@@ -3,10 +3,15 @@ import { TOWERS } from './towers.ts';
 
 export interface EvolutionDefinition { id: BranchId; towerId: TowerId; name: string; description: string; starter: boolean; stats: readonly EffectiveTowerStats[]; }
 
-export const DAMAGE_FACTORS: readonly number[] = [1.2, 1.55, 2, 2.6];
+// Approved balance seed. Rank 2/3 damage carries the 1.3 late-rank multiplier and
+// the rank-3 cost factor is 8, the smallest factor whose eight-run acceptance
+// matrix satisfies every Medium gate (2-5 rank-3 towers at victory) while keeping
+// every reference run a siege victory. See
+// artifacts/audit-fixes/balance/candidates.json for the recorded search.
+export const DAMAGE_FACTORS: readonly number[] = [1.2, 1.55, 2.6, 3.38];
 export const INTERVAL_FACTORS: readonly number[] = [1, 0.97, 0.94, 0.9];
 export const RANGE_FACTORS: readonly number[] = [1, 1.03, 1.06, 1.1];
-export const EVOLUTION_COST_FACTORS: readonly number[] = [1.5, 2, 2.75, 3.75];
+export const EVOLUTION_COST_FACTORS: readonly number[] = [1.5, 2, 2.75, 8];
 
 export const EVOLUTION_RULES: {
   fieldMs: number; tickMs: number; fieldFraction: number; controlCadence: number; controlImmunityMs: number; masteryGain: number; masteryCostGrowth: number;

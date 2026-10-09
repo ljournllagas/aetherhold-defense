@@ -11,10 +11,16 @@ import type { DifficultyId, PowerUpId } from '../../src/shared/types.ts';
 export interface PurchaseTrace { wave: number; towerId: TowerId; branchId: BranchId | null; rank: EvolutionRank | null; masteryRank: number; spent: number; goldAfter: number; }
 export interface ProgressionTrace { difficulty: DifficultyId; debugAssisted: boolean; unlocked: BranchId[]; purchases: PurchaseTrace[]; firstEvolutionWave: number | null; firstRank2Wave: number | null; fullyEvolvedAtVictory: number; siegeWon: boolean; ordinaryRewardsOnly: boolean; duration1xSeconds: number; maxForcedWaitWaves: number; goldByWave: number[]; leaksByWave: number[]; relics: Array<{ wave: number; id: PowerUpId; used: boolean }>; }
 
-export function verifyTrace(trace: ProgressionTrace): string[] {
+/** Shared sanity checks that hold on every difficulty and carry no Medium tuning bound. */
+export function verifySanity(trace: ProgressionTrace): string[] {
   const f: string[] = [];
   if (trace.debugAssisted) f.push('Trace must not be debug-assisted');
   if (!trace.siegeWon) f.push('Trace must record a siege victory');
+  return f;
+}
+/** The shared sanity checks plus every approved Medium progression bound (unchanged). */
+export function verifyTrace(trace: ProgressionTrace): string[] {
+  const f: string[] = verifySanity(trace);
   if (trace.firstEvolutionWave === null || trace.firstEvolutionWave < 11 || trace.firstEvolutionWave > 13) f.push('First evolution must be affordable during waves 11–13');
   if (trace.firstRank2Wave === null || trace.firstRank2Wave >= 20) f.push('Rank 2 must be achievable before wave 20');
   if (trace.fullyEvolvedAtVictory < 2 || trace.fullyEvolvedAtVictory > 5) f.push('A successful mixed build must have 2–5 fully evolved towers at victory');

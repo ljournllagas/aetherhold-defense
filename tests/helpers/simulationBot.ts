@@ -14,8 +14,8 @@ import { POWERUP_EFFECTS, POWERUP_INVENTORY_LIMIT } from '../../src/game/config/
 import { TOWERS, TOWER_LIST } from '../../src/game/config/towers.ts';
 import { getDifficulty } from '../../src/game/config/difficulties.ts';
 import { MAP1 } from '../../src/game/maps/map1.ts';
-import type { BranchId, RunOutcome, TowerId } from '../../src/shared/progression.ts';
-import type { DifficultyId, PowerUpId, TargetingMode } from '../../src/shared/types.ts';
+import type { BranchId, TowerId } from '../../src/shared/progression.ts';
+import type { DifficultyId, GameResultPayload, PowerUpId, TargetingMode } from '../../src/shared/types.ts';
 import { MIXED_BUILD, type ProgressionTrace, type PurchaseTrace } from './progressionTrace.ts';
 
 export const SIM_STEP_MS = 50;
@@ -23,13 +23,18 @@ export const PREP_MS = 10_000;
 export const SIMULATION_STRATEGY = 'Plan-first mixed build with a locked-step fallback: buy the T23 MIXED_BUILD steps in order as soon as each is affordable during preparation (evolve steps use the alternative branch when the profile has it unlocked). A step that is only unaffordable is saved for. A step that is locked (for example an evolution waiting for the wave-10 boss) does not hold the gold: meanwhile the bot buys the cheapest legal purchase among evolution ranks, foundation upgrades, evolutions and (in endless) mastery on existing towers, otherwise builds the cheapest tower on the best free plot. A step that is already complete or impossible (foundation already at level 4, tower already evolved, no free plot) is skipped. New towers go on the free plot with the most road within their level-1 range. After the plan the same cheapest-purchase rule applies. Targeting: every tower uses First, and Strongest on boss waves (every 10th wave). Relics: a reward is stored while a slot is free, otherwise discarded, except that a stored Gold Rush is used first to make room; on boss waves every stored Gold Rush is used during preparation before buying, and when a boss first comes within range of a tower every other stored relic is used at once (Meteor cast on the boss; Stronghold Repair only when at least 4 lives are missing); the victory decision only stores (slot free) or discards. 10 s of idle preparation at 1x before every wave; no selling, no pause, no speed change, no QA commands.';
 export const RELIC_ATTRIBUTION_NOTE = 'relics[].used is attributed, not tracked: each use marks the earliest grant of the same relic not yet marked, so when an earlier copy was discarded a later grant may be marked instead. relicUses (the wave and relic of every use) and the number of used grants per relic are exact.';
 
-export interface SimulationOptions { label: string; difficulty: DifficultyId; seed: number; unlockAll: boolean; throughWave: number; continueEndless: boolean; }
+/** 'disabled' keeps every gold-producing relic out of the run: no Gold Rush preparation and no gold relic at boss arrival. */
+export type GoldRelicMode = 'normal' | 'disabled';
+export interface SimulationOptions { label: string; difficulty: DifficultyId; seed: number; unlockAll: boolean; throughWave: number; continueEndless: boolean; goldRelics?: GoldRelicMode; }
 export interface EndlessCheckpoint { wave: number; reached: boolean; lives: number; leaks: number; gold: number; scheduledHp: number; gameTimeMs: number; masteryRanks: number[]; nextMasteryCosts: Array<number | null>; }
 export interface SimulationTrace extends ProgressionTrace {
   simulated: true; label: string; seed: number; strategy: string; stepMs: number; prepSecondsPerWave: number;
   simulatedGameTimeMs: number;
   wavesCompleted: number; finalLives: number;
   outcome: 'victory' | 'endless' | 'defeat' | 'siege-failed' | 'incomplete';
+  /** The scene-produced GameOver payload (direct or defeat-Preload request) for a finished run; null while a run is still alive. */
+  terminalPayload: GameResultPayload | null;
+  goldRelics: GoldRelicMode;
   endless: EndlessCheckpoint[];
   relicUses: Array<{ wave: number; id: PowerUpId }>;
   goldAtLastWaveStart: number;
@@ -145,6 +150,7 @@ export function runSimulation(options: SimulationOptions): SimulationTrace {
 
 function simulate(options: SimulationOptions): SimulationTrace {
   const { difficulty, unlockAll, throughWave, continueEndless } = options;
+  const goldRelics: GoldRelicMode = options.goldRelics ?? 'normal';
   const instance = new GameScene();
   const run = instance as unknown as Run, loose = instance as unknown as Record<string, unknown>;
   run.unlockRepository = new UnlockRepository(null, () => '2026-10-08T00:00:00Z');
@@ -152,9 +158,19 @@ function simulate(options: SimulationOptions): SimulationTrace {
   run.init({ difficulty, playerName: 'Simulation Bot' });
   for (const name of PRESENTATION) loose[name] = () => {};
   loose.add = anyStub(); loose.world = (value: unknown) => value; run.speed = 1;
-  let result: { outcome: RunOutcome } | null = null;
-  run.scene = { start: (key, data) => { if (key === 'GameOver') result = data as { outcome: RunOutcome };
-      else if (key === 'Preload' && (data as any)?.destination === 'GameOver') result = (data as any).data as { outcome: RunOutcome }; }, restart: () => {} };
+  // Capture the actual scene-produced result: GameOver receives it directly unless a
+  // terminal defeat routes through the defeat-stage Preload request. The holder keeps
+  // the assignment visible to control-flow analysis (the writes happen in a callback).
+  const terminal: { payload: GameResultPayload | null } = { payload: null };
+  run.scene = {
+    start: (key, data) => {
+      if (key === 'GameOver') terminal.payload = data as GameResultPayload;
+      else if (key === 'Preload' && (data as { destination?: string } | undefined)?.destination === 'GameOver') {
+        terminal.payload = (data as { data: GameResultPayload }).data;
+      }
+    },
+    restart: () => {}
+  };
   const relics: ProgressionTrace['relics'] = [];
   const grant = run.grantPowerup.bind(instance);
   run.grantPowerup = (id, reason, wantModal) => { relics.push({ wave: run.wave, id, used: false }); grant(id, reason, wantModal); };
@@ -282,7 +298,7 @@ function simulate(options: SimulationOptions): SimulationTrace {
   };
   const prepareRelics = (wave: number): void => {
     for (;;) {
-      if (run.siege.phase !== 'victory' && run.siege.phase !== 'terminal') {
+      if (goldRelics === 'normal' && run.siege.phase !== 'victory' && run.siege.phase !== 'terminal') {
         const i = goldRushIndex(run.vault.stored, wave, run.vault.pending.length);
         if (i >= 0) { useStored(wave, i, null); continue; }
       }
@@ -324,7 +340,9 @@ function simulate(options: SimulationOptions): SimulationTrace {
         if (boss) {
           bossRelicsDone = true;
           record.storedAtBossArrival = [...run.vault.stored]; record.livesAtBossArrival = run.lives;
-          for (const id of bossRelicsToActivate(record.storedAtBossArrival, run.lives, run.maxLives)) useStored(wave, run.vault.stored.indexOf(id), boss);
+          const activatable = bossRelicsToActivate(record.storedAtBossArrival, run.lives, run.maxLives)
+            .filter((id) => goldRelics === 'normal' || !GOLD_RELICS.has(id));
+          for (const id of activatable) useStored(wave, run.vault.stored.indexOf(id), boss);
         }
       }
     }
@@ -353,7 +371,6 @@ function simulate(options: SimulationOptions): SimulationTrace {
     }
   }
 
-  const finished = result as { outcome: RunOutcome } | null;
   const simulatedGameTimeMs = victoryTimeMs ?? run.gameTimeMs;
   return {
     difficulty,
@@ -379,7 +396,9 @@ function simulate(options: SimulationOptions): SimulationTrace {
     simulatedGameTimeMs,
     wavesCompleted: run.siege.wavesCompleted,
     finalLives: run.lives,
-    outcome: finished?.outcome ?? (run.siege.phase === 'endless' ? 'endless' : 'incomplete'),
+    outcome: terminal.payload?.outcome ?? (run.siege.phase === 'endless' ? 'endless' : 'incomplete'),
+    terminalPayload: terminal.payload,
+    goldRelics,
     endless,
     relicUses,
     goldAtLastWaveStart,

@@ -44,18 +44,24 @@ describe('evolution roster', () => {
 
 describe('rank progression and prices', () => {
   it('uses the common seed factors and rules', () => {
-    expect(DAMAGE_FACTORS).toEqual([1.2, 1.55, 2, 2.6]);
+    expect(DAMAGE_FACTORS).toEqual([1.2, 1.55, 2.6, 3.38]);
     expect(INTERVAL_FACTORS).toEqual([1, 0.97, 0.94, 0.9]);
     expect(RANGE_FACTORS).toEqual([1, 1.03, 1.06, 1.1]);
-    expect(EVOLUTION_COST_FACTORS).toEqual([1.5, 2, 2.75, 3.75]);
+    expect(EVOLUTION_COST_FACTORS).toEqual([1.5, 2, 2.75, 8]);
     expect(EVOLUTION_RULES).toEqual({ fieldMs: 3000, tickMs: 500, fieldFraction: 0.3, controlCadence: 5, controlImmunityMs: 1500, masteryGain: 0.05, masteryCostGrowth: 1.25 });
+  });
+  it('keeps rank prices and rank damage strictly monotonic', () => {
+    for (let rank = 1; rank < EVOLUTION_COST_FACTORS.length; rank++) {
+      expect(EVOLUTION_COST_FACTORS[rank]).toBeGreaterThan(EVOLUTION_COST_FACTORS[rank - 1]);
+      expect(DAMAGE_FACTORS[rank]).toBeGreaterThan(DAMAGE_FACTORS[rank - 1]);
+    }
   });
   it.each([...TOWER_IDS])('prices both %s branches identically from the level-4 cost', (id) => {
     const expected = EVOLUTION_COST_FACTORS.map((f) => Math.ceil(TOWERS[id].levels[3].cost * f));
     expect(all(STARTER_BRANCH[id], 'cost')).toEqual(expected);
     expect(all(ALTERNATIVE_BRANCH[id], 'cost')).toEqual(expected);
   });
-  it('prices Ranger at 510, 680, 935, 1275', () => expect(all('marksman', 'cost')).toEqual([510, 680, 935, 1275]));
+  it('prices Ranger at 510, 680, 935, 2720', () => expect(all('marksman', 'cost')).toEqual([510, 680, 935, 2720]));
 });
 
 describe('branch modifiers (seed values)', () => {
