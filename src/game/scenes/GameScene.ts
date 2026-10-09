@@ -19,6 +19,7 @@ import { rollPowerUp, shouldDropOnKill } from '../systems/PowerUpSystem.ts';
 import { pickTarget } from '../systems/CombatSystem.ts';
 import { loadSettings, saveSettings, loadBest, saveBest } from '../systems/Settings.ts';
 import { runPlayerName } from '../../shared/playerName.ts';
+import { SimulationClock, SIMULATION_STEP_MS } from '../systems/SimulationClock.ts';
 import { SoundManager } from '../systems/SoundManager.ts';
 import { newRunId } from '../../api/leaderboardClient.ts';
 import { C, FONT_DISPLAY, RARITY_COLOR, RANGE_FILL_ALPHA, RANGE_STROKE, RANGE_STROKE_ALPHA, style } from '../ui/tokens.ts';
@@ -101,6 +102,8 @@ export class GameScene extends Phaser.Scene {
   private bossesKilled = 0;
   private startTime = 0;
   private runningDurationMs = 0;
+  private simulationClock = new SimulationClock();
+  private inSimulationTick = false;
   private freezeUntil = 0;
   private doubleBountyUntil = 0;
   private battleCryUntil = 0;
@@ -325,7 +328,7 @@ export class GameScene extends Phaser.Scene {
     this.revealTimer = null;
     this.storeAfterTarget = false;
     this.startTime = Date.now();
-    this.runningDurationMs = 0;
+    this.runningDurationMs = 0; this.simulationClock.reset(); this.inSimulationTick = false;
     this.bossWarned = {};
     this.plotMarkers = [];
     this.occupied = new Set<number>();
@@ -1654,6 +1657,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private presentReward(): void {
+    if (this.inSimulationTick) return;
     if (this.auto.enabled || this.ended || this.modal || this.pendingMeteor || this.paused || !this.vault.pending.length) return;
     const reward = this.vault.pending[0];
     if (reward.reveal && this.waveActive) return;
@@ -2002,11 +2006,6 @@ export class GameScene extends Phaser.Scene {
       if (target) { const point = this.enemyImpactPoint(target); flight.x2 = point.x; flight.y2 = point.y; }
     }
     const arrived = advanceFlights(this.flights, gameDeltaMs, this.ended);
-    for (const flight of this.flights) {
-      const k = flight.elapsedMs / flight.durationMs;
-      flight.view.setPosition(flight.x1 + (flight.x2 - flight.x1) * k, flight.y1 + (flight.y2 - flight.y1) * k)
-        .setRotation(Math.atan2(flight.y2 - flight.y1, flight.x2 - flight.x1));
-    }
     for (const flight of arrived) {
       flight.view.destroy(true);
       if (this.ended) continue;
@@ -2193,8 +2192,6 @@ export class GameScene extends Phaser.Scene {
     const cands = this.enemies.map(e => ({ id: e.id, x: e.x, y: e.y, hp: e.hp, maxHp: e.maxHp, distanceTraveled: e.distanceTraveled }));
     for (const t of this.towers) {
       t.cooldown -= dt;
-      // Crown recoil: squash on fire, release after — subtle, never whole-body (§59).
-      t.crown?.setScale(this.gameTimeMs < t.recoilUntil ? 0.88 : 1);
       if (t.cooldown > 0) continue;
       const target = pickTarget(cands, t.x, t.y, t.stats.range, t.targeting);
       if (!target) { t.cooldown = 0; continue; }
@@ -2244,32 +2241,52 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  // ---------- main loop (delta-driven; never frame-rate dependent) ----------
+  // Combat uses fixed game-time steps; Auto and presentation observe visible frames.
   override update(time: number, deltaMs: number): void {
-    // Combat delta is smoothed by Phaser; Auto counts real time between visible frames.
+    const validDelta = Number.isFinite(deltaMs) && deltaMs > 0 ? deltaMs : 0;
     const autoDeltaMs = this.autoLastUpdateAt === null ? 0 : time - this.autoLastUpdateAt;
     if (Number.isFinite(time) && (this.autoLastUpdateAt === null || time >= this.autoLastUpdateAt)) this.autoLastUpdateAt = time;
     const beforeAuto = this.autoSnapshot();
     const frameWasWaiting = this.auto.enabled && !beforeAuto.blocked && !beforeAuto.waveActive &&
       (beforeAuto.phase === 'siege' || beforeAuto.phase === 'endless');
-    if (!this.pauseState.has('background')) this.updateAchievementNotices(deltaMs);
-    if (this.ended || this.paused || this.pausedByModal || this.siege.phase === 'victory' || this.siege.phase === 'terminal') {
+    if (!this.pauseState.has('background')) this.updateAchievementNotices(validDelta);
+    if (this.isRunBlocked()) {
       this.auto.advance(0, this.autoSnapshot()); this.refreshAutoDisplay(); return;
     }
-    this.runningDurationMs += deltaMs;
-    const dt = (deltaMs / 1000) * this.speed;
-    this.gameTimeMs += deltaMs * this.speed;
+    this.runningDurationMs += validDelta;
+    const consumed = this.simulationClock.advance(validDelta * this.speed, step => this.simulateTick(step));
+    if (this.ended || this.siege.phase === 'terminal') return;
+    this.renderFrame(consumed * SIMULATION_STEP_MS);
+    this.tickAuto(autoDeltaMs, frameWasWaiting);
+    this.refreshAutoDisplay(); this.presentReward();
     if (import.meta.env.DEV && this.gameTimeMs - this.lastQAStatusAt >= 500) {
-      this.lastQAStatusAt = this.gameTimeMs;
-      this.publishQAStatus();
+      this.lastQAStatusAt = this.gameTimeMs; this.publishQAStatus();
     }
+  }
 
-    while (this.spawnQueue.length > 0 && this.spawnQueue[0].atMs <= this.gameTimeMs) {
-      const s = this.spawnQueue.shift()!;
-      const enemy = this.spawnEnemy(s.enemyId, s.hpBonus);
-      if (enemy.isBoss && (this.wave === 10 || this.wave === 20 || this.wave === 30)) this.scheduledBossIds.set(enemy.id, this.wave);
-    }
+  private simulateTick(stepMs: number): boolean {
+    if (this.isRunBlocked()) return false;
+    this.inSimulationTick = true;
+    try {
+      this.gameTimeMs += stepMs;
+      while (this.spawnQueue.length && this.spawnQueue[0].atMs <= this.gameTimeMs) {
+        const spawn = this.spawnQueue.shift()!;
+        const enemy = this.spawnEnemy(spawn.enemyId, spawn.hpBonus);
+        if (enemy.isBoss && [10, 20, 30].includes(this.wave)) this.scheduledBossIds.set(enemy.id, this.wave);
+      }
+      this.moveEnemies(stepMs);
+      if (this.isRunBlocked()) return false;
+      this.enemies = this.enemies.filter(e => e.alive);
+      this.updateFlights(stepMs); this.processFieldTicks();
+      this.enemies = this.enemies.filter(e => e.alive);
+      this.fireTowers(stepMs / 1000); this.checkWaveClear();
+    } finally { this.inSimulationTick = false; }
+    this.presentReward();
+    return !this.isRunBlocked();
+  }
 
+  private moveEnemies(stepMs: number): void {
+    const dt = stepMs / 1000;
     const wps = MAP1.waypoints;
     for (const e of this.enemies) {
       if (!e.alive) continue;
@@ -2306,6 +2323,29 @@ export class GameScene extends Phaser.Scene {
         const movedX = e.x - fromX;
         const movedY = e.y - fromY;
         if (movedX * movedX + movedY * movedY > 0.01) e.heading = Math.atan2(movedY, movedX);
+
+      }
+      // Late-game summoning (wave 20+ only — early bosses stay at 2 mechanics).
+      if (e.isBoss && e.alive && this.wave >= BOSS_BEHAVIOR.summonFromWave && Math.floor(this.gameTimeMs / BOSS_BEHAVIOR.summonIntervalMs) !== Math.floor((this.gameTimeMs - stepMs) / BOSS_BEHAVIOR.summonIntervalMs)) {
+        for (let i = 0; i < BOSS_BEHAVIOR.summonCount; i++) {
+          const d = getDifficulty(this.difficultyId);
+          const m = new Enemy('gloomite', enemyHpForWave('gloomite', this.wave, d, 1), enemySpeedForWave('gloomite', this.wave, d), ENEMIES.gloomite.baseReward);
+          m.x = e.x - 10 - i * 12; m.y = e.y + 8;
+          m.waypointIndex = e.waypointIndex;
+          m.distanceTraveled = e.distanceTraveled - 20;
+          this.makeEnemyVisual(m);
+          this.enemies.push(m);
+        }
+        this.floatTextForEnemy(e, 'Warlord calls the swarm', C.arcane, 14);
+      }
+    }
+  }
+
+  private renderFrame(processedGameMs: number): void {
+    for (const e of this.enemies) {
+      if (!e.alive) continue;
+      const status = this.evolutionCombat.statuses(e.id, this.gameTimeMs);
+      const movedX = Math.cos(e.heading), movedY = Math.sin(e.heading);
         const frozen = status.frozen || status.stunned || this.gameTimeMs < e.frozenUntil || this.gameTimeMs < this.freezeUntil;
         const slowed = !frozen && status.slowFactor > 0;
         const data = (e.view?.getData('bobAmp') as number | undefined) ?? 1.6;
@@ -2315,7 +2355,7 @@ export class GameScene extends Phaser.Scene {
         e.view?.setPosition(point.x, point.y);
         e.view?.setRotation(0).setDepth(3 + point.y / 1000);
         const visual = e.view?.getData('enemyVisual') as { setFacing?: (dx: number, dy: number) => void; setWalking?: (walking: boolean) => void } | undefined;
-        visual?.setFacing?.(movedX, movedY); visual?.setWalking?.(!frozen && Math.hypot(movedX, movedY) > 0.01);
+        visual?.setFacing?.(movedX, movedY); visual?.setWalking?.(!frozen && e.effectiveSpeed(this.gameTimeMs, this.freezeUntil, status) > 0);
         const sprite = (visual as { sprite?: Phaser.GameObjects.Sprite } | undefined)?.sprite;
         if (sprite) sprite.anims.timeScale = this.speed * (slowed ? 1 - status.slowFactor : 1);
         const edge = e.view?.getData('silhouetteEdge') as Phaser.GameObjects.Image | undefined;
@@ -2344,43 +2384,17 @@ export class GameScene extends Phaser.Scene {
           e.hpBar.fillStyle(e.isBoss ? 0xd85f59 : 0xb65b50, 1);
           e.hpBar.fillRect(point.x - w / 2, point.y - visualHeight - 4 / sy, w * Math.max(0, e.hp / e.maxHp), barHeight);
         } else e.hpBar?.clear();
-      }
-      // Late-game summoning (wave 20+ only — early bosses stay at 2 mechanics).
-      if (e.isBoss && e.alive && this.wave >= BOSS_BEHAVIOR.summonFromWave && Math.floor(this.gameTimeMs / BOSS_BEHAVIOR.summonIntervalMs) !== Math.floor((this.gameTimeMs - deltaMs * this.speed) / BOSS_BEHAVIOR.summonIntervalMs)) {
-        for (let i = 0; i < BOSS_BEHAVIOR.summonCount; i++) {
-          const d = getDifficulty(this.difficultyId);
-          const m = new Enemy('gloomite', enemyHpForWave('gloomite', this.wave, d, 1), enemySpeedForWave('gloomite', this.wave, d), ENEMIES.gloomite.baseReward);
-          m.x = e.x - 10 - i * 12; m.y = e.y + 8;
-          m.waypointIndex = e.waypointIndex;
-          m.distanceTraveled = e.distanceTraveled - 20;
-          this.makeEnemyVisual(m);
-          this.enemies.push(m);
-        }
-        this.floatTextForEnemy(e, 'Warlord calls the swarm', C.arcane, 14);
-      }
     }
-    this.enemies = this.enemies.filter((e) => e.alive);
+    for (const flight of this.flights) {
+      const k = flight.elapsedMs / flight.durationMs;
+      flight.view.setPosition(flight.x1 + (flight.x2 - flight.x1) * k, flight.y1 + (flight.y2 - flight.y1) * k)
+        .setRotation(Math.atan2(flight.y2 - flight.y1, flight.x2 - flight.x1));
+    }
+    for (const tower of this.towers) tower.crown?.setScale(this.gameTimeMs < tower.recoilUntil ? 0.88 : 1);
+    this.syncFieldViews(); this.updateBossBar(); this.updateDying(); this.updateEffects();
     this.worldRoot?.sort('depth');
-
-    this.updateFlights(deltaMs * this.speed);
-    this.processFieldTicks();
-    this.syncFieldViews();
-    this.enemies = this.enemies.filter(e => e.alive);
-
-    this.fireTowers(dt);
-
-    this.checkWaveClear();
-    this.tickAuto(autoDeltaMs, frameWasWaiting);
-    this.refreshAutoDisplay();
-
-    this.presentReward();
-    this.updateBossBar();
-    this.updateDying();
-    this.updateEffects();
-    this.worldRoot?.sort('depth');
-
     for (const f of this.floaters) {
-      f.text.y -= deltaMs * 0.02 * this.speed;
+      f.text.y -= processedGameMs * 0.02;
       f.text.alpha = Math.max(0, Math.min(1, (f.until - this.gameTimeMs) / 700));
     }
     while (this.floaters.length > 0 && this.floaters[0].until <= this.gameTimeMs) {
@@ -2518,6 +2532,7 @@ export class GameScene extends Phaser.Scene {
 
   /** Idempotent; restart/quit discard the run without creating a result. */
   private cleanupProgression(): void {
+    this.simulationClock.reset(); this.inSimulationTick = false;
     this.auto.reset();
     this.autoLastUpdateAt = null;
     this.autoLastKeyAt = -Infinity;

@@ -46,7 +46,7 @@ describe('headless simulation bot', () => {
     expect(trace.phaseEnds.every((e) => ['buy', 'wait-gold', 'locked', 'after-plan'].includes(e.status))).toBe(true);
     expect(trace.lockedSteps.map((s) => s.wave)).toEqual(trace.phaseEnds.filter((e) => e.status === 'locked').map((e) => e.wave));
     expect(trace.relicAttribution).toBe(RELIC_ATTRIBUTION_NOTE); expect(RELIC_ATTRIBUTION_NOTE).toContain('discarded');
-    expect(trace.simulatedGameTimeMs % SIM_STEP_MS).toBe(0);
+    expect(trace.simulatedGameTimeMs / SIM_STEP_MS).toBeCloseTo(Math.round(trace.simulatedGameTimeMs / SIM_STEP_MS), 8);
     expect(trace.simulatedGameTimeMs).toBeGreaterThanOrEqual(3 * PREP_MS);
     expect(trace.duration1xSeconds).toBe(Math.round(trace.simulatedGameTimeMs / 1000));
     expect(trace.strategy).toBe(SIMULATION_STRATEGY);

@@ -37,7 +37,7 @@ export function autoScene():{scene:GameScene;run:AutoRun;loose:Record<string,unk
   vi.spyOn(SoundManager,'get').mockReturnValue(chain());const scene=new GameScene();scene.init({difficulty:'medium'});
   const run=scene as unknown as AutoRun,loose=scene as unknown as Record<string,unknown>;
   for(const name of ['drawPowerupBar','drawSheet','refreshInfoPanel','refreshPlots','refreshPlacePanel','hideGhost','showTouchPreview',
-    'floatText','floatTextForEnemy','impactAt','impactBurst','startDeathAnim','makeEnemyVisual','addEffect','drawCatalog','drawAchievementNotice',
+    'floatText','floatTextForEnemy','impactAt','impactBurst','startDeathAnim','makeEnemyVisual','addEffect','drawCatalog','drawAchievementNotice','renderFrame',
     'updateBossBar','renderVictory','publishQAStatus','updateHUD'])loose[name]=vi.fn();
   loose.add=chain();loose.world=(v:unknown)=>v;loose.uiRoot=chain();loose.game=chain();loose.time=chain();loose.tweens=chain();
   run.input=Object.assign(new EventEmitter(),{keyboard:new EventEmitter()});run.scene={start:vi.fn(),restart:vi.fn()};

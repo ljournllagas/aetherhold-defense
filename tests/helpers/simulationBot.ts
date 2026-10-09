@@ -97,7 +97,7 @@ interface Run {
   scene: { start(key: string, data: unknown): void; restart(): void };
 }
 
-const PRESENTATION = ['updateHUD', 'refreshInfoPanel', 'drawSheet', 'drawPowerupBar', 'refreshPlots', 'refreshPlacePanel', 'hideGhost', 'showBanner', 'floatText', 'floatTextForEnemy', 'impactAt', 'impactBurst', 'startDeathAnim', 'drawCatalog', 'refreshTowerVisual', 'updateNextPreview', 'renderVictory', 'showTouchPreview', 'projectEntity', 'makeEnemyVisual', 'presentReward', 'updateBossBar', 'updateDying', 'updateEffects', 'syncFieldViews', 'addEffect', 'drawTempestArc', 'publishQAStatus', 'drawAchievementNotice'];
+const PRESENTATION = ['updateHUD', 'refreshInfoPanel', 'drawSheet', 'drawPowerupBar', 'refreshPlots', 'refreshPlacePanel', 'hideGhost', 'showBanner', 'floatText', 'floatTextForEnemy', 'impactAt', 'impactBurst', 'startDeathAnim', 'drawCatalog', 'refreshTowerVisual', 'updateNextPreview', 'renderVictory', 'showTouchPreview', 'projectEntity', 'makeEnemyVisual', 'presentReward', 'updateBossBar', 'updateDying', 'updateEffects', 'syncFieldViews', 'addEffect', 'drawTempestArc', 'publishQAStatus', 'drawAchievementNotice','renderFrame'];
 const ENDLESS_CHECKPOINTS = [31, 35, 40];
 const WAVE_TIMEOUT_MS = 30 * 60 * 1000;
 
