@@ -43,6 +43,22 @@ const find = (prefix: string) => ui.buttons.find((b) => b.label.startsWith(prefi
 afterEach(() => vi.restoreAllMocks());
 
 describe('progression controls', () => {
+  it.each([['evolve', 1280, 720], ['tower', 390, 844]] as const)('groups branch comparisons before their actions in the %s sheet', (kind, width, height) => {
+    const { run } = sceneFixture(width, height);
+    const content: string[] = [];
+    vi.spyOn(ScrollSheet.prototype, 'text').mockImplementation((_y, value) => { content.push(value); return { height: 20 } as never; });
+    vi.spyOn(ScrollSheet.prototype, 'action').mockImplementation((_y, label) => { content.push(label); return ui.anyStub(); });
+    run.sheetKind = kind; run.drawSheet();
+    expect(content.filter(value => value.includes('Base stats'))).toHaveLength(1);
+    for (const branch of ['Marksman', 'Volley']) {
+      const description = content.findIndex(value => value.startsWith(branch + ' (') || value.startsWith(branch + ' —'));
+      const action = content.findIndex(value => value.startsWith('Evolve: ' + branch));
+      expect(description).toBeGreaterThan(-1); expect(action).toBeGreaterThan(description);
+      const comparison = content.slice(description + 1, action).join(' ');
+      for (const stat of ['Damage', 'Attack', 'Range', '→']) expect(comparison).toContain(stat);
+      expect(content.filter(value => value.startsWith(branch + ' (') || value.startsWith(branch + ' —'))).toHaveLength(1);
+    }
+  });
   it('renders disabled sheet actions that cannot fire', () => {
     const sheet = new ScrollSheet(ui.anyStub(), ui.anyStub(), { x: 0, y: 0, width: 320, height: 400 }, 'Tower Progression', () => {});
     const fire = vi.fn();

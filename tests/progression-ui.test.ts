@@ -4,18 +4,33 @@ import { UnlockRepository } from '../src/game/systems/UnlockSystem.ts';
 import type { PurchaseContext } from '../src/game/systems/EvolutionSystem.ts';
 import type { BranchId } from '../src/shared/progression.ts';
 import { tower } from './helpers/evolutionFixtures.ts';
+import { EVOLUTIONS } from '../src/game/config/evolutions.ts';
+import { effectiveStats } from '../src/game/systems/EvolutionSystem.ts';
 
 const ctx = (patch: Partial<PurchaseContext> = {}): PurchaseContext => ({ gold: 1000, evolutionOpen: false, endless: false, blocked: false, unlocked: new Set<BranchId>(), ...patch });
 
 describe('tower progression view', () => {
-  it('shows a level-4 tower as ready to evolve with both branches and specific reasons', () => {
+  it('shows a level-4 tower waiting for the boss with both branches and specific reasons', () => {
     const t = tower(null), view = towerProgressionView(t, ctx());
-    expect(view.title).toBe('Ranger · Level 4 · Ready to evolve');
+    expect(view.title).toBe('Ranger · Level 4 · Defeat the wave-10 boss to evolve');
     expect(view.actions.map((a) => a.label)).toEqual(['Evolve: Marksman · 510 gold', 'Evolve: Volley · 510 gold']);
     expect(view.actions.map((a) => a.reason)).toEqual(['Defeat the wave-10 boss', 'Complete the branch achievement']);
     expect(view.branches.find((b) => b.id === 'volley')).toMatchObject({ locked: true, requirement: achievementRequirement('longbow') });
     expect(view.commitment).toBe('Branch choice is permanent for this tower.');
     expect(t.progression.revision).toBe(0);
+  });
+  it.each([1, 4])('previews both rank-0 branches at foundation level %i without mutating state', (level) => {
+    const t = tower(null); t.progression.foundationLevel = level;
+    const before = structuredClone(t.progression), context = ctx({ gold: 0, blocked: true });
+    const view = towerProgressionView(t, context);
+    expect(view.stats).toEqual(effectiveStats(t.towerId, before));
+    for (const branch of view.branches) expect(branch.stats).toEqual(EVOLUTIONS[branch.id].stats[0]);
+    expect(view.branches[1].locked).toBe(true);
+    expect(t.progression).toEqual(before); expect(context.gold).toBe(0);
+  });
+  it('reports readiness after the boss and omits branch choices after evolution', () => {
+    expect(towerProgressionView(tower(null), ctx({ evolutionOpen: true })).title).toBe('Ranger · Level 4 · Ready to evolve');
+    expect(towerProgressionView(tower('marksman'), ctx()).branches).toEqual([]);
   });
   it('enables evolve after the boss with the captured intent and revision', () => {
     expect(towerProgressionView(tower(null), ctx({ evolutionOpen: true })).actions[0]).toEqual({ label: 'Evolve: Marksman · 510 gold', reason: null, intent: { kind: 'evolve', branchId: 'marksman' }, revision: 0 });

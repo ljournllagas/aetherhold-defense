@@ -414,10 +414,10 @@ export class GameScene extends Phaser.Scene {
         rowY += 60;
       });
     } else if (kind === 'evolve' && this.selectedTower) {
-      this.drawProgressionModel(sheet, this.selectedTower, 0, true);
+      this.drawProgressionModel(sheet, this.selectedTower, 0);
     } else if (kind === 'tower' && this.selectedTower) {
       const t = this.selectedTower;
-      let y = this.drawProgressionModel(sheet, t, 0, false);
+      let y = this.drawProgressionModel(sheet, t, 0);
       sheet.action(y, `Sell · ${investedRefund(t.progression)} gold`, () => { this.sellSelected(); this.sheetKind = null; this.drawSheet(); }, 'danger'); y += 60;
       sheet.text(y, 'Targeting'); y += 28;
       TARGET_MODES.forEach((mode, i) => sheet.action(y + i * 52, `${t.targeting === mode ? '✓ ' : ''}${mode[0].toUpperCase() + mode.slice(1)}`, () => { t.targeting = mode; this.drawSheet(); }));
@@ -441,7 +441,7 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private drawProgressionModel(sheet: ScrollSheet, t: Tower, startY: number, full: boolean): number {
+  private drawProgressionModel(sheet: ScrollSheet, t: Tower, startY: number): number {
     const view = towerProgressionView(t, this.purchaseContext(), this.wavesCompleted, this.towers);
     const st = view.stats;
     let y = startY;
@@ -450,17 +450,19 @@ export class GameScene extends Phaser.Scene {
     line(view.role, C.textSecondary, 12);
     line(`Damage ${formatStat('damage', st.damage)} · Range ${formatStat('range', st.range)} · Attack ${formatStat('attackInterval', st.attackInterval)}s · ${st.damageType}`);
     if (view.commitment) line(view.commitment, C.textMuted, 12);
+    if (view.branches.length) line('Base stats · Current → Evolved', C.textMuted, 12);
     for (const action of view.actions) {
+      if (action.intent.kind === 'evolve') {
+        const branchId = action.intent.branchId;
+        const branch = view.branches.find(b => b.id === branchId)!;
+        line(`${branch.name}${branch.starter ? ' (starter)' : ''} — ${branch.description}`, C.textSecondary, 12);
+        line(`Damage ${formatStat('damage', st.damage)} → ${formatStat('damage', branch.stats.damage)} · Attack ${formatStat('attackInterval', st.attackInterval)}s → ${formatStat('attackInterval', branch.stats.attackInterval)}s · Range ${formatStat('range', st.range)} → ${formatStat('range', branch.stats.range)}`, C.textSecondary, 12);
+        if (branch.locked) line(`Locked · ${branch.requirement}${branch.qualifiesNow ? ' · On track this run' : ''}`, C.textMuted, 12);
+      }
       sheet.action(y, action.reason ? `${action.label} · ${action.reason}` : action.label, () => {
         if (!action.reason) { this.purchaseSelected(action.intent, t.id, action.revision); this.drawSheet(); }
       }, 'primary', action.reason === null);
       y += 52;
-    }
-    if (full) {
-      for (const branch of view.branches) {
-        line(`${branch.name}${branch.starter ? ' (starter)' : ''} — ${branch.description}`, C.textSecondary, 12);
-        if (branch.locked) line(`Locked · ${branch.requirement}${branch.qualifiesNow ? ' · On track this run' : ''}`, C.textMuted, 12);
-      }
     }
     return y + 8;
   }
@@ -1142,6 +1144,7 @@ export class GameScene extends Phaser.Scene {
     this.auraCircle?.setVisible(showAura);
     if (showAura && beacon) this.auraCircle?.setPosition(beacon.x, beacon.y);
     if (!this.layout.inspector) { this.drawSheet(); return; }
+    if (this.sheetKind === 'evolve') this.drawSheet();
     this.infoPanel?.destroy(true); this.infoPanel = null; this.hideGhost();
     this.towerCommands?.destroy(true); this.towerCommands = null;
     this.hudStatus?.setPosition(this.layout.compact ? 512 : 544, this.layout.height - this.layout.tray + 12);
@@ -1178,8 +1181,11 @@ export class GameScene extends Phaser.Scene {
     }
     c.add(this.add.image(40, 40, towerPortraitKey(t.towerId)).setDisplaySize(56, 56));
     c.add(this.add.text(76, 12, t.cfg.name, style(18, C.textPrimary, true, FONT_DISPLAY)));
-    c.add(this.add.text(76, 36, towerProgressionView(t, this.purchaseContext(), this.wavesCompleted, this.towers).title, style(14, C.gold, true)).setWordWrapWidth(width - 130));
-    if (!compact) c.add(this.add.text(16, 80, t.cfg.role, style(12, C.textSecondary)).setWordWrapWidth(width - 32));
+    const progressionTitle = this.add.text(76, 36, towerProgressionView(t, this.purchaseContext(), this.wavesCompleted, this.towers).title, style(12, C.gold, true)).setWordWrapWidth(width - 130);
+    c.add(progressionTitle);
+    const detailsY = Math.max(80, 36 + progressionTitle.height + 8);
+    const detailsOffset = detailsY - 80;
+    if (!compact) c.add(this.add.text(16, detailsY, t.cfg.role, style(12, C.textSecondary)).setWordWrapWidth(width - 32));
     button(this, c, width - 52, 4, 44, '×', () => { this.selectedTower = null; this.refreshInfoPanel(); });
     const st = t.stats;
     const rows: Array<[string, string]> = [['Damage', formatStat('damage', st.damage)], ['Attack', `${formatStat('attackInterval', st.attackInterval)}s`], ['Range', formatStat('range', st.range)], ['Type', st.damageType]];
@@ -1187,8 +1193,8 @@ export class GameScene extends Phaser.Scene {
     if (st.chainCount) rows.push(['Chain', `${st.chainCount}`]);
     if (st.slowFactor) rows.push(['Slow', `${Math.round(st.slowFactor * 100)}%`]);
     if (compact) rows.forEach(([k,v], i) => c.add(this.add.text(16 + (i % 3) * (width - 32) / 3, 72 + Math.floor(i / 3) * 24, `${k}  ${v}`, style(14, C.textSecondary))));
-    else rows.forEach(([k, v], i) => statRow(this, c, 120 + i * 24, k, v, width));
-    const modesY = compact ? 132 : 144 + rows.length * 24;
+    else rows.forEach(([k, v], i) => statRow(this, c, 120 + detailsOffset + i * 24, k, v, width));
+    const modesY = compact ? 132 : 144 + detailsOffset + rows.length * 24;
     if (!compact) c.add(this.add.text(16, modesY - 24, 'Targeting', style(14, C.textSecondary)));
     TARGET_MODES.forEach((mode, i) => {
       const bw = compact ? (width - 32) / 5 : 100;

@@ -15,7 +15,7 @@ export function verifyTrace(trace: ProgressionTrace): string[] {
   const f: string[] = [];
   if (trace.debugAssisted) f.push('Trace must not be debug-assisted');
   if (!trace.siegeWon) f.push('Trace must record a siege victory');
-  if (trace.firstEvolutionWave === null || trace.firstEvolutionWave > 13) f.push('First evolution must be affordable during waves 11–13');
+  if (trace.firstEvolutionWave === null || trace.firstEvolutionWave < 11 || trace.firstEvolutionWave > 13) f.push('First evolution must be affordable during waves 11–13');
   if (trace.firstRank2Wave === null || trace.firstRank2Wave >= 20) f.push('Rank 2 must be achievable before wave 20');
   if (trace.fullyEvolvedAtVictory < 2 || trace.fullyEvolvedAtVictory > 5) f.push('A successful mixed build must have 2–5 fully evolved towers at victory');
   if (trace.maxForcedWaitWaves > 3) f.push('No forced wait may exceed three consecutive completed waves');

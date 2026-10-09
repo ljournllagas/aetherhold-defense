@@ -6,6 +6,6 @@ artifacts/
 .code-review-graph/
 .sdd/
 *.tsbuildinfo
-({label
+([{]label
 String(i+153).padStart(4)+'
 \['Cinzel'

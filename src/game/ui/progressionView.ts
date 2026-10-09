@@ -7,7 +7,7 @@ import type { UnlockView } from '../systems/UnlockSystem.ts';
 import type { BranchId, CombatTower, EffectiveTowerStats, TowerId } from '../../shared/progression.ts';
 
 export interface ProgressionAction { label: string; reason: string | null; intent: PurchaseIntent; revision: number; }
-export interface BranchOption { id: BranchId; name: string; description: string; starter: boolean; locked: boolean; requirement: string | null; qualifiesNow: boolean; }
+export interface BranchOption { id: BranchId; name: string; description: string; stats: EffectiveTowerStats; starter: boolean; locked: boolean; requirement: string | null; qualifiesNow: boolean; }
 export interface TowerProgressionView { title: string; role: string; stats: EffectiveTowerStats; commitment: string | null; actions: ProgressionAction[]; branches: BranchOption[]; }
 export interface AchievementView { towerId: TowerId; branchId: BranchId; starterName: string; alternativeName: string; requirement: string; earned: boolean; unsaved: boolean; qualifiesNow: boolean; }
 
@@ -48,15 +48,16 @@ export function towerProgressionView(tower: CombatTower, context: PurchaseContex
     title = `${def.name} · Rank ${p.rank}${p.masteryRank > 0 ? ` · Mastery ${p.masteryRank}` : ''}`;
     role = def.description;
   } else {
-    title = `${TOWERS[id].name} · Level ${p.foundationLevel}${p.foundationLevel === 4 ? ' · Ready to evolve' : ''}`;
+    const readiness = context.evolutionOpen ? 'Ready to evolve' : 'Defeat the wave-10 boss to evolve';
+    title = `${TOWERS[id].name} · Level ${p.foundationLevel}${p.foundationLevel === 4 ? ` · ${readiness}` : ''}`;
     role = TOWERS[id].description;
   }
 
-  const branches: BranchOption[] = [STARTER_BRANCH[id], ALTERNATIVE_BRANCH[id]].map((bid) => {
+  const branches: BranchOption[] = (evolved ? [] : [STARTER_BRANCH[id], ALTERNATIVE_BRANCH[id]]).map((bid) => {
     const def = EVOLUTIONS[bid];
     const locked = !def.starter && !context.unlocked.has(bid);
     return {
-      id: bid, name: def.name, description: def.description, starter: def.starter, locked,
+      id: bid, name: def.name, description: def.description, stats: def.stats[0], starter: def.starter, locked,
       requirement: def.starter ? null : achievementRequirement(id), qualifiesNow: !def.starter && qualifies(id, towers, waveCompleted)
     };
   });

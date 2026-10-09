@@ -2,8 +2,17 @@
 
 Date: 2026-10-09
 Tier: Spec-only
-Status: awaiting written-spec approval
+Status: approved and implemented
 Review: round 1 cleared at 9/10 with zero blockers and zero advisory items.
+Approval: user approved the written spec on 2026-10-09.
+
+## Implementation verification
+
+Verified 2026-10-09: focused regressions failed before implementation; the final default suite and deployment suite both passed 478 tests, with the six deliberately opt-in balance checks skipped. Production build passed, retaining the existing bundle-size warning. Git ignore checks preserved all three stray-file exclusions and ordinary repository searches no longer report a glob parse error.
+
+Browser self-check `artifacts/evolution-preview/check.cjs` passed all six specified viewport sizes, checking both previews, control scroll reachability, state preservation while scrolling, readiness refresh, and separation of the desktop readiness text from the role label. It caught and drove fixes for inspector overlap and a stale open desktop evolution sheet. Screenshots and results are in `artifacts/evolution-preview/`. This is automated desktop Chromium verification; physical touch hardware and human balance playtesting were not checked.
+
+`npm run deploy` passed and published Worker version `e8a937c2-42d2-4d97-9847-31553c3983f4` to https://aetherhold-defense.ljournllagas.workers.dev/. Live verification (`artifacts/evolution-preview/live.cjs`) confirmed HTTP 200 for HTML, its current bundle `/assets/index-CrbSRM_s.js`, and `/api/health` with `ok: true` and scoreVersion 2. The live bundle is byte-identical to the local build (SHA-256 `2483c3feed2ecbd46fa43a8507a80831649ff77d852e6f69a4a7b5f3e0f4247e`). The production page rendered with no browser errors. No balance tuning or database changes were made.
 
 ## Intent and agreed scope
 

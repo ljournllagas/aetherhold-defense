@@ -8,7 +8,9 @@ import { MIXED_BUILD, cheapestFullEvolution, ordinaryIncomeByWave, simulatePurch
 const passing: ProgressionTrace = { difficulty: 'medium', debugAssisted: false, unlocked: [], purchases: [], firstEvolutionWave: 12, firstRank2Wave: 19, fullyEvolvedAtVictory: 3, siegeWon: true, ordinaryRewardsOnly: true, duration1xSeconds: 1500, maxForcedWaitWaves: 3, goldByWave: [], leaksByWave: [], relics: [] };
 describe('trace reporter (synthetic data, not gameplay evidence)', () => {
   it('accepts a trace that meets every gate', () => expect(verifyTrace(passing)).toEqual([]));
+  it.each([11, 13])('accepts first evolution at boundary wave %i', (firstEvolutionWave) => expect(verifyTrace({ ...passing, firstEvolutionWave })).toEqual([]));
   it.each([
+    [{ firstEvolutionWave: 10 }, 'First evolution must be affordable during waves 11–13'],
     [{ firstEvolutionWave: 14 }, 'First evolution must be affordable during waves 11–13'], [{ firstEvolutionWave: null }, 'First evolution must be affordable during waves 11–13'],
     [{ firstRank2Wave: 20 }, 'Rank 2 must be achievable before wave 20'], [{ duration1xSeconds: 900 }, 'Medium siege duration must be 1200–1800 seconds'],
     [{ duration1xSeconds: 1801 }, 'Medium siege duration must be 1200–1800 seconds'], [{ fullyEvolvedAtVictory: 1 }, 'A successful mixed build must have 2–5 fully evolved towers at victory'],
