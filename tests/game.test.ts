@@ -211,6 +211,11 @@ describe('score validation', () => {
     const result = validateScorePayload(good);
     expect(result.ok).toBe(true);
   });
+  it('normalizes Unicode player names and retains forbidden/oversized rejection', () => {
+    const named = { ...good, playerName: 'Jose\u0301 A.' };
+    expect(validateScorePayload(named)).toMatchObject({ ok: true, sanitizedName: 'Jos\u00e9 A.' });
+    for (const playerName of ['a'.repeat(21), '<script>', '\u{1F600}']) expect(validateScorePayload({ ...named, playerName }).ok).toBe(false);
+  });
   it('rejects a forged late wave with no progress', () => {
     expect(validateScorePayload({ ...good, highestWave: 500, finalScore: 0, enemiesKilled: 0, bossesKilled: 0, gameDurationSeconds: 0 }).ok).toBe(false);
   });

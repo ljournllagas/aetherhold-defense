@@ -18,6 +18,7 @@ import { killReward, waveClearBonus, canAfford } from '../systems/EconomySystem.
 import { rollPowerUp, shouldDropOnKill } from '../systems/PowerUpSystem.ts';
 import { pickTarget } from '../systems/CombatSystem.ts';
 import { loadSettings, saveSettings, loadBest, saveBest } from '../systems/Settings.ts';
+import { runPlayerName } from '../../shared/playerName.ts';
 import { SoundManager } from '../systems/SoundManager.ts';
 import { newRunId } from '../../api/leaderboardClient.ts';
 import { C, FONT_DISPLAY, RARITY_COLOR, RANGE_FILL_ALPHA, RANGE_STROKE, RANGE_STROKE_ALPHA, style } from '../ui/tokens.ts';
@@ -269,8 +270,8 @@ export class GameScene extends Phaser.Scene {
     this.modalRenderer = null; this.modalSheet = null; this.backgroundOverlay = null; this.gestureHintShown = false;
     this.modalError = '';
     const s = loadSettings();
-    this.difficultyId = data.difficulty ?? s.difficulty;
-    this.playerName = (data.playerName ?? s.playerName ?? 'Warden').slice(0, 20) || 'Warden';
+    this.difficultyId = getDifficulty(data.difficulty ?? s.difficulty).id;
+    this.playerName = runPlayerName(data.playerName ?? s.playerName);
     const d = getDifficulty(this.difficultyId);
     this.gold = d.startingGold;
     this.lives = d.startingLives;

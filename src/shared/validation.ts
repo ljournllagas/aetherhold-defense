@@ -15,6 +15,7 @@ import { GAME_VERSION, SCORE_VERSION } from './version.ts';
 import type { DifficultyId, GameResultPayload } from './types.ts';
 import type { ResultProgress, RunOutcome } from './progression.ts';
 import { resultProgressErrors } from './resultProgress.ts';
+import { validatePlayerName } from './playerName.ts';
 
 export { SCORE_VERSION, GAME_VERSION };
 
@@ -24,8 +25,6 @@ export interface ValidationResult {
   sanitizedName: string;
 }
 
-const NAME_MAX = 20;
-const NAME_RE = /^[\p{L}\p{N} _\-'.]{1,20}$/u;
 const RUN_ID_RE = /^[A-Za-z0-9\-_]{8,64}$/;
 const MAX_GAME_SPEED = 3;
 const MAX_GAME_DURATION_SECONDS = 24 * 3600;
@@ -199,7 +198,7 @@ export function validateScorePayload(body: unknown): ValidationResult & { value?
     return { ok: false, errors: ['Invalid JSON body'], sanitizedName: '' };
   }
   const b = body as Record<string, unknown>;
-  const playerNameRaw = typeof b.playerName === 'string' ? b.playerName.trim() : '';
+  const playerName = validatePlayerName(b.playerName);
   const difficulty = b.difficulty;
   const highestWave = b.highestWave;
   const finalScore = b.finalScore;
@@ -214,10 +213,8 @@ export function validateScorePayload(body: unknown): ValidationResult & { value?
   const outcome = b.outcome;
   const siegeBossesDefeated = b.siegeBossesDefeated;
 
-  const sanitizedName = playerNameRaw.slice(0, NAME_MAX).trim();
-  if (!playerNameRaw || sanitizedName.length < 1) errors.push('playerName is required');
-  else if (playerNameRaw.length > NAME_MAX) errors.push('playerName too long');
-  else if (!NAME_RE.test(sanitizedName)) errors.push('playerName contains invalid characters');
+  const sanitizedName = playerName.name;
+  if (!playerName.ok) errors.push(playerName.error!);
 
   if (difficulty !== 'easy' && difficulty !== 'medium' && difficulty !== 'hard') errors.push('Invalid difficulty');
   const isNonNegInt = (v: unknown) => typeof v === 'number' && Number.isInteger(v) && v >= 0;

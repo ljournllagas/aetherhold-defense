@@ -8,6 +8,7 @@ import { etchedFrame } from '../ui/components.ts';
 import { emblemKey } from '../art/artkit.ts';
 import { paintVista } from '../art/menubg.ts';
 import { ScrollSheet } from '../ui/ScrollSheet.ts';
+import { editPlayerName, runPlayerName } from '../../shared/playerName.ts';
 
 const COLORS = { selected: 0xd7aa4e, line: 0x445564, card: 0x101820, raised: 0x19232d };
 
@@ -115,16 +116,21 @@ export class DifficultyScene extends Phaser.Scene {
     };
     nameInput.addEventListener('focus', () => { nameInput.style.outline = '2px solid #F0CD72'; nameInput.style.outlineOffset = '2px'; });
     nameInput.addEventListener('blur', () => { nameInput.style.outline = 'none'; nameInput.style.outlineOffset = '0'; });
-    nameInput.addEventListener('input', () => {
-      const clean = nameInput.value.replace(/[^\w '\-]/g, '').slice(0, 20);
+    let composing = false;
+    const commitName = () => {
+      if (composing) return;
+      const clean = editPlayerName(nameInput.value);
       if (clean !== nameInput.value) nameInput.value = clean;
       this.playerName = clean;
       const next = loadSettings();
       next.playerName = clean;
       saveSettings(next);
-    });
+    };
+    nameInput.addEventListener('compositionstart', () => { composing = true; });
+    nameInput.addEventListener('compositionend', () => { composing = false; commitName(); });
+    nameInput.addEventListener('input', commitName);
     nameInput.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') this.beginSiege();
+      if (event.key === 'Enter' && !event.isComposing && !composing) this.beginSiege();
       if (event.key === 'Escape') this.scene.start('MainMenu');
     });
     document.body.appendChild(nameInput);
@@ -238,8 +244,12 @@ export class DifficultyScene extends Phaser.Scene {
     const input = document.createElement('input'); input.value = this.playerName; input.maxLength = 20; input.autocomplete = 'name';
     input.setAttribute('aria-label', 'Defender name, 20 characters maximum'); input.placeholder = 'Defender name';
     input.style.cssText = 'position:fixed;height:44px;box-sizing:border-box;z-index:1000;background:#0a0e12;color:#f3ebdd;border:1px solid #d7aa4e;padding:8px 12px;font:16px Inter,system-ui';
-    input.addEventListener('input', () => { this.playerName = input.value.replace(/[^\w '\-]/g, '').slice(0, 20); input.value = this.playerName; saveSettings({ ...loadSettings(), playerName: this.playerName }); });
-    input.addEventListener('keydown', e => { if (e.key === 'Enter') { input.blur(); this.beginSiege(); } });
+    let composing = false;
+    const commitName = () => { if (composing) return; input.value = editPlayerName(input.value); this.playerName = input.value; saveSettings({ ...loadSettings(), playerName: input.value }); };
+    input.addEventListener('compositionstart', () => { composing = true; });
+    input.addEventListener('compositionend', () => { composing = false; commitName(); });
+    input.addEventListener('input', commitName);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing && !composing) { input.blur(); this.beginSiege(); } });
     document.body.appendChild(input); this.nameInput = input;
     input.addEventListener('blur', () => { if (this.phoneRoot && this.scene.isActive('Difficulty')) this.drawPhoneControls(); });
     this.drawPhoneControls();
@@ -270,7 +280,7 @@ export class DifficultyScene extends Phaser.Scene {
   private beginSiege(): void {
     SoundManager.get().unlock();
     SoundManager.get().click();
-    const name = (this.nameInput?.value ?? this.playerName).trim().replace(/\s+/g, ' ').slice(0, 20) || 'Warden';
+    const name = runPlayerName(this.nameInput?.value ?? this.playerName);
     const settings = loadSettings();
     settings.playerName = name;
     settings.difficulty = this.selectedDiff;

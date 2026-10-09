@@ -1,4 +1,5 @@
 import { SCORE_VERSION } from '../../shared/version.ts';
+import { editPlayerName } from '../../shared/playerName.ts';
 
 export interface Settings {
   masterVolume: number;
@@ -32,18 +33,25 @@ function clampVolume(value: unknown, fallback: number): number {
     : fallback;
 }
 
+export function normalizeSettings(value: unknown): Settings {
+  const saved = value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {};
+  return {
+    masterVolume: clampVolume(saved.masterVolume, DEFAULTS.masterVolume),
+    musicVolume: clampVolume(saved.musicVolume, DEFAULTS.musicVolume),
+    sfxVolume: clampVolume(saved.sfxVolume, DEFAULTS.sfxVolume),
+    musicOn: typeof saved.musicOn === 'boolean' ? saved.musicOn : DEFAULTS.musicOn,
+    sfxOn: typeof saved.sfxOn === 'boolean' ? saved.sfxOn : DEFAULTS.sfxOn,
+    gameSpeed: saved.gameSpeed === 1 || saved.gameSpeed === 2 || saved.gameSpeed === 3 ? saved.gameSpeed : DEFAULTS.gameSpeed,
+    difficulty: saved.difficulty === 'easy' || saved.difficulty === 'medium' || saved.difficulty === 'hard' ? saved.difficulty : DEFAULTS.difficulty,
+    playerName: editPlayerName(saved.playerName)
+  };
+}
+
 export function loadSettings(): Settings {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return { ...DEFAULTS };
-    const saved = JSON.parse(raw) as Partial<Settings>;
-    return {
-      ...DEFAULTS,
-      ...saved,
-      masterVolume: clampVolume(saved.masterVolume, DEFAULTS.masterVolume),
-      musicVolume: clampVolume(saved.musicVolume, DEFAULTS.musicVolume),
-      sfxVolume: clampVolume(saved.sfxVolume, DEFAULTS.sfxVolume)
-    };
+    return normalizeSettings(JSON.parse(raw));
   } catch {
     return { ...DEFAULTS };
   }
@@ -51,12 +59,7 @@ export function loadSettings(): Settings {
 
 export function saveSettings(s: Settings): void {
   try {
-    localStorage.setItem(KEY, JSON.stringify({
-      ...s,
-      masterVolume: clampVolume(s.masterVolume, DEFAULTS.masterVolume),
-      musicVolume: clampVolume(s.musicVolume, DEFAULTS.musicVolume),
-      sfxVolume: clampVolume(s.sfxVolume, DEFAULTS.sfxVolume)
-    }));
+    localStorage.setItem(KEY, JSON.stringify(normalizeSettings(s)));
   } catch { /* ignore */ }
 }
 
