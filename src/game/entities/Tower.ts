@@ -2,6 +2,8 @@ import { TOWERS, isTowerId } from '../config/towers.ts';
 import { effectiveStats, initialEvolution } from '../systems/EvolutionSystem.ts';
 import type { TargetingMode } from '../../shared/types.ts';
 import type { EffectiveTowerStats, EvolutionState, HitCounter, TowerId } from '../../shared/progression.ts';
+import type { CampaignSpecializationId } from '../campaign/types.ts';
+import { campaignTowerStats } from '../campaign/battle.ts';
 
 let NEXT_ID = 1;
 
@@ -14,6 +16,8 @@ export class Tower {
   y: number;
   targeting: TargetingMode = 'first';
   cooldown = 0;
+  frozenUntil = 0;
+  specialization: CampaignSpecializationId | null = null;
   overchargeUntil = 0;
   recoilUntil = 0; // attack-recoil window (game-time ms, cosmetic)
   plotIndex: number;
@@ -39,7 +43,7 @@ export class Tower {
   }
 
   get stats(): EffectiveTowerStats {
-    return effectiveStats(this.towerId, this.progression);
+    return campaignTowerStats(effectiveStats(this.towerId, this.progression), this.specialization);
   }
 
   get maxLevel(): boolean {

@@ -1,5 +1,21 @@
 # Latest session work
 
+## Campaign Worlds 1–3 — published handoff (2026-10-10)
+
+Deployment `campaign-w1-w3-20261009`, Heavy route; baseline `main` is `c1cb32abbf453ff9b4dfad6249b2a05200d8f71a`. Implementation is published; documentation closure and commit/push remain before final delivery. Campaign config/save/preparation, map/detail/Codex UI, twelve route families and variants, new enemies/supports, three bosses, specializations, visual-tier adapters and relic gates/reroll reuse the existing fixed-step GameScene. Classic results, bests, achievements, API and bindings remain separate.
+
+Independent evidence: progression 28 tests PASS; combat/regression 180 tests PASS; six independent paid-resource challenge levels PASS; all 30 natural simulation traces hit original score/lives targets, with all 676 purchases independently audited for configured cost and exact before/after balances. Human balance remains unverified, with narrow margins at Levels 8, 22 and 26.
+
+Browser Tester V3 accepted native map→battle→restart→world-map, reload and rotation at six viewports, three biome battles, boss phases/callouts/compact bars, Level 10/20/30 rewards and temporary placed tower tiers I–III. Its discovered defects were repaired and independently recaptured: wrapped phone metadata, roster labels, route construction/targets, cached QA startup before scene registration, and enemy-anchored callouts/compact phase text. Compact fixture captures hide only the external DEV dock after reading status; the in-canvas fixture label and state remain intact. Seeded captures do not establish natural balance or final art.
+
+Release worker R1 ran `npm run deploy`: 893 passing tests / 11 configured skips, successful build and `wrangler deploy --keep-vars`. Worker `62eadfc5-a3bd-4f69-8b21-89947401dbbc` serves https://aetherhold-defense.ljournllagas.workers.dev/. HTML SHA-256 `00a359b0fc121cdade1cc209dd3a323cc6e092ef5be39c2b611c2a60b38da631`; JavaScript `/assets/index-DusJeCBx.js` SHA-256 `6f7746638afdd959e493a5e3dfb0628bd5bd86e13fd69987ac701f51584d5568`, 2,017,680 bytes. Both exactly match local dist. Health 200 `{ok:true,scoreVersion:3}`; unmodified desktop production campaign/classic entry passes with zero JS/page errors, request failures and POSTs, and QA bridge absent. Two implicit favicon console 404s and a direct `/favicon.ico` 404 remain nonblocking; no failed app assets. No D1 migration or binding change.
+
+Next: Archivist closes verified public/module documentation and exact missing-production-art list; R1 stages only task-owned code/tests/docs, commits and pushes `main`, verifies local HEAD equals remote, and preserves unrelated `.scratch/audit-fixes-d1` SQLite files. Main owns progress/diary/latest handoff; do not overwrite those from workers.
+
+Evidence: `artifacts/campaign/verification-progress.md`, `verification-combat.md`, `visual/final/verification-report-final.md`, `callout/verification.md`, `release/deployment-verification.json`; all-level trace `artifacts/campaign-w1-w3-20261009/p3-balance.json`; QA repair `artifacts/campaign/qa-bootstrap/`. Artifacts are gitignored. All 43 production targets in `src/game/campaign/artManifest.ts` remain `final_required`; no concept-board crops are shipped. Final-art approval, physical devices and human balance are UNVERIFIED.
+
+DEV screenshot URLs: `?qa=campaign&level=N`; `?qa=campaign-boss&level=10&bossPhase=guarded|enraged`, level 20 `initial|broken|core`, level 30 `initial|telegraph|freeze|phase2`; `?qa=campaign-results&level=N`. These use isolated session-only progression and pause after seeding. Local Vite 5183 is retained for V3. Ordinary production ignores these fixtures.
+
 ## Combined audit fixes (2026-10-09) — published
 
 All twelve tasks of `docs/superpowers/plans/2026-10-09-combined-audit-fixes.md` are complete. The

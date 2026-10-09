@@ -1,16 +1,16 @@
 import Phaser from 'phaser';
 import type { GameOverData } from './GameOverScene.ts';
-import type { LoadingRequest } from './PreloadScene.ts';
-import { MAP1, HUD_HEIGHT } from '../maps/map1.ts';
-import { TOWER_LIST, towerTotalInvested } from '../config/towers.ts';
+import type { GameStartData, LoadingRequest } from './PreloadScene.ts';
+import { MAP1, HUD_HEIGHT, type MapDef } from '../maps/map1.ts';
+import { TOWER_LIST, towerTotalInvested, isTowerId } from '../config/towers.ts';
 import { ENEMIES, BOSS_BEHAVIOR, BONUS_TARGET_HP_PER_WAVE } from '../config/enemies.ts';
 import { getDifficulty } from '../config/difficulties.ts';
 import { POWERUPS, POWERUP_EFFECTS, POWERUP_DROP_CHANCE_PER_KILL, POWERUP_INVENTORY_LIMIT } from '../config/powerUps.ts';
 import { EVOLUTIONS } from '../config/evolutions.ts';
 import type { DamageType, DifficultyId, EnemyArchetype, PowerUpId, TargetingMode } from '../../shared/types.ts';
-import type { QAAction, QAStatus } from '../qa.ts';
+import { isQACampaignFixture, type QACampaignFixture, type QAAction, type QAStatus } from '../qa.ts';
 import { GAME_VERSION, SCORE_VERSION } from '../../shared/version.ts';
-import { buildWave, scheduleWave, enemyHpForWave, enemySpeedForWave, type SpawnEvent } from '../systems/WaveSystem.ts';
+import { buildWave, scheduleWave, enemyHpForWave, enemySpeedForWave } from '../systems/WaveSystem.ts';
 import { RelicVault, advanceFlights } from '../systems/RunSimulation.ts';
 import { AutoSystem, chooseAutoRelic, type AutoContext, type AutoRelicIntent } from '../systems/AutoSystem.ts';
 import { gameLayout, sheetBounds, viewportToWorld, worldToViewport, type GameLayout } from '../ui/layout.ts';
@@ -39,16 +39,23 @@ import { PauseState } from '../systems/PauseState.ts';
 import { ScrollSheet } from '../ui/ScrollSheet.ts';
 import { SiegeSystem, victoryRewardChoices, victoryRewardsResolved } from '../systems/SiegeSystem.ts';
 import { EvolutionCombat, chainShot, nextChainTarget, volleyTargets } from '../systems/EvolutionCombat.ts';
-import { purchaseEvolution, investedRefund, PURCHASE_REASON_TEXT, type PurchaseContext, type PurchaseIntent } from '../systems/EvolutionSystem.ts';
+import { purchaseEvolution, effectiveStats, initialEvolution, investedRefund, PURCHASE_REASON_TEXT, type PurchaseContext, type PurchaseIntent } from '../systems/EvolutionSystem.ts';
 import { unlockRepository as sharedUnlockRepository, earnedBranches, SAVE_FAILED_WARNING, UNLOCK_STORAGE_KEY, type UnlockRepository } from '../systems/UnlockSystem.ts';
 import { formatStat, towerProgressionView, wavePresentation } from '../ui/progressionView.ts';
 import type { BranchId, RunOutcome, ShotSnapshot } from '../../shared/progression.ts';
+import { CampaignBattle, CAMPAIGN_BATTLE_TUNING, campaignTowerStats, specializeShot, type CampaignShot, type CampaignSpawn } from '../campaign/battle.ts';
+import { CampaignBossSystem, CAMPAIGN_BOSS_TUNING } from '../campaign/bosses.ts';
+import { getCampaignEnemy, isClassicEnemy } from '../campaign/enemies.ts';
+import { CampaignRepository, campaignRepository, CAMPAIGN_STORAGE_KEY } from '../campaign/progress.ts';
+import { getCampaignLevel } from '../campaign/config.ts';
+import { getCampaignSpecialization } from '../campaign/specializations.ts';
+import type { CampaignClearResult } from '../campaign/types.ts';
 
 interface Flight {
   elapsedMs: number; durationMs: number;
   x1: number; y1: number; x2: number; y2: number;
   towerId: string; targetId: number;
-  shot: ShotSnapshot;
+  shot: CampaignShot;
   view: Phaser.GameObjects.Container;
   chainIndex: number;
   hit: Set<number>;
@@ -62,6 +69,19 @@ interface Floater {
 const TARGET_MODES: TargetingMode[] = ['first', 'last', 'strongest', 'weakest', 'closest'];
 
 export class GameScene extends Phaser.Scene {
+  private map: MapDef = MAP1;
+  private campaign: CampaignBattle | null = null;
+  private campaignBosses = new CampaignBossSystem();
+  private campaignCallout: { text: string; until: number } | null = null;
+  private campaignCalloutView: Phaser.GameObjects.Text | null = null;
+  private campaignStartRejected = false;
+  private qaCampaignFixture: QACampaignFixture | null = null;
+  private qaCampaignRepository: CampaignRepository | null = null;
+  private get towerVisualTier(): 1 | 2 | 3 {
+    return (import.meta.env.DEV ? this.qaCampaignFixture?.visualTier : undefined) ?? this.campaign?.visualTier ?? 1;
+  }
+  private campaignResult: { outcome: RunOutcome; score: number; lives: number; clear: CampaignClearResult | null } | null = null;
+  private towerFreezeViews = new Map<number, Phaser.GameObjects.Arc>();
   private difficultyId: DifficultyId = 'medium';
   private playerName = 'Warden';
   private runId = '';
@@ -76,7 +96,7 @@ export class GameScene extends Phaser.Scene {
   private towers: Tower[] = [];
   private dying: Array<{ view: Phaser.GameObjects.Container; shadow: Phaser.GameObjects.Ellipse | null; ring: Phaser.GameObjects.Ellipse | null; bar: Phaser.GameObjects.Graphics | null; t0: number; duration: number }> = [];
   private field: BattlefieldArt | null = null;
-  private spawnQueue: SpawnEvent[] = [];
+  private spawnQueue: CampaignSpawn[] = [];
   private gameTimeMs = 0;
   private lastQAStatusAt = 0;
   private speed = 1;
@@ -131,6 +151,7 @@ export class GameScene extends Phaser.Scene {
   private progressionListenerAttached = false;
   private readonly handleStorage = (event: { key: string | null }): void => {
     if (event.key === null || event.key === UNLOCK_STORAGE_KEY) this.unlockRepository.reconcile();
+    if (event.key === null || event.key === CAMPAIGN_STORAGE_KEY) campaignRepository.reconcile();
   };
   private scheduledBossIds = new Map<number, number>();
   private victoryPanel: Phaser.GameObjects.Container | null = null;
@@ -211,8 +232,8 @@ export class GameScene extends Phaser.Scene {
       return;
     }
     if (this.placingTowerId && inField) {
-      const index = touch ? this.cameraView.nearest(MAP1.buildable, screen, Math.max(22, 26 * this.cameraView.scale)) : this.nearestPlot(point.x, point.y)?.index ?? -1;
-      if (touch) { this.touchPreview = { point: index >= 0 ? MAP1.buildable[index] : point, plot: index >= 0 ? index : null }; this.showTouchPreview(); }
+      const index = touch ? this.cameraView.nearest(this.map.buildable, screen, Math.max(22, 26 * this.cameraView.scale)) : this.nearestPlot(point.x, point.y)?.index ?? -1;
+      if (touch) { this.touchPreview = { point: index >= 0 ? this.map.buildable[index] : point, plot: index >= 0 ? index : null }; this.showTouchPreview(); }
       else if (index >= 0) this.tryBuild(this.placingTowerId, index);
       return;
     }
@@ -269,13 +290,27 @@ export class GameScene extends Phaser.Scene {
     super('Game');
   }
 
-  init(data: { difficulty?: DifficultyId; playerName?: string }): void {
+  init(data: Partial<GameStartData>): void {
     this.pauseState = new PauseState(); this.gesture.cancel(); this.cameraView.reset();
     this.touchPreview = null; this.touchMode = false; this.sheetKind = null; this.sheet = null;
     this.modalRenderer = null; this.modalSheet = null; this.backgroundOverlay = null; this.gestureHintShown = false;
     this.modalError = '';
     const s = loadSettings();
-    this.difficultyId = getDifficulty(data.difficulty ?? s.difficulty).id;
+    this.campaign = null; this.campaignStartRejected = false; this.campaignResult = null;
+    this.qaCampaignFixture = null; this.qaCampaignRepository = null;
+    this.campaignCallout = null; this.campaignCalloutView = null;
+    if (import.meta.env.DEV && data.mode === 'campaign' && isQACampaignFixture(data.qaCampaignFixture) && data.campaignLevel === data.qaCampaignFixture.level) {
+      this.qaCampaignFixture = { ...data.qaCampaignFixture };
+      this.qaCampaignRepository = new CampaignRepository(null);
+      for (let level = 1; level < data.qaCampaignFixture.level; level++) this.qaCampaignRepository.recordClear(level, getCampaignLevel(level)!.mastery.scoreTarget, 20);
+    }
+    this.campaignBosses = new CampaignBossSystem(); this.towerFreezeViews = new Map();
+    if (data.mode === 'campaign') {
+      try { this.campaign = new CampaignBattle(data.campaignLevel ?? NaN, (this.qaCampaignRepository ?? campaignRepository).view()); }
+      catch { this.campaignStartRejected = true; }
+    }
+    this.map = this.campaign?.map ?? MAP1;
+    this.difficultyId = this.campaign ? 'medium' : getDifficulty(data.difficulty ?? s.difficulty).id;
     this.playerName = runPlayerName(data.playerName ?? s.playerName);
     const d = getDifficulty(this.difficultyId);
     this.gold = d.startingGold;
@@ -314,7 +349,7 @@ export class GameScene extends Phaser.Scene {
     this.effects = [];
     this.ended = false;
     this.refreshProgressionActions = null;
-    this.siege = new SiegeSystem(); this.evolutionCombat = new EvolutionCombat(); this.runUnlocks = this.unlockRepository.snapshotForRun(); this.unlocksEarnedThisRun = []; this.debugAssisted = false;
+    this.siege = new SiegeSystem(); this.evolutionCombat = new EvolutionCombat(); this.runUnlocks = this.unlockRepository.snapshotForRun(); this.unlocksEarnedThisRun = []; this.debugAssisted = import.meta.env.DEV && this.qaCampaignFixture !== null;
     this.achievementNotices = []; this.notifiedAchievements = new Set(); this.achievementNoticeView = null;
     this.scheduledBossIds = new Map(); this.victoryPanel = null;
     this.selectedTower = null;
@@ -365,6 +400,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
+    if (this.campaignStartRejected) { this.scene.start('Campaign', { error: 'That campaign level is locked or unavailable.' }); return; }
     const snd = SoundManager.get();
     const settings = loadSettings();
     Object.assign(snd, { masterVolume: settings.masterVolume, musicOn: settings.musicOn, sfxOn: settings.sfxOn, musicVolume: settings.musicVolume, sfxVolume: settings.sfxVolume });
@@ -397,6 +433,7 @@ export class GameScene extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.shutdownRun, this);
     if (import.meta.env.DEV) this.events.on('qa:action', this.handleQAAction, this);
     this.attachProgressionListeners();
+    if (import.meta.env.DEV && this.qaCampaignFixture) this.seedQACampaignFixture();
   }
 
   private attachProgressionListeners(): void {
@@ -440,7 +477,9 @@ export class GameScene extends Phaser.Scene {
       let rowY = 0;
       TOWER_LIST.forEach(cfg => {
         const title = sheet.text(rowY, `${cfg.name} · ${cfg.role} · ${cfg.levels[0].cost} gold`, C.gold); rowY += title.height + 8;
-        const description = sheet.text(rowY, cfg.description, C.textSecondary, 12); rowY += description.height + 8;
+        const choice = isTowerId(cfg.id) ? this.campaign?.choices[cfg.id] : null;
+        const specialization = choice ? getCampaignSpecialization(choice) : null;
+        const description = sheet.text(rowY, specialization ? `${specialization.name} · ${specialization.description}` : cfg.description, C.textSecondary, 12); rowY += description.height + 8;
         sheet.action(rowY, this.gold < cfg.levels[0].cost ? `Choose ${cfg.name} · Not enough gold` : `Choose ${cfg.name}`, () => {
           this.placingTowerId = cfg.id; this.touchPreview = null; this.sheetKind = null;
           this.drawSheet(); this.refreshPlots(); this.showTouchPreview();
@@ -479,6 +518,18 @@ export class GameScene extends Phaser.Scene {
   }
 
   private drawProgressionModel(sheet: ScrollSheet, t: Tower, startY: number): number {
+    if (this.campaign) {
+      const stats = t.stats;
+      const specialization = t.specialization ? getCampaignSpecialization(t.specialization) : null;
+      sheet.text(startY, `${t.cfg.name} · Foundation ${t.level}/4`, C.gold);
+      const title = sheet.text(startY + 32, specialization ? `${specialization.name} · ${specialization.description}` : 'No specialization selected', C.textSecondary);
+      const y = startY + 44 + title.height;
+      const summary = sheet.text(y, `Damage ${formatStat('damage', stats.damage)} · Range ${formatStat('range', stats.range)} · Attack ${formatStat('attackInterval', stats.attackInterval)}s`);
+      const actionY = y + summary.height + 16;
+      if (!t.maxLevel) sheet.action(actionY, `Upgrade · ${t.upgradeCost()} gold`, () => this.upgradeSelected(), 'primary', !this.isRunBlocked() && this.gold >= t.upgradeCost()!);
+      else sheet.text(actionY, 'Maximum foundation · Specializations change before battle', C.textMuted);
+      return actionY + 60;
+    }
     const view = towerProgressionView(t, this.purchaseContext(), this.wavesCompleted, this.towers);
     const st = view.stats;
     let y = startY;
@@ -524,6 +575,7 @@ export class GameScene extends Phaser.Scene {
   private inspectorPrimaryLabel(t: Tower): string {
     const p = t.progression;
     if (p.foundationLevel < 4) return `Upgrade · ${t.upgradeCost()} gold`;
+    if (this.campaign) return 'Maximum foundation';
     if (p.branchId === null || p.rank === null) return 'Evolve…';
     if (p.rank < 3) return `${EVOLUTIONS[p.branchId].name} rank ${p.rank + 1}…`;
     return 'Mastery…';
@@ -532,6 +584,7 @@ export class GameScene extends Phaser.Scene {
   private inspectorPrimaryAction(): void {
     const t = this.selectedTower; if (!t) return;
     if (t.progression.foundationLevel < 4) { this.purchaseSelected({ kind: 'foundation-upgrade' }, t.id, t.progression.revision); return; }
+    if (this.campaign) return;
     this.sheetKind = 'evolve'; this.drawSheet();
   }
 
@@ -595,6 +648,7 @@ export class GameScene extends Phaser.Scene {
     this.refreshProgressionActions = null;
     this.sheet?.destroy(); this.sheet = null;
     this.achievementNoticeView?.destroy(); this.achievementNoticeView = null;
+    this.campaignCalloutView?.destroy(); this.campaignCalloutView = null;
     this.uiRoot?.destroy(true);
     this.uiRoot = this.add.container(0, 0).setDepth(1000);
     this.nextPreview = null; this.confirmStrip = null;
@@ -610,8 +664,10 @@ export class GameScene extends Phaser.Scene {
     this.drawHUD(); this.drawTowerPanel(); this.drawControls(); this.drawPowerupBar(); this.drawBossBar();
     this.refreshInfoPanel(); this.refreshPlacePanel(); this.updateNextPreview(); this.updateHUD();
     this.drawSheet(scrollOffset); this.showTouchPreview();
-    if (this.siege.phase === 'victory') this.renderVictory();
+    if (this.campaignResult) this.renderCampaignResult();
+    else if (this.siege.phase === 'victory') this.renderVictory();
     this.drawAchievementNotice();
+    this.drawCampaignCallout();
   }
 
   private shutdownRun(): void {
@@ -651,8 +707,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   private enemyRenderPoint(enemy: Enemy): { x: number; y: number } {
-    const a = MAP1.waypoints[Math.max(0, enemy.waypointIndex - 1)];
-    const b = MAP1.waypoints[Math.min(MAP1.waypoints.length - 1, enemy.waypointIndex)];
+    const a = this.map.waypoints[Math.max(0, enemy.waypointIndex - 1)];
+    const b = this.map.waypoints[Math.min(this.map.waypoints.length - 1, enemy.waypointIndex)];
     const length = Math.hypot(b.x - a.x, b.y - a.y) || 1;
     const dx = (b.x - a.x) / length; const dy = (b.y - a.y) / length;
     // Stable visual ranks only: the simulation continues on its exact centerline.
@@ -679,6 +735,11 @@ export class GameScene extends Phaser.Scene {
 
   private handleQAAction(action: QAAction): void {
     if (!import.meta.env.DEV) return;
+    if (action.type === 'campaign-fixture') {
+      if (!isQACampaignFixture(action.fixture)) return;
+      this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: this.playerName, mode: 'campaign', campaignLevel: action.fixture.level, qaCampaignFixture: action.fixture } } satisfies LoadingRequest);
+      return;
+    }
     if (action.type === 'seed' || action.type === 'grant-powerup') this.debugAssisted = true;
     if (action.type === 'seed') {
       if (['normal', 'heavy', 'boss'].includes(action.state)) {
@@ -702,7 +763,7 @@ export class GameScene extends Phaser.Scene {
           this.placingTowerId = 'longbow';
           this.refreshPlots();
           this.refreshPlacePanel();
-          const plot = MAP1.buildable[0];
+          const plot = this.map.buildable[0];
           if (plot) this.updateGhost(plot.x, plot.y);
           break;
         }
@@ -745,7 +806,8 @@ export class GameScene extends Phaser.Scene {
         }
       }
     } else if (action.type === 'toggle-pause') {
-      this.togglePauseMenu();
+      if (this.qaCampaignFixture && this.paused && !this.modal) { this.paused = false; this.updateHUD(); }
+      else this.togglePauseMenu();
     } else if (action.type === 'cycle-speed') {
       this.cycleSpeed();
     } else if (action.type === 'grant-powerup') {
@@ -753,14 +815,60 @@ export class GameScene extends Phaser.Scene {
     } else if (action.type === 'start-wave') {
       this.startNextWave();
     } else if (action.type === 'restart') {
-      this.scene.restart({ difficulty: this.difficultyId, playerName: this.playerName });
+      this.restartRun();
       return;
     }
     this.publishQAStatus();
   }
 
+  private seedQACampaignFixture(): void {
+    if (!import.meta.env.DEV || !this.qaCampaignFixture || !this.campaign) return;
+    const fixture = this.qaCampaignFixture;
+    this.debugAssisted = true; this.speed = 1; this.gold = 10000;
+    // Cosmetic comparisons use lower legal plots so the full tower silhouette is visible.
+    const plots = this.map.buildable.map((point, index) => ({ point, index })).filter(({ point }) => !fixture.visualTier || point.y >= 210);
+    TOWER_LIST.forEach((cfg, index) => {
+      this.tryBuild(cfg.id, plots[index].index);
+      this.upgradeSelected();
+      if (fixture.state !== 'campaign') this.upgradeSelected();
+    });
+    this.selectedTower = null; this.placingTowerId = null; this.gold = 1200;
+    if (fixture.state === 'campaign') {
+      this.auto.setEnabled(true);
+      this.startNextWave();
+      for (let step = 0; step < 300 && !this.ended; step++) this.simulateTick(SIMULATION_STEP_MS);
+      this.auto.reset(); this.vault = new RelicVault(); this.drawPowerupBar();
+    } else {
+      const finalWave = this.campaign.waveCount;
+      this.wave = finalWave; this.wavesCompleted = finalWave - 1;
+      this.siege.seedForQA(finalWave - 1, 0); this.siege.startWave(finalWave);
+      this.waveActive = true; this.currentWaveIsBoss = !!this.campaign.definition.bossEnemyId;
+      if (fixture.state === 'campaign-results') {
+        this.enemiesKilled = Math.ceil(this.campaign.definition.mastery.scoreTarget / 10);
+        this.bossesKilled = this.campaign.definition.bossEnemyId ? 1 : 0;
+        this.campaign.bossKilled = this.currentWaveIsBoss;
+        this.checkWaveClear();
+      } else {
+        const boss = this.spawnEnemy(this.campaign.definition.bossEnemyId!, 1);
+        const index = Math.min(3, this.map.waypoints.length - 2);
+        boss.x = this.map.waypoints[index].x; boss.y = this.map.waypoints[index].y; boss.waypointIndex = index + 1;
+        boss.distanceTraveled = this.map.waypoints.slice(1, index + 1).reduce((sum, point, i) => sum + Math.hypot(point.x - this.map.waypoints[i].x, point.y - this.map.waypoints[i].y), 0);
+        if (fixture.bossPhase === 'enraged' || fixture.bossPhase === 'core') boss.hp = boss.maxHp * 0.24;
+        if (fixture.bossPhase === 'broken') boss.hp = boss.maxHp * 0.6;
+        if (fixture.bossPhase === 'phase2') boss.hp = boss.maxHp * 0.4;
+        this.gameTimeMs = fixture.level === 10 && fixture.bossPhase !== 'guarded' ? CAMPAIGN_BOSS_TUNING.shieldDurationMs : ['telegraph','freeze','phase2'].includes(fixture.bossPhase) ? CAMPAIGN_BOSS_TUNING.freezeIntervalMs : 0;
+        this.tickCampaignBosses();
+        if (fixture.bossPhase === 'freeze') { this.gameTimeMs += CAMPAIGN_BOSS_TUNING.freezeTelegraphMs; this.tickCampaignBosses(); }
+      }
+    }
+    this.refreshInfoPanel(); this.refreshPlots(); this.updateNextPreview();
+    if (!this.ended) { this.renderFrame(0); this.paused = true; }
+    this.updateHUD(); this.publishQAStatus();
+  }
+
   private publishQAStatus(): void {
     if (!import.meta.env.DEV) return;
+    const labelGeometry = (view: Phaser.GameObjects.Text) => { const { x, y, width, height } = view.getBounds(); return { text: view.text, bounds: { x, y, width, height } }; };
     const status: QAStatus = {
       wave: this.wave,
       gold: this.gold,
@@ -794,7 +902,13 @@ export class GameScene extends Phaser.Scene {
       fields: this.evolutionCombat.activeFieldCount,
       debugAssisted: this.debugAssisted,
       unsavedUnlocks: [...this.unlockRepository.view().unsaved],
-      progression: this.towers.map((t) => ({ towerId: t.towerId, branchId: t.progression.branchId, rank: t.progression.rank, masteryRank: t.progression.masteryRank, invested: t.progression.invested }))
+      progression: this.towers.map((t) => ({ towerId: t.towerId, branchId: t.progression.branchId, rank: t.progression.rank, masteryRank: t.progression.masteryRank, invested: t.progression.invested, visualTier: this.towerVisualTier })),
+      campaignLevel: this.campaign?.definition.level ?? null,
+      campaignFixture: this.qaCampaignFixture ? `${this.qaCampaignFixture.state}/${this.qaCampaignFixture.bossPhase} · DEV FIXTURE · unsaved` : null,
+      campaignBoss: (() => { const boss = this.enemies.find(e => e.alive && e.isBoss && e.campaignId); return boss ? { id: boss.campaignId!, ...this.campaignBosses.presentation(boss.id, this.gameTimeMs), targets: this.campaignBosses.telegraphTargets() } : null; })(),
+      campaignOutcome: this.campaignResult?.outcome ?? null,
+      campaignBossLabels: this.campaign && this.bossBarText && this.bossBarHp ? { name: labelGeometry(this.bossBarText), status: labelGeometry(this.bossBarHp) } : null,
+      campaignCallout: this.campaignCallout && this.campaignCalloutView ? { ...this.campaignCallout, bounds: (() => { const { x, y, width, height } = this.campaignCalloutView!.getBounds(); return { x, y, width, height }; })() } : null
     };
     this.events.emit('qa:status', status);
   }
@@ -811,9 +925,9 @@ export class GameScene extends Phaser.Scene {
   // ---------- map (painted battlefield, ART_BIBLE.md §38-46) ----------
   private drawMap(): void {
     const before = new Set(this.children.list);
-    this.field = paintBattlefield(this);
+    this.field = paintBattlefield(this, this.map, this.campaign?.definition.worldId);
     this.worldRoot?.add(this.children.list.filter(view => !before.has(view) && !view.parentContainer));
-    this.plotMarkers = MAP1.buildable.map((p, i) => this.world(this.add.circle(p.x, p.y, 22, 0, 0)
+    this.plotMarkers = this.map.buildable.map((p, i) => this.world(this.add.circle(p.x, p.y, 22, 0, 0)
       .setStrokeStyle(1, 0x63c77c, 0).setDepth(2).setData('plot', i)));
     this.refreshPlots();
     this.enemyLayer = null;
@@ -822,7 +936,7 @@ export class GameScene extends Phaser.Scene {
   private nearestPlot(x: number, y: number): { index: number; x: number; y: number } | null {
     let best: { index: number; x: number; y: number } | null = null;
     let bestD = 26 * 26;
-    MAP1.buildable.forEach((p, i) => {
+    this.map.buildable.forEach((p, i) => {
       const dx = p.x - x; const dy = p.y - y;
       const d = dx * dx + dy * dy;
       if (d < bestD) { bestD = d; best = { index: i, x: p.x, y: p.y }; }
@@ -844,7 +958,7 @@ export class GameScene extends Phaser.Scene {
   private placementCheck(towerId: string, plotIndex: number): { ok: boolean; reason: string } {
     const cfg = TOWER_LIST.find((t) => t.id === towerId);
     if (!cfg) return { ok: false, reason: 'Unknown tower' };
-    if (plotIndex < 0 || plotIndex >= MAP1.buildable.length) return { ok: false, reason: 'Outside build zone' };
+    if (plotIndex < 0 || plotIndex >= this.map.buildable.length) return { ok: false, reason: 'Outside build zone' };
     if (this.occupied.has(plotIndex)) return { ok: false, reason: 'Occupied' };
     if (!canAfford(this.gold, cfg.levels[0].cost)) return { ok: false, reason: 'Not enough gold' };
     return { ok: true, reason: '' };
@@ -864,13 +978,14 @@ export class GameScene extends Phaser.Scene {
   private updateGhost(x: number, y: number): void {
     if (!this.placingTowerId || this.modal || x < 0 || x > 1040 || y < 56 || y > 640) { this.hideGhost(); return; }
     const cfg = TOWER_LIST.find(t => t.id === this.placingTowerId);
-    if (!cfg) return;
+    if (!cfg || !isTowerId(cfg.id)) return;
+    const stats = campaignTowerStats(effectiveStats(cfg.id, initialEvolution(cfg.id)), this.campaign?.choices[cfg.id] ?? null);
     const plot = this.nearestPlot(x, y);
     const gx = plot?.x ?? x; const gy = plot?.y ?? y;
     const check = plot ? this.placementCheck(cfg.id, plot.index) : { ok: false, reason: this.onRoute(x, y) ? 'Path blocked' : 'Outside build zone' };
     if (!this.ghost || this.ghostTowerId !== cfg.id) {
       this.ghost?.destroy(true);
-      this.ghost = this.world(buildTowerVisual(this, cfg.id, 1).view).setDepth(7);
+      this.ghost = this.world(buildTowerVisual(this, cfg.id, 1, this.towerVisualTier).view).setDepth(7);
       this.projectEntity(this.ghost);
       this.ghostTowerId = cfg.id;
     }
@@ -881,14 +996,14 @@ export class GameScene extends Phaser.Scene {
     const labelPoint = this.cameraView.project({ x: gx, y: gy < 150 ? gy + 40 : gy - 116 });
     this.ghostReason.setPosition(Math.max(100, Math.min(this.layout.field.width - 100, labelPoint.x)), Math.max(120, labelPoint.y)).setVisible(true)
       .setText(`${check.ok ? 'Valid' : check.reason} · ${cfg.levels[0].cost} gold`).setColor(check.ok ? C.health : C.dangerBright);
-    this.rangeCircle?.setPosition(gx, gy).setRadius(cfg.levels[0].range).setVisible(true)
+    this.rangeCircle?.setPosition(gx, gy).setRadius(stats.range).setVisible(true)
       .setStrokeStyle(2, check.ok ? 0x63c77c : 0xd85f59, 0.8);
-    this.rangeBackdrop?.setPosition(gx, gy).setRadius(cfg.levels[0].range).setVisible(true);
+    this.rangeBackdrop?.setPosition(gx, gy).setRadius(stats.range).setVisible(true);
   }
 
   private onRoute(x: number, y: number): boolean {
-    return MAP1.waypoints.slice(1).some((b, i) => {
-      const a = MAP1.waypoints[i]; const dx = b.x - a.x; const dy = b.y - a.y;
+    return this.map.waypoints.slice(1).some((b, i) => {
+      const a = this.map.waypoints[i]; const dx = b.x - a.x; const dy = b.y - a.y;
       const t = Math.max(0, Math.min(1, ((x - a.x) * dx + (y - a.y) * dy) / (dx * dx + dy * dy || 1)));
       return Math.hypot(x - a.x - t * dx, y - a.y - t * dy) < 22;
     });
@@ -968,8 +1083,8 @@ export class GameScene extends Phaser.Scene {
     this.refreshProgressionActions?.();
     const d = getDifficulty(this.difficultyId);
     const bossNow = this.waveActive && this.currentWaveIsBoss;
-    const bossNext = !this.waveActive && buildWave(this.wave + 1, 1).isBossWave;
-    const total = this.siege.phase === 'endless' ? '∞' : '30';
+    const bossNext = !this.waveActive && (this.campaign ? this.wave + 1 === this.campaign.waveCount && !!this.campaign.definition.bossEnemyId : buildWave(this.wave + 1, 1).isBossWave);
+    const total = this.campaign ? String(this.campaign.waveCount) : this.siege.phase === 'endless' ? '∞' : '30';
     if (bossNow || bossNext) {
       this.hudWaveLabel?.setText('BOSS WAVE').setColor(C.dangerBright);
       this.hudWaveValue?.setText(`${bossNow ? this.wave : this.wave + 1}/${total}`).setColor(C.dangerBright);
@@ -983,8 +1098,9 @@ export class GameScene extends Phaser.Scene {
     // Urgent at low lives, but no continuous flashing (§21).
     this.hudLivesValue?.setColor(this.lives <= 5 ? C.danger : C.textPrimary);
     this.hudScoreValue?.setText(`${this.scoreSoFar()}`);
-    this.hudDiff?.setText(d.label);
+    this.hudDiff?.setText(this.campaign ? `Level ${this.campaign.definition.level}` : d.label);
     const bits: string[] = [];
+    if (import.meta.env.DEV && this.qaCampaignFixture) bits.push(`DEV CAMPAIGN FIXTURE · L${this.qaCampaignFixture.level} · unsaved`);
     if (this.paused || this.pausedByModal) bits.push('PAUSED');
     if (this.speed !== 1) bits.push(`${this.speed}x`);
     if (this.gameTimeMs < this.freezeUntil) bits.push('FROZEN');
@@ -992,7 +1108,9 @@ export class GameScene extends Phaser.Scene {
     if (this.gameTimeMs < this.battleCryUntil) bits.push('TEMPO');
     if (this.gameTimeMs < this.surgeUntil) bits.push('SURGE');
     if (this.pendingMeteor) bits.push(this.touchMode ? 'METEOR: TAP TO PREVIEW' : 'METEOR: CLICK BATTLEFIELD');
-    this.hudStatus?.setText(bits.join(' · ')).setVisible(bits.length > 0 && !(this.layout.compact && this.compactBossActive));
+    const devFixtureLabel = import.meta.env.DEV && this.qaCampaignFixture !== null;
+    if (devFixtureLabel && this.layout.compact) this.hudStatus?.setPosition(8, this.layout.hud + 4).setWordWrapWidth(this.layout.width - 16);
+    this.hudStatus?.setText(bits.join(' · ')).setVisible(bits.length > 0 && (!(this.layout.compact && this.compactBossActive) || devFixtureLabel));
     if (!this.waveActive) {
       this.startBtnLabel?.setText(`Start Wave ${this.wave + 1}`);
       this.startBtn?.setFillStyle(0x19232d, 1).setStrokeStyle(2, 0xd7aa4e, 1);
@@ -1071,7 +1189,7 @@ export class GameScene extends Phaser.Scene {
       card.add(this.add.rectangle(portraitX, ch / 2, iconSize + 2, iconSize + 2, 0x0a0e12).setStrokeStyle(1, 0x80674a));
       card.add(this.add.image(portraitX, ch / 2, towerPortraitKey(cfg.id)).setDisplaySize(iconSize, iconSize));
       const tx = horizontal ? 66 : iconSize + 16;
-      const stats = cfg.levels[0];
+      const stats = this.campaign && isTowerId(cfg.id) ? campaignTowerStats(effectiveStats(cfg.id, initialEvolution(cfg.id)), this.campaign.choices[cfg.id]) : cfg.levels[0];
       const summary = horizontal
         ? stats.splashRadius ? 'Splash shells' : stats.slowFactor ? 'Slows foes' : stats.chainCount ? `${stats.chainCount}-foe chain` : stats.damageType === 'arcane' ? 'Arcane bolts' : 'Fast arrows'
         : stats.splashRadius ? 'Splash shells.\nArea damage.' : stats.slowFactor ? 'Chilling bolts.\nSlows enemies.' : stats.chainCount ? `Chain lightning.\nHits ${stats.chainCount} foes.` : stats.damageType === 'arcane' ? 'Arcane bolts.\nPierces plate.' : 'Physical arrows.\nSingle target.';
@@ -1090,6 +1208,13 @@ export class GameScene extends Phaser.Scene {
   }
 
   private compositionSummary(wave: number, complete = false): string {
+    if (this.campaign) {
+      if (wave > this.campaign.waveCount) return 'Campaign battle resolved';
+      const cfg = this.campaign.wave(wave);
+      const counts = new Map<string, number>();
+      for (const spawn of cfg.spawns) counts.set(spawn.enemyId, (counts.get(spawn.enemyId) ?? 0) + 1);
+      return `Next: Wave ${wave}/${this.campaign.waveCount} · ${[...counts].map(([id, count]) => `${count}x ${getCampaignEnemy(id).name}`).join(', ')}`;
+    }
     const d = getDifficulty(this.difficultyId);
     const cfg = buildWave(wave, d.enemyCountMultiplier);
     const parts = cfg.groups
@@ -1168,8 +1293,8 @@ export class GameScene extends Phaser.Scene {
     button(this, c, 24, 68, 272, 'Resume', () => this.togglePauseMenu(), 'primary');
     button(this, c, 24, 120, 272, 'Settings', () => this.showPauseSettings());
     this.pauseAutoButton = button(this, c, 24, 172, 272, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => this.setAutoEnabled(!this.auto.enabled));
-    button(this, c, 24, 224, 272, 'Restart Run', () => this.scene.restart({ difficulty: this.difficultyId, playerName: this.playerName }));
-    button(this, c, 24, 276, 272, 'Quit to Menu', () => { SoundManager.get().stopMusic(); this.scene.start('MainMenu'); }, 'danger');
+    button(this, c, 24, 224, 272, 'Restart Run', () => this.restartRun());
+    button(this, c, 24, 276, 272, this.campaign ? 'World Map' : 'Quit to Menu', () => { SoundManager.get().stopMusic(); this.scene.start(this.campaign ? 'Campaign' : 'MainMenu'); }, 'danger');
     this.updateHUD();
   }
 
@@ -1269,12 +1394,14 @@ export class GameScene extends Phaser.Scene {
     const y = compact ? (aboveTower ? this.layout.hud + 8 : this.layout.height - this.layout.tray - height - 8) : this.layout.hud;
     const view = towerProgressionView(t, this.purchaseContext(), this.wavesCompleted, this.towers);
     const c = this.add.container(x, y); this.uiRoot!.add(c); this.infoPanel = c;
+    const progressionLabel = this.campaign ? `${t.maxLevel ? 'Maximum foundation' : `Foundation ${t.level}/4`} · ${t.specialization ? getCampaignSpecialization(t.specialization)?.name : 'No specialization'}` : view.title;
     panel(this, c, 0, 0, width, height).setInteractive().on('pointerdown', (_p: unknown, _x: number, _y: number, e: Phaser.Types.Input.EventData) => e.stopPropagation());
     if (compact) {
       const st = t.stats;
-      const next = view.actions[0]?.nextStats ?? null;
+      const nextBase = this.campaign && t.maxLevel ? null : view.actions[0]?.nextStats ?? null;
+      const next = nextBase && this.campaign ? campaignTowerStats(nextBase, t.specialization) : nextBase;
       c.add(this.add.image(28, 28, towerPortraitKey(t.towerId)).setDisplaySize(40, 40));
-      c.add(this.add.text(60, 6, view.title, style(14, C.textPrimary, true, FONT_DISPLAY)));
+      c.add(this.add.text(60, 6, progressionLabel, style(14, C.textPrimary, true, FONT_DISPLAY)).setWordWrapWidth(width - 120));
       c.add(this.add.text(60, 28, `Damage ${formatStat('damage', st.damage)} · Attack ${formatStat('attackInterval', st.attackInterval)}s · Range ${formatStat('range', st.range)} · Type ${st.damageType}`, style(14, C.textSecondary)));
       if (next) c.add(this.add.text(width - 60, 8, `Next: ${formatStat('damage', next.damage)} damage · ${formatStat('range', next.range)} range · ${formatStat('attackInterval', next.attackInterval)}s`, style(12, C.gold)).setOrigin(1, 0));
       button(this, c, width - 52, 4, 44, '×', () => { this.selectedTower = null; this.refreshInfoPanel(); });
@@ -1292,7 +1419,7 @@ export class GameScene extends Phaser.Scene {
     }
     c.add(this.add.image(40, 40, towerPortraitKey(t.towerId)).setDisplaySize(56, 56));
     c.add(this.add.text(76, 12, t.cfg.name, style(18, C.textPrimary, true, FONT_DISPLAY)));
-    const progressionTitle = this.add.text(76, 36, view.title, style(12, C.gold, true)).setWordWrapWidth(width - 130);
+    const progressionTitle = this.add.text(76, 36, progressionLabel, style(12, C.gold, true)).setWordWrapWidth(width - 130);
     c.add(progressionTitle);
     const detailsY = Math.max(80, 36 + progressionTitle.height + 8);
     const detailsOffset = detailsY - 80;
@@ -1314,7 +1441,8 @@ export class GameScene extends Phaser.Scene {
       button(this, c, bx, by, bw - 4, mode[0].toUpperCase() + mode.slice(1), () => { t.targeting = mode; this.refreshInfoPanel(); }, t.targeting === mode ? 'primary' : 'secondary');
     });
     const upgradeY = compact ? 184 : modesY + 152;
-    const next = view.actions[0]?.nextStats ?? null;
+    const nextBase = this.campaign && t.maxLevel ? null : view.actions[0]?.nextStats ?? null;
+    const next = nextBase && this.campaign ? campaignTowerStats(nextBase, t.specialization) : nextBase;
     if (next) {
       const preview = `Damage ${formatStat('damage', st.damage)} → ${formatStat('damage', next.damage)}   Range ${formatStat('range', st.range)} → ${formatStat('range', next.range)}\nAttack ${formatStat('attackInterval', st.attackInterval)}s → ${formatStat('attackInterval', next.attackInterval)}s`;
       if (!compact) c.add(this.add.text(16, upgradeY, preview, style(12, C.textSecondary)).setWordWrapWidth(width - 32));
@@ -1331,17 +1459,18 @@ export class GameScene extends Phaser.Scene {
     if (!cfg) return;
     const check = this.placementCheck(towerId, plotIndex);
     if (!check.ok) {
-      const p = MAP1.buildable[plotIndex] ?? { x: MAP1.width / 2, y: MAP1.height / 2 };
+      const p = this.map.buildable[plotIndex] ?? { x: this.map.width / 2, y: this.map.height / 2 };
       this.floatText(p.x, p.y - 26, check.reason, C.dangerBright);
       SoundManager.get().sell();
       return;
     }
     const cost = cfg.levels[0].cost;
     this.gold -= cost;
-    const p = MAP1.buildable[plotIndex];
+    const p = this.map.buildable[plotIndex];
     const tw = new Tower(towerId, p.x, p.y, plotIndex);
+    if (this.campaign) { tw.specialization = this.campaign.choices[tw.towerId]; tw.targeting = this.campaign.targeting[tw.towerId]; }
     // Authored family visual + contact shadow (§13-14, §65).
-    const visual = buildTowerVisual(this, towerId, 1);
+    const visual = buildTowerVisual(this, towerId, 1, this.towerVisualTier);
     const { view, crown } = visual;
     view.setData({ muzzleX: visual.muzzleX, muzzleY: visual.muzzleY, displayBounds: visual.displayBounds });
     this.world(view).setPosition(p.x, p.y).setDepth(3 + p.y / 1000);
@@ -1367,10 +1496,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   private purchaseContext(): PurchaseContext {
-    return { gold: this.gold, evolutionOpen: this.siege.evolutionOpen, endless: this.siege.phase === 'endless', blocked: this.isRunBlocked(), unlocked: this.runUnlocks };
+    return { gold: this.gold, evolutionOpen: !this.campaign && this.siege.evolutionOpen, endless: !this.campaign && this.siege.phase === 'endless', blocked: this.isRunBlocked(), unlocked: this.runUnlocks };
   }
 
   private purchaseSelected(intent: PurchaseIntent, expectedTowerId: number, expectedRevision: number): void {
+    if (this.campaign && intent.kind !== 'foundation-upgrade') return;
     const tower = this.selectedTower;
     if (!tower || tower.id !== expectedTowerId || !this.towers.includes(tower)) { this.showBanner(PURCHASE_REASON_TEXT['stale action'], C.dangerBright); return; }
     const result = purchaseEvolution(tower.towerId, tower.progression, intent, this.purchaseContext(), expectedRevision);
@@ -1388,7 +1518,7 @@ export class GameScene extends Phaser.Scene {
   private refreshTowerVisual(t: Tower): void {
     // Upgrade visibly evolves the silhouette (§15, §91): rebuild at new level.
     t.view?.destroy(true);
-    const rebuilt = buildTowerVisual(this, t.towerId, t.level);
+    const rebuilt = buildTowerVisual(this, t.towerId, t.level, this.towerVisualTier);
     rebuilt.view.setData({ muzzleX: rebuilt.muzzleX, muzzleY: rebuilt.muzzleY, displayBounds: rebuilt.displayBounds });
     this.world(rebuilt.view).setPosition(t.x, t.y).setDepth(3 + t.y / 1000);
     const { branchId, rank } = t.progression;
@@ -1484,13 +1614,14 @@ export class GameScene extends Phaser.Scene {
     if (!this.siege.startWave(this.wave + 1)) return;
     this.auto.cancelCountdown();
     this.wave++;
-    const d = getDifficulty(this.difficultyId); const cfg = buildWave(this.wave, d.enemyCountMultiplier);
+    const d = getDifficulty(this.difficultyId);
+    const cfg = this.campaign ? this.campaign.wave(this.wave, d.enemyCountMultiplier) : buildWave(this.wave, d.enemyCountMultiplier);
     this.currentWaveIsBoss = cfg.isBossWave;
-    this.spawnQueue = scheduleWave(cfg.groups, this.gameTimeMs + (cfg.isBossWave ? 1300 : 800));
+    this.spawnQueue = 'spawns' in cfg ? cfg.spawns.map(spawn => ({ ...spawn, atMs: spawn.atMs + this.gameTimeMs })) : scheduleWave(cfg.groups, this.gameTimeMs + (cfg.isBossWave ? 1300 : 800));
     this.waveActive = true;
     if (cfg.isBossWave) {
       this.bossWarned[this.wave] = true; SoundManager.get().boss();
-      this.showBanner(wavePresentation(this.wave, this.siege.phase === 'endless').warning, C.dangerBright);
+      this.showBanner(this.campaign ? getCampaignEnemy(this.campaign.definition.bossEnemyId!).name : wavePresentation(this.wave, this.siege.phase === 'endless').warning, C.dangerBright);
     } else this.floatText(520, 128, `Wave ${this.wave}`, C.textPrimary, 22);
     this.updateNextPreview(); this.updateHUD();
   }
@@ -1504,7 +1635,7 @@ export class GameScene extends Phaser.Scene {
     // Authored creature + contact shadow + slow ring (bible §22-30, §65).
     // Slow uses a ring, never a full recolor (§50).
     const shadow = this.add.ellipse(e.x, e.y + e.radius * 0.7, e.radius * 2.1, e.radius * 0.9, 0x000000, 0.3).setDepth(3);
-    const visual = buildEnemyVisual(this, e.archetype);
+    const visual = buildEnemyVisual(this, e.archetype, e.campaignId ?? undefined);
     const { view, body, bobAmp, bobFreq, rockAmp } = visual;
     view.setData('enemyVisual', visual);
     const edge = this.add.image(0, 1, visual.sprite.texture.key, visual.sprite.frame.name).setOrigin(0.5, 1)
@@ -1567,7 +1698,17 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private spawnEnemy(enemyId: EnemyArchetype, hpBonus: number): Enemy {
+  private spawnEnemy(enemyId: string, hpBonus: number): Enemy {
+    if (this.campaign && enemyId !== 'pilferer') {
+      const cfg = getCampaignEnemy(enemyId);
+      const hp = Math.round(cfg.baseHp * (1 + CAMPAIGN_BATTLE_TUNING.hpGrowthPerWave * (this.wave - 1) + CAMPAIGN_BATTLE_TUNING.levelHpGrowth * (this.campaign.definition.level - 1)) * hpBonus);
+      const enemy = new Enemy(cfg.visualArchetype, hp, cfg.baseSpeed * (1 + CAMPAIGN_BATTLE_TUNING.speedGrowthPerWave * (this.wave - 1)), cfg.baseReward, cfg);
+      enemy.campaignId = cfg.id; enemy.slowResistance = cfg.slowResistance;
+      enemy.x = this.map.spawn.x; enemy.y = this.map.spawn.y;
+      this.campaignBosses.register(enemy, this.gameTimeMs);
+      this.makeEnemyVisual(enemy); this.enemies.push(enemy); return enemy;
+    }
+    if (!isClassicEnemy(enemyId)) throw new Error(`Unknown classic enemy: ${enemyId}`);
     const d = getDifficulty(this.difficultyId);
     const w = Math.max(1, this.wave);
     const hp = enemyId === 'pilferer'
@@ -1577,7 +1718,7 @@ export class GameScene extends Phaser.Scene {
     const cfg = ENEMIES[enemyId];
     const reward = cfg.baseReward;
     const e = new Enemy(enemyId, hp, speed, reward);
-    const wp0 = MAP1.waypoints[0];
+    const wp0 = this.map.waypoints[0];
     e.x = wp0.x; e.y = wp0.y;
     e.waypointIndex = 1;
     this.makeEnemyVisual(e);
@@ -1624,9 +1765,16 @@ export class GameScene extends Phaser.Scene {
     const pct = Math.max(0, boss.hp / boss.maxHp);
     const maxWidth = this.layout.compact ? 120 : Math.min(440, this.layout.field.width - 32) - 56;
     this.bossBarFill?.setDisplaySize(maxWidth * pct, this.layout.compact ? 5 : 8);
-    this.bossBarText?.setText(`${boss.name}${pct < 0.3 ? ' · Enraged' : ''}`);
-    this.bossBarHp?.setText(this.layout.compact ? `HP ${Math.ceil(pct * 100)}%` : `${Math.ceil(pct * 100)}%`);
-    if (this.layout.compact) this.hudStatus?.setVisible(false);
+    if (this.campaign && this.layout.compact) {
+      // Keep the identity to one line; phase and HP share a separate status row.
+      const name = boss.campaignId === 'hollow_warden' ? 'Hollow Warden' : boss.campaignId === 'cinder_colossus' ? 'Cinder Colossus' : 'Frost Matriarch';
+      this.bossBarText?.setText(name);
+      this.bossBarHp?.setText(`Phase ${this.campaignBosses.phase(boss.id)} · HP ${Math.ceil(pct * 100)}%`);
+    } else {
+      this.bossBarText?.setText(`${boss.name}${this.campaign ? ` · Phase ${this.campaignBosses.phase(boss.id)}` : pct < 0.3 ? ' · Enraged' : ''}`);
+      this.bossBarHp?.setText(this.layout.compact ? `HP ${Math.ceil(pct * 100)}%` : `${Math.ceil(pct * 100)}%`);
+    }
+    if (this.layout.compact && !(import.meta.env.DEV && this.qaCampaignFixture)) this.hudStatus?.setVisible(false);
   }
 
   // ---------- power-ups ----------
@@ -1700,6 +1848,7 @@ export class GameScene extends Phaser.Scene {
     this.gesture.cancel(); this.touchPreview = null;
     this.modalRenderer = () => this.showRelicPanel(id, reason, full, use, keep, victory);
     const cfg = POWERUPS[id];
+    const reroll = this.canRerollReward(id, reason);
     this.pausedByModal = true;
     if (!this.rebuildingModal) SoundManager.get().powerup();
     if (this.layout.width < 768) {
@@ -1717,11 +1866,12 @@ export class GameScene extends Phaser.Scene {
         sheet.action(y, 'Use oldest', use, 'primary'); sheet.action(y + 52, 'Replace oldest', keep);
         sheet.action(y + 104, 'Discard new', () => { this.vault.resolve('discard-new'); this.closeModal(); this.presentReward(); });
       } else { sheet.action(y, cfg.requiresTarget ? 'Choose target' : 'Use Now', use, 'primary'); sheet.action(y + 52, reason === 'Stored Power-Up' ? 'Keep' : 'Store', keep); }
+      if (reroll) sheet.action(y + (full ? 156 : 104), 'Reroll · Once this level', () => this.rerollReward(id, reason));
       this.updateHUD(); return;
     }
     const compact = this.layout.compact;
     const width = Math.min(compact ? 650 : 620, this.layout.width - 32);
-    const height = compact ? 324 : (full ? 348 : 332);
+    const height = (compact ? 324 : (full ? 348 : 332)) + (reroll ? 52 : 0);
     const rarityColor = Number(RARITY_COLOR[cfg.rarity].replace('#', '0x'));
     const c = this.modalFrame(width, height, 0x80674a);
     const frame = this.add.graphics();
@@ -1786,6 +1936,7 @@ export class GameScene extends Phaser.Scene {
     if (full) c.add(this.add.text(detailsX, artY + 76, 'Choose one action to make room.', style(12, C.textSecondary)));
 
     const y = height - 56;
+    if (reroll) button(this, c, detailsX, y - 52, detailsWidth, 'Reroll · Once this level', () => this.rerollReward(id, reason), 'secondary', 44);
     if (victory) {
       c.add(this.add.text(detailsX, y - 24, 'Continue into endless to use relics', style(12, C.gold)).setWordWrapWidth(detailsWidth));
       const gap = 8;
@@ -1814,6 +1965,22 @@ export class GameScene extends Phaser.Scene {
       if (result.kind === 'apply') { this.applyPowerup(result.id); this.vault.resolve('store'); }
       this.finishUse(result, result.kind === 'apply');
     }, () => { this.vault.resolve('replace-oldest'); this.closeModal(); this.drawPowerupBar(); this.presentReward(); });
+  }
+
+  private rollReward(): PowerUpId { return this.campaign ? this.campaign.rollReward() : rollPowerUp(); }
+
+  private canRerollReward(id: PowerUpId, reason: string): boolean {
+    const reward = this.vault.pending[0];
+    return !!this.campaign && reason !== 'QA fixture' && reason !== 'Stored Power-Up' && reward?.id === id && reward.reason === reason && this.campaign.canReroll(reward.reveal);
+  }
+
+  private rerollReward(id: PowerUpId, reason: string): void {
+    if (!this.canRerollReward(id, reason) || this.pauseState.has('background')) return;
+    const reward = this.vault.pending[0];
+    const replacement = this.campaign!.reroll(id, reward.reveal);
+    if (!replacement) return;
+    reward.id = replacement; this.vault.revision++;
+    this.closeModal(); this.presentReward();
   }
 
   private activatePowerup(index: number): void {
@@ -1846,12 +2013,12 @@ export class GameScene extends Phaser.Scene {
       case 'gold_rush': {
         const g = POWERUP_EFFECTS.gold.base + this.wave * POWERUP_EFFECTS.gold.perWave;
         this.gold += g;
-        this.floatText(MAP1.width / 2, 160, `Gold Rush! +${g} gold`, C.gold, 20);
+        this.floatText(this.map.width / 2, 160, `Gold Rush! +${g} gold`, C.gold, 20);
         break;
       }
       case 'time_freeze':
         this.freezeUntil = this.gameTimeMs + POWERUP_EFFECTS.freezeMs;
-        this.floatText(MAP1.width / 2, 160, 'TIME FROZEN', C.frost, 22);
+        this.floatText(this.map.width / 2, 160, 'TIME FROZEN', C.frost, 22);
         break;
       case 'battle_cry':
         this.battleCryUntil = this.gameTimeMs + POWERUP_EFFECTS.tempo.durationMs;
@@ -1859,21 +2026,21 @@ export class GameScene extends Phaser.Scene {
         break;
       case 'arcane_surge':
         this.surgeUntil = this.gameTimeMs + POWERUP_EFFECTS.surge.durationMs;
-        this.floatText(MAP1.width / 2, 160, 'ARCANE SURGE: +50% damage', C.arcane, 20);
+        this.floatText(this.map.width / 2, 160, 'ARCANE SURGE: +50% damage', C.arcane, 20);
         break;
       case 'emergency_repair': {
         const before = this.lives;
         this.lives = Math.min(this.maxLives, this.lives + POWERUP_EFFECTS.repairLives);
-        this.floatText(MAP1.width / 2, 160, `Repaired ${this.lives - before} lives`, C.health, 20);
+        this.floatText(this.map.width / 2, 160, `Repaired ${this.lives - before} lives`, C.health, 20);
         break;
       }
       case 'treasure_goblin':
         this.spawnEnemy('pilferer', 1);
-        this.floatText(MAP1.width / 2, 160, 'A Gilded Pilferer appears!', C.gold, 20);
+        this.floatText(this.map.width / 2, 160, 'A Gilded Pilferer appears!', C.gold, 20);
         break;
       case 'double_bounty':
         this.doubleBountyUntil = this.gameTimeMs + POWERUP_EFFECTS.doubleBountyMs;
-        this.floatText(MAP1.width / 2, 160, 'DOUBLE BOUNTY for 20s', C.gold, 20);
+        this.floatText(this.map.width / 2, 160, 'DOUBLE BOUNTY for 20s', C.gold, 20);
         break;
       case 'tower_overcharge': {
         if (this.towers.length === 0) return;
@@ -1884,9 +2051,9 @@ export class GameScene extends Phaser.Scene {
       }
       case 'ancient_blessing': {
         const roll = Math.random();
-        if (roll < POWERUP_EFFECTS.blessing.coinChance) { const g = POWERUP_EFFECTS.blessing.goldBase + this.wave * POWERUP_EFFECTS.blessing.goldPerWave; this.gold += g; this.floatText(MAP1.width / 2, 160, `Blessing of Coin: +${g} gold`, C.gold, 20); }
-        else if (roll < POWERUP_EFFECTS.blessing.repairThreshold) { this.lives = Math.min(d.maxLives, this.lives + POWERUP_EFFECTS.blessing.repairLives); this.floatText(MAP1.width / 2, 160, 'Blessing of Stone: +2 lives', C.health, 20); }
-        else { this.surgeUntil = this.gameTimeMs + POWERUP_EFFECTS.surge.durationMs; this.floatText(MAP1.width / 2, 160, 'Blessing of Stars: Surge', C.arcane, 20); }
+        if (roll < POWERUP_EFFECTS.blessing.coinChance) { const g = POWERUP_EFFECTS.blessing.goldBase + this.wave * POWERUP_EFFECTS.blessing.goldPerWave; this.gold += g; this.floatText(this.map.width / 2, 160, `Blessing of Coin: +${g} gold`, C.gold, 20); }
+        else if (roll < POWERUP_EFFECTS.blessing.repairThreshold) { this.lives = Math.min(d.maxLives, this.lives + POWERUP_EFFECTS.blessing.repairLives); this.floatText(this.map.width / 2, 160, 'Blessing of Stone: +2 lives', C.health, 20); }
+        else { this.surgeUntil = this.gameTimeMs + POWERUP_EFFECTS.surge.durationMs; this.floatText(this.map.width / 2, 160, 'Blessing of Stars: Surge', C.arcane, 20); }
         break;
       }
       case 'meteor_strike':
@@ -1943,7 +2110,7 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private fireProjectile(x1: number, y1: number, enemy: Enemy, shot: ShotSnapshot, chainIndex = 0, hit = new Set<number>(), visualStart?: { x: number; y: number }): void {
+  private fireProjectile(x1: number, y1: number, enemy: Enemy, shot: CampaignShot, chainIndex = 0, hit = new Set<number>(), visualStart?: { x: number; y: number }): void {
     if (this.ended) return;
     const towerId = shot.towerId;
     const cfg = TOWER_LIST.find(t => t.id === towerId)!;
@@ -2030,9 +2197,9 @@ export class GameScene extends Phaser.Scene {
         const blast = this.world(this.add.circle(target.x, target.y, st.splashRadius, 0xde8742, 0.16).setDepth(6)); this.addEffect(blast, 220);
         for (const enemy of this.enemies) if (enemy.alive && Math.hypot(enemy.x - target.x, enemy.y - target.y) <= st.splashRadius) this.damageEnemy(enemy, shot.rawDamage, st.damageType, shot);
         this.evolutionCombat.primaryHit(shot, target, this.gameTimeMs, !target.alive);
-        if (this.towers.some(t => t.id === shot.ownerId)) this.evolutionCombat.addField(shot, target.x, target.y, this.gameTimeMs);
+        if (this.towers.some(t => t.id === shot.ownerId)) this.evolutionCombat.addField(shot, target.x, target.y, this.gameTimeMs, shot.specialization?.burnDurationMs, shot.specialization?.burnDamageMultiplier);
       } else {
-        this.damageEnemy(target, flight.chainIndex ? shot.rawDamage * 0.75 : shot.rawDamage, st.damageType, shot);
+        this.damageEnemy(target, flight.chainIndex ? shot.rawDamage * 0.75 * (shot.specialization?.chainDamageMultiplier ?? 1) : shot.rawDamage, st.damageType, shot);
         if (shot.primary) this.evolutionCombat.primaryHit(shot, target, this.gameTimeMs, !target.alive);
         if (st.chainCount && flight.chainIndex + 1 < st.chainCount) {
           flight.hit.add(target.id);
@@ -2044,7 +2211,8 @@ export class GameScene extends Phaser.Scene {
               this.drawTempestArc(arc, point, nextPoint, next.id + flight.chainIndex);
               this.addEffect(arc, 160);
             }
-            this.fireProjectile(target.x, target.y, next, chainShot(shot), flight.chainIndex + 1, flight.hit, point);
+            const chained = chainShot(shot.primary && shot.specialization?.primaryDamageMultiplier ? { ...shot, rawDamage: shot.rawDamage / shot.specialization.primaryDamageMultiplier } : shot);
+            this.fireProjectile(target.x, target.y, next, chained, flight.chainIndex + 1, flight.hit, point);
           }
         }
       }
@@ -2129,9 +2297,10 @@ export class GameScene extends Phaser.Scene {
     this.addEffect(g, 260);
   }
 
-  private damageEnemy(e: Enemy, raw: number, type: DamageType, shot?: ShotSnapshot): number {
+  private damageEnemy(e: Enemy, raw: number, type: DamageType, shot?: CampaignShot): number {
     if (this.ended || !e.alive) return 0;
-    const dealt = this.evolutionCombat.damage(raw, type, e, this.gameTimeMs, shot);
+    const slowed = this.evolutionCombat.statuses(e.id, this.gameTimeMs).slowFactor > 0;
+    const dealt = this.evolutionCombat.damage(raw * e.damageTakenMultiplier * (slowed ? shot?.specialization?.slowedTargetDamageMultiplier ?? 1 : 1), type, e, this.gameTimeMs, shot);
     e.hp -= dealt;
     e.flashUntil = this.gameTimeMs + 110; // 50–100ms-class hit reaction (§63)
     if (e.hp <= 0 && e.alive) this.killEnemy(e);
@@ -2141,6 +2310,8 @@ export class GameScene extends Phaser.Scene {
   private killEnemy(e: Enemy): void {
     if (this.ended || !e.alive) return;
     e.alive = false;
+    if (this.campaign && e.campaignId === this.campaign.definition.bossEnemyId) this.campaign.bossKilled = true;
+    this.campaignBosses.remove(e.id);
     this.evolutionCombat.removeEnemy(e.id);
     const siegeWave = this.scheduledBossIds.get(e.id);
     if (siegeWave !== undefined) { this.siege.bossKilled(siegeWave); this.scheduledBossIds.delete(e.id); this.refreshInfoPanel(); }
@@ -2153,10 +2324,10 @@ export class GameScene extends Phaser.Scene {
     if (e.isBoss) {
       this.bossesKilled++;
       this.gold += waveClearBonus(this.wave);
-      this.grantPowerup(rollPowerUp(), 'Boss defeated', true);
+      this.grantPowerup(this.rollReward(), 'Boss defeated', true);
     } else if (shouldDropOnKill(Math.random, POWERUP_DROP_CHANCE_PER_KILL)) {
       // Rare drops never interrupt combat: store + toast (SPEC §26, no long block).
-      this.grantPowerup(rollPowerUp(), 'Relic Found', false);
+      this.grantPowerup(this.rollReward(), 'Relic Found', false);
     }
     SoundManager.get().die();
     const point = this.enemyImpactPoint(e);
@@ -2201,6 +2372,7 @@ export class GameScene extends Phaser.Scene {
     const surgeActive = this.gameTimeMs < this.surgeUntil;
     const cands = this.enemies.map(e => ({ id: e.id, x: e.x, y: e.y, hp: e.hp, maxHp: e.maxHp, distanceTraveled: e.distanceTraveled }));
     for (const t of this.towers) {
+      if (this.gameTimeMs < t.frozenUntil) continue;
       t.cooldown -= dt;
       if (t.cooldown > 0) continue;
       const target = pickTarget(cands, t.x, t.y, t.stats.range, t.targeting);
@@ -2209,7 +2381,8 @@ export class GameScene extends Phaser.Scene {
       if (!enemy) continue;
       const multiplier = (surgeActive ? POWERUP_EFFECTS.surge.damageMultiplier : 1)
         * (this.gameTimeMs < t.overchargeUntil ? POWERUP_EFFECTS.overcharge.damageMultiplier : 1);
-      const shot = this.evolutionCombat.makeShot(t, this.towers, multiplier);
+      const baseShot = this.evolutionCombat.makeShot(t, this.towers, multiplier, true, t.stats);
+      const shot = specializeShot(baseShot, t.specialization);
       const interval = shot.stats.attackInterval * (cryActive ? POWERUP_EFFECTS.tempo.intervalMultiplier : 1);
       t.cooldown = Math.max(0, t.cooldown + interval);
       t.recoilUntil = this.gameTimeMs + 130; // attack animation reinforces cadence (§60)
@@ -2221,7 +2394,10 @@ export class GameScene extends Phaser.Scene {
       const mx = (t.view?.getData('muzzleX') as number | undefined) ?? 0;
       const my = (t.view?.getData('muzzleY') as number | undefined) ?? -48;
       const targets = shot.stats.volleyTargets > 1 ? volleyTargets(this.enemies, t, shot.stats, t.targeting) as Enemy[] : [enemy];
-      for (const victim of targets) this.fireProjectile(t.x + mx * (t.view?.scaleX ?? 1), t.y + my * (t.view?.scaleY ?? 1), victim, shot);
+      for (let i = 0; i < targets.length; i++) {
+        const splitShot = i > 0 && shot.specialization?.splitTargets ? { ...shot, primary: false, rawDamage: shot.rawDamage * (shot.specialization.splitDamageMultiplier ?? 1) } : shot;
+        this.fireProjectile(t.x + mx * (t.view?.scaleX ?? 1), t.y + my * (t.view?.scaleY ?? 1), targets[i], splitShot);
+      }
     }
   }
 
@@ -2249,6 +2425,33 @@ export class GameScene extends Phaser.Scene {
       view.destroy();
       this.fieldViews.delete(ownerId);
     }
+  }
+
+  private tickCampaignBosses(): void {
+    for (const event of this.campaignBosses.tick(this.enemies, this.towers, this.gameTimeMs)) {
+      this.showCampaignCallout(event.text);
+      if (!event.summon) continue;
+      for (let i = 0; i < event.summon.count; i++) {
+        const add = this.spawnEnemy(event.summon.enemyId, 1);
+        add.x = event.boss.x; add.y = event.boss.y;
+        add.waypointIndex = event.boss.waypointIndex; add.distanceTraveled = event.boss.distanceTraveled;
+      }
+    }
+  }
+
+  private syncTowerFreezeViews(): void {
+    if (!this.campaign) return;
+    const telegraphs = this.campaignBosses.telegraphTargets();
+    const active = new Set<number>();
+    for (const tower of this.towers) {
+      const frozen = this.gameTimeMs < tower.frozenUntil, marked = telegraphs.includes(tower.id);
+      if (!frozen && !marked) continue;
+      active.add(tower.id);
+      let view = this.towerFreezeViews.get(tower.id);
+      if (!view) { view = this.world(this.add.circle(tower.x, tower.y, 30, 0x9fd4e8, 0.08).setDepth(6)); this.towerFreezeViews.set(tower.id, view); }
+      view.setStrokeStyle(frozen ? 4 : 2, frozen ? 0xe1f5fe : 0x9fd4e8, 0.95).setRadius(frozen ? 32 : 30);
+    }
+    for (const [id, view] of this.towerFreezeViews) if (!active.has(id)) { view.destroy(); this.towerFreezeViews.delete(id); }
   }
 
   // Combat uses fixed game-time steps; Auto and presentation observe visible frames.
@@ -2282,8 +2485,9 @@ export class GameScene extends Phaser.Scene {
       while (this.spawnQueue.length && this.spawnQueue[0].atMs <= this.gameTimeMs) {
         const spawn = this.spawnQueue.shift()!;
         const enemy = this.spawnEnemy(spawn.enemyId, spawn.hpBonus);
-        if (enemy.isBoss && [10, 20, 30].includes(this.wave)) this.scheduledBossIds.set(enemy.id, this.wave);
+        if (!this.campaign && enemy.isBoss && [10, 20, 30].includes(this.wave)) this.scheduledBossIds.set(enemy.id, this.wave);
       }
+      if (this.campaign) this.tickCampaignBosses();
       this.moveEnemies(stepMs);
       if (this.isRunBlocked()) return false;
       this.enemies = this.enemies.filter(e => e.alive);
@@ -2297,14 +2501,14 @@ export class GameScene extends Phaser.Scene {
 
   private moveEnemies(stepMs: number): void {
     const dt = stepMs / 1000;
-    const wps = MAP1.waypoints;
+    const wps = this.map.waypoints;
     for (const e of this.enemies) {
       if (!e.alive) continue;
       if (e.regen > 0 && e.hp < e.maxHp) e.hp = Math.min(e.maxHp, e.hp + e.regen * dt);
       const status = this.evolutionCombat.statuses(e.id, this.gameTimeMs);
       const sp = e.effectiveSpeed(this.gameTimeMs, this.freezeUntil, status);
       // Boss enrage below 30% HP (one of max two early mechanics: regen + enrage).
-      const enraged = e.isBoss && e.hp < e.maxHp * BOSS_BEHAVIOR.enrageHpFraction;
+      const enraged = !this.campaign && e.isBoss && e.hp < e.maxHp * BOSS_BEHAVIOR.enrageHpFraction;
       const v = sp * (enraged ? BOSS_BEHAVIOR.enrageSpeedMultiplier : 1);
       const fromX = e.x;
       const fromY = e.y;
@@ -2336,7 +2540,7 @@ export class GameScene extends Phaser.Scene {
 
       }
       // Late-game summoning (wave 20+ only — early bosses stay at 2 mechanics).
-      if (e.isBoss && e.alive && this.wave >= BOSS_BEHAVIOR.summonFromWave && Math.floor(this.gameTimeMs / BOSS_BEHAVIOR.summonIntervalMs) !== Math.floor((this.gameTimeMs - stepMs) / BOSS_BEHAVIOR.summonIntervalMs)) {
+      if (!this.campaign && e.isBoss && e.alive && this.wave >= BOSS_BEHAVIOR.summonFromWave && Math.floor(this.gameTimeMs / BOSS_BEHAVIOR.summonIntervalMs) !== Math.floor((this.gameTimeMs - stepMs) / BOSS_BEHAVIOR.summonIntervalMs)) {
         for (let i = 0; i < BOSS_BEHAVIOR.summonCount; i++) {
           const d = getDifficulty(this.difficultyId);
           const m = new Enemy('gloomite', enemyHpForWave('gloomite', this.wave, d, 1), enemySpeedForWave('gloomite', this.wave, d), ENEMIES.gloomite.baseReward);
@@ -2352,6 +2556,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private renderFrame(processedGameMs: number): void {
+    this.updateCampaignCallout();
     for (const e of this.enemies) {
       if (!e.alive) continue;
       const status = this.evolutionCombat.statuses(e.id, this.gameTimeMs);
@@ -2365,6 +2570,7 @@ export class GameScene extends Phaser.Scene {
         e.view?.setPosition(point.x, point.y);
         e.view?.setRotation(0).setDepth(3 + point.y / 1000);
         const visual = e.view?.getData('enemyVisual') as { setFacing?: (dx: number, dy: number) => void; setWalking?: (walking: boolean) => void } | undefined;
+        if (e.campaignId) (visual as { setCampaignState?: (state: { phase: number; telegraph: boolean; guarded: boolean }) => void } | undefined)?.setCampaignState?.(this.campaignBosses.presentation(e.id, this.gameTimeMs));
         visual?.setFacing?.(movedX, movedY); visual?.setWalking?.(!frozen && e.effectiveSpeed(this.gameTimeMs, this.freezeUntil, status) > 0);
         const sprite = (visual as { sprite?: Phaser.GameObjects.Sprite } | undefined)?.sprite;
         if (sprite) sprite.anims.timeScale = this.speed * (slowed ? 1 - status.slowFactor : 1);
@@ -2401,7 +2607,7 @@ export class GameScene extends Phaser.Scene {
         .setRotation(Math.atan2(flight.y2 - flight.y1, flight.x2 - flight.x1));
     }
     for (const tower of this.towers) tower.crown?.setScale(this.gameTimeMs < tower.recoilUntil ? 0.88 : 1);
-    this.syncFieldViews(); this.updateBossBar(); this.updateDying(); this.updateEffects();
+    this.syncFieldViews(); this.syncTowerFreezeViews(); this.updateBossBar(); this.updateDying(); this.updateEffects();
     this.worldRoot?.sort('depth');
     for (const f of this.floaters) {
       f.text.y -= processedGameMs * 0.02;
@@ -2417,10 +2623,11 @@ export class GameScene extends Phaser.Scene {
   private handleLeak(e: Enemy): boolean {
     e.alive = false;
     e.reachedEnd = true;
+    this.campaignBosses.remove(e.id);
     this.evolutionCombat.removeEnemy(e.id);
     this.lives = Math.max(0, this.lives - e.livesLost);
     SoundManager.get().leak();
-    this.floatText(MAP1.stronghold.x - 40, MAP1.stronghold.y - 60, `-${e.livesLost} lives`, C.dangerBright, 16);
+    this.floatText(this.map.stronghold.x - 40, this.map.stronghold.y - 60, `-${e.livesLost} lives`, C.dangerBright, 16);
     this.destroyView(e);
     if (this.field) refreshStronghold(this.field.stronghold, this.lives / this.maxLives);
     this.updateHUD();
@@ -2429,6 +2636,7 @@ export class GameScene extends Phaser.Scene {
       this.finishRun('defeat');
       return true;
     }
+    if (this.campaign && e.isBoss) { this.finishCampaign('siege-failed'); return true; }
     const wave = this.scheduledBossIds.get(e.id);
     if (wave === undefined) return false;
     this.scheduledBossIds.delete(e.id);
@@ -2444,14 +2652,15 @@ export class GameScene extends Phaser.Scene {
     const event = this.siege.completeWave({ wave: this.wave, lives: this.lives, spawns: this.spawnQueue.length, enemies: this.enemies.filter((e) => e.alive).length, flights: this.flights.length, fields: this.evolutionCombat.activeFieldCount });
     if (event === 'none') return;
     this.waveActive = false; this.wavesCompleted = this.siege.wavesCompleted;
-    const earned = earnedBranches(this.wave, this.lives, this.towers, this.debugAssisted);
+    const earned = this.campaign ? [] : earnedBranches(this.wave, this.lives, this.towers, this.debugAssisted);
     const known = this.unlockRepository.view().profile.earned;
     for (const id of earned) if (!known[id] && !this.unlocksEarnedThisRun.includes(id)) this.unlocksEarnedThisRun.push(id);
-    this.unlockRepository.earn(earned);
+    if (!this.campaign) this.unlockRepository.earn(earned);
     this.notifyAchievements();
     const bonus = waveClearBonus(this.wave); this.gold += bonus;
-    this.floatText(MAP1.width / 2, 140, `Wave ${this.wave} cleared! +${bonus} gold`, C.health, 18);
-    if (this.wave % 5 === 0 && !this.currentWaveIsBoss) this.grantPowerup(rollPowerUp(), `Wave ${this.wave} Relic`, true);
+    this.floatText(this.map.width / 2, 140, `Wave ${this.wave} cleared! +${bonus} gold`, C.health, 18);
+    if (this.campaign?.readyToClear(this.wave, this.lives, this.spawnQueue.length + this.enemies.filter(e => e.alive).length + this.flights.length + this.evolutionCombat.activeFieldCount)) { this.finishCampaign('victory'); return; }
+    if (this.wave % 5 === 0 && !this.currentWaveIsBoss) this.grantPowerup(this.rollReward(), `Wave ${this.wave} Relic`, true);
     if (event === 'victory') this.enterVictory();
     this.updateNextPreview(); this.updateHUD();
   }
@@ -2493,7 +2702,62 @@ export class GameScene extends Phaser.Scene {
 
   private gameOver(): void { this.finishRun('defeat'); }
 
+  private restartRun(): void {
+    this.scene.restart({ difficulty: this.difficultyId, playerName: this.playerName, ...(this.campaign ? { mode: 'campaign', campaignLevel: this.campaign.definition.level } : {}), ...(import.meta.env.DEV && this.qaCampaignFixture ? { qaCampaignFixture: this.qaCampaignFixture } : {}) } satisfies GameStartData);
+  }
+
+  private finishCampaign(outcome: RunOutcome): void {
+    const campaign = this.campaign;
+    if (!campaign || campaign.settled || this.ended) return;
+    const unresolved = this.spawnQueue.length + this.enemies.filter(e => e.alive).length + this.flights.length + this.evolutionCombat.activeFieldCount;
+    if (outcome === 'victory' && !campaign.readyToClear(this.wave, this.lives, unresolved)) return;
+    campaign.settled = true; this.ended = true; this.waveActive = false;
+    const score = this.scoreSoFar();
+    const fixtureRepository = import.meta.env.DEV ? this.qaCampaignRepository : null;
+    const clear = outcome === 'victory' && (!this.debugAssisted || fixtureRepository) ? (fixtureRepository ?? campaignRepository).recordClear(campaign.definition.level, score, this.lives) : null;
+    this.campaignResult = { outcome, score, lives: this.lives, clear };
+    this.spawnQueue = [];
+    for (const flight of this.flights) flight.view.destroy(true);
+    for (const effect of this.effects) effect.view.destroy();
+    this.flights = []; this.effects = [];
+    this.vault = new RelicVault(); this.storeAfterTarget = false;
+    this.placingTowerId = null; this.selectedTower = null; this.touchPreview = null;
+    this.closeModal(); this.cleanupProgression(); this.hideGhost();
+    SoundManager.get().gameover(); SoundManager.get().stopMusic();
+    this.renderCampaignResult(); this.updateHUD();
+  }
+
+  private renderCampaignResult(): void {
+    if (!this.campaign || !this.campaignResult) return;
+    this.modalSheet?.destroy(); this.modalSheet = null;
+    this.modal?.destroy(true); this.modal = null;
+    this.modalRenderer = () => this.renderCampaignResult();
+    const result = this.campaignResult, level = this.campaign.definition.level;
+    const width = Math.min(480, this.layout.width - 24), height = Math.min(450, this.layout.height - 24);
+    const root = this.modalFrame(width, height);
+    const sheet = new ScrollSheet(this, root, { x: 0, y: 0, width, height }, result.outcome === 'victory' ? `Level ${level} cleared` : result.outcome === 'siege-failed' ? 'Boss escaped · Battle failed' : 'Stronghold lost', () => this.scene.start('Campaign'));
+    this.modalSheet = sheet;
+    let y = 0;
+    const line = (message: string, color: string = C.textSecondary) => { const text = sheet.text(y, message, color); y += text.height + 12; };
+    if (import.meta.env.DEV && this.qaCampaignFixture) line('DEV CAMPAIGN FIXTURE · Reward preview · Not saved', C.gold);
+    line(`Score ${result.score} · Lives ${result.lives}/${this.maxLives}`, C.gold);
+    if (result.clear) {
+      const progress = result.clear.progress;
+      line(`Mastery: Completion ${progress.completionStar ? 'earned' : 'missing'} · Stronghold ${progress.livesStar ? 'earned' : 'missing'} · Score ${progress.scoreStar ? 'earned' : 'missing'}`);
+      line(result.clear.newlyEarnedStars.length ? `New stars: ${result.clear.newlyEarnedStars.join(', ')} · Total ${result.clear.totalMasteryStars}/90` : `Total ${result.clear.totalMasteryStars}/90 · Stars retained from earlier clears`);
+      if (result.clear.newlyEarnedSigils.length) line(`World Sigil earned: ${result.clear.newlyEarnedSigils.map(id => id.replace(/_/g, ' ')).join(', ')}`, C.gold);
+      if (result.clear.newlyUnlockedFeatures.length) line(`Unlocked: ${result.clear.newlyUnlockedFeatures.map(id => id.replace(/_/g, ' ')).join(', ')}`, C.gold);
+      const view = (import.meta.env.DEV && this.qaCampaignRepository ? this.qaCampaignRepository : campaignRepository).view();
+      line(view.unsavedLevels.has(level) ? 'Earned this session · Progress could not be saved' : 'Progress saved in this browser', view.unsavedLevels.has(level) ? C.dangerBright : C.health);
+      if (view.warning) line(view.warning, C.dangerBright);
+    } else line(result.outcome === 'victory' ? 'Assisted battle · Campaign progress was not awarded' : 'No stars awarded · Replay to clear this level');
+    sheet.action(y, 'Restart Level', () => this.restartRun(), 'primary'); y += 52;
+    sheet.action(y, 'World Map', () => this.scene.start('Campaign')); y += 52;
+    if (result.outcome === 'victory' && level < 30 && (import.meta.env.DEV && this.qaCampaignRepository ? this.qaCampaignRepository : campaignRepository).view().highestUnlockedLevel > level) sheet.action(y, `Next · Level ${level + 1}`, () => this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: this.playerName, mode: 'campaign', campaignLevel: level + 1, ...(import.meta.env.DEV && this.qaCampaignFixture ? { qaCampaignFixture: { state: 'campaign', level: level + 1, bossPhase: 'initial' } satisfies QACampaignFixture } : {}) } } satisfies LoadingRequest), 'primary');
+  }
+
   private finishRun(outcome: RunOutcome): void {
+    if (this.campaign) { this.finishCampaign(outcome); return; }
     if (this.ended) return;
     if (outcome !== 'victory' && !this.siege.fail(outcome)) return;
     this.ended = true;
@@ -2531,7 +2795,7 @@ export class GameScene extends Phaser.Scene {
       isPersonalBest,
       unlocksEarned: this.unlocksEarnedThisRun.map((branchId) => ({ branchId, saved: !this.unlockRepository.view().unsaved.has(branchId) })),
       worldSnapshot: {
-        mapId: MAP1.id,
+        mapId: this.map.id,
         strongholdRatio: remainingLives / this.maxLives,
         towers: this.towers.map(t => ({ towerId: t.towerId, level: t.level, x: t.x, y: t.y, branchId: t.progression.branchId, rank: t.progression.rank, masteryRank: t.progression.masteryRank })),
         enemies: this.enemies.filter(e => e.alive).map(e => ({ archetype: e.archetype, x: e.x, y: e.y, hpFraction: Math.max(0, e.hp / e.maxHp) }))
@@ -2545,11 +2809,16 @@ export class GameScene extends Phaser.Scene {
 
   /** Idempotent; restart/quit discard the run without creating a result. */
   private cleanupProgression(): void {
+    this.campaignCallout = null;
+    this.campaignCalloutView?.destroy(); this.campaignCalloutView = null;
     this.simulationClock.reset(); this.inSimulationTick = false;
     this.auto.reset();
     this.autoLastUpdateAt = null;
     this.autoLastKeyAt = -Infinity;
     this.evolutionCombat.clear();
+    this.campaignBosses.clear();
+    for (const view of this.towerFreezeViews.values()) view.destroy();
+    this.towerFreezeViews.clear();
     this.syncFieldViews();
     this.scheduledBossIds.clear();
     this.victoryPanel?.destroy(true); this.victoryPanel = null;
@@ -2557,6 +2826,29 @@ export class GameScene extends Phaser.Scene {
     this.progressionListenerAttached = false;
     this.achievementNotices = [];
     this.achievementNoticeView?.destroy(); this.achievementNoticeView = null;
+  }
+
+  /** Latest ability cue stays in the UI for three seconds of game time, including across resize. */
+  private showCampaignCallout(text: string): void {
+    this.campaignCallout = { text, until: this.gameTimeMs + 3000 };
+    this.drawCampaignCallout();
+  }
+
+  private updateCampaignCallout(): void {
+    if (!this.campaignCallout || this.gameTimeMs < this.campaignCallout.until) return;
+    this.campaignCallout = null;
+    this.campaignCalloutView?.destroy(); this.campaignCalloutView = null;
+  }
+
+  private drawCampaignCallout(): void {
+    this.campaignCalloutView?.destroy(); this.campaignCalloutView = null;
+    this.updateCampaignCallout();
+    if (!this.campaignCallout || !this.uiRoot) return;
+    const f = this.layout.field;
+    const view = this.add.text(f.x + f.width / 2, f.y + f.height - 12, this.campaignCallout.text, {
+      ...style(14, C.frost, true), backgroundColor: `#${C.bgPanel.toString(16).padStart(6, '0')}`, padding: { x: 8, y: 4 }
+    }).setOrigin(0.5, 1).setWordWrapWidth(Math.min(420, f.width - 40)).setAlign('center').setDepth(1400);
+    this.uiRoot.add(view); this.campaignCalloutView = view;
   }
 
   /** Queue one 3000 ms notice per newly earned branch; never pauses the run. */

@@ -1,8 +1,9 @@
 import Phaser from 'phaser';
 import { TOWERS } from '../config/towers.ts';
 import { EVOLUTIONS } from '../config/evolutions.ts';
-import { contactShadow } from './artkit.ts';
+import { contactShadow, P2 } from './artkit.ts';
 import type { BranchId, EvolutionRank } from '../../shared/progression.ts';
+import { campaignTowerTextureKey } from './campaignArt.ts';
 
 const CELL = 627;
 
@@ -131,8 +132,25 @@ function stageArt(id: TowerId, spec: TowerArtSpec, stage: number): TowerStageArt
   };
 }
 
-/** Production sprite art; the input atlas frames already contain all four upgrade stages. */
-export function buildTowerVisual(scene: Phaser.Scene, towerId: string, level: number): TowerView {
+function addCampaignTierOverlay(scene: Phaser.Scene, parent: Phaser.GameObjects.Container, tier: 2 | 3): void {
+  const g = scene.add.graphics();
+  g.fillStyle(0x483b29, 0.94); g.fillRect(-24, -15, 48, 7);
+  g.lineStyle(3, 0x8a744e, 0.96);
+  g.lineBetween(-21, -14, -18, -42); g.lineBetween(21, -14, 18, -42);
+  g.lineBetween(-22, -28, 22, -28); g.lineBetween(-18, -42, -9, -48); g.lineBetween(18, -42, 9, -48);
+  g.fillStyle(0xd7aa4e, 1); g.fillCircle(-21, -15, 2.5); g.fillCircle(21, -15, 2.5);
+  if (tier === 3) {
+    g.lineStyle(2, 0x9e7ae6, 0.92);
+    g.lineBetween(-14, -54, -7, -62); g.lineBetween(-7, -62, 0, -54); g.lineBetween(0, -54, 7, -62); g.lineBetween(7, -62, 14, -54);
+    g.fillStyle(0xd1b3ff, 1);
+    g.fillPoints(P2([{ x: 0, y: -72 }, { x: 5, y: -64 }, { x: 0, y: -57 }, { x: -5, y: -64 }]), true);
+    g.fillCircle(-15, -54, 2); g.fillCircle(15, -54, 2);
+  }
+  parent.add(g);
+}
+
+/** Production sprite art; campaign tiers add replaceable cosmetics without changing classic towers. */
+export function buildTowerVisual(scene: Phaser.Scene, towerId: string, level: number, visualTier: 1 | 2 | 3 = 1): TowerView {
   const id = normalizeTowerId(towerId);
   const spec = ART[id];
   const stage = Math.max(1, Math.min(4, Math.floor(level))) - 1;
@@ -144,13 +162,25 @@ export function buildTowerVisual(scene: Phaser.Scene, towerId: string, level: nu
   const bottomMargin = art.sourceHeight - 1 - bounds.bottom;
   const view = scene.add.container(0, 0);
   const shadow = contactShadow(scene, 0, 2, 62, 25).setAlpha(0.42);
-  const sprite = (art.frameIndex === undefined
-    ? scene.add.image(-centerOffsetX * scale, bottomMargin * scale, art.textureKey)
-    : scene.add.image(-centerOffsetX * scale, bottomMargin * scale, art.textureKey, art.frameIndex))
-    .setOrigin(0.5, 1)
-    .setScale(scale);
+  const productionKey = visualTier === 2 || visualTier === 3 ? campaignTowerTextureKey(id, visualTier) : '';
+  const hasProductionArt = productionKey !== '' && scene.textures.exists(productionKey);
+  const productionSource = hasProductionArt ? scene.textures.get(productionKey).getSourceImage() as HTMLImageElement | HTMLCanvasElement : null;
+  const productionWidth = productionSource ? art.targetHeight * productionSource.width / productionSource.height : 0;
+  const sprite = hasProductionArt
+    ? scene.add.image(0, 0, productionKey).setOrigin(0.5, 1).setDisplaySize(productionWidth, art.targetHeight)
+    : (art.frameIndex === undefined
+      ? scene.add.image(-centerOffsetX * scale, bottomMargin * scale, art.textureKey)
+      : scene.add.image(-centerOffsetX * scale, bottomMargin * scale, art.textureKey, art.frameIndex))
+      .setOrigin(0.5, 1).setScale(scale);
   const crown = scene.add.container(0, 0);
   view.add([shadow, sprite, crown]);
+  if ((visualTier === 2 || visualTier === 3) && !hasProductionArt) addCampaignTierOverlay(scene, view, visualTier);
+
+  const visualWidth = hasProductionArt ? productionWidth : bounds.width * scale;
+  const visualHeight = hasProductionArt ? art.targetHeight : bounds.height * scale;
+  const displayBounds = hasProductionArt
+    ? { left: -visualWidth / 2, top: -visualHeight, width: visualWidth, height: visualHeight }
+    : { left: (bounds.left - sourceCenterX) * scale, top: (bounds.top - bounds.bottom) * scale, width: visualWidth, height: visualHeight };
 
   return {
     view,
@@ -158,14 +188,9 @@ export function buildTowerVisual(scene: Phaser.Scene, towerId: string, level: nu
     muzzleX: Math.round(art.focus.x * art.targetHeight),
     muzzleY: Math.round(art.focus.y * art.targetHeight),
     footprintPx: 64,
-    visualWidth: bounds.width * scale,
-    visualHeight: bounds.height * scale,
-    displayBounds: {
-      left: (bounds.left - sourceCenterX) * scale,
-      top: (bounds.top - bounds.bottom) * scale,
-      width: bounds.width * scale,
-      height: bounds.height * scale
-    }
+    visualWidth,
+    visualHeight,
+    displayBounds
   };
 }
 

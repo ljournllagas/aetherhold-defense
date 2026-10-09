@@ -1,5 +1,8 @@
 import Phaser from 'phaser';
 import { MAP1, HUD_HEIGHT } from '../maps/map1.ts';
+import type { MapDef } from '../maps/map1.ts';
+import type { CampaignWorldId } from '../campaign/types.ts';
+import { ensureCampaignBattleBackground } from './campaignArt.ts';
 
 export interface StrongholdArt {
   root: Phaser.GameObjects.Container;
@@ -34,15 +37,16 @@ function ensureBeaconFrames(scene: Phaser.Scene): void {
  * The texture includes road, clearings, ruins, forest, keep, and its original
  * beacon; this layer adds only small runtime health cues and ambient light.
  */
-export function paintBattlefield(scene: Phaser.Scene): BattlefieldArt {
-  const field = MAP1.field;
-  scene.add.image(field.x, field.y, MAP1.backgroundKey)
+export function paintBattlefield(scene: Phaser.Scene, map: MapDef = MAP1, worldId?: CampaignWorldId): BattlefieldArt {
+  const field = map.field;
+  const backgroundKey = worldId ? ensureCampaignBattleBackground(scene, map, worldId) : map.backgroundKey;
+  scene.add.image(field.x, field.y, backgroundKey)
     .setOrigin(0, 0)
     .setDisplaySize(field.width, field.height)
     .setDepth(0);
 
-  const stronghold = MAP1.stronghold;
-  const beaconPoint = MAP1.beacon;
+  const stronghold = map.stronghold;
+  const beaconPoint = map.beacon;
   const root = scene.add.container(0, 0).setDepth(3);
 
   // The beacon sits at the painted spire, separate from the bridge/gameplay gate.

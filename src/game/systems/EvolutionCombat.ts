@@ -24,8 +24,8 @@ export class EvolutionCombat {
   private readonly fields = new Map<number, BurningField>();
   private flushed: FieldTick[] = [];
 
-  makeShot(owner: CombatTower, towers: readonly CombatTower[], damageMultiplier: number, primary = true): ShotSnapshot {
-    const stats = effectiveStats(owner.towerId, owner.progression);
+  makeShot(owner: CombatTower, towers: readonly CombatTower[], damageMultiplier: number, primary = true, resolvedStats?: EffectiveTowerStats): ShotSnapshot {
+    const stats = resolvedStats ?? effectiveStats(owner.towerId, owner.progression);
     let aura = 1;
     for (const t of towers) {
       if (t.id === owner.id || t.progression.branchId !== 'arcane-beacon' || t.progression.rank === null) continue;
@@ -81,14 +81,14 @@ export class EvolutionCombat {
     return { slowFactor, frozen, stunned, vulnerability };
   }
 
-  addField(shot: ShotSnapshot, x: number, y: number, nowMs: number): void {
+  addField(shot: ShotSnapshot, x: number, y: number, nowMs: number, durationMs: number = EVOLUTION_RULES.fieldMs, damageFraction: number = EVOLUTION_RULES.fieldFraction): void {
     if (!shot.stats.burningField) return;
     const old = this.fields.get(shot.ownerId);
     if (old) this.emitDue(old, Math.min(nowMs, old.expiresMs), this.flushed);
     this.fields.set(shot.ownerId, {
       ownerId: shot.ownerId, x, y, radius: shot.stats.splashRadius ?? 0,
-      rawDamage: shot.rawDamage * EVOLUTION_RULES.fieldFraction,
-      nextTickMs: nowMs + EVOLUTION_RULES.tickMs, expiresMs: nowMs + EVOLUTION_RULES.fieldMs
+      rawDamage: shot.rawDamage * damageFraction,
+      nextTickMs: nowMs + EVOLUTION_RULES.tickMs, expiresMs: nowMs + durationMs
     });
   }
 

@@ -1,7 +1,8 @@
 import type Phaser from 'phaser';
 import { ENEMIES } from '../config/enemies.ts';
-import type { EnemyArchetype } from '../../shared/types.ts';
+import type { EnemyArchetype, EnemyConfig } from '../../shared/types.ts';
 import type { StatusView } from '../systems/EvolutionCombat.ts';
+import { CAMPAIGN_STATUS_TUNING } from '../campaign/enemies.ts';
 
 let NEXT_ID = 1;
 
@@ -38,9 +39,14 @@ export class Enemy {
   slowRing: Phaser.GameObjects.Ellipse | null = null;
   hpBar: Phaser.GameObjects.Graphics | null = null;
   name: string;
+  campaignId: string | null = null;
+  slowResistance = 0;
+  speedBuffUntil = 0;
+  slowResistanceUntil = 0;
+  damageTakenMultiplier = 1;
+  bossSpeedMultiplier = 1;
 
-  constructor(archetype: EnemyArchetype, hp: number, speed: number, reward: number) {
-    const cfg = ENEMIES[archetype];
+  constructor(archetype: EnemyArchetype, hp: number, speed: number, reward: number, cfg: Omit<EnemyConfig, 'id'> = ENEMIES[archetype]) {
     this.archetype = archetype;
     this.name = cfg.name;
     this.maxHp = hp;
@@ -60,6 +66,7 @@ export class Enemy {
   effectiveSpeed(nowMs: number, globalFreeze: number, status?: StatusView): number {
     if (status?.frozen || status?.stunned || nowMs < globalFreeze || nowMs < this.frozenUntil) return 0;
     const slow = status ? status.slowFactor : nowMs < this.slowUntil ? this.slowFactor : 0;
-    return this.baseSpeed * (1 - slow);
+    const resistance = Math.max(this.slowResistance, nowMs < this.slowResistanceUntil ? CAMPAIGN_STATUS_TUNING.supportSlowResistance : 0);
+    return this.baseSpeed * (1 - slow * (1 - resistance)) * this.bossSpeedMultiplier * (nowMs < this.speedBuffUntil ? CAMPAIGN_STATUS_TUNING.supportSpeedMultiplier : 1);
   }
 }

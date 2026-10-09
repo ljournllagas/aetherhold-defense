@@ -15,6 +15,9 @@ export const QA_STATES = [
   'evolution',
   'victory',
   'mastery',
+  'campaign',
+  'campaign-boss',
+  'campaign-results',
   'gameover',
   'leaderboard'
 ] as const;
@@ -24,8 +27,28 @@ export type LeaderboardFixture = 'empty' | 'failure';
 const GAME_QA_STATES = ['normal', 'heavy', 'placement', 'selected', 'reward', 'boss', 'evolution', 'victory', 'mastery'] as const;
 type GameQAState = (typeof GAME_QA_STATES)[number];
 
+export interface QACampaignFixture {
+  state: 'campaign' | 'campaign-boss' | 'campaign-results';
+  level: number;
+  bossPhase: 'initial' | 'guarded' | 'enraged' | 'broken' | 'core' | 'telegraph' | 'freeze' | 'phase2';
+  /** DEV-only cosmetic comparison; does not change campaign power or unlocks. */
+  visualTier?: 1 | 2 | 3;
+}
+
+export function isQACampaignFixture(value: unknown): value is QACampaignFixture {
+  if (!value || typeof value !== 'object') return false;
+  const fixture = value as Partial<QACampaignFixture>;
+  if (fixture.visualTier !== undefined && ![1,2,3].includes(fixture.visualTier)) return false;
+  if (!Number.isInteger(fixture.level) || fixture.level! < 1 || fixture.level! > 30) return false;
+  if (fixture.state === 'campaign' || fixture.state === 'campaign-results') return fixture.bossPhase === 'initial';
+  if (fixture.state !== 'campaign-boss') return false;
+  const phases = fixture.level === 10 ? ['initial','guarded','enraged'] : fixture.level === 20 ? ['initial','broken','core'] : fixture.level === 30 ? ['initial','telegraph','freeze','phase2'] : [];
+  return phases.includes(fixture.bossPhase ?? '');
+}
+
 export type QAAction =
   | { type: 'seed'; state: GameQAState }
+  | { type: 'campaign-fixture'; fixture: QACampaignFixture }
   | { type: 'toggle-pause' }
   | { type: 'cycle-speed' }
   | { type: 'grant-powerup'; id: PowerUpId }
@@ -65,12 +88,19 @@ export interface QAStatus {
   fields: number;
   debugAssisted: boolean;
   unsavedUnlocks: string[];
-  progression: Array<{ towerId: string; branchId: string | null; rank: number | null; masteryRank: number; invested: number }>;
+  progression: Array<{ towerId: string; branchId: string | null; rank: number | null; masteryRank: number; invested: number; visualTier?: 1 | 2 | 3 }>;
+  campaignLevel?: number | null;
+  campaignFixture?: string | null;
+  campaignBoss?: { id: string; phase: number; telegraph: boolean; guarded: boolean; targets: readonly number[] } | null;
+  campaignOutcome?: string | null;
+  campaignBossLabels?: { name: { text: string; bounds: { x: number; y: number; width: number; height: number } }; status: { text: string; bounds: { x: number; y: number; width: number; height: number } } } | null;
+  campaignCallout?: { text: string; until: number; bounds: { x: number; y: number; width: number; height: number } } | null;
 }
 
 export interface QARequest {
   state: QAState;
   leaderboardFixture?: LeaderboardFixture;
+  campaignFixture?: QACampaignFixture;
 }
 
 export function parseQARequest(search: string): QARequest | null {
@@ -80,14 +110,26 @@ export function parseQARequest(search: string): QARequest | null {
   if (state === 'leaderboard') {
     return { state, leaderboardFixture: params.get('fixture') === 'failure' ? 'failure' : 'empty' };
   }
+  if (state === 'campaign' || state === 'campaign-boss' || state === 'campaign-results') {
+    const rawLevel = params.get('level');
+    if (rawLevel !== null && !/^(?:[1-9]|[12]\d|30)$/.test(rawLevel)) return null;
+    const tier = params.get('tier');
+    if (tier !== null && !/^[123]$/.test(tier)) return null;
+    const fixture = { state, level: rawLevel === null ? state === 'campaign-boss' ? 20 : state === 'campaign-results' ? 10 : 1 : Number(rawLevel), bossPhase: params.get('bossPhase') ?? 'initial', ...(tier === null ? {} : { visualTier: Number(tier) }) };
+    return isQACampaignFixture(fixture) ? { state, campaignFixture: fixture } : null;
+  }
   return { state };
 }
 
 const GAME_SCENE_KEY = 'Game';
 
 export function installQA(game: Phaser.Game): void {
+  if (!import.meta.env.DEV) return;
   const request = parseQARequest(window.location.search);
   if (!request) return;
+  const scene = game.scene.getScene(GAME_SCENE_KEY);
+  // A cached QA import can resolve before SceneManager registers scenes at READY.
+  if (!scene) { game.events.once('step', () => installQA(game)); return; }
 
   const panel = createPanel(request);
   document.body.appendChild(panel.root);
@@ -96,7 +138,6 @@ export function installQA(game: Phaser.Game): void {
   panel.onLeaderboardFixtureChange((fixture) => navigateToLeaderboardFixture(fixture));
   panel.onAction((action) => sendGameAction(game, action));
 
-  const scene = game.scene.getScene(GAME_SCENE_KEY);
   const reportStatus = (status: QAStatus) => {
     panel.root.dataset.qaStatus = JSON.stringify(status);
     panel.setStatus(
@@ -165,16 +206,17 @@ export function installQA(game: Phaser.Game): void {
       game.scene.start('Preload', { stage: 'gameplay', destination: 'GameOver', data } satisfies LoadingRequest);
       return;
     }
-    startGameFixture(game, request.state);
+    startGameFixture(game, request);
   };
 
   game.events.on('step', enterRequestedState);
 }
 
-function startGameFixture(game: Phaser.Game, state: QAState): void {
+function startGameFixture(game: Phaser.Game, request: QARequest): void {
+  const state = request.state;
   const scene = game.scene.getScene(GAME_SCENE_KEY) as Phaser.Scene;
-  if (!isGameQAState(state)) return;
-  scene.events.once('create', () => {
+  if (!isGameQAState(state) && !request.campaignFixture) return;
+  if (isGameQAState(state)) scene.events.once('create', () => {
     scene.events.emit('qa:action', { type: 'seed', state } satisfies QAAction);
   });
   // Mirror the real entry flow: the previous scene stops before the gameplay stage loads.
@@ -184,7 +226,7 @@ function startGameFixture(game: Phaser.Game, state: QAState): void {
   for (const active of game.scene.getScenes(true)) {
     if (active.scene.key !== 'Preload') game.scene.stop(active.scene.key);
   }
-  game.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: 'QA Warden' } } satisfies LoadingRequest);
+  game.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: 'QA Warden', ...(request.campaignFixture ? { mode: 'campaign', campaignLevel: request.campaignFixture.level, qaCampaignFixture: request.campaignFixture } : {}) } } satisfies LoadingRequest);
 }
 
 function isQAState(value: string | null): value is QAState {
@@ -332,6 +374,10 @@ function createPanel(request: QARequest): QAPanel {
   const meteorButton = addAction('Grant Meteor', { type: 'grant-powerup', id: 'meteor_strike' });
   meteorButton.dataset.qaPowerup = 'meteor_strike';
   addAction('Fresh Run', { type: 'restart' });
+  if (request.campaignFixture) {
+    const reset = addAction('Reset Campaign Fixture', { type: 'campaign-fixture', fixture: request.campaignFixture });
+    reset.dataset.qaFixture = JSON.stringify(request.campaignFixture);
+  }
 
   let actionCallback: ((action: QAAction) => void) | null = null;
   for (const button of actionButtons) {
@@ -363,6 +409,10 @@ function actionForButton(button: HTMLButtonElement): QAAction | null {
     case 'start-wave': return { type: 'start-wave' };
     case 'grant-powerup': return { type: 'grant-powerup', id: (button.dataset.qaPowerup ?? 'gold_rush') as PowerUpId };
     case 'restart': return { type: 'restart' };
+    case 'campaign-fixture': {
+      try { const fixture: unknown = JSON.parse(button.dataset.qaFixture ?? 'null'); return isQACampaignFixture(fixture) ? { type: 'campaign-fixture', fixture } : null; }
+      catch { return null; }
+    }
     default: return null;
   }
 }
@@ -381,6 +431,7 @@ function styleControl(control: HTMLButtonElement | HTMLSelectElement): void {
 }
 
 function fixtureLabel(request: QARequest): string {
+  if (request.campaignFixture) return `Campaign L${request.campaignFixture.level} / ${request.campaignFixture.state === 'campaign-boss' ? request.campaignFixture.bossPhase : request.state}${request.campaignFixture.visualTier ? ` / cosmetic Tier ${request.campaignFixture.visualTier}` : ''} / unsaved fixture`;
   if (request.state === 'leaderboard') return `leaderboard / ${request.leaderboardFixture}`;
   return request.state;
 }

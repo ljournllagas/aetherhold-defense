@@ -1,13 +1,14 @@
 import Phaser from 'phaser';
 import type { DifficultyId } from '../../shared/types.ts';
 import type { GameOverData } from './GameOverScene.ts';
+import type { QACampaignFixture } from '../qa.ts';
 import { C, FONT_DISPLAY, style } from '../ui/tokens.ts';
 import { button } from '../ui/components.ts';
 import { ensureArtTextures, ensureMenuTextures } from '../art/artkit.ts';
 import { ensureTowerPortraits } from '../art/towerArt.ts';
 import { requiredAssets, type AssetSpec } from '../art/assetManifest.ts';
 
-export interface GameStartData { difficulty: DifficultyId; playerName: string; }
+export interface GameStartData { difficulty: DifficultyId; playerName: string; mode?: 'classic' | 'campaign'; campaignLevel?: number; qaCampaignFixture?: QACampaignFixture; }
 export type LoadingRequest =
   | { stage: 'menu'; destination: 'MainMenu'; data?: undefined }
   | { stage: 'gameplay'; destination: 'Game'; data: GameStartData }

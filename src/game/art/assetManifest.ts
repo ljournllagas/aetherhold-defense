@@ -1,4 +1,5 @@
 import { TOWERS } from '../config/towers.ts';
+import { campaignArtAssetsForLoader } from '../campaign/artManifest.ts';
 export type AssetStage = 'menu' | 'gameplay' | 'defeat';
 export type AssetSpec = { key: string; path: string } &
   ({ kind: 'image' } | { kind: 'sheet'; frameWidth: number; frameHeight: number });
@@ -7,7 +8,8 @@ export const STAGE_ASSETS: Record<AssetStage, readonly AssetSpec[]> = {
     { kind: 'image', key: 'emblem', path: '/assets/branding/aegis-emblem-v1.webp' },
     { kind: 'image', key: 'menu_vista', path: '/assets/world/vistas/ancient-border-keep-vista-v1.webp' },
     { kind: 'image', key: 'menu_vista_sunset', path: '/assets/world/vistas/ancient-border-keep-vista-menu-v2.webp' },
-    ...(['easy', 'medium', 'hard'] as const).map(id => ({ kind: 'image' as const, key: `difficulty_helm_${id}`, path: `/assets/ui/difficulty-helm-${id}-v1.webp` }))
+    ...(['easy', 'medium', 'hard'] as const).map(id => ({ kind: 'image' as const, key: `difficulty_helm_${id}`, path: `/assets/ui/difficulty-helm-${id}-v1.webp` })),
+    ...campaignArtAssetsForLoader('menu')
   ],
   gameplay: [
     { kind: 'image', key: 'map_ancient_border_keep', path: '/assets/world/maps/ancient-border-keep-map-v2.webp' },
@@ -16,7 +18,8 @@ export const STAGE_ASSETS: Record<AssetStage, readonly AssetSpec[]> = {
     ...(['nature-v2', 'warden-v1', 'elite-v1'] as const).map(name => ({ kind: 'image' as const, key: `enemy_walk_atlas_${name}`, path: `/assets/enemies/enemy_walk_atlas_${name}.webp` })),
     { kind: 'image', key: 'relic_icons_atlas', path: '/assets/powerups/relic-icons-atlas-v1.webp' },
     { kind: 'image', key: 'hud_icons_atlas', path: '/assets/ui/hud-icons-atlas-v1.webp' },
-    { kind: 'image', key: 'stronghold_beacon_atlas', path: '/assets/world/overlays/borderkeep-beacon-states-v1.webp' }
+    { kind: 'image', key: 'stronghold_beacon_atlas', path: '/assets/world/overlays/borderkeep-beacon-states-v1.webp' },
+    ...campaignArtAssetsForLoader('gameplay')
   ],
   defeat: [{ kind: 'image', key: 'map_ancient_border_keep_defeated', path: '/assets/world/maps/ancient-border-keep-defeated-v1.webp' }]
 };

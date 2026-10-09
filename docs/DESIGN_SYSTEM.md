@@ -1771,3 +1771,25 @@ The battlefield is the stage.
 Towers and enemies are the actors.
 
 The UI is the quiet stage crew that makes everything legible.
+
+# 71. Campaign World Map and Biomes
+
+Campaign navigation is an illustrated fantasy realm map with connected route
+nodes, subdued locked levels, a warm-gold current-level marker, completion marks
+and distinct boss crests. Pair it with a selected-level detail and enemy-preview
+surface. Keep it within the existing slate-and-gold visual language; do not turn
+it into a generic numbered grid or a dashboard.
+
+Keep the player faction and painted strategy style consistent across the three
+biomes. Borderkeep uses forest, warm stone and restrained violet; Emberfall uses
+basalt, ash and local ember warmth without tinting the whole terrain orange; Frostveil
+uses slate, snow and pale ice with warm torch contrast rather than an all-cyan field.
+Maintain upper-left light and readable routes, build clearings, enemy silhouettes
+and boss paths. Snow, ash and heat shimmer remain subtle and cannot cover play.
+
+On narrow screens, retain 44px route targets with 8px separation, wrap level
+metadata into measured lines, and keep objectives and Start Battle reachable
+without shrinking type or controls. Source dimensions, animation rows, fallback
+policy and unapproved art are tracked in
+[`CAMPAIGN_PRODUCTION_ASSETS.md`](CAMPAIGN_PRODUCTION_ASSETS.md). The current
+procedural fallback and concept references do not constitute final-art approval.

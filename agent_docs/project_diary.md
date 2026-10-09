@@ -2,6 +2,14 @@
 
 ## Lasting decisions and lessons
 
+- Campaign reuses the fixed-step GameScene with run-local map, wave, enemy, preparation and specialization configuration. Keep its local results outside classic bests, branch achievements and siege leaderboard validation; campaign foundation levels and prebattle sidegrades do not invent a classic evolution unlock trigger.
+- Derive campaign unlocks and feature summaries from contiguous clears, boss Sigils and monotone individual star flags. Never overwrite malformed or future-version saves; report session-only progress truthfully.
+- Build all campaign route nodes before cross-world links. Preserve 44px hit areas with 8px separation instead of shrinking a thirty-node route on phones. Measure wrapped metadata/objective heights before placing later detail rows.
+- Cached runtime imports can make a development QA installer run before Phaser registers scenes. Guard actual scene availability before subscriptions, controls or network fixtures; prove the timing repair in a native browser as well as tests.
+- Campaign ability notices need a backed, bounded surface separate from enemy anchors and boss bars. Compact boss identity, phase/HP and health rows must be measured independently. Label seeded fixtures and document hiding only the external QA dock for unobscured captures.
+- Natural paid-resource simulations and seeded visual fixtures answer different questions. Audit configured costs and before/after balances, not only recorded purchases; preserve narrow target margins and do not claim human balance from a bot.
+- Production art manifests describe dimensions, anchors and required state rows, while explicit final-quality and approved-path gates control loading. Procedural fallback and concept sheets do not establish final-art acceptance.
+
 - The SPEC controls mechanics and numbers; approved images control visual family, composition, materials, hierarchy, and state presentation. Functional rendering can still fail visual acceptance.
 - Preserve verified pure systems and configuration; rebuild placeholder world art and conflicting layouts. Canonical coordinates and adaptive controls preserve gameplay visibility at 844×390 without shrinking text and targets.
 - Use game-time projectile travel and effects so pause and speed affect simulation consistently. Keep relic inventory at three slots with explicit pending-reward choices.

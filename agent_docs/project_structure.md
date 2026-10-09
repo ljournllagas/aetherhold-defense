@@ -5,14 +5,15 @@ docs/                 Product, gameplay, design, art, and agent contracts
   sdd/                Spec-driven development specs/ and plans/ (task blocks, verify commands)
 references/           Visual reference guide and approved screenshots
 src/
-  main.ts             Phaser bootstrap and scene registration
+  main.ts             Phaser bootstrap and ten-scene registration
   game/
-    scenes/           Boot, preload, menu, difficulty, settings, gameplay, game-over, leaderboard, progression
-    systems/          Wave, combat, economy, scoring, power-up, settings, sound, evolution, evolution combat, unlock and siege logic
-    config/           Tower, enemy, wave (incl. wave-30 siege finale), difficulty, economy, score, power-up and evolution data
+    scenes/           Boot, preload, menu, campaign, difficulty, settings, gameplay, game-over, leaderboard, progression
+    campaign/         Campaign levels, map families, enemies, bosses, versioned local progression, specializations and art manifest
+    systems/          Shared wave, combat, economy, scoring, power-up, settings, sound, evolution, unlock and siege logic
+    config/           Classic tower, enemy, wave, difficulty, economy, score, power-up and evolution data
     entities/         Tower and enemy entities
     maps/             Map layout and game dimensions
-    art/              Phaser drawing and texture-generation helpers
+    art/              Phaser drawing and texture-generation helpers, including procedural campaign fallback art
     ui/               Shared UI tokens, layout, scroll sheets and progression presentation models
   api/                Leaderboard and score client
   shared/             Shared types, validation, version values, progression contract and result progress rules
@@ -20,13 +21,15 @@ worker/               Cloudflare Worker API
 migrations/           D1 SQL migrations (0004 adds progression result columns)
 tests/                Vitest game and Worker tests
   helpers/            Evolution and result fixtures, balance trace reporter and headless simulation bot
-public/assets/        Runtime game art, including 22 WebP files with matching PNGs retained
+public/assets/        Classic runtime art (22 WebPs with matching PNGs); campaign final rasters are not yet approved or present
 dist/                 Vite build output served by Wrangler
-artifacts/            Verification evidence (rebuild/, responsive/, progression/) and promo/
+artifacts/            Verification evidence (rebuild/, responsive/, progression/, campaign/) and promo/
 agent_docs/           Durable agent context and deployment handoff
 ```
 
 `src/game/art/` holds drawing and texture-generation helpers; runtime art is loaded from `public/assets/`. `docs/REFERENCE_AUDIT.md` is an older audit and contains stale inventory recommendations. Follow the current contracts in `SPEC.md`, `DESIGN_SYSTEM.md`, `ART_BIBLE.md`, and `AI_AGENT_INSTRUCTIONS.md`; use `references/VISUAL_REFERENCE_GUIDE.md` to interpret screenshots.
+
+Campaign boundaries, save behavior and unlocks are documented in `docs/CAMPAIGN_WORLDS_1_3.md`. Its production asset contract is `docs/CAMPAIGN_PRODUCTION_ASSETS.md`; every campaign raster target remains `final_required` until approved art is integrated.
 
 ## Progression and evolutions files (2026-10-08)
 

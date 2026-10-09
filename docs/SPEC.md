@@ -2079,3 +2079,49 @@ frames.
   impact or field batch completes before any modal opens; deferral never suppresses reward
   creation or resolution.
 - **Reset.** A new run, Restart and cleanup reset the clock and its debt.
+
+# 51. Campaign Mode — Worlds 1–3
+
+Campaign is a separate local mode alongside Classic Siege. It uses the existing
+fixed-step `GameScene` and combat systems with campaign-scoped maps, waves, enemies,
+bosses and pre-battle choices. Campaign results never update Classic bests,
+branch achievements, score submissions or the siege leaderboard. Campaign levels
+are foundation levels: pre-battle Specialization I choices are reversible sidegrades
+and do not trigger Classic tower evolution.
+
+The campaign contains exactly 30 replayable levels: The Borderkeep (1–10),
+Emberfall Highlands (11–20) and Frostveil Pass (21–30). The connected illustrated
+world map exposes contiguous level unlocks, selected-level objectives, best score
+and lives, enemy preview, completion stars and boss nodes. Four route families per
+world (A introduction, B pressure, C advanced, D boss arena) are reused with
+authored variants; there are no Worlds 4–10 in this foundation.
+
+Each completed level keeps three monotone flags: completion, configured minimum
+remaining lives and configured score target. Replays can add missing stars and
+improve saved best score/lives; they never remove earned stars. Completing levels
+10, 20 and 30 grants the Border, Ember and Frost Sigils. The first two unlock
+Worlds 2 and 3 respectively; Level 30 completes the Worlds 1–3 milestone.
+
+Mastery unlocks information, choice, cosmetics or convenience, never permanent
+combat-stat bonuses:
+
+| Total stars | Unlock |
+| ---: | --- |
+| 10 | Aether Codex tactical entries |
+| 20 | Battle Preparation Presets |
+| 30 | Tower Specialization I |
+| 45 | One Power-Up reroll per level |
+| 60 | Runic Masterwork tower visuals |
+| 75 | Veteran banner and advanced Codex stats |
+| 90 | Frostveil Conqueror crest |
+
+Specialization I is selected before battle and can be changed between levels.
+World Sigils also add their documented Codex entries, cosmetics, tower visual
+tiers and campaign Power-Ups. All campaign tuning and stable level IDs live in
+`src/game/campaign/`; the gameplay and persistence summary is
+[`CAMPAIGN_WORLDS_1_3.md`](CAMPAIGN_WORLDS_1_3.md).
+
+Progress is stored locally under `aetherhold-campaign-v1`, with campaign and
+progression versions. A malformed or newer save is protected from overwrite;
+when storage cannot be trusted or written, progress earned in that session is
+labelled session-only. Campaign progress is not cloud-synced.

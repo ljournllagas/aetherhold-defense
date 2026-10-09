@@ -8,6 +8,7 @@ import Phaser from 'phaser';
 import { BootScene } from './game/scenes/BootScene.ts';
 import { PreloadScene } from './game/scenes/PreloadScene.ts';
 import { MainMenuScene } from './game/scenes/MainMenuScene.ts';
+import { CampaignScene } from './game/scenes/CampaignScene.ts';
 import { DifficultyScene } from './game/scenes/DifficultyScene.ts';
 import { SettingsScene } from './game/scenes/SettingsScene.ts';
 import { GameScene } from './game/scenes/GameScene.ts';
@@ -32,7 +33,7 @@ const config: Phaser.Types.Core.GameConfig = {
     keyboard: true,
     activePointers: 3
   },
-  scene: [BootScene, PreloadScene, MainMenuScene, DifficultyScene, SettingsScene, GameScene, GameOverScene, LeaderboardScene, ProgressionScene]
+  scene: [BootScene, PreloadScene, MainMenuScene, CampaignScene, DifficultyScene, SettingsScene, GameScene, GameOverScene, LeaderboardScene, ProgressionScene]
 };
 
 // eslint-disable-next-line no-new

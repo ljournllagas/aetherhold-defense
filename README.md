@@ -1,37 +1,33 @@
-# Fantasy Tower Defense — Complete Project Reference
+# Aegis of the Borderkeep
 
-Extract this folder into the project root.
+An original browser fantasy tower-defense game built with Phaser, TypeScript and
+Vite. This release adds the Aetherhold Defense campaign foundation. Cloudflare
+Workers and D1 serve the health and Classic Siege leaderboard APIs.
 
-Expected structure:
+## Modes
 
-```text
-docs/
-  SPEC.md
-  DESIGN_SYSTEM.md
-  ART_BIBLE.md
-  AI_AGENT_INSTRUCTIONS.md
-  REFERENCE_AUDIT.md
+- **Classic Siege** — the existing 30-wave siege, with its score, best-run,
+  achievement and leaderboard systems.
+- **Campaign** — 30 local levels across The Borderkeep, Emberfall Highlands and
+  Frostveil Pass. Progress, stars, Sigils and pre-battle sidegrades are saved in
+  the browser and stay separate from Classic results. Worlds 4–10 are not part
+  of the current campaign.
 
-references/
-  VISUAL_REFERENCE_GUIDE.md
-  visual/
-    01_main_menu.png
-    02_difficulty_selection.png
-    03_gameplay_normal.png
-    04_gameplay_heavy_wave.png
-    05_tower_placement_valid.png
-    06_selected_tower.png
-    07_powerup_reveal.png
-    08_boss_wave.png
-    09_game_over.png
-    10_leaderboard.png
+## Run locally
 
-MASTER_REBUILD_PROMPT.md
+```sh
+npm install
+npm run dev
 ```
 
-Give `MASTER_REBUILD_PROMPT.md` to the implementation agent.
+Useful checks are `npm run typecheck`, `npm test` and `npm run build`.
 
-Important:
-- Text documents define behavior and rules.
-- Approved screenshots define visual direction and composition.
-- If screenshot content conflicts with the text documents, the text documents win.
+## Project guides
+
+- [Product and gameplay contract](docs/SPEC.md)
+- [Visual rules](docs/DESIGN_SYSTEM.md)
+- [Campaign Worlds 1–3](docs/CAMPAIGN_WORLDS_1_3.md)
+- [Campaign production asset manifest and missing art](docs/CAMPAIGN_PRODUCTION_ASSETS.md)
+- [Art production rules](docs/ART_BIBLE.md)
+- [Agent implementation instructions](docs/AI_AGENT_INSTRUCTIONS.md)
+- [Current verification and deployment handoff](agent_docs/project_progress.md)
