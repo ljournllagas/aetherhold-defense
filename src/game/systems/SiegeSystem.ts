@@ -95,6 +95,6 @@ export function victoryRewardChoices(inventoryCount: number): readonly ('store' 
   return inventoryCount >= POWERUP_INVENTORY_LIMIT ? ['replace-oldest', 'discard-new'] : ['store', 'discard-new'];
 }
 
-export function victoryRewardsResolved(vault: RelicVault, rewardModalOpen: boolean): boolean {
-  return vault.pending.length === 0 && vault.target === null && !rewardModalOpen;
+export function victoryRewardsResolved(vault: RelicVault, rewardModalOpen: boolean, retainPending = false): boolean {
+  return (retainPending || vault.pending.length === 0) && vault.target === null && !rewardModalOpen;
 }

@@ -94,3 +94,12 @@ describe('victory relic exits', () => {
     expect([vault.target, vault.stored, vault.pending.length]).toEqual([null, ['meteor_strike'], 1]);
   });
 });
+
+it('permits retained pending rewards only when requested, never a target or dialog', () => {
+  const v=new RelicVault(); v.offer('meteor_strike','held',true);
+  expect(victoryRewardsResolved(v,false)).toBe(false);
+  expect(victoryRewardsResolved(v,false,true)).toBe(true);
+  expect(victoryRewardsResolved(v,true,true)).toBe(false);
+  v.beginPendingUse(true);
+  expect(victoryRewardsResolved(v,false,true)).toBe(false);
+});
