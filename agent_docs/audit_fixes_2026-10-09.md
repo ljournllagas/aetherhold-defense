@@ -65,34 +65,33 @@ Commits (newest first):
   `artifacts/audit-fixes/api.json` records 201 accept, 409 duplicate, 400 for era-2/forged progress,
   413 oversized, one native 429 with `Retry-After: 60`; the era-2 row `audit-legacy-row-0001` survives
   and never appears on the era-3 board.
-- Browser matrix against the isolated services (`artifacts/audit-fixes/browser.json`, 19 case groups,
-  screenshots and per-case logs): cold staged menu/game/defeat stages at 1440×900, 1280×720, 1024×768,
-  844×390, 390×844 and 360×640; held-atlas gating; asset failure and Retry; canceled load with a stale
-  completion; IME/name boundaries; malformed settings; offline submit then menu retry after reload;
-  accepted-response-lost duplicate (409, single DB row); defeat-art recovery with identical payload;
-  storage denied/future/malformed; retired era-2 record; two tabs with a late success; Auto/pause/rotate;
-  victory finish and continue-endless; unmodified built Worker policy check.
+- Browser matrix against the isolated services (`artifacts/audit-fixes/browser.json`, **34 cases, 0
+  failed**, screenshots and per-case logs): cold staged menu/game/defeat stages at 1440×900, 1280×720,
+  1024×768, 844×390, 390×844 and 360×640; held-atlas gating; asset failure and Retry; canceled load with
+  a stale completion; IME/name boundaries; malformed settings; offline submit then menu retry after
+  reload; accepted-response-lost duplicate (409, single DB row); defeat-art recovery with identical
+  payload; storage denied/future/malformed; retired era-2 record; two tabs with a late success;
+  rank/mastery preview at six sizes; Auto/pause/rotate; victory finish and continue-endless; unmodified
+  built Worker policy check.
 - Two real defects were found and fixed by this verification: the gameplay/defeat loading transition was
   blocked in a real browser because Phaser marks a scene `RUNNING` only after `create()` returns
   (regression test in `tests/preload.test.ts`), and a failed submit against protected storage reported
   "a newer attempt replaced this saved retry" instead of session-only (`viewFrom` now prefers the
   session attempt for protected bytes).
 
-## Unresolved blocker (Task 11 preview cases → Task 12)
+## Resolved blocker (found and fixed during Task 11)
 
-Every `?qa=` game-state browser case (`preview-evolution`, `preview-mastery` at six sizes, and the other
-`?qa=` states used by that group) fails in the **development-only QA harness**, not in the shipped flow:
-`window.__auditGame` reports `Boot` shut down, both `Preload` and `MainMenu` running, `Game` still in
-status INIT, and the page throws `TypeError: Cannot read properties of null (reading 'resolution')` from
-Phaser's WebGL `TexturerImage.run` while rendering an image with no texture source. The Game scene never
-starts, so the rank/mastery preview cannot be exercised in the browser.
+Every `?qa=` game-state browser case (`preview-evolution`, `preview-mastery` at six sizes) initially
+failed in the development-only QA harness: both `Preload` and `MainMenu` ran, `Game` stayed in status
+INIT, and the page threw `TypeError: Cannot read properties of null (reading 'resolution')` from Phaser's
+WebGL `TexturerImage.run`.
 
-- Product behavior for that feature is covered by `tests/evolution-system.test.ts`,
-  `tests/progression-ui.test.ts`, `tests/scene-progression-ui.test.ts` and `tests/compact-sheet.test.ts`
-  (96 tests) plus model-level assertions that the committed stats equal the preview.
-- Task 12 is therefore not started: the plan requires every acceptance case to pass before publishing.
-  The next step is to fix the `?qa=` startup path (likely the QA Preload start while `MainMenu` is still
-  running) and re-run `node artifacts/audit-fixes/browser.cjs`.
+Cause: `startGameFixture` started the gameplay `Preload` through the `SceneManager`, which does not stop
+the current scene, so `MainMenu` kept running and holding live `Image` objects bound to the menu-only
+procedural `hud_wave`/`hud_score` fallback textures that gameplay readiness replaces. The fix makes the
+QA entry mirror the real flow by stopping the previous scene before the gameplay stage loads
+(`src/game/qa.ts`). `tests/qa.test.ts` stays green (16 tests) and the full matrix now passes:
+**34 cases, 0 failed**, including the unmodified built-Worker policy smoke.
 
 ## Verification limits (not measured)
 

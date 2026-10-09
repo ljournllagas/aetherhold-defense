@@ -177,6 +177,13 @@ function startGameFixture(game: Phaser.Game, state: QAState): void {
   scene.events.once('create', () => {
     scene.events.emit('qa:action', { type: 'seed', state } satisfies QAAction);
   });
+  // Mirror the real entry flow: the previous scene stops before the gameplay stage loads.
+  // Leaving the menu running keeps live Images bound to the menu-only procedural HUD
+  // fallbacks, which gameplay readiness replaces, and the renderer then dereferences a
+  // null texture source.
+  for (const active of game.scene.getScenes(true)) {
+    if (active.scene.key !== 'Preload') game.scene.stop(active.scene.key);
+  }
   game.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: 'QA Warden' } } satisfies LoadingRequest);
 }
 
