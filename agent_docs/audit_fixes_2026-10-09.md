@@ -6,9 +6,26 @@ Baseline for the whole-change review: `06938d9`. Branch: `main`.
 
 ## Status
 
-Tasks 1–11 are implemented, committed and green, including the whole-change cold review (verdict: PASS
-WITH FINDINGS, advisory only, no blocker) and its two actionable fixes. Task 12 (publish, live
-verification, branch synchronization) is in progress.
+Tasks 1–12 are complete: implemented, committed, cold-reviewed (PASS WITH FINDINGS, advisory only, both
+actionable items fixed), published once and verified live on the production Worker.
+
+## Published release
+
+| Item | Value |
+|---|---|
+| URL | https://aetherhold-defense.ljournllagas.workers.dev/ |
+| Worker version id | `ca0a8b8b-6e75-4d01-b380-95f4baf9855c` |
+| Published bundle | `/assets/index-U_hsPps9.js` |
+| Bundle SHA-256 | `4511e926a016b86f8e0528910ec61b372b31660a3bce5ce8887f0da2334a1164` |
+| Live bindings | `DB` (D1 `aetherhold_scores`), `SCORE_RATE_LIMITER` (10 requests/60 s), `ENVIRONMENT` |
+| Live `/api/health` | `{ ok: true, scoreVersion: 3 }` |
+| Live board | era-3 rows returned; earlier-era rows excluded, none deleted and no migration applied |
+| Header policy | `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`, CSP with `frame-ancestors 'none'` |
+| Native smoke | unmodified live bundle, no injected game object, **0 score POSTs**, 0 page errors, 0 failed requests |
+
+`npm run deploy` ran the test suite and the build before publishing; the only build note is the
+pre-existing single-chunk size warning. The production D1 database and Worker were kept as-is
+(`--keep-vars`), and no migration ran.
 
 Commits (newest first):
 
@@ -80,7 +97,7 @@ stays genuinely covered by the ScrollSheet paths and the six-size browser previe
 ## Verification actually run
 
 - `npm run typecheck` — clean.
-- `npm test` — **728 passed, 11 skipped, 0 failed** (54 files).
+- `npm test` — **729 passed, 11 skipped, 0 failed** (54 files) after the review fixes (728 before them).
 - `npm run build` — succeeds; the pre-existing Phaser bundle-size warning remains (single 1.93 MB chunk).
 - Local isolated Worker (`wrangler dev`, `--persist-to .scratch/audit-fixes-d1`, migrations 0001–0004):
   `artifacts/audit-fixes/api.json` records 201 accept, 409 duplicate, 400 for era-2/forged progress,

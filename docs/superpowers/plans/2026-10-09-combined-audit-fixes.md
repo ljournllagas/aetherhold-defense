@@ -10,7 +10,7 @@
 
 **Spec:** `docs/superpowers/specs/2026-10-09-combined-audit-fixes-design.md` (approved 2026-10-09; cold review 9/10, no blockers).
 
-**Status:** reviewed plan awaiting user plan review and execution choice.
+**Status:** executed, verified and published on 2026-10-09 — Worker version `ca0a8b8b-6e75-4d01-b380-95f4baf9855c`, bundle `/assets/index-U_hsPps9.js`, GAME_VERSION `0.3.0` / SCORE_VERSION `3`. All twelve tasks are complete and every step checkbox below is ticked; see the execution record at the end of this file and `agent_docs/audit_fixes_2026-10-09.md`.
 **Cold review:** cleared round 3 on 2026-10-09 at 9/10; 44 of 44 requirements
 covered, zero blockers and zero advisory findings. Round 1: 7/10, six blockers;
 round 2: 8/10, three blockers; all corrected before the final review. Earlier
@@ -1377,7 +1377,7 @@ record, spec and this plan's completion checkboxes/status. No new product API.
 score era 3 and verified whole-change review. Produces live verification record,
 published URL/Worker version and matching local/remote HEAD.
 
-- [ ] **Step 1: Prepare the read-only live checker before deployment.** Reuse the
+- [x] **Step 1: Prepare the read-only live checker before deployment.** Reuse the
 observed Playwright runtime path and Node standard-library fetch/fs/crypto. The
 checker must use the exact current HTML-selected bundle and verify bytes, not
 only filename or status:
@@ -1412,21 +1412,21 @@ Collect page errors, CSP messages, unexpected requests and screenshots. Attach a
 request guard rejecting every POST during live verification. Do not add QA/global
 Game hooks, intercept the live bundle, seed live storage or manufacture live data.
 
-- [ ] **Step 2: Publish the complete application.** With a clean verified change
+- [x] **Step 2: Publish the complete application.** With a clean verified change
 and all acceptance gates passing, run `rtk npm run deploy` in a retained session.
 This command must execute tests/build before `wrangler deploy --keep-vars`; keep the
 existing Worker and D1 database. Record the actual Worker version/URL and deployment
 log. A failed test/build/binding/deploy is resolved or reported as a concrete blocker;
 there is no partial-success release claim and no new approval request for publishing.
 
-- [ ] **Step 3: Run live verification and fix any release failure.** Run
+- [x] **Step 3: Run live verification and fix any release failure.** Run
 `rtk proxy node artifacts/audit-fixes/live.cjs`; expect actual HTML/current bundle/
 health/API/header checks and native smoke to pass, with zero POSTs. If a deployment
 defect requires a code fix, run its focused regression and the deploy gate before
 republishing. Preserve existing remote score rows; this release needs no migration.
 If verification cannot pass, report the failing endpoint/behavior/version precisely.
 
-- [ ] **Step 4: Record completion, commit/push and compare HEAD.** Write final
+- [x] **Step 4: Record completion, commit/push and compare HEAD.** Write final
 test totals, actual prices/trace outcomes, reviewed findings, browser limits,
 deployment version/URL and live SHA into handoff and latest_session_work. Mark only
 completed plan/spec work done. Stage only the release's source/tests/docs/evidence;
@@ -2276,3 +2276,4 @@ Tasks 1-10 are complete and committed; Task 11 is complete except the cold revie
 | 11 | `3f37eeb`, `2d2fbbd` | Evidence harness, report runner, two real defect fixes, SPEC.md and handoff docs; 34 browser cases pass |
 
 Verification at the Task 11 gate: `npm run typecheck` clean, `npm test` 728 passed / 11 skipped / 0 failed, `npm run build` green (pre-existing large-bundle warning), isolated local Worker API evidence, and 34 browser cases with 0 failures. Full detail: `agent_docs/audit_fixes_2026-10-09.md`.
+

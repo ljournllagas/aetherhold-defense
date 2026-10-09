@@ -3,9 +3,16 @@
 Date: 2026-10-09
 Tier: Full
 Workflow route: Light; main agent owns the work, with skill-required cold reviews.
-Status: approved specification; reviewed implementation plan awaiting user handoff
+Status: implemented, reviewed and published on 2026-10-09 as GAME_VERSION 0.3.0 / SCORE_VERSION 3
 Written-spec approval: user approved on 2026-10-09.
 Review: round 1 cleared at 9/10, zero blockers and zero advisory items.
+Implementation review: whole-change cold review cleared as PASS WITH FINDINGS, advisory only; both
+actionable items fixed before publication.
+Publication: Worker version ca0a8b8b-6e75-4d01-b380-95f4baf9855c at
+https://aetherhold-defense.ljournllagas.workers.dev/ (bundle /assets/index-U_hsPps9.js, SHA-256
+4511e926a016b86f8e0528910ec61b372b31660a3bce5ce8887f0da2334a1164); live health, bundle bytes and
+header policy verified, native smoke issued zero score POSTs. Evidence:
+agent_docs/audit_fixes_2026-10-09.md.
 Scope approval: user confirmed all eleven audit items as one release.
 Score-era decision: user selected era 3 with preserved legacy records.
 Implementation plan: [combined audit fixes](../plans/2026-10-09-combined-audit-fixes.md),

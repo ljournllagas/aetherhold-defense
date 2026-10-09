@@ -1,25 +1,34 @@
 # Latest session work
 
-## Combined audit fixes (2026-10-09) — in progress, not published
+## Combined audit fixes (2026-10-09) — published
 
-Tasks 1–10 of `docs/superpowers/plans/2026-10-09-combined-audit-fixes.md` are committed and green:
-fixed-step simulation clock, shared Unicode name/settings policy, staged assets with recoverable loading,
-tuned balance gates (rank-3 price factor 8 plus the ×1.3 late-rank damage multiplier; nine recorded traces
-with empty gate lists), score era 3 with both legacy bests retained, native score throttling and static
-response headers, one retained manual submission with cross-tab settlement, the saved-score menu sheet,
-and the next rank/mastery purchase preview.
+All twelve tasks of `docs/superpowers/plans/2026-10-09-combined-audit-fixes.md` are complete. The
+release adds the fixed-step simulation clock, the shared Unicode name/settings policy, staged assets with
+recoverable loading, tuned balance gates (rank-3 price factor 8 plus the ×1.3 late-rank damage multiplier;
+nine recorded traces with empty gate lists), score era 3 with both legacy bests retained, native score
+throttling and static response headers, one retained manual submission with cross-tab settlement, the
+saved-score menu sheet, and the next rank/mastery purchase preview.
 
-Verified: `npm run typecheck` clean, `npm test` 728 passed / 11 skipped / 0 failed, `npm run build` green
-(pre-existing large-bundle warning), isolated local Worker API evidence (201/409/400/413/native 429, the
-era-2 row survives) and 19 browser case groups against the isolated services. Two real defects were found
-and fixed by that verification: a Phaser `create()` ordering bug that blocked every gameplay/defeat
-loading transition in a real browser, and misleading offline messaging after a failed submit against
-protected storage.
+Verified before publishing: `npm run typecheck` clean, `npm test` 729 passed / 11 skipped / 0 failed,
+`npm run build` green (pre-existing large-bundle warning), isolated local Worker API evidence
+(201/409/400/413/native 429 with the era-2 row preserved), 34 browser cases at 0 failures, and a fresh
+read-only whole-change review (PASS WITH FINDINGS, advisory only) whose two actionable items were fixed.
+That verification found and fixed three real defects: a Phaser `create()` ordering bug that blocked every
+gameplay/defeat loading transition in a real browser, misleading offline messaging after a failed submit
+against protected storage, and a QA entry that left the menu running under the gameplay stage.
 
-Not published yet: the `?qa=` preview browser cases fail in the development-only QA harness with a Phaser
-WebGL render error (`Cannot read properties of null (reading 'resolution')`) while both `Preload` and
-`MainMenu` run, so `Game` never starts and Task 12 is blocked. Full record, evidence and the exact
-blocker: `agent_docs/audit_fixes_2026-10-09.md`.
+Published Worker `ca0a8b8b-6e75-4d01-b380-95f4baf9855c` at
+https://aetherhold-defense.ljournllagas.workers.dev/ (bundle `/assets/index-U_hsPps9.js`, SHA-256
+`4511e926a016b86f8e0528910ec61b372b31660a3bce5ce8887f0da2334a1164`). Live HTML/bundle bytes, `/api/health`
+(era 3) and the header policy check passed; the unmodified live bundle's native
+name/entry/pause/resume/restart smoke recorded zero score POSTs and zero page errors. No migration ran and
+no existing D1 row was changed.
+
+Limits: headless Chromium only; physical touch, other browsers, physical audio output, human balance and
+extreme endless performance are not measured; native rate-limit counters are per-location and eventually
+consistent. The accepted AC-127 branch-parity limitation stands, and the pre-existing unreachable
+compact-inspector branch in `GameScene.refreshInfoPanel` is recorded but not changed. Full record:
+`agent_docs/audit_fixes_2026-10-09.md`; evidence under `artifacts/audit-fixes/` (git-ignored).
 
 ## Auto mode (2026-10-09) — previous release
 
