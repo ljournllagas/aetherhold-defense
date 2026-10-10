@@ -44,7 +44,7 @@ Independent V6 passed all eighteen repaired 29/30/90-Star UI cases across six si
 
 Final R1 publication passed npm run deploy with 939 tests / 11 configured skips, typecheck and build. Worker af75da8f-9800-42ce-919d-e823a0ad471a serves index-De2JS_7L.js, SHA-256 42C5D68374993BDE0FB41DBCB942DCD9A953E6742BE1C7A5CE2B4104CB90922D. Live HTML/JS/CSS and all25 PNGs returned200 and matched dist; health200 ok:true scoreVersion:3. Instrumented ordinary Campaign/Classic restart/navigation passed, clear16px gutter and zero mask warnings.32GETs/no mutations/profilewrites/pageerrors; four screenshot ReadPixels driver warnings had no visible impact. Evidence verification/release/live-verification-p6.json and native-live-smoke-p6.json. Existing bindings preserved, no migrations.
 
-Git operator R2 prepared55task-owned files excluding23unrelated scratch SQLite/SHM/WAL files. Synchronization follows final documentation readiness; verify local HEAD equals remote main. Preserve scratch and ignored originals.
+Git operator R2 committed55task-owned files as d4d54623ccc5e4a833908e5fe127958f9b072c58 and pushed origin/main. Fetch confirmed local HEAD equals remote with ahead/behind0/0 and clean tracked tree. All23unrelated scratch SQLite/SHM/WAL files and ignored originals were preserved. Final closure handoff is synchronized separately as documentation only.
 
 ## Authority and limits
 

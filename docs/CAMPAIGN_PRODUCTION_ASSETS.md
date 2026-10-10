@@ -101,5 +101,8 @@ typecheck and build passed. HTML, JavaScript, CSS and all 25 campaign PNGs
 returned 200 and matched `dist`; `/api/health` returned 200 with `ok: true` and
 `scoreVersion: 3`. See the [live verification](../artifacts/campaign-production-completion-20261010/verification/release/live-verification-p6.json)
 and [ordinary live smoke](../artifacts/campaign-production-completion-20261010/verification/release/native-live-smoke-p6.json).
-The 18 absent atlases remain UNVERIFIED under the approved allowance; Git sync
-is pending.
+The 18 absent atlases remain UNVERIFIED under the approved allowance.
+Implementation sync passed: commit
+`d4d54623ccc5e4a833908e5fe127958f9b072c58` is pushed to `origin/main` with 55
+task files, including 22 PNGs; 23 unrelated scratch files were preserved. The
+closure documentation requires a docs-only commit/push next.

@@ -90,7 +90,10 @@ start or score settlement. The live smoke recorded 32 GETs, no API mutations,
 campaign-profile writes, failed requests, page errors or mask warnings, and a
 clear 16px gutter. Four GPU ReadPixels screenshot warnings had no visual impact;
 the existing Vite chunk advisory remains. Physical-device touch remains
-unverified. Git sync remains pending. If a
+unverified. Implementation sync passed: commit
+`d4d54623ccc5e4a833908e5fe127958f9b072c58` is pushed to `origin/main` with 55
+task files, including 22 PNGs; 23 unrelated scratch files were preserved. The
+closure documentation requires a docs-only commit/push next. If a
 future review rejects a staged candidate, move its public copy back to ignored
 artifacts before release build/deploy while preserving its original. Campaign
 UI pictograms remain procedural/vector or text assets. P6's shared viewport
