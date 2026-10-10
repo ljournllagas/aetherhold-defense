@@ -51,10 +51,16 @@ export function paintBattlefield(scene: Phaser.Scene, map: MapDef = MAP1, worldI
 
   // The beacon sits at the painted spire, separate from the bridge/gameplay gate.
   ensureBeaconFrames(scene);
+  const campaignSpire = Boolean(worldId);
   const beaconSprite = scene.textures.exists('stronghold_beacon_atlas')
-    ? scene.add.sprite(beaconPoint.x, beaconPoint.y, 'stronghold_beacon_atlas', 'healthy')
+    ? scene.add.sprite(
+      campaignSpire ? stronghold.x : beaconPoint.x,
+      campaignSpire ? stronghold.y - 15 : beaconPoint.y,
+      'stronghold_beacon_atlas',
+      'healthy'
+    )
       .setOrigin(0.5)
-      .setScale(34 / BEACON_FRAMES[0].height)
+      .setScale((campaignSpire ? 70 : 34) / BEACON_FRAMES[0].height)
       .setDepth(3)
     : undefined;
   if (beaconSprite) root.add(beaconSprite);

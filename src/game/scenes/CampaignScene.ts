@@ -18,6 +18,7 @@ import { SoundManager } from '../systems/SoundManager.ts';
 import { button, panel } from '../ui/components.ts';
 import { C, FONT_DISPLAY, style } from '../ui/tokens.ts';
 import { ScrollSheet } from '../ui/ScrollSheet.ts';
+import { handleViewportPointerUp, ViewportMaskController } from '../ui/ViewportMask.ts';
 import { drawCampaignEnemyBadge, paintCampaignWorldMap } from '../art/campaignArt.ts';
 
 const TARGETING_MODES: readonly TargetingMode[] = ['first', 'last', 'strongest', 'weakest', 'closest'];
@@ -62,7 +63,7 @@ export class CampaignScene extends Phaser.Scene {
   private mapScroll = 0;
   private campaignView!: CampaignView;
   private mapRoot: Phaser.GameObjects.Container | null = null;
-  private mapMask: Phaser.GameObjects.Graphics | null = null;
+  private mapMask: ViewportMaskController | null = null;
   private sheet: ScrollSheet | null = null;
   private sheetRoot: Phaser.GameObjects.Container | null = null;
   private lastResult: CampaignClearResult | undefined;
@@ -91,7 +92,7 @@ export class CampaignScene extends Phaser.Scene {
   }
 
   private draw(): void {
-    this.closeSheet(); this.mapMask?.destroy(); this.mapMask = null;
+    this.closeSheet(); this.mapMask?.destroy(); this.mapMask = null; this.mapRoot = null;
     this.children.removeAll(true);
     this.campaignView = campaignRepository.view();
     this.cameras.main.setBackgroundColor('#0A0E12');
@@ -157,6 +158,7 @@ export class CampaignScene extends Phaser.Scene {
 
   private drawMap(root: Phaser.GameObjects.Container, width: number, top: number, height: number, active: CampaignWorldId): void {
     const viewportX = 16, viewportW = width - 32, scale = 1;
+    const viewport = { x: viewportX, y: top, width: viewportW, height };
     const route = campaignMapRoute(height);
     panel(this, root, viewportX, top, viewportW, height, 0x445564).setFillStyle(0x121920, 0.98);
     const mapRoot = this.add.container(0, 0); root.add(mapRoot); this.mapRoot = mapRoot;
@@ -228,16 +230,14 @@ export class CampaignScene extends Phaser.Scene {
         mapRoot.add(earned);
       }
       const hit = this.add.rectangle(point.x, point.y, CAMPAIGN_NODE_HIT_SIZE, CAMPAIGN_NODE_HIT_SIZE, 0xffffff, 0.001).setInteractive({ useHandCursor: true });
-      hit.on('pointerup', (_pointer: Phaser.Input.Pointer, _x: number, _y: number, event: Phaser.Types.Input.EventData) => {
-        event.stopPropagation(); this.selectedLevel = point.level; this.lastResult = undefined; this.draw();
+      hit.on('pointerup', (pointer: Phaser.Input.Pointer, _x: number, _y: number, event: Phaser.Types.Input.EventData) => {
+        handleViewportPointerUp(viewport, pointer, event, () => { this.selectedLevel = point.level; this.lastResult = undefined; this.draw(); });
       });
       mapRoot.add(hit);
     }
 
     mapRoot.setPosition(viewportX + centeredOffset - this.mapScroll * scale, top).setScale(scale);
-    const mask = this.make.graphics({ x: 0, y: 0 }, false);
-    mask.fillStyle(0xffffff, 1); mask.fillRect(viewportX, top, viewportW, height); mask.setVisible(false);
-    mapRoot.setMask(new Phaser.Display.Masks.GeometryMask(this, mask)); this.mapMask = mask;
+    this.mapMask = new ViewportMaskController(this, mapRoot, viewport);
   }
 
   private drawDetail(root: Phaser.GameObjects.Container, width: number, top: number, height: number): void {
@@ -383,10 +383,10 @@ export class CampaignScene extends Phaser.Scene {
       sheet.text(y, `${unlocked ? 'CODEX ENTRY' : `REQUIRES ${world.sigilId.replace('_', ' ').toUpperCase()}`}  ·  ${enemy.name}`, unlocked ? C.goldBright : C.textMuted);
       y += 22;
       if (unlocked) {
-        sheet.text(y, world.bossEnemyId === 'hollow_warden' ? 'Temporary damage ward; summons Marchlings at half health; quickens below 25% health.'
+        const description = sheet.text(y, world.bossEnemyId === 'hollow_warden' ? 'Temporary damage ward; summons Marchlings at half health; quickens below 25% health.'
           : world.bossEnemyId === 'cinder_colossus' ? 'High starting armor breaks in stages; its exposed core takes increased damage.'
           : 'Resists slowing and telegraphs temporary tower freezes; later freezes can catch two towers.');
-        y += 40;
+        y += description.height + 22;
         if (this.campaignView.profile.unlockedFeatures.includes('advanced_codex_stats')) {
           sheet.text(y, `HP ${enemy.baseHp} · Speed ${enemy.baseSpeed} · Physical armor ${Math.round(enemy.physicalArmor * 100)}% · Ward ${Math.round(enemy.wardArmor * 100)}%`, C.textMuted, 12); y += 36;
         }

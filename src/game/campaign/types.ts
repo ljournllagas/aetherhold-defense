@@ -2,6 +2,7 @@ import type { PowerUpId, TargetingMode } from '../../shared/types.ts';
 import type { TowerId } from '../../shared/progression.ts';
 
 export type CampaignWorldId = 'borderkeep' | 'emberfall' | 'frostveil';
+export type CampaignVisualTier = 1 | 2 | 3;
 export type CampaignSpecializationId =
   | 'longbow_bastion' | 'repeater_tower'
   | 'siege_mortar' | 'ember_cannon'

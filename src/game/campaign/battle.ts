@@ -7,10 +7,14 @@ import { POWERUPS } from '../config/powerUps.ts';
 import { rollRarity } from '../systems/PowerUpSystem.ts';
 import type { EffectiveTowerStats, ShotSnapshot, TowerId } from '../../shared/progression.ts';
 import type { PowerUpId } from '../../shared/types.ts';
-import type { CampaignLevelDefinition, CampaignSpecializationEffects, CampaignSpecializationId, CampaignView } from './types.ts';
+import type { CampaignLevelDefinition, CampaignSpecializationEffects, CampaignSpecializationId, CampaignView, CampaignVisualTier } from './types.ts';
 
 export interface CampaignSpawn { enemyId: string; atMs: number; hpBonus: number; }
 export interface CampaignShot extends ShotSnapshot { specialization?: Readonly<CampaignSpecializationEffects>; }
+
+export function campaignVisualTier(view: Pick<CampaignView, 'unlockedFeatures'>): CampaignVisualTier {
+  return view.unlockedFeatures.includes('tower_visual_tier_iii') ? 3 : view.unlockedFeatures.includes('tower_visual_tier_ii') ? 2 : 1;
+}
 
 // Unspecified battle tuning is isolated here. Starter mastery targets are untouched.
 const WAVE_COUNTS = [5,6,6,7,8,8,9,10,10,10,10,11,12,13,13,14,14,15,15,15,16,16,19,20,18,22,20,20,21,21];
@@ -28,14 +32,14 @@ export class CampaignBattle {
   readonly waveCount: number;
   readonly choices;
   readonly targeting;
-  readonly visualTier: 1 | 2 | 3;
+  readonly visualTier: CampaignVisualTier;
   readonly powerUpPool: readonly PowerUpId[];
   readonly rerollAvailable: boolean;
   private rerolled = false;
   bossKilled = false;
   settled = false;
 
-  constructor(level: number, view: CampaignView) {
+  constructor(level: number, view: CampaignView, visualTier?: CampaignVisualTier) {
     const definition = getCampaignLevel(level);
     if (!definition || !isLevelUnlocked(level, view)) throw new Error('Campaign level is locked or invalid');
     this.definition = definition;
@@ -44,7 +48,7 @@ export class CampaignBattle {
     this.choices = { ...view.profile.choices };
     if (!view.unlockedFeatures.includes('tower_specialization_i')) for (const id of Object.keys(this.choices) as TowerId[]) this.choices[id] = null;
     this.targeting = { ...view.profile.targeting };
-    this.visualTier = view.unlockedFeatures.includes('tower_visual_tier_iii') ? 3 : view.unlockedFeatures.includes('tower_visual_tier_ii') ? 2 : 1;
+    this.visualTier = visualTier ?? campaignVisualTier(view);
     this.powerUpPool = [...campaignPowerUpPool(view.profile)];
     this.rerollAvailable = view.unlockedFeatures.includes('one_powerup_reroll_per_level');
   }

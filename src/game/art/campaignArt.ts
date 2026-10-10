@@ -4,10 +4,16 @@ import { P2 } from './artkit.ts';
 import { CAMPAIGN_ART_MANIFEST } from '../campaign/artManifest.ts';
 import type { CampaignWorldId } from '../campaign/types.ts';
 
-const WORLD_COLOR: Record<CampaignWorldId, { land: number; light: number; dark: number; accent: number; route: number }> = {
-  borderkeep: { land: 0x354437, light: 0x526146, dark: 0x202c28, accent: 0x83a064, route: 0x8b7965 },
-  emberfall: { land: 0x363434, light: 0x625449, dark: 0x211f21, accent: 0xe27737, route: 0x85705d },
-  frostveil: { land: 0x58616a, light: 0x8997a0, dark: 0x313c45, accent: 0x9fd4e8, route: 0xadb8bc }
+const WORLD_COLOR: Record<CampaignWorldId, { land: number; light: number; dark: number; accent: number }> = {
+  borderkeep: { land: 0x354437, light: 0x526146, dark: 0x202c28, accent: 0x83a064 },
+  emberfall: { land: 0x363434, light: 0x625449, dark: 0x211f21, accent: 0xe27737 },
+  frostveil: { land: 0x58616a, light: 0x8997a0, dark: 0x313c45, accent: 0x9fd4e8 }
+};
+
+const ROAD_MATERIAL: Record<CampaignWorldId, { edge: number; shoulder: number; bed: number; pavers: readonly number[]; highlight: number; seam: number }> = {
+  borderkeep: { edge: 0x51483d, shoulder: 0x726652, bed: 0x88775f, pavers: [0xa6967c, 0x877865, 0xb0a086, 0x756a5b, 0x95846d, 0x7e715f, 0xa0937e, 0x827665], highlight: 0xc8b58f, seam: 0x5c5144 },
+  emberfall: { edge: 0x302a27, shoulder: 0x5a4c40, bed: 0x74604e, pavers: [0x8c7157, 0x77614f, 0x9a7856, 0x65584e, 0x826b58, 0x725b49], highlight: 0xb0916d, seam: 0x463b33 },
+  frostveil: { edge: 0x3e474c, shoulder: 0x68737a, bed: 0x87939a, pavers: [0xaeb9bd, 0x929fa5, 0xc0c8c9, 0x78868d, 0x9eaaae, 0x89959a], highlight: 0xdbe0de, seam: 0x59666d }
 };
 
 const ENEMY_WORLD: Readonly<Record<string, CampaignWorldId>> = {
@@ -39,13 +45,115 @@ function path(g: Phaser.GameObjects.Graphics, points: readonly { x: number; y: n
   g.strokePath();
 }
 
-/** Reuses a shipped family texture when one is approved; otherwise paints a deterministic biome map. */
+function brushRoadBand(g: Phaser.GameObjects.Graphics, points: readonly { x: number; y: number }[], color: number, width: number, alpha: number): void {
+  const radius = width / 2;
+  const spacing = Math.max(8, width * 0.28);
+  g.fillStyle(color, alpha);
+  for (let segment = 1; segment < points.length; segment++) {
+    const from = points[segment - 1], to = points[segment];
+    const dx = to.x - from.x, dy = to.y - from.y;
+    const length = Math.hypot(dx, dy);
+    if (length === 0) continue;
+    const steps = Math.ceil(length / spacing);
+    for (let step = segment === 1 ? 0 : 1; step <= steps; step++) {
+      const t = step / steps;
+      g.fillCircle(from.x + dx * t, from.y + dy * t, radius);
+    }
+  }
+}
+
+function paintRoadStones(g: Phaser.GameObjects.Graphics, points: readonly { x: number; y: number }[], mapId: string, worldId: CampaignWorldId): void {
+  const material = ROAD_MATERIAL[worldId];
+  const random = randomFor(hash(`${worldId}:${mapId}:road`));
+  const across = [-15.2, -7.6, 0, 7.6, 15.2];
+  const stoneShape = [[-0.82, -0.34], [-0.35, -0.91], [0.42, -0.86], [0.96, -0.2], [0.74, 0.63], [0.13, 0.97], [-0.62, 0.78], [-0.98, 0.17]] as const;
+
+  for (let segment = 1; segment < points.length; segment++) {
+    const from = points[segment - 1], to = points[segment];
+    const dx = to.x - from.x, dy = to.y - from.y;
+    const length = Math.hypot(dx, dy);
+    if (length === 0) continue;
+    const tangentX = dx / length, tangentY = dy / length;
+    const normalX = -tangentY, normalY = tangentX;
+    for (let row = 0; row < across.length; row++) {
+      const phase = row % 2 ? 6.2 : 0;
+      let distance = -3 + phase + random() * 3;
+      while (distance < length + 3) {
+        const along = distance + (random() - 0.5) * 3.4;
+        const offset = across[row] + (random() - 0.5) * 2.6;
+        const centerX = from.x + tangentX * along + normalX * offset;
+        const centerY = from.y + tangentY * along + normalY * offset;
+        const halfLength = 4.6 + random() * 2.9;
+        const halfWidth = 2.4 + random() * 1.1;
+        const rotation = (random() - 0.5) * 0.24;
+        const cos = Math.cos(rotation), sin = Math.sin(rotation);
+        const vertices = stoneShape.map(([u, v]) => {
+          const roughU = u * halfLength + (random() - 0.5) * 1.25;
+          const roughV = v * halfWidth + (random() - 0.5) * 0.62;
+          const rotatedU = roughU * cos - roughV * sin;
+          const rotatedV = roughU * sin + roughV * cos;
+          return {
+            x: centerX + tangentX * rotatedU + normalX * rotatedV,
+            y: centerY + tangentY * rotatedU + normalY * rotatedV
+          };
+        });
+
+        g.fillStyle(material.pavers[Math.floor(random() * material.pavers.length)], 0.96);
+        g.fillPoints(P2(vertices), true);
+
+        let lightEdge = 0, shadeEdge = 0, lightScore = Infinity, shadeScore = -Infinity;
+        for (let edge = 0; edge < vertices.length; edge++) {
+          const next = (edge + 1) % vertices.length;
+          const score = vertices[edge].x + vertices[next].x + vertices[edge].y + vertices[next].y;
+          if (score < lightScore) { lightScore = score; lightEdge = edge; }
+          if (score > shadeScore) { shadeScore = score; shadeEdge = edge; }
+        }
+        const lightNext = (lightEdge + 1) % vertices.length;
+        const shadeNext = (shadeEdge + 1) % vertices.length;
+        g.lineStyle(0.8, material.highlight, 0.42);
+        g.lineBetween(vertices[lightEdge].x, vertices[lightEdge].y, vertices[lightNext].x, vertices[lightNext].y);
+        g.lineStyle(0.7, material.seam, 0.35);
+        g.lineBetween(vertices[shadeEdge].x, vertices[shadeEdge].y, vertices[shadeNext].x, vertices[shadeNext].y);
+        distance += 10.8 + random() * 5.1;
+      }
+    }
+  }
+}
+
+function paintCampaignMapOverlay(g: Phaser.GameObjects.Graphics, map: MapDef, worldId: CampaignWorldId): void {
+  const { width, height } = map.field;
+  const palette = WORLD_COLOR[worldId];
+  const clearings = map.buildable.slice(0, 18);
+  for (const point of clearings) {
+    g.fillStyle(palette.light, 0.11); g.fillCircle(point.x - map.field.x, point.y - map.field.y, 26);
+  }
+  const waypoints = map.waypoints.map(point => ({ x: point.x - map.field.x, y: point.y - map.field.y }));
+  const road = ROAD_MATERIAL[worldId];
+  brushRoadBand(g, waypoints, road.edge, 50, 0.78);
+  brushRoadBand(g, waypoints, road.shoulder, 44, 0.96);
+  brushRoadBand(g, waypoints, road.bed, 37, 1);
+  paintRoadStones(g, waypoints, map.id, worldId);
+  g.fillStyle(palette.accent, 0.92); g.fillCircle(map.beacon.x - map.field.x, map.beacon.y - map.field.y, 5);
+}
+
+/** Reuses an approved terrain plate under the authored runtime route; otherwise keeps the deterministic painter. */
 export function ensureCampaignBattleBackground(scene: Phaser.Scene, map: MapDef, worldId: CampaignWorldId): string {
-  if (scene.textures.exists(map.backgroundKey)) return map.backgroundKey;
   const key = `campaign_temp_${map.id}`;
   if (scene.textures.exists(key)) return key;
-  const g = scene.make.graphics({ x: 0, y: 0 }, false);
   const { width, height } = map.field;
+  if (scene.textures.exists(map.backgroundKey)) {
+    const texture = scene.textures.addDynamicTexture(key, width, height);
+    if (texture) {
+      const background = scene.make.image({ x: 0, y: 0 }, false)
+        .setTexture(map.backgroundKey).setOrigin(0, 0).setDisplaySize(width, height);
+      const overlay = scene.make.graphics({ x: 0, y: 0 }, false);
+      paintCampaignMapOverlay(overlay, map, worldId);
+      texture.draw([background, overlay]).render();
+      background.destroy(); overlay.destroy();
+      return key;
+    }
+  }
+  const g = scene.make.graphics({ x: 0, y: 0 }, false);
   const palette = WORLD_COLOR[worldId];
   const random = randomFor(hash(`${worldId}:${map.id}`));
   g.fillStyle(palette.land, 1); g.fillRect(0, 0, width, height);
@@ -82,21 +190,7 @@ export function ensureCampaignBattleBackground(scene: Phaser.Scene, map: MapDef,
     path(g, [{ x: 0, y: height * 0.38 }, { x: width * 0.19, y: height * 0.47 }, { x: width * 0.41, y: height * 0.34 }, { x: width * 0.63, y: height * 0.42 }, { x: width * 0.84, y: height * 0.3 }, { x: width, y: height * 0.4 }], 0x44798c, 26, 0.75);
     path(g, [{ x: 0, y: height * 0.37 }, { x: width * 0.19, y: height * 0.46 }, { x: width * 0.41, y: height * 0.33 }, { x: width * 0.63, y: height * 0.41 }, { x: width * 0.84, y: height * 0.29 }, { x: width, y: height * 0.39 }], 0xa7d9e5, 2, 0.76);
   }
-  const clearings = map.buildable.slice(0, 18);
-  for (const point of clearings) {
-    g.fillStyle(palette.light, 0.11); g.fillCircle(point.x - map.field.x, point.y - map.field.y, 26);
-  }
-  const waypoints = map.waypoints.map(point => ({ x: point.x - map.field.x, y: point.y - map.field.y }));
-  path(g, waypoints, palette.dark, 50, 1);
-  path(g, waypoints, worldId === 'frostveil' ? 0x626b70 : 0x5b5046, 40, 1);
-  path(g, waypoints, palette.route, 30, 1);
-  path(g, waypoints, worldId === 'borderkeep' ? 0x8b806e : worldId === 'emberfall' ? 0x9a8570 : 0xc4cdcf, 1.5, 0.75);
-  const keepX = map.stronghold.x - map.field.x, keepY = map.stronghold.y - map.field.y;
-  g.fillStyle(0x23282c, 0.9); g.fillRect(keepX - 24, keepY - 22, 48, 26);
-  g.fillStyle(worldId === 'frostveil' ? 0x788d9a : 0x786d5f, 1); g.fillRect(keepX - 20, keepY - 36, 10, 42); g.fillRect(keepX + 10, keepY - 36, 10, 42);
-  g.fillTriangle(keepX - 22, keepY - 36, keepX - 15, keepY - 49, keepX - 8, keepY - 36);
-  g.fillTriangle(keepX + 8, keepY - 36, keepX + 15, keepY - 49, keepX + 22, keepY - 36);
-  g.fillStyle(palette.accent, 0.92); g.fillCircle(map.beacon.x - map.field.x, map.beacon.y - map.field.y, 5);
+  paintCampaignMapOverlay(g, map, worldId);
   g.generateTexture(key, width, height); g.destroy();
   return key;
 }

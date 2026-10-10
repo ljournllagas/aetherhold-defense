@@ -3,6 +3,7 @@ import { EventEmitter } from 'eventemitter3';
 import { GameScene } from '../src/game/scenes/GameScene.ts';
 import { parseQARequest, QA_STATES, isQACampaignFixture, installQA, type QACampaignFixture } from '../src/game/qa.ts';
 import { CampaignRepository, campaignRepository } from '../src/game/campaign/progress.ts';
+import { campaignVisualTier } from '../src/game/campaign/battle.ts';
 import * as settingsModule from '../src/game/systems/Settings.ts';
 import * as scoreApi from '../src/api/leaderboardClient.ts';
 import { earnedBranches } from '../src/game/systems/UnlockSystem.ts';
@@ -202,7 +203,7 @@ function anyStub(): any {
 interface QARun { wave: number; waveActive: boolean; debugAssisted: boolean; towers: Tower[]; selectedTower: Tower | null; siege: SiegeSystem; vault: RelicVault; events: { emit: ReturnType<typeof vi.fn> }; handleQAAction(action: QAAction): void; }
 function qaScene(fixture?: QACampaignFixture): QARun {
   vi.spyOn(SoundManager, 'get').mockReturnValue(anyStub());
-  const scene = new GameScene(); scene.init({ difficulty: 'medium', playerName: 'QA Warden', ...(fixture ? { mode: 'campaign', campaignLevel: fixture.level, qaCampaignFixture: fixture } : {}) });
+  const scene = new GameScene(); scene.init({ difficulty: 'medium', playerName: 'QA Warden', ...(fixture ? { mode: 'campaign', campaignLevel: fixture.level, qaCampaignFixture: fixture, ...(fixture.visualTier === undefined ? {} : { campaignVisualTier: fixture.visualTier }) } : {}) });
   const loose = scene as unknown as Record<string, unknown>;
   for (const name of ['updateHUD', 'refreshInfoPanel', 'drawSheet', 'drawPowerupBar', 'refreshPlots', 'refreshPlacePanel', 'hideGhost', 'showBanner', 'floatText', 'floatTextForEnemy', 'drawCatalog', 'updateNextPreview', 'renderVictory', 'projectEntity', 'presentReward', 'showTouchPreview', 'refreshTowerVisual', 'makeEnemyVisual', 'renderFrame', 'renderCampaignResult', 'closeModal', 'syncFieldViews', 'impactAt', 'impactBurst', 'startDeathAnim', 'addEffect']) loose[name] = () => {};
   loose.add = anyStub(); loose.world = (v: unknown) => v;
@@ -227,7 +228,7 @@ describe('development campaign fixtures', () => {
     vi.stubGlobal('localStorage', { getItem: () => null, setItem: write });
     vi.mocked(buildTowerVisual).mockClear();
     const run: any = qaScene(request.campaignFixture); run.seedQACampaignFixture();
-    expect(run.campaign.visualTier).toBe(1); expect(run.qaCampaignRepository.view().totalMasteryStars).toBe(0);
+    expect(run.campaign.visualTier).toBe(visualTier); expect(run.qaCampaignRepository.view().totalMasteryStars).toBe(0);
     expect(run.towers).toHaveLength(5);
     for (const tower of run.towers) {
       expect(tower.y).toBeGreaterThanOrEqual(210);
@@ -245,9 +246,16 @@ describe('development campaign fixtures', () => {
     for (const tier of ['0','4','2.0','2e0','NaN','']) expect(parseQARequest(`?qa=campaign&level=1&tier=${tier}`)).toBeNull();
     expect(isQACampaignFixture({ ...fixture(1,'initial','campaign'),visualTier: '3' })).toBe(false);
     const run: any = qaScene({ ...fixture(1,'initial','campaign'),visualTier: 3 }); expect(run.towerVisualTier).toBe(3);
-    vi.stubEnv('DEV',false); expect(run.towerVisualTier).toBe(1);
+    vi.stubEnv('DEV',false);
+    const productionTier = campaignVisualTier(campaignRepository.view());
     run.init({ mode: 'campaign', campaignLevel: 1, qaCampaignFixture: { ...fixture(1,'initial','campaign'),visualTier: 3 } });
-    expect(run.qaCampaignFixture).toBeNull(); expect(run.towerVisualTier).toBe(1);
+    expect(run.qaCampaignFixture).toBeNull(); expect(run.towerVisualTier).toBe(productionTier);
+  });
+  it('keeps the seeded cosmetic tier in sync for boss fixtures without an explicit override', () => {
+    const run: any = qaScene(fixture(30,'initial','campaign-boss'));
+    expect(run.qaCampaignRepository.view().totalMasteryStars).toBe(87);
+    expect(run.campaign.visualTier).toBe(3);
+    expect(run.towerVisualTier).toBe(3);
   });
   it.each([1,11,21])('seeds level %i using the actual campaign map, roster, and fixed-step wave', level => {
     const sharedView = vi.spyOn(campaignRepository,'view'), sharedClear = vi.spyOn(campaignRepository,'recordClear');

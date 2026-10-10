@@ -1,14 +1,17 @@
 import Phaser from 'phaser';
 import type { DifficultyId } from '../../shared/types.ts';
 import type { GameOverData } from './GameOverScene.ts';
-import type { QACampaignFixture } from '../qa.ts';
+import { createQACampaignRepository, isQACampaignFixture, type QACampaignFixture } from '../qa.ts';
 import { C, FONT_DISPLAY, style } from '../ui/tokens.ts';
 import { button } from '../ui/components.ts';
 import { ensureArtTextures, ensureMenuTextures } from '../art/artkit.ts';
 import { ensureTowerPortraits } from '../art/towerArt.ts';
-import { requiredAssets, type AssetSpec } from '../art/assetManifest.ts';
+import { requiredAssetsForRequest, type AssetSpec } from '../art/assetManifest.ts';
+import { campaignVisualTier } from '../campaign/battle.ts';
+import { campaignRepository } from '../campaign/progress.ts';
+import type { CampaignVisualTier } from '../campaign/types.ts';
 
-export interface GameStartData { difficulty: DifficultyId; playerName: string; mode?: 'classic' | 'campaign'; campaignLevel?: number; qaCampaignFixture?: QACampaignFixture; }
+export interface GameStartData { difficulty: DifficultyId; playerName: string; mode?: 'classic' | 'campaign'; campaignLevel?: number; campaignVisualTier?: CampaignVisualTier; qaCampaignFixture?: QACampaignFixture; }
 export type LoadingRequest =
   | { stage: 'menu'; destination: 'MainMenu'; data?: undefined }
   | { stage: 'campaign'; destination: 'Campaign'; data?: undefined }
@@ -20,6 +23,7 @@ export class PreloadScene extends Phaser.Scene {
   private request: LoadingRequest = { stage: 'menu', destination: 'MainMenu' };
   private generation = 0;
   private state: 'loading' | 'failed' | 'ready' = 'loading';
+  private required: readonly AssetSpec[] = [];
   private destinationStarted = false;
   private created = false;
   private loadingRoot: Phaser.GameObjects.Container | null = null;
@@ -32,7 +36,12 @@ export class PreloadScene extends Phaser.Scene {
 
   init(request?: LoadingRequest): void {
     this.releaseCallbacks(); this.generation++;
-    this.request = request?.stage ? request : { stage: 'menu', destination: 'MainMenu' };
+    const next = request?.stage ? request : { stage: 'menu' as const, destination: 'MainMenu' as const };
+    this.request = next.stage === 'gameplay' && next.destination === 'Game' && next.data.mode === 'campaign'
+      ? this.snapshotCampaignTier(next) : next;
+    this.required = this.request.destination === 'Game'
+      ? requiredAssetsForRequest(this.request.stage, this.request.data)
+      : requiredAssetsForRequest(this.request.stage);
     this.state = 'loading'; this.destinationStarted = false; this.created = false;
     this.progress = 0; this.errorText = '';
   }
@@ -45,8 +54,15 @@ export class PreloadScene extends Phaser.Scene {
   private assetReady(asset: AssetSpec): boolean {
     return this.textures.exists(asset.key) && (asset.kind !== 'sheet' || this.textures.get(asset.key).has('3'));
   }
+  private snapshotCampaignTier(request: Extract<LoadingRequest, { destination: 'Game' }>): Extract<LoadingRequest, { destination: 'Game' }> {
+    const fixture = import.meta.env.DEV && isQACampaignFixture(request.data.qaCampaignFixture)
+      && request.data.campaignLevel === request.data.qaCampaignFixture.level ? request.data.qaCampaignFixture : undefined;
+    const view = fixture ? createQACampaignRepository(fixture).view() : campaignRepository.view();
+    const visualTier = fixture?.visualTier ?? request.data.campaignVisualTier ?? campaignVisualTier(view);
+    return { ...request, data: { ...request.data, campaignVisualTier: visualTier } };
+  }
   private queueMissing(): void {
-    for (const asset of requiredAssets(this.request.stage)) {
+    for (const asset of this.required) {
       if (this.assetReady(asset)) continue;
       if (this.textures.exists(asset.key)) this.textures.remove(asset.key);
       if (asset.kind === 'sheet') this.load.spritesheet(asset.key, asset.path, { frameWidth: asset.frameWidth, frameHeight: asset.frameHeight });
@@ -58,7 +74,7 @@ export class PreloadScene extends Phaser.Scene {
     const generation = this.generation;
     const progress = (value: number) => { if (generation === this.generation) { this.progress = value; this.drawLoading(); } };
     const failed = (file: Phaser.Loader.File) => {
-      if (generation !== this.generation || !requiredAssets(this.request.stage).some(a => a.key === file.key)) return;
+      if (generation !== this.generation || !this.required.some(a => a.key === file.key)) return;
       this.state = 'failed'; this.errorText = 'Some artwork could not load. Retry to continue.'; this.drawLoading();
     };
     const complete = () => this.completeLoading(generation);
@@ -67,7 +83,7 @@ export class PreloadScene extends Phaser.Scene {
   }
   private completeLoading(generation: number): void {
     if (generation !== this.generation || !this.created || this.destinationStarted || this.state === 'failed') return;
-    if (requiredAssets(this.request.stage).some(asset => !this.assetReady(asset))) {
+    if (this.required.some(asset => !this.assetReady(asset))) {
       this.state = 'failed'; this.errorText = 'Some artwork is unavailable. Retry to continue.'; this.drawLoading(); return;
     }
     this.state = 'ready'; this.progress = 1;

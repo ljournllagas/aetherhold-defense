@@ -25,6 +25,11 @@ vi.mock('phaser', () => {
     textHistory: string[] = [];
     handlers = new Map<string, (...args: any[]) => void>();
     destroyed = false;
+    mask: { destroy?: () => void } | null = null;
+    // Phaser 4 exposes these on Game Objects in both renderers. Canvas keeps
+    // `filters` null and enableFilters() is a no-op, so ViewportMaskController
+    // correctly chooses the GeometryMask path in this renderer-free harness.
+    filters: null = null;
     setOrigin() { return this; }
     setDisplaySize() { return this; }
     setStrokeStyle() { return this; }
@@ -48,8 +53,13 @@ vi.mock('phaser', () => {
     setDepth() { return this; }
     setWordWrapWidth() { return this; }
     setAlpha() { return this; }
-    setMask() { return this; }
-    clearMask() { return this; }
+    setMask(mask: { destroy?: () => void } | null) { this.mask = mask; return this; }
+    clearMask(destroyMask = false) {
+      if (destroyMask) this.mask?.destroy?.();
+      this.mask = null;
+      return this;
+    }
+    enableFilters() { return this; }
     setText(value: string) { this.currentText = value; this.textHistory.push(value); return this; }
     setColor() { return this; }
     lineStyle() { return this; }
@@ -125,9 +135,16 @@ vi.mock('phaser', () => {
     constructor(_key: string) {}
   }
 
+  class FakeGeometryMask {
+    geometryMask: FakeDisplay | null;
+    constructor(_scene: FakeScene, graphicsGeometry: FakeDisplay) { this.geometryMask = graphicsGeometry; }
+    destroy() { this.geometryMask = null; }
+  }
+
   return {
     default: {
       Scene: FakeScene,
+      Display: { Masks: { GeometryMask: FakeGeometryMask } },
       Scenes: { Events: { SHUTDOWN: 'shutdown' } },
       Scale: { Events: { RESIZE: 'resize' } }
     }

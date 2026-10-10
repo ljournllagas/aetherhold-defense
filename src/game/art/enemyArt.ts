@@ -6,6 +6,7 @@ import { campaignAnimationDefinitions } from '../campaign/artManifest.ts';
 import { P2 } from './artkit.ts';
 
 type Facing = 'left' | 'right';
+export type EnemyAnimationAction = 'attack' | 'buff' | 'death' | 'armor_break' | 'exposed_core' | 'freeze_cast' | 'phase_two' | 'special';
 interface TrimFrame {
   name: string;
   x: number;
@@ -43,8 +44,15 @@ export interface EnemyView {
   setWalking(walking: boolean): void;
   getFacing(): Facing;
   isWalking(): boolean;
+  /** Play an authored one-shot without coupling presentation to combat resolution. */
+  playAction(action: EnemyAnimationAction): number | null;
   setCampaignState?(state: CampaignBossArtState): void;
 }
+
+const ACTION_PRIORITY: Record<EnemyAnimationAction, number> = {
+  buff: 50, phase_two: 60, armor_break: 60, exposed_core: 65, special: 70,
+  attack: 80, freeze_cast: 90, death: 100
+};
 
 const ROLE_MOTION: Record<EnemyArchetype, Pick<EnemyView, 'bobAmp' | 'bobFreq' | 'rockAmp'>> = {
   thornling: { bobAmp: 1.6, bobFreq: 9, rockAmp: 0.05 },
@@ -102,11 +110,14 @@ function buildCampaignEnemyVisual(scene: Phaser.Scene, archetype: EnemyArchetype
   const frame = { name: frameName, x: 0, y: 0, width: size, height: size, area: size * size, facing: 'right' as const, cycle: 0, pivot: { x: size / 2, y: size }, baselineSourceY: size };
   const view = scene.add.container(0, 0), body = scene.add.container(0, 0);
   const sprite = (art.final ? scene.add.sprite(0, 0, key, frameName) : scene.add.sprite(0, 0, key)).setOrigin(0.5, 1).setScale(dimension / size);
-  body.add(sprite); view.add(body);
+  const overlays = scene.add.container(0, 0);
+  body.add(sprite); body.add(overlays); view.add(body);
 
   const overlay = (draw: (g: Phaser.GameObjects.Graphics) => void): Phaser.GameObjects.Graphics => {
-    const g = scene.add.graphics().setPosition(-size / 2, -size).setScale(dimension / size);
-    draw(g); body.add(g); return g;
+    // Graphics use source-atlas coordinates. Match the sprite's (0.5, 1) origin
+    // after scaling; object position itself is not scaled by Phaser.
+    const g = scene.add.graphics().setPosition(-dimension / 2, -dimension).setScale(dimension / size);
+    draw(g); overlays.add(g); return g;
   };
   let leftArmor: Phaser.GameObjects.Graphics | null = null, rightArmor: Phaser.GameObjects.Graphics | null = null;
   let core: Phaser.GameObjects.Graphics | null = null, telegraph: Phaser.GameObjects.Graphics | null = null;
@@ -153,10 +164,14 @@ function buildCampaignEnemyVisual(scene: Phaser.Scene, archetype: EnemyArchetype
       g.lineStyle(2, 0xc2a2ff, 0.8); g.lineBetween(c - 36, c, c + 36, c); g.lineBetween(c, c - 36, c, c + 36);
     }).setVisible(false);
   }
-  let facing: Facing = 'right', walking = false, bossPose: string | null = null, currentPoseKey = '';
-  // Register every manifest row. Support-buff clips are available by key, but
-  // their playback remains unverified until the runtime signals a buff state.
-  if (art.final) for (const definition of campaignAnimationDefinitions(key)) {
+  let facing: Facing = 'right', walking = false, currentPoseKey = '';
+  let activeAction: { state: EnemyAnimationAction; key: string; priority: number } | null = null;
+  let phasePose: { state: EnemyAnimationAction; frame: string } | null = null;
+  let deathStarted = false;
+  let previousPhase = 1, previousTelegraph = false, previousGuarded = false;
+  const definitions = new Map(campaignAnimationDefinitions(key).map(definition => [definition.state, definition] as const));
+  // Temporary procedural art remains static. Only approved atlas frames receive clips.
+  if (art.final) for (const definition of definitions.values()) {
     if (!scene.anims.exists(definition.key)) scene.anims.create({
       key: definition.key,
       frames: definition.frames.map(frame => ({ key, frame })),
@@ -165,8 +180,17 @@ function buildCampaignEnemyVisual(scene: Phaser.Scene, archetype: EnemyArchetype
     });
   }
   const showPose = (): void => {
-    if (!art.final) return;
-    const state = bossPose ?? (walking ? 'walk' : 'idle');
+    if (!art.final || activeAction) return;
+    if (phasePose) {
+      const heldPoseKey = `held:${phasePose.state}`;
+      if (currentPoseKey !== heldPoseKey || sprite.frame.name !== phasePose.frame) {
+        sprite.anims.stop();
+        sprite.setFrame(phasePose.frame);
+        currentPoseKey = heldPoseKey;
+      }
+      return;
+    }
+    const state = walking ? 'walk' : 'idle';
     const animationKey = `campaign_enemy_${campaignId}_${state}`;
     if (scene.anims.exists(animationKey)) {
       if (currentPoseKey !== animationKey) { currentPoseKey = animationKey; sprite.play(animationKey); }
@@ -174,36 +198,69 @@ function buildCampaignEnemyVisual(scene: Phaser.Scene, archetype: EnemyArchetype
       sprite.anims.stop(); sprite.setFrame(frameName); currentPoseKey = animationKey;
     }
   };
+  const playAction = (state: EnemyAnimationAction): number | null => {
+    if (!art.final) return null;
+    const definition = definitions.get(state);
+    if (!definition || definition.repeat !== 0 || !scene.anims.exists(definition.key)) return null;
+    const durationMs = definition.frames.length * 1000 / definition.frameRate;
+    if (!Number.isFinite(durationMs) || durationMs <= 0) return null;
+    if (deathStarted) return state === 'death' && activeAction?.state === 'death' ? durationMs : null;
+    if (activeAction?.state === state) return durationMs;
+    const priority = ACTION_PRIORITY[state];
+    if (activeAction && priority <= activeAction.priority) return null;
+    if (state === 'death') deathStarted = true;
+    activeAction = { state, key: definition.key, priority };
+    currentPoseKey = definition.key;
+    sprite.play(definition.key);
+    return durationMs;
+  };
+  sprite.on('animationcomplete', (animation: { key?: string } | undefined) => {
+    if (!activeAction || animation?.key !== activeAction.key || activeAction.state === 'death') return;
+    activeAction = null;
+    currentPoseKey = '';
+    showPose();
+  });
   showPose();
   return {
     view, body, sprite, ...ROLE_MOTION[archetype], maxVisualDimension: dimension, atlas: key,
     frameRectangles: { right: [frame], left: [frame] },
-    setFacing(dx: number) { if (Math.abs(dx) >= 0.01) { facing = dx < 0 ? 'left' : 'right'; sprite.setFlipX(facing === 'left'); } },
+    setFacing(dx: number) { if (Math.abs(dx) >= 0.01) { facing = dx < 0 ? 'left' : 'right'; sprite.setFlipX(facing === 'left'); overlays.setScale(facing === 'left' ? -1 : 1, 1); } },
     setWalking(value: boolean) { if (walking !== value) { walking = value; showPose(); } },
-    getFacing: () => facing, isWalking: () => walking,
+    getFacing: () => facing, isWalking: () => walking, playAction,
     ...(campaignId === 'cinder_colossus' || campaignId === 'frostbound_matriarch' || campaignId === 'hollow_warden' ? {
       setCampaignState(state: CampaignBossArtState) {
         const phase = Math.max(1, Math.min(3, Math.floor(state.phase)));
-        let nextBossPose: string | null = null;
+        let transitionAction: EnemyAnimationAction | null = null;
+        let nextPhasePose: EnemyAnimationAction | null = null;
+        const preferAction = (action: EnemyAnimationAction): void => {
+          if (!transitionAction || ACTION_PRIORITY[action] > ACTION_PRIORITY[transitionAction]) transitionAction = action;
+        };
         if (campaignId === 'cinder_colossus') {
           if (leftArmor) leftArmor.setVisible(phase === 1 || phase === 2);
           if (rightArmor) rightArmor.setVisible(phase === 1);
           if (core) core.setVisible(phase >= 2).setAlpha(phase === 3 ? 1 : 0.55);
           phaseAura?.setVisible(phase >= 2 || state.telegraph);
-          nextBossPose = phase >= 3 ? 'exposed_core' : phase >= 2 ? 'armor_break' : null;
+          nextPhasePose = phase >= 3 ? 'exposed_core' : phase === 2 ? 'armor_break' : null;
+          if (phase > previousPhase && nextPhasePose) preferAction(nextPhasePose);
         } else if (campaignId === 'frostbound_matriarch') {
           telegraph?.setVisible(state.telegraph);
           phaseAura?.setVisible(phase >= 2);
-          nextBossPose = state.telegraph ? 'freeze_cast' : phase >= 2 ? 'phase_two' : null;
+          nextPhasePose = phase >= 2 ? 'phase_two' : null;
+          if (phase > previousPhase) preferAction('phase_two');
+          if (state.telegraph && !previousTelegraph) preferAction('freeze_cast');
         } else {
           ward?.setVisible(state.guarded);
           phaseAura?.setVisible(phase >= 2);
-          nextBossPose = state.guarded || phase >= 2 ? 'special' : null;
+          nextPhasePose = state.guarded || phase >= 2 ? 'special' : null;
+          if ((state.guarded && !previousGuarded) || phase > previousPhase) preferAction('special');
         }
-        if (bossPose !== nextBossPose) {
-          bossPose = nextBossPose;
-          showPose();
-        }
+        const frames = nextPhasePose ? definitions.get(nextPhasePose)?.frames : undefined;
+        phasePose = nextPhasePose && frames?.length ? { state: nextPhasePose, frame: frames[frames.length - 1] } : null;
+        if (transitionAction) playAction(transitionAction);
+        showPose();
+        previousPhase = phase;
+        previousTelegraph = state.telegraph;
+        previousGuarded = state.guarded;
       }
     } : {})
   };
@@ -262,7 +319,8 @@ export function buildEnemyVisual(scene: Phaser.Scene, archetype: EnemyArchetype,
       showPose();
     },
     getFacing: () => facing,
-    isWalking: () => walking
+    isWalking: () => walking,
+    playAction: () => null
   };
 }
 

@@ -1,8 +1,12 @@
 # Campaign World-Map Art Provenance
 
 This record covers the three accepted realm panels shipped in deployment
-`campaign-worldmap-art-20261010`. Their manifest entries are `final` with
-`temporary=null`; the other 40 campaign raster targets remain `final_required`.
+`campaign-worldmap-art-20261010`; their manifest entries remain `final` with
+`temporary=null`. It preserves the panel-specific prompts and provenance from
+that release. The current 43-target inventory is in
+[`CAMPAIGN_PRODUCTION_ASSETS.md`](CAMPAIGN_PRODUCTION_ASSETS.md), and the later
+terrain/tower prompts and exact atlas handoff are in
+[`CAMPAIGN_PRODUCTION_ART_PROVENANCE.md`](CAMPAIGN_PRODUCTION_ART_PROVENANCE.md).
 The deployment and verification handoff is canonical in
 [`agent_docs/project_progress.md`](../agent_docs/project_progress.md).
 

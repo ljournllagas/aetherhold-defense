@@ -13,6 +13,7 @@ Use these documents as the project contract:
 - `docs/CAMPAIGN_WORLDS_1_3.md` records the campaign contract and implementation ownership.
 - `docs/CAMPAIGN_PRODUCTION_ASSETS.md` lists all campaign raster production targets and their loading gates.
 - `docs/CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md` records the accepted realm-panel prompts, references and fingerprints.
+- `docs/CAMPAIGN_PRODUCTION_ART_PROVENANCE.md` records terrain/tower prompts and provenance, manifest status, fallback behavior and the missing atlas handoff.
 - `references/VISUAL_REFERENCE_GUIDE.md` explains how to use screenshots; screenshots do not override the text specifications.
 
 Consult `agent_docs/project_progress.md` for current deployment and verification state. Source files, tests, or build output alone do not establish that runtime or visual behavior was verified.

@@ -18,7 +18,7 @@ describe('independent campaign world-map art acceptance', () => {
       }))
     );
     expect(worldPanels.every(asset => !asset.qualityFlags.includes('final_art_unverified') && asset.temporary === null)).toBe(true);
-    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(worldPanels.map(asset => asset.path));
+    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path));
     expect(campaignArtAssetsForLoader('campaign')).toEqual(worlds.map(worldId => ({
       kind: 'image', key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-v1.png`
     })));
@@ -47,8 +47,9 @@ describe('independent campaign world-map art acceptance', () => {
       { key: 'difficulty_helm_hard', path: '/assets/ui/difficulty-helm-hard-v1.webp' }
     ]);
     expect(campaignArtAssetsForLoader('menu')).toEqual([]);
-    expect(campaignArtAssetsForLoader('gameplay')).toEqual([]);
-    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(worldPanels.map(asset => asset.path));
+    expect(campaignArtAssetsForLoader('gameplay').some(asset => asset.path.includes('/world-map/'))).toBe(false);
+    expect(STAGE_ASSETS.gameplay.every(asset => !asset.path.startsWith('/assets/campaign/'))).toBe(true);
+    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path));
     expect(STAGE_ASSETS.campaign).toEqual(campaignArtAssetsForLoader('campaign'));
   });
 });

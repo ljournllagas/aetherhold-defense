@@ -1,5 +1,7 @@
 import { TOWERS } from '../config/towers.ts';
-import { campaignArtAssetsForLoader } from '../campaign/artManifest.ts';
+import { campaignArtAssetsForLoader, campaignGameplayAssetsForLevel } from '../campaign/artManifest.ts';
+import { getCampaignLevel } from '../campaign/config.ts';
+import type { CampaignVisualTier } from '../campaign/types.ts';
 export type AssetStage = 'menu' | 'campaign' | 'gameplay' | 'defeat';
 export type AssetSpec = { key: string; path: string } &
   ({ kind: 'image' } | { kind: 'sheet'; frameWidth: number; frameHeight: number });
@@ -20,7 +22,6 @@ export const STAGE_ASSETS: Record<AssetStage, readonly AssetSpec[]> = {
     { kind: 'image', key: 'relic_icons_atlas', path: '/assets/powerups/relic-icons-atlas-v1.webp' },
     { kind: 'image', key: 'hud_icons_atlas', path: '/assets/ui/hud-icons-atlas-v1.webp' },
     { kind: 'image', key: 'stronghold_beacon_atlas', path: '/assets/world/overlays/borderkeep-beacon-states-v1.webp' },
-    ...campaignArtAssetsForLoader('gameplay')
   ],
   defeat: [{ kind: 'image', key: 'map_ancient_border_keep_defeated', path: '/assets/world/maps/ancient-border-keep-defeated-v1.webp' }]
 };
@@ -29,6 +30,13 @@ export function requiredAssets(stage: AssetStage, campaignAssets: readonly Asset
   if (stage === 'campaign') return [...STAGE_ASSETS.menu, ...campaignAssets];
   if (stage === 'gameplay') return [...STAGE_ASSETS.menu, ...STAGE_ASSETS.gameplay];
   return [...STAGE_ASSETS.menu, ...STAGE_ASSETS.gameplay, ...STAGE_ASSETS.defeat];
+}
+export interface CampaignGameplayRequest { mode?: 'classic' | 'campaign'; campaignLevel?: number; campaignVisualTier?: CampaignVisualTier; }
+export function requiredAssetsForRequest(stage: AssetStage, data?: CampaignGameplayRequest): readonly AssetSpec[] {
+  const base = requiredAssets(stage);
+  if (stage !== 'gameplay' || data?.mode !== 'campaign') return base;
+  const level = getCampaignLevel(data.campaignLevel ?? NaN);
+  return level ? [...base, ...campaignGameplayAssetsForLevel(level, data.campaignVisualTier ?? 1)] : base;
 }
 export function missingAssets(stage: AssetStage, exists: (key: string) => boolean): AssetSpec[] {
   return requiredAssets(stage).filter(a => !exists(a.key));

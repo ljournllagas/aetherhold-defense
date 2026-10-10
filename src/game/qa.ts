@@ -2,6 +2,8 @@ import type Phaser from 'phaser';
 import type { GameOverData } from './scenes/GameOverScene.ts';
 import type { LoadingRequest } from './scenes/PreloadScene.ts';
 import type { DifficultyId, PowerUpId } from '../shared/types.ts';
+import { getCampaignLevel } from './campaign/config.ts';
+import { CampaignRepository } from './campaign/progress.ts';
 
 export const QA_STATES = [
   'menu',
@@ -44,6 +46,12 @@ export function isQACampaignFixture(value: unknown): value is QACampaignFixture 
   if (fixture.state !== 'campaign-boss') return false;
   const phases = fixture.level === 10 ? ['initial','guarded','enraged'] : fixture.level === 20 ? ['initial','broken','core'] : fixture.level === 30 ? ['initial','telegraph','freeze','phase2'] : [];
   return phases.includes(fixture.bossPhase ?? '');
+}
+
+export function createQACampaignRepository(fixture: QACampaignFixture): CampaignRepository {
+  const repository = new CampaignRepository(null);
+  for (let level = 1; level < fixture.level; level++) repository.recordClear(level, getCampaignLevel(level)!.mastery.scoreTarget, 20);
+  return repository;
 }
 
 export type QAAction =

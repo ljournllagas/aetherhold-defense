@@ -1,5 +1,5 @@
 import type { AssetSpec } from '../art/assetManifest.ts';
-import type { CampaignWorldId } from './types.ts';
+import type { CampaignLevelDefinition, CampaignVisualTier, CampaignWorldId } from './types.ts';
 
 export type CampaignArtState = 'final_required' | 'final';
 export interface CampaignArtSource {
@@ -73,10 +73,13 @@ function imageSource(
 
 /** Final art targets. Their explicit state keeps the preload contract from requesting absent files. */
 export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
-  ...WORLDS.flatMap(worldId => FAMILIES.map(family => imageSource(
-    `map:${worldId}:${family}`, `campaign_${worldId}_${family}`,
-    `/assets/campaign/maps/${worldId}_${family}-v1.png`, 1672, 940, 'gameplay', ['final_art_unverified', 'procedural_biome_fallback']
-  ))),
+  ...WORLDS.flatMap(worldId => FAMILIES.map(family => {
+    return imageSource(
+      `map:${worldId}:${family}`, `campaign_${worldId}_${family}`,
+      `/assets/campaign/maps/${worldId}_${family}-v1.png`, 1672, 940, 'gameplay',
+      ['terrain_plate', 'runtime_geometry_overlay'], 'final', null
+    );
+  })),
   ...WORLDS.flatMap(worldId => [
     imageSource(`world-panel:${worldId}`, `campaign_worldmap_${worldId}`,
       `/assets/campaign/world-map/${worldId}-v1.png`, 768, 432, 'campaign', ['biome_illustration'], 'final', null),
@@ -106,15 +109,17 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
   ]),
   ...TOWERS.flatMap(id => ([2, 3] as const).map(tier => imageSource(
     `tower:${id}:tier${tier}`, `campaign_tower_${id}_tier${tier}`,
-    `/assets/campaign/towers/${id}-tier${tier}-v1.png`, 192, 192, 'gameplay', ['final_art_unverified', 'transparent_png_required', 'cosmetic_only', 'classic_art_unchanged']
+    `/assets/campaign/towers/${id}-tier${tier}-v1.png`, 192, 192, 'gameplay', ['transparent_png_required', 'cosmetic_only', 'classic_art_unchanged'], 'final', null
   )))
 ];
 
 /** A production file is queued only after its manifest entry is promoted and its exact path is listed here. */
 export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
+  ...WORLDS.flatMap(worldId => FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v1.png`)),
   '/assets/campaign/world-map/borderkeep-v1.png',
   '/assets/campaign/world-map/emberfall-v1.png',
-  '/assets/campaign/world-map/frostveil-v1.png'
+  '/assets/campaign/world-map/frostveil-v1.png',
+  ...TOWERS.flatMap(id => ([2, 3] as const).map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.png`))
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
@@ -129,6 +134,25 @@ export function resolveCampaignArtAssets(
 
 export function campaignArtAssetsForLoader(stage: 'menu' | 'campaign' | 'gameplay', availablePaths: readonly string[] = AVAILABLE_CAMPAIGN_ART_PATHS): AssetSpec[] {
   return resolveCampaignArtAssets(CAMPAIGN_ART_MANIFEST, stage, availablePaths);
+}
+
+const BOSS_SUMMONS: Readonly<Record<string, readonly string[]>> = { hollow_warden: ['marchling'] };
+
+/** Select only the current level's family, visual tier, and registered roster/boss/summon art. */
+export function campaignGameplayAssetsForLevel(
+  level: CampaignLevelDefinition, visualTier: CampaignVisualTier,
+  manifest: readonly CampaignArtSource[] = CAMPAIGN_ART_MANIFEST,
+  availablePaths: readonly string[] = AVAILABLE_CAMPAIGN_ART_PATHS
+): AssetSpec[] {
+  const family = /^(borderkeep|emberfall|frostveil)_([abcd])/.exec(level.mapLayoutId);
+  if (!family || family[1] !== level.worldId) return [];
+  const ids = new Set([
+    `map:${level.worldId}:${family[2]}`,
+    ...level.enemyIds.map(id => `enemy:${id}`),
+    ...(level.bossEnemyId ? [`boss:${level.bossEnemyId}`, ...(BOSS_SUMMONS[level.bossEnemyId] ?? []).map(id => `enemy:${id}`)] : []),
+    ...(visualTier === 1 ? [] : TOWERS.map(id => `tower:${id}:tier${visualTier}`))
+  ]);
+  return resolveCampaignArtAssets(manifest.filter(asset => ids.has(asset.id)), 'gameplay', availablePaths);
 }
 
 export function missingCampaignProductionAssets(): CampaignArtSource[] {

@@ -8,7 +8,7 @@ import { getDifficulty } from '../config/difficulties.ts';
 import { POWERUPS, POWERUP_EFFECTS, POWERUP_DROP_CHANCE_PER_KILL, POWERUP_INVENTORY_LIMIT } from '../config/powerUps.ts';
 import { EVOLUTIONS } from '../config/evolutions.ts';
 import type { DamageType, DifficultyId, EnemyArchetype, PowerUpId, TargetingMode } from '../../shared/types.ts';
-import { isQACampaignFixture, type QACampaignFixture, type QAAction, type QAStatus } from '../qa.ts';
+import { createQACampaignRepository, isQACampaignFixture, type QACampaignFixture, type QAAction, type QAStatus } from '../qa.ts';
 import { GAME_VERSION, SCORE_VERSION } from '../../shared/version.ts';
 import { buildWave, scheduleWave, enemyHpForWave, enemySpeedForWave } from '../systems/WaveSystem.ts';
 import { RelicVault, advanceFlights } from '../systems/RunSimulation.ts';
@@ -35,6 +35,7 @@ import { Enemy } from '../entities/Enemy.ts';
 import { Tower } from '../entities/Tower.ts';
 import { BattlefieldView, type Point } from '../ui/viewport.ts';
 import { PointerGesture } from '../systems/PointerGesture.ts';
+import { ViewportMaskController } from '../ui/ViewportMask.ts';
 import { PauseState } from '../systems/PauseState.ts';
 import { ScrollSheet } from '../ui/ScrollSheet.ts';
 import { SiegeSystem, victoryRewardChoices, victoryRewardsResolved } from '../systems/SiegeSystem.ts';
@@ -157,7 +158,7 @@ export class GameScene extends Phaser.Scene {
   private victoryPanel: Phaser.GameObjects.Container | null = null;
   private layout: GameLayout = gameLayout(1280, 720);
   private worldRoot: Phaser.GameObjects.Container | null = null;
-  private fieldMask: Phaser.GameObjects.Graphics | null = null;
+  private fieldMask: ViewportMaskController | null = null;
   private uiRoot: Phaser.GameObjects.Container | null = null;
   private catalog: Phaser.GameObjects.Container | null = null;
   private catalogOpen = false;
@@ -301,12 +302,11 @@ export class GameScene extends Phaser.Scene {
     this.campaignCallout = null; this.campaignCalloutView = null;
     if (import.meta.env.DEV && data.mode === 'campaign' && isQACampaignFixture(data.qaCampaignFixture) && data.campaignLevel === data.qaCampaignFixture.level) {
       this.qaCampaignFixture = { ...data.qaCampaignFixture };
-      this.qaCampaignRepository = new CampaignRepository(null);
-      for (let level = 1; level < data.qaCampaignFixture.level; level++) this.qaCampaignRepository.recordClear(level, getCampaignLevel(level)!.mastery.scoreTarget, 20);
+      this.qaCampaignRepository = createQACampaignRepository(this.qaCampaignFixture);
     }
     this.campaignBosses = new CampaignBossSystem(); this.towerFreezeViews = new Map();
     if (data.mode === 'campaign') {
-      try { this.campaign = new CampaignBattle(data.campaignLevel ?? NaN, (this.qaCampaignRepository ?? campaignRepository).view()); }
+      try { this.campaign = new CampaignBattle(data.campaignLevel ?? NaN, (this.qaCampaignRepository ?? campaignRepository).view(), data.campaignVisualTier); }
       catch { this.campaignStartRejected = true; }
     }
     this.map = this.campaign?.map ?? MAP1;
@@ -657,9 +657,10 @@ export class GameScene extends Phaser.Scene {
     this.bossBar = null; this.bossBarHp = null; this.bossBarText = null; this.bossBarFill = null;
     const f = this.layout.field;
     this.applyView();
-    if (!this.fieldMask) this.fieldMask = this.make.graphics({ x: 0, y: 0 }, false);
-    this.fieldMask.clear().fillStyle(0xffffff).fillRect(f.x, f.y, f.width, f.height);
-    this.worldRoot?.setMask(this.fieldMask.createGeometryMask());
+    if (this.worldRoot) {
+      if (!this.fieldMask) this.fieldMask = new ViewportMaskController(this, this.worldRoot, f);
+      else this.fieldMask.refresh(f);
+    }
     for (const view of [...this.towers.map(t => t.view), ...this.enemies.map(e => e.view), this.ghost]) if (view) this.projectEntity(view);
     this.drawHUD(); this.drawTowerPanel(); this.drawControls(); this.drawPowerupBar(); this.drawBossBar();
     this.refreshInfoPanel(); this.refreshPlacePanel(); this.updateNextPreview(); this.updateHUD();
@@ -691,8 +692,8 @@ export class GameScene extends Phaser.Scene {
     this.flights = []; this.effects = []; this.spawnQueue = [];
     this.vault = new RelicVault();
     this.modal?.destroy(true); this.modal = null;
-    this.worldRoot?.destroy(true); this.worldRoot = null;
     this.fieldMask?.destroy(); this.fieldMask = null;
+    this.worldRoot?.destroy(true); this.worldRoot = null;
     this.ghostReason?.destroy(); this.ghostReason = null;
     this.uiRoot?.destroy(true); this.uiRoot = null;
   }
@@ -1121,13 +1122,7 @@ export class GameScene extends Phaser.Scene {
     this.startBtnLabel?.setVisible(!(this.layout.compact && this.compactBossActive));
     this.tweens.timeScale = this.paused || this.pausedByModal ? 0 : this.speed;
     this.time.paused = this.paused || this.pauseState.has('background');
-    for (const enemy of this.enemies) {
-      const visual = enemy.view?.getData('enemyVisual') as { sprite?: Phaser.GameObjects.Sprite } | undefined;
-      if (!visual?.sprite) continue;
-      visual.sprite.anims.timeScale = this.speed;
-      if (this.paused || this.pausedByModal || this.gameTimeMs < this.freezeUntil) visual.sprite.anims.pause();
-      else visual.sprite.anims.resume();
-    }
+    this.syncEnemyAnimationPlayback();
     this.refreshAutoDisplay();
     this.publishQAStatus();
   }
@@ -1673,7 +1668,9 @@ export class GameScene extends Phaser.Scene {
   /** Collapse/dissolve over ~300ms, pause-safe (bible §62). */
   private startDeathAnim(e: Enemy): void {
     if (!e.view) return;
-    this.dying.push({ view: e.view, shadow: e.shadow, ring: e.slowRing, bar: e.hpBar, t0: this.gameTimeMs, duration: e.isBoss ? 900 : 320 });
+    const visual = e.view.getData('enemyVisual') as EnemyView | undefined;
+    const duration = visual?.playAction('death') ?? (e.isBoss ? 900 : 320);
+    this.dying.push({ view: e.view, shadow: e.shadow, ring: e.slowRing, bar: e.hpBar, t0: this.gameTimeMs, duration });
     e.hpBar?.clear();
     e.view = null;
     e.body = null;
@@ -1686,6 +1683,9 @@ export class GameScene extends Phaser.Scene {
     for (let i = this.dying.length - 1; i >= 0; i--) {
       const d = this.dying[i];
       const k = Math.min(1, (this.gameTimeMs - d.t0) / d.duration);
+      const visual = d.view.getData('enemyVisual') as EnemyView | undefined;
+      const edge = d.view.getData('silhouetteEdge') as Phaser.GameObjects.Image | undefined;
+      if (visual && edge) edge.setFrame(visual.sprite.frame.name);
       d.view.setScale((d.view.getData('baseScaleX') as number ?? 1) * (1 - k * 0.8), (d.view.getData('baseScaleY') as number ?? 1) * (1 - k * 0.8));
       d.view.setAlpha(1 - k);
       if (k >= 1) {
@@ -2429,6 +2429,9 @@ export class GameScene extends Phaser.Scene {
 
   private tickCampaignBosses(): void {
     for (const event of this.campaignBosses.tick(this.enemies, this.towers, this.gameTimeMs)) {
+      if (event.boss.campaignId === 'ashcaller' || event.boss.campaignId === 'frost_shaman') {
+        (event.boss.view?.getData('enemyVisual') as EnemyView | undefined)?.playAction('buff');
+      }
       this.showCampaignCallout(event.text);
       if (!event.summon) continue;
       for (let i = 0; i < event.summon.count; i++) {
@@ -2437,6 +2440,19 @@ export class GameScene extends Phaser.Scene {
         add.waypointIndex = event.boss.waypointIndex; add.distanceTraveled = event.boss.distanceTraveled;
       }
     }
+  }
+
+  private syncEnemyAnimationPlayback(): void {
+    const paused = this.paused || this.pausedByModal || this.gameTimeMs < this.freezeUntil;
+    const sync = (view: Phaser.GameObjects.Container | null): void => {
+      const visual = view?.getData('enemyVisual') as EnemyView | undefined;
+      if (!visual) return;
+      visual.sprite.anims.timeScale = this.speed;
+      if (paused) visual.sprite.anims.pause();
+      else visual.sprite.anims.resume();
+    };
+    for (const enemy of this.enemies) sync(enemy.view);
+    for (const dying of this.dying) sync(dying.view);
   }
 
   private syncTowerFreezeViews(): void {
@@ -2703,7 +2719,7 @@ export class GameScene extends Phaser.Scene {
   private gameOver(): void { this.finishRun('defeat'); }
 
   private restartRun(): void {
-    this.scene.restart({ difficulty: this.difficultyId, playerName: this.playerName, ...(this.campaign ? { mode: 'campaign', campaignLevel: this.campaign.definition.level } : {}), ...(import.meta.env.DEV && this.qaCampaignFixture ? { qaCampaignFixture: this.qaCampaignFixture } : {}) } satisfies GameStartData);
+    this.scene.restart({ difficulty: this.difficultyId, playerName: this.playerName, ...(this.campaign ? { mode: 'campaign', campaignLevel: this.campaign.definition.level, campaignVisualTier: this.towerVisualTier } : {}), ...(import.meta.env.DEV && this.qaCampaignFixture ? { qaCampaignFixture: this.qaCampaignFixture } : {}) } satisfies GameStartData);
   }
 
   private finishCampaign(outcome: RunOutcome): void {

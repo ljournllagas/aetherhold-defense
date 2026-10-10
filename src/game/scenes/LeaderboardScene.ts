@@ -6,6 +6,7 @@ import { SoundManager } from '../systems/SoundManager.ts';
 import { C, FONT_DISPLAY, style } from '../ui/tokens.ts';
 import { etchedFrame } from '../ui/components.ts';
 import { paintVista } from '../art/menubg.ts';
+import { ViewportMaskController } from '../ui/ViewportMask.ts';
 
 type Filter = DifficultyId | 'overall';
 const ROWS = 20;
@@ -27,8 +28,7 @@ export class LeaderboardScene extends Phaser.Scene {
   private retryBox: Phaser.GameObjects.Rectangle | null = null;
   private retryLabel: Phaser.GameObjects.Text | null = null;
   private scrollZone: Phaser.GameObjects.Rectangle | null = null;
-  private rowMask: Phaser.Display.Masks.GeometryMask | null = null;
-  private maskGraphics: Phaser.GameObjects.Graphics | null = null;
+  private rowMask: ViewportMaskController | null = null;
   private tabs: TabView[] = [];
   private records: ScoreRecord[] = [];
   private loadGeneration = 0;
@@ -84,9 +84,9 @@ export class LeaderboardScene extends Phaser.Scene {
       this.input.off('pointermove', this.handlePointerMove);
       this.input.off('pointerup', this.handlePointerUp);
       this.input.off('wheel', this.handleWheel);
-      this.rowLayer?.clearMask(true);
-      this.maskGraphics?.destroy();
-      this.maskGraphics = null;
+      this.rowMask?.destroy();
+      this.rowMask = null;
+      this.rowLayer = null;
     });
     this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);
 
@@ -170,11 +170,7 @@ export class LeaderboardScene extends Phaser.Scene {
     const bodyHeight = this.bodyBottom - this.bodyTop;
     this.rowHeight = W < 768 ? 80 : compact ? 28 : 42;
     this.rowLayer = this.add.container(0, 0).setDepth(3);
-    const maskGraphics = this.make.graphics({ x: 0, y: 0 }, false);
-    maskGraphics.fillStyle(0xffffff, 1).fillRect(panelX + 4, this.bodyTop, panelWidth - 8, bodyHeight);
-    this.maskGraphics = maskGraphics;
-    this.rowMask = maskGraphics.createGeometryMask();
-    this.rowLayer.setMask(this.rowMask);
+    this.rowMask = new ViewportMaskController(this, this.rowLayer, { x: panelX + 4, y: this.bodyTop, width: panelWidth - 8, height: bodyHeight });
 
     this.statusText = this.add.text(W / 2, this.bodyTop + bodyHeight / 2, 'Consulting the archives...', style(14, C.textSecondary)).setOrigin(0.5).setAlign('center').setWordWrapWidth(panelWidth - 40);
     this.retryBox = this.add.rectangle(W / 2 - 72, this.bodyTop + bodyHeight / 2 + 34, 144, 44, 0x19232d, 0.98)

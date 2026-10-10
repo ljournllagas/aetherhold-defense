@@ -2,6 +2,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { GameScene } from '../src/game/scenes/GameScene.ts';
 import { gameLayout } from '../src/game/ui/layout.ts';
 import { SoundManager } from '../src/game/systems/SoundManager.ts';
+import { CampaignBossSystem } from '../src/game/campaign/bosses.ts';
+import { CAMPAIGN_BATTLE_TUNING } from '../src/game/campaign/battle.ts';
+import type { Enemy } from '../src/game/entities/Enemy.ts';
 
 vi.mock('phaser', () => ({ default: { Scene: class { constructor(_key?: string) {} } } }));
 function stub(): any {
@@ -32,6 +35,49 @@ describe('campaign ability callout', () => {
     expect(run.spawnEnemy).toHaveBeenCalledTimes(3);
     expect(views[0]).toMatchObject({ text: 'Marchlings summoned', style: { backgroundColor: '#121920', padding: { x: 8, y: 4 } } });
     expect(run.campaignCallout).toEqual({ text: 'Marchlings summoned', until: 3000 });
+  });
+  it.each(['ashcaller', 'frost_shaman'])('plays the authored buff clip on a real %s pulse', (campaignId) => {
+    const { run } = fixture();
+    const visual = { playAction: vi.fn() };
+    const support = { id: 7, campaignId, alive: true, isBoss: false, x: 0, y: 0, view: { getData: () => visual } };
+    const ally = { alive: true, x: 12, y: 0, speedBuffUntil: 0, slowResistanceUntil: 0 };
+    const bosses = new CampaignBossSystem();
+    bosses.register(support as unknown as Enemy, 0);
+    run.campaignBosses = bosses; run.enemies = [support, ally]; run.towers = [];
+    run.gameTimeMs = CAMPAIGN_BATTLE_TUNING.supportIntervalMs;
+
+    run.tickCampaignBosses();
+
+    expect(visual.playAction).toHaveBeenCalledOnce();
+    expect(visual.playAction).toHaveBeenCalledWith('buff');
+    if (campaignId === 'ashcaller') expect(ally.speedBuffUntil).toBe(run.gameTimeMs + CAMPAIGN_BATTLE_TUNING.supportDurationMs);
+    else expect(ally.slowResistanceUntil).toBe(run.gameTimeMs + CAMPAIGN_BATTLE_TUNING.supportDurationMs);
+  });
+  it('starts the authored death clip while retaining detached-view cleanup and clip duration', () => {
+    const { run } = fixture();
+    const visual = { playAction: vi.fn(() => 750) };
+    const view = { getData: () => visual };
+    const enemy: any = { isBoss: false, view, shadow: null, slowRing: null, hpBar: { clear: vi.fn() }, body: {} };
+    run.gameTimeMs = 120;
+
+    run.startDeathAnim(enemy);
+
+    expect(visual.playAction).toHaveBeenCalledWith('death');
+    expect(run.dying[0]).toMatchObject({ view, t0: 120, duration: 750 });
+    expect(enemy).toMatchObject({ view: null, body: null, shadow: null, slowRing: null, hpBar: null });
+    expect(enemy.hpBar).toBeNull();
+  });
+  it('pauses and resumes detached death clips with simulation speed', () => {
+    const { run } = fixture();
+    const sprite = { anims: { timeScale: 1, pause: vi.fn(), resume: vi.fn() } };
+    const view = { getData: () => ({ sprite }) };
+    run.dying = [{ view }]; run.speed = 3; run.paused = true;
+
+    run.syncEnemyAnimationPlayback();
+    expect(sprite.anims.timeScale).toBe(3); expect(sprite.anims.pause).toHaveBeenCalledOnce();
+    run.paused = false;
+    run.syncEnemyAnimationPlayback();
+    expect(sprite.anims.resume).toHaveBeenCalledOnce();
   });
   it.each([[1440,900],[1280,720],[1024,768],[844,390],[390,844],[360,640]])('keeps the notice inside the bottom of the field at %ix%i', (width, height) => {
     const { run, views } = fixture(width,height);

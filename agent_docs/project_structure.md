@@ -14,22 +14,22 @@ src/
     entities/         Tower and enemy entities
     maps/             Map layout and game dimensions
     art/              Phaser drawing and texture-generation helpers, including procedural campaign fallback art
-    ui/               Shared UI tokens, layout, scroll sheets and progression presentation models
+    ui/               Shared tokens/layout, scroll sheets and ViewportMask.ts for Campaign, Game and Leaderboard clipping
   api/                Leaderboard and score client
   shared/             Shared types, validation, version values, progression contract and result progress rules
 worker/               Cloudflare Worker API
 migrations/           D1 SQL migrations (0004 adds progression result columns)
 tests/                Vitest game and Worker tests
   helpers/            Evolution and result fixtures, balance trace reporter and headless simulation bot
-public/assets/        Classic runtime art plus 3 accepted campaign world panels; 40 campaign raster targets remain unapproved or absent
+public/assets/        Classic art, 3 world panels, 12 terrain plates, 10 tower sprites; 18 enemy/boss atlas paths absent
 dist/                 Vite build output served by Wrangler
-artifacts/            Verification evidence (rebuild/, responsive/, progression/, campaign/) and promo/
+artifacts/            Verification evidence (including campaign-production-completion-20261010/) and promo/
 agent_docs/           Durable agent context and deployment handoff
 ```
 
 `src/game/art/` holds drawing and texture-generation helpers; runtime art is loaded from `public/assets/`. `docs/REFERENCE_AUDIT.md` is an older audit and contains stale inventory recommendations. Follow the current contracts in `SPEC.md`, `DESIGN_SYSTEM.md`, `ART_BIBLE.md`, and `AI_AGENT_INSTRUCTIONS.md`; use `references/VISUAL_REFERENCE_GUIDE.md` to interpret screenshots.
 
-Campaign boundaries, save behavior and unlocks are documented in `docs/CAMPAIGN_WORLDS_1_3.md`. `docs/CAMPAIGN_PRODUCTION_ASSETS.md` tracks the asset gate: three world panels are final and the other 40 raster targets remain `final_required`. Their exact prompts and fingerprints are in `docs/CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md`.
+Campaign boundaries, save behavior and unlocks are documented in `docs/CAMPAIGN_WORLDS_1_3.md`. The current 43-target manifest has 25 `final` and 18 `final_required` entries. `docs/CAMPAIGN_PRODUCTION_ASSETS.md` tracks each target and loader gate; `docs/CAMPAIGN_PRODUCTION_ART_PROVENANCE.md` records terrain/tower prompts, references, hashes and the exact missing atlas list. V7 raw review and V6 combined map/tower runtime visual QA passed for all twelve terrain plates; eighteen atlases remain absent with fallback art, so final art is UNVERIFIED. The campaign release is complete under the explicit missing-art allowance and live-verified. V9 viewport-mask precision/lifecycle checks passed in headless Edge WebGL and Canvas fallback tests; physical-device touch remains unverified. Git sync is pending.
 
 ## Progression and evolutions files (2026-10-08)
 

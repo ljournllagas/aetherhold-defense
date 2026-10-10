@@ -2,6 +2,16 @@
 
 ## Lasting decisions and lessons
 
+- Responsive progression coverage must include fully unlocked content, not only early milestones. The 90-Star Codex exposed 14px boss paragraph/stats overlaps missed by the 10-Star view; advance text layout by measured rendered height.
+- Phaser 4.2.1 GeometryMask/setMask is Canvas-only. WebGL fixed viewport clips require external parent-space Mask filters, visible off-display-list source Graphics, controlled refresh and separate input bounds checks. An accepted screenshot can still miss narrow gutter spill; inspect actual viewport boundaries and unsupported API warnings.
+
+- Stage raw-approved art in a held working manifest so native review exercises the real loader. Keep publication gated on combined runtime acceptance; browser-only manifest injection is unnecessary once the integration can be tested safely before release.
+
+- Boss effects must share the sprite's transformed origin and facing. Scaling Graphics does not scale its position: use display-size origin offsets and a mirrored parent, then compare transformed geometry with sprite reference points. Native screenshots still establish visual acceptance.
+- Pending manifest status does not prevent publication of public files. Independently accept candidates before release or remove rejected runtime copies from public output, preserving originals separately.
+
+- Separate persistent boss phase appearance from transient authored clips. Completion must restore the current armor/core/enraged pose rather than ordinary idle art; test after completion and movement updates, not only clip selection.
+- Generated terrain plates must not redefine campaign roads or build sites. Composite the existing painter with actual variant geometry and cache by map identity; independently review both pixel alignment and the rendered road finish.
 - Campaign realm panels require ground-filled strategy-map composition; cinematic horizon landscapes can suit the menu while failing this surface. Preserve full generated originals and exact prompts, and approve the rendered crop independently before manifest promotion.
 - Load approved realm panels in a separate campaign stage to preserve the six-asset cold menu. Use centered cover cropping with equal-axis scaling and bounded caption backings; keep route geometry and touch targets independent of illustration details.
 - A label that fits a full realm can still clip after the campaign map pans on a phone. Compute caption width from the visible realm intersection, wrap at readable size, measure its backing, and independently recapture each selected world.
@@ -26,3 +36,6 @@
 - Durable documents contain verified decisions and continuation state; raw captures and chronological logs live under artifacts/rebuild/.
 - Compare decoded dimensions, alpha and visible RGB when changing raster transport. All 22 lossless WebPs preserved these properties and saved 35.22%; bundle equivalence isolated the release delta to asset URLs.
 - Preserve unversioned scores in legacy era 0 and require explicit current era 1. Export and fingerprint remote records before migrating; scope account selection to each Wrangler process. Clean verification rows by exact run UUID only.
+- Phaser 4 WebGL requires an external Mask filter for fixed pane clipping; GeometryMask/setMask is Canvas-only. Keep the mask source visible off the display list, refresh the static controller after redraw, and guard input bounds separately. Native pixel-band comparisons and restart/resize listener counts exposed and verified the repair across map, battlefield and leaderboard.
+- Verify the fully unlocked campaign UI at exact threshold profiles and narrow portrait sizes. Measured description height prevents boss Codex paragraphs colliding with stats; lower-Star fixtures cannot establish the 30/90-Star layout.
+- Campaign production completion 20261010 published Worker af75da8f-9800-42ce-919d-e823a0ad471a after independent native acceptance and939 passing tests/11 configured skips. Live current bundle, health and25 images matched the build. Eighteen absent atlases remain explicitly UNVERIFIED under the user's fallback allowance; raw art and exact prompts are retained separately from production files.

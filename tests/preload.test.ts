@@ -4,9 +4,10 @@ vi.mock('phaser', () => ({ default: { Scene: class {}, Scenes: { Events: { SHUTD
 vi.mock('../src/game/art/artkit.ts', () => ({ ensureMenuTextures: vi.fn(), ensureArtTextures: vi.fn() }));
 vi.mock('../src/game/art/towerArt.ts', () => ({ ensureTowerPortraits: vi.fn() }));
 import { PreloadScene } from '../src/game/scenes/PreloadScene.ts';
-import { requiredAssets } from '../src/game/art/assetManifest.ts';
+import { requiredAssets, requiredAssetsForRequest } from '../src/game/art/assetManifest.ts';
+import { campaignRepository } from '../src/game/campaign/progress.ts';
 import { ensureArtTextures, ensureMenuTextures } from '../src/game/art/artkit.ts';
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 function loaderFixture() {
   const scene = new PreloadScene();
   const loose = scene as unknown as Record<string, any>;
@@ -40,6 +41,80 @@ it('waits through a failed atlas and retries only missing assets', async () => {
   f.loaded.add('enemy_walk_atlas_nature-v2'); f.load.emit('complete');
   await Promise.resolve(); await Promise.resolve();
   expect(f.start).toHaveBeenCalledTimes(1);
+  expect(f.start).toHaveBeenCalledWith('Game', data);
+});
+it('keeps campaign failure, readiness, and retry scoped to the selected family and tier', async () => {
+  const f = loaderFixture();
+  const data = { difficulty: 'medium' as const, playerName: 'Scoped', mode: 'campaign' as const, campaignLevel: 1, campaignVisualTier: 2 as const };
+  const required = requiredAssetsForRequest('gameplay', data);
+  const family = required.find(asset => asset.key === 'campaign_borderkeep_a')!;
+  for (const asset of required) if (asset.key !== family.key) f.loaded.add(asset.key);
+
+  f.scene.init({ stage: 'gameplay', destination: 'Game', data }); f.scene.preload();
+  expect(f.queued).toEqual([family.key]);
+  f.load.emit('loaderror', { key: 'campaign_borderkeep_b' });
+  expect(f.loose.state).toBe('loading');
+  f.load.emit('loaderror', { key: family.key });
+  f.scene.create();
+  expect(f.loose.state).toBe('failed');
+  expect(f.start).not.toHaveBeenCalled();
+
+  f.queued.length = 0; f.loose.retryLoading();
+  expect(f.queued).toEqual([family.key]);
+  f.load.emit('complete');
+  expect(f.loose.state).toBe('failed');
+  expect(f.start).not.toHaveBeenCalled();
+
+  f.queued.length = 0; f.loose.retryLoading();
+  f.loaded.add(family.key); f.load.emit('complete');
+  expect(f.start).toHaveBeenCalledWith('Game', data);
+});
+it('snapshots the effective production tier once for a campaign loading request', () => {
+  const view = vi.spyOn(campaignRepository, 'view').mockReturnValue({ unlockedFeatures: ['tower_visual_tier_ii'] } as any);
+  const f = loaderFixture();
+  f.scene.init({ stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: 'Snapshot', mode: 'campaign', campaignLevel: 1 } });
+  expect(f.loose.request.data.campaignVisualTier).toBe(2);
+  view.mockReturnValue({ unlockedFeatures: ['tower_visual_tier_iii'] } as any);
+  expect(f.loose.required.filter((asset: { path: string }) => asset.path.includes('/assets/campaign/towers/')).every((asset: { path: string }) => asset.path.includes('-tier2-'))).toBe(true);
+  expect(f.loose.request.data.campaignVisualTier).toBe(2);
+});
+it.each([1, 2, 3] as const)('snapshots DEV campaign fixture tier %i before preload selection', visualTier => {
+  const f = loaderFixture();
+  f.scene.init({ stage: 'gameplay', destination: 'Game', data: {
+    difficulty: 'medium', playerName: 'QA tier', mode: 'campaign', campaignLevel: 1,
+    qaCampaignFixture: { state: 'campaign', level: 1, bossPhase: 'initial', visualTier }
+  } });
+  expect(f.loose.request.data.campaignVisualTier).toBe(visualTier);
+  expect(f.loose.required.filter((asset: { path: string }) => asset.path.includes('/assets/campaign/towers/')).map((asset: { path: string }) => asset.path)).toEqual(
+    visualTier === 1 ? [] : ['longbow', 'ember', 'glacier', 'starfire', 'tempest'].map(id => `/assets/campaign/towers/${id}-tier${visualTier}-v1.png`)
+  );
+});
+it('uses the isolated seeded tier for a DEV boss fixture without an explicit override', () => {
+  const f = loaderFixture();
+  f.scene.init({ stage: 'gameplay', destination: 'Game', data: {
+    difficulty: 'medium', playerName: 'QA boss', mode: 'campaign', campaignLevel: 30,
+    qaCampaignFixture: { state: 'campaign-boss', level: 30, bossPhase: 'initial' }
+  } });
+  expect(f.loose.request.data.campaignVisualTier).toBe(3);
+  expect(f.loose.required.filter((asset: { path: string }) => asset.path.includes('/assets/campaign/towers/')).map((asset: { path: string }) => asset.path)).toEqual(
+    ['longbow', 'ember', 'glacier', 'starfire', 'tempest'].map(id => `/assets/campaign/towers/${id}-tier3-v1.png`)
+  );
+});
+it('does not request campaign art for classic or GameOver loading', () => {
+  for (const request of [
+    { stage: 'gameplay' as const, destination: 'Game' as const, data: { difficulty: 'medium' as const, playerName: 'Classic' } },
+    { stage: 'gameplay' as const, destination: 'GameOver' as const, data: { runId: 'terminal-retained-0001', finalScore: 123 } as any },
+    { stage: 'defeat' as const, destination: 'GameOver' as const, data: { runId: 'terminal-retained-0001', finalScore: 123 } as any }
+  ]) {
+    const f = loaderFixture(); f.scene.init(request); f.scene.preload();
+    expect(f.queued.some(key => key.startsWith('campaign_'))).toBe(false);
+  }
+});
+it('reuses warm campaign family and tier assets without queueing files', () => {
+  const f = loaderFixture(), data = { difficulty: 'hard' as const, playerName: 'Warm', mode: 'campaign' as const, campaignLevel: 1, campaignVisualTier: 3 as const };
+  for (const asset of requiredAssetsForRequest('gameplay', data)) f.loaded.add(asset.key);
+  f.scene.init({ stage: 'gameplay', destination: 'Game', data }); f.scene.preload(); f.scene.create();
+  expect(f.queued).toEqual([]);
   expect(f.start).toHaveBeenCalledWith('Game', data);
 });
 it('ignores fonts and timeout callbacks owned by a canceled request', async () => {
