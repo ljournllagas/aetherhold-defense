@@ -5,6 +5,7 @@ vi.mock('../src/game/art/artkit.ts', () => ({ ensureMenuTextures: vi.fn(), ensur
 vi.mock('../src/game/art/towerArt.ts', () => ({ ensureTowerPortraits: vi.fn() }));
 import { PreloadScene } from '../src/game/scenes/PreloadScene.ts';
 import { requiredAssets } from '../src/game/art/assetManifest.ts';
+import { ensureArtTextures, ensureMenuTextures } from '../src/game/art/artkit.ts';
 afterEach(() => vi.unstubAllGlobals());
 function loaderFixture() {
   const scene = new PreloadScene();
@@ -61,6 +62,27 @@ it('reuses warm cache without queueing and starts its destination once', async (
   f.scene.init({ stage: 'gameplay', destination: 'Game', data }); f.scene.preload(); f.scene.create(); f.load.emit('complete');
   await Promise.resolve(); await Promise.resolve(); for (const timer of f.timers) timer();
   expect(f.queued).toEqual([]); expect(f.start).toHaveBeenCalledTimes(1); expect(f.start).toHaveBeenCalledWith('Game', data);
+});
+it('waits for campaign-stage readiness, retries only missing menu art, and skips gameplay derivation', () => {
+  vi.clearAllMocks();
+  const f = loaderFixture(), missing = requiredAssets('campaign')[0];
+  f.scene.init({ stage: 'campaign', destination: 'Campaign' }); f.scene.preload();
+  for (const asset of requiredAssets('campaign').slice(1)) f.loaded.add(asset.key);
+  f.load.emit('loaderror', { key: missing.key }); f.scene.create();
+  expect(f.start).not.toHaveBeenCalled();
+
+  f.queued.length = 0; f.loose.retryLoading();
+  expect(f.queued).toEqual([missing.key]);
+  f.loaded.add(missing.key); f.load.emit('complete');
+  expect(f.start).toHaveBeenCalledWith('Campaign', undefined);
+  expect(ensureMenuTextures).toHaveBeenCalledTimes(1);
+  expect(ensureArtTextures).not.toHaveBeenCalled();
+});
+it('enters Campaign from warm menu-stage cache without queueing', () => {
+  const f = loaderFixture(); for (const asset of requiredAssets('campaign')) f.loaded.add(asset.key);
+  f.scene.init({ stage: 'campaign', destination: 'Campaign' }); f.scene.preload(); f.scene.create();
+  expect(f.queued).toEqual([]);
+  expect(f.start).toHaveBeenCalledWith('Campaign', undefined);
 });
 it('transitions after create even though Phaser marks the scene running only afterwards', () => {
   // SceneManager.create calls scene.create() and assigns CONST.RUNNING after it returns,

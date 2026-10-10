@@ -16,6 +16,12 @@ achievements, score submission or the siege leaderboard. Foundation-level
 specializations are reversible sidegrades and never serve as Classic evolution
 triggers. Worlds 4–10 are out of scope.
 
+Each world uses an accepted 768×432 realm panel loaded by the separate campaign
+entry stage. The map uses centered cover cropping with equal-axis scaling; world
+captions wrap inside each currently visible realm slice and their backing height
+follows the rendered lines. The three panels' exact provenance and acceptance are
+recorded in [CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md](CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md).
+
 ## World and level plan
 
 | World | Levels | Theme and canonical enemy family | Level layout sequence | Boss |
@@ -99,5 +105,6 @@ session-only instead of claiming it was saved. No campaign progress is uploaded.
 - `specializations.ts` and `presentation.ts`: sidegrades and selected-level/Codex
   presentation models.
 - [`artManifest.ts`](../src/game/campaign/artManifest.ts): gated production asset
-  loading contract. Its 43 raster targets are all `final_required`; see
+  loading contract. Three world panels are `final`; the other 40 raster targets
+  remain `final_required`; see
   [CAMPAIGN_PRODUCTION_ASSETS.md](CAMPAIGN_PRODUCTION_ASSETS.md).

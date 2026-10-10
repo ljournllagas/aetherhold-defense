@@ -21,7 +21,7 @@ worker/               Cloudflare Worker API
 migrations/           D1 SQL migrations (0004 adds progression result columns)
 tests/                Vitest game and Worker tests
   helpers/            Evolution and result fixtures, balance trace reporter and headless simulation bot
-public/assets/        Classic runtime art (22 WebPs with matching PNGs); campaign final rasters are not yet approved or present
+public/assets/        Classic runtime art plus 3 accepted campaign world panels; 40 campaign raster targets remain unapproved or absent
 dist/                 Vite build output served by Wrangler
 artifacts/            Verification evidence (rebuild/, responsive/, progression/, campaign/) and promo/
 agent_docs/           Durable agent context and deployment handoff
@@ -29,7 +29,7 @@ agent_docs/           Durable agent context and deployment handoff
 
 `src/game/art/` holds drawing and texture-generation helpers; runtime art is loaded from `public/assets/`. `docs/REFERENCE_AUDIT.md` is an older audit and contains stale inventory recommendations. Follow the current contracts in `SPEC.md`, `DESIGN_SYSTEM.md`, `ART_BIBLE.md`, and `AI_AGENT_INSTRUCTIONS.md`; use `references/VISUAL_REFERENCE_GUIDE.md` to interpret screenshots.
 
-Campaign boundaries, save behavior and unlocks are documented in `docs/CAMPAIGN_WORLDS_1_3.md`. Its production asset contract is `docs/CAMPAIGN_PRODUCTION_ASSETS.md`; every campaign raster target remains `final_required` until approved art is integrated.
+Campaign boundaries, save behavior and unlocks are documented in `docs/CAMPAIGN_WORLDS_1_3.md`. `docs/CAMPAIGN_PRODUCTION_ASSETS.md` tracks the asset gate: three world panels are final and the other 40 raster targets remain `final_required`. Their exact prompts and fingerprints are in `docs/CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md`.
 
 ## Progression and evolutions files (2026-10-08)
 

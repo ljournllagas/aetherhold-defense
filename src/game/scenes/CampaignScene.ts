@@ -8,7 +8,7 @@ import {
 } from '../campaign/presentation.ts';
 import {
   CAMPAIGN_MAP_WORLD_WIDTH, CAMPAIGN_NODE_HIT_SIZE,
-  campaignDetailContentLayout, campaignMapRoute, campaignScreenLayout
+  campaignDetailContentLayout, campaignMapRoute, campaignScreenLayout, campaignWorldCaptionLayout
 } from '../campaign/mapLayout.ts';
 import { getCampaignEnemy } from '../campaign/enemies.ts';
 import type { CampaignClearResult, CampaignFeatureId, CampaignView, CampaignWorldId, TargetingMode, TowerId } from '../campaign/types.ts';
@@ -164,15 +164,12 @@ export class CampaignScene extends Phaser.Scene {
     const routeGraphics = this.add.graphics(); mapRoot.add(routeGraphics);
     // All 30 nodes exist before roads are built, so both world crossings have endpoints.
     const centers = route.nodes;
+    const scrollMax = Math.max(0, route.width - viewportW / scale);
+    this.mapScroll = Math.max(0, Math.min(scrollMax, centers[this.selectedLevel - 1].x - viewportW / scale / 2));
+    const centeredOffset = Math.max(0, (viewportW - route.width) / 2);
+    const visibleMapStart = this.mapScroll - centeredOffset;
     for (const world of CAMPAIGN_WORLDS) {
       const wi = worldIndex(world.id), worldNodes = centers.filter(node => node.worldId === world.id);
-      const startX = worldNodes[0].x;
-      if (height >= 100) mapRoot.add(this.add.text(startX - 8, 12, `WORLD ${world.worldNumber}  ·  ${world.name.toUpperCase()}`, style(15, C.textPrimary, true, FONT_DISPLAY)));
-      const sigilEarned = this.campaignView.profile.worldSigils.includes(world.sigilId);
-      if (height >= 100) {
-        const sigilColor = sigilEarned ? C.goldBright : C.textMuted;
-        mapRoot.add(this.add.text(startX - 8, 33, `${world.levelStart}–${world.levelEnd}   ${sigilEarned ? 'SIGIL EARNED' : `BOSS SIGIL · LEVEL ${world.bossLevel}`}`, style(12, sigilColor)));
-      }
       routeGraphics.lineStyle(18, 0x172025, 0.94);
       routeGraphics.beginPath(); routeGraphics.moveTo(worldNodes[0].x, worldNodes[0].y);
       for (const node of worldNodes.slice(1)) routeGraphics.lineTo(node.x, node.y);
@@ -189,6 +186,19 @@ export class CampaignScene extends Phaser.Scene {
       const x = (link.from.x + link.to.x) / 2, y = (link.from.y + link.to.y) / 2;
       routeGraphics.fillStyle(0x19232d, 0.94); routeGraphics.fillCircle(x, y, 16);
       routeGraphics.lineStyle(2, 0xd7aa4e, 0.75); routeGraphics.strokeCircle(x, y, 16);
+    }
+    if (height >= 100) for (const [wi, world] of CAMPAIGN_WORLDS.entries()) {
+      const caption = campaignWorldCaptionLayout(wi, visibleMapStart, viewportW);
+      if (!caption) continue;
+      const compact = width < 520;
+      const title = this.add.text(caption.textX, 8, `WORLD ${world.worldNumber}  ·  ${world.name.toUpperCase()}`, style(compact ? 13 : 15, C.textPrimary, true, FONT_DISPLAY))
+        .setWordWrapWidth(caption.textWidth);
+      const sigilEarned = this.campaignView.profile.worldSigils.includes(world.sigilId);
+      const sigil = this.add.text(caption.textX, 8 + title.height + 4,
+        `${world.levelStart}–${world.levelEnd}   ${sigilEarned ? 'SIGIL EARNED' : `BOSS SIGIL · LEVEL ${world.bossLevel}`}`,
+        style(12, sigilEarned ? C.goldBright : C.textMuted)).setWordWrapWidth(caption.textWidth);
+      panel(this, mapRoot, caption.x, 0, caption.width, sigil.y + sigil.height + 6, 0x445564).setFillStyle(C.bgPanel, 0.88);
+      mapRoot.add([title, sigil]);
     }
 
     // Route nodes, mastery stars and sigil labels are house-style vector/text pictograms; no raster files are needed.
@@ -224,10 +234,6 @@ export class CampaignScene extends Phaser.Scene {
       mapRoot.add(hit);
     }
 
-    const target = centers[this.selectedLevel - 1];
-    const scrollMax = Math.max(0, route.width - viewportW / scale);
-    this.mapScroll = Math.max(0, Math.min(scrollMax, target.x - viewportW / scale / 2));
-    const centeredOffset = Math.max(0, (viewportW - route.width) / 2);
     mapRoot.setPosition(viewportX + centeredOffset - this.mapScroll * scale, top).setScale(scale);
     const mask = this.make.graphics({ x: 0, y: 0 }, false);
     mask.fillStyle(0xffffff, 1); mask.fillRect(viewportX, top, viewportW, height); mask.setVisible(false);

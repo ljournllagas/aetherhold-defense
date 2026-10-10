@@ -1,6 +1,6 @@
 import { TOWERS } from '../config/towers.ts';
 import { campaignArtAssetsForLoader } from '../campaign/artManifest.ts';
-export type AssetStage = 'menu' | 'gameplay' | 'defeat';
+export type AssetStage = 'menu' | 'campaign' | 'gameplay' | 'defeat';
 export type AssetSpec = { key: string; path: string } &
   ({ kind: 'image' } | { kind: 'sheet'; frameWidth: number; frameHeight: number });
 export const STAGE_ASSETS: Record<AssetStage, readonly AssetSpec[]> = {
@@ -11,6 +11,7 @@ export const STAGE_ASSETS: Record<AssetStage, readonly AssetSpec[]> = {
     ...(['easy', 'medium', 'hard'] as const).map(id => ({ kind: 'image' as const, key: `difficulty_helm_${id}`, path: `/assets/ui/difficulty-helm-${id}-v1.webp` })),
     ...campaignArtAssetsForLoader('menu')
   ],
+  campaign: [...campaignArtAssetsForLoader('campaign')],
   gameplay: [
     { kind: 'image', key: 'map_ancient_border_keep', path: '/assets/world/maps/ancient-border-keep-map-v2.webp' },
     ...Object.entries({ longbow: 'ranger_stages-v2', ember: 'bombard_stages-v1', glacier: 'frost_stages-v1', starfire: 'arcane_stages-v1', tempest: 'tempest_stages-v1' }).map(([id, name]) => ({ kind: 'sheet' as const, key: TOWERS[id].assetKey, path: `/assets/towers/tower_${name}.webp`, frameWidth: 627, frameHeight: 627 })),
@@ -23,10 +24,11 @@ export const STAGE_ASSETS: Record<AssetStage, readonly AssetSpec[]> = {
   ],
   defeat: [{ kind: 'image', key: 'map_ancient_border_keep_defeated', path: '/assets/world/maps/ancient-border-keep-defeated-v1.webp' }]
 };
-export function requiredAssets(stage: AssetStage): readonly AssetSpec[] {
-  return stage === 'menu' ? STAGE_ASSETS.menu : stage === 'gameplay'
-    ? [...STAGE_ASSETS.menu, ...STAGE_ASSETS.gameplay]
-    : [...STAGE_ASSETS.menu, ...STAGE_ASSETS.gameplay, ...STAGE_ASSETS.defeat];
+export function requiredAssets(stage: AssetStage, campaignAssets: readonly AssetSpec[] = STAGE_ASSETS.campaign): readonly AssetSpec[] {
+  if (stage === 'menu') return STAGE_ASSETS.menu;
+  if (stage === 'campaign') return [...STAGE_ASSETS.menu, ...campaignAssets];
+  if (stage === 'gameplay') return [...STAGE_ASSETS.menu, ...STAGE_ASSETS.gameplay];
+  return [...STAGE_ASSETS.menu, ...STAGE_ASSETS.gameplay, ...STAGE_ASSETS.defeat];
 }
 export function missingAssets(stage: AssetStage, exists: (key: string) => boolean): AssetSpec[] {
   return requiredAssets(stage).filter(a => !exists(a.key));

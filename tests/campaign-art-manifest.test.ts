@@ -1,28 +1,30 @@
 import { describe, expect, it } from 'vitest';
-import { requiredAssets } from '../src/game/art/assetManifest.ts';
+import { STAGE_ASSETS, requiredAssets } from '../src/game/art/assetManifest.ts';
 import {
-  CAMPAIGN_ART_MANIFEST, CAMPAIGN_UI_ART_POLICY, campaignAnimationDefinitions,
+  AVAILABLE_CAMPAIGN_ART_PATHS, CAMPAIGN_ART_MANIFEST, CAMPAIGN_UI_ART_POLICY, campaignAnimationDefinitions,
   campaignArtAssetsForLoader, missingCampaignProductionAssets, resolveCampaignArtAssets
 } from '../src/game/campaign/artManifest.ts';
 
 describe('campaign art replacement contract', () => {
   it('does not request any absent final-required production files', () => {
     const missing = missingCampaignProductionAssets();
-    const required = [...requiredAssets('menu'), ...requiredAssets('gameplay')];
+    const required = [...requiredAssets('menu'), ...requiredAssets('campaign'), ...requiredAssets('gameplay')];
 
-    expect(missing.length).toBeGreaterThan(0);
+    expect(missing).toHaveLength(40);
     expect(missing.every(asset => asset.path.startsWith('/assets/campaign/'))).toBe(true);
     expect(missing.every(asset => asset.qualityFlags.includes('final_art_unverified'))).toBe(true);
     expect(campaignArtAssetsForLoader('menu', missing.map(asset => asset.path))).toEqual([]);
+    expect(campaignArtAssetsForLoader('campaign', missing.map(asset => asset.path))).toEqual([]);
     expect(campaignArtAssetsForLoader('gameplay', missing.map(asset => asset.path))).toEqual([]);
-    expect(required.some(asset => asset.key.startsWith('campaign_'))).toBe(false);
-    expect(CAMPAIGN_ART_MANIFEST.every(asset => asset.state === 'final_required')).toBe(true);
+    expect(required.filter(asset => asset.path.startsWith('/assets/campaign/'))).toEqual(campaignArtAssetsForLoader('campaign'));
+    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(3);
+    expect(CAMPAIGN_ART_MANIFEST).toHaveLength(43);
   });
 
   it('queues only promoted assets whose exact production paths are approved', () => {
     const sheet = missingCampaignProductionAssets().find(asset => asset.kind === 'sheet')!;
     const finalSheet = { ...sheet, state: 'final' as const };
-    const image = { ...missingCampaignProductionAssets().find(asset => asset.kind === 'image' && asset.stage === 'menu')!, state: 'final' as const };
+    const image = CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:borderkeep')!;
 
     expect(resolveCampaignArtAssets([finalSheet], 'gameplay', [finalSheet.path])).toEqual([{
       kind: 'sheet', key: finalSheet.key, path: finalSheet.path,
@@ -30,9 +32,26 @@ describe('campaign art replacement contract', () => {
     }]);
     expect(resolveCampaignArtAssets([finalSheet], 'gameplay', [`${finalSheet.path}.wrong`])).toEqual([]);
     expect(resolveCampaignArtAssets([image], 'gameplay', [image.path])).toEqual([]);
-    expect(resolveCampaignArtAssets([image], 'menu', [image.path])).toEqual([{
+    expect(resolveCampaignArtAssets([image], 'menu', [image.path])).toEqual([]);
+    expect(resolveCampaignArtAssets([image], 'campaign', [`${image.path}.wrong`])).toEqual([]);
+    expect(resolveCampaignArtAssets([image], 'campaign', [image.path])).toEqual([{
       kind: 'image', key: image.key, path: image.path
     }]);
+  });
+
+  it('requests exactly the three approved world panels on campaign entry', () => {
+    const panels = CAMPAIGN_ART_MANIFEST.filter(asset => asset.id.startsWith('world-panel:'));
+    const campaign = campaignArtAssetsForLoader('campaign');
+    const requested = requiredAssets('campaign');
+
+    expect(campaign.map(asset => asset.key)).toEqual([
+      'campaign_worldmap_borderkeep', 'campaign_worldmap_emberfall', 'campaign_worldmap_frostveil'
+    ]);
+    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(panels.map(asset => asset.path));
+    expect(panels.every(asset => asset.state === 'final' && asset.temporary === null
+      && !asset.qualityFlags.includes('final_art_unverified'))).toBe(true);
+    expect(requested).toEqual([...requiredAssets('menu'), ...campaign]);
+    expect(requested.some(asset => STAGE_ASSETS.gameplay.some(gameplay => gameplay.key === asset.key))).toBe(false);
   });
 
   it('describes support buff atlases and exposes every boss/support animation key', () => {

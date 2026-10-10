@@ -7,6 +7,7 @@ import { etchedFrame } from '../ui/components.ts';
 import { ScrollSheet } from '../ui/ScrollSheet.ts';
 import { emblemKey } from '../art/artkit.ts';
 import { paintVista } from '../art/menubg.ts';
+import type { LoadingRequest } from './PreloadScene.ts';
 
 /** Reserved band for the saved-score footer action, in the existing responsive footer region. */
 const SAVED_BAND_HEIGHT = 52;
@@ -139,7 +140,7 @@ export class MainMenuScene extends Phaser.Scene {
       const gap = 8;
       const startY = Math.max(H * 0.52 + SAVED_BAND_HEIGHT, H - (height * 4 + gap * 3) - 18);
       savedY = startY - SAVED_BAND_HEIGHT;
-      addButton(this, (W - width) / 2, startY, width, height, 'Campaign', true, () => this.scene.start('Campaign'), 'hud_wave');
+      addButton(this, (W - width) / 2, startY, width, height, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave');
       addButton(this, (W - width) / 2, startY + height + gap, width, height, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score');
       addButton(this, (W - width) / 2, startY + (height + gap) * 2, width, height, 'Settings', false, () => this.scene.start('Settings'));
       addButton(this, (W - width) / 2, startY + (height + gap) * 3, width, height, 'Progression', false, () => this.scene.start('Progression'));
@@ -151,7 +152,7 @@ export class MainMenuScene extends Phaser.Scene {
       const startX = (W - total) / 2;
       const height = 48;
       const y = Math.min(H - height - 20, H * (best ? 0.64 : 0.61));
-      addButton(this, startX, y, width, height, 'Campaign', true, () => this.scene.start('Campaign'), 'hud_wave');
+      addButton(this, startX, y, width, height, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave');
       addButton(this, startX + width + gap, y, width, height, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score');
       addButton(this, startX + (width + gap) * 2, y, width, height, 'Settings', false, () => this.scene.start('Settings'));
       addButton(this, startX + (width + gap) * 3, y, width, height, 'Progression', false, () => this.scene.start('Progression'));
@@ -161,7 +162,7 @@ export class MainMenuScene extends Phaser.Scene {
       const playHeight = Math.min(98, H * 0.105);
       const secondaryHeight = Math.min(76, H * 0.082);
       const gap = Math.max(12, Math.min(16, H * 0.018));
-      addButton(this, (W - width) / 2, startY, width, playHeight, 'Campaign', true, () => this.scene.start('Campaign'), 'hud_wave');
+      addButton(this, (W - width) / 2, startY, width, playHeight, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave');
       addButton(this, (W - width) / 2, startY + playHeight + gap, width, secondaryHeight, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score');
       const lastY = startY + playHeight + gap + secondaryHeight + gap;
       const half = (width - 12) / 2;

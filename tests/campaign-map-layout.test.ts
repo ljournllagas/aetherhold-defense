@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   CAMPAIGN_NODE_GAP, CAMPAIGN_NODE_HIT_SIZE, CAMPAIGN_NODE_SPACING,
-  campaignDetailContentLayout, campaignMapRoute, campaignScreenLayout
+  campaignDetailContentLayout, campaignMapRoute, campaignScreenLayout, campaignWorldCaptionLayout
 } from '../src/game/campaign/mapLayout.ts';
 
 describe('campaign route layout', () => {
@@ -22,6 +22,39 @@ describe('campaign route layout', () => {
     for (const first of route.nodes) {
       const next = route.nodes.find(node => node.level === first.level + 1);
       if (next && first.worldId === next.worldId) expect(next.x - first.x).toBe(52);
+    }
+  });
+
+  it('fits world captions inside the selected realm intersection on portrait screens', () => {
+    const route = campaignMapRoute(328), viewportWidth = 358;
+    const visibleStart = (level: number) => Math.max(0, route.nodes[level - 1].x - viewportWidth / 2);
+    const emberfall = campaignWorldCaptionLayout(1, visibleStart(11), viewportWidth)!;
+    const borderkeepAtCrossing = campaignWorldCaptionLayout(0, visibleStart(10), viewportWidth)!;
+    const emberfallAtCrossing = campaignWorldCaptionLayout(1, visibleStart(10), viewportWidth)!;
+    const frostveil = campaignWorldCaptionLayout(2, visibleStart(21), viewportWidth)!;
+
+    expect(emberfall).toMatchObject({ x: 602, width: 235, textX: 608, textWidth: 223 });
+    expect(borderkeepAtCrossing.width).toBe(247);
+    expect(emberfallAtCrossing.width).toBe(103);
+    expect(frostveil.width).toBe(235);
+    for (const [layout, level] of [[emberfall, 11], [borderkeepAtCrossing, 10], [emberfallAtCrossing, 10], [frostveil, 21]] as const) {
+      const start = visibleStart(level), screenTextX = 16 + layout.textX - start;
+      expect(screenTextX).toBeGreaterThanOrEqual(24);
+      expect(screenTextX + layout.textWidth).toBeLessThanOrEqual(374);
+    }
+    expect(campaignWorldCaptionLayout(2, 0, viewportWidth)).toBeNull();
+    expect(campaignWorldCaptionLayout(1, 345, viewportWidth)).toBeNull();
+
+    for (const selected of route.nodes) {
+      const scroll = Math.max(0, Math.min(route.width - viewportWidth, selected.x - viewportWidth / 2));
+      for (let worldIndex = 0; worldIndex < 3; worldIndex++) {
+        const caption = campaignWorldCaptionLayout(worldIndex, scroll, viewportWidth);
+        if (!caption) continue;
+        const screenTextX = 16 + caption.textX - scroll;
+        expect(screenTextX).toBeGreaterThanOrEqual(24);
+        expect(screenTextX + caption.textWidth, `level ${selected.level}, world ${worldIndex}`).toBeLessThanOrEqual(374);
+        expect(caption.textX + caption.textWidth).toBeLessThanOrEqual(caption.x + caption.width - 6);
+      }
     }
   });
 

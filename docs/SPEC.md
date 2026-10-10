@@ -2040,12 +2040,17 @@ client and the Worker agree exactly.
 
 # 49. Staged Asset Loading and Recovery
 
-Source images are grouped into three stages in one manifest
-(`src/game/art/assetManifest.ts`): `menu` (6 images), `gameplay` (15) and `defeat` (1).
+Source images are grouped into four request stages in one manifest
+(`src/game/art/assetManifest.ts`): `menu` (6 images), `campaign` (the menu sources
+plus 3 realm panels), `gameplay` (15 additional images) and `defeat` (1 additional
+image).
 
 - **Cold menu.** The first load requests exactly the six menu sources; no gameplay or defeat
   source is requested before it is needed. Menu-required procedural HUD symbols are the only
   art generated at menu readiness.
+- **Campaign entry.** Selecting Campaign requests the three approved world-map panels through
+  its own stage, while retaining the six-source cold menu. A warm menu cache queues only the
+  panels.
 - **Progressive entry.** Play, Retry and every results entry route through the gameplay
   stage; the defeat stage is used only for a same-map terminal defeat. A warm cache queues
   nothing and re-enters the same destination.
@@ -2091,10 +2096,12 @@ and do not trigger Classic tower evolution.
 
 The campaign contains exactly 30 replayable levels: The Borderkeep (1–10),
 Emberfall Highlands (11–20) and Frostveil Pass (21–30). The connected illustrated
-world map exposes contiguous level unlocks, selected-level objectives, best score
-and lives, enemy preview, completion stars and boss nodes. Four route families per
-world (A introduction, B pressure, C advanced, D boss arena) are reused with
-authored variants; there are no Worlds 4–10 in this foundation.
+world map uses one accepted 768×432 realm panel per world, centered cover-cropped
+without stretching; captions wrap within the visible realm slice and use measured
+backings. It exposes contiguous level unlocks, selected-level objectives, best
+score and lives, enemy preview, completion stars and boss nodes. Four route
+families per world (A introduction, B pressure, C advanced, D boss arena) are
+reused with authored variants; there are no Worlds 4–10 in this foundation.
 
 Each completed level keeps three monotone flags: completion, configured minimum
 remaining lives and configured score target. Replays can add missing stars and

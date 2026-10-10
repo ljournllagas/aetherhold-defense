@@ -12,6 +12,7 @@ Use these documents as the project contract:
 - `docs/AI_AGENT_INSTRUCTIONS.md` defines implementation and validation procedure.
 - `docs/CAMPAIGN_WORLDS_1_3.md` records the campaign contract and implementation ownership.
 - `docs/CAMPAIGN_PRODUCTION_ASSETS.md` lists all campaign raster production targets and their loading gates.
+- `docs/CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md` records the accepted realm-panel prompts, references and fingerprints.
 - `references/VISUAL_REFERENCE_GUIDE.md` explains how to use screenshots; screenshots do not override the text specifications.
 
 Consult `agent_docs/project_progress.md` for current deployment and verification state. Source files, tests, or build output alone do not establish that runtime or visual behavior was verified.

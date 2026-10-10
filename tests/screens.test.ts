@@ -256,6 +256,15 @@ describe('screen lifecycle and leaderboard states', () => {
   };
   const resultData = (overrides: Record<string, unknown> = {}) => ({ ...gameOverData('run-result-0001'), ...overrides }) as unknown as ReturnType<typeof gameOverData>;
 
+  it.each([[390, 844], [800, 400], [1280, 720]])('loads Campaign through its preload stage at %ix%i', (width, height) => {
+    const scene = new MainMenuScene(); (scene.scale as any).width = width; (scene.scale as any).height = height; scene.create();
+    const campaignButton = (scene as any).children.list.find((display: any) => display.kind === 'rectangle' && display.handlers.has('pointerdown'));
+    expect(campaignButton).toBeDefined();
+    campaignButton.fire('pointerdown');
+    expect(scene.scene.start).toHaveBeenCalledWith('Preload', { stage: 'campaign', destination: 'Campaign' });
+    scene.events.emit('shutdown');
+  });
+
   it.each([
     ['victory', { outcome: 'victory', highestWave: 30, wavesCompleted: 30, remainingLives: 12, siegeBossesDefeated: 7 }], ['defeat', {}],
     ['siege failure', { outcome: 'siege-failed', highestWave: 10, wavesCompleted: 9, remainingLives: 15 }],

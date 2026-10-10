@@ -11,6 +11,7 @@ import { requiredAssets, type AssetSpec } from '../art/assetManifest.ts';
 export interface GameStartData { difficulty: DifficultyId; playerName: string; mode?: 'classic' | 'campaign'; campaignLevel?: number; qaCampaignFixture?: QACampaignFixture; }
 export type LoadingRequest =
   | { stage: 'menu'; destination: 'MainMenu'; data?: undefined }
+  | { stage: 'campaign'; destination: 'Campaign'; data?: undefined }
   | { stage: 'gameplay'; destination: 'Game'; data: GameStartData }
   | { stage: 'gameplay' | 'defeat'; destination: 'GameOver'; data: GameOverData };
 
@@ -70,7 +71,7 @@ export class PreloadScene extends Phaser.Scene {
       this.state = 'failed'; this.errorText = 'Some artwork is unavailable. Retry to continue.'; this.drawLoading(); return;
     }
     this.state = 'ready'; this.progress = 1;
-    if (this.request.stage === 'menu') ensureMenuTextures(this);
+    if (this.request.stage === 'menu' || this.request.stage === 'campaign') ensureMenuTextures(this);
     else { ensureArtTextures(this); ensureTowerPortraits(this); }
     const transition = () => {
       if (generation !== this.generation || !this.scene.isActive('Preload') || this.state !== 'ready' || this.destinationStarted) return;

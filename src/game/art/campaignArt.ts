@@ -185,6 +185,13 @@ export function campaignTowerTextureKey(towerId: string, tier: 2 | 3): string {
   return `campaign_tower_${towerId}_tier${tier}`;
 }
 
+export function campaignWorldMapCoverCrop(sourceWidth: number, sourceHeight: number, targetWidth: number, targetHeight: number) {
+  if (![sourceWidth, sourceHeight, targetWidth, targetHeight].every(value => Number.isFinite(value) && value > 0)) return null;
+  const scale = Math.max(targetWidth / sourceWidth, targetHeight / sourceHeight);
+  const width = targetWidth / scale, height = targetHeight / scale;
+  return { x: (sourceWidth - width) / 2, y: (sourceHeight - height) / 2, width, height, scale };
+}
+
 export function paintCampaignWorldMap(scene: Phaser.Scene, parent: Phaser.GameObjects.Container, width: number, height: number): void {
   const worldWidth = width / 3;
   const palettes = [WORLD_COLOR.borderkeep, WORLD_COLOR.emberfall, WORLD_COLOR.frostveil];
@@ -192,7 +199,10 @@ export function paintCampaignWorldMap(scene: Phaser.Scene, parent: Phaser.GameOb
   for (let world = 0; world < worldIds.length; world++) {
     const key = `campaign_worldmap_${worldIds[world]}`;
     if (scene.textures.exists(key)) {
-      parent.add(scene.add.image(world * worldWidth + worldWidth / 2, height / 2, key).setDisplaySize(worldWidth, height));
+      const source = scene.textures.get(key).getSourceImage();
+      const crop = campaignWorldMapCoverCrop(source.width, source.height, worldWidth, height);
+      if (crop) parent.add(scene.add.image(world * worldWidth + worldWidth / 2, height / 2, key)
+        .setOrigin(0.5).setCrop(crop.x, crop.y, crop.width, crop.height).setScale(crop.scale));
     }
   }
   const g = scene.add.graphics(); parent.add(g);

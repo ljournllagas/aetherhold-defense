@@ -1,14 +1,18 @@
 import { expect, it, vi } from 'vitest';
 vi.mock('phaser', () => ({ default: { Math: { Vector2: class { constructor(public x: number, public y: number) {} } } } }));
 import { ensureArtTextures, ensureMenuTextures } from '../src/game/art/artkit.ts';
-import { STAGE_ASSETS, missingAssets } from '../src/game/art/assetManifest.ts';
+import { STAGE_ASSETS, missingAssets, requiredAssets } from '../src/game/art/assetManifest.ts';
+import { AVAILABLE_CAMPAIGN_ART_PATHS } from '../src/game/campaign/artManifest.ts';
 it('assigns all source assets once and keeps cold menu small', () => {
   expect(STAGE_ASSETS.menu).toHaveLength(6);
+  expect(STAGE_ASSETS.campaign.map(asset => asset.path)).toEqual(AVAILABLE_CAMPAIGN_ART_PATHS);
   expect(STAGE_ASSETS.gameplay).toHaveLength(15);
   expect(STAGE_ASSETS.defeat).toHaveLength(1);
   const all = Object.values(STAGE_ASSETS).flat();
-  expect(new Set(all.map(a => a.key)).size).toBe(22);
+  expect(new Set(all.map(a => a.key)).size).toBe(25);
   expect(STAGE_ASSETS.menu.some(a => a.path.includes('/enemies/'))).toBe(false);
+  expect(requiredAssets('campaign')).toEqual([...STAGE_ASSETS.menu, ...STAGE_ASSETS.campaign]);
+  expect(requiredAssets('menu')).toHaveLength(6);
   expect(missingAssets('gameplay', () => true)).toEqual([]);
 });
 it('generates only menu icons, then promotes them to painted atlas icons once', () => {

@@ -8,4 +8,6 @@
 
 Campaign progression is validated and stored locally by `CampaignRepository` under `aetherhold-campaign-v1`, with campaign/progression version fields. It does not use D1 or the score API; campaign results do not enter Classic score or best-run systems.
 
+Campaign realm panels use a separate campaign-entry loading stage. The six-source cold main menu is unchanged; entering Campaign adds the three accepted world panels before the route map opens.
+
 Keep gameplay rules and balancing values in `src/game/systems/` and `src/game/config/`. Keep cloud and database access in the API/Worker boundary, outside Phaser gameplay systems, as required by `docs/SPEC.md` and `docs/AI_AGENT_INSTRUCTIONS.md`.

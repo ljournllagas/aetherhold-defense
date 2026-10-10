@@ -27,6 +27,14 @@ export interface CampaignMapRoute {
   links: readonly CampaignMapLink[];
 }
 
+export interface CampaignWorldCaptionLayout {
+  x: number;
+  width: number;
+  textX: number;
+  textWidth: number;
+}
+const CAMPAIGN_WORLD_CAPTION_MIN_WIDTH = 104;
+
 export interface CampaignScreenLayout {
   compact: boolean;
   narrowHeader: boolean;
@@ -96,6 +104,17 @@ export function campaignMapRoute(height: number): CampaignMapRoute {
     crossesWorld: nodes[index].worldId !== to.worldId
   }));
   return { width: CAMPAIGN_MAP_WIDTH, height: contentHeight, nodes, links };
+}
+
+export function campaignWorldCaptionLayout(
+  worldIndex: number, visibleMapStart: number, viewportWidth: number
+): CampaignWorldCaptionLayout | null {
+  const worldStart = worldIndex * CAMPAIGN_MAP_WORLD_WIDTH;
+  const left = Math.max(worldStart, visibleMapStart);
+  const width = Math.min(worldStart + CAMPAIGN_MAP_WORLD_WIDTH, visibleMapStart + viewportWidth) - left;
+  // Keep the title and sigil legible; a narrow realm sliver has no usable caption area.
+  if (width < CAMPAIGN_WORLD_CAPTION_MIN_WIDTH) return null;
+  return { x: left + 2, width: Math.max(1, width - 4), textX: left + 8, textWidth: Math.max(1, width - 16) };
 }
 
 /** Reserve the campaign controls and selected-level CTA even in short landscape viewports. */

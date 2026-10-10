@@ -1,15 +1,17 @@
 # Campaign Production Assets — Worlds 1–3
 
 [`src/game/campaign/artManifest.ts`](../src/game/campaign/artManifest.ts) defines
-43 required raster targets. All 43 currently have `state=final_required` and
-`temporary=procedural`; none is queued by the production loader. The exact path
-must be listed in `AVAILABLE_CAMPAIGN_ART_PATHS` and the manifest entry promoted
-to `final` before it can be loaded. Current procedural biome art and concept
-references do not meet final-art acceptance. Final-art verification is
-**UNVERIFIED**.
+43 raster targets. The three world panels are accepted (`state=final`,
+`temporary=null`) and load at campaign entry; the other 40 remain
+`final_required` with procedural fallbacks. Each asset must be independently
+accepted, listed at its exact path in `AVAILABLE_CAMPAIGN_ART_PATHS`, and promoted
+to `final` before the loader requests it. See
+[`CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md`](CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md) for
+the accepted panels' prompts, references, crop packaging and SHA-256 fingerprints.
 
 Atlas row indices below are zero-based. `rN×M` means row N with M frames. Every
-entry inherits `final_required` and `temporary=procedural`.
+entry except the three accepted world panels has `state=final_required` and
+`temporary=procedural`.
 
 | ID | Required path | Dimensions / stage / kind | States and exact quality flags |
 | --- | --- | --- | --- |
@@ -25,9 +27,9 @@ entry inherits `final_required` and `temporary=procedural`.
 | `map:frostveil:b` | `/assets/campaign/maps/frostveil_b-v1.png` | 1672×940 · gameplay · image | none · `final_art_unverified`, `procedural_biome_fallback` |
 | `map:frostveil:c` | `/assets/campaign/maps/frostveil_c-v1.png` | 1672×940 · gameplay · image | none · `final_art_unverified`, `procedural_biome_fallback` |
 | `map:frostveil:d` | `/assets/campaign/maps/frostveil_d-v1.png` | 1672×940 · gameplay · image | none · `final_art_unverified`, `procedural_biome_fallback` |
-| `world-panel:borderkeep` | `/assets/campaign/world-map/borderkeep-v1.png` | 768×432 · menu · image | none · `final_art_unverified`, `biome_illustration` |
-| `world-panel:emberfall` | `/assets/campaign/world-map/emberfall-v1.png` | 768×432 · menu · image | none · `final_art_unverified`, `biome_illustration` |
-| `world-panel:frostveil` | `/assets/campaign/world-map/frostveil-v1.png` | 768×432 · menu · image | none · `final_art_unverified`, `biome_illustration` |
+| `world-panel:borderkeep` | `/assets/campaign/world-map/borderkeep-v1.png` | 768×432 · campaign · image | final · temporary:null · none · `biome_illustration` |
+| `world-panel:emberfall` | `/assets/campaign/world-map/emberfall-v1.png` | 768×432 · campaign · image | final · temporary:null · none · `biome_illustration` |
+| `world-panel:frostveil` | `/assets/campaign/world-map/frostveil-v1.png` | 768×432 · campaign · image | final · temporary:null · none · `biome_illustration` |
 | `enemy:marchling` | `/assets/campaign/enemies/borderkeep/marchling-atlas-v1.png` | 768×512 · gameplay · sheet · 128×128 cell | idle r0×4, walk r1×6, attack r2×6, death r3×6 · `final_art_unverified`, `transparent_png_required`, `consistent_feet_anchor`, `no_baked_ui_or_large_shadow` |
 | `enemy:skitter` | `/assets/campaign/enemies/borderkeep/skitter-atlas-v1.png` | 768×512 · gameplay · sheet · 128×128 cell | idle r0×4, walk r1×6, attack r2×6, death r3×6 · `final_art_unverified`, `transparent_png_required`, `consistent_feet_anchor`, `no_baked_ui_or_large_shadow` |
 | `enemy:stoneback` | `/assets/campaign/enemies/borderkeep/stoneback-atlas-v1.png` | 768×512 · gameplay · sheet · 128×128 cell | idle r0×4, walk r1×6, attack r2×6, death r3×6 · `final_art_unverified`, `transparent_png_required`, `consistent_feet_anchor`, `no_baked_ui_or_large_shadow` |
@@ -62,8 +64,10 @@ Mastery Star glyphs or World Sigil labels; the manifest declares these as
 procedural/vector or text UI. The support buff playback flags above remain
 unverified until approved support atlases are integrated and viewed in game.
 
-Production acceptance follows `docs/ART_BIBLE.md` and the expansion pack's sprite
+Sprite acceptance follows `docs/ART_BIBLE.md` and the expansion pack's sprite
 production guide: transparent edges, consistent anchors, legible silhouettes at
 gameplay scale, correct animation states, no baked UI, and review against terrain,
 health bars and active effects. Concept-board crops are references only and are
-not accepted as production atlases.
+not accepted as production atlases. The three world-panel acceptance records and
+their exact prompts are in
+[`CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md`](CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md).

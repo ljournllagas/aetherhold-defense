@@ -1789,7 +1789,9 @@ and boss paths. Snow, ash and heat shimmer remain subtle and cannot cover play.
 
 On narrow screens, retain 44px route targets with 8px separation, wrap level
 metadata into measured lines, and keep objectives and Start Battle reachable
-without shrinking type or controls. Source dimensions, animation rows, fallback
-policy and unapproved art are tracked in
-[`CAMPAIGN_PRODUCTION_ASSETS.md`](CAMPAIGN_PRODUCTION_ASSETS.md). The current
-procedural fallback and concept references do not constitute final-art approval.
+without shrinking type or controls. The three accepted 768×432 realm panels use
+centered cover cropping with equal-axis scaling. Wrap world captions inside the
+visible realm intersection and size their slate backings to the rendered lines.
+Panel paths, fingerprints, acceptance and remaining production targets are
+tracked in [`CAMPAIGN_PRODUCTION_ASSETS.md`](CAMPAIGN_PRODUCTION_ASSETS.md) and
+[`CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md`](CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md).

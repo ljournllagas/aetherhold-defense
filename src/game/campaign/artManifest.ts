@@ -7,7 +7,7 @@ export interface CampaignArtSource {
   key: string;
   path: string;
   state: CampaignArtState;
-  stage: 'menu' | 'gameplay';
+  stage: 'menu' | 'campaign' | 'gameplay';
   kind: 'image' | 'sheet';
   width: number;
   height: number;
@@ -15,7 +15,7 @@ export interface CampaignArtSource {
   frameHeight?: number;
   states: Readonly<Record<string, { row: number; frames: number }>>;
   qualityFlags: readonly string[];
-  temporary: 'procedural';
+  temporary: 'procedural' | null;
 }
 
 const WORLDS: readonly CampaignWorldId[] = ['borderkeep', 'emberfall', 'frostveil'];
@@ -65,10 +65,10 @@ export function campaignAnimationDefinitions(assetKey: string): CampaignAnimatio
 }
 
 function imageSource(
-  id: string, key: string, path: string, width: number, height: number, stage: 'menu' | 'gameplay' = 'gameplay',
-  qualityFlags: readonly string[] = ['final_art_unverified']
+  id: string, key: string, path: string, width: number, height: number, stage: 'menu' | 'campaign' | 'gameplay' = 'gameplay',
+  qualityFlags: readonly string[] = ['final_art_unverified'], state: CampaignArtState = 'final_required', temporary: 'procedural' | null = 'procedural'
 ): CampaignArtSource {
-  return { id, key, path, state: 'final_required', stage, kind: 'image', width, height, states: {}, qualityFlags, temporary: 'procedural' };
+  return { id, key, path, state, stage, kind: 'image', width, height, states: {}, qualityFlags, temporary };
 }
 
 /** Final art targets. Their explicit state keeps the preload contract from requesting absent files. */
@@ -79,7 +79,7 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
   ))),
   ...WORLDS.flatMap(worldId => [
     imageSource(`world-panel:${worldId}`, `campaign_worldmap_${worldId}`,
-      `/assets/campaign/world-map/${worldId}-v1.png`, 768, 432, 'menu', ['final_art_unverified', 'biome_illustration']),
+      `/assets/campaign/world-map/${worldId}-v1.png`, 768, 432, 'campaign', ['biome_illustration'], 'final', null),
     ...NORMAL_ENEMIES[worldId].map(id => {
       const states = id === 'ashcaller' || id === 'frost_shaman' ? SUPPORT_STATES : NORMAL_STATES;
       const rows = Math.max(...Object.values(states).map(state => state.row)) + 1;
@@ -111,11 +111,15 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
 ];
 
 /** A production file is queued only after its manifest entry is promoted and its exact path is listed here. */
-export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [];
+export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
+  '/assets/campaign/world-map/borderkeep-v1.png',
+  '/assets/campaign/world-map/emberfall-v1.png',
+  '/assets/campaign/world-map/frostveil-v1.png'
+];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
 export function resolveCampaignArtAssets(
-  manifest: readonly CampaignArtSource[], stage: 'menu' | 'gameplay', availablePaths: readonly string[]
+  manifest: readonly CampaignArtSource[], stage: 'menu' | 'campaign' | 'gameplay', availablePaths: readonly string[]
 ): AssetSpec[] {
   const available = new Set(availablePaths);
   return manifest.filter(asset => asset.stage === stage && asset.state === 'final' && available.has(asset.path)).map(asset => asset.kind === 'sheet'
@@ -123,7 +127,7 @@ export function resolveCampaignArtAssets(
     : { kind: 'image' as const, key: asset.key, path: asset.path });
 }
 
-export function campaignArtAssetsForLoader(stage: 'menu' | 'gameplay', availablePaths: readonly string[] = AVAILABLE_CAMPAIGN_ART_PATHS): AssetSpec[] {
+export function campaignArtAssetsForLoader(stage: 'menu' | 'campaign' | 'gameplay', availablePaths: readonly string[] = AVAILABLE_CAMPAIGN_ART_PATHS): AssetSpec[] {
   return resolveCampaignArtAssets(CAMPAIGN_ART_MANIFEST, stage, availablePaths);
 }
 

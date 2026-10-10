@@ -1,5 +1,13 @@
 # Project progress
 
+## Campaign world-map production art (2026-10-10) — published
+
+Deployment `campaign-worldmap-art-20261010`, Heavy route. Following the published campaign milestone, the next bounded production batch is the three Borderkeep/Emberfall/Frostveil world-map region illustrations. Generate original raster candidates using the built-in imagegen workflow, preserve gameplay and classic loading behavior, review actual responsive rendering independently, then promote only accepted assets through the existing manifest contract. The other 40 raster targets remain outside this batch and UNVERIFIED.
+
+All three revised original panels passed independent raw-art review. Independent browser verification captured 29 screenshots across six viewports and passed campaign-only loading, proportional crops, 44px targets, selection/battle entry, warm cache, reload/rotation and Retry/Back recovery with no storage/API writes. Clipped portrait headings were repaired using wrapped captions within the visible realm intersection and measured slate backing. Fresh independent recheck passed all three worlds at both portrait sizes, desktop and short landscape. The three panels are now `final`, with exact approved paths and `temporary:null`; the remaining 40 art targets remain `final_required`.
+
+Fresh release gates passed: 907 tests / 11 configured skips, typecheck and build. Published Worker `6382e8c5-060e-4ba5-a29a-d41441313ef0` at https://aetherhold-defense.ljournllagas.workers.dev/. Live HTML, JavaScript, CSS and three PNGs match dist; `/api/health` is 200 `{ok:true,scoreVersion:3}`. Bundle `/assets/index-Bq-tNF23.js` SHA-256 `aaef80b748297065f09c6e64ed0d90d5c1b34da633890bca33c95d168d6490d5`. Native production campaign/classic entry passed with no failed requests, browser/console errors or score POSTs. Final documentation and remote synchronization are pending; preserve unrelated `.scratch/` files. Existing large-bundle warning, physical devices and the other production art remain limitations.
+
 ## Campaign Worlds 1–3 (2026-10-09 to 2026-10-10) — published
 
 Deployment `campaign-w1-w3-20261009`, Heavy route. Scope: campaign Levels 1–30 only, illustrated realm map, persistent replay mastery, Sigils and milestones, canonical map families, biome enemies and three bosses, prebattle specialization, Codex, versioned local saves, independent functional and screenshot verification. The expansion pack's written contracts control campaign behavior; its boards and starter sheets do not establish final-art acceptance.
