@@ -16,7 +16,7 @@ migrations_dir = "migrations"
 [vars]
 ENVIRONMENT = "production"
 APP_ORIGIN = "https://aetherhold-defense.ljournllagas.workers.dev"
-ACCOUNT_LOGIN_REQUIRED = "0"
+ACCOUNT_LOGIN_REQUIRED = "1"
 
 [[ratelimits]]
 name = "SCORE_RATE_LIMITER"

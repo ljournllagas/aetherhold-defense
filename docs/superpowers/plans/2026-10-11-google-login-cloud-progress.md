@@ -421,6 +421,8 @@ Define integration harness in tests/account-integration.test.ts with actual loca
 
 Cold review completed in three rounds: 7/10 with three contract blockers, 8/10 with one release-order blocker, then 9/10 with zero blockers and zero advisory findings. All nine spec acceptance requirements map to tasks. No application code or dependencies have been changed during planning. Awaiting user plan review and execution-method selection.
 
+Execution update (2026-10-11): user approved inline execution. Implementation is deployed with required login; independent code-review findings were fixed with regression tests. Release evidence, rulings, and remaining manual acceptance limits are in docs/GOOGLE_LOGIN_IMPLEMENTATION.md. Final production deployment passed 1,067 tests and the build; real Google sign-in and deletion reauthentication were confirmed by the user. A full live two-device battle playthrough and destructive production deletion were not performed.
+
 ## Source references
 
 - oauth4webapi runtime support: https://github.com/panva/oauth4webapi
