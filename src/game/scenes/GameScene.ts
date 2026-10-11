@@ -17,7 +17,10 @@ import { GAME_VERSION, SCORE_VERSION } from '../../shared/version.ts';
 import { buildWave, scheduleWave, enemyHpForWave, enemySpeedForWave } from '../systems/WaveSystem.ts';
 import { RelicVault, advanceFlights } from '../systems/RunSimulation.ts';
 import { AutoSystem, chooseAutoRelic, type AutoContext, type AutoRelicIntent } from '../systems/AutoSystem.ts';
-import { gameLayout, sheetBounds, viewportToWorld, worldToViewport, type GameLayout } from '../ui/layout.ts';
+import { gameLayout, readSafeInsets, sheetBounds, viewportToWorld, worldToViewport, type GameLayout } from '../ui/layout.ts';
+import {TowerTray} from '../ui/TowerTray.ts';
+import {TowerTrayGesture,edgePan,type TrayInput,type TrayIntent} from '../systems/TowerTrayGesture.ts';
+import type {TowerId} from '../../shared/progression.ts';
 import { button, panel, statRow } from '../ui/components.ts';
 import { calculateScore } from '../systems/ScoreSystem.ts';
 import { killReward, waveClearBonus, canAfford } from '../systems/EconomySystem.ts';
@@ -114,6 +117,45 @@ export class GameScene extends Phaser.Scene {
   private cameraView = new BattlefieldView(gameLayout(1280, 720).field);
   private gesture = new PointerGesture();
   private touchPreview: { point: Point; plot: number | null } | null = null;
+  private towerTray:TowerTray|null=null;
+  private trayGesture=new TowerTrayGesture();
+  private trayOwner:number|null=null;
+  private trayPoint:Point|null=null;
+  private trayDrag:{point:Point;anchor:Point}|null=null;
+  private compactInspectorBounds:{x:number;y:number;width:number;height:number}|null=null;
+  private beginTowerDrag(input:TrayInput,id:TowerId):void {
+    if(this.isRunBlocked()||this.modal||this.sheetKind||this.pendingMeteor)return;
+    this.trayOwner=input.id;this.trayPoint=input.point;this.trayGesture.down(input,id);this.gesture.cancel();
+  }
+  private pointerTrayInput(p:Phaser.Input.Pointer):TrayInput {
+    return {id:p.id,point:{x:p.x,y:p.y},kind:p.wasTouch?'touch':(p.event as PointerEvent)?.pointerType==='pen'?'pen':'mouse'};
+  }
+  private overBattleControls(p:Point):boolean {
+    const b=this.compactInspectorBounds;
+    return !!this.towerTray?.contains(p)||!!this.sheet?.contains(p)||!!b&&(p.x>=b.x&&p.x<b.x+b.width&&p.y>=b.y&&p.y<b.y+b.height);
+  }
+  private handleTrayIntent(intent:TrayIntent|null):void {
+    if(!intent)return;
+    if(intent.type==='scroll'){this.towerTray?.scrollBy(intent.dx);return;}
+    if(intent.type==='cancel'){this.cancelGesture();return;}
+    if(intent.type==='select'){
+      this.touchMode=true;this.placingTowerId=intent.towerId;this.selectedTower=null;this.touchPreview=null;
+      this.refreshInfoPanel();this.refreshPlots();this.showTouchPreview();return;
+    }
+    if(intent.type==='drag'){
+      this.placingTowerId=intent.towerId;this.selectedTower=null;this.trayDrag=intent;
+      this.infoPanel?.destroy(true);this.infoPanel=null;this.compactInspectorBounds=null;
+      const index=this.cameraView.nearest(this.map.buildable,intent.anchor,28);
+      const point=index>=0?this.map.buildable[index]:this.cameraView.unproject(intent.anchor);
+      this.updateGhost(point.x,point.y);return;
+    }
+    this.trayDrag=null;this.placingTowerId=null;
+    if(!this.cameraView.inField(intent.point)||this.overBattleControls(intent.point)||this.isRunBlocked()){this.hideGhost();return;}
+    const plot=this.cameraView.nearest(this.map.buildable,intent.anchor,28);
+    if(plot>=0)this.tryBuild(intent.towerId,plot);
+    else this.showBanner('Drop onto a build circle.',C.gold);
+    this.hideGhost();this.refreshPlots();
+  }
   private touchMode = false;
   private sheet: ScrollSheet | null = null;
   private refreshProgressionActions: (() => void) | null = null;
@@ -214,6 +256,7 @@ export class GameScene extends Phaser.Scene {
   private occupied = new Set<number>();
 
   private readonly handlePointerDown = (ptr: Phaser.Input.Pointer): void => {
+    if(this.trayOwner!==null&&ptr.id!==this.trayOwner){const id=this.trayOwner,point=this.trayPoint;this.cancelGesture();if(point)this.gesture.down(id,point);this.gesture.down(ptr.id,ptr);return;}
     if (this.pauseState.has('background')) return;
     SoundManager.get().unlock();
     if (this.modal || this.sheet?.contains(ptr)) return;
@@ -239,20 +282,20 @@ export class GameScene extends Phaser.Scene {
     }
     if (this.placingTowerId && inField) {
       const index = touch ? this.cameraView.nearest(this.map.buildable, screen, Math.max(22, 26 * this.cameraView.scale)) : this.nearestPlot(point.x, point.y)?.index ?? -1;
-      if (touch) { this.touchPreview = { point: index >= 0 ? this.map.buildable[index] : point, plot: index >= 0 ? index : null }; this.showTouchPreview(); }
-      else if (index >= 0) this.tryBuild(this.placingTowerId, index);
+      this.touchMode=true;this.touchPreview = { point: index >= 0 ? this.map.buildable[index] : point, plot: index >= 0 ? index : null }; this.showTouchPreview();
       return;
     }
     if (inField) {
       const index = this.cameraView.nearest(this.towers, screen, Math.max(22, 24 * this.cameraView.scale));
       const t = touch ? this.towers[index] ?? null : this.towerAt(point.x, point.y);
       this.selectedTower = t;
-      if (!this.layout.inspector) this.sheetKind = t ? 'tower' : null;
+      if (!this.layout.inspector) this.sheetKind = null;
       this.refreshInfoPanel();
     }
   }
 
   private readonly handlePointerMove = (ptr: Phaser.Input.Pointer): void => {
+    if(this.trayOwner===ptr.id){this.trayPoint={x:ptr.x,y:ptr.y};this.handleTrayIntent(this.trayGesture.move(this.pointerTrayInput(ptr)));return;}
     if (ptr.wasTouch || (ptr.event as PointerEvent)?.pointerType === 'pen') {
       const intent = this.gesture.move(ptr.id, ptr);
       if (intent?.type === 'pinch') { this.cameraView.zoomAt(this.cameraView.zoom * intent.ratio, intent.point); this.cameraView.pan(intent.dx, intent.dy); }
@@ -265,10 +308,11 @@ export class GameScene extends Phaser.Scene {
   };
 
   private readonly handlePointerUp = (ptr: Phaser.Input.Pointer): void => {
+    if(this.trayOwner===ptr.id){const intent=this.trayGesture.up(this.pointerTrayInput(ptr));this.trayOwner=null;this.handleTrayIntent(intent);return;}
     const intent = this.gesture.up(ptr.id);
     if (intent?.type === 'tap') this.selectBattlefield(intent.point, true);
   };
-  private readonly cancelGesture = (): void => { this.gesture.cancel(); this.cancelAutoPress(); };
+  private readonly cancelGesture = (): void => { this.gesture.cancel();this.trayGesture.cancel();this.trayOwner=null;this.trayDrag=null;this.placingTowerId=null;this.touchPreview=null;this.hideGhost(); this.cancelAutoPress(); };
   private readonly captureLost = (event: PointerEvent): void => { if (event.buttons !== 0) this.cancelGesture(); };
   private readonly visibilityChanged = (): void => {
     if (!document.hidden) return;
@@ -421,7 +465,7 @@ export class GameScene extends Phaser.Scene {
     Object.assign(snd, { masterVolume: settings.masterVolume, musicOn: settings.musicOn, sfxOn: settings.sfxOn, musicVolume: settings.musicVolume, sfxVolume: settings.sfxVolume });
     snd.applyVolumes(); snd.unlock();
     if (settings.musicOn) snd.startMusic();
-    this.layout = gameLayout(this.scale.width, this.scale.height);
+    this.layout = gameLayout(this.scale.width, this.scale.height,readSafeInsets());
     this.cameraView.resize(this.layout.field);
     this.worldRoot = this.add.container(0, 0);
     this.drawMap();
@@ -482,7 +526,7 @@ export class GameScene extends Phaser.Scene {
     const scrollOffset = restoreOffset ?? (context && this.sheet?.root.getData('progressionContext') === context ? this.sheet.scrollOffset : 0);
     this.refreshProgressionActions = null;
     this.sheet?.destroy(); this.sheet = null;
-    if ((this.layout.inspector && this.sheetKind !== 'more' && this.sheetKind !== 'next' && this.sheetKind !== 'evolve') || !this.sheetKind || !this.uiRoot) return;
+    if (!this.sheetKind || !this.uiRoot) return;
     const kind = this.sheetKind;
     const bounds = sheetBounds(this.layout, kind, this.touchPreview !== null);
     const title = { build: 'Build Towers', tower: 'Selected Tower', more: 'Battle Controls', relics: 'Relics', next: 'Next Wave', evolve: 'Tower Progression' }[kind];
@@ -609,7 +653,7 @@ export class GameScene extends Phaser.Scene {
 
   private showTouchPreview(): void {
     this.confirmStrip?.destroy(true); this.confirmStrip = null;
-    if (!this.uiRoot || (!this.placingTowerId && !this.pendingMeteor) || (this.layout.inspector && !this.touchMode)) return;
+    if (!this.uiRoot || (!this.placingTowerId && !this.pendingMeteor)) return;
     if (this.sheetKind) return;
     const w = Math.min(600, this.layout.width - 16);
     const c = this.add.container((this.layout.width - w) / 2, this.layout.height - this.layout.tray - 80); this.uiRoot.add(c); this.confirmStrip = c;
@@ -647,7 +691,7 @@ export class GameScene extends Phaser.Scene {
   private readonly handleResize = (): void => {
     this.cancelGesture();
     this.pauseAutoButton = null;
-    this.layout = gameLayout(this.scale.width, this.scale.height);
+    this.layout = gameLayout(this.scale.width, this.scale.height,readSafeInsets());
     this.cameraView.resize(this.layout.field);
     const render = this.modalRenderer;
     this.modalSheet?.destroy(); this.modalSheet = null;
@@ -1144,77 +1188,39 @@ export class GameScene extends Phaser.Scene {
 
   // ---------- bottom command tray (80px): build + relics + wave action ----------
   private drawTowerPanel(): void {
-    if (!this.layout.inspector) {
-      const { width, height, tray } = this.layout, y = height - tray;
-      panel(this, this.uiRoot!, 0, y, width, tray);
-      button(this, this.uiRoot!, 8, y + 8, 68, 'Build', () => { if (!this.pendingMeteor) this.openSheet('build'); }, 'secondary', 44);
-      const wave = button(this, this.uiRoot!, 84, y + 8, width - 168, '', () => {
+      this.towerTray?.destroy();
+      this.towerTray=new TowerTray(this,this.uiRoot!,this.layout.trayBounds,(input,id)=>this.beginTowerDrag(input,id));
+      this.towerTray.refresh(this.gold,this.placingTowerId as TowerId|null);
+      const {x,y,width,height}=this.layout.waveBounds;
+      panel(this,this.uiRoot!,x,y,width,height);
+      button(this,this.uiRoot!,x+4,y+8,54,'Relics',()=>this.openSheet('relics'));
+      const wave = button(this, this.uiRoot!, x+62, y + 8, width-124, '', () => {
         if (this.waveActive || this.pauseState.blocked || this.pendingMeteor || (!this.auto.enabled && this.vault.pending.length)) { this.openSheet('next'); return; }
         this.startNextWave();
       }, 'primary', 44);
       this.startBtn = wave.box; this.startBtnLabel = wave.text;
-      button(this, this.uiRoot!, width - 76, y + 8, 68, 'More', () => this.openSheet('more'), 'secondary', 44);
-      return;
-    }
-    const { width, height, tray, inspector, compact } = this.layout;
-    const y = height - tray;
-    panel(this, this.uiRoot!, 0, y, width, tray);
-    const bx = inspector ? 16 : compact ? 88 : 112;
-    const action = button(this, this.uiRoot!, bx, y + 8, compact ? 136 : 240, '', () => this.startNextWave(), 'primary', 48);
-    this.startBtn = action.box; this.startBtnLabel = action.text;
-    this.nextPreview = this.add.text(bx, y + 60, '', style(12, C.textSecondary)).setWordWrapWidth(Math.max(240, width - 680));
-    if (compact) this.nextPreview.setVisible(false);
-    this.uiRoot!.add(this.nextPreview);
-    if (!inspector) button(this, this.uiRoot!, 12, y + 8, compact ? 64 : 88, 'Build', () => { this.selectedTower = null; this.catalogOpen = !this.catalogOpen; this.refreshInfoPanel(); this.drawCatalog(); }, 'secondary', 48);
-    this.drawCatalog();
-    if (inspector) button(this, this.uiRoot!, width - 216, y + 8, 96, 'View', () => this.openSheet('more'));
+      button(this, this.uiRoot!, x+width-58, y + 8, 54, 'More', () => this.openSheet('more'), 'secondary', 44);
   }
 
   private drawCatalog(): void {
-    if (!this.layout.inspector) { this.drawSheet(); return; }
-    this.catalog?.destroy(true); this.catalog = null;
-    if (this.selectedTower || (!this.layout.inspector && !this.catalogOpen)) return;
-    const l = this.layout;
-    const horizontal = l.compact;
-    const width = horizontal ? l.width - 24 : (l.inspector || 240);
-    const height = horizontal ? 128 : l.field.height;
-    const x = horizontal ? 12 : l.width - width;
-    const y = horizontal ? l.height - l.tray - height : l.hud;
-    const c = this.add.container(x, y); this.uiRoot!.add(c); this.catalog = c;
-    const background = panel(this, c, 0, 0, width, height);
-    background.setInteractive().on('pointerdown', (_p: unknown, _x: number, _y: number, e: Phaser.Types.Input.EventData) => e.stopPropagation());
-    c.add(this.add.text(16, 12, 'Build Towers', style(18, C.goldBright, true, FONT_DISPLAY)));
-    if (!l.inspector) button(this, c, width - 56, 4, 44, '×', () => { this.catalogOpen = false; this.drawCatalog(); });
-    TOWER_LIST.forEach((cfg, i) => {
-      const cw = horizontal ? (width - 24) / 5 : width - 24;
-      const ch = horizontal ? 76 : Math.min(136, (height - 72) / 5 - 8);
-      const cx = horizontal ? 12 + i * cw : 12;
-      const cy = horizontal ? 44 : 48 + i * (ch + 8);
-      const card = this.add.container(cx, cy); c.add(card);
-      const selected = this.placingTowerId === cfg.id;
-      const box = panel(this, card, 0, 0, cw - (horizontal ? 4 : 0), ch, selected ? 0xd7aa4e : 0x80674a);
-      if (selected) box.setFillStyle(C.bgHover);
-      const iconSize = horizontal ? 56 : Math.min(88, ch - 16);
-      const portraitX = horizontal ? 34 : iconSize / 2 + 8;
-      card.add(this.add.rectangle(portraitX, ch / 2, iconSize + 2, iconSize + 2, 0x0a0e12).setStrokeStyle(1, 0x80674a));
-      card.add(this.add.image(portraitX, ch / 2, towerPortraitKey(cfg.id)).setDisplaySize(iconSize, iconSize));
-      const tx = horizontal ? 66 : iconSize + 16;
-      const stats = this.campaign && isTowerId(cfg.id) ? campaignTowerStats(effectiveStats(cfg.id, initialEvolution(cfg.id)), this.campaign.choices[cfg.id]) : cfg.levels[0];
-      const summary = horizontal
-        ? stats.splashRadius ? 'Splash shells' : stats.slowFactor ? 'Slows foes' : stats.chainCount ? `${stats.chainCount}-foe chain` : stats.damageType === 'arcane' ? 'Arcane bolts' : 'Fast arrows'
-        : stats.splashRadius ? 'Splash shells.\nArea damage.' : stats.slowFactor ? 'Chilling bolts.\nSlows enemies.' : stats.chainCount ? `Chain lightning.\nHits ${stats.chainCount} foes.` : stats.damageType === 'arcane' ? 'Arcane bolts.\nPierces plate.' : 'Physical arrows.\nSingle target.';
-      card.add(this.add.text(tx, 8, cfg.name, style(horizontal ? 14 : 16, C.textPrimary, true, FONT_DISPLAY)));
-      card.add(this.add.text(tx, horizontal ? 28 : 32, summary, style(12, C.textSecondary)).setWordWrapWidth(cw - tx - 12));
-      card.add(this.add.text(horizontal ? tx : cw - 12, ch - 22, `${stats.cost} gold`, style(14, this.gold >= stats.cost ? C.gold : C.textMuted, true)).setOrigin(horizontal ? 0 : 1, 0));
-      box.setInteractive({ useHandCursor: true });
-      box.on('pointerdown', (_p: unknown, _x: number, _y: number, e: Phaser.Types.Input.EventData) => {
-        e.stopPropagation();
-        if (this.modal || this.pendingMeteor) return;
-        SoundManager.get().click(); this.placingTowerId = selected ? null : cfg.id; this.selectedTower = null;
-        if (!l.inspector) this.catalogOpen = false;
-        this.hideGhost(); this.refreshPlots(); this.refreshPlacePanel(); this.drawCatalog();
-      });
-    });
+    if (!this.layout.inspector) {
+      this.infoPanel?.destroy(true);this.infoPanel=null;this.compactInspectorBounds=null;
+      const t=this.selectedTower;if(!t||this.sheetKind)return;
+      const w=Math.min(560,this.layout.width-16),h=108;
+      const screen=this.cameraView.project(t);
+      const y=this.layout.width<this.layout.height?this.layout.height-this.layout.tray-h-4:
+        screen.y>this.layout.hud+this.layout.field.height/2?this.layout.hud+4:this.layout.height-this.layout.tray-h-4;
+      const x=(this.layout.width-w)/2,c=this.add.container(x,y);this.uiRoot!.add(c);this.infoPanel=c;
+      this.compactInspectorBounds={x,y,width:w,height:h};
+      panel(this,c,0,0,w,h).setInteractive().on('pointerdown',(_p:unknown,_x:number,_y:number,e:Phaser.Types.Input.EventData)=>e.stopPropagation());
+      c.add(this.add.text(8,6,`${t.cfg.name} · Level ${t.level}`,style(14,C.textPrimary,true)));
+      const next=towerProgressionView(t,this.purchaseContext(),this.wavesCompleted,this.towers).actions[0];
+      c.add(this.add.text(8,26,next?.nextStats?`Damage ${t.stats.damage} → ${next.nextStats.damage} · Range ${t.stats.range} → ${next.nextStats.range}`:'View progression and requirements',style(14,C.textSecondary)).setWordWrapWidth(w-16));
+      button(this,c,8,58,w-128,this.inspectorPrimaryLabel(t),()=>this.inspectorPrimaryAction(),'primary');
+      button(this,c,w-112,58,60,'Details',()=>this.openSheet('tower'));
+      button(this,c,w-48,58,44,'×',()=>{this.selectedTower=null;this.refreshInfoPanel();});
+      return;
+    }
   }
 
   private compositionSummary(wave: number, complete = false): string {
@@ -1387,7 +1393,7 @@ export class GameScene extends Phaser.Scene {
     const showAura = !!beacon && beacon.progression.branchId === 'arcane-beacon' && beacon.progression.rank !== null;
     this.auraCircle?.setVisible(showAura);
     if (showAura && beacon) this.auraCircle?.setPosition(beacon.x, beacon.y);
-    if (!this.layout.inspector) { this.drawSheet(); return; }
+    if (!this.layout.inspector) { this.drawCatalog(); return; }
     if (this.sheetKind === 'evolve') this.drawSheet();
     this.infoPanel?.destroy(true); this.infoPanel = null; this.hideGhost();
     this.towerCommands?.destroy(true); this.towerCommands = null;
@@ -1794,24 +1800,8 @@ export class GameScene extends Phaser.Scene {
 
   // ---------- power-ups ----------
   private drawPowerupBar(): void {
-    if (!this.layout.inspector) { if (this.sheetKind === 'relics') this.drawSheet(); return; }
-    this.powerupRow?.destroy(true);
-    const compact = this.layout.compact;
-    const x = this.layout.inspector ? 288 : (compact ? 240 : 384);
-    const c = this.add.container(x, this.layout.height - this.layout.tray + 8); this.uiRoot!.add(c); this.powerupRow = c;
-    if (!compact) c.add(this.add.text(0, 0, 'Power-Ups', style(14, C.textSecondary, true, FONT_DISPLAY)));
-    for (let i = 0; i < 3; i++) {
-      const id = this.powerups[i]; const cfg = id ? POWERUPS[id] : null;
-      const bx = i * (compact ? 56 : 64); const by = compact ? 0 : 20;
-      const box = this.add.rectangle(bx, by, compact ? 48 : 56, 48, C.bgRaised).setOrigin(0).setStrokeStyle(cfg ? 2 : 1, cfg ? Number(RARITY_COLOR[cfg.rarity].replace('#', '0x')) : 0x445564);
-      c.add(box);
-      if (id) c.add(this.add.image(bx + (compact ? 24 : 28), by + 24, `relic_${id}`).setDisplaySize(40, 40));
-      else c.add(this.add.text(bx + (compact ? 24 : 28), by + 24, '+', style(22, C.textMuted)).setOrigin(0.5));
-      box.setInteractive({ useHandCursor: !!id });
-      box.on('pointerdown', (_p: unknown, _x: number, _y: number, e: Phaser.Types.Input.EventData) => {
-        e.stopPropagation(); if (!this.modal && !this.pendingMeteor) this.inspectPowerup(i);
-      });
-    }
+    this.powerupRow?.destroy(true);this.powerupRow=null;
+    if(this.sheetKind==='relics')this.drawSheet();
   }
 
   private inspectPowerup(index: number): void {
@@ -2487,6 +2477,13 @@ export class GameScene extends Phaser.Scene {
 
   // Combat uses fixed game-time steps; Auto and presentation observe visible frames.
   override update(time: number, deltaMs: number): void {
+    if(this.trayDrag&&!this.isRunBlocked()){
+      const v=edgePan(this.trayDrag.anchor,this.layout.field,this.overBattleControls(this.trayDrag.point));
+      this.cameraView.pan(v.x*Math.min(deltaMs,100)/1000,v.y*Math.min(deltaMs,100)/1000);this.applyView();
+      const plot=this.cameraView.nearest(this.map.buildable,this.trayDrag.anchor,28);
+      const p=plot>=0?this.map.buildable[plot]:this.cameraView.unproject(this.trayDrag.anchor);this.updateGhost(p.x,p.y);
+    }
+    this.towerTray?.refresh(this.gold,this.placingTowerId as TowerId|null);
     const validDelta = Number.isFinite(deltaMs) && deltaMs > 0 ? deltaMs : 0;
     const autoDeltaMs = this.autoLastUpdateAt === null ? 0 : time - this.autoLastUpdateAt;
     if (Number.isFinite(time) && (this.autoLastUpdateAt === null || time >= this.autoLastUpdateAt)) this.autoLastUpdateAt = time;
