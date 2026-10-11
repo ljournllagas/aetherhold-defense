@@ -515,9 +515,24 @@ export class GameScene extends Phaser.Scene {
   private openSheet(kind: NonNullable<GameScene['sheetKind']>): void {
     if (this.modal || this.pauseState.has('background')) return;
     if (this.pendingMeteor && (kind === 'build' || kind === 'tower')) return;
-    this.gesture.cancel(); this.touchPreview = null; this.hideGhost();
+    this.cancelGesture();
     if (kind === 'build') this.selectedTower = null;
-    this.sheetKind = this.sheetKind === kind ? null : kind; this.drawSheet(); this.showTouchPreview();
+    this.sheetKind = this.sheetKind === kind ? null : kind;
+    this.pauseState.set('details',this.sheetKind==='tower'||this.sheetKind==='evolve');
+    this.drawSheet(); this.showTouchPreview();
+  }
+  private detailsPurchaseContext():PurchaseContext {
+    return {...this.purchaseContext(),blocked:this.ended||this.siege.phase==='victory'||this.siege.phase==='terminal'||this.pauseState.blockedExcept('details')};
+  }
+  private openDetails(kind:'tower'|'evolve'):void {this.sheetKind=kind;this.pauseState.set('details',true);this.drawSheet();}
+  private closeDetails():void {this.sheetKind=null;this.pauseState.set('details',false);this.sheet?.destroy();this.sheet=null;this.refreshInfoPanel();}
+  private performDetailedAction(action:()=>void):void {
+    const kind=this.sheetKind==='evolve'?'evolve':'tower',gold=this.gold,revision=this.selectedTower?.progression.revision,
+      count=this.towers.length,target=this.selectedTower?.targeting;
+    this.closeDetails();
+    if(this.isRunBlocked()){this.showBanner('Resume the battle before making changes.',C.gold);this.openDetails(kind);return;}
+    action();
+    if(this.gold===gold&&this.selectedTower?.progression.revision===revision&&this.towers.length===count&&this.selectedTower?.targeting===target)this.openDetails(kind);
   }
 
   private drawSheet(restoreOffset?: number): void {
@@ -530,7 +545,7 @@ export class GameScene extends Phaser.Scene {
     const kind = this.sheetKind;
     const bounds = sheetBounds(this.layout, kind, this.touchPreview !== null);
     const title = { build: 'Build Towers', tower: 'Selected Tower', more: 'Battle Controls', relics: 'Relics', next: 'Next Wave', evolve: 'Tower Progression' }[kind];
-    const sheet = new ScrollSheet(this, this.uiRoot, bounds, title, () => { this.sheetKind = null; this.drawSheet(); this.showTouchPreview(); }); this.sheet = sheet;
+    const sheet = new ScrollSheet(this, this.uiRoot, bounds, title, () => { this.closeDetails();this.showTouchPreview(); }); this.sheet = sheet;
     sheet.root.setData('progressionContext', context);
     if (kind === 'build') {
       let rowY = 0;
@@ -550,9 +565,9 @@ export class GameScene extends Phaser.Scene {
     } else if (kind === 'tower' && this.selectedTower) {
       const t = this.selectedTower;
       let y = this.drawProgressionModel(sheet, t, 0);
-      sheet.action(y, `Sell · ${investedRefund(t.progression)} gold`, () => { this.sellSelected(); this.sheetKind = null; this.drawSheet(); }, 'danger'); y += 60;
+      sheet.action(y, `Sell · ${investedRefund(t.progression)} gold`, () => this.performDetailedAction(()=>this.sellSelected()), 'danger',!this.detailsPurchaseContext().blocked); y += 60;
       sheet.text(y, 'Targeting'); y += 28;
-      TARGET_MODES.forEach((mode, i) => sheet.action(y + i * 52, `${t.targeting === mode ? '✓ ' : ''}${mode[0].toUpperCase() + mode.slice(1)}`, () => { t.targeting = mode; this.drawSheet(); }));
+      TARGET_MODES.forEach((mode, i) => sheet.action(y + i * 52, `${t.targeting === mode ? '✓ ' : ''}${mode[0].toUpperCase() + mode.slice(1)}`, () => this.performDetailedAction(()=>{if(this.selectedTower===t&&this.towers.includes(t))t.targeting=mode;}),'secondary',!this.detailsPurchaseContext().blocked));
     } else if (kind === 'more') {
       this.autoDetailText = sheet.text(0, this.autoDetail());
       const y = this.autoDetailText.height + 12;
@@ -585,11 +600,11 @@ export class GameScene extends Phaser.Scene {
       const y = startY + 44 + title.height;
       const summary = sheet.text(y, `Damage ${formatStat('damage', stats.damage)} · Range ${formatStat('range', stats.range)} · Attack ${formatStat('attackInterval', stats.attackInterval)}s`);
       const actionY = y + summary.height + 16;
-      if (!t.maxLevel) sheet.action(actionY, `Upgrade · ${t.upgradeCost()} gold`, () => this.upgradeSelected(), 'primary', !this.isRunBlocked() && this.gold >= t.upgradeCost()!);
+      if (!t.maxLevel) sheet.action(actionY, `Upgrade · ${t.upgradeCost()} gold`, () => this.performDetailedAction(()=>this.upgradeSelected()), 'primary', !this.detailsPurchaseContext().blocked && this.gold >= t.upgradeCost()!);
       else sheet.text(actionY, 'Maximum foundation · Specializations change before battle', C.textMuted);
       return actionY + 60;
     }
-    const view = towerProgressionView(t, this.purchaseContext(), this.wavesCompleted, this.towers);
+    const view = towerProgressionView(t, this.detailsPurchaseContext(), this.wavesCompleted, this.towers);
     const st = view.stats;
     let y = startY;
     const line = (value: string, color: string = C.textSecondary, size = 14) => { const text = sheet.text(y, value, color, size); y += text.height + 8; };
@@ -613,13 +628,13 @@ export class GameScene extends Phaser.Scene {
         if (branch.locked) line(`Locked · ${branch.requirement}${branch.qualifiesNow ? ' · On track this run' : ''}`, C.textMuted, 12);
       }
       const control = sheet.action(y, action.reason ? `${action.label} · ${action.reason}` : action.label, () => {
-        if (!action.reason) { this.purchaseSelected(action.intent, t.id, action.revision); this.drawSheet(); }
+        if (!action.reason) this.performDetailedAction(()=>this.purchaseSelected(action.intent,t.id,action.revision));
       }, 'primary', action.reason === null);
       y += 52;
       return { action, control };
     });
     this.refreshProgressionActions = () => {
-      const context = this.purchaseContext();
+      const context = this.detailsPurchaseContext();
       for (const { action, control } of controls) {
         const result = purchaseEvolution(t.towerId, t.progression, action.intent, context, action.revision);
         const reason = result.ok ? null : PURCHASE_REASON_TEXT[result.reason];
@@ -644,7 +659,7 @@ export class GameScene extends Phaser.Scene {
     const t = this.selectedTower; if (!t) return;
     if (t.progression.foundationLevel < 4) { this.purchaseSelected({ kind: 'foundation-upgrade' }, t.id, t.progression.revision); return; }
     if (this.campaign) return;
-    this.sheetKind = 'evolve'; this.drawSheet();
+    this.openDetails('evolve');
   }
 
   private changeZoom(factor: number): void {
@@ -974,6 +989,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private onEscape(): void {
+    if(this.pauseState.has('details')){this.closeDetails();return;}
     this.touchPreview = null; this.gesture.cancel();
     if (this.modal) { if (this.modal.getData('pauseMenu') === true) this.togglePauseMenu(); return; }
     if (this.pendingMeteor) { this.vault.cancelTarget(); this.storeAfterTarget = false; this.hideGhost(); this.showTouchPreview(); this.presentReward(); this.updateHUD(); }
@@ -2855,6 +2871,7 @@ export class GameScene extends Phaser.Scene {
 
   /** Idempotent; restart/quit discard the run without creating a result. */
   private cleanupProgression(): void {
+    this.cancelGesture();this.pauseState.set('details',false);
     this.campaignCallout = null;
     this.campaignCalloutView?.destroy(); this.campaignCalloutView = null;
     this.simulationClock.reset(); this.inSimulationTick = false;
