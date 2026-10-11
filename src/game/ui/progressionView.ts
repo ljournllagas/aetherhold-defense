@@ -1,4 +1,5 @@
 import { ENEMIES } from '../config/enemies.ts';
+import {classicRequirements,type Requirement} from './prerequisites.ts';
 import { ALTERNATIVE_BRANCH, EVOLUTIONS, STARTER_BRANCH } from '../config/evolutions.ts';
 import { TOWERS, TOWER_IDS } from '../config/towers.ts';
 import { PURCHASE_REASON_TEXT, effectiveStats, nextPurchaseCost, previewPurchaseStats, purchaseEvolution } from '../systems/EvolutionSystem.ts';
@@ -6,7 +7,7 @@ import type { PurchaseContext, PurchaseIntent } from '../systems/EvolutionSystem
 import type { UnlockView } from '../systems/UnlockSystem.ts';
 import type { BranchId, CombatTower, EffectiveTowerStats, TowerId } from '../../shared/progression.ts';
 
-export interface ProgressionAction { label: string; reason: string | null; intent: PurchaseIntent; revision: number; nextStats: EffectiveTowerStats | null; }
+export interface ProgressionAction { label: string; reason: string | null; intent: PurchaseIntent; revision: number; nextStats: EffectiveTowerStats | null; requirements:Requirement[]; }
 export interface BranchOption { id: BranchId; name: string; description: string; stats: EffectiveTowerStats; starter: boolean; locked: boolean; requirement: string | null; qualifiesNow: boolean; }
 export interface TowerProgressionView { title: string; role: string; stats: EffectiveTowerStats; commitment: string | null; actions: ProgressionAction[]; branches: BranchOption[]; }
 export interface AchievementView { towerId: TowerId; branchId: BranchId; starterName: string; alternativeName: string; requirement: string; earned: boolean; unsaved: boolean; qualifiesNow: boolean; }
@@ -39,7 +40,7 @@ export function towerProgressionView(tower: CombatTower, context: PurchaseContex
       default: label = `Mastery ${p.masteryRank + 1} · ${cost === null ? 'limit' : `${cost} gold`}`;
     }
     const result = purchaseEvolution(id, p, intent, context, p.revision);
-    return { label, reason: result.ok ? null : PURCHASE_REASON_TEXT[result.reason], intent, revision: p.revision, nextStats: previewPurchaseStats(id, p, intent) };
+    return { label, reason: result.ok ? null : PURCHASE_REASON_TEXT[result.reason], intent, revision: p.revision, nextStats: previewPurchaseStats(id, p, intent),requirements:classicRequirements(tower,intent,context,waveCompleted,towers) };
   });
 
   let title: string, role: string;

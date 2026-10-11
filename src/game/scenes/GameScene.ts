@@ -627,6 +627,7 @@ export class GameScene extends Phaser.Scene {
         line(`Damage ${formatStat('damage', st.damage)} → ${formatStat('damage', branch.stats.damage)} · Attack ${formatStat('attackInterval', st.attackInterval)}s → ${formatStat('attackInterval', branch.stats.attackInterval)}s · Range ${formatStat('range', st.range)} → ${formatStat('range', branch.stats.range)}`, C.textSecondary, 12);
         if (branch.locked) line(`Locked · ${branch.requirement}${branch.qualifiesNow ? ' · On track this run' : ''}`, C.textMuted, 12);
       }
+      for(const requirement of action.requirements)line(`${requirement.met?'✓':'○'} ${requirement.label} · ${requirement.progress}${requirement.met?'':` · ${requirement.nextStep}`}`,C.textSecondary,16);
       const control = sheet.action(y, action.reason ? `${action.label} · ${action.reason}` : action.label, () => {
         if (!action.reason) this.performDetailedAction(()=>this.purchaseSelected(action.intent,t.id,action.revision));
       }, 'primary', action.reason === null);

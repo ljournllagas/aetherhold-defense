@@ -35,7 +35,11 @@ describe('tower progression view', () => {
   });
   it('enables evolve after the boss with the captured intent and revision', () => {
     const action = towerProgressionView(tower(null), ctx({ evolutionOpen: true })).actions[0];
-    expect(action).toEqual({ label: 'Evolve: Marksman · 510 gold', reason: null, intent: { kind: 'evolve', branchId: 'marksman' }, revision: 0, nextStats: EVOLUTIONS.marksman.stats[0] });
+    expect(action).toEqual({ label: 'Evolve: Marksman · 510 gold', reason: null, intent: { kind: 'evolve', branchId: 'marksman' }, revision: 0, nextStats: EVOLUTIONS.marksman.stats[0],requirements:[
+      {id:'foundation',label:'Tower foundation',met:true,progress:'Level 4/4',nextStep:'Upgrade this tower to level 4.'},
+      {id:'boss',label:'This run: wave-10 boss',met:true,progress:'Defeated',nextStep:'Defeat the wave-10 boss in this run.'},
+      {id:'gold',label:'Gold',met:true,progress:'1000/510 gold',nextStep:'Cost covered.'}
+    ] });
   });
   it('offers the foundation upgrade and asks for level 4 below it', () => {
     const t = tower(null); t.progression = { ...t.progression, foundationLevel: 2, invested: 190 };
@@ -46,7 +50,7 @@ describe('tower progression view', () => {
   it('reports insufficient gold and paused or ended runs', () => {
     const view = towerProgressionView(tower('marksman', 1), ctx({ gold: 10, evolutionOpen: true }));
     expect(view.title).toBe('Marksman · Rank 1');
-    expect(view.actions).toEqual([{ label: 'Marksman rank 2 · 935 gold', reason: 'Not enough gold', intent: { kind: 'evolution-rank' }, revision: 0, nextStats: EVOLUTIONS.marksman.stats[2] }]);
+    expect(view.actions).toEqual([{ label: 'Marksman rank 2 · 935 gold', reason: 'Not enough gold', intent: { kind: 'evolution-rank' }, revision: 0, nextStats: EVOLUTIONS.marksman.stats[2],requirements:[{id:'gold',label:'Gold',met:false,progress:'10/935 gold',nextStep:'Earn 925 more gold.'}] }]);
     expect(towerProgressionView(tower('marksman', 1), ctx({ blocked: true, evolutionOpen: true })).actions[0].reason).toBe('Unavailable while paused or ended');
   });
   it('offers mastery only in endless and shows the numeric limit', () => {
