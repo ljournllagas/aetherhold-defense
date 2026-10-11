@@ -4,6 +4,7 @@ export type GestureIntent = { type: 'tap'; point: Point } | { type: 'pan'; dx: n
 export class PointerGesture {
   private contacts = new Map<number, { start: Point; point: Point }>();
   private suppressed = false;
+  get contactCount():number{return this.contacts.size;}
   down(id: number, point: Point): void {
     this.contacts.set(id, { start: { x: point.x, y: point.y }, point: { x: point.x, y: point.y } });
     if (this.contacts.size > 1) this.suppressed = true;

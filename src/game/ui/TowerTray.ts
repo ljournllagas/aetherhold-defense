@@ -5,6 +5,7 @@ import {towerPortraitKey} from '../art/towerArt.ts';
 import {C,style} from './tokens.ts';
 import type {TowerId} from '../../shared/progression.ts';
 import type {TrayInput} from '../systems/TowerTrayGesture.ts';
+import {button} from './components.ts';
 export class TowerTray {
  private root:Phaser.GameObjects.Container;
  private offset=0;
@@ -18,13 +19,15 @@ export class TowerTray {
  refresh(gold:number,selected:TowerId|null):void {
   if(this.gold===gold&&this.selected===selected)return;this.gold=gold;this.selected=selected;this.draw();
  }
- scrollBy(dx:number):void {this.offset=Math.max(0,Math.min(Math.max(0,TOWER_IDS.length*94-this.bounds.width+8),this.offset-dx));this.draw();}
+ private get visibleWidth():number{return this.bounds.width-(TOWER_IDS.length*94>this.bounds.width?48:0);}
+ private get maxOffset():number{return Math.max(0,TOWER_IDS.length*94-this.visibleWidth+8);}
+ scrollBy(dx:number):void {this.offset=Math.max(0,Math.min(this.maxOffset,this.offset-dx));this.draw();}
  resize(bounds:Rect):void {this.bounds=bounds;this.root.setPosition(bounds.x,bounds.y);this.draw();}
  private draw():void {
   this.root.removeAll(true);
   this.root.add(this.scene.add.rectangle(0,0,this.bounds.width,this.bounds.height,C.bgPanel).setOrigin(0));
   TOWER_IDS.forEach((id,i)=>{
-   const x=4+i*94-this.offset;if(x<0||x+88>this.bounds.width)return;
+   const x=4+i*94-this.offset;if(x<0||x+88>this.visibleWidth)return;
    const cfg=TOWERS[id],cost=cfg.levels[0].cost;
    const box=this.scene.add.rectangle(x,4,88,68,C.bgRaised).setOrigin(0).setStrokeStyle(1,id===this.selected?0xd7aa4e:0x586b76).setInteractive({useHandCursor:true});
    box.on('pointerdown',(p:Phaser.Input.Pointer,_x:number,_y:number,e:Phaser.Types.Input.EventData)=>{
@@ -35,7 +38,7 @@ export class TowerTray {
     this.scene.add.text(x+43,12,String(cost),style(14,this.gold>=cost?C.gold:C.textSecondary)),
     this.scene.add.text(x+43,29,this.gold>=cost?'gold':'Need gold',style(12,C.textSecondary))]);
   });
-  if(TOWER_IDS.length*94>this.bounds.width)this.root.add(this.scene.add.text(this.bounds.width-12,50,this.offset===0?'›':'‹',style(20,C.gold)));
+  if(this.maxOffset)button(this.scene,this.root,this.bounds.width-44,4,44,this.offset>=this.maxOffset?'↺':'›',()=>{this.offset=this.offset>=this.maxOffset?0:Math.min(this.maxOffset,this.offset+94);this.draw();},'secondary',68);
  }
  destroy():void {this.root.destroy(true);}
 }

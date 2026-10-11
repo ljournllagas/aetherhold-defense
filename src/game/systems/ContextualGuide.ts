@@ -14,6 +14,8 @@ export class ContextualGuide {
  replay():void{this.done.clear();this.skipped=false;this.save();}
  private save():void{try{this.storage?.setItem('aetherhold-ui-guide-v1',JSON.stringify({done:[...this.done],skipped:this.skipped}));}catch{/* Session memory keeps dismissals effective. */}}
 }
+let deviceGuide:ContextualGuide|undefined;
 export function localGuide():ContextualGuide {
- try{return new ContextualGuide(typeof localStorage==='undefined'?null:localStorage);}catch{return new ContextualGuide(null);}
+ if(deviceGuide)return deviceGuide;
+ try{return deviceGuide=new ContextualGuide(typeof localStorage==='undefined'?null:localStorage);}catch{return deviceGuide=new ContextualGuide(null);}
 }

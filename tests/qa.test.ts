@@ -191,7 +191,7 @@ describe('GameScene replay lifecycle', () => {
 
     internals.detachInputListeners();
 
-    expect(off.mock.calls.map(([event]) => event)).toEqual(['pointerup', 'pointerupoutside', 'pointerdown', 'pointermove']);
+    expect(off.mock.calls.map(([event]) => event)).toEqual(['pointerup', 'pointerupoutside', 'pointerdown', 'control:pointerdown', 'pointermove']);
     expect(keyboardOff.mock.calls.map(([event]) => event)).toEqual(['keydown', 'keydown-ESC', 'keydown-SPACE', 'keydown-P', 'keydown-A']);
   });
 });

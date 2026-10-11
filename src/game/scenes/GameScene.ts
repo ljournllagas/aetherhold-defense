@@ -53,7 +53,7 @@ import { PauseState } from '../systems/PauseState.ts';
 import { ScrollSheet } from '../ui/ScrollSheet.ts';
 import { SiegeSystem, victoryRewardChoices, victoryRewardsResolved } from '../systems/SiegeSystem.ts';
 import { EvolutionCombat, chainShot, nextChainTarget, volleyTargets } from '../systems/EvolutionCombat.ts';
-import { purchaseEvolution, effectiveStats, initialEvolution, investedRefund, PURCHASE_REASON_TEXT, type PurchaseContext, type PurchaseIntent } from '../systems/EvolutionSystem.ts';
+import { purchaseEvolution, effectiveStats, initialEvolution, investedRefund, previewPurchaseStats, PURCHASE_REASON_TEXT, type PurchaseContext, type PurchaseIntent } from '../systems/EvolutionSystem.ts';
 import { unlockRepository as sharedUnlockRepository, earnedBranches, SAVE_FAILED_WARNING, UNLOCK_STORAGE_KEY, type UnlockRepository } from '../systems/UnlockSystem.ts';
 import { formatStat, towerProgressionView, wavePresentation } from '../ui/progressionView.ts';
 import type { BranchId, RunOutcome, ShotSnapshot } from '../../shared/progression.ts';
@@ -130,6 +130,8 @@ export class GameScene extends Phaser.Scene {
   private trayDrag:{point:Point;anchor:Point}|null=null;
   private compactInspectorBounds:{x:number;y:number;width:number;height:number}|null=null;
   private beginTowerDrag(input:TrayInput,id:TowerId):void {
+    if(this.trayOwner!==null&&this.trayOwner!==input.id){const owner=this.trayOwner,point=this.trayPoint;this.cancelGesture();if(point)this.gesture.down(owner,point);this.gesture.down(input.id,input.point);return;}
+    if(this.gesture.contactCount){this.gesture.down(input.id,input.point);return;}
     if(this.isRunBlocked()||this.modal||this.sheetKind||this.pendingMeteor)return;
     this.trayOwner=input.id;this.trayPoint=input.point;this.trayGesture.down(input,id);this.gesture.cancel();
   }
@@ -311,7 +313,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private readonly handlePointerMove = (ptr: Phaser.Input.Pointer): void => {
-    if(this.trayOwner===ptr.id){this.trayPoint={x:ptr.x,y:ptr.y};this.handleTrayIntent(this.trayGesture.move(this.pointerTrayInput(ptr)));return;}
+    if(this.trayOwner===ptr.id){if(!ptr.isDown){this.cancelGesture();return;}this.trayPoint={x:ptr.x,y:ptr.y};this.handleTrayIntent(this.trayGesture.move(this.pointerTrayInput(ptr)));return;}
     if (ptr.wasTouch || (ptr.event as PointerEvent)?.pointerType === 'pen') {
       const intent = this.gesture.move(ptr.id, ptr);
       if (intent?.type === 'pinch') { this.cameraView.zoomAt(this.cameraView.zoom * intent.ratio, intent.point); this.cameraView.pan(intent.dx, intent.dy); }
@@ -329,6 +331,7 @@ export class GameScene extends Phaser.Scene {
     if (intent?.type === 'tap') this.selectBattlefield(intent.point, true);
   };
   private readonly cancelGesture = (): void => { this.gesture.cancel();this.trayGesture.cancel();this.trayOwner=null;this.trayDrag=null;this.placingTowerId=null;this.touchPreview=null;this.hideGhost(); this.cancelAutoPress(); };
+  private readonly handleControlDown = ():void=>{if(this.trayOwner!==null||this.gesture.contactCount)this.cancelGesture();};
   private readonly captureLost = (event: PointerEvent): void => { if (event.buttons !== 0) this.cancelGesture(); };
   private readonly visibilityChanged = (): void => {
     if (!document.hidden) return;
@@ -375,7 +378,7 @@ export class GameScene extends Phaser.Scene {
 
   init(data: Partial<GameStartData>): void {
     this.unlockRepository = sharedUnlockRepository;
-    this.pauseState = new PauseState(); this.gesture.cancel(); this.cameraView.reset();
+    this.pauseState = new PauseState(); this.gesture.cancel();this.trayGesture.cancel();this.trayOwner=null;this.trayDrag=null;this.trayPoint=null; this.cameraView.reset();
     this.touchPreview = null; this.touchMode = false; this.sheetKind = null; this.sheet = null;
     this.modalRenderer = null; this.modalSheet = null; this.backgroundOverlay = null; this.gestureHintShown = false;
     this.modalError = '';
@@ -510,6 +513,7 @@ export class GameScene extends Phaser.Scene {
     this.selectionRing = this.world(this.add.circle(0, 0, 25, 0, 0).setStrokeStyle(2, RANGE_STROKE).setVisible(false).setDepth(6));
     this.drawShell();
     this.input.on('pointerdown', this.handlePointerDown);
+    this.input.on('control:pointerdown',this.handleControlDown);
     this.input.on('pointermove', this.handlePointerMove);
     this.input.on('pointerup', this.handlePointerUp);
     this.input.on('pointerupoutside', this.cancelGesture);
@@ -559,7 +563,7 @@ export class GameScene extends Phaser.Scene {
   private detailsPurchaseContext():PurchaseContext {
     return {...this.purchaseContext(),blocked:this.ended||this.siege.phase==='victory'||this.siege.phase==='terminal'||this.pauseState.blockedExcept('details')};
   }
-  private openDetails(kind:'tower'|'evolve'|'help'|'progression'):void {this.sheetKind=kind;this.pauseState.set('details',true);this.drawSheet();}
+  private openDetails(kind:'tower'|'evolve'|'help'|'progression'):void {this.cancelGesture();this.sheetKind=kind;this.pauseState.set('details',true);this.drawSheet();}
   private closeDetails():void {if(this.guideStep)this.guide.complete(this.guideStep);this.guideStep=null;this.sheetKind=null;this.pauseState.set('details',false);this.refreshProgressionActions=null;this.sheet?.destroy();this.sheet=null;this.refreshInfoPanel();}
   private performDetailedAction(action:()=>boolean):void {
     const kind=this.sheetKind==='evolve'?'evolve':'tower';
@@ -622,6 +626,7 @@ export class GameScene extends Phaser.Scene {
       sheet.action(y + 156, 'Reset View', () => { this.cameraView.reset(); this.applyView(); });
       sheet.action(y+208,'Progression and requirements',()=>this.openDetails('progression'));
       sheet.action(y+260,'Help',()=>this.openDetails('help'));
+      sheet.action(y+312,`Speed ${this.speed}×`,()=>{this.cycleSpeed();this.drawSheet();});
     } else if (kind === 'relics') {
       let rowY = 0;
       for (let i = 0; i < 3; i++) {
@@ -651,7 +656,11 @@ export class GameScene extends Phaser.Scene {
       const title = sheet.text(startY + 32, specialization ? `${specialization.name} · ${specialization.description}` : 'No specialization selected', C.textSecondary);
       const y = startY + 44 + title.height;
       const summary = sheet.text(y, `Damage ${formatStat('damage', stats.damage)} · Range ${formatStat('range', stats.range)} · Attack ${formatStat('attackInterval', stats.attackInterval)}s`);
-      const actionY = y + summary.height + 16;
+      let actionY = y + summary.height + 16;
+      const explanation=sheet.text(actionY,'Lower seconds means faster firing.',C.textSecondary,16);actionY+=explanation.height+12;
+      const nextBase=previewPurchaseStats(t.towerId,t.progression,{kind:'foundation-upgrade'});
+      if(!t.maxLevel&&nextBase){const next=campaignTowerStats(nextBase,t.specialization);const comparison=sheet.text(actionY,`Next: Damage ${formatStat('damage',stats.damage)} → ${formatStat('damage',next.damage)} · Range ${formatStat('range',stats.range)} → ${formatStat('range',next.range)} · Attack ${formatStat('attackInterval',stats.attackInterval)}s → ${formatStat('attackInterval',next.attackInterval)}s`);actionY+=comparison.height+12;}
+      if(!t.maxLevel&&this.gold<t.upgradeCost()!){const shortage=sheet.text(actionY,`Need ${t.upgradeCost()!-this.gold} more gold`,C.gold,16);actionY+=shortage.height+12;}
       if (!t.maxLevel) sheet.action(actionY, `Upgrade · ${t.upgradeCost()} gold`, () => this.performDetailedAction(()=>this.upgradeSelected()), 'primary', !this.detailsPurchaseContext().blocked && this.gold >= t.upgradeCost()!);
       else sheet.text(actionY, 'Maximum foundation · Specializations change before battle', C.textMuted);
       return actionY + 60;
@@ -663,6 +672,7 @@ export class GameScene extends Phaser.Scene {
     line(view.title, C.gold);
     line(view.role, C.textSecondary, 16);
     line(`Damage ${formatStat('damage', st.damage)} · Range ${formatStat('range', st.range)} · Attack ${formatStat('attackInterval', st.attackInterval)}s · ${st.damageType}`);
+    line('Lower seconds means faster firing.');
     const next = view.actions[0]?.nextStats ?? null;
     if (next) {
       line(`Next: Damage ${formatStat('damage', st.damage)} → ${formatStat('damage', next.damage)} · Attack ${formatStat('attackInterval', st.attackInterval)}s → ${formatStat('attackInterval', next.attackInterval)}s · Range ${formatStat('range', st.range)} → ${formatStat('range', next.range)}`, C.textSecondary, 12);
@@ -814,7 +824,7 @@ export class GameScene extends Phaser.Scene {
     this.game.canvas.removeEventListener('touchcancel', this.cancelGesture);
     this.game.canvas.removeEventListener('lostpointercapture', this.captureLost);
     this.game.canvas.removeEventListener('pointercancel', this.cancelGesture);
-    this.gesture.cancel(); this.touchPreview = null; this.modalRenderer = null;
+    this.cancelGesture(); this.touchPreview = null; this.modalRenderer = null;
     this.ended = true;
     this.cleanupProgression();
     this.detachInputListeners();
@@ -862,6 +872,7 @@ export class GameScene extends Phaser.Scene {
   private detachInputListeners(): void {
     this.input.off('pointerup', this.handlePointerUp); this.input.off('pointerupoutside', this.cancelGesture);
     this.input.off('pointerdown', this.handlePointerDown);
+    this.input.off('control:pointerdown',this.handleControlDown);
     this.input.keyboard?.off('keydown',this.handleBuildKey);
     this.input.off('pointermove', this.handlePointerMove);
     this.input.keyboard?.off('keydown-ESC', this.handleEscapeKey);
@@ -1052,10 +1063,10 @@ export class GameScene extends Phaser.Scene {
 
   private onEscape(): void {
     if(this.pauseState.has('details')){this.closeDetails();return;}
-    this.touchPreview = null; this.gesture.cancel();
+    const wasPlacing=this.placingTowerId;this.cancelGesture();
     if (this.modal) { if (this.modal.getData('pauseMenu') === true) this.togglePauseMenu(); return; }
     if (this.pendingMeteor) { this.vault.cancelTarget(); this.storeAfterTarget = false; this.hideGhost(); this.showTouchPreview(); this.presentReward(); this.updateHUD(); }
-    else if (this.placingTowerId) { this.placingTowerId = null; this.hideGhost(); this.refreshPlots(); this.refreshPlacePanel(); this.drawCatalog(); }
+    else if (wasPlacing) { this.refreshPlots(); this.refreshPlacePanel(); this.drawCatalog(); }
     else if (this.selectedTower) { this.selectedTower = null; this.refreshInfoPanel(); }
     else { this.catalogOpen = false; this.drawCatalog(); }
   }
@@ -1118,7 +1129,8 @@ export class GameScene extends Phaser.Scene {
     const cfg = TOWER_LIST.find(t => t.id === this.placingTowerId);
     if (!cfg || !isTowerId(cfg.id)) return;
     const stats = campaignTowerStats(effectiveStats(cfg.id, initialEvolution(cfg.id)), this.campaign?.choices[cfg.id] ?? null);
-    const plot = this.nearestPlot(x, y);
+    const dragIndex=this.trayDrag?this.cameraView.nearest(this.map.buildable,this.trayDrag.anchor,28):-1;
+    const plot = this.trayDrag ? (dragIndex>=0?{index:dragIndex,...this.map.buildable[dragIndex]}:null) : this.nearestPlot(x, y);
     const gx = plot?.x ?? x; const gy = plot?.y ?? y;
     const check = plot ? this.placementCheck(cfg.id, plot.index) : { ok: false, reason: this.onRoute(x, y) ? 'Path blocked' : 'Outside build zone' };
     if (!this.ghost || this.ghostTowerId !== cfg.id) {
@@ -1402,7 +1414,7 @@ export class GameScene extends Phaser.Scene {
     if (!this.pauseMenuAvailable()) return;
     if (this.modal) { this.closeModal(); this.paused = false; this.presentReward(); this.updateHUD(); return; }
     this.paused = true;
-    this.gesture.cancel();
+    this.cancelGesture();
     this.modalRenderer = () => { this.paused = false; this.togglePauseMenu(); };
     const c = this.modalFrame(Math.min(320, this.layout.width - 24), 348); this.modal!.setData('pauseMenu', true);
     c.add(this.add.text(160, 20, 'Paused', style(22, C.textPrimary, true, FONT_DISPLAY)).setOrigin(0.5,0));
@@ -1500,7 +1512,7 @@ export class GameScene extends Phaser.Scene {
     this.hudStatus?.setPosition(this.layout.compact ? 512 : 544, this.layout.height - this.layout.tray + 12);
     this.drawCatalog();
     const t = this.selectedTower;
-    if (!t) { if (this.sheetKind === 'evolve') { this.sheetKind = null; this.drawSheet(); } return; }
+    if (!t) { if (this.sheetKind === 'evolve') { this.sheetKind = null;this.pauseState.set('details',false);this.drawSheet(); } return; }
     const compact = this.layout.compact;
     const width = compact ? Math.min(820, this.layout.width - 24) : 240;
     const height = compact ? 108 : this.layout.field.height;
@@ -1540,7 +1552,7 @@ export class GameScene extends Phaser.Scene {
     const detailsY = Math.max(80, 36 + progressionTitle.height + 8);
     const detailsOffset = detailsY - 80;
     if (!compact) c.add(this.add.text(16, detailsY, t.cfg.role, style(12, C.textSecondary)).setWordWrapWidth(width - 32));
-    button(this, c, width - 52, 4, 44, '×', () => { this.selectedTower = null; this.refreshInfoPanel(); });
+    button(this, c, width - 52, 4, 44, '×', () => { if(this.pauseState.has('details'))this.closeDetails();this.selectedTower = null; this.refreshInfoPanel(); });
     const st = t.stats;
     const rows: Array<[string, string]> = [['Damage', formatStat('damage', st.damage)], ['Attack', `${formatStat('attackInterval', st.attackInterval)}s`], ['Range', formatStat('range', st.range)], ['Type', st.damageType]];
     if (st.splashRadius) rows.push(['Splash', formatStat('splashRadius', st.splashRadius)]);
@@ -1549,14 +1561,7 @@ export class GameScene extends Phaser.Scene {
     if (compact) rows.forEach(([k,v], i) => c.add(this.add.text(16 + (i % 3) * (width - 32) / 3, 72 + Math.floor(i / 3) * 24, `${k}  ${v}`, style(14, C.textSecondary))));
     else rows.forEach(([k, v], i) => statRow(this, c, 120 + detailsOffset + i * 24, k, v, width));
     const modesY = compact ? 132 : 144 + detailsOffset + rows.length * 24;
-    if (!compact) c.add(this.add.text(16, modesY - 24, 'Targeting', style(14, C.textSecondary)));
-    TARGET_MODES.forEach((mode, i) => {
-      const bw = compact ? (width - 32) / 5 : 100;
-      const bx = 16 + (compact ? i : i % 2) * bw;
-      const by = modesY + (compact ? 0 : Math.floor(i / 2) * 48);
-      button(this, c, bx, by, bw - 4, mode[0].toUpperCase() + mode.slice(1), () => { t.targeting = mode; this.refreshInfoPanel(); }, t.targeting === mode ? 'primary' : 'secondary');
-    });
-    const upgradeY = compact ? 184 : modesY + 152;
+    const upgradeY = compact ? 184 : modesY;
     const nextBase = this.campaign && t.maxLevel ? null : view.actions[0]?.nextStats ?? null;
     const next = nextBase && this.campaign ? campaignTowerStats(nextBase, t.specialization) : nextBase;
     if (next) {
@@ -1566,7 +1571,7 @@ export class GameScene extends Phaser.Scene {
     }
     const buttonsY = compact ? 192 : upgradeY + 56;
     button(this, c, 16, buttonsY, compact ? width / 2 - 24 : width - 32, this.inspectorPrimaryLabel(t), () => this.inspectorPrimaryAction(), 'primary');
-    button(this, c, compact ? width / 2 + 8 : 16, compact ? buttonsY : buttonsY + 52, compact ? width / 2 - 24 : width - 32, `Sell · ${investedRefund(t.progression)} gold`, () => this.sellSelected(), 'danger');
+    button(this,c,16,buttonsY+52,width-32,'Details',()=>this.openDetails('tower'));
   }
 
   private tryBuild(towerId: string, plotIndex: number): void {
@@ -1953,7 +1958,7 @@ export class GameScene extends Phaser.Scene {
 
   private showRelicPanel(id: PowerUpId, reason: string, full: boolean, use: () => void, keep: () => void, victory = false): void {
     if (!this.rebuildingModal) this.modalError = '';
-    this.gesture.cancel(); this.touchPreview = null;
+    this.cancelGesture();
     this.modalRenderer = () => this.showRelicPanel(id, reason, full, use, keep, victory);
     const cfg = POWERUPS[id];
     const reroll = this.canRerollReward(id, reason);

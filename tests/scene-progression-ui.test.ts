@@ -66,6 +66,16 @@ function liveSheetFixture(kind: 'tower' | 'evolve') {
 afterEach(() => vi.restoreAllMocks());
 
 describe('progression controls', () => {
+  it('compact landscape More changes active battle speed',()=>{
+    const {run,loose}=sceneFixture(640,360);run.sheetKind='more';run.drawSheet();
+    expect(find('Speed 1×')).toBeDefined();find('Speed 1×')!.action();expect(loose.speed).toBe(2);expect(find('Speed 2×')).toBeDefined();
+  });
+  it('Campaign Details compares next stats and explains the gold shortage and firing interval',()=>{
+    const {run,loose,t}=sceneFixture(390,844,1);loose.campaign={};run.gold=0;
+    const text:string[]=[];const sheet={text:(_y:number,value:string)=>{text.push(value);return {height:16};},action:()=>{}};
+    (run as unknown as {drawProgressionModel(s:unknown,t:Tower,y:number):number}).drawProgressionModel(sheet,t,0);
+    expect(text.some(v=>v.includes('Next:')&&v.includes('→'))).toBe(true);expect(text.some(v=>v.includes('Need 90 more gold'))).toBe(true);expect(text.some(v=>v.includes('Lower seconds means faster firing'))).toBe(true);
+  });
   it.each(['tower', 'evolve'] as const)('updates affordability in the open %s sheet without rebuilding it', (kind) => {
     const { run, t } = liveSheetFixture(kind);
     run.gold = 509; run.drawSheet();

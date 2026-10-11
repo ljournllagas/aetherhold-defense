@@ -1,5 +1,9 @@
 import {expect,it} from 'vitest';
-import {ContextualGuide} from '../src/game/systems/ContextualGuide.ts';
+import {ContextualGuide,localGuide} from '../src/game/systems/ContextualGuide.ts';
+it('Help replay resets the guide already held by gameplay even without storage',()=>{
+ const game=localGuide();game.skip();expect(game.shouldShow('placement')).toBe(false);
+ localGuide().replay();expect(game.shouldShow('placement')).toBe(true);
+});
 it('unavailable storage falls back to session and replay never touches progress',()=>{
  const g=new ContextualGuide({getItem(){throw Error('blocked');},setItem(){throw Error('blocked');}});
  expect(g.shouldShow('placement')).toBe(true);g.complete('placement');expect(g.shouldShow('placement')).toBe(false);

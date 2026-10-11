@@ -79,10 +79,11 @@ export function button(scene: Phaser.Scene, parent: Phaser.GameObjects.Container
   box.on('pointerout', () => box.setFillStyle(C.bgRaised));
   let press: { id: number; x: number; y: number } | null = null;
   box.on('pointerdown', (p: Phaser.Input.Pointer, _x: number, _y: number, event: Phaser.Types.Input.EventData) => {
+    scene.input?.emit('control:pointerdown',p);
     event.stopPropagation(); press = { id: p.id, x: p.x, y: p.y };
   });
   box.on('pointerup', (p: Phaser.Input.Pointer, _x: number, _y: number, event: Phaser.Types.Input.EventData) => {
-    event.stopPropagation(); const start = press; press = null;
+    const start = press; press = null;
     if (start?.id === p.id && Math.hypot(p.x - start.x, p.y - start.y) <= 8) action();
   });
   box.on('pointerout', () => { press = null; });
