@@ -1,0 +1,1366 @@
+{
+  "taskId": "V6 campaign boss overlay browser verification",
+  "failures": [],
+  "phaseCases": [
+    {
+      "level": 10,
+      "boss": "hollow_warden",
+      "phase": "initial",
+      "outcome": "PASS",
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\boss-phases\\L10-initial-right.png",
+        "artifacts\\road-monster-20261011\\boss-phases\\L10-initial-left.png"
+      ],
+      "mapResponse": {
+        "path": "/assets/campaign/maps/borderkeep_d-v1.png",
+        "status": 200,
+        "sha256": "27badc84706cfb873393278c9b7c96651c4b19e152f6f34b3d9f2d74f6007c6a"
+      },
+      "runtime": {
+        "id": "hollow_warden",
+        "aliveBossCount": 1,
+        "hpRatio": 1,
+        "phase": 1,
+        "guarded": false,
+        "telegraph": false,
+        "targets": [],
+        "frozenTowers": 0,
+        "gameTimeMs": 2500,
+        "paused": true,
+        "speed": 1,
+        "debugAssisted": true,
+        "fixture": "campaign-boss/initial",
+        "atlasKey": "campaign_enemy_hollow_warden",
+        "finalTextureLoaded": true,
+        "facing": "right",
+        "sprite": {
+          "x": 0,
+          "y": 0,
+          "originX": 0.5,
+          "originY": 0.9,
+          "displayWidth": 123.07692307692307,
+          "displayHeight": 123.07692307692307,
+          "flipX": false,
+          "visible": true,
+          "alpha": 1
+        },
+        "body": {
+          "x": 0,
+          "y": -0.27055434339931056,
+          "childTypes": [
+            "Image",
+            "Sprite",
+            "Container"
+          ]
+        },
+        "overlay": {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "parentIsBody": true,
+          "children": [
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            }
+          ]
+        },
+        "runId": "d1e36497-3f3e-45df-990d-e8c1e68f70b0",
+        "sceneObjectCount": 2
+      },
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/borderkeep_d-v1.png",
+            "status": 200,
+            "sha256": "27badc84706cfb873393278c9b7c96651c4b19e152f6f34b3d9f2d74f6007c6a"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    },
+    {
+      "level": 10,
+      "boss": "hollow_warden",
+      "phase": "guarded",
+      "outcome": "PASS",
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\boss-phases\\L10-guarded-right.png",
+        "artifacts\\road-monster-20261011\\boss-phases\\L10-guarded-left.png"
+      ],
+      "mapResponse": {
+        "path": "/assets/campaign/maps/borderkeep_d-v1.png",
+        "status": 200,
+        "sha256": "27badc84706cfb873393278c9b7c96651c4b19e152f6f34b3d9f2d74f6007c6a"
+      },
+      "runtime": {
+        "id": "hollow_warden",
+        "aliveBossCount": 1,
+        "hpRatio": 1,
+        "phase": 1,
+        "guarded": true,
+        "telegraph": false,
+        "targets": [],
+        "frozenTowers": 0,
+        "gameTimeMs": 0,
+        "paused": true,
+        "speed": 1,
+        "debugAssisted": true,
+        "fixture": "campaign-boss/guarded",
+        "atlasKey": "campaign_enemy_hollow_warden",
+        "finalTextureLoaded": true,
+        "facing": "right",
+        "sprite": {
+          "x": 0,
+          "y": 0,
+          "originX": 0.5,
+          "originY": 0.9,
+          "displayWidth": 123.07692307692307,
+          "displayHeight": 123.07692307692307,
+          "flipX": false,
+          "visible": true,
+          "alpha": 1
+        },
+        "body": {
+          "x": 0,
+          "y": -0.668180680582801,
+          "childTypes": [
+            "Image",
+            "Sprite",
+            "Container"
+          ]
+        },
+        "overlay": {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "parentIsBody": true,
+          "children": [
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": true,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            }
+          ]
+        },
+        "runId": "56ddef5b-6190-4efe-9f1f-735366bcd30e",
+        "sceneObjectCount": 2
+      },
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/borderkeep_d-v1.png",
+            "status": 200,
+            "sha256": "27badc84706cfb873393278c9b7c96651c4b19e152f6f34b3d9f2d74f6007c6a"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    },
+    {
+      "level": 10,
+      "boss": "hollow_warden",
+      "phase": "enraged",
+      "outcome": "PASS",
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\boss-phases\\L10-enraged-right.png",
+        "artifacts\\road-monster-20261011\\boss-phases\\L10-enraged-left.png"
+      ],
+      "mapResponse": {
+        "path": "/assets/campaign/maps/borderkeep_d-v1.png",
+        "status": 200,
+        "sha256": "27badc84706cfb873393278c9b7c96651c4b19e152f6f34b3d9f2d74f6007c6a"
+      },
+      "runtime": {
+        "id": "hollow_warden",
+        "aliveBossCount": 1,
+        "hpRatio": 0.24000000000000002,
+        "phase": 3,
+        "guarded": false,
+        "telegraph": false,
+        "targets": [],
+        "frozenTowers": 0,
+        "gameTimeMs": 2500,
+        "paused": true,
+        "speed": 1,
+        "debugAssisted": true,
+        "fixture": "campaign-boss/enraged",
+        "atlasKey": "campaign_enemy_hollow_warden",
+        "finalTextureLoaded": true,
+        "facing": "right",
+        "sprite": {
+          "x": 0,
+          "y": 0,
+          "originX": 0.5,
+          "originY": 0.9,
+          "displayWidth": 123.07692307692307,
+          "displayHeight": 123.07692307692307,
+          "flipX": false,
+          "visible": true,
+          "alpha": 1
+        },
+        "body": {
+          "x": 0,
+          "y": -0.7998450556780927,
+          "childTypes": [
+            "Image",
+            "Sprite",
+            "Container"
+          ]
+        },
+        "overlay": {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "parentIsBody": true,
+          "children": [
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": true,
+              "alpha": 1
+            }
+          ]
+        },
+        "runId": "f9e8eca6-396b-4393-a153-65d2ed9fac3a",
+        "sceneObjectCount": 2
+      },
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/borderkeep_d-v1.png",
+            "status": 200,
+            "sha256": "27badc84706cfb873393278c9b7c96651c4b19e152f6f34b3d9f2d74f6007c6a"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    },
+    {
+      "level": 20,
+      "boss": "cinder_colossus",
+      "phase": "initial",
+      "outcome": "PASS",
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\boss-phases\\L20-initial-right.png",
+        "artifacts\\road-monster-20261011\\boss-phases\\L20-initial-left.png"
+      ],
+      "mapResponse": {
+        "path": "/assets/campaign/maps/emberfall_d-v1.png",
+        "status": 200,
+        "sha256": "2c100931a6ff966b2e9ad8e2f5f6b0dfe4948a1e6482697c1e14f7187fae40af"
+      },
+      "runtime": {
+        "id": "cinder_colossus",
+        "aliveBossCount": 1,
+        "hpRatio": 1,
+        "phase": 1,
+        "guarded": false,
+        "telegraph": false,
+        "targets": [],
+        "frozenTowers": 0,
+        "gameTimeMs": 0,
+        "paused": true,
+        "speed": 1,
+        "debugAssisted": true,
+        "fixture": "campaign-boss/initial",
+        "atlasKey": "campaign_enemy_cinder_colossus",
+        "finalTextureLoaded": true,
+        "facing": "right",
+        "sprite": {
+          "x": 0,
+          "y": 0,
+          "originX": 0.5,
+          "originY": 0.9,
+          "displayWidth": 123.07692307692307,
+          "displayHeight": 123.07692307692307,
+          "flipX": false,
+          "visible": true,
+          "alpha": 1
+        },
+        "body": {
+          "x": 0,
+          "y": -0.7824391843512769,
+          "childTypes": [
+            "Image",
+            "Sprite",
+            "Container"
+          ]
+        },
+        "overlay": {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "parentIsBody": true,
+          "children": [
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": true,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": true,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 0.55
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            }
+          ]
+        },
+        "runId": "8b3af8e6-ea0b-4a1c-8d9a-e8c3b0bc3820",
+        "sceneObjectCount": 2
+      },
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/emberfall_d-v1.png",
+            "status": 200,
+            "sha256": "2c100931a6ff966b2e9ad8e2f5f6b0dfe4948a1e6482697c1e14f7187fae40af"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    },
+    {
+      "level": 20,
+      "boss": "cinder_colossus",
+      "phase": "broken",
+      "outcome": "PASS",
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\boss-phases\\L20-broken-right.png",
+        "artifacts\\road-monster-20261011\\boss-phases\\L20-broken-left.png"
+      ],
+      "mapResponse": {
+        "path": "/assets/campaign/maps/emberfall_d-v1.png",
+        "status": 200,
+        "sha256": "2c100931a6ff966b2e9ad8e2f5f6b0dfe4948a1e6482697c1e14f7187fae40af"
+      },
+      "runtime": {
+        "id": "cinder_colossus",
+        "aliveBossCount": 1,
+        "hpRatio": 0.6,
+        "phase": 2,
+        "guarded": false,
+        "telegraph": false,
+        "targets": [],
+        "frozenTowers": 0,
+        "gameTimeMs": 0,
+        "paused": true,
+        "speed": 1,
+        "debugAssisted": true,
+        "fixture": "campaign-boss/broken",
+        "atlasKey": "campaign_enemy_cinder_colossus",
+        "finalTextureLoaded": true,
+        "facing": "right",
+        "sprite": {
+          "x": 0,
+          "y": 0,
+          "originX": 0.5,
+          "originY": 0.9,
+          "displayWidth": 123.07692307692307,
+          "displayHeight": 123.07692307692307,
+          "flipX": false,
+          "visible": true,
+          "alpha": 1
+        },
+        "body": {
+          "x": 0,
+          "y": -0.7416463842759876,
+          "childTypes": [
+            "Image",
+            "Sprite",
+            "Container"
+          ]
+        },
+        "overlay": {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "parentIsBody": true,
+          "children": [
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": true,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": true,
+              "alpha": 0.55
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": true,
+              "alpha": 1
+            }
+          ]
+        },
+        "runId": "d18195f1-c1b3-474f-a17a-2ce8b832ae11",
+        "sceneObjectCount": 2
+      },
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/emberfall_d-v1.png",
+            "status": 200,
+            "sha256": "2c100931a6ff966b2e9ad8e2f5f6b0dfe4948a1e6482697c1e14f7187fae40af"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    },
+    {
+      "level": 20,
+      "boss": "cinder_colossus",
+      "phase": "core",
+      "outcome": "PASS",
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\boss-phases\\L20-core-right.png",
+        "artifacts\\road-monster-20261011\\boss-phases\\L20-core-left.png"
+      ],
+      "mapResponse": {
+        "path": "/assets/campaign/maps/emberfall_d-v1.png",
+        "status": 200,
+        "sha256": "2c100931a6ff966b2e9ad8e2f5f6b0dfe4948a1e6482697c1e14f7187fae40af"
+      },
+      "runtime": {
+        "id": "cinder_colossus",
+        "aliveBossCount": 1,
+        "hpRatio": 0.23999999999999996,
+        "phase": 3,
+        "guarded": false,
+        "telegraph": false,
+        "targets": [],
+        "frozenTowers": 0,
+        "gameTimeMs": 0,
+        "paused": true,
+        "speed": 1,
+        "debugAssisted": true,
+        "fixture": "campaign-boss/core",
+        "atlasKey": "campaign_enemy_cinder_colossus",
+        "finalTextureLoaded": true,
+        "facing": "right",
+        "sprite": {
+          "x": 0,
+          "y": 0,
+          "originX": 0.5,
+          "originY": 0.9,
+          "displayWidth": 123.07692307692307,
+          "displayHeight": 123.07692307692307,
+          "flipX": false,
+          "visible": true,
+          "alpha": 1
+        },
+        "body": {
+          "x": 0,
+          "y": -0.7611930087666907,
+          "childTypes": [
+            "Image",
+            "Sprite",
+            "Container"
+          ]
+        },
+        "overlay": {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "parentIsBody": true,
+          "children": [
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": true,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": true,
+              "alpha": 1
+            }
+          ]
+        },
+        "runId": "b3b81b8e-4c14-43d4-8bbd-91a4aa0a77d6",
+        "sceneObjectCount": 2
+      },
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/emberfall_d-v1.png",
+            "status": 200,
+            "sha256": "2c100931a6ff966b2e9ad8e2f5f6b0dfe4948a1e6482697c1e14f7187fae40af"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    },
+    {
+      "level": 30,
+      "boss": "frostbound_matriarch",
+      "phase": "initial",
+      "outcome": "PASS",
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\boss-phases\\L30-initial-right.png",
+        "artifacts\\road-monster-20261011\\boss-phases\\L30-initial-left.png"
+      ],
+      "mapResponse": {
+        "path": "/assets/campaign/maps/frostveil_d-v1.png",
+        "status": 200,
+        "sha256": "546ef885e48d7047f6402ffea7a5e3771b3e6ba00ebe36f334a80fade2022cb9"
+      },
+      "runtime": {
+        "id": "frostbound_matriarch",
+        "aliveBossCount": 1,
+        "hpRatio": 1,
+        "phase": 1,
+        "guarded": false,
+        "telegraph": false,
+        "targets": [],
+        "frozenTowers": 0,
+        "gameTimeMs": 0,
+        "paused": true,
+        "speed": 1,
+        "debugAssisted": true,
+        "fixture": "campaign-boss/initial",
+        "atlasKey": "campaign_enemy_frostbound_matriarch",
+        "finalTextureLoaded": true,
+        "facing": "right",
+        "sprite": {
+          "x": 0,
+          "y": 0,
+          "originX": 0.5,
+          "originY": 0.9,
+          "displayWidth": 123.07692307692307,
+          "displayHeight": 123.07692307692307,
+          "flipX": false,
+          "visible": true,
+          "alpha": 1
+        },
+        "body": {
+          "x": 0,
+          "y": -0.7509077670126938,
+          "childTypes": [
+            "Image",
+            "Sprite",
+            "Container"
+          ]
+        },
+        "overlay": {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "parentIsBody": true,
+          "children": [
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            }
+          ]
+        },
+        "runId": "f40b28bd-46e1-4b68-9077-8bc66f4040a0",
+        "sceneObjectCount": 2
+      },
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/frostveil_d-v1.png",
+            "status": 200,
+            "sha256": "546ef885e48d7047f6402ffea7a5e3771b3e6ba00ebe36f334a80fade2022cb9"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    },
+    {
+      "level": 30,
+      "boss": "frostbound_matriarch",
+      "phase": "telegraph",
+      "outcome": "PASS",
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\boss-phases\\L30-telegraph-right.png",
+        "artifacts\\road-monster-20261011\\boss-phases\\L30-telegraph-left.png"
+      ],
+      "mapResponse": {
+        "path": "/assets/campaign/maps/frostveil_d-v1.png",
+        "status": 200,
+        "sha256": "546ef885e48d7047f6402ffea7a5e3771b3e6ba00ebe36f334a80fade2022cb9"
+      },
+      "runtime": {
+        "id": "frostbound_matriarch",
+        "aliveBossCount": 1,
+        "hpRatio": 1,
+        "phase": 1,
+        "guarded": false,
+        "telegraph": true,
+        "targets": [
+          1
+        ],
+        "frozenTowers": 0,
+        "gameTimeMs": 7500,
+        "paused": true,
+        "speed": 1,
+        "debugAssisted": true,
+        "fixture": "campaign-boss/telegraph",
+        "atlasKey": "campaign_enemy_frostbound_matriarch",
+        "finalTextureLoaded": true,
+        "facing": "right",
+        "sprite": {
+          "x": 0,
+          "y": 0,
+          "originX": 0.5,
+          "originY": 0.9,
+          "displayWidth": 123.07692307692307,
+          "displayHeight": 123.07692307692307,
+          "flipX": false,
+          "visible": true,
+          "alpha": 1
+        },
+        "body": {
+          "x": 0,
+          "y": -0.5530470330169396,
+          "childTypes": [
+            "Image",
+            "Sprite",
+            "Container"
+          ]
+        },
+        "overlay": {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "parentIsBody": true,
+          "children": [
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": true,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            }
+          ]
+        },
+        "runId": "0b722edc-d5f8-4390-9577-3af163ee0b0d",
+        "sceneObjectCount": 2
+      },
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/frostveil_d-v1.png",
+            "status": 200,
+            "sha256": "546ef885e48d7047f6402ffea7a5e3771b3e6ba00ebe36f334a80fade2022cb9"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    },
+    {
+      "level": 30,
+      "boss": "frostbound_matriarch",
+      "phase": "freeze",
+      "outcome": "PASS",
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\boss-phases\\L30-freeze-right.png",
+        "artifacts\\road-monster-20261011\\boss-phases\\L30-freeze-left.png"
+      ],
+      "mapResponse": {
+        "path": "/assets/campaign/maps/frostveil_d-v1.png",
+        "status": 200,
+        "sha256": "546ef885e48d7047f6402ffea7a5e3771b3e6ba00ebe36f334a80fade2022cb9"
+      },
+      "runtime": {
+        "id": "frostbound_matriarch",
+        "aliveBossCount": 1,
+        "hpRatio": 1,
+        "phase": 1,
+        "guarded": false,
+        "telegraph": false,
+        "targets": [],
+        "frozenTowers": 1,
+        "gameTimeMs": 9000,
+        "paused": true,
+        "speed": 1,
+        "debugAssisted": true,
+        "fixture": "campaign-boss/freeze",
+        "atlasKey": "campaign_enemy_frostbound_matriarch",
+        "finalTextureLoaded": true,
+        "facing": "right",
+        "sprite": {
+          "x": 0,
+          "y": 0,
+          "originX": 0.5,
+          "originY": 0.9,
+          "displayWidth": 123.07692307692307,
+          "displayHeight": 123.07692307692307,
+          "flipX": false,
+          "visible": true,
+          "alpha": 1
+        },
+        "body": {
+          "x": 0,
+          "y": -0.2647742995634296,
+          "childTypes": [
+            "Image",
+            "Sprite",
+            "Container"
+          ]
+        },
+        "overlay": {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "parentIsBody": true,
+          "children": [
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": false,
+              "alpha": 1
+            }
+          ]
+        },
+        "runId": "3b5eb74d-9a61-42f6-b108-21d134247735",
+        "sceneObjectCount": 2
+      },
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/frostveil_d-v1.png",
+            "status": 200,
+            "sha256": "546ef885e48d7047f6402ffea7a5e3771b3e6ba00ebe36f334a80fade2022cb9"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    },
+    {
+      "level": 30,
+      "boss": "frostbound_matriarch",
+      "phase": "phase2",
+      "outcome": "PASS",
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\boss-phases\\L30-phase2-right.png",
+        "artifacts\\road-monster-20261011\\boss-phases\\L30-phase2-left.png"
+      ],
+      "mapResponse": {
+        "path": "/assets/campaign/maps/frostveil_d-v1.png",
+        "status": 200,
+        "sha256": "546ef885e48d7047f6402ffea7a5e3771b3e6ba00ebe36f334a80fade2022cb9"
+      },
+      "runtime": {
+        "id": "frostbound_matriarch",
+        "aliveBossCount": 1,
+        "hpRatio": 0.4,
+        "phase": 2,
+        "guarded": false,
+        "telegraph": true,
+        "targets": [
+          1,
+          5
+        ],
+        "frozenTowers": 0,
+        "gameTimeMs": 7500,
+        "paused": true,
+        "speed": 1,
+        "debugAssisted": true,
+        "fixture": "campaign-boss/phase2",
+        "atlasKey": "campaign_enemy_frostbound_matriarch",
+        "finalTextureLoaded": true,
+        "facing": "right",
+        "sprite": {
+          "x": 0,
+          "y": 0,
+          "originX": 0.5,
+          "originY": 0.9,
+          "displayWidth": 123.07692307692307,
+          "displayHeight": 123.07692307692307,
+          "flipX": false,
+          "visible": true,
+          "alpha": 1
+        },
+        "body": {
+          "x": 0,
+          "y": -0.4854475159812986,
+          "childTypes": [
+            "Image",
+            "Sprite",
+            "Container"
+          ]
+        },
+        "overlay": {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "parentIsBody": true,
+          "children": [
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": true,
+              "alpha": 1
+            },
+            {
+              "type": "Graphics",
+              "x": -61.53846153846153,
+              "y": -110.76923076923076,
+              "scaleX": 0.4807692307692307,
+              "scaleY": 0.4807692307692307,
+              "visible": true,
+              "alpha": 1
+            }
+          ]
+        },
+        "runId": "eee5e4a4-c0a1-4fe5-86b3-c4d72a3dc949",
+        "sceneObjectCount": 2
+      },
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/frostveil_d-v1.png",
+            "status": 200,
+            "sha256": "546ef885e48d7047f6402ffea7a5e3771b3e6ba00ebe36f334a80fade2022cb9"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    }
+  ],
+  "thresholdCases": [
+    {
+      "level": 10,
+      "boss": "hollow_warden",
+      "samples": [
+        {
+          "ratio": 0.5001,
+          "expectedPhase": 1,
+          "phase": 1,
+          "guarded": false,
+          "telegraph": false,
+          "physicalArmor": 0.15,
+          "wardArmor": 0.15,
+          "speedMultiplier": 1,
+          "damageTakenMultiplier": 1,
+          "visible": [
+            false,
+            false
+          ],
+          "marchlings": 0
+        },
+        {
+          "ratio": 0.5,
+          "expectedPhase": 2,
+          "phase": 2,
+          "guarded": false,
+          "telegraph": false,
+          "physicalArmor": 0.15,
+          "wardArmor": 0.15,
+          "speedMultiplier": 1,
+          "damageTakenMultiplier": 1,
+          "visible": [
+            false,
+            true
+          ],
+          "marchlings": 3
+        },
+        {
+          "ratio": 0.2501,
+          "expectedPhase": 2,
+          "phase": 2,
+          "guarded": false,
+          "telegraph": false,
+          "physicalArmor": 0.15,
+          "wardArmor": 0.15,
+          "speedMultiplier": 1,
+          "damageTakenMultiplier": 1,
+          "visible": [
+            false,
+            true
+          ],
+          "marchlings": 3
+        },
+        {
+          "ratio": 0.25,
+          "expectedPhase": 2,
+          "phase": 2,
+          "guarded": false,
+          "telegraph": false,
+          "physicalArmor": 0.15,
+          "wardArmor": 0.15,
+          "speedMultiplier": 1,
+          "damageTakenMultiplier": 1,
+          "visible": [
+            false,
+            true
+          ],
+          "marchlings": 3
+        },
+        {
+          "ratio": 0.2499,
+          "expectedPhase": 3,
+          "phase": 3,
+          "guarded": false,
+          "telegraph": false,
+          "physicalArmor": 0.15,
+          "wardArmor": 0.15,
+          "speedMultiplier": 1.2,
+          "damageTakenMultiplier": 1,
+          "visible": [
+            false,
+            true
+          ],
+          "marchlings": 3
+        }
+      ],
+      "outcome": "PASS",
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/borderkeep_d-v1.png",
+            "status": 200,
+            "sha256": "27badc84706cfb873393278c9b7c96651c4b19e152f6f34b3d9f2d74f6007c6a"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    },
+    {
+      "level": 20,
+      "boss": "cinder_colossus",
+      "samples": [
+        {
+          "ratio": 0.6501,
+          "expectedPhase": 1,
+          "phase": 1,
+          "guarded": false,
+          "telegraph": false,
+          "physicalArmor": 0.65,
+          "wardArmor": 0.35,
+          "speedMultiplier": 1,
+          "damageTakenMultiplier": 1,
+          "visible": [
+            true,
+            true,
+            false,
+            false
+          ],
+          "marchlings": 0
+        },
+        {
+          "ratio": 0.65,
+          "expectedPhase": 2,
+          "phase": 2,
+          "guarded": false,
+          "telegraph": false,
+          "physicalArmor": 0.32,
+          "wardArmor": 0.18,
+          "speedMultiplier": 1.2,
+          "damageTakenMultiplier": 1,
+          "visible": [
+            true,
+            false,
+            true,
+            true
+          ],
+          "marchlings": 0
+        },
+        {
+          "ratio": 0.3001,
+          "expectedPhase": 2,
+          "phase": 2,
+          "guarded": false,
+          "telegraph": false,
+          "physicalArmor": 0.32,
+          "wardArmor": 0.18,
+          "speedMultiplier": 1.2,
+          "damageTakenMultiplier": 1,
+          "visible": [
+            true,
+            false,
+            true,
+            true
+          ],
+          "marchlings": 0
+        },
+        {
+          "ratio": 0.3,
+          "expectedPhase": 3,
+          "phase": 3,
+          "guarded": false,
+          "telegraph": false,
+          "physicalArmor": 0.08,
+          "wardArmor": 0,
+          "speedMultiplier": 1.4,
+          "damageTakenMultiplier": 1.3,
+          "visible": [
+            false,
+            false,
+            true,
+            true
+          ],
+          "marchlings": 0
+        }
+      ],
+      "outcome": "PASS",
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/emberfall_d-v1.png",
+            "status": 200,
+            "sha256": "2c100931a6ff966b2e9ad8e2f5f6b0dfe4948a1e6482697c1e14f7187fae40af"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    },
+    {
+      "level": 30,
+      "boss": "frostbound_matriarch",
+      "samples": [
+        {
+          "ratio": 0.5001,
+          "expectedPhase": 1,
+          "phase": 1,
+          "guarded": false,
+          "telegraph": false,
+          "physicalArmor": 0.15,
+          "wardArmor": 0.15,
+          "speedMultiplier": 1,
+          "damageTakenMultiplier": 1,
+          "visible": [
+            false,
+            false
+          ],
+          "marchlings": 0
+        },
+        {
+          "ratio": 0.5,
+          "expectedPhase": 2,
+          "phase": 2,
+          "guarded": false,
+          "telegraph": false,
+          "physicalArmor": 0.15,
+          "wardArmor": 0.15,
+          "speedMultiplier": 1,
+          "damageTakenMultiplier": 1,
+          "visible": [
+            false,
+            true
+          ],
+          "marchlings": 0
+        }
+      ],
+      "outcome": "PASS",
+      "safety": {
+        "errors": [],
+        "failedRequests": [],
+        "postAttempts": [],
+        "mapResponses": [
+          {
+            "path": "/assets/campaign/maps/frostveil_d-v1.png",
+            "status": 200,
+            "sha256": "546ef885e48d7047f6402ffea7a5e3771b3e6ba00ebe36f334a80fade2022cb9"
+          }
+        ],
+        "responseTasks": [
+          {}
+        ]
+      }
+    }
+  ],
+  "lifecycle": {
+    "case": "pause/resume/speed/restart cleanup",
+    "outcome": "PASS",
+    "delta2xMs": 466.6666666666624,
+    "delta3xMs": 699.9999999999936,
+    "beforeRestart": {
+      "runId": "5f8150a9-428b-41c0-befe-a16ea1dea2ba",
+      "gameTimeMs": 3833.333333333321,
+      "paused": true,
+      "objectCount": 3
+    },
+    "afterRestart": {
+      "runId": "0dc0aff8-72d1-4ca1-bf2e-7eb5cec8e380",
+      "gameTimeMs": 2500,
+      "paused": true,
+      "speed": 1,
+      "bossCount": 1,
+      "oldViewActive": false,
+      "oldViewInScene": false,
+      "oldViewInWorld": false,
+      "newView": true,
+      "overlayVisible": [
+        false,
+        false
+      ],
+      "phase": 1
+    },
+    "safety": {
+      "errors": [],
+      "failedRequests": [],
+      "postAttempts": [],
+      "mapResponses": [
+        {
+          "path": "/assets/campaign/maps/borderkeep_d-v1.png",
+          "status": 200,
+          "sha256": "27badc84706cfb873393278c9b7c96651c4b19e152f6f34b3d9f2d74f6007c6a"
+        }
+      ],
+      "responseTasks": [
+        {}
+      ]
+    }
+  },
+  "contactSheets": [
+    "artifacts\\road-monster-20261011\\boss-phases\\L10-contact-sheet.png",
+    "artifacts\\road-monster-20261011\\boss-phases\\L20-contact-sheet.png",
+    "artifacts\\road-monster-20261011\\boss-phases\\L30-contact-sheet.png"
+  ],
+  "startedAt": "2026-10-11T01:16:35.923Z",
+  "baseUrl": "http://127.0.0.1:5195/",
+  "browser": "Bundled Playwright Chromium, headless",
+  "safety": {
+    "apiPosts": "intercepted, blocked, and asserted absent",
+    "storage": "all mutators intercepted and asserted absent",
+    "fixture": "DEV QA campaign boss fixture; debug-assisted and unsaved"
+  },
+  "sourceHashes": {
+    "start": {
+      "src/game/art/enemyArt.ts": "0f6d97b180fc44ef52ea911ec3c377be98bda2a303d0543c12ab7a0529552a3a",
+      "src/game/art/campaignArt.ts": "a0a3c55be16847eb96c0f0626092b888008ffe3e7c8c380d2762c336545f8bd4",
+      "src/game/scenes/GameScene.ts": "a1385a90909af2f015c6f48c8cfa933afe7ef8819ff4b1c40f3cff16da940db7",
+      "src/game/campaign/bosses.ts": "dda1e1a15061cff07aba77efec29aeebc7895cc6020254ddff5ba8875101c611",
+      "src/game/qa.ts": "4cb68e859a8e66d5c1d820b0b9c1ead25990ffbea7b8ed2ea607697e5ec94214"
+    },
+    "end": {
+      "src/game/art/enemyArt.ts": "0f6d97b180fc44ef52ea911ec3c377be98bda2a303d0543c12ab7a0529552a3a",
+      "src/game/art/campaignArt.ts": "a0a3c55be16847eb96c0f0626092b888008ffe3e7c8c380d2762c336545f8bd4",
+      "src/game/scenes/GameScene.ts": "a1385a90909af2f015c6f48c8cfa933afe7ef8819ff4b1c40f3cff16da940db7",
+      "src/game/campaign/bosses.ts": "dda1e1a15061cff07aba77efec29aeebc7895cc6020254ddff5ba8875101c611",
+      "src/game/qa.ts": "4cb68e859a8e66d5c1d820b0b9c1ead25990ffbea7b8ed2ea607697e5ec94214"
+    },
+    "stable": true
+  },
+  "finishedAt": "2026-10-11T01:19:45.372Z",
+  "limits": [
+    "All captures use final painted enemy/boss atlases.",
+    "Facing is changed on the live fixture enemy heading and rendered through GameScene.renderFrame.",
+    "Threshold probes set live boss HP ratios and tick CampaignBossSystem; they do not simulate tower damage or validate balance."
+  ]
+}

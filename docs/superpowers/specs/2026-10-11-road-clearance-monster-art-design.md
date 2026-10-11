@@ -1,6 +1,6 @@
 # Road clearance and complete monster artwork
 
-Date: 2026-10-11. Tier: Spec-only. Status: awaiting reviewed-spec approval.
+Date: 2026-10-11. Tier: Spec-only. Status: approved and implemented; release verification is recorded in `docs/ROAD_CLEARANCE_AND_MONSTER_ART.md`.
 
 ## Agreed outcome
 

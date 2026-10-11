@@ -1,0 +1,8087 @@
+[
+  {
+    "id": "marchling",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 256,
+        "count": 0
+      },
+      {
+        "position": 512,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1039,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 95,
+        "top": 124,
+        "right": 212,
+        "bottom": 240,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 348,
+        "top": 123,
+        "right": 466,
+        "bottom": 240,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 601,
+        "top": 124,
+        "right": 721,
+        "bottom": 241,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 860,
+        "top": 123,
+        "right": 980,
+        "bottom": 241,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 86,
+        "top": 361,
+        "right": 207,
+        "bottom": 481,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 346,
+        "top": 359,
+        "right": 476,
+        "bottom": 481,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 599,
+        "top": 359,
+        "right": 734,
+        "bottom": 481,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 846,
+        "top": 359,
+        "right": 977,
+        "bottom": 481,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1110,
+        "top": 356,
+        "right": 1237,
+        "bottom": 481,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1359,
+        "top": 357,
+        "right": 1491,
+        "bottom": 481,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 86,
+        "top": 610,
+        "right": 210,
+        "bottom": 736,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 300,
+        "top": 555,
+        "right": 423,
+        "bottom": 736,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 582,
+        "top": 613,
+        "right": 708,
+        "bottom": 736,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 818,
+        "top": 622,
+        "right": 1037,
+        "bottom": 736,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1102,
+        "top": 611,
+        "right": 1257,
+        "bottom": 736,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1365,
+        "top": 614,
+        "right": 1487,
+        "bottom": 736,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 86,
+        "top": 847,
+        "right": 250,
+        "bottom": 976,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 335,
+        "top": 856,
+        "right": 466,
+        "bottom": 975,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 560,
+        "top": 879,
+        "right": 726,
+        "bottom": 974,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 804,
+        "top": 884,
+        "right": 990,
+        "bottom": 972,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1061,
+        "top": 906,
+        "right": 1257,
+        "bottom": 977,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1319,
+        "top": 921,
+        "right": 1506,
+        "bottom": 977,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/borderkeep/marchling-atlas-v1.png",
+    "sha256": "9200e75aee1109807b151aecba6946e1d55c6d532b6f4e21e62140986cd56c72",
+    "scale": 0.45381818181818184
+  },
+  {
+    "id": "skitter",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 256,
+        "count": 0
+      },
+      {
+        "position": 512,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 77,
+        "top": 133,
+        "right": 206,
+        "bottom": 217,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 322,
+        "top": 131,
+        "right": 455,
+        "bottom": 217,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 570,
+        "top": 125,
+        "right": 695,
+        "bottom": 218,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 822,
+        "top": 139,
+        "right": 956,
+        "bottom": 218,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 62,
+        "top": 361,
+        "right": 204,
+        "bottom": 454,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 325,
+        "top": 362,
+        "right": 463,
+        "bottom": 453,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 571,
+        "top": 360,
+        "right": 717,
+        "bottom": 453,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 826,
+        "top": 362,
+        "right": 969,
+        "bottom": 455,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1067,
+        "top": 360,
+        "right": 1225,
+        "bottom": 456,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1328,
+        "top": 363,
+        "right": 1473,
+        "bottom": 455,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 70,
+        "top": 607,
+        "right": 204,
+        "bottom": 699,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 317,
+        "top": 558,
+        "right": 478,
+        "bottom": 704,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 570,
+        "top": 556,
+        "right": 752,
+        "bottom": 704,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 808,
+        "top": 599,
+        "right": 997,
+        "bottom": 711,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1064,
+        "top": 602,
+        "right": 1258,
+        "bottom": 709,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1332,
+        "top": 607,
+        "right": 1486,
+        "bottom": 701,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 69,
+        "top": 835,
+        "right": 217,
+        "bottom": 943,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 312,
+        "top": 836,
+        "right": 476,
+        "bottom": 941,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 559,
+        "top": 843,
+        "right": 720,
+        "bottom": 944,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 816,
+        "top": 848,
+        "right": 984,
+        "bottom": 940,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1056,
+        "top": 871,
+        "right": 1258,
+        "bottom": 950,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1303,
+        "top": 880,
+        "right": 1500,
+        "bottom": 952,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/borderkeep/skitter-atlas-v1.png",
+    "sha256": "b9f8eb069d437c4d78b1cc95276a90ebab65da1bdab96c6cf581151f92de2b3b",
+    "scale": 0.49182266009852216
+  },
+  {
+    "id": "stoneback",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 256,
+        "count": 0
+      },
+      {
+        "position": 512,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 69,
+        "top": 96,
+        "right": 189,
+        "bottom": 219,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 329,
+        "top": 98,
+        "right": 456,
+        "bottom": 218,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 580,
+        "top": 97,
+        "right": 704,
+        "bottom": 219,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 833,
+        "top": 98,
+        "right": 955,
+        "bottom": 219,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 60,
+        "top": 330,
+        "right": 203,
+        "bottom": 459,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 321,
+        "top": 329,
+        "right": 442,
+        "bottom": 460,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 572,
+        "top": 331,
+        "right": 708,
+        "bottom": 459,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 822,
+        "top": 331,
+        "right": 973,
+        "bottom": 460,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1088,
+        "top": 329,
+        "right": 1212,
+        "bottom": 458,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1337,
+        "top": 329,
+        "right": 1477,
+        "bottom": 459,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 58,
+        "top": 577,
+        "right": 199,
+        "bottom": 719,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 323,
+        "top": 543,
+        "right": 461,
+        "bottom": 711,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 584,
+        "top": 564,
+        "right": 735,
+        "bottom": 717,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 821,
+        "top": 600,
+        "right": 1002,
+        "bottom": 721,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1077,
+        "top": 591,
+        "right": 1249,
+        "bottom": 722,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1333,
+        "top": 597,
+        "right": 1481,
+        "bottom": 713,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 67,
+        "top": 817,
+        "right": 198,
+        "bottom": 954,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 310,
+        "top": 844,
+        "right": 467,
+        "bottom": 959,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 562,
+        "top": 850,
+        "right": 741,
+        "bottom": 961,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 801,
+        "top": 868,
+        "right": 1004,
+        "bottom": 963,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1060,
+        "top": 876,
+        "right": 1262,
+        "bottom": 958,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1308,
+        "top": 893,
+        "right": 1508,
+        "bottom": 963,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/borderkeep/stoneback-atlas-v1.png",
+    "sha256": "28d5b3a0eae451d2bba4111d86e1c4ac49658ea0c877864a4f57753b49689060",
+    "scale": 0.4894117647058824
+  },
+  {
+    "id": "ironhide",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 256,
+        "count": 0
+      },
+      {
+        "position": 512,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 84,
+        "top": 95,
+        "right": 203,
+        "bottom": 242,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 333,
+        "top": 92,
+        "right": 453,
+        "bottom": 242,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 588,
+        "top": 94,
+        "right": 705,
+        "bottom": 242,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 824,
+        "top": 92,
+        "right": 956,
+        "bottom": 242,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 84,
+        "top": 332,
+        "right": 196,
+        "bottom": 483,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 317,
+        "top": 332,
+        "right": 447,
+        "bottom": 484,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 572,
+        "top": 336,
+        "right": 701,
+        "bottom": 483,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 831,
+        "top": 331,
+        "right": 968,
+        "bottom": 484,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1079,
+        "top": 335,
+        "right": 1210,
+        "bottom": 484,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1334,
+        "top": 337,
+        "right": 1467,
+        "bottom": 483,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 80,
+        "top": 599,
+        "right": 223,
+        "bottom": 734,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 319,
+        "top": 558,
+        "right": 470,
+        "bottom": 734,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 557,
+        "top": 540,
+        "right": 746,
+        "bottom": 735,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 816,
+        "top": 580,
+        "right": 1006,
+        "bottom": 745,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1068,
+        "top": 610,
+        "right": 1255,
+        "bottom": 741,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1336,
+        "top": 587,
+        "right": 1462,
+        "bottom": 734,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 85,
+        "top": 829,
+        "right": 218,
+        "bottom": 965,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 313,
+        "top": 839,
+        "right": 467,
+        "bottom": 965,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 567,
+        "top": 854,
+        "right": 721,
+        "bottom": 965,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 801,
+        "top": 868,
+        "right": 988,
+        "bottom": 970,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1057,
+        "top": 869,
+        "right": 1254,
+        "bottom": 970,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1297,
+        "top": 890,
+        "right": 1501,
+        "bottom": 969,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/borderkeep/ironhide-atlas-v1.png",
+    "sha256": "e5e23d946a02efdad537be22c3caaec3c9412664e6899918c14f316e8c49e7fe",
+    "scale": 0.4870243902439025
+  },
+  {
+    "id": "veilborn",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 256,
+        "count": 0
+      },
+      {
+        "position": 512,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 769,
+            "count": 0
+          },
+          {
+            "position": 1043,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 53,
+        "top": 91,
+        "right": 195,
+        "bottom": 235,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 320,
+        "top": 91,
+        "right": 448,
+        "bottom": 236,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 574,
+        "top": 93,
+        "right": 703,
+        "bottom": 233,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 831,
+        "top": 95,
+        "right": 959,
+        "bottom": 234,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 49,
+        "top": 335,
+        "right": 201,
+        "bottom": 476,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 309,
+        "top": 333,
+        "right": 460,
+        "bottom": 476,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 567,
+        "top": 333,
+        "right": 715,
+        "bottom": 475,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 818,
+        "top": 331,
+        "right": 970,
+        "bottom": 476,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1085,
+        "top": 335,
+        "right": 1231,
+        "bottom": 478,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1333,
+        "top": 338,
+        "right": 1483,
+        "bottom": 475,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 65,
+        "top": 588,
+        "right": 206,
+        "bottom": 728,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 321,
+        "top": 530,
+        "right": 476,
+        "bottom": 734,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 559,
+        "top": 547,
+        "right": 767,
+        "bottom": 733,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 801,
+        "top": 601,
+        "right": 1041,
+        "bottom": 736,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1079,
+        "top": 591,
+        "right": 1260,
+        "bottom": 732,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1348,
+        "top": 593,
+        "right": 1485,
+        "bottom": 734,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 68,
+        "top": 835,
+        "right": 216,
+        "bottom": 971,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 323,
+        "top": 852,
+        "right": 479,
+        "bottom": 968,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 562,
+        "top": 846,
+        "right": 724,
+        "bottom": 967,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 810,
+        "top": 875,
+        "right": 990,
+        "bottom": 969,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1077,
+        "top": 880,
+        "right": 1265,
+        "bottom": 975,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1323,
+        "top": 893,
+        "right": 1507,
+        "bottom": 973,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/borderkeep/veilborn-atlas-v1.png",
+    "sha256": "e32f2908dbb6ae76793c737e814b6ff6e2b132a172c2785e4d91d09b0725e200",
+    "scale": 0.41427385892116186
+  },
+  {
+    "id": "cinderling",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 256,
+        "count": 0
+      },
+      {
+        "position": 506,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1286,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1026,
+            "count": 0
+          },
+          {
+            "position": 1290,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 23,
+        "top": 21,
+        "right": 253,
+        "bottom": 247,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 298,
+        "top": 13,
+        "right": 508,
+        "bottom": 249,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 542,
+        "top": 39,
+        "right": 763,
+        "bottom": 247,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 793,
+        "top": 19,
+        "right": 1019,
+        "bottom": 247,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 11,
+        "top": 276,
+        "right": 248,
+        "bottom": 490,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 281,
+        "top": 274,
+        "right": 504,
+        "bottom": 495,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 525,
+        "top": 293,
+        "right": 765,
+        "bottom": 496,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 792,
+        "top": 278,
+        "right": 1012,
+        "bottom": 492,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1040,
+        "top": 273,
+        "right": 1284,
+        "bottom": 496,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1309,
+        "top": 287,
+        "right": 1522,
+        "bottom": 486,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 22,
+        "top": 519,
+        "right": 233,
+        "bottom": 756,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 284,
+        "top": 507,
+        "right": 482,
+        "bottom": 759,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 524,
+        "top": 515,
+        "right": 749,
+        "bottom": 755,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 775,
+        "top": 560,
+        "right": 1024,
+        "bottom": 766,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1043,
+        "top": 533,
+        "right": 1288,
+        "bottom": 763,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1312,
+        "top": 533,
+        "right": 1522,
+        "bottom": 742,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 11,
+        "top": 786,
+        "right": 246,
+        "bottom": 998,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 283,
+        "top": 809,
+        "right": 509,
+        "bottom": 997,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 535,
+        "top": 801,
+        "right": 763,
+        "bottom": 993,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 781,
+        "top": 844,
+        "right": 1020,
+        "bottom": 997,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1032,
+        "top": 853,
+        "right": 1277,
+        "bottom": 991,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1289,
+        "top": 859,
+        "right": 1525,
+        "bottom": 992,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/emberfall/cinderling-atlas-v1.png",
+    "sha256": "003cd5e2d61b10eba749367bcf33d70f592f37b5ad17c17623a72412e239f11f",
+    "scale": 0.3946245059288538
+  },
+  {
+    "id": "ashrunner",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 256,
+        "count": 0
+      },
+      {
+        "position": 512,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 784,
+            "count": 0
+          },
+          {
+            "position": 1029,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 18,
+        "top": 54,
+        "right": 245,
+        "bottom": 239,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 276,
+        "top": 57,
+        "right": 502,
+        "bottom": 239,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 531,
+        "top": 47,
+        "right": 748,
+        "bottom": 240,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 783,
+        "top": 59,
+        "right": 1009,
+        "bottom": 240,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 15,
+        "top": 308,
+        "right": 249,
+        "bottom": 479,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 272,
+        "top": 309,
+        "right": 505,
+        "bottom": 478,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 528,
+        "top": 307,
+        "right": 765,
+        "bottom": 470,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 797,
+        "top": 309,
+        "right": 1020,
+        "bottom": 474,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1044,
+        "top": 310,
+        "right": 1267,
+        "bottom": 478,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1297,
+        "top": 306,
+        "right": 1522,
+        "bottom": 482,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 16,
+        "top": 550,
+        "right": 237,
+        "bottom": 730,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 271,
+        "top": 521,
+        "right": 505,
+        "bottom": 727,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 529,
+        "top": 544,
+        "right": 782,
+        "bottom": 738,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 785,
+        "top": 532,
+        "right": 1027,
+        "bottom": 743,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1039,
+        "top": 557,
+        "right": 1270,
+        "bottom": 733,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1282,
+        "top": 566,
+        "right": 1517,
+        "bottom": 732,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 17,
+        "top": 787,
+        "right": 252,
+        "bottom": 970,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 272,
+        "top": 791,
+        "right": 509,
+        "bottom": 964,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 525,
+        "top": 818,
+        "right": 757,
+        "bottom": 976,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 769,
+        "top": 826,
+        "right": 1020,
+        "bottom": 964,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1034,
+        "top": 835,
+        "right": 1277,
+        "bottom": 965,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1285,
+        "top": 826,
+        "right": 1523,
+        "bottom": 961,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/emberfall/ashrunner-atlas-v1.png",
+    "sha256": "db2645f560b9a349777fdb98afb4b9813984ea763a7e944401337641b37a17f1",
+    "scale": 0.3930708661417323
+  },
+  {
+    "id": "magmahide",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 256,
+        "count": 0
+      },
+      {
+        "position": 512,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 75,
+        "top": 68,
+        "right": 207,
+        "bottom": 218,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 326,
+        "top": 66,
+        "right": 458,
+        "bottom": 219,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 579,
+        "top": 72,
+        "right": 712,
+        "bottom": 219,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 827,
+        "top": 67,
+        "right": 962,
+        "bottom": 219,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 58,
+        "top": 320,
+        "right": 196,
+        "bottom": 472,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 319,
+        "top": 320,
+        "right": 456,
+        "bottom": 474,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 569,
+        "top": 320,
+        "right": 711,
+        "bottom": 477,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 824,
+        "top": 324,
+        "right": 974,
+        "bottom": 476,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1082,
+        "top": 317,
+        "right": 1229,
+        "bottom": 476,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1342,
+        "top": 321,
+        "right": 1490,
+        "bottom": 473,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 55,
+        "top": 588,
+        "right": 208,
+        "bottom": 733,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 313,
+        "top": 537,
+        "right": 478,
+        "bottom": 736,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 544,
+        "top": 572,
+        "right": 760,
+        "bottom": 737,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 805,
+        "top": 582,
+        "right": 1011,
+        "bottom": 740,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1088,
+        "top": 594,
+        "right": 1269,
+        "bottom": 737,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1351,
+        "top": 594,
+        "right": 1498,
+        "bottom": 734,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 47,
+        "top": 826,
+        "right": 207,
+        "bottom": 973,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 309,
+        "top": 826,
+        "right": 452,
+        "bottom": 974,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 547,
+        "top": 832,
+        "right": 734,
+        "bottom": 975,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 797,
+        "top": 857,
+        "right": 991,
+        "bottom": 970,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1051,
+        "top": 848,
+        "right": 1248,
+        "bottom": 974,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1301,
+        "top": 873,
+        "right": 1510,
+        "bottom": 978,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/emberfall/magmahide-atlas-v1.png",
+    "sha256": "83f0a142bd1e1329fb23c6324d25556f90c8989f5a9b17bb65ce598606c6f600",
+    "scale": 0.4600921658986175
+  },
+  {
+    "id": "ember_brute",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 256,
+        "count": 0
+      },
+      {
+        "position": 512,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 68,
+        "top": 88,
+        "right": 184,
+        "bottom": 211,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 323,
+        "top": 87,
+        "right": 441,
+        "bottom": 211,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 576,
+        "top": 83,
+        "right": 699,
+        "bottom": 211,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 833,
+        "top": 79,
+        "right": 954,
+        "bottom": 211,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 58,
+        "top": 329,
+        "right": 195,
+        "bottom": 469,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 333,
+        "top": 335,
+        "right": 455,
+        "bottom": 471,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 586,
+        "top": 337,
+        "right": 703,
+        "bottom": 471,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 832,
+        "top": 339,
+        "right": 953,
+        "bottom": 469,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1090,
+        "top": 339,
+        "right": 1230,
+        "bottom": 469,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1349,
+        "top": 331,
+        "right": 1485,
+        "bottom": 469,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 58,
+        "top": 547,
+        "right": 204,
+        "bottom": 724,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 316,
+        "top": 558,
+        "right": 474,
+        "bottom": 727,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 556,
+        "top": 578,
+        "right": 723,
+        "bottom": 725,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 807,
+        "top": 615,
+        "right": 987,
+        "bottom": 727,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1066,
+        "top": 592,
+        "right": 1253,
+        "bottom": 726,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1359,
+        "top": 595,
+        "right": 1478,
+        "bottom": 724,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 56,
+        "top": 826,
+        "right": 202,
+        "bottom": 970,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 311,
+        "top": 844,
+        "right": 452,
+        "bottom": 969,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 565,
+        "top": 859,
+        "right": 723,
+        "bottom": 970,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 807,
+        "top": 870,
+        "right": 991,
+        "bottom": 970,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1057,
+        "top": 894,
+        "right": 1250,
+        "bottom": 969,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1320,
+        "top": 904,
+        "right": 1495,
+        "bottom": 969,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/emberfall/ember_brute-atlas-v1.png",
+    "sha256": "8938af40c27d0647ecfd8d97856de9ca57dc87eca09e5bc229c45b1f8295d70b",
+    "scale": 0.514639175257732
+  },
+  {
+    "id": "ashcaller",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 205,
+        "count": 0
+      },
+      {
+        "position": 410,
+        "count": 0
+      },
+      {
+        "position": 614,
+        "count": 0
+      },
+      {
+        "position": 819,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "buff",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 88,
+        "top": 52,
+        "right": 190,
+        "bottom": 181,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 339,
+        "top": 46,
+        "right": 430,
+        "bottom": 184,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 583,
+        "top": 52,
+        "right": 687,
+        "bottom": 184,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 833,
+        "top": 56,
+        "right": 948,
+        "bottom": 184,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 80,
+        "top": 249,
+        "right": 182,
+        "bottom": 377,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 325,
+        "top": 244,
+        "right": 447,
+        "bottom": 376,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 581,
+        "top": 242,
+        "right": 701,
+        "bottom": 376,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 832,
+        "top": 240,
+        "right": 950,
+        "bottom": 377,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1093,
+        "top": 241,
+        "right": 1212,
+        "bottom": 378,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1337,
+        "top": 246,
+        "right": 1458,
+        "bottom": 373,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 85,
+        "top": 426,
+        "right": 194,
+        "bottom": 576,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 337,
+        "top": 419,
+        "right": 457,
+        "bottom": 576,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 543,
+        "top": 431,
+        "right": 722,
+        "bottom": 576,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 827,
+        "top": 455,
+        "right": 1011,
+        "bottom": 576,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1082,
+        "top": 442,
+        "right": 1258,
+        "bottom": 576,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1340,
+        "top": 457,
+        "right": 1493,
+        "bottom": 577,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 82,
+        "top": 641,
+        "right": 204,
+        "bottom": 772,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 325,
+        "top": 666,
+        "right": 460,
+        "bottom": 776,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 570,
+        "top": 659,
+        "right": 694,
+        "bottom": 775,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 788,
+        "top": 681,
+        "right": 972,
+        "bottom": 779,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1060,
+        "top": 704,
+        "right": 1241,
+        "bottom": 788,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1314,
+        "top": 715,
+        "right": 1502,
+        "bottom": 783,
+        "edgePixels": 0
+      },
+      {
+        "state": "buff",
+        "col": 0,
+        "row": 4,
+        "left": 81,
+        "top": 827,
+        "right": 189,
+        "bottom": 968,
+        "edgePixels": 0
+      },
+      {
+        "state": "buff",
+        "col": 1,
+        "row": 4,
+        "left": 332,
+        "top": 827,
+        "right": 454,
+        "bottom": 971,
+        "edgePixels": 0
+      },
+      {
+        "state": "buff",
+        "col": 2,
+        "row": 4,
+        "left": 580,
+        "top": 822,
+        "right": 712,
+        "bottom": 971,
+        "edgePixels": 0
+      },
+      {
+        "state": "buff",
+        "col": 3,
+        "row": 4,
+        "left": 823,
+        "top": 825,
+        "right": 972,
+        "bottom": 971,
+        "edgePixels": 0
+      },
+      {
+        "state": "buff",
+        "col": 4,
+        "row": 4,
+        "left": 1082,
+        "top": 834,
+        "right": 1219,
+        "bottom": 968,
+        "edgePixels": 0
+      },
+      {
+        "state": "buff",
+        "col": 5,
+        "row": 4,
+        "left": 1346,
+        "top": 830,
+        "right": 1467,
+        "bottom": 968,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/emberfall/ashcaller-atlas-v1.png",
+    "sha256": "61335dca97fd2a0f53ef189ed92a6fa888070d957ed937b9da51a5c2da151cb1",
+    "scale": 0.5282539682539683
+  },
+  {
+    "id": "snowstalker",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 268,
+        "count": 0
+      },
+      {
+        "position": 512,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1035,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 83,
+        "top": 157,
+        "right": 223,
+        "bottom": 266,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 326,
+        "top": 158,
+        "right": 473,
+        "bottom": 265,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 568,
+        "top": 162,
+        "right": 733,
+        "bottom": 266,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 806,
+        "top": 122,
+        "right": 958,
+        "bottom": 265,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 65,
+        "top": 401,
+        "right": 236,
+        "bottom": 504,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 310,
+        "top": 397,
+        "right": 479,
+        "bottom": 501,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 558,
+        "top": 402,
+        "right": 729,
+        "bottom": 503,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 796,
+        "top": 401,
+        "right": 970,
+        "bottom": 502,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1046,
+        "top": 403,
+        "right": 1218,
+        "bottom": 502,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1303,
+        "top": 401,
+        "right": 1474,
+        "bottom": 503,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 95,
+        "top": 626,
+        "right": 220,
+        "bottom": 727,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 323,
+        "top": 566,
+        "right": 499,
+        "bottom": 725,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 552,
+        "top": 591,
+        "right": 766,
+        "bottom": 725,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 800,
+        "top": 595,
+        "right": 1033,
+        "bottom": 735,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1054,
+        "top": 627,
+        "right": 1225,
+        "bottom": 725,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1299,
+        "top": 625,
+        "right": 1467,
+        "bottom": 725,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 76,
+        "top": 812,
+        "right": 223,
+        "bottom": 944,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 325,
+        "top": 833,
+        "right": 484,
+        "bottom": 947,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 552,
+        "top": 849,
+        "right": 736,
+        "bottom": 947,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 809,
+        "top": 873,
+        "right": 973,
+        "bottom": 943,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1064,
+        "top": 875,
+        "right": 1218,
+        "bottom": 942,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1302,
+        "top": 878,
+        "right": 1479,
+        "bottom": 944,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/frostveil/snowstalker-atlas-v1.png",
+    "sha256": "cf570e5764a791bf8d3d4ccc9a51bcb391eafdae2fadf21105d34b19c42adccc",
+    "scale": 0.4266666666666667
+  },
+  {
+    "id": "icebound",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 256,
+        "count": 0
+      },
+      {
+        "position": 512,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 81,
+        "top": 80,
+        "right": 209,
+        "bottom": 226,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 333,
+        "top": 81,
+        "right": 453,
+        "bottom": 226,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 592,
+        "top": 81,
+        "right": 709,
+        "bottom": 227,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 831,
+        "top": 80,
+        "right": 961,
+        "bottom": 226,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 68,
+        "top": 331,
+        "right": 222,
+        "bottom": 473,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 327,
+        "top": 331,
+        "right": 483,
+        "bottom": 475,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 578,
+        "top": 333,
+        "right": 735,
+        "bottom": 475,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 822,
+        "top": 336,
+        "right": 989,
+        "bottom": 475,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1079,
+        "top": 330,
+        "right": 1237,
+        "bottom": 474,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1336,
+        "top": 330,
+        "right": 1496,
+        "bottom": 474,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 63,
+        "top": 542,
+        "right": 197,
+        "bottom": 728,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 297,
+        "top": 571,
+        "right": 485,
+        "bottom": 720,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 538,
+        "top": 567,
+        "right": 734,
+        "bottom": 725,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 822,
+        "top": 579,
+        "right": 1001,
+        "bottom": 732,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1078,
+        "top": 591,
+        "right": 1273,
+        "bottom": 716,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1340,
+        "top": 569,
+        "right": 1483,
+        "bottom": 718,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 73,
+        "top": 814,
+        "right": 208,
+        "bottom": 956,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 320,
+        "top": 811,
+        "right": 468,
+        "bottom": 945,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 569,
+        "top": 832,
+        "right": 727,
+        "bottom": 951,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 817,
+        "top": 858,
+        "right": 994,
+        "bottom": 951,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1050,
+        "top": 882,
+        "right": 1259,
+        "bottom": 948,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1308,
+        "top": 889,
+        "right": 1501,
+        "bottom": 960,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/frostveil/icebound-atlas-v1.png",
+    "sha256": "8bd7042984d3b5cad74d54b6c4175d9a7eb02848b9b929ac751811fde3268766",
+    "scale": 0.4754285714285714
+  },
+  {
+    "id": "frostback",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 256,
+        "count": 0
+      },
+      {
+        "position": 512,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1281,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 53,
+        "top": 83,
+        "right": 200,
+        "bottom": 233,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 307,
+        "top": 88,
+        "right": 462,
+        "bottom": 233,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 563,
+        "top": 82,
+        "right": 716,
+        "bottom": 233,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 819,
+        "top": 84,
+        "right": 967,
+        "bottom": 233,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 42,
+        "top": 338,
+        "right": 217,
+        "bottom": 483,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 296,
+        "top": 334,
+        "right": 469,
+        "bottom": 480,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 550,
+        "top": 334,
+        "right": 720,
+        "bottom": 482,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 810,
+        "top": 335,
+        "right": 987,
+        "bottom": 481,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1063,
+        "top": 344,
+        "right": 1246,
+        "bottom": 483,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1318,
+        "top": 333,
+        "right": 1494,
+        "bottom": 481,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 49,
+        "top": 541,
+        "right": 201,
+        "bottom": 738,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 298,
+        "top": 536,
+        "right": 469,
+        "bottom": 738,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 532,
+        "top": 532,
+        "right": 748,
+        "bottom": 739,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 793,
+        "top": 581,
+        "right": 1020,
+        "bottom": 749,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1058,
+        "top": 588,
+        "right": 1279,
+        "bottom": 749,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1282,
+        "top": 578,
+        "right": 1494,
+        "bottom": 745,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 39,
+        "top": 803,
+        "right": 216,
+        "bottom": 976,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 283,
+        "top": 827,
+        "right": 476,
+        "bottom": 979,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 537,
+        "top": 851,
+        "right": 748,
+        "bottom": 983,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 786,
+        "top": 867,
+        "right": 1006,
+        "bottom": 982,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1041,
+        "top": 869,
+        "right": 1268,
+        "bottom": 980,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1299,
+        "top": 884,
+        "right": 1514,
+        "bottom": 981,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/frostveil/frostback-atlas-v1.png",
+    "sha256": "3986f4c5bd86068031e4c325ad9a636ffc5f34c4d6419be324cc7431c10c1c2d",
+    "scale": 0.4378947368421053
+  },
+  {
+    "id": "glacier_knight",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 256,
+        "count": 0
+      },
+      {
+        "position": 512,
+        "count": 0
+      },
+      {
+        "position": 768,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1025,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 82,
+        "top": 76,
+        "right": 190,
+        "bottom": 226,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 320,
+        "top": 76,
+        "right": 449,
+        "bottom": 228,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 579,
+        "top": 75,
+        "right": 702,
+        "bottom": 227,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 828,
+        "top": 74,
+        "right": 955,
+        "bottom": 227,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 70,
+        "top": 329,
+        "right": 204,
+        "bottom": 477,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 325,
+        "top": 329,
+        "right": 465,
+        "bottom": 478,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 578,
+        "top": 329,
+        "right": 719,
+        "bottom": 476,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 824,
+        "top": 328,
+        "right": 963,
+        "bottom": 478,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1079,
+        "top": 327,
+        "right": 1227,
+        "bottom": 478,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1337,
+        "top": 327,
+        "right": 1474,
+        "bottom": 479,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 90,
+        "top": 591,
+        "right": 211,
+        "bottom": 740,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 316,
+        "top": 549,
+        "right": 476,
+        "bottom": 740,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 562,
+        "top": 546,
+        "right": 735,
+        "bottom": 739,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 821,
+        "top": 592,
+        "right": 1023,
+        "bottom": 739,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1074,
+        "top": 595,
+        "right": 1230,
+        "bottom": 739,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1342,
+        "top": 590,
+        "right": 1474,
+        "bottom": 739,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 67,
+        "top": 820,
+        "right": 202,
+        "bottom": 958,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 319,
+        "top": 837,
+        "right": 467,
+        "bottom": 965,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 567,
+        "top": 849,
+        "right": 732,
+        "bottom": 959,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 807,
+        "top": 877,
+        "right": 994,
+        "bottom": 960,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1055,
+        "top": 883,
+        "right": 1246,
+        "bottom": 963,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1300,
+        "top": 896,
+        "right": 1508,
+        "bottom": 966,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/frostveil/glacier_knight-atlas-v1.png",
+    "sha256": "4f9bc299ffa6d0c92da67f84810c9eeb12cc2f11169ec847202b67eb1cbd942b",
+    "scale": 0.4777033492822967
+  },
+  {
+    "id": "frost_shaman",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 217,
+        "count": 0
+      },
+      {
+        "position": 413,
+        "count": 0
+      },
+      {
+        "position": 619,
+        "count": 0
+      },
+      {
+        "position": 819,
+        "count": 0
+      },
+      {
+        "position": 1024,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "buff",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 256,
+            "count": 0
+          },
+          {
+            "position": 512,
+            "count": 0
+          },
+          {
+            "position": 768,
+            "count": 0
+          },
+          {
+            "position": 1024,
+            "count": 0
+          },
+          {
+            "position": 1280,
+            "count": 0
+          },
+          {
+            "position": 1536,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 77,
+        "top": 79,
+        "right": 174,
+        "bottom": 215,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 331,
+        "top": 82,
+        "right": 429,
+        "bottom": 215,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 584,
+        "top": 83,
+        "right": 678,
+        "bottom": 215,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 840,
+        "top": 81,
+        "right": 933,
+        "bottom": 215,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 63,
+        "top": 284,
+        "right": 174,
+        "bottom": 411,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 321,
+        "top": 288,
+        "right": 434,
+        "bottom": 410,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 578,
+        "top": 290,
+        "right": 699,
+        "bottom": 411,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 834,
+        "top": 294,
+        "right": 956,
+        "bottom": 411,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 1091,
+        "top": 286,
+        "right": 1206,
+        "bottom": 411,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1344,
+        "top": 295,
+        "right": 1464,
+        "bottom": 411,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 65,
+        "top": 489,
+        "right": 164,
+        "bottom": 614,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 335,
+        "top": 460,
+        "right": 437,
+        "bottom": 613,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 578,
+        "top": 472,
+        "right": 726,
+        "bottom": 615,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 828,
+        "top": 509,
+        "right": 1019,
+        "bottom": 615,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 1083,
+        "top": 521,
+        "right": 1268,
+        "bottom": 617,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1348,
+        "top": 521,
+        "right": 1485,
+        "bottom": 617,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 3,
+        "left": 81,
+        "top": 689,
+        "right": 185,
+        "bottom": 798,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 3,
+        "left": 331,
+        "top": 673,
+        "right": 447,
+        "bottom": 796,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 3,
+        "left": 566,
+        "top": 721,
+        "right": 723,
+        "bottom": 796,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 3,
+        "left": 822,
+        "top": 745,
+        "right": 1011,
+        "bottom": 794,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 3,
+        "left": 1082,
+        "top": 754,
+        "right": 1257,
+        "bottom": 800,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 3,
+        "left": 1328,
+        "top": 756,
+        "right": 1489,
+        "bottom": 799,
+        "edgePixels": 0
+      },
+      {
+        "state": "buff",
+        "col": 0,
+        "row": 4,
+        "left": 65,
+        "top": 860,
+        "right": 197,
+        "bottom": 987,
+        "edgePixels": 0
+      },
+      {
+        "state": "buff",
+        "col": 1,
+        "row": 4,
+        "left": 321,
+        "top": 860,
+        "right": 468,
+        "bottom": 987,
+        "edgePixels": 0
+      },
+      {
+        "state": "buff",
+        "col": 2,
+        "row": 4,
+        "left": 556,
+        "top": 839,
+        "right": 719,
+        "bottom": 994,
+        "edgePixels": 0
+      },
+      {
+        "state": "buff",
+        "col": 3,
+        "row": 4,
+        "left": 817,
+        "top": 828,
+        "right": 988,
+        "bottom": 994,
+        "edgePixels": 0
+      },
+      {
+        "state": "buff",
+        "col": 4,
+        "row": 4,
+        "left": 1077,
+        "top": 867,
+        "right": 1244,
+        "bottom": 986,
+        "edgePixels": 0
+      },
+      {
+        "state": "buff",
+        "col": 5,
+        "row": 4,
+        "left": 1339,
+        "top": 860,
+        "right": 1481,
+        "bottom": 987,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/enemies/frostveil/frost_shaman-atlas-v1.png",
+    "sha256": "9fa486e305e6cbad0c28390c3a283c2b17f2c19d6c3b0b0cffaf2ef710edb3ed",
+    "scale": 0.52
+  },
+  {
+    "id": "hollow_warden",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 198,
+        "count": 0
+      },
+      {
+        "position": 397,
+        "count": 0
+      },
+      {
+        "position": 606,
+        "count": 0
+      },
+      {
+        "position": 813,
+        "count": 0
+      },
+      {
+        "position": 992,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 198,
+            "count": 0
+          },
+          {
+            "position": 396,
+            "count": 0
+          },
+          {
+            "position": 595,
+            "count": 0
+          },
+          {
+            "position": 793,
+            "count": 0
+          },
+          {
+            "position": 991,
+            "count": 0
+          },
+          {
+            "position": 1189,
+            "count": 0
+          },
+          {
+            "position": 1388,
+            "count": 0
+          },
+          {
+            "position": 1586,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 198,
+            "count": 0
+          },
+          {
+            "position": 396,
+            "count": 0
+          },
+          {
+            "position": 595,
+            "count": 0
+          },
+          {
+            "position": 793,
+            "count": 0
+          },
+          {
+            "position": 991,
+            "count": 0
+          },
+          {
+            "position": 1189,
+            "count": 0
+          },
+          {
+            "position": 1388,
+            "count": 0
+          },
+          {
+            "position": 1586,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 198,
+            "count": 0
+          },
+          {
+            "position": 396,
+            "count": 0
+          },
+          {
+            "position": 595,
+            "count": 0
+          },
+          {
+            "position": 793,
+            "count": 0
+          },
+          {
+            "position": 991,
+            "count": 0
+          },
+          {
+            "position": 1189,
+            "count": 0
+          },
+          {
+            "position": 1388,
+            "count": 0
+          },
+          {
+            "position": 1586,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "special",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 198,
+            "count": 0
+          },
+          {
+            "position": 396,
+            "count": 0
+          },
+          {
+            "position": 595,
+            "count": 0
+          },
+          {
+            "position": 793,
+            "count": 0
+          },
+          {
+            "position": 991,
+            "count": 0
+          },
+          {
+            "position": 1189,
+            "count": 0
+          },
+          {
+            "position": 1388,
+            "count": 0
+          },
+          {
+            "position": 1586,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 198,
+            "count": 0
+          },
+          {
+            "position": 396,
+            "count": 0
+          },
+          {
+            "position": 603,
+            "count": 0
+          },
+          {
+            "position": 803,
+            "count": 0
+          },
+          {
+            "position": 995,
+            "count": 0
+          },
+          {
+            "position": 1189,
+            "count": 0
+          },
+          {
+            "position": 1388,
+            "count": 0
+          },
+          {
+            "position": 1586,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 55,
+        "top": 54,
+        "right": 172,
+        "bottom": 177,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 248,
+        "top": 58,
+        "right": 361,
+        "bottom": 180,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 441,
+        "top": 54,
+        "right": 561,
+        "bottom": 180,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 635,
+        "top": 58,
+        "right": 752,
+        "bottom": 180,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 4,
+        "row": 0,
+        "left": 832,
+        "top": 56,
+        "right": 952,
+        "bottom": 179,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 5,
+        "row": 0,
+        "left": 1029,
+        "top": 55,
+        "right": 1147,
+        "bottom": 180,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 52,
+        "top": 257,
+        "right": 187,
+        "bottom": 387,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 246,
+        "top": 253,
+        "right": 384,
+        "bottom": 387,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 437,
+        "top": 252,
+        "right": 576,
+        "bottom": 385,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 627,
+        "top": 247,
+        "right": 771,
+        "bottom": 390,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 829,
+        "top": 253,
+        "right": 964,
+        "bottom": 390,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 1028,
+        "top": 251,
+        "right": 1170,
+        "bottom": 387,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 6,
+        "row": 1,
+        "left": 1216,
+        "top": 250,
+        "right": 1353,
+        "bottom": 387,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 7,
+        "row": 1,
+        "left": 1412,
+        "top": 255,
+        "right": 1551,
+        "bottom": 388,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 50,
+        "top": 445,
+        "right": 191,
+        "bottom": 598,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 251,
+        "top": 443,
+        "right": 380,
+        "bottom": 599,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 444,
+        "top": 463,
+        "right": 590,
+        "bottom": 597,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 629,
+        "top": 464,
+        "right": 777,
+        "bottom": 599,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 825,
+        "top": 463,
+        "right": 977,
+        "bottom": 601,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 1019,
+        "top": 466,
+        "right": 1176,
+        "bottom": 600,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 6,
+        "row": 2,
+        "left": 1223,
+        "top": 476,
+        "right": 1376,
+        "bottom": 603,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 7,
+        "row": 2,
+        "left": 1422,
+        "top": 476,
+        "right": 1537,
+        "bottom": 604,
+        "edgePixels": 0
+      },
+      {
+        "state": "special",
+        "col": 0,
+        "row": 3,
+        "left": 46,
+        "top": 672,
+        "right": 190,
+        "bottom": 799,
+        "edgePixels": 0
+      },
+      {
+        "state": "special",
+        "col": 1,
+        "row": 3,
+        "left": 237,
+        "top": 679,
+        "right": 383,
+        "bottom": 802,
+        "edgePixels": 0
+      },
+      {
+        "state": "special",
+        "col": 2,
+        "row": 3,
+        "left": 437,
+        "top": 669,
+        "right": 570,
+        "bottom": 805,
+        "edgePixels": 0
+      },
+      {
+        "state": "special",
+        "col": 3,
+        "row": 3,
+        "left": 626,
+        "top": 656,
+        "right": 780,
+        "bottom": 806,
+        "edgePixels": 0
+      },
+      {
+        "state": "special",
+        "col": 4,
+        "row": 3,
+        "left": 822,
+        "top": 656,
+        "right": 983,
+        "bottom": 810,
+        "edgePixels": 0
+      },
+      {
+        "state": "special",
+        "col": 5,
+        "row": 3,
+        "left": 1020,
+        "top": 657,
+        "right": 1186,
+        "bottom": 811,
+        "edgePixels": 0
+      },
+      {
+        "state": "special",
+        "col": 6,
+        "row": 3,
+        "left": 1219,
+        "top": 682,
+        "right": 1375,
+        "bottom": 808,
+        "edgePixels": 0
+      },
+      {
+        "state": "special",
+        "col": 7,
+        "row": 3,
+        "left": 1429,
+        "top": 677,
+        "right": 1554,
+        "bottom": 801,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 4,
+        "left": 36,
+        "top": 845,
+        "right": 185,
+        "bottom": 959,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 4,
+        "left": 242,
+        "top": 857,
+        "right": 387,
+        "bottom": 960,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 4,
+        "left": 443,
+        "top": 860,
+        "right": 601,
+        "bottom": 957,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 4,
+        "left": 631,
+        "top": 870,
+        "right": 801,
+        "bottom": 957,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 4,
+        "left": 816,
+        "top": 882,
+        "right": 993,
+        "bottom": 955,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 4,
+        "left": 1024,
+        "top": 878,
+        "right": 1176,
+        "bottom": 958,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 6,
+        "row": 4,
+        "left": 1199,
+        "top": 889,
+        "right": 1373,
+        "bottom": 958,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 7,
+        "row": 4,
+        "left": 1398,
+        "top": 901,
+        "right": 1563,
+        "bottom": 952,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/bosses/hollow_warden-atlas-v1.png",
+    "sha256": "e5cd3b89ee905bf5f79ba64e32f672e0c05794091eb2fb081f1e762199dc3f87",
+    "scale": 1.1217977528089889
+  },
+  {
+    "id": "cinder_colossus",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 181,
+        "count": 0
+      },
+      {
+        "position": 362,
+        "count": 0
+      },
+      {
+        "position": 543,
+        "count": 0
+      },
+      {
+        "position": 724,
+        "count": 0
+      },
+      {
+        "position": 905,
+        "count": 0
+      },
+      {
+        "position": 1086,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 181,
+            "count": 0
+          },
+          {
+            "position": 362,
+            "count": 0
+          },
+          {
+            "position": 543,
+            "count": 0
+          },
+          {
+            "position": 724,
+            "count": 0
+          },
+          {
+            "position": 905,
+            "count": 0
+          },
+          {
+            "position": 1086,
+            "count": 0
+          },
+          {
+            "position": 1267,
+            "count": 0
+          },
+          {
+            "position": 1448,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 181,
+            "count": 0
+          },
+          {
+            "position": 362,
+            "count": 0
+          },
+          {
+            "position": 543,
+            "count": 0
+          },
+          {
+            "position": 724,
+            "count": 0
+          },
+          {
+            "position": 905,
+            "count": 0
+          },
+          {
+            "position": 1086,
+            "count": 0
+          },
+          {
+            "position": 1267,
+            "count": 0
+          },
+          {
+            "position": 1448,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 181,
+            "count": 0
+          },
+          {
+            "position": 362,
+            "count": 0
+          },
+          {
+            "position": 543,
+            "count": 0
+          },
+          {
+            "position": 724,
+            "count": 0
+          },
+          {
+            "position": 905,
+            "count": 0
+          },
+          {
+            "position": 1086,
+            "count": 0
+          },
+          {
+            "position": 1267,
+            "count": 0
+          },
+          {
+            "position": 1448,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "armor_break",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 181,
+            "count": 0
+          },
+          {
+            "position": 362,
+            "count": 0
+          },
+          {
+            "position": 543,
+            "count": 0
+          },
+          {
+            "position": 724,
+            "count": 0
+          },
+          {
+            "position": 905,
+            "count": 0
+          },
+          {
+            "position": 1086,
+            "count": 0
+          },
+          {
+            "position": 1267,
+            "count": 0
+          },
+          {
+            "position": 1448,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "exposed_core",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 181,
+            "count": 0
+          },
+          {
+            "position": 362,
+            "count": 0
+          },
+          {
+            "position": 543,
+            "count": 0
+          },
+          {
+            "position": 724,
+            "count": 0
+          },
+          {
+            "position": 905,
+            "count": 0
+          },
+          {
+            "position": 1086,
+            "count": 0
+          },
+          {
+            "position": 1267,
+            "count": 0
+          },
+          {
+            "position": 1448,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 181,
+            "count": 0
+          },
+          {
+            "position": 362,
+            "count": 0
+          },
+          {
+            "position": 543,
+            "count": 0
+          },
+          {
+            "position": 724,
+            "count": 0
+          },
+          {
+            "position": 905,
+            "count": 0
+          },
+          {
+            "position": 1086,
+            "count": 0
+          },
+          {
+            "position": 1267,
+            "count": 0
+          },
+          {
+            "position": 1448,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 50,
+        "top": 66,
+        "right": 139,
+        "bottom": 154,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 232,
+        "top": 66,
+        "right": 320,
+        "bottom": 154,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 411,
+        "top": 66,
+        "right": 502,
+        "bottom": 154,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 590,
+        "top": 66,
+        "right": 682,
+        "bottom": 154,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 4,
+        "row": 0,
+        "left": 770,
+        "top": 66,
+        "right": 865,
+        "bottom": 155,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 5,
+        "row": 0,
+        "left": 950,
+        "top": 66,
+        "right": 1043,
+        "bottom": 154,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 39,
+        "top": 244,
+        "right": 135,
+        "bottom": 337,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 225,
+        "top": 243,
+        "right": 322,
+        "bottom": 337,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 403,
+        "top": 239,
+        "right": 499,
+        "bottom": 338,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 581,
+        "top": 241,
+        "right": 679,
+        "bottom": 337,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 767,
+        "top": 240,
+        "right": 860,
+        "bottom": 336,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 944,
+        "top": 242,
+        "right": 1049,
+        "bottom": 337,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 6,
+        "row": 1,
+        "left": 1119,
+        "top": 241,
+        "right": 1230,
+        "bottom": 336,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 7,
+        "row": 1,
+        "left": 1302,
+        "top": 240,
+        "right": 1410,
+        "bottom": 337,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 36,
+        "top": 423,
+        "right": 154,
+        "bottom": 520,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 225,
+        "top": 407,
+        "right": 333,
+        "bottom": 518,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 400,
+        "top": 407,
+        "right": 498,
+        "bottom": 518,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 571,
+        "top": 419,
+        "right": 695,
+        "bottom": 526,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 747,
+        "top": 429,
+        "right": 883,
+        "bottom": 529,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 921,
+        "top": 451,
+        "right": 1064,
+        "bottom": 533,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 6,
+        "row": 2,
+        "left": 1102,
+        "top": 436,
+        "right": 1242,
+        "bottom": 530,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 7,
+        "row": 2,
+        "left": 1300,
+        "top": 426,
+        "right": 1411,
+        "bottom": 517,
+        "edgePixels": 0
+      },
+      {
+        "state": "armor_break",
+        "col": 0,
+        "row": 3,
+        "left": 39,
+        "top": 602,
+        "right": 148,
+        "bottom": 697,
+        "edgePixels": 0
+      },
+      {
+        "state": "armor_break",
+        "col": 1,
+        "row": 3,
+        "left": 221,
+        "top": 601,
+        "right": 325,
+        "bottom": 700,
+        "edgePixels": 0
+      },
+      {
+        "state": "armor_break",
+        "col": 2,
+        "row": 3,
+        "left": 399,
+        "top": 593,
+        "right": 512,
+        "bottom": 699,
+        "edgePixels": 0
+      },
+      {
+        "state": "armor_break",
+        "col": 3,
+        "row": 3,
+        "left": 580,
+        "top": 590,
+        "right": 687,
+        "bottom": 700,
+        "edgePixels": 0
+      },
+      {
+        "state": "armor_break",
+        "col": 4,
+        "row": 3,
+        "left": 759,
+        "top": 587,
+        "right": 871,
+        "bottom": 700,
+        "edgePixels": 0
+      },
+      {
+        "state": "armor_break",
+        "col": 5,
+        "row": 3,
+        "left": 940,
+        "top": 588,
+        "right": 1060,
+        "bottom": 700,
+        "edgePixels": 0
+      },
+      {
+        "state": "armor_break",
+        "col": 6,
+        "row": 3,
+        "left": 1120,
+        "top": 589,
+        "right": 1232,
+        "bottom": 700,
+        "edgePixels": 0
+      },
+      {
+        "state": "armor_break",
+        "col": 7,
+        "row": 3,
+        "left": 1303,
+        "top": 590,
+        "right": 1407,
+        "bottom": 699,
+        "edgePixels": 0
+      },
+      {
+        "state": "exposed_core",
+        "col": 0,
+        "row": 4,
+        "left": 41,
+        "top": 771,
+        "right": 155,
+        "bottom": 879,
+        "edgePixels": 0
+      },
+      {
+        "state": "exposed_core",
+        "col": 1,
+        "row": 4,
+        "left": 218,
+        "top": 772,
+        "right": 330,
+        "bottom": 879,
+        "edgePixels": 0
+      },
+      {
+        "state": "exposed_core",
+        "col": 2,
+        "row": 4,
+        "left": 396,
+        "top": 764,
+        "right": 510,
+        "bottom": 879,
+        "edgePixels": 0
+      },
+      {
+        "state": "exposed_core",
+        "col": 3,
+        "row": 4,
+        "left": 573,
+        "top": 766,
+        "right": 691,
+        "bottom": 880,
+        "edgePixels": 0
+      },
+      {
+        "state": "exposed_core",
+        "col": 4,
+        "row": 4,
+        "left": 757,
+        "top": 759,
+        "right": 873,
+        "bottom": 880,
+        "edgePixels": 0
+      },
+      {
+        "state": "exposed_core",
+        "col": 5,
+        "row": 4,
+        "left": 930,
+        "top": 764,
+        "right": 1058,
+        "bottom": 880,
+        "edgePixels": 0
+      },
+      {
+        "state": "exposed_core",
+        "col": 6,
+        "row": 4,
+        "left": 1112,
+        "top": 756,
+        "right": 1237,
+        "bottom": 880,
+        "edgePixels": 0
+      },
+      {
+        "state": "exposed_core",
+        "col": 7,
+        "row": 4,
+        "left": 1288,
+        "top": 765,
+        "right": 1415,
+        "bottom": 880,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 5,
+        "left": 33,
+        "top": 948,
+        "right": 151,
+        "bottom": 1055,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 5,
+        "left": 207,
+        "top": 960,
+        "right": 324,
+        "bottom": 1051,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 5,
+        "left": 381,
+        "top": 963,
+        "right": 514,
+        "bottom": 1051,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 5,
+        "left": 558,
+        "top": 970,
+        "right": 708,
+        "bottom": 1053,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 5,
+        "left": 739,
+        "top": 970,
+        "right": 892,
+        "bottom": 1053,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 5,
+        "left": 920,
+        "top": 976,
+        "right": 1074,
+        "bottom": 1056,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 6,
+        "row": 5,
+        "left": 1101,
+        "top": 982,
+        "right": 1251,
+        "bottom": 1055,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 7,
+        "row": 5,
+        "left": 1281,
+        "top": 983,
+        "right": 1428,
+        "bottom": 1052,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/bosses/cinder_colossus-atlas-v1.png",
+    "sha256": "88250d82e367a3309515c3eacd9f56c5d372bfac9e766321c28781fa34f1414d",
+    "scale": 1.288258064516129
+  },
+  {
+    "id": "frostbound_matriarch",
+    "rowCuts": [
+      {
+        "position": 0,
+        "count": 0
+      },
+      {
+        "position": 181,
+        "count": 0
+      },
+      {
+        "position": 362,
+        "count": 0
+      },
+      {
+        "position": 543,
+        "count": 0
+      },
+      {
+        "position": 724,
+        "count": 0
+      },
+      {
+        "position": 905,
+        "count": 0
+      },
+      {
+        "position": 1086,
+        "count": 0
+      }
+    ],
+    "cuts": [
+      {
+        "state": "idle",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 181,
+            "count": 0
+          },
+          {
+            "position": 362,
+            "count": 0
+          },
+          {
+            "position": 543,
+            "count": 0
+          },
+          {
+            "position": 724,
+            "count": 0
+          },
+          {
+            "position": 905,
+            "count": 0
+          },
+          {
+            "position": 1086,
+            "count": 0
+          },
+          {
+            "position": 1267,
+            "count": 0
+          },
+          {
+            "position": 1448,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "walk",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 181,
+            "count": 0
+          },
+          {
+            "position": 362,
+            "count": 0
+          },
+          {
+            "position": 543,
+            "count": 0
+          },
+          {
+            "position": 724,
+            "count": 0
+          },
+          {
+            "position": 905,
+            "count": 0
+          },
+          {
+            "position": 1086,
+            "count": 0
+          },
+          {
+            "position": 1267,
+            "count": 0
+          },
+          {
+            "position": 1448,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "attack",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 181,
+            "count": 0
+          },
+          {
+            "position": 362,
+            "count": 0
+          },
+          {
+            "position": 543,
+            "count": 0
+          },
+          {
+            "position": 724,
+            "count": 0
+          },
+          {
+            "position": 905,
+            "count": 0
+          },
+          {
+            "position": 1092,
+            "count": 0
+          },
+          {
+            "position": 1272,
+            "count": 0
+          },
+          {
+            "position": 1448,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "freeze_cast",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 181,
+            "count": 0
+          },
+          {
+            "position": 362,
+            "count": 0
+          },
+          {
+            "position": 543,
+            "count": 0
+          },
+          {
+            "position": 724,
+            "count": 0
+          },
+          {
+            "position": 905,
+            "count": 0
+          },
+          {
+            "position": 1086,
+            "count": 0
+          },
+          {
+            "position": 1267,
+            "count": 0
+          },
+          {
+            "position": 1448,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "phase_two",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 181,
+            "count": 0
+          },
+          {
+            "position": 362,
+            "count": 0
+          },
+          {
+            "position": 543,
+            "count": 0
+          },
+          {
+            "position": 724,
+            "count": 0
+          },
+          {
+            "position": 905,
+            "count": 0
+          },
+          {
+            "position": 1086,
+            "count": 0
+          },
+          {
+            "position": 1267,
+            "count": 0
+          },
+          {
+            "position": 1448,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "state": "death",
+        "columns": [
+          {
+            "position": 0,
+            "count": 0
+          },
+          {
+            "position": 181,
+            "count": 0
+          },
+          {
+            "position": 362,
+            "count": 0
+          },
+          {
+            "position": 543,
+            "count": 0
+          },
+          {
+            "position": 724,
+            "count": 0
+          },
+          {
+            "position": 905,
+            "count": 0
+          },
+          {
+            "position": 1086,
+            "count": 0
+          },
+          {
+            "position": 1267,
+            "count": 0
+          },
+          {
+            "position": 1448,
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "blocked": [],
+    "frames": [
+      {
+        "state": "idle",
+        "col": 0,
+        "row": 0,
+        "left": 33,
+        "top": 50,
+        "right": 134,
+        "bottom": 167,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 1,
+        "row": 0,
+        "left": 211,
+        "top": 49,
+        "right": 314,
+        "bottom": 167,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 2,
+        "row": 0,
+        "left": 396,
+        "top": 48,
+        "right": 499,
+        "bottom": 168,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 3,
+        "row": 0,
+        "left": 578,
+        "top": 49,
+        "right": 684,
+        "bottom": 167,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 4,
+        "row": 0,
+        "left": 757,
+        "top": 48,
+        "right": 865,
+        "bottom": 167,
+        "edgePixels": 0
+      },
+      {
+        "state": "idle",
+        "col": 5,
+        "row": 0,
+        "left": 936,
+        "top": 50,
+        "right": 1046,
+        "bottom": 168,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 0,
+        "row": 1,
+        "left": 33,
+        "top": 218,
+        "right": 144,
+        "bottom": 338,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 1,
+        "row": 1,
+        "left": 198,
+        "top": 217,
+        "right": 330,
+        "bottom": 338,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 2,
+        "row": 1,
+        "left": 387,
+        "top": 217,
+        "right": 514,
+        "bottom": 338,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 3,
+        "row": 1,
+        "left": 563,
+        "top": 217,
+        "right": 686,
+        "bottom": 338,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 4,
+        "row": 1,
+        "left": 745,
+        "top": 216,
+        "right": 871,
+        "bottom": 338,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 5,
+        "row": 1,
+        "left": 930,
+        "top": 217,
+        "right": 1050,
+        "bottom": 338,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 6,
+        "row": 1,
+        "left": 1111,
+        "top": 216,
+        "right": 1234,
+        "bottom": 338,
+        "edgePixels": 0
+      },
+      {
+        "state": "walk",
+        "col": 7,
+        "row": 1,
+        "left": 1284,
+        "top": 216,
+        "right": 1407,
+        "bottom": 337,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 0,
+        "row": 2,
+        "left": 32,
+        "top": 399,
+        "right": 163,
+        "bottom": 516,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 1,
+        "row": 2,
+        "left": 214,
+        "top": 377,
+        "right": 342,
+        "bottom": 519,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 2,
+        "row": 2,
+        "left": 385,
+        "top": 375,
+        "right": 510,
+        "bottom": 520,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 3,
+        "row": 2,
+        "left": 555,
+        "top": 379,
+        "right": 717,
+        "bottom": 519,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 4,
+        "row": 2,
+        "left": 743,
+        "top": 400,
+        "right": 895,
+        "bottom": 518,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 5,
+        "row": 2,
+        "left": 924,
+        "top": 405,
+        "right": 1090,
+        "bottom": 519,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 6,
+        "row": 2,
+        "left": 1118,
+        "top": 399,
+        "right": 1270,
+        "bottom": 516,
+        "edgePixels": 0
+      },
+      {
+        "state": "attack",
+        "col": 7,
+        "row": 2,
+        "left": 1301,
+        "top": 398,
+        "right": 1419,
+        "bottom": 515,
+        "edgePixels": 0
+      },
+      {
+        "state": "freeze_cast",
+        "col": 0,
+        "row": 3,
+        "left": 32,
+        "top": 552,
+        "right": 143,
+        "bottom": 697,
+        "edgePixels": 0
+      },
+      {
+        "state": "freeze_cast",
+        "col": 1,
+        "row": 3,
+        "left": 205,
+        "top": 560,
+        "right": 337,
+        "bottom": 699,
+        "edgePixels": 0
+      },
+      {
+        "state": "freeze_cast",
+        "col": 2,
+        "row": 3,
+        "left": 386,
+        "top": 564,
+        "right": 515,
+        "bottom": 699,
+        "edgePixels": 0
+      },
+      {
+        "state": "freeze_cast",
+        "col": 3,
+        "row": 3,
+        "left": 563,
+        "top": 570,
+        "right": 698,
+        "bottom": 699,
+        "edgePixels": 0
+      },
+      {
+        "state": "freeze_cast",
+        "col": 4,
+        "row": 3,
+        "left": 742,
+        "top": 562,
+        "right": 886,
+        "bottom": 698,
+        "edgePixels": 0
+      },
+      {
+        "state": "freeze_cast",
+        "col": 5,
+        "row": 3,
+        "left": 914,
+        "top": 551,
+        "right": 1077,
+        "bottom": 699,
+        "edgePixels": 0
+      },
+      {
+        "state": "freeze_cast",
+        "col": 6,
+        "row": 3,
+        "left": 1110,
+        "top": 578,
+        "right": 1248,
+        "bottom": 698,
+        "edgePixels": 0
+      },
+      {
+        "state": "freeze_cast",
+        "col": 7,
+        "row": 3,
+        "left": 1294,
+        "top": 575,
+        "right": 1403,
+        "bottom": 696,
+        "edgePixels": 0
+      },
+      {
+        "state": "phase_two",
+        "col": 0,
+        "row": 4,
+        "left": 31,
+        "top": 732,
+        "right": 162,
+        "bottom": 874,
+        "edgePixels": 0
+      },
+      {
+        "state": "phase_two",
+        "col": 1,
+        "row": 4,
+        "left": 201,
+        "top": 728,
+        "right": 336,
+        "bottom": 874,
+        "edgePixels": 0
+      },
+      {
+        "state": "phase_two",
+        "col": 2,
+        "row": 4,
+        "left": 377,
+        "top": 728,
+        "right": 519,
+        "bottom": 874,
+        "edgePixels": 0
+      },
+      {
+        "state": "phase_two",
+        "col": 3,
+        "row": 4,
+        "left": 554,
+        "top": 730,
+        "right": 708,
+        "bottom": 874,
+        "edgePixels": 0
+      },
+      {
+        "state": "phase_two",
+        "col": 4,
+        "row": 4,
+        "left": 734,
+        "top": 734,
+        "right": 886,
+        "bottom": 874,
+        "edgePixels": 0
+      },
+      {
+        "state": "phase_two",
+        "col": 5,
+        "row": 4,
+        "left": 918,
+        "top": 740,
+        "right": 1069,
+        "bottom": 874,
+        "edgePixels": 0
+      },
+      {
+        "state": "phase_two",
+        "col": 6,
+        "row": 4,
+        "left": 1103,
+        "top": 736,
+        "right": 1242,
+        "bottom": 874,
+        "edgePixels": 0
+      },
+      {
+        "state": "phase_two",
+        "col": 7,
+        "row": 4,
+        "left": 1284,
+        "top": 756,
+        "right": 1411,
+        "bottom": 869,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 0,
+        "row": 5,
+        "left": 32,
+        "top": 922,
+        "right": 150,
+        "bottom": 1047,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 1,
+        "row": 5,
+        "left": 211,
+        "top": 938,
+        "right": 331,
+        "bottom": 1045,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 2,
+        "row": 5,
+        "left": 384,
+        "top": 943,
+        "right": 524,
+        "bottom": 1045,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 3,
+        "row": 5,
+        "left": 565,
+        "top": 940,
+        "right": 709,
+        "bottom": 1047,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 4,
+        "row": 5,
+        "left": 741,
+        "top": 943,
+        "right": 892,
+        "bottom": 1046,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 5,
+        "row": 5,
+        "left": 919,
+        "top": 947,
+        "right": 1074,
+        "bottom": 1050,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 6,
+        "row": 5,
+        "left": 1102,
+        "top": 969,
+        "right": 1261,
+        "bottom": 1046,
+        "edgePixels": 0
+      },
+      {
+        "state": "death",
+        "col": 7,
+        "row": 5,
+        "left": 1284,
+        "top": 998,
+        "right": 1435,
+        "bottom": 1050,
+        "edgePixels": 0
+      }
+    ],
+    "output": "/assets/campaign/bosses/frostbound_matriarch-atlas-v1.png",
+    "sha256": "c37811937425845b620e40e0e82c9313046b917c85f32bd4f3e1b7b757cc3eeb",
+    "scale": 1.195688622754491
+  }
+]

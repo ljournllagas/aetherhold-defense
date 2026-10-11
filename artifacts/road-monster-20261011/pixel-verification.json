@@ -1,0 +1,3962 @@
+{
+  "campaign": [
+    {
+      "id": "enemy:marchling",
+      "path": "/assets/campaign/enemies/borderkeep/marchling-atlas-v1.png",
+      "sha256": "9200e75aee1109807b151aecba6946e1d55c6d532b6f4e21e62140986cd56c72",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 1196,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "acd50ec61c253ceb198773bbde15fa8a7ab20d0c3d28a3b351908ff27d10c332"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 1200,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4c950a649dc42b90bf734a376d67d7459277296e756f185e658f869fc330f027"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 1198,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4f9aa3cf60297779763723493b696cc6baa171c95b9cb1c159ba123c2e53f930"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 1220,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0490c8ff0110a324553efc1d1bd2edb110468d5eaf5443c43dba519292a8d3a1"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 1232,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "e5b6e23d34687a913e6a54dca82af2ce786df1601c2be7b794ec96580dc6898f"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 1291,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c9160800da4a8b3ffa9b7bb14638b334a2f1d153183e72431196cadb172f0df7"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 1353,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "1717ce012cee6cb7c0c393d8609a0011a50194956fc4ba3dd32146be8a9997da"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 1272,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "fc4cb3cf70c156080526428d760fe5e42ed50cdb0c59286ffe32d2c777bf7dda"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 1252,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "5b986fc3ea3d3b195b89866fb710c7d594695d209e36d620cb6fa6f81fdc271c"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 1291,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "219ad846a6d3b3b4db09eb163f36b68b393519b1325d7c7dd7fe55071244b76a"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 1293,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "56added381837f8ee4ae54de49fd2a0516b3440869ed2b67c5fa0ba7e77a81d3"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 1505,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9936f9564cc7042dc67b346dc692ac57ce3e8dc0fa0a5a691900ccf5baf67eca"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 1390,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a8c1399243f1a95052b0bca1e67cee525b7ea7fb8653ee3d6debaa18d4933f3a"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 1425,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "fe2d501b27093dbbda84bcfddebbe5c2d9dcae8636ef4722b9c426d2c44e4f2e"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 1414,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "42227e681201cdffc7cd54cf800989712ca0d5e53846a0a01061381a0ec0e680"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 1312,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "67df6916324f661395225203f0df72e796825342b8892fc1baeb4c0e144a0838"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 1449,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "6a2367133b37b6c3e6010c12901e9d9ff5340487ce057b4d066a5d182b96b908"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 1375,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c9390034080a0bd43c4c0c1124d95b3e70e7eaf2d481cf15e6df2db0d22c99be"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 1336,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0e3090c998e0cd2e66b0c939bf19b9a826387c2d6c5ec6f1d827deebd3b5b9c1"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 1396,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "932ea6fd84ba685dada4e61c593dcec4f6807ba61021eed0b75d1a48dbf44fc7"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 1360,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "7ce432b35b7a4bd7ebde40545ab4338414f79f489c75434ab8582698109ed5cd"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 1192,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "8c3fe54f53a052bcf5cbfbf1ebb0a3896096ebb3a863cb6cf2b7ecfe5432e735"
+        }
+      ]
+    },
+    {
+      "id": "enemy:skitter",
+      "path": "/assets/campaign/enemies/borderkeep/skitter-atlas-v1.png",
+      "sha256": "b9f8eb069d437c4d78b1cc95276a90ebab65da1bdab96c6cf581151f92de2b3b",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 1632,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "15d9b8a6589e10022594d7a3ee48125002d3f449af1014b2ed08d64d2a7bd176"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 1546,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "d7cfd49e1594c04952de93b866976a4565d872c074840cb4e0d71640e1cd39ec"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 1608,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c2b1e47bbd3a67e97c6ae19228e19239f4be839d1cdecb5f2fdda3a2f9f94703"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 1587,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "7259ba72aa94bcf703580d0cdaf8111e35bb1c2904fec90bd805918ead1643d6"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 1700,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4f80c8d5ce50c43269f11008425ee81ea84b54ece920833dc35a5a84e87531d6"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 1722,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0d36ee9d17d46da4723c94d1cf58d69acc98098f01576d17a5528533741b54fe"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 1793,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "28a6a2c2db261d2fd377bde3b2f54d820d268aaaf14aa8b43fb3558d4d26449c"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 1787,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a321c4282139bcf8ad07934ceac976af08d63745ee49b80d77f0f417d163611d"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 1821,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "99a98c217dd69852a304cbf56d84822692b9e5c901b4db47cee4de55983f9ec3"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 1879,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "17a95ba0bb328a5584f49e592a8c955dc56235952dc8cc640a35daa02f0f5bd3"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 1772,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "e48d2c54e6e9622c01ac383a64a057329ee8b0aae451386376927a30043347db"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 2264,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "b10acc5bbf8a9000c4e652f3efa64042b582d9e19f85ef9c6d55d33a5fbf2c98"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 2980,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c9d95d2c916a2c90b0eb00da3bac3546d1326c8430f5126c4a361d21efcff19b"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 2737,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "ec945ca584ee1c05bf6da600c71aaaa6f32d5561cfcf5fd81e0760538d8cc555"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 2632,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "663ca126b0f74d545cf436f9287efc034d35b767c3f4a4c823834e97c808f07a"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 2029,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "fad8cf83f5c0ddb69fe3d4a997c0a11a7f25f8c7aff0ec757be0b19ae97c1b5b"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 2117,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "e55615a75e226bb738b585c82954a709515730053da97a04b564899ffc69a1f5"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 2192,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a65d0c85088e3588da85408a5076d8479ce0c885d4b753c5308598686110be8c"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 2158,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "efccb2aa7f754811ee500213d023d21a1204af24eb0c06b0c02b52eb66e8f6f5"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 1902,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "31a98312a8b7d41b06a0377cdeba4d4a4c2722780bdd2650dc4c239d376384f3"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 1910,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "71a1552fcb5c0a6f12ec1e57a3d1c8d3ef5490850f9caeb2f6c9997eb63005de"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 1688,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "afde32040e36b1af1d76533ca243438aa69c7c7396ff1ed86d66f398ed87280c"
+        }
+      ]
+    },
+    {
+      "id": "enemy:stoneback",
+      "path": "/assets/campaign/enemies/borderkeep/stoneback-atlas-v1.png",
+      "sha256": "28d5b3a0eae451d2bba4111d86e1c4ac49658ea0c877864a4f57753b49689060",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 2614,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0603a636aaed1dd79c64e9d2e4f192ed0372f19184d37ca22b1842602ed85523"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 2717,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "b33a635c701151c5960de64f58dd2a7a0ef8bdcdbf09eaba3b3f6c84b69ed679"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 2627,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "ea4d3d88bc9e1dbac2edc226e62940e35d37fd0cf087bdbd57714106ee343811"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 2697,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "40f5b2911ee100d4b00ec77ff524987d18bff16ca41a5a380fd83fe144740abb"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 2885,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0a4f221850972e967e126092c16f6e5fe50fdd749da28e3b4460069603eb5f62"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 2732,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "22778afa2db61163c08939388fb109b4d4112f615714a23eec2ca576934dca63"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 2825,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "d32871a04f311ff786e73cfa0f73b9b707c81d33c8e2ebeb524c980a63d119c7"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 3000,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "30fef4eba3720be1cbdeb3e1c97a705d85fcc754f28505f2fa5dc21f1749a41f"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 2685,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "05b570fe131e8c0f13806c6dd96dd2e5ac84193642df1e7b1a6df64bf68bc60f"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 2826,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "6a9385acc7baed5564cb051fd1bb051901c24987c6bc0e17a9dcccd5bf7af669"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 2549,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c69f6133e314a06580830e17679dc6754388e23281f69ab9541712cf198e0cd2"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 3135,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "19a73d772fb0654fd9a7963357725f67e667e61906e443a8ad52043e79f5faed"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 2902,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9cb3d8409be785e4366c44924023f65f9c0220a13ed758f0dac97012cc95762c"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 3104,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f4a30e3d1abe44cd8c166e76ab0b180661aeac00c3d1f03c7246bb5dabcfa77a"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 2867,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4155d745294b1fc524f2fb76d2c3d04ffe4fe868e1a54f165f9cb8c8869e94b9"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 2548,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "475d7c36874c1707a1b8d4c86fdc6fe28e4d19fe404aadf67708b341b2a5d997"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 3018,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9ca3b0b2391215081abae15dc46a90294e97515fb80c4363b983598639769392"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 2733,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "21533edb50caad0685b7d29a2dd7322b05dd1bf1bb828d7996d6134aba7d7020"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 2813,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "fcba9864dbe3a85878cd68f2b92037dc847c48544d396322c93e61c59dbd9a47"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 2846,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "ede84aa7e3e7d8cf9bd69a40987f6fa6fff4e6dfc75e08d58cdfcbaa54ec94ce"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 2516,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "67bacab42fd770fa98ff58b4e902ca14c6999fb2ff7acc2a220e30d78a796261"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 2293,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "1aed72a5d4d9edab93ed837f35807894e8fe118fcf8d1dd0fa0ed98dd0aa20b0"
+        }
+      ]
+    },
+    {
+      "id": "enemy:ironhide",
+      "path": "/assets/campaign/enemies/borderkeep/ironhide-atlas-v1.png",
+      "sha256": "e5e23d946a02efdad537be22c3caaec3c9412664e6899918c14f316e8c49e7fe",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 2852,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "b5018ed60f0b3f9f1cd5b5912aef29b303834530a33a8f766216c5016cab13e6"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 2924,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "37bc5ad373c5cbed7c67ae064554722c747ade6fedfc30d78e3bfa94dcda9a21"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 2889,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "1f60ccafcf47159c2c85a5f7cc46d7e05921f02f5f94c346ec01c99bddeb33d6"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 2962,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0d879478adc3890a4034e59ab294697f5b70de857e08ae9dc30931797f98ef18"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 2698,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "1a5cdc6e82b19b4d9a8b5f8dc6ba0d2d6aa355b10792fcc8565b02e67d7ed1a7"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 2738,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "600d63d061566924a9e553fb00aa17b36556aad6edad9db38a1738e25914177e"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 2909,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "539b876ead7297b442abeb0396d9e4bdef57bbcef33db82643f37d6313c2b3d8"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 3136,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f0772fa62d0691c9071bb332f6afcc6d05c2ed9113f5050a5bbeaafdde475b21"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 3086,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "dd6d2261f4f2d4fd43defbe0a41e234ae64bbe93bb4fb82874c98f432b52f930"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 2917,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "d3ebea032d2e2c2ce3379d2afb28f66dc5cca3ad8b80e67b6db99f3761607202"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 2936,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9b61d5e67dfc11f8fe37fb9eba39c383330ddd71081ccd96d8bbe6dde37dc2f9"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 2929,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "611d916d3b2a4711d9e251ed73b4e902cd4c327ea1357ca2cb253d9cab6b13e9"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 4174,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c893428940dfad1edf33ab379b1f0aa2d282c3e3ac7ef51ad0738aadd74a1a77"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 3892,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4802c6fbfb7f386b76455984f99b0321b3a43cd5fcc803ff2e5369006c835df3"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 3357,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4cc0fb3dae9f9f2e1da68f761239be08882afdc280921b654f75125bd801b656"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 2864,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a173b85075b3ab5fee1df7354e46db4b42586e28f40676ba67490308f99c3bce"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 3060,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "04a47f087f600d70608adb28c6446c63e9d5240275f4a58fc228010ca1479f3a"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 2891,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "d14cb43a7a2a0effa8a2cc35a76fa3c745c2aa7b189ee3595717a4d8c9f8abd5"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 2628,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9b7683471ff15b7dc55962bbc133d830ee0019c5b49cff8f87682cfb3be73af2"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 2689,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9fb915cd29b227acae03bbbd178d5d412bdd44736eb55085d1b6fdba3d1ab0a5"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 2646,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "94beaefd9c4b6eb4fb996c50c58df20d0198055f47eeeb72c3e2aeb2bcccd8a7"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 2277,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "40549353bb4a4b844be6b141803a95812856daab9a3f0ea7ffc26ada96c7d9a3"
+        }
+      ]
+    },
+    {
+      "id": "enemy:veilborn",
+      "path": "/assets/campaign/enemies/borderkeep/veilborn-atlas-v1.png",
+      "sha256": "e32f2908dbb6ae76793c737e814b6ff6e2b132a172c2785e4d91d09b0725e200",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 1696,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "2058284315bc16857f56dd287b091b95e248b9ceac116f37863c756c182f290b"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 1603,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "8c1f6438803e291fcaf522e7a0426c8943ae4535d5db91e87beec2586e586f1c"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 1691,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "aada32417ac095d645e26961c60ae1f3b2214d62057e1e5fba5c858dff075c1b"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 1607,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4e06cc2cfbb814137fb2505a617df98a15657eff7fe2d9eaa97960d6204df0ac"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 1664,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "7537d11eb76b438334002f99b6f939d43202b90bd35827f274d99030e3e4e520"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 1639,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "94dc5036122aff035ee152dd239ba17841b22b111f9f20b15fa8828478cb8f29"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 1741,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "2b3aebc14508b102d7b125e5801a5bc6234a907895bd417a3f12f4538036215a"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 1698,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "d5aff2905cb06081faa665c80713b5309fbc59e00c751efb7633b738d433bb3d"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 1710,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a1712483d30e3cd1fec7dccd63496aa4feae3ce9f75117c8612afae2dbd5f41a"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 1652,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "218acc607a527b9c6ef3a4354e14963dcf2ee8d2251a568f44fe45c35d0a45ff"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 1758,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "3891799d23324c85ee8abd396d3bf8411b51c1d069bcbb5b59161cbab1d2f11e"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 2169,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4d4f23c3729140ce232e8b37ea851e5e6008e946c43ce7d43424ff70b7881913"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 2795,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c10a2c717c008352966ec59f853a27c6137b1ea64d72a9ab59a832f89cad2c17"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 2298,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "54629243e9bc91263472a44759e450184fdbf2af298bb8686fb50964f63ccf22"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 1695,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "495b91394326e6357e78f751374884301a31835f1d0a6723eab3ef4363e43867"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 1695,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f5d1e6615a4e910377b22041bd428437d44928de3b0233e6ff5958c5b0a1e770"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 1696,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "75441434fcc73b9745586e2a20c047266141871c51ed991e63dc8548e1241736"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 1485,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "1ed58725a4aa130c0c389a0c0f72a1691fb66eecf51de4a061fb2c9b2c18f529"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 1559,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "807eb615ec199c48d920579543d025e0d3a39d0d6a9fb44f8d315032794548ca"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 1347,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "b1072fd83e20d77184ff897e77c765caa6b544c17b71a1bd3c5f4d0956c42a69"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 1185,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9df45e34690bb40f7efb1b24515b2304227f0773ab4df441832c2fc0273d845d"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 1194,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "854017104505b9786ededdf7383f286f1986469896b767c74afe134ccc3b5a05"
+        }
+      ]
+    },
+    {
+      "id": "boss:hollow_warden",
+      "path": "/assets/campaign/bosses/hollow_warden-atlas-v1.png",
+      "sha256": "e5cd3b89ee905bf5f79ba64e32f672e0c05794091eb2fb081f1e762199dc3f87",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 10531,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "b6329660a604798a92d397684fd8da7eaec1151d7aca5354d60e59fd7d3fb892"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 10948,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "c48fc2b70cdcd19cec69ba94f28c9a9760e58797d90ee107c89190d0918df0bb"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 10982,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "115ba61f6ce1e2d525a8e937a0a9d8dc657e8ca2787e14f229ddf2a4d39977ef"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 10855,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "378489ae86469878a51605d7a33da41fd9a9059ca394aeea1b90bb6041c24c5f"
+        },
+        {
+          "state": "idle",
+          "column": 4,
+          "occupied": 10896,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "e963837be2276a63cd5641e53ecce64bb4ab847851efbb3fcc30761f32727e46"
+        },
+        {
+          "state": "idle",
+          "column": 5,
+          "occupied": 10817,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "2d805bdea101a430071838fe9386b2977f4c0a8292b89af323ffcf283156ead3"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 11501,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "56f966aa765377900d562b91934f9dc2ca2b86298bcf6e5c40140fcd47b86f00"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 12184,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "49cd6c74b9b6b5605decf7a4f27c2aaabe53443fc70401ea1011186bb6349d74"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 12123,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "994bab1cfa185bc595fd1f3f2eeeea3f2f8787560bc5e723b902b05dc85c1649"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 12820,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "ddae94b415d828be0fcbf4bfeeeb62c118b87317ff5c888ad9d7d24c130beee7"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 12326,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "8f960eddc45988bc8e3867d549e20cb38c7021e134c88ca20b0d7237ce6d24a7"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 12402,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "bd4ccb9c1b4842ca69529a27ccc308cdea26891e5c898a73df55acbab9b216cc"
+        },
+        {
+          "state": "walk",
+          "column": 6,
+          "occupied": 12748,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "566300f236d14cd8eabeabfefc3d475d9f61fe8b4d08eeb5d89b8b663a36e915"
+        },
+        {
+          "state": "walk",
+          "column": 7,
+          "occupied": 12026,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "cbb20aff17948d84cb27e0fa6a6698dbcf4daed931f0af4301f3e8f55f2b4873"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 12017,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "1ee27e7283cd79068087b4e65e2b3830ad156df521d879ec3f21dc939f22de60"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 11898,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "595a0451ca1b8163e1e7815f3c896901810f7142fcd1521dc08c8bf2980affd9"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 11597,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "2c985538362dca861c595d4bb0d05f27a88a987a4e02b97de923d3b4bd36dc04"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 12566,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "47d078774d39f02ad33017b21ab7c19cc6946207df646102c6fea609a8e74241"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 14056,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "2ff7b4465893a0d54e17d87300fec03c74496bfff7b423475ac4801e5683a037"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 13836,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "d1b46831acaa25152595e0ee297dc7eabb53fead9e0cdbccc7c60ea634ada6bb"
+        },
+        {
+          "state": "attack",
+          "column": 6,
+          "occupied": 12935,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "aea197850ed29f3d93f7bc95f6692e2e62ffe7361fadb56bac5106ef1e5bd343"
+        },
+        {
+          "state": "attack",
+          "column": 7,
+          "occupied": 11705,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "3942aa661254a163427b9d2c4eaf8bad460b98e7fb0473b07ccf1c618774d487"
+        },
+        {
+          "state": "special",
+          "column": 0,
+          "occupied": 11905,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "26226f07238cb61d3cb172888c992e87a5ff369ac140400ca7f030e441351c0c"
+        },
+        {
+          "state": "special",
+          "column": 1,
+          "occupied": 13839,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "65bf3b7d5c5027deb06fa77cd4cc56dd02770baf9d5cf86b3d5bf27f6316769c"
+        },
+        {
+          "state": "special",
+          "column": 2,
+          "occupied": 15281,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "04879046838cbf70cb7241a63869ec1f31954e46f392f54f9cf51dd30f7c57a9"
+        },
+        {
+          "state": "special",
+          "column": 3,
+          "occupied": 18569,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "9fc00927eb5a3a4f70ed6f021e5d449009abc4aa99d38fbbc2c69dca3ece80ec"
+        },
+        {
+          "state": "special",
+          "column": 4,
+          "occupied": 21353,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "60c875afd373c43d5d32e88b3e00abc7c30ddf572ce0bbc217a7849d054f29ea"
+        },
+        {
+          "state": "special",
+          "column": 5,
+          "occupied": 21951,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "d1121e4bc821e37789cd73995d97e1bc1e25d77c518c72d015367838d31c0cad"
+        },
+        {
+          "state": "special",
+          "column": 6,
+          "occupied": 14495,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "948302f136a9f59c5dac69650c6751667aeeea4d41752527c5b3bc8c3d8ece1f"
+        },
+        {
+          "state": "special",
+          "column": 7,
+          "occupied": 11613,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "4f227543e7004fa20a49eedfcc444242b46c63b26348d31f409f82701df73b99"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 10997,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "67ef66f9e049b0761c5a056b7364e55b7c79f52db9a2736c5d193d5ca0c96640"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 10486,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "49eb8a638b053f489f77ab7152340d66a7e639956aa99c119b017a9bf4d80384"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 10863,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "3b340d714590c758ac1819d2ebde86ad6b9ebaf33973d6e5b2bcbe71bceffc2e"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 10493,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "ea34cfd646d134fea339bd7a78bb3112e41b1dfe37e745ad8d6244ab4440e904"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 9294,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "30e561ddb50dae5a7eab866d30eccc71df8ee9bfe0f9aafd73535f41e717d635"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 9198,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "a46ba06fc4eac131c4078cdf9c7cf22e2604aa252b98c7d2b9db6028d31d8a55"
+        },
+        {
+          "state": "death",
+          "column": 6,
+          "occupied": 9251,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "bb966ec1197920c698572073d3b71ee312d498243c5a3c9192c0fd598d9d66aa"
+        },
+        {
+          "state": "death",
+          "column": 7,
+          "occupied": 6727,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "81a4c768488670ed533e4c59023fe20f98fe04df16b7c4a5b806e62238799938"
+        }
+      ]
+    },
+    {
+      "id": "enemy:cinderling",
+      "path": "/assets/campaign/enemies/emberfall/cinderling-atlas-v1.png",
+      "sha256": "003cd5e2d61b10eba749367bcf33d70f592f37b5ad17c17623a72412e239f11f",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 4467,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a96051f628327f12dcd7a38af965d2f5f3139353dc3029df6a1d47bffdf6dd8e"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 4271,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0005dea71bbf7e5a9f05449bd5557438e9532dc1138a12e32e948ec3d139e03d"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 4114,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "dffcf2c0229c1452d9f3f9b31234d232aba082e684950271e62d662e2973bb5a"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 4385,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "191bb412e07cc7d16623999c95685d7eb982a0196549b1887d8c82c5e50b3f58"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 4125,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "21140246079c54b0af91ec810f353adae5d3dbb4dfc7c0d4e927323b8361b0aa"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 3730,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "7eae51302e8f0c321b24b9124576324ca32b497cf12a458e8860128ce6450ffe"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 4020,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f5812fc83706ab46805a3a01df3c0cec38210f4e0cfa471272b870ce758db977"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 3813,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "96a641a0233884a258fa7b1dec240ba0d31a0368225055aab8ca4e14b4494be8"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 4166,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "7d504c7159303fe32d62745958633ccf6489c522d15dd9ec5843731f0acbab52"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 4001,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "82e4f4aa3678fbab955bb626f5cb6a1393ec47e3da87b1a22170b9a4c4767f90"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 4183,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "7dfdaaca85d165eac107b602c3e34b8f89f9b23833d21d7e500a8312d2c14509"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 4305,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "75260a87b8ecefe6b55277ff8cc9270cac5c28218ad2da3096401b9fa6f19514"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 4488,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0f010773f94ae1f29851ad700cbacfea2956cc5c05c5fcd2ea900787e2be83a5"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 4447,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "ef00257ed4cbc3f564f8589ae911eaba7c1012c01df662379e1d545870be545f"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 5024,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "947cb2fe2e1337ad6060bbc62d6bd61e7d49cfedfa56d06fa488facf2089d03a"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 3826,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "b7107c672cf2cbc863a2b553cf39ef62a25160cf72deb498d50b04e84b147d7d"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 4158,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "3930e8c84101e755a14180d9d341e56e12be8cc6bacc3bf6609cfc6ff9a1c11c"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 3934,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "b838830dcff4ee156c7cdfdd10f6dc9606613dceaccdf2317832817ac659810a"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 3618,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "952a7a7fa38b8ff87b5298330ca14afcd5948d14ba4363ff236ade6398a32e09"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 3284,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0e36d8a154e9fde91161bf5f10bd2c9ab7145b45c848875de5fccbf7cce00ca0"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 2544,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "d9303bab42e332fb0504b2f6bf5b8fb495ee70bb62205147277e09b6300273b6"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 2195,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "923f79fa3929b3873b66adfd7755c4950c544d234937e70448950182d133529f"
+        }
+      ]
+    },
+    {
+      "id": "enemy:ashrunner",
+      "path": "/assets/campaign/enemies/emberfall/ashrunner-atlas-v1.png",
+      "sha256": "db2645f560b9a349777fdb98afb4b9813984ea763a7e944401337641b37a17f1",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 3379,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "3769b17f3a632d1292ac2139541d48d749364078ac1e57d7f059dd2ac3c649d7"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 3271,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "98e6719a7c309444444e371ca8575cde3d909e290b8fe1b64bd1617523ea2bdd"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 3324,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9b4e4065c78ab55896a8cc0190d7b801ccdf1c78099b320462048a439411d430"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 3353,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "29e6ca1964f214810789c2ba322ccb4084bc1d0deca60930946cb81a19915c2c"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 3364,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9648d30a9c827f3dc4e07247a84396591a34e3ae4a7ea6d56396c849114338be"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 3352,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "863962e8edb142aa8b85fc0ad52f1e14a943ece44aa28aff671cd44ed1bf7c5b"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 3090,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "57120d94724f8eadeb2cafd9ab451b77e48d48b648f8ca46ff29a25b2ccc1a71"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 3216,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c5bac24b997cd954d588df4f76acda6bedf4cf02e3815b69679c91930f5e88f7"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 3156,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0a93e97fccd8c70f457c320d12e8da2394e490862168436e63aa6dbe3377aa96"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 3244,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "28e1d702bafb555b02532afd00b8e2ce73c3a557d00ad735d6c3b28dfdf3ca04"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 3099,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a7acc6aa74e3ae5343074558e91a33cd27800d76a7e02c0306d080fd7cf93b6c"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 4060,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a52e7201a23f8809c3ac212a7f2f79648e364663a81b29f127dd217ccb160a5b"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 3547,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c70b757bd60329e6593b3773ce152fca6c7ab475ae743a2172c157e04c498510"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 4506,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0cf01107fd97632d69444c8ac0816098d2677b1c130f0edf778a230217a4df80"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 3036,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "cd71496661ba21986d15855bc45358e4400ac6ef54cd8a9b4b28c5708bdf6392"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 3379,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "03aaeb6736cd707b9e420bb84ef2549408b9daa43479e4414fd9ea9a8cf8eae9"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 3672,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "425dd85dc15794796f3aa0213f88d5e8b879a73054f3e632b797e86c434145db"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 3387,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "67eedf8ed7fc90ee09f83a9e98d10438cafdbd05bc1c85826eb6a3d5b431e3d5"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 2857,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "abea2bb1306a542dcc960413bea64c20702889e0e5428e8d2fbaa929571fa573"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 2813,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "e4d956e1a40f26e6d403d59e46b2dfe469bf205a114599d9948de3d400cbc30a"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 2367,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "fa452ddd08c06fe9a16856cd4a5d5b23277000601d564c02606f2a3bd0e4508f"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 2013,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "2e0f3ad0cf9e1060ddf465cd04ab22752e8ff09ecef2c48f77ef862a81c414eb"
+        }
+      ]
+    },
+    {
+      "id": "enemy:magmahide",
+      "path": "/assets/campaign/enemies/emberfall/magmahide-atlas-v1.png",
+      "sha256": "83f0a142bd1e1329fb23c6324d25556f90c8989f5a9b17bb65ce598606c6f600",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 2964,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "347822db422ad31033ff6fb61f1e24f9a033b1d75a4d4079c248c130c288e872"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 2912,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "6bb4ebae25ef1ba3e44a9a83bba04db8ad3039be8b7416c19d0341ab22320b18"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 3040,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "83549163205dc7cbbbae2de6325de14a95f9c1d2d6e7fdc37ae3b06837fce160"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 2953,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "6bb639e76cc10dca344f5a1188678483bd834292b8ef24f60169fb924f8d384f"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 2998,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "5f6c40fa64da28d2241190ae388675c347697e1bfc2306f44274864561076cb6"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 2875,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "def2d88b6475ed8b8fc3ab778693acfaa02a4b39210b6e2fe74175a80739bcc6"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 3170,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "922ff33a9b330fdd98a9d7110af0d224799b684155c4f49fa3c84581973d615b"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 3066,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "7796b5da97ff34d9d29514feb0e961c472759f8b2ec60a1fe8973b077ae7d84a"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 3107,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "ec470823c90f1b8c5073b6cb3d010cf8d6fc243fd8e4f2b4662945733a6b2fe9"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 3061,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "7ff13bcec407540e1a238d83da62abff274870e9b4e9e50fd9c2b72e20bddce3"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 3070,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "240508fec7dc74fe25c565b76de170b3ffbfa7aebee25e41ba637040fd90aa5b"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 3758,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "df7223b5d069586d70ffb490ffa05dfda030f365ffef6c4e89fc71281751551b"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 4333,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9ccc853483c11f7d98c09c9f9a517647b220cbdd5aa458f305c0cce3fd5d4b97"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 3387,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c5f4d6eddc3dd4c0114c1240954f4b52d8675969afbdbd31e13355fab20bcb37"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 2953,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "edecc0eb4f5dbca3b405a34c2026132bbe001c2215e4d9d755e135853f1912ca"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 2769,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "64ad6b05a592021702131ff0a199b1d0ff606c4159ddadc3c73749291ae438d8"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 3121,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "ad37f2484fb80300ae4b92ba7f4f1fca326cc8616908ac8af4cfc5f6ee113104"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 2723,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "2610bcd05b3e49b4a6972001672588033cc7ccabef185f0109bedfa1f5bcaa5f"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 2983,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "6a7092f69faef5a91d29f848f4f6e6a0bbfcc87d560c39ef97e3c5584123c492"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 2716,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "e2d7cc8b126fb5bd1dab4090c3db6c1eeed3732d2a6b70556d14cfb6be5dc9b5"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 2443,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "58134b547efd6a05e58ced7c3218d76a1eafbd1495c7e9c8a4776a1f666f0f6b"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 2363,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "2a360963b4b36a33fe5836abe9e9ab2b98d7287e4e030a969fe720ebf4b19bbc"
+        }
+      ]
+    },
+    {
+      "id": "enemy:ember_brute",
+      "path": "/assets/campaign/enemies/emberfall/ember_brute-atlas-v1.png",
+      "sha256": "8938af40c27d0647ecfd8d97856de9ca57dc87eca09e5bc229c45b1f8295d70b",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 2749,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "16eea8e165c44bc1a3118cb2ed84ebfe7e6ae9722263aef112ed2dcd6d9271e6"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 2718,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "e66df41aacab71b93ab214ef39d3cdc5cab225214130a21f5b9a85fb95e7f3cf"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 2908,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "1e2d45a721f2d436c5561cfc9c01628322b233edb15c01f51729a286cc7e6589"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 2819,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "848bddfac83af5330d5e673d363b914b7b6fa1dcc521b4a848968b0b259ea55d"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 3113,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "d2b3ee0ce501fcedef581d16e8325c08ef635b32d1926e3a6d081d0f7af3185c"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 3094,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "ad98fbfe73cbaddc157e0e3aa8c75743fa0c1cbacb9cee672b9256e463d0d14f"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 2882,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "8f49adc8c9ebb8975ce75b73e4f20983a9628e58f0c04e5dd7c874357a0501a4"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 2933,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "fedeae9116c54aeccac9a4d9676fd5ffadae59e8ccda03d963afa03205cb4bf8"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 3132,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f995576490ac0e0d98fdd0a84f149fefab677a22a8958fdf5f4eeecebdd28fbe"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 3115,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "7f09321e2d08cd7a3ff4c5fd9e8f698cb01ecba7e56bc35b2bf9b5da8e447c7c"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 3843,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "301883699e4cd7bacc8620e5d697bd0e1d1e25cf08a604f3bd4f152dc5a04ae8"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 3754,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a126cdc0a037e9568de5c9107b5b512f1187bb3868e49ed38b67fb24bd7e3546"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 3838,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "232f687224a1b7152315554030cc9c339420ec36d8751ed99f9e16adb9319dde"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 3312,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f13dd265a29739589564e18756fa1fc5e3a4e609ac18eacb432c3266e5111d21"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 3417,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f489b6640613370562d132e9febcdff884f2b42a0ac07c359ecd6328333f475e"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 2932,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "7e1976d05cda781a08f98ce3b0f76f5627f7d7ef58f284c8f706c1f8d9c1ab81"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 3291,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "53ae10003f8e40bf9fb7891e6447334c577977c0df2e3bf894c2b1197acaeb07"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 2828,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "8722a95c8beb04bdda14a30a0f4d739a38bdcb72656b515bb16353ad0971e6e3"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 2883,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "d226fe207dd4b19602a02c84a634b18255566b0dec618ccbd3c81a5baed45859"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 2912,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f7df7628ae811d24d3444793ba16d3169473e98532c6a73e4b24d3175b3333fb"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 2463,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "dce4be842dd9378128b6f01c9bf2eb0f9aa0718a1b0eb710982379084897cddb"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 1924,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "d6fc6fbd13ecad0c075d891bde7875feaf4895474908a076bfd8ff754ab19718"
+        }
+      ]
+    },
+    {
+      "id": "enemy:ashcaller",
+      "path": "/assets/campaign/enemies/emberfall/ashcaller-atlas-v1.png",
+      "sha256": "61335dca97fd2a0f53ef189ed92a6fa888070d957ed937b9da51a5c2da151cb1",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 2175,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "26af0e299e18f7398a9047a12906c93bf6b39e87667c8bd04e09c19c89514366"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 2152,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "fec2715d4cdd1632d8101ea6b8360e56e66ebffe090b9e6a17db620b771ffa50"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 2308,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "584545af111f61980391e5b2cd86d6df5ba77792c334740172965b162c6781f8"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 2291,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "35e43955b72f70335a295c998213be5118850185772a4fffa251ac61fc8cda03"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 2031,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4842b3036d51455e0963a960f13804abae65f5f8c10ea99f8284f0ba6748650c"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 2204,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "3074b1ae5ced1d018c6238e47f310282c5b27e642fcabf4b78f45eb0d5562cbc"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 2299,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "89e6a0e6507541662e04d6e9ee59d944ca8979b2a9e80567d7fcfa4d17a4e8e6"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 2388,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "5a4cfd3a94771476bb42e7c4cd009b3b59e0fe8597377cd3dda5c165356e0576"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 2444,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "510bec163f7b4f0e05c62337ef3bde6506b615661b12fbcca5d1bf295cd0070e"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 2144,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a0a18ed9970eb5622759cd65ceef9ea571ccdcbdfd46cb46f513e157752362fc"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 2426,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9bedbad103a145234215b06920d92a2ccab91feebd7819811df15788b03e4eaa"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 2560,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c0694ad6926b957c21c2098bf9fa735d46fe86e0981f17437167eeee3fe03713"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 2902,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "3ee89b4ea160b668dadb3d1e98643a4e0c19e5f59729017705239195d41ae66e"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 2698,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c4d94051f7f816e9fec8c50b31532d189e1167978d02331ac2312d262be074ed"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 2533,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f04f4e9ee4b79d4dea719d3d5bb226afe78d18a51654fce9ec8b0483a315c188"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 2213,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "6e4ca1de28ef35afdd15213846b02498fa3f4662a5ec94e78c46108153231e4b"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 2359,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "129a6e122bdb34bc1819ecfac71333f71683211ca25f08071f324bd6649bf9b7"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 2332,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "2dfd52f6da0e5558ec08979562063d88798a304f002f3f9f79613ebe59ec5374"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 2179,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "99c0aa7ddea1315f398aab4b6707701b0ed8e07c380fcbfda8705a722b858554"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 2339,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "ebc1859e76081729e67693b213d66bd55f0d28b7ddb1adac793619fe75186803"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 2150,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "87ececfcddf2be2bd703eff0929ac2ddf048222f56ef0e385ccd180f4ed580b5"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 1925,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "93cd75e00ca9fc94e3a4d9eee84bcd50e75c4c0d2ca72960e4b9e91871212db6"
+        },
+        {
+          "state": "buff",
+          "column": 0,
+          "occupied": 2400,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "667c336cc28756076d0893180b8463db8018a759c2dd2f45b90b859be35d87fe"
+        },
+        {
+          "state": "buff",
+          "column": 1,
+          "occupied": 2744,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a92a464ed1ac3dfdb0302e0c8af4cda41cbd31b70656136c50743bf354a784bc"
+        },
+        {
+          "state": "buff",
+          "column": 2,
+          "occupied": 2681,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "09334df9f4af93c899461a459d8aaef30b91edf526f42094286641775f1e818d"
+        },
+        {
+          "state": "buff",
+          "column": 3,
+          "occupied": 2905,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "e0e31e23c8ec8384cd0a0b46a15683303ba0d3be8924ae349266f11feeb4710e"
+        },
+        {
+          "state": "buff",
+          "column": 4,
+          "occupied": 2487,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "2013997f50f7769781906f59ea90a4e38b4885ffd03fb1dfc1743f2c1dc5c4c3"
+        },
+        {
+          "state": "buff",
+          "column": 5,
+          "occupied": 2383,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "bc7db8de526fe058817a73584d0c46274b78db696f5df047ee8e1324aebeecc6"
+        }
+      ]
+    },
+    {
+      "id": "boss:cinder_colossus",
+      "path": "/assets/campaign/bosses/cinder_colossus-atlas-v1.png",
+      "sha256": "88250d82e367a3309515c3eacd9f56c5d372bfac9e766321c28781fa34f1414d",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 9507,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "c2de9c56ed2ac112bc49b4c7a361ea3b86b988b5353392667bc294febb085520"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 9385,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "56e50ddd44b3c3879eda4d716de757fbb93a4a40df2d6556761d63483bf667dd"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 9504,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "024b86d1449214f0470c01f4d9af06458636677e6d7045ef20d25e15507bcefe"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 9636,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "afc3d38184ae655513673e9c2a93bddb8a7fb5583ce8af8c29970b5857fffb8d"
+        },
+        {
+          "state": "idle",
+          "column": 4,
+          "occupied": 9924,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "9db16c2a4a93c1249bcc6c86128a76f46291a7bf04b0809f197ec83e5a17f1c2"
+        },
+        {
+          "state": "idle",
+          "column": 5,
+          "occupied": 9622,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "254cd97b744534b9659e9ce622d0ce4cbac07132e9b652f23c89939da25a3232"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 10151,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "86443f4dbdc8a667fb50bba476eb0490fbbfdbeaa6ddceda1b51ecfa90920d28"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 10491,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "7d4e2b17a5533664765961cf4389b376e5575c9b7adca3b713e64a3e518e488c"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 10173,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "62a3e542aaefdba7891b87c6bb776a7dbb3934bda7a09d6400754b6057b1e7d9"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 9742,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "b96974bc9c5fb40ae4283ef200a9ac5ba3af882738d3f17392a49d0912d12138"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 9891,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "c0d4d841e6f28aa47934964305a65f1fb36e2c3cea1fc84a25036538125b1f10"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 11031,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "1c1ac42090acee28864cb31fb7560af3925e1c3aa2314da67a69ea0bcf75494b"
+        },
+        {
+          "state": "walk",
+          "column": 6,
+          "occupied": 10845,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "c69adf1064c806f144653783c58c84fed5ed1175b8ff06e229ffc05bdb9c2ff4"
+        },
+        {
+          "state": "walk",
+          "column": 7,
+          "occupied": 10867,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "99b0923d7fab222b6ef6d32eeca25b65a01904c56e9237bce1d9b68f930906e5"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 11942,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "6a9905e24d09586714088c2f52c85b567e87cfa35e906a530022335c3299aed8"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 11134,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "860cceba978020a7dfa972c327ecf9c1e5baf005a1b924cafd72e000a75f868f"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 11655,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "aee9dded982ffb5ab382c0ffc7cbde3395e99daacbdb9200102961d138bca681"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 11483,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "e3ab29938df87d1b0de47b56461d5319c7b6744a6d85990f7b2ac1d6836a22dd"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 12685,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "a45ce4de5d31ca477f0d12688c6f5fa4f1f9fa5bafab9e745f469931c635e6a0"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 11888,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "6108a49aff09a87807ca008f6be02a2c7db2a9668dad3452342904e4b4644a91"
+        },
+        {
+          "state": "attack",
+          "column": 6,
+          "occupied": 12765,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "dca16c92fd1b0505854ca9b4bf8aec9280b24a7806f191cc58153db8e392d1cc"
+        },
+        {
+          "state": "attack",
+          "column": 7,
+          "occupied": 10804,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "cead282aed610805a243383ca4e142642f9733ff58bd39b14f6301766c440f32"
+        },
+        {
+          "state": "armor_break",
+          "column": 0,
+          "occupied": 12330,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "556828723daed103d21a900b8edb6a10717b524284b3a0a9edda5c54638231dd"
+        },
+        {
+          "state": "armor_break",
+          "column": 1,
+          "occupied": 11988,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "b266b6faa76f10db048e79dcb655b42589c1b5eefc24222e6ad771d6a10cdd80"
+        },
+        {
+          "state": "armor_break",
+          "column": 2,
+          "occupied": 12672,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "ebb7c63c50c3f8800e14216058a729f249c8bd968b86dbee3d9f0517ee439fec"
+        },
+        {
+          "state": "armor_break",
+          "column": 3,
+          "occupied": 12950,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "17bd42de20bb8954c7ada6e953621fa913a86373b3e3966af82f63b8e0ea377e"
+        },
+        {
+          "state": "armor_break",
+          "column": 4,
+          "occupied": 12761,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "aa72185b72a7254fa8d862cb834b5747cb5399cd69f3003dbe66fa3387e3bdf1"
+        },
+        {
+          "state": "armor_break",
+          "column": 5,
+          "occupied": 13550,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "89eda0c5c458c0e08e4b6a6d6202b1ce0d47c217eb4cd857e2be6e763b776dd9"
+        },
+        {
+          "state": "armor_break",
+          "column": 6,
+          "occupied": 13779,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "2155c70f953d02292c525e0d92e877882132141197c8c713e70d3df2edb99b86"
+        },
+        {
+          "state": "armor_break",
+          "column": 7,
+          "occupied": 12762,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "cf7c0b37d68123ac6790761b0759b3f73a420da6f622753615359116ed551b5d"
+        },
+        {
+          "state": "exposed_core",
+          "column": 0,
+          "occupied": 13228,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "621cd20a120aa4c2ddc906d8e65326bbae8611ff578f45014658b52f337368f2"
+        },
+        {
+          "state": "exposed_core",
+          "column": 1,
+          "occupied": 13974,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "0fe67e859c0f8a9ac475631bb96eb698da7e17fa2e7f0a92650829a3dc5f64e5"
+        },
+        {
+          "state": "exposed_core",
+          "column": 2,
+          "occupied": 14340,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "8204fa3945ecfe70418ee75eef7db9d21214d0a18f7ffc530763abcfc243899c"
+        },
+        {
+          "state": "exposed_core",
+          "column": 3,
+          "occupied": 15591,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "f1f56f29c8625ec0c69647c43d4354b30922cfb2b9d8cc0923082b6c30fbae09"
+        },
+        {
+          "state": "exposed_core",
+          "column": 4,
+          "occupied": 15435,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "7e2944942e203bcd66db02f213c209870cb5d83ef22177a4abca2857fd53576b"
+        },
+        {
+          "state": "exposed_core",
+          "column": 5,
+          "occupied": 17248,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "affd62bb91cf124619798f92077f2c8644a5372576ae01073c99dc63b9c2c3f8"
+        },
+        {
+          "state": "exposed_core",
+          "column": 6,
+          "occupied": 17282,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "005e1930c76cff99425aeda9bfb0c65cdd3d1c60c58ad4a6a7537192354259ef"
+        },
+        {
+          "state": "exposed_core",
+          "column": 7,
+          "occupied": 12618,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "23f8ac7a8fe88ee999bc514af2d0260278d8c21d14b3ea5c29fcaef0b1d335c6"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 12296,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "ac5d3676a76c9e6b398638887293493b80225850d861f3a5bc4f6504811a854c"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 10852,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "4457a69d01b1c6f36222d56e22d705628cdd0c0a1f8039ba4bd2407bfbfb411d"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 9995,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "800038df23fc5face8606b7fa5667b619b5ff04ef267a805113fc0fef30926cd"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 10442,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "64feda66cc55a57a13912bc52e3836fd119d12d32022b9ac17bf5b90e0f50c6f"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 8768,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "7ba942317f8755bf1c3fab56a9ae244b117643e89bd712ba09386255be46055c"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 9283,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "4d0d2e7b6c7d7c2969865fa7f7c693be75e35906fba864883a6a74e3f3cf479a"
+        },
+        {
+          "state": "death",
+          "column": 6,
+          "occupied": 7796,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "9fcffc4a8880fcf21fdeb730eeef562ae5322a841e8fdceca5ecb77979125583"
+        },
+        {
+          "state": "death",
+          "column": 7,
+          "occupied": 5742,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "f570fd10b2b766d8ad15d64a6c09bd4f22331c9aa91db0ad61ed662d53b09f8e"
+        }
+      ]
+    },
+    {
+      "id": "enemy:snowstalker",
+      "path": "/assets/campaign/enemies/frostveil/snowstalker-atlas-v1.png",
+      "sha256": "cf570e5764a791bf8d3d4ccc9a51bcb391eafdae2fadf21105d34b19c42adccc",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 1521,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "fbe3c642ea5d8b6ed707ac0e79353c3db5d43773affa08c6b1c79e0a66c91e69"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 1491,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "3d62d6ab15a9f7dbc3ddd5d80880552dac1ce28239cf703a25c7ddaf2c2748cd"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 1621,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "19b081c0305dd8fe63d0e9633c03507935e4a249c7e0f0b716c22a1dc04b42f7"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 1520,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f096c365a4f924f5417297d9304da899d859d5c6978a06804dda0fd3bad96f23"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 1610,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f3c479472321662b4b40d31e970821803ed8fbf5936f26e673fafca6923419cc"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 1599,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "d92296d9a8e3d87c54afd1a9ccdc491a2f8b64c0b3536ad7ab3347824a53191b"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 1637,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "aade75e3c146abb350dca52fd4b04844760a2a275736aadfd4796548f5b11a24"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 1643,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "6d82aa3332bf851b0a9806904a609e6522677d260303ce48fcb8b4d60887f38a"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 1663,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "793d8fab89acf4b54ad1d4a072f7e73ed7e8de73e6557c754615a632fb559301"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 1675,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9d460a94966571fa6c0ace7e797e5d21b82b2478f80d19136696a2f0bae34206"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 1535,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "05052e8465cf256274d324ee8e703fc6dbddc733ca3dde6d5dbc61a25e998c59"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 1974,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "b16764bd7a43266a4a296beec78a296607fc9e709bfa202bdca0786eae21a9dd"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 2313,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "498437e853e1e53089b6e15c20efb6a23b6d9204f6208861e219c113a233d7f0"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 2670,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "915e4423a1635fb1f095f858995d9629b9c15920bb2902c75b7940d555af3c0d"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 1570,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "73190b08552d9b6255192a8d8a8b9400eb2ec3c21acf349a1d66553e40452321"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 1598,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "d17b586c50e24a339ef851a612af8330dc87d18d5229a037cbd0ae15b5756073"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 1645,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "8655c8f008cd556c621cab69ae7a2288835261dc84dcf8a5fca32a362c2321a9"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 1714,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "693c4e287e3164c7c7f78a5bf63dfd4491092ceb0bcc208d993b6945309e97ed"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 1468,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "b1c54027beb8947e21ef691dd4c0303fa0c9b75cbc30e16c3f9a07ef17b41b37"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 1332,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "30dc18359cd16b283e3ac948a7c7c69482ed5e540b1c37450f32c51fd90aef33"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 1278,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9d3d3a76dd9cce1f5f4faf0f86bf1385b397e6bc9ca3b37ac3a85561be5c089a"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 1312,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "34b509921f08b2e5af82a495618bcbdb7ce88979b6d948516a308efcfe423ef8"
+        }
+      ]
+    },
+    {
+      "id": "enemy:icebound",
+      "path": "/assets/campaign/enemies/frostveil/icebound-atlas-v1.png",
+      "sha256": "8bd7042984d3b5cad74d54b6c4175d9a7eb02848b9b929ac751811fde3268766",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 2079,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c879d9d66b47e03fd52c34e3a6c705b7c6bb4a1f2f5a9badb6d2aa68f76e2f3f"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 2073,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "909629505244cdcb98de6e41a02f74597622f63ab2c385edbccd5a1a21f66dd4"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 2005,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "2f6c2bd245a4f8e1f40e8b67aece6aeb5e33ea89b76dad5aaef1e7bc83b71a31"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 2048,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "76f15a113db27a84218db19e8c522adc55d22206157f4ffb7d0ced85b8eb074f"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 2336,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "872b42a11ac58bfb78b9d4c09b49f5f183f369187ebbce5d98e2236fd6c4191b"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 2153,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "318066bdb66f61fe0beb34e5aa1276b71eebf1d55ce270b2c668e2d34d085650"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 2046,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "40c573eca47aa7667272a4eae53f69772f891379123b93b81256ffe2b615ed61"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 2251,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "846f19b893846b49b55e3d34d2a3553c61bab0d75ab76d534b1c5145103533fb"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 2218,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "85c77268b86a3f34afb0ba964df6eb03f8a07882dc46bf9da1a7bd401c7cc305"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 2025,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "2896de10badb382629a21a33ff92efa708eeb0f52c0f12b728d981a39ed214a4"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 2565,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "8680f509a2b070b87abdbec7605334e75265821241ed221d64090ad945eb39f5"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 2972,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "90630e9ee854b8fe0929f583c77f6b7442933733546f61abceb448dda27d8749"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 3394,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "bca20f6f33ca47b2ee49fc59b7841cd00984b1fa240235466115793b17cd98aa"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 2683,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0595f167a2daf17ecd5d4ba58e0f958529b934d2af18e10349036c0aecaac316"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 2291,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "e957a9f50a340fbbd5b54e4b2937264218cc25f900a26759dae0fe01f4262020"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 2322,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f182f06bfbce3183bfdaaf24e8326b327e48d36d6660fc4fe6709bf103a71a8d"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 2385,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "032ba6e05dbbc810719d46f7a229f41af2c1d303a6054cfa52cddc4736771489"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 2084,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "196a89cfd1692c3c9a9299123ce92bd1ba02c71ac7efdc78d220c55968a9e916"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 1932,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "579a72e1c1adbea3ff5fb9b298b2fa9dc8d63e58ba25995671d6db7fb5ccc965"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 1992,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4347ed4b68273ab73940e5171cdc83d1519c906fa4a64d99e7f5c642c9b53225"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 1886,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4b126d8f671a202379fb9c03effe21eaaefe5f0254ab98ab8627ace043dfa0b5"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 1777,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "af92d35ffcc668e14d2ce34bde8b4240699fa1e3a1a3dd619bb4c215f558eeb7"
+        }
+      ]
+    },
+    {
+      "id": "enemy:frostback",
+      "path": "/assets/campaign/enemies/frostveil/frostback-atlas-v1.png",
+      "sha256": "3986f4c5bd86068031e4c325ad9a636ffc5f34c4d6419be324cc7431c10c1c2d",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 2939,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "70ddc91eb03c4002b9937e14d0e41fa023bcfe89832e8d4487745b950a903898"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 2912,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "805bd18ed3fc2ff91adc05ab0dad3bec5eec356fc90aed3ac3565eaae621edac"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 2932,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "aae913c5d9ad289fc90f425e8614e9a09bf146776617c1488b41167e2be053f4"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 2880,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "70f6c55e9fdeb36dc327706d82b77d068bc86e80fa81357c74b7b8b798c2285f"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 3268,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "e3e43f410b10ee73312e84757c2f1189ea6319bc8c32c84686a522f869b3e9b2"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 3198,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9f1bf2fb0b8c9239f301dce7a4471429051711863961e3c64a43f86c82dd1a8d"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 3082,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9614b69d3b309e783e25f2bd1ec18304fc34e2921e952befc7b9e46560be921b"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 3359,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "b230a048a446a777452296c68ef7d9dc61059bb9801def5646bef2ad5872b1a3"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 3292,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "868d6c18371fa698b6065f7406312f406c36f97f51248960da402cebb242a411"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 3387,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "34eedfca0647172526f72c68277c9dfb0881b5cc10eca075ae9a7befda16783a"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 3737,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4f7bccde9615f553a1eccdc1ffb2c45a883922b68ba12ff010915dff81c7dd50"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 3574,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0e4deef1a6607fc0b30a2feee08846b64d6aa9a30701ec22ae46510466150b7d"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 5456,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "b7dfdfd3baab54dbae86a9870904d3c60b32169783e7c86175b3cac0f34d54fe"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 4561,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "65fe73b08ba4b11f438beabb9c79b626c01d915020c06513eb5196e780e699fe"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 4253,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "bb9fc8eca804b7fcbeec92feef89caaf064802a9f195b05184c553bb809c3e35"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 3219,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "51902fed7898e8e78438d711b7030e48d7c2b6290ecb0467a7f5f6c03e64b6f4"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 3401,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "872f224a6841cfe5fea0a8281fe03dc2625e90b170e4905bb270317455d143ea"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 3432,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "cb5180645fe1c6565674443de00448b87bfa8e4317fe0519168a5a06e93124b6"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 3166,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "768e72a2ca78e1e2d875e6b79c6254853f6dd8e3c00997030469b8c6aed45aa7"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 2730,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "1f1561671243625ba597b7ad4ddc1b7e1ee332e1c4d26cd1f3be288bdd4d8d68"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 2729,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "d4561fa79d8a1a254a90ede361c41ba3e661dfc2581cd35aa939c4f2906a7597"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 2598,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "ee62bf84753bd9b77556eb8c54c919057617ee1a575afedbb7ab10b9e8468a07"
+        }
+      ]
+    },
+    {
+      "id": "enemy:glacier_knight",
+      "path": "/assets/campaign/enemies/frostveil/glacier_knight-atlas-v1.png",
+      "sha256": "4f9bc299ffa6d0c92da67f84810c9eeb12cc2f11169ec847202b67eb1cbd942b",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 2612,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "7b3ab55ae411bca0e7aad3f8c4131e7dd062384035e136259e27fbd46ab0299e"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 2726,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "29f6c7bbe0f23f33d290a9d82dc2965d85ca3ee062294bf750387719a0e88184"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 2770,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "738a67a073f485625777d85ef8c413e7c8b57fdd62ce5445d6cca143ddf9548b"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 2747,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c7c70f11b6605b33151f19f0bd1abe32207714c9ed490a078bc192a94a1c838f"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 2563,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "3b6f8653270752bd7c2928f0405d7c3ac9b121398342e96d8699a11d046ce6a7"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 2575,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "6c0d986b39db441676e6f05791d498e8a0f3c6b53b4706e3801ce39c47e8f4dd"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 2584,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "edce19a2cbf7090e65ba9dc36829b0adea3c16a048729f2ffbc015ff83f3ddd7"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 2549,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "17f5cb10fdb58833a2a20d422434f3c425f17d0b242bfe0df3d61514214104aa"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 2682,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "bf4f9786119a58c764c1806bfcfe8661a9485b76a2c979841b8ece25b39aab4a"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 2698,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "bc10d016db1135dbebaa9053df032d06a30200e0c401f42d2bcaa25ef3243a99"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 2649,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "817c5a17d306bc86c232ff305049de9a7e2fb4d8dd65ff2431c88a1740a64e5b"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 3776,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "aa66b2b410ae8b3c79db94e9d50e25370bf36ab9dd33cadb895729c1b013661b"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 4072,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f5a44140a2c3f43bd516519ab7a64372f1bc18e6ad926748528dad9c3ef1fc2a"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 3157,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "ae91fc2cb77fd9cfe847382cd96d4e867adb04ed9f06807f7a4a2d06b5192d55"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 2790,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "9f32667effb78c9aa4940b2e56e8013d8a7f73801b35541f4292c2ad5dbffc8d"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 2861,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0265468df207879116ba22b91d85d68a3e28bc89a533b3274bfd47b2f716dc2e"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 2388,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "3a81c9ec0376f0be9e9472b40ac73fea75604c0c3f1573945946be0ea042e59e"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 2514,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "b7fef58167f8a8a0ed85fe7aba635c0a3685efd294156ac76ed09b53fe98ea9e"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 2610,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c641fe7dc2d30b6d958ce24ba0e4bd5e99630bb959df4f9f690372428b12e076"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 2211,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "07862dbdf22032a7e14fe0d33ddfb71d6d9e51dd14d7f1583c0d5e63a89d0666"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 2544,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c563ca0779fefd606663abd6729f5a4c31d38387cfb4851efb05a3d547d34c3d"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 2105,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "4418ad703dc5df8e20719bc3b95e43bdf14a3cb0f754a36f490500c91d26af3c"
+        }
+      ]
+    },
+    {
+      "id": "enemy:frost_shaman",
+      "path": "/assets/campaign/enemies/frostveil/frost_shaman-atlas-v1.png",
+      "sha256": "9fa486e305e6cbad0c28390c3a283c2b17f2c19d6c3b0b0cffaf2ef710edb3ed",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 1997,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "52704b4fc3ae2bf08d400fd680929655aba67601ede596fe2b10bd5301db4a10"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 1964,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "3a792ebd9dc781730f5a85c14a504510dd63f8f89bf2fc467c89bbf1277d8c20"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 1894,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "c80bc5f7a90124df74db9dd1d61a3ed89be720c0b6c68f56d9c9e316768794fd"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 2027,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "f38958238306cd141f766c8c3dcb94277aa7e148979ab1ab98150fc2f1865931"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 2064,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "e6fbcaabfcdcaa59fe31067c8a30efed74170182722ff56c805e9686a0d49ac4"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 1998,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "535a499d11f80a7fe64638fac4f072880ea561c371350b9b6c1bfbeed61d3a66"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 2012,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "39e7bb0a61d7b717b73e7d4b72eacc010b8b148a39d92f241830d13fd678ed04"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 2072,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "91775d8273e4cb8e56b284d0b36b30e1412d343748f6a17ac32ff444bff9e57c"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 2055,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "b2b726bede0d462cddbc7500dc98a9da16357418fba9620983a27891f9fcd68d"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 2057,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "5491db98747855fe9285bb25021ff4a7f71d01c292f86646f1aaedaab854a5cd"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 2041,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "02997f6e4cb7f5aaaacc64f167f2d28979fe9b10a019818c1c76b0d429970cb3"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 2107,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "8686c9e07fa43d36007959ba48a58391c2bcaf72c5a772337f289ea853505bcd"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 2796,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "774a581328ec25beb217a3c87b981400d1d8ad852f9fcb81a3d70fa8cc9733a0"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 2945,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "18fee3ccee3decc1cb6ccfe72edad4e0b6787a170f22113bb57386c25acf6ff7"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 2596,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "1c512e0c21872323eeeb077fc25d7107a80dea72394f93bd2b9c0ce700132010"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 1996,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "3e74fa8397e908d13d80750062780b55802634ed170b1468e48878ccb8461402"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 2055,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "556d3193fb1797a221b81545c6c70079e21e8b09d475e9bb7388a665f5839be0"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 1884,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "e63deb0b502e4a22ddd7896c738cd4e15c50db0b2ed2e199e58151d062432258"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 1715,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "902de670a5a74a78d3a34ae596265f68f06c2f863289bf61519c4ceed7672339"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 1677,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "5a1c10ef21c41217056a8a69ec35f0dd1444fcfdf40359f6b168eb1850b14dca"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 1404,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "799c34c314d244af777e54bb8e7973c8b8eb82f0c932395e9e14df33ef766b3e"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 1257,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "e12d69f584891c3313cd416c2c0f06272c0988d88bd4c9015ee67f5ecd2b20c9"
+        },
+        {
+          "state": "buff",
+          "column": 0,
+          "occupied": 2358,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a52473dc06ef05d78cc935c614627f3f327beb9998e8bb4a42e98e97d1fda027"
+        },
+        {
+          "state": "buff",
+          "column": 1,
+          "occupied": 2635,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "0dd44e52d8305fbb0cc1705458d514dc41b040c4f516de00cebfad0880eded72"
+        },
+        {
+          "state": "buff",
+          "column": 2,
+          "occupied": 4803,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "a693c15638b3e09f344b914d6b973681f5c4dd5b41ec3e28d3244e0ede1a49ae"
+        },
+        {
+          "state": "buff",
+          "column": 3,
+          "occupied": 5655,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "aababa09f496bf8860f7eec266f498cf6df9ce32312d96262e1ed3114b5e2176"
+        },
+        {
+          "state": "buff",
+          "column": 4,
+          "occupied": 2689,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "43ea99a85847d8d99600e3512b3387cb7a05b92ba79e67bff10a290b209ae534"
+        },
+        {
+          "state": "buff",
+          "column": 5,
+          "occupied": 2248,
+          "bottom": 114,
+          "edge": 0,
+          "sha256": "84c873aa50a913c9e9731da7e55ea45e1da65b22ea32eb18fbeebd5fd2498844"
+        }
+      ]
+    },
+    {
+      "id": "boss:frostbound_matriarch",
+      "path": "/assets/campaign/bosses/frostbound_matriarch-atlas-v1.png",
+      "sha256": "c37811937425845b620e40e0e82c9313046b917c85f32bd4f3e1b7b757cc3eeb",
+      "frames": [
+        {
+          "state": "idle",
+          "column": 0,
+          "occupied": 10656,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "6ed4bc4fcb6d9357f274686dae1941be998d04d2aad0f77e94aa7c229f698a1a"
+        },
+        {
+          "state": "idle",
+          "column": 1,
+          "occupied": 10949,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "e6a3ab2917dc94761381b5d55e14b9eab687ea3faf768d3d56939cd573c01925"
+        },
+        {
+          "state": "idle",
+          "column": 2,
+          "occupied": 10862,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "ad3ca2e2490ed3a0a083ea6b22f46c8e738cc229fcc4738ac2c8dc1d53ef510f"
+        },
+        {
+          "state": "idle",
+          "column": 3,
+          "occupied": 10703,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "d1a678a41dd83357cefd18bdce1063f5d116b85ea2d32b7905018c0347e7cdaa"
+        },
+        {
+          "state": "idle",
+          "column": 4,
+          "occupied": 10886,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "602ce0f04dc5a3fa19b86506e54994850d192a8e23faacc99d900eab701db1bf"
+        },
+        {
+          "state": "idle",
+          "column": 5,
+          "occupied": 10652,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "5c5b7e63dae4dd4eb551c4167fd2ed39e1c71657771f69ab1c919b09e6aa34da"
+        },
+        {
+          "state": "walk",
+          "column": 0,
+          "occupied": 11680,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "27462d74fd4e16de977da18c9d60ed266ee8c8eb2aebbba2496f58d04f94ecc1"
+        },
+        {
+          "state": "walk",
+          "column": 1,
+          "occupied": 11800,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "cf880e4fdcad3e5daa588282a4cbbbe1463a477b63ffbf2ff626ecd36e8d5148"
+        },
+        {
+          "state": "walk",
+          "column": 2,
+          "occupied": 11920,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "21e81183fa061993df125f6bf8b6883a6399e48192d75ee1ff4c7968df955c0b"
+        },
+        {
+          "state": "walk",
+          "column": 3,
+          "occupied": 11977,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "03fb341095b94b69e88266f18eef62b58570ab2377b7f52ccee34c9a75bf90a4"
+        },
+        {
+          "state": "walk",
+          "column": 4,
+          "occupied": 11644,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "7cbd22e4b9ad2cdd4c8086076c65f0d81a5d282de2c7cbc18fe3a6a6edcb9525"
+        },
+        {
+          "state": "walk",
+          "column": 5,
+          "occupied": 11160,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "8176e3dbe21281ee6b825a6733856acadcba755c353c7f651a7b006f454df07b"
+        },
+        {
+          "state": "walk",
+          "column": 6,
+          "occupied": 11940,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "6aa21d27a8644bf1bf77acb2a6f0b35fbd56144f57e0f834c3f2dfbf2b3afe14"
+        },
+        {
+          "state": "walk",
+          "column": 7,
+          "occupied": 11939,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "a50c63e831d921138926686ba4701548bdc9ada0e295fa0873d2ec5bd3753e4a"
+        },
+        {
+          "state": "attack",
+          "column": 0,
+          "occupied": 11894,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "55ec30b79789c8bcfe0479046517e60996aa89ea8a586ce0fd6daa1200c9192a"
+        },
+        {
+          "state": "attack",
+          "column": 1,
+          "occupied": 11905,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "947dff8f2a2a2c90a5adea3720605a0802a2a1cf0b9990e13e55d5ae21687880"
+        },
+        {
+          "state": "attack",
+          "column": 2,
+          "occupied": 11674,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "bce0fed0a81b34d526b55e3176406edd4565d6227d3ce224941ecef4a419e085"
+        },
+        {
+          "state": "attack",
+          "column": 3,
+          "occupied": 15387,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "c09624f9416045f6c213d11c8778654255084ac168b1a39b22d2ac05f3c8b773"
+        },
+        {
+          "state": "attack",
+          "column": 4,
+          "occupied": 13715,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "4647b62bdd39b33b09c9a6561e564d0509ecc04eda333a41a2681bdb39219cde"
+        },
+        {
+          "state": "attack",
+          "column": 5,
+          "occupied": 12809,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "e4bfd55b35c095a538312ca1daa6cc0bb56850f6e186405f3c7e97454b5d5a32"
+        },
+        {
+          "state": "attack",
+          "column": 6,
+          "occupied": 12283,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "5eb29b9032168713c30c1a2dc1bcab5efe91c2837a91e33807081fab0ffd1a96"
+        },
+        {
+          "state": "attack",
+          "column": 7,
+          "occupied": 11038,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "ea0f3eed3a5e7c7fc3356e76d4cdbf3f7bc6576be28e447a7cb1567c784e9f11"
+        },
+        {
+          "state": "freeze_cast",
+          "column": 0,
+          "occupied": 11312,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "11bc653762ec76bdc06bb7e1b544019f63b5aed5f6d33380c9fa410e54c60237"
+        },
+        {
+          "state": "freeze_cast",
+          "column": 1,
+          "occupied": 13091,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "45046ec92d71d81e873cc44c8a31779e2a0dd1fcbea665718e155447c55dfbea"
+        },
+        {
+          "state": "freeze_cast",
+          "column": 2,
+          "occupied": 13527,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "a82c20ad66fd4a3a603a603524f50c3edf1915f34a790b2091c5ba3ed9c3bc3e"
+        },
+        {
+          "state": "freeze_cast",
+          "column": 3,
+          "occupied": 14316,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "274382f3bb48d9cbbfea847df6760906ed7f90bb6be4b20f5cc39e88e5da0fe9"
+        },
+        {
+          "state": "freeze_cast",
+          "column": 4,
+          "occupied": 14266,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "9fe9c72d6416a4837cef0a4672717d09aaf02a22e282a1c22aab57f844dd8b7e"
+        },
+        {
+          "state": "freeze_cast",
+          "column": 5,
+          "occupied": 19749,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "d696e4acc3efdbe19f990ccbb3d6c2358d1ee45717f68e0ea02894423df60a0d"
+        },
+        {
+          "state": "freeze_cast",
+          "column": 6,
+          "occupied": 13858,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "07248d2f1476368877e311dd9c9e1e1f0d73b7acd7ec5004de3552df3fb8f872"
+        },
+        {
+          "state": "freeze_cast",
+          "column": 7,
+          "occupied": 10927,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "8e257c14800e059183b1839568d341edbc834c6ae37d3fa8ecd266cb9fd4b9c3"
+        },
+        {
+          "state": "phase_two",
+          "column": 0,
+          "occupied": 17129,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "2b39a6571124715ee7d9278f3e9cbaa3d5173891c4e919a1ca4670fdbdcab30b"
+        },
+        {
+          "state": "phase_two",
+          "column": 1,
+          "occupied": 17208,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "7878c893bf024d4d10402853c025202038979587cbb912d97ae695845c8c5dd1"
+        },
+        {
+          "state": "phase_two",
+          "column": 2,
+          "occupied": 17843,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "96cc92d953315ef7eb2b2b2f54be245239865fdc9182c6a65fc7382a434a0631"
+        },
+        {
+          "state": "phase_two",
+          "column": 3,
+          "occupied": 19294,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "11061a37f064e0dd6c6fc460ed167a19fbdffe02c601cb3e3ad334fde794125f"
+        },
+        {
+          "state": "phase_two",
+          "column": 4,
+          "occupied": 19337,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "1e9f4c1e4525e19f244316de0edbccb564832a05db00cf3acdc1cf70840e38bd"
+        },
+        {
+          "state": "phase_two",
+          "column": 5,
+          "occupied": 18726,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "900101c9ef43d7f4835d0a3a132a05b42241b6185c2a8ac002551744c09876ba"
+        },
+        {
+          "state": "phase_two",
+          "column": 6,
+          "occupied": 16799,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "236aae0374acdd5beae9383fc73cde3dfa2fe95546df69c9a89ccafa7839d4d4"
+        },
+        {
+          "state": "phase_two",
+          "column": 7,
+          "occupied": 13389,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "56861d3175fdaf4ae4c83617332dac31fd6bf2f54461d2aebbe1df7638232e40"
+        },
+        {
+          "state": "death",
+          "column": 0,
+          "occupied": 13732,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "ba5bdfd354ab480015391575f3792df455be73bc31bb2ef8aa3bebd056bc417a"
+        },
+        {
+          "state": "death",
+          "column": 1,
+          "occupied": 11056,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "a7cafd598326d906914fe960666ead61a2011481e26ab9990c8af562ff8a4051"
+        },
+        {
+          "state": "death",
+          "column": 2,
+          "occupied": 10215,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "56478e810142c15bed04c8006e6f60d34ee2b5c5eaf178084a60cf41323f3e33"
+        },
+        {
+          "state": "death",
+          "column": 3,
+          "occupied": 10584,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "5335ea9bc9c1b55784a361b67c5d81d4efbaff96e04522a7f0d59ee21cfa8c3a"
+        },
+        {
+          "state": "death",
+          "column": 4,
+          "occupied": 11340,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "bea5446f5c018eaaae98393c64f238746cd30fcf01de4db1207ba8a4af25a4f8"
+        },
+        {
+          "state": "death",
+          "column": 5,
+          "occupied": 10572,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "1b19a93664131469ee52432727eb3a292d82d0eac73169702c41eddab0d76a56"
+        },
+        {
+          "state": "death",
+          "column": 6,
+          "occupied": 8978,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "91c86359fb035fd517e6472b00cc5f639f0dd281eb1309fa12b6410f9da5c7ee"
+        },
+        {
+          "state": "death",
+          "column": 7,
+          "occupied": 7958,
+          "bottom": 229,
+          "edge": 0,
+          "sha256": "a5e56669eecf10d765da01bf801c1a35cb968066685df79c7ea63811ec3c45fd"
+        }
+      ]
+    }
+  ],
+  "classic": [
+    {
+      "id": "thornling",
+      "atlas": "enemy_walk_atlas_nature-v2.png",
+      "right": 3,
+      "left": 3
+    },
+    {
+      "id": "swiftwisp",
+      "atlas": "enemy_walk_atlas_nature-v2.png",
+      "right": 3,
+      "left": 3
+    },
+    {
+      "id": "cragback",
+      "atlas": "enemy_walk_atlas_nature-v2.png",
+      "right": 3,
+      "left": 3
+    },
+    {
+      "id": "ironbark",
+      "atlas": "enemy_walk_atlas_warden-v1.png",
+      "right": 3,
+      "left": 3
+    },
+    {
+      "id": "runescale",
+      "atlas": "enemy_walk_atlas_warden-v1.png",
+      "right": 3,
+      "left": 3
+    },
+    {
+      "id": "mossmaw",
+      "atlas": "enemy_walk_atlas_warden-v1.png",
+      "right": 3,
+      "left": 3
+    },
+    {
+      "id": "gloomite",
+      "atlas": "enemy_walk_atlas_elite-v1.png",
+      "right": 3,
+      "left": 3
+    },
+    {
+      "id": "warlord",
+      "atlas": "enemy_walk_atlas_elite-v1.png",
+      "right": 3,
+      "left": 3
+    },
+    {
+      "id": "pilferer",
+      "atlas": "enemy_walk_atlas_elite-v1.png",
+      "right": 3,
+      "left": 3
+    }
+  ]
+}

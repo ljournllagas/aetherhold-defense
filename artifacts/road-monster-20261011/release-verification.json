@@ -1,0 +1,93 @@
+{
+  "verifiedAt": "2026-10-11T01:27:12.276Z",
+  "base": "https://aetherhold-defense.ljournllagas.workers.dev",
+  "htmlSha256": "2f3cebd7d01ff64cb6e7e51f738fac98927929898b2bbe09f57422004a69f23d",
+  "checks": [
+    {
+      "url": "/assets/index-A85rsaQ4.js",
+      "sha256": "5f1ef0a6557d8b021c1e25316b514caf5d901c137158f3c5f5fda10e8e54e95a"
+    },
+    {
+      "url": "/assets/index-BUQAZS2h.css",
+      "sha256": "81cbe7e0b381b5eedaed0536fd0ffc16b5e1e282fe38fb513fa9f86162e72c47"
+    },
+    {
+      "url": "/assets/campaign/enemies/borderkeep/ironhide-atlas-v1.png",
+      "sha256": "e5e23d946a02efdad537be22c3caaec3c9412664e6899918c14f316e8c49e7fe"
+    },
+    {
+      "url": "/assets/campaign/enemies/borderkeep/marchling-atlas-v1.png",
+      "sha256": "9200e75aee1109807b151aecba6946e1d55c6d532b6f4e21e62140986cd56c72"
+    },
+    {
+      "url": "/assets/campaign/enemies/borderkeep/skitter-atlas-v1.png",
+      "sha256": "b9f8eb069d437c4d78b1cc95276a90ebab65da1bdab96c6cf581151f92de2b3b"
+    },
+    {
+      "url": "/assets/campaign/enemies/borderkeep/stoneback-atlas-v1.png",
+      "sha256": "28d5b3a0eae451d2bba4111d86e1c4ac49658ea0c877864a4f57753b49689060"
+    },
+    {
+      "url": "/assets/campaign/enemies/borderkeep/veilborn-atlas-v1.png",
+      "sha256": "e32f2908dbb6ae76793c737e814b6ff6e2b132a172c2785e4d91d09b0725e200"
+    },
+    {
+      "url": "/assets/campaign/enemies/emberfall/ashcaller-atlas-v1.png",
+      "sha256": "61335dca97fd2a0f53ef189ed92a6fa888070d957ed937b9da51a5c2da151cb1"
+    },
+    {
+      "url": "/assets/campaign/enemies/emberfall/ashrunner-atlas-v1.png",
+      "sha256": "db2645f560b9a349777fdb98afb4b9813984ea763a7e944401337641b37a17f1"
+    },
+    {
+      "url": "/assets/campaign/enemies/emberfall/cinderling-atlas-v1.png",
+      "sha256": "003cd5e2d61b10eba749367bcf33d70f592f37b5ad17c17623a72412e239f11f"
+    },
+    {
+      "url": "/assets/campaign/enemies/emberfall/ember_brute-atlas-v1.png",
+      "sha256": "8938af40c27d0647ecfd8d97856de9ca57dc87eca09e5bc229c45b1f8295d70b"
+    },
+    {
+      "url": "/assets/campaign/enemies/emberfall/magmahide-atlas-v1.png",
+      "sha256": "83f0a142bd1e1329fb23c6324d25556f90c8989f5a9b17bb65ce598606c6f600"
+    },
+    {
+      "url": "/assets/campaign/enemies/frostveil/frostback-atlas-v1.png",
+      "sha256": "3986f4c5bd86068031e4c325ad9a636ffc5f34c4d6419be324cc7431c10c1c2d"
+    },
+    {
+      "url": "/assets/campaign/enemies/frostveil/frost_shaman-atlas-v1.png",
+      "sha256": "9fa486e305e6cbad0c28390c3a283c2b17f2c19d6c3b0b0cffaf2ef710edb3ed"
+    },
+    {
+      "url": "/assets/campaign/enemies/frostveil/glacier_knight-atlas-v1.png",
+      "sha256": "4f9bc299ffa6d0c92da67f84810c9eeb12cc2f11169ec847202b67eb1cbd942b"
+    },
+    {
+      "url": "/assets/campaign/enemies/frostveil/icebound-atlas-v1.png",
+      "sha256": "8bd7042984d3b5cad74d54b6c4175d9a7eb02848b9b929ac751811fde3268766"
+    },
+    {
+      "url": "/assets/campaign/enemies/frostveil/snowstalker-atlas-v1.png",
+      "sha256": "cf570e5764a791bf8d3d4ccc9a51bcb391eafdae2fadf21105d34b19c42adccc"
+    },
+    {
+      "url": "/assets/campaign/bosses/cinder_colossus-atlas-v1.png",
+      "sha256": "88250d82e367a3309515c3eacd9f56c5d372bfac9e766321c28781fa34f1414d"
+    },
+    {
+      "url": "/assets/campaign/bosses/frostbound_matriarch-atlas-v1.png",
+      "sha256": "c37811937425845b620e40e0e82c9313046b917c85f32bd4f3e1b7b757cc3eeb"
+    },
+    {
+      "url": "/assets/campaign/bosses/hollow_warden-atlas-v1.png",
+      "sha256": "e5cd3b89ee905bf5f79ba64e32f672e0c05794091eb2fb081f1e762199dc3f87"
+    }
+  ],
+  "health": {
+    "ok": true,
+    "time": "2026-10-11T01:26:46.844Z",
+    "scoreVersion": 3
+  },
+  "errors": []
+}

@@ -1,0 +1,672 @@
+{
+  "taskId": "V9",
+  "capturedAt": "2026-10-11T01:12:00.606Z",
+  "baseUrl": "http://127.0.0.1:5195/",
+  "browser": "Bundled Playwright with installed Microsoft Edge, headless; one isolated context per scenario; Phaser WebGL required.",
+  "sourceHashes": {
+    "src/game/ui/ViewportMask.ts": "ca5dc901fbc772731757fecc37544e84db5928b214e10b299ef5d6e4deb119d8",
+    "src/game/scenes/CampaignScene.ts": "e9ce597f761e973061b1b76d3227c74c8ff630012cb01fd6a48cc5bba87d6bf5",
+    "src/game/scenes/GameScene.ts": "a1385a90909af2f015c6f48c8cfa933afe7ef8819ff4b1c40f3cff16da940db7",
+    "src/game/scenes/LeaderboardScene.ts": "1074997b0193f6f49a2905751c656be5eacaf606c3b186c5789b36355760f95e",
+    "src/game/scenes/MainMenuScene.ts": "c122338e18e0a297a6e9ae9551ed0eb9259c9c093fd63ff38b3ae51549074cb2",
+    "src/game/scenes/DifficultyScene.ts": "4a70274f2f08d7cb4ba8744025010c380c93fba6b70d556eb143b46bfd748114",
+    "src/game/campaign/mapLayout.ts": "58e6ad76e28561111ae1f2e3de58ad3b62185f843027aaf814c9b8708876f392",
+    "src/game/ui/layout.ts": "177703e1e0bcdfd5b381216c3882cf398a4fc9f2294553d440831f0eb9af6665",
+    "src/game/qa.ts": "4cb68e859a8e66d5c1d820b0b9c1ead25990ffbea7b8ed2ea607697e5ec94214"
+  },
+  "sourceHashesAfter": {
+    "src/game/ui/ViewportMask.ts": "ca5dc901fbc772731757fecc37544e84db5928b214e10b299ef5d6e4deb119d8",
+    "src/game/scenes/CampaignScene.ts": "e9ce597f761e973061b1b76d3227c74c8ff630012cb01fd6a48cc5bba87d6bf5",
+    "src/game/scenes/GameScene.ts": "a1385a90909af2f015c6f48c8cfa933afe7ef8819ff4b1c40f3cff16da940db7",
+    "src/game/scenes/LeaderboardScene.ts": "1074997b0193f6f49a2905751c656be5eacaf606c3b186c5789b36355760f95e",
+    "src/game/scenes/MainMenuScene.ts": "c122338e18e0a297a6e9ae9551ed0eb9259c9c093fd63ff38b3ae51549074cb2",
+    "src/game/scenes/DifficultyScene.ts": "4a70274f2f08d7cb4ba8744025010c380c93fba6b70d556eb143b46bfd748114",
+    "src/game/campaign/mapLayout.ts": "58e6ad76e28561111ae1f2e3de58ad3b62185f843027aaf814c9b8708876f392",
+    "src/game/ui/layout.ts": "177703e1e0bcdfd5b381216c3882cf398a4fc9f2294553d440831f0eb9af6665",
+    "src/game/qa.ts": "4cb68e859a8e66d5c1d820b0b9c1ead25990ffbea7b8ed2ea607697e5ec94214"
+  },
+  "sourceStable": true,
+  "rendererTypes": [
+    {
+      "tag": "battle-borderkeep",
+      "type": 2,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "tag": "battle-emberfall",
+      "type": 2,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "tag": "battle-frostveil",
+      "type": 2,
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "tag": "battle-classic",
+      "type": 2,
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "mapCases": [],
+  "battleCases": [
+    {
+      "world": "borderkeep",
+      "initialLevel": 10,
+      "rendererType": 2,
+      "initialMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "afterPanZoom": {
+        "zoom": 2.5897936693875825,
+        "center": {
+          "x": 532.7684721428335,
+          "y": 356.12925994816584
+        },
+        "mask": {
+          "destroyed": false,
+          "filterCount": 1,
+          "filterPresent": true,
+          "filterActive": true,
+          "autoUpdate": false,
+          "viewTransform": "world",
+          "hasMainCamera": true,
+          "maskGameObjectIsSource": true,
+          "filterNeedsUpdate": false,
+          "sourceVisible": true,
+          "sourceInSceneList": false,
+          "sourceHasScene": true,
+          "externalKeys": [
+            "camera",
+            "list"
+          ],
+          "externalCount": 1,
+          "externalContainsControllerFilter": true
+        }
+      },
+      "pauseMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "restartMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "restartCleanup": {
+        "destroyed": true,
+        "controllerFilterCleared": true,
+        "oldFilterListCount": 0,
+        "sourceDestroyed": true,
+        "sourceInactive": true,
+        "sourceInvisible": true,
+        "sourceSceneCleared": true,
+        "sourceDisplayListCleared": true
+      },
+      "resizeReuse": {
+        "sameController": true,
+        "sameSource": true,
+        "externalCount": 1,
+        "field": {
+          "x": 0,
+          "y": 104,
+          "width": 390,
+          "height": 676
+        }
+      },
+      "rotateField": {
+        "x": 0,
+        "y": 56,
+        "width": 844,
+        "height": 270
+      },
+      "reentryMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "inputListenersAfterRestart": {
+        "pointerdown": 1,
+        "pointermove": 1,
+        "pointerup": 1
+      },
+      "pixelsOutsideFieldChangedDuringPanZoom": 0,
+      "pixelsInsideFieldChangedDuringPanZoom": 914042,
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\viewport\\battle-borderkeep-initial.png",
+        "artifacts\\road-monster-20261011\\viewport\\battle-borderkeep-panned-zoomed.png",
+        "artifacts\\road-monster-20261011\\viewport\\battle-borderkeep-reentry.png"
+      ]
+    },
+    {
+      "world": "emberfall",
+      "initialLevel": 20,
+      "rendererType": 2,
+      "initialMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "afterPanZoom": {
+        "zoom": 2.5897936693875825,
+        "center": {
+          "x": 532.7684721428335,
+          "y": 356.12925994816584
+        },
+        "mask": {
+          "destroyed": false,
+          "filterCount": 1,
+          "filterPresent": true,
+          "filterActive": true,
+          "autoUpdate": false,
+          "viewTransform": "world",
+          "hasMainCamera": true,
+          "maskGameObjectIsSource": true,
+          "filterNeedsUpdate": false,
+          "sourceVisible": true,
+          "sourceInSceneList": false,
+          "sourceHasScene": true,
+          "externalKeys": [
+            "camera",
+            "list"
+          ],
+          "externalCount": 1,
+          "externalContainsControllerFilter": true
+        }
+      },
+      "pauseMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "restartMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "restartCleanup": {
+        "destroyed": true,
+        "controllerFilterCleared": true,
+        "oldFilterListCount": 0,
+        "sourceDestroyed": true,
+        "sourceInactive": true,
+        "sourceInvisible": true,
+        "sourceSceneCleared": true,
+        "sourceDisplayListCleared": true
+      },
+      "resizeReuse": {
+        "sameController": true,
+        "sameSource": true,
+        "externalCount": 1,
+        "field": {
+          "x": 0,
+          "y": 104,
+          "width": 390,
+          "height": 676
+        }
+      },
+      "rotateField": {
+        "x": 0,
+        "y": 56,
+        "width": 844,
+        "height": 270
+      },
+      "reentryMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "inputListenersAfterRestart": {
+        "pointerdown": 1,
+        "pointermove": 1,
+        "pointerup": 1
+      },
+      "pixelsOutsideFieldChangedDuringPanZoom": 0,
+      "pixelsInsideFieldChangedDuringPanZoom": 915524,
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\viewport\\battle-emberfall-initial.png",
+        "artifacts\\road-monster-20261011\\viewport\\battle-emberfall-panned-zoomed.png",
+        "artifacts\\road-monster-20261011\\viewport\\battle-emberfall-reentry.png"
+      ]
+    },
+    {
+      "world": "frostveil",
+      "initialLevel": 30,
+      "rendererType": 2,
+      "initialMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "afterPanZoom": {
+        "zoom": 2.5897936693875825,
+        "center": {
+          "x": 532.7684721428335,
+          "y": 356.12925994816584
+        },
+        "mask": {
+          "destroyed": false,
+          "filterCount": 1,
+          "filterPresent": true,
+          "filterActive": true,
+          "autoUpdate": false,
+          "viewTransform": "world",
+          "hasMainCamera": true,
+          "maskGameObjectIsSource": true,
+          "filterNeedsUpdate": false,
+          "sourceVisible": true,
+          "sourceInSceneList": false,
+          "sourceHasScene": true,
+          "externalKeys": [
+            "camera",
+            "list"
+          ],
+          "externalCount": 1,
+          "externalContainsControllerFilter": true
+        }
+      },
+      "pauseMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "restartMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "restartCleanup": {
+        "destroyed": true,
+        "controllerFilterCleared": true,
+        "oldFilterListCount": 0,
+        "sourceDestroyed": true,
+        "sourceInactive": true,
+        "sourceInvisible": true,
+        "sourceSceneCleared": true,
+        "sourceDisplayListCleared": true
+      },
+      "resizeReuse": {
+        "sameController": true,
+        "sameSource": true,
+        "externalCount": 1,
+        "field": {
+          "x": 0,
+          "y": 104,
+          "width": 390,
+          "height": 676
+        }
+      },
+      "rotateField": {
+        "x": 0,
+        "y": 56,
+        "width": 844,
+        "height": 270
+      },
+      "reentryMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "inputListenersAfterRestart": {
+        "pointerdown": 1,
+        "pointermove": 1,
+        "pointerup": 1
+      },
+      "pixelsOutsideFieldChangedDuringPanZoom": 0,
+      "pixelsInsideFieldChangedDuringPanZoom": 911893,
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\viewport\\battle-frostveil-initial.png",
+        "artifacts\\road-monster-20261011\\viewport\\battle-frostveil-panned-zoomed.png",
+        "artifacts\\road-monster-20261011\\viewport\\battle-frostveil-reentry.png"
+      ]
+    },
+    {
+      "world": "classic",
+      "initialLevel": null,
+      "rendererType": 2,
+      "initialMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "afterPanZoom": {
+        "zoom": 2.5897936693875825,
+        "center": {
+          "x": 532.7684721428335,
+          "y": 356.12925994816584
+        },
+        "mask": {
+          "destroyed": false,
+          "filterCount": 1,
+          "filterPresent": true,
+          "filterActive": true,
+          "autoUpdate": false,
+          "viewTransform": "world",
+          "hasMainCamera": true,
+          "maskGameObjectIsSource": true,
+          "filterNeedsUpdate": false,
+          "sourceVisible": true,
+          "sourceInSceneList": false,
+          "sourceHasScene": true,
+          "externalKeys": [
+            "camera",
+            "list"
+          ],
+          "externalCount": 1,
+          "externalContainsControllerFilter": true
+        }
+      },
+      "pauseMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "restartMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "restartCleanup": {
+        "destroyed": true,
+        "controllerFilterCleared": true,
+        "oldFilterListCount": 0,
+        "sourceDestroyed": true,
+        "sourceInactive": true,
+        "sourceInvisible": true,
+        "sourceSceneCleared": true,
+        "sourceDisplayListCleared": true
+      },
+      "resizeReuse": {
+        "sameController": true,
+        "sameSource": true,
+        "externalCount": 1,
+        "field": {
+          "x": 0,
+          "y": 104,
+          "width": 390,
+          "height": 676
+        }
+      },
+      "rotateField": {
+        "x": 0,
+        "y": 56,
+        "width": 844,
+        "height": 270
+      },
+      "reentryMask": {
+        "destroyed": false,
+        "filterCount": 1,
+        "filterPresent": true,
+        "filterActive": true,
+        "autoUpdate": false,
+        "viewTransform": "world",
+        "hasMainCamera": true,
+        "maskGameObjectIsSource": true,
+        "filterNeedsUpdate": false,
+        "sourceVisible": true,
+        "sourceInSceneList": false,
+        "sourceHasScene": true,
+        "externalKeys": [
+          "camera",
+          "list"
+        ],
+        "externalCount": 1,
+        "externalContainsControllerFilter": true
+      },
+      "inputListenersAfterRestart": {
+        "pointerdown": 1,
+        "pointermove": 1,
+        "pointerup": 1
+      },
+      "pixelsOutsideFieldChangedDuringPanZoom": 0,
+      "pixelsInsideFieldChangedDuringPanZoom": 916794,
+      "screenshots": [
+        "artifacts\\road-monster-20261011\\viewport\\battle-classic-initial.png",
+        "artifacts\\road-monster-20261011\\viewport\\battle-classic-panned-zoomed.png",
+        "artifacts\\road-monster-20261011\\viewport\\battle-classic-reentry.png"
+      ]
+    }
+  ],
+  "leaderboardCases": [],
+  "safety": {
+    "apiMutationAttempts": [],
+    "pageErrors": [],
+    "consoleErrors": [],
+    "consoleWarnings": [],
+    "failedRequests": [],
+    "badResponses": []
+  },
+  "issues": []
+}

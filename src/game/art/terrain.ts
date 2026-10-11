@@ -35,7 +35,7 @@ function ensureBeaconFrames(scene: Phaser.Scene): void {
 /**
  * Draws the reviewed painted battlefield at the canonical field rectangle.
  * The texture includes road, clearings, ruins, forest, keep, and its original
- * beacon; this layer adds only small runtime health cues and ambient light.
+ * beacon; this layer adds relocated ground clearings and runtime health cues.
  */
 export function paintBattlefield(scene: Phaser.Scene, map: MapDef = MAP1, worldId?: CampaignWorldId): BattlefieldArt {
   const field = map.field;
@@ -44,6 +44,22 @@ export function paintBattlefield(scene: Phaser.Scene, map: MapDef = MAP1, worldI
     .setOrigin(0, 0)
     .setDisplaySize(field.width, field.height)
     .setDepth(0);
+
+  if (!worldId) {
+    // Small soil patches clear the tower footprint of painted rubble/foliage.
+    // Their 26-unit fringe stays inside the shared road-clearance allowance.
+    const clearings = scene.add.graphics().setDepth(1);
+    for (const [index, point] of map.buildable.entries()) {
+      clearings.fillStyle(0x817b48, 0.45); clearings.fillCircle(point.x, point.y, 26);
+      clearings.fillStyle(0x948453, 1); clearings.fillCircle(point.x, point.y, 24);
+      clearings.fillStyle(0x9c905d, 0.6); clearings.fillCircle(point.x - 2, point.y - 2, 20);
+      for (let grain = 0; grain < 35; grain++) {
+        const angle = grain * 2.399963, radius = Math.sqrt((grain + 1) / 36) * 22;
+        clearings.fillStyle([0x645e3c, 0xa39a68, 0x79804c][(grain + index) % 3], 0.55);
+        clearings.fillCircle(point.x + Math.cos(angle) * radius, point.y + Math.sin(angle) * radius, grain % 4 ? 0.8 : 1.6);
+      }
+    }
+  }
 
   const stronghold = map.stronghold;
   const beaconPoint = map.beacon;

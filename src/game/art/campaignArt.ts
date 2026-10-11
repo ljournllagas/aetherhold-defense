@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import type { MapDef } from '../maps/map1.ts';
+import { BUILD_PLOT_POLICY } from '../maps/buildPlotPolicy.ts';
 import { P2 } from './artkit.ts';
 import { CAMPAIGN_ART_MANIFEST } from '../campaign/artManifest.ts';
 import type { CampaignWorldId } from '../campaign/types.ts';
@@ -123,13 +124,13 @@ function paintRoadStones(g: Phaser.GameObjects.Graphics, points: readonly { x: n
 function paintCampaignMapOverlay(g: Phaser.GameObjects.Graphics, map: MapDef, worldId: CampaignWorldId): void {
   const { width, height } = map.field;
   const palette = WORLD_COLOR[worldId];
-  const clearings = map.buildable.slice(0, 18);
+  const clearings = map.buildable;
   for (const point of clearings) {
     g.fillStyle(palette.light, 0.11); g.fillCircle(point.x - map.field.x, point.y - map.field.y, 26);
   }
   const waypoints = map.waypoints.map(point => ({ x: point.x - map.field.x, y: point.y - map.field.y }));
   const road = ROAD_MATERIAL[worldId];
-  brushRoadBand(g, waypoints, road.edge, 50, 0.78);
+  brushRoadBand(g, waypoints, road.edge, BUILD_PLOT_POLICY.campaignRoadRadius * 2, 0.78);
   brushRoadBand(g, waypoints, road.shoulder, 44, 0.96);
   brushRoadBand(g, waypoints, road.bed, 37, 1);
   paintRoadStones(g, waypoints, map.id, worldId);

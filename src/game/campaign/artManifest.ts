@@ -2,6 +2,9 @@ import type { AssetSpec } from '../art/assetManifest.ts';
 import type { CampaignLevelDefinition, CampaignVisualTier, CampaignWorldId } from './types.ts';
 
 export type CampaignArtState = 'final_required' | 'final';
+/** Production sheet packaging: largest painted pose occupies 78% of a cell. */
+export const CAMPAIGN_ATLAS_CONTENT_FRACTION = 0.78;
+export const CAMPAIGN_ATLAS_GROUND_ORIGIN = 0.9;
 export interface CampaignArtSource {
   id: string;
   key: string;
@@ -88,9 +91,9 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
       const rows = Math.max(...Object.values(states).map(state => state.row)) + 1;
       return {
         id: `enemy:${id}`, key: `campaign_enemy_${id}`, path: `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.png`,
-        state: 'final_required' as const, stage: 'gameplay' as const, kind: 'sheet' as const, width: 768, height: rows * 128,
+        state: 'final' as const, stage: 'gameplay' as const, kind: 'sheet' as const, width: 768, height: rows * 128,
         frameWidth: 128, frameHeight: 128, states,
-        qualityFlags: ['final_art_unverified', 'transparent_png_required', 'consistent_feet_anchor', 'no_baked_ui_or_large_shadow', ...(id === 'ashcaller' || id === 'frost_shaman' ? ['support_buff_playback_unverified'] : [])], temporary: 'procedural' as const
+        qualityFlags: ['authored_animation_reviewed', 'transparent_png_required', 'consistent_feet_anchor', 'no_baked_ui_or_large_shadow', ...(id === 'ashcaller' || id === 'frost_shaman' ? ['support_buff_playback_verified'] : [])], temporary: null
       };
     }),
     (() => {
@@ -101,9 +104,9 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
       const rows = Math.max(...Object.values(states).map(state => state.row)) + 1;
       return {
         id: `boss:${id}`, key: `campaign_enemy_${id}`, path: `/assets/campaign/bosses/${id}-atlas-v1.png`,
-        state: 'final_required' as const, stage: 'gameplay' as const, kind: 'sheet' as const, width: 2048, height: rows * 256,
+        state: 'final' as const, stage: 'gameplay' as const, kind: 'sheet' as const, width: 2048, height: rows * 256,
         frameWidth: 256, frameHeight: 256, states,
-        qualityFlags: ['final_art_unverified', 'transparent_png_required', 'consistent_feet_anchor', 'phase_state_readability_required'], temporary: 'procedural' as const
+        qualityFlags: ['authored_animation_reviewed', 'transparent_png_required', 'consistent_feet_anchor', 'phase_state_readability_verified'], temporary: null
       };
     })()
   ]),
@@ -116,9 +119,11 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
 /** A production file is queued only after its manifest entry is promoted and its exact path is listed here. */
 export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
   ...WORLDS.flatMap(worldId => FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v1.png`)),
-  '/assets/campaign/world-map/borderkeep-v1.png',
-  '/assets/campaign/world-map/emberfall-v1.png',
-  '/assets/campaign/world-map/frostveil-v1.png',
+  ...WORLDS.flatMap(worldId => [
+    `/assets/campaign/world-map/${worldId}-v1.png`,
+    ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.png`),
+    `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v1.png`
+  ]),
   ...TOWERS.flatMap(id => ([2, 3] as const).map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.png`))
 ];
 

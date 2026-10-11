@@ -11,14 +11,14 @@ describe('campaign art replacement contract', () => {
     const missing = missingCampaignProductionAssets();
     const required = [...requiredAssets('menu'), ...requiredAssets('campaign'), ...requiredAssets('gameplay')];
 
-    expect(missing).toHaveLength(18);
+    expect(missing).toHaveLength(0);
     expect(missing.every(asset => asset.path.startsWith('/assets/campaign/'))).toBe(true);
     expect(missing.every(asset => asset.qualityFlags.includes('final_art_unverified'))).toBe(true);
     expect(campaignArtAssetsForLoader('menu', missing.map(asset => asset.path))).toEqual([]);
     expect(campaignArtAssetsForLoader('campaign', missing.map(asset => asset.path))).toEqual([]);
     expect(campaignArtAssetsForLoader('gameplay', missing.map(asset => asset.path))).toEqual([]);
     expect(required.filter(asset => asset.path.startsWith('/assets/campaign/'))).toEqual(campaignArtAssetsForLoader('campaign'));
-    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(25);
+    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(43);
     expect(CAMPAIGN_ART_MANIFEST).toHaveLength(43);
   });
 
@@ -40,13 +40,13 @@ describe('campaign art replacement contract', () => {
     expect(towers.every(asset => asset.state === 'final' && asset.temporary === null && !asset.qualityFlags.includes('final_art_unverified'))).toBe(true);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual([
       ...maps.map(asset => asset.path),
-      ...CAMPAIGN_ART_MANIFEST.filter(asset => asset.id.startsWith('world-panel:')).map(asset => asset.path),
+      ...CAMPAIGN_ART_MANIFEST.filter(asset => asset.id.startsWith('world-panel:') || asset.kind === 'sheet').map(asset => asset.path),
       ...towers.map(asset => asset.path)
     ]);
   });
 
   it('queues only promoted assets whose exact production paths are approved', () => {
-    const sheet = missingCampaignProductionAssets().find(asset => asset.kind === 'sheet')!;
+    const sheet = CAMPAIGN_ART_MANIFEST.find(asset => asset.kind === 'sheet')!;
     const finalSheet = { ...sheet, state: 'final' as const };
     const image = CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:borderkeep')!;
 
@@ -55,6 +55,7 @@ describe('campaign art replacement contract', () => {
       frameWidth: finalSheet.frameWidth, frameHeight: finalSheet.frameHeight
     }]);
     expect(resolveCampaignArtAssets([finalSheet], 'gameplay', [`${finalSheet.path}.wrong`])).toEqual([]);
+    expect(resolveCampaignArtAssets([{ ...sheet, state: 'final_required' }], 'gameplay', [sheet.path])).toEqual([]);
     expect(resolveCampaignArtAssets([image], 'gameplay', [image.path])).toEqual([]);
     expect(resolveCampaignArtAssets([image], 'menu', [image.path])).toEqual([]);
     expect(resolveCampaignArtAssets([image], 'campaign', [`${image.path}.wrong`])).toEqual([]);
@@ -85,9 +86,10 @@ describe('campaign art replacement contract', () => {
     const tierTwo = campaignGameplayAssetsForLevel(level, 2);
     expect(tierTwo.map(asset => asset.path)).toEqual([
       '/assets/campaign/maps/borderkeep_a-v1.png',
+      ...CAMPAIGN_ART_MANIFEST.filter(asset => level.enemyIds.some(id => asset.id === `enemy:${id}`)).map(asset => asset.path),
       ...['longbow', 'ember', 'glacier', 'starfire', 'tempest'].map(id => `/assets/campaign/towers/${id}-tier2-v1.png`)
     ]);
-    expect(campaignGameplayAssetsForLevel(level, 1).map(asset => asset.path)).toEqual(['/assets/campaign/maps/borderkeep_a-v1.png']);
+    expect(campaignGameplayAssetsForLevel(level, 1).map(asset => asset.path)).toEqual(tierTwo.filter(asset => !asset.path.includes('/towers/')).map(asset => asset.path));
     expect(campaignGameplayAssetsForLevel(level, 3).filter(asset => asset.path.includes('/towers/')).every(asset => asset.path.includes('-tier3-'))).toBe(true);
     const otherFamily = campaignGameplayAssetsForLevel(getCampaignLevel(11)!, 2);
     expect(otherFamily.some(asset => asset.path === '/assets/campaign/maps/emberfall_a-v1.png')).toBe(true);
@@ -110,8 +112,8 @@ describe('campaign art replacement contract', () => {
     expect([ashcaller.height, frostShaman.height]).toEqual([640, 640]);
     expect(ashcaller.states.buff).toEqual({ row: 4, frames: 6 });
     expect(frostShaman.states.buff).toEqual({ row: 4, frames: 6 });
-    expect(ashcaller.qualityFlags).toContain('support_buff_playback_unverified');
-    expect(frostShaman.qualityFlags).toContain('support_buff_playback_unverified');
+    expect(ashcaller.qualityFlags).toContain('support_buff_playback_verified');
+    expect(frostShaman.qualityFlags).toContain('support_buff_playback_verified');
 
     const animationKeys = (id: string) => campaignAnimationDefinitions(`campaign_enemy_${id}`).map(animation => animation.key);
     expect(animationKeys('ashcaller')).toContain('campaign_enemy_ashcaller_buff');

@@ -1,5 +1,13 @@
 # Campaign Production Assets — Worlds 1–3
 
+## Current status — 2026-10-11
+
+All 43 raster targets are now manifest-final and allowlisted, including the eighteen completed enemy/boss atlases and their 472 required frames. The earlier missing-art allowance has been superseded by the completed production artwork. Current asset prompts, sources, hashes, placement rules and verification are documented in [Road clearance and monster artwork](ROAD_CLEARANCE_AND_MONSTER_ART.md).
+
+## Historical release record — 2026-10-10
+
+The inventory and verification history below describe the earlier release, before the eighteen atlases were completed.
+
 [`src/game/campaign/artManifest.ts`](../src/game/campaign/artManifest.ts) defines
 43 raster targets. The current manifest has 25 `final` targets: three accepted
 world panels, all twelve terrain plates, and ten Tier II/III tower sprites.

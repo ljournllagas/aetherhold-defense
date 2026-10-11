@@ -1,5 +1,7 @@
 import { MAP1, type MapDef, type MapPoint } from '../maps/map1.ts';
 import type { CampaignLevelDefinition } from './types.ts';
+import { BUILD_PLOT_POLICY, resolveBuildPlots } from '../maps/buildPlotPolicy.ts';
+import { TOWERS } from '../config/towers.ts';
 
 type Route = readonly (readonly [number, number])[];
 
@@ -43,6 +45,22 @@ export function resolveCampaignMap(level: CampaignLevelDefinition): MapDef {
     const distance = distanceToRoute(point, waypoints);
     if (distance >= 46 && distance <= 155 && (row + col + variant) % 3 !== 0) buildable.push(point);
   }
+  // Keep the heavy frost opener's two eastern clearings covering the same
+  // repeated approach, so their damage overlaps rather than splitting the pack.
+  if (level.mapLayoutId === 'frostveil_b3') buildable[9] = { x: 753, y: 383 };
+  // Preserve a three-pass defensive clearing for the first boss's paid,
+  // foundation-only opener, on the inside of the western return bend.
+  if (level.mapLayoutId === 'borderkeep_d_boss') {
+    buildable[4] = { x: 721.5, y: 215 };
+    buildable[7] = { x: 438.5, y: 390 };
+    buildable[9] = { x: 438.5, y: 450 };
+    buildable[10] = { x: 721.5, y: 425 };
+  }
   const gate = waypoints[waypoints.length - 1];
-  return { ...MAP1, id: level.mapLayoutId, name: `${level.worldId} · Level ${level.level}`, backgroundKey: `campaign_${family}`, waypoints, buildable, spawn: waypoints[0], gate, stronghold: { x: 1005, y: gate.y - 35 }, beacon: { x: 1005, y: gate.y - 85 } };
+  const plots = resolveBuildPlots(buildable, {
+    road: { route: waypoints, radii: waypoints.slice(1).map(() => BUILD_PLOT_POLICY.campaignRoadRadius) },
+    field: MAP1.field, minimumRange: Math.min(...Object.values(TOWERS).map(tower => tower.levels[0].range)),
+    allowed: point => point.x < 930
+  });
+  return { ...MAP1, id: level.mapLayoutId, name: `${level.worldId} · Level ${level.level}`, backgroundKey: `campaign_${family}`, waypoints, buildable: plots, spawn: waypoints[0], gate, stronghold: { x: 1005, y: gate.y - 35 }, beacon: { x: 1005, y: gate.y - 85 } };
 }

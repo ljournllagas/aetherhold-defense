@@ -1,0 +1,10 @@
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto');
+const {chromium}=require('C:/Users/ljour/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+(async()=>{const base='https://aetherhold-defense.ljournllagas.workers.dev',sha=b=>crypto.createHash('sha256').update(b).digest('hex'),checks=[];
+const html=await fetch(base+'/').then(r=>{assert.equal(r.status,200);return r.text()});assert.equal(sha(html),sha(fs.readFileSync('dist/index.html')));
+const urls=[...html.matchAll(new RegExp('(?:src|href)="(/assets/[^" ]+[.](?:js|css))"','g'))].map(m=>m[1]);
+for(const d of ['public/assets/campaign/enemies','public/assets/campaign/bosses']){for(const f of fs.readdirSync(d,{recursive:true})){if(String(f).endsWith('-atlas-v1.png'))urls.push('/'+path.join(d,String(f)).replaceAll('\\','/').replace('public/',''));}}
+for(const url of urls){const r=await fetch(base+url);assert.equal(r.status,200,url);const b=Buffer.from(await r.arrayBuffer()),local=fs.readFileSync(path.join('dist',url));assert.equal(sha(b),sha(local),url);checks.push({url,sha256:sha(b)});}
+const hr=await fetch(base+'/api/health');assert.equal(hr.status,200);const health=await hr.json();assert.equal(health.ok,true);
+const browser=await chromium.launch({headless:true}),page=await browser.newPage({viewport:{width:1280,height:720}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(base);await page.waitForTimeout(3500);await page.screenshot({path:path.join(__dirname,'live-menu.png')});assert.deepEqual(errors,[]);await browser.close();
+fs.writeFileSync(path.join(__dirname,'release-verification.json'),JSON.stringify({verifiedAt:new Date().toISOString(),base,htmlSha256:sha(html),checks,health,errors},null,2));console.log(JSON.stringify({assets:checks.length,health,errors}));})().catch(e=>{console.error(e);process.exit(1)});

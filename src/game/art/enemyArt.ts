@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import type { EnemyArchetype } from '../../shared/types.ts';
 import atlasMetadata from './enemyAtlasFrames.json';
 import { ensureCampaignEnemyTexture, type CampaignBossArtState } from './campaignArt.ts';
-import { campaignAnimationDefinitions } from '../campaign/artManifest.ts';
+import { CAMPAIGN_ATLAS_CONTENT_FRACTION, CAMPAIGN_ATLAS_GROUND_ORIGIN, campaignAnimationDefinitions } from '../campaign/artManifest.ts';
 import { P2 } from './artkit.ts';
 
 type Facing = 'left' | 'right';
@@ -109,14 +109,16 @@ function buildCampaignEnemyVisual(scene: Phaser.Scene, archetype: EnemyArchetype
   const frameName = art.final ? 'walk_0' : '__BASE';
   const frame = { name: frameName, x: 0, y: 0, width: size, height: size, area: size * size, facing: 'right' as const, cycle: 0, pivot: { x: size / 2, y: size }, baselineSourceY: size };
   const view = scene.add.container(0, 0), body = scene.add.container(0, 0);
-  const sprite = (art.final ? scene.add.sprite(0, 0, key, frameName) : scene.add.sprite(0, 0, key)).setOrigin(0.5, 1).setScale(dimension / size);
+  const groundOrigin = art.final ? CAMPAIGN_ATLAS_GROUND_ORIGIN : 1;
+  const sourceScale = dimension / (size * (art.final ? CAMPAIGN_ATLAS_CONTENT_FRACTION : 1));
+  const sprite = (art.final ? scene.add.sprite(0, 0, key, frameName) : scene.add.sprite(0, 0, key)).setOrigin(0.5, groundOrigin).setScale(sourceScale);
   const overlays = scene.add.container(0, 0);
   body.add(sprite); body.add(overlays); view.add(body);
 
   const overlay = (draw: (g: Phaser.GameObjects.Graphics) => void): Phaser.GameObjects.Graphics => {
-    // Graphics use source-atlas coordinates. Match the sprite's (0.5, 1) origin
+    // Graphics use source-atlas coordinates. Match the sprite's ground origin
     // after scaling; object position itself is not scaled by Phaser.
-    const g = scene.add.graphics().setPosition(-dimension / 2, -dimension).setScale(dimension / size);
+    const g = scene.add.graphics().setPosition(-size * sourceScale / 2, -size * sourceScale * groundOrigin).setScale(sourceScale);
     draw(g); overlays.add(g); return g;
   };
   let leftArmor: Phaser.GameObjects.Graphics | null = null, rightArmor: Phaser.GameObjects.Graphics | null = null;

@@ -80,6 +80,17 @@ function expectSamePoint(actual: { x: number; y: number }, expected: { x: number
 }
 
 describe('campaign enemy animation playback', () => {
+  it('anchors the authored atlas baseline at the enemy ground position', () => {
+    const f = fixture();
+    buildEnemyVisual(f.scene, 'warlord', 'cinder_colossus');
+    expect(f.sprite.originY).toBe(0.9);
+    expect(spritePoint(f.sprite, { x: 128, y: 256 * 0.9 }, 256).y).toBeCloseTo(0);
+  });
+  it('sizes painted content independently of the transparent packaging gutter', () => {
+    const f = fixture();
+    const visual = buildEnemyVisual(f.scene, 'warlord', 'cinder_colossus');
+    expect(f.sprite.scaleX * 256 * 0.78).toBeCloseTo(visual.maxVisualDimension);
+  });
   it('keeps boss overlays on the sprite origin through phase changes and both facings', () => {
     const bosses = [
       { id: 'cinder_colossus', phases: [{ phase: 1, telegraph: false, guarded: false }, { phase: 2, telegraph: false, guarded: false }, { phase: 3, telegraph: false, guarded: false }] },

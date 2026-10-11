@@ -1,3 +1,6 @@
+import { resolveBuildPlots, type RoadEnvelope } from './buildPlotPolicy.ts';
+import { TOWERS } from '../config/towers.ts';
+
 /**
  * Single production battlefield: Ancient Border Keep.
  * World coordinates use the full 1280x720 game canvas. The painted map is a
@@ -52,12 +55,26 @@ const pathNativePx: ReadonlyArray<readonly [number, number]> = [
 
 /** Candidate centers are only in the broad unmarked clearings beside the road. */
 const buildableNativePx: ReadonlyArray<readonly [number, number]> = [
-  [330, 300], [550, 295], [780, 305], [1000, 320],
-  [500, 555], [630, 570], [745, 575], [210, 570], [1370, 480]
+  [400, 275], [590, 280], [875, 295], [1100, 375],
+  [555, 560], [665, 580], [805, 590], [235, 575], [1060, 775]
 ];
 
 const waypoints = pathNativePx.map(mapNativeToWorld);
-const buildable = buildableNativePx.map(mapNativeToWorld);
+// Painted shoulder half-widths traced in native pixels, one per route segment.
+// The wider upper bend and eastern turn differ from the narrow southern road.
+const roadHalfWidthsNative = [48, 48, 43, 39, 38, 38, 38, 40, 43, 46, 48, 49,
+  49, 48, 46, 43, 41, 40, 39, 38, 39, 42, 44, 46, 46, 44, 42, 40, 39, 39,
+  40, 42, 43, 44, 45, 43, 40];
+export const CLASSIC_ROAD_ENVELOPE: RoadEnvelope = {
+  route: waypoints, radii: roadHalfWidthsNative.map(width => width * FIELD.width / ART_WIDTH)
+};
+const authored = buildableNativePx.map(mapNativeToWorld);
+const buildable = resolveBuildPlots(authored, {
+  road: CLASSIC_ROAD_ENVELOPE, field: FIELD,
+  minimumRange: Math.min(...Object.values(TOWERS).map(tower => tower.levels[0].range)),
+  // Retain the side and region of the existing clearings; avoid distant forest/keep candidates.
+  allowed: (point, index) => Math.hypot(point.x - authored[index].x, point.y - authored[index].y) <= 95
+});
 const spawn = mapNativeToWorld(pathNativePx[0]);
 const gate = mapNativeToWorld([1475, 420]);
 

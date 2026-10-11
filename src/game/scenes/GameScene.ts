@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import type { GameOverData } from './GameOverScene.ts';
 import type { GameStartData, LoadingRequest } from './PreloadScene.ts';
 import { MAP1, HUD_HEIGHT, type MapDef } from '../maps/map1.ts';
+import { BUILD_PLOT_POLICY } from '../maps/buildPlotPolicy.ts';
 import { TOWER_LIST, towerTotalInvested, isTowerId } from '../config/towers.ts';
 import { ENEMIES, BOSS_BEHAVIOR, BONUS_TARGET_HP_PER_WAVE } from '../config/enemies.ts';
 import { getDifficulty } from '../config/difficulties.ts';
@@ -928,8 +929,8 @@ export class GameScene extends Phaser.Scene {
     const before = new Set(this.children.list);
     this.field = paintBattlefield(this, this.map, this.campaign?.definition.worldId);
     this.worldRoot?.add(this.children.list.filter(view => !before.has(view) && !view.parentContainer));
-    this.plotMarkers = this.map.buildable.map((p, i) => this.world(this.add.circle(p.x, p.y, 22, 0, 0)
-      .setStrokeStyle(1, 0x63c77c, 0).setDepth(2).setData('plot', i)));
+    this.plotMarkers = this.map.buildable.map((p, i) => this.world(this.add.circle(p.x, p.y, BUILD_PLOT_POLICY.radius, 0, 0)
+      .setStrokeStyle(BUILD_PLOT_POLICY.strokeWidth, 0x63c77c, 0).setDepth(2).setData('plot', i)));
     this.refreshPlots();
     this.enemyLayer = null;
   }
@@ -971,7 +972,7 @@ export class GameScene extends Phaser.Scene {
       const valid = placing && this.placementCheck(this.placingTowerId!, index).ok;
       const color = placing ? (valid ? 0x8ee6a0 : 0xff8078) : 0xe8c879;
       marker.setVisible(placing || !this.occupied.has(index)).setFillStyle(0x0a0e12, 0.35)
-        .setStrokeStyle(placing ? 3 : 2, color, placing ? 1 : 0.85);
+        .setStrokeStyle(placing ? BUILD_PLOT_POLICY.strokeWidth : BUILD_PLOT_POLICY.idleStrokeWidth, color, placing ? 1 : 0.85);
     });
   }
 

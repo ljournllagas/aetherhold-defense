@@ -141,6 +141,9 @@ describe('campaign settlement gates in the scene', () => {
 describe('independent natural-economy challenge', () => {
   it.each([8, 18, 28, 10, 20, 30])('clears heavy introduction or boss level %i with paid foundation towers only', level => {
     const run = fixture(level), definition = CAMPAIGN_LEVELS[level - 1];
+    const bosses: Enemy[] = [];
+    const originalSpawn = run.spawnEnemy.bind(run);
+    run.spawnEnemy = (id: string, hpBonus: number) => { const spawned = originalSpawn(id, hpBonus); if (spawned.isBoss) bosses.push(spawned); return spawned; };
     expect([run.gold, run.lives]).toEqual([600, 20]);
     const initialVault = run.vault, consumePowerUp = vi.spyOn(initialVault, 'beginUse');
     const purchases: Array<{ kind: 'build' | 'upgrade'; tower: TowerId; from: number; to: number; cost: number; goldAfter: number }> = [];
@@ -199,7 +202,7 @@ describe('independent natural-economy challenge', () => {
       expect(ticks).toBeLessThan(60 * 240);
     }
 
-    expect(run.campaignResult?.outcome, JSON.stringify({ wave: run.wave, lives: run.lives, score: run.campaignResult?.score, bossesKilled: run.bossesKilled, gold: run.gold, towers: run.towers.map((tower: Tower) => [tower.towerId, tower.level]) })).toBe('victory');
+    expect(run.campaignResult?.outcome, JSON.stringify({ wave: run.wave, lives: run.lives, score: run.campaignResult?.score, bossesKilled: run.bossesKilled, bossHealth: bosses.map(boss => [boss.hp, boss.maxHp]), gold: run.gold, towers: run.towers.map((tower: Tower) => [tower.towerId, tower.level, tower.x, tower.y]) })).toBe('victory');
     expect(run.campaignResult?.score).toBeGreaterThanOrEqual(definition.mastery.scoreTarget);
     expect(run.lives).toBeGreaterThanOrEqual(definition.mastery.minimumLivesForStar);
     expect(run.bossesKilled).toBe(definition.bossEnemyId ? 1 : 0);

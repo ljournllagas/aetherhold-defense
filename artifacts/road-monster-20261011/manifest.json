@@ -1,0 +1,1105 @@
+[
+  {
+    "id": "map:borderkeep:a",
+    "key": "campaign_borderkeep_a",
+    "path": "/assets/campaign/maps/borderkeep_a-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 1672,
+    "height": 940,
+    "states": {},
+    "qualityFlags": [
+      "terrain_plate",
+      "runtime_geometry_overlay"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "map:borderkeep:b",
+    "key": "campaign_borderkeep_b",
+    "path": "/assets/campaign/maps/borderkeep_b-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 1672,
+    "height": 940,
+    "states": {},
+    "qualityFlags": [
+      "terrain_plate",
+      "runtime_geometry_overlay"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "map:borderkeep:c",
+    "key": "campaign_borderkeep_c",
+    "path": "/assets/campaign/maps/borderkeep_c-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 1672,
+    "height": 940,
+    "states": {},
+    "qualityFlags": [
+      "terrain_plate",
+      "runtime_geometry_overlay"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "map:borderkeep:d",
+    "key": "campaign_borderkeep_d",
+    "path": "/assets/campaign/maps/borderkeep_d-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 1672,
+    "height": 940,
+    "states": {},
+    "qualityFlags": [
+      "terrain_plate",
+      "runtime_geometry_overlay"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "map:emberfall:a",
+    "key": "campaign_emberfall_a",
+    "path": "/assets/campaign/maps/emberfall_a-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 1672,
+    "height": 940,
+    "states": {},
+    "qualityFlags": [
+      "terrain_plate",
+      "runtime_geometry_overlay"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "map:emberfall:b",
+    "key": "campaign_emberfall_b",
+    "path": "/assets/campaign/maps/emberfall_b-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 1672,
+    "height": 940,
+    "states": {},
+    "qualityFlags": [
+      "terrain_plate",
+      "runtime_geometry_overlay"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "map:emberfall:c",
+    "key": "campaign_emberfall_c",
+    "path": "/assets/campaign/maps/emberfall_c-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 1672,
+    "height": 940,
+    "states": {},
+    "qualityFlags": [
+      "terrain_plate",
+      "runtime_geometry_overlay"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "map:emberfall:d",
+    "key": "campaign_emberfall_d",
+    "path": "/assets/campaign/maps/emberfall_d-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 1672,
+    "height": 940,
+    "states": {},
+    "qualityFlags": [
+      "terrain_plate",
+      "runtime_geometry_overlay"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "map:frostveil:a",
+    "key": "campaign_frostveil_a",
+    "path": "/assets/campaign/maps/frostveil_a-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 1672,
+    "height": 940,
+    "states": {},
+    "qualityFlags": [
+      "terrain_plate",
+      "runtime_geometry_overlay"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "map:frostveil:b",
+    "key": "campaign_frostveil_b",
+    "path": "/assets/campaign/maps/frostveil_b-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 1672,
+    "height": 940,
+    "states": {},
+    "qualityFlags": [
+      "terrain_plate",
+      "runtime_geometry_overlay"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "map:frostveil:c",
+    "key": "campaign_frostveil_c",
+    "path": "/assets/campaign/maps/frostveil_c-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 1672,
+    "height": 940,
+    "states": {},
+    "qualityFlags": [
+      "terrain_plate",
+      "runtime_geometry_overlay"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "map:frostveil:d",
+    "key": "campaign_frostveil_d",
+    "path": "/assets/campaign/maps/frostveil_d-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 1672,
+    "height": 940,
+    "states": {},
+    "qualityFlags": [
+      "terrain_plate",
+      "runtime_geometry_overlay"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "world-panel:borderkeep",
+    "key": "campaign_worldmap_borderkeep",
+    "path": "/assets/campaign/world-map/borderkeep-v1.png",
+    "state": "final",
+    "stage": "campaign",
+    "kind": "image",
+    "width": 768,
+    "height": 432,
+    "states": {},
+    "qualityFlags": [
+      "biome_illustration"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "enemy:marchling",
+    "key": "campaign_enemy_marchling",
+    "path": "/assets/campaign/enemies/borderkeep/marchling-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "enemy:skitter",
+    "key": "campaign_enemy_skitter",
+    "path": "/assets/campaign/enemies/borderkeep/skitter-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "enemy:stoneback",
+    "key": "campaign_enemy_stoneback",
+    "path": "/assets/campaign/enemies/borderkeep/stoneback-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "enemy:ironhide",
+    "key": "campaign_enemy_ironhide",
+    "path": "/assets/campaign/enemies/borderkeep/ironhide-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "enemy:veilborn",
+    "key": "campaign_enemy_veilborn",
+    "path": "/assets/campaign/enemies/borderkeep/veilborn-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "boss:hollow_warden",
+    "key": "campaign_enemy_hollow_warden",
+    "path": "/assets/campaign/bosses/hollow_warden-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 2048,
+    "height": 1280,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 6
+      },
+      "walk": {
+        "row": 1,
+        "frames": 8
+      },
+      "attack": {
+        "row": 2,
+        "frames": 8
+      },
+      "special": {
+        "row": 3,
+        "frames": 8
+      },
+      "death": {
+        "row": 4,
+        "frames": 8
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "phase_state_readability_required"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "world-panel:emberfall",
+    "key": "campaign_worldmap_emberfall",
+    "path": "/assets/campaign/world-map/emberfall-v1.png",
+    "state": "final",
+    "stage": "campaign",
+    "kind": "image",
+    "width": 768,
+    "height": 432,
+    "states": {},
+    "qualityFlags": [
+      "biome_illustration"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "enemy:cinderling",
+    "key": "campaign_enemy_cinderling",
+    "path": "/assets/campaign/enemies/emberfall/cinderling-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "enemy:ashrunner",
+    "key": "campaign_enemy_ashrunner",
+    "path": "/assets/campaign/enemies/emberfall/ashrunner-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "enemy:magmahide",
+    "key": "campaign_enemy_magmahide",
+    "path": "/assets/campaign/enemies/emberfall/magmahide-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "enemy:ember_brute",
+    "key": "campaign_enemy_ember_brute",
+    "path": "/assets/campaign/enemies/emberfall/ember_brute-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "enemy:ashcaller",
+    "key": "campaign_enemy_ashcaller",
+    "path": "/assets/campaign/enemies/emberfall/ashcaller-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 640,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      },
+      "buff": {
+        "row": 4,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow",
+      "support_buff_playback_unverified"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "boss:cinder_colossus",
+    "key": "campaign_enemy_cinder_colossus",
+    "path": "/assets/campaign/bosses/cinder_colossus-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 2048,
+    "height": 1536,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 6
+      },
+      "walk": {
+        "row": 1,
+        "frames": 8
+      },
+      "attack": {
+        "row": 2,
+        "frames": 8
+      },
+      "armor_break": {
+        "row": 3,
+        "frames": 8
+      },
+      "exposed_core": {
+        "row": 4,
+        "frames": 8
+      },
+      "death": {
+        "row": 5,
+        "frames": 8
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "phase_state_readability_required"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "world-panel:frostveil",
+    "key": "campaign_worldmap_frostveil",
+    "path": "/assets/campaign/world-map/frostveil-v1.png",
+    "state": "final",
+    "stage": "campaign",
+    "kind": "image",
+    "width": 768,
+    "height": 432,
+    "states": {},
+    "qualityFlags": [
+      "biome_illustration"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "enemy:snowstalker",
+    "key": "campaign_enemy_snowstalker",
+    "path": "/assets/campaign/enemies/frostveil/snowstalker-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "enemy:icebound",
+    "key": "campaign_enemy_icebound",
+    "path": "/assets/campaign/enemies/frostveil/icebound-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "enemy:frostback",
+    "key": "campaign_enemy_frostback",
+    "path": "/assets/campaign/enemies/frostveil/frostback-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "enemy:glacier_knight",
+    "key": "campaign_enemy_glacier_knight",
+    "path": "/assets/campaign/enemies/frostveil/glacier_knight-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 512,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "enemy:frost_shaman",
+    "key": "campaign_enemy_frost_shaman",
+    "path": "/assets/campaign/enemies/frostveil/frost_shaman-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 768,
+    "height": 640,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 4
+      },
+      "walk": {
+        "row": 1,
+        "frames": 6
+      },
+      "attack": {
+        "row": 2,
+        "frames": 6
+      },
+      "death": {
+        "row": 3,
+        "frames": 6
+      },
+      "buff": {
+        "row": 4,
+        "frames": 6
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "no_baked_ui_or_large_shadow",
+      "support_buff_playback_unverified"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "boss:frostbound_matriarch",
+    "key": "campaign_enemy_frostbound_matriarch",
+    "path": "/assets/campaign/bosses/frostbound_matriarch-atlas-v1.png",
+    "state": "final_required",
+    "stage": "gameplay",
+    "kind": "sheet",
+    "width": 2048,
+    "height": 1536,
+    "frameWidth": 256,
+    "frameHeight": 256,
+    "states": {
+      "idle": {
+        "row": 0,
+        "frames": 6
+      },
+      "walk": {
+        "row": 1,
+        "frames": 8
+      },
+      "attack": {
+        "row": 2,
+        "frames": 8
+      },
+      "freeze_cast": {
+        "row": 3,
+        "frames": 8
+      },
+      "phase_two": {
+        "row": 4,
+        "frames": 8
+      },
+      "death": {
+        "row": 5,
+        "frames": 8
+      }
+    },
+    "qualityFlags": [
+      "final_art_unverified",
+      "transparent_png_required",
+      "consistent_feet_anchor",
+      "phase_state_readability_required"
+    ],
+    "temporary": "procedural"
+  },
+  {
+    "id": "tower:longbow:tier2",
+    "key": "campaign_tower_longbow_tier2",
+    "path": "/assets/campaign/towers/longbow-tier2-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 192,
+    "height": 192,
+    "states": {},
+    "qualityFlags": [
+      "transparent_png_required",
+      "cosmetic_only",
+      "classic_art_unchanged"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "tower:longbow:tier3",
+    "key": "campaign_tower_longbow_tier3",
+    "path": "/assets/campaign/towers/longbow-tier3-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 192,
+    "height": 192,
+    "states": {},
+    "qualityFlags": [
+      "transparent_png_required",
+      "cosmetic_only",
+      "classic_art_unchanged"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "tower:ember:tier2",
+    "key": "campaign_tower_ember_tier2",
+    "path": "/assets/campaign/towers/ember-tier2-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 192,
+    "height": 192,
+    "states": {},
+    "qualityFlags": [
+      "transparent_png_required",
+      "cosmetic_only",
+      "classic_art_unchanged"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "tower:ember:tier3",
+    "key": "campaign_tower_ember_tier3",
+    "path": "/assets/campaign/towers/ember-tier3-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 192,
+    "height": 192,
+    "states": {},
+    "qualityFlags": [
+      "transparent_png_required",
+      "cosmetic_only",
+      "classic_art_unchanged"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "tower:glacier:tier2",
+    "key": "campaign_tower_glacier_tier2",
+    "path": "/assets/campaign/towers/glacier-tier2-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 192,
+    "height": 192,
+    "states": {},
+    "qualityFlags": [
+      "transparent_png_required",
+      "cosmetic_only",
+      "classic_art_unchanged"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "tower:glacier:tier3",
+    "key": "campaign_tower_glacier_tier3",
+    "path": "/assets/campaign/towers/glacier-tier3-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 192,
+    "height": 192,
+    "states": {},
+    "qualityFlags": [
+      "transparent_png_required",
+      "cosmetic_only",
+      "classic_art_unchanged"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "tower:starfire:tier2",
+    "key": "campaign_tower_starfire_tier2",
+    "path": "/assets/campaign/towers/starfire-tier2-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 192,
+    "height": 192,
+    "states": {},
+    "qualityFlags": [
+      "transparent_png_required",
+      "cosmetic_only",
+      "classic_art_unchanged"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "tower:starfire:tier3",
+    "key": "campaign_tower_starfire_tier3",
+    "path": "/assets/campaign/towers/starfire-tier3-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 192,
+    "height": 192,
+    "states": {},
+    "qualityFlags": [
+      "transparent_png_required",
+      "cosmetic_only",
+      "classic_art_unchanged"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "tower:tempest:tier2",
+    "key": "campaign_tower_tempest_tier2",
+    "path": "/assets/campaign/towers/tempest-tier2-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 192,
+    "height": 192,
+    "states": {},
+    "qualityFlags": [
+      "transparent_png_required",
+      "cosmetic_only",
+      "classic_art_unchanged"
+    ],
+    "temporary": null
+  },
+  {
+    "id": "tower:tempest:tier3",
+    "key": "campaign_tower_tempest_tier3",
+    "path": "/assets/campaign/towers/tempest-tier3-v1.png",
+    "state": "final",
+    "stage": "gameplay",
+    "kind": "image",
+    "width": 192,
+    "height": 192,
+    "states": {},
+    "qualityFlags": [
+      "transparent_png_required",
+      "cosmetic_only",
+      "classic_art_unchanged"
+    ],
+    "temporary": null
+  }
+]

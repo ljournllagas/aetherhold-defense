@@ -98,6 +98,14 @@ function fakeBattlefieldScene(existingTextures: readonly string[]) {
 }
 
 describe('campaign terrain plate composition', () => {
+  it('paints a ground clearing at every relocated Classic plot without replacing its road', () => {
+    const fixture = fakeBattlefieldScene(['map_ancient_border_keep']);
+    paintBattlefield(fixture.scene as never, MAP1);
+    for (const point of MAP1.buildable) {
+      expect(fixture.calls.some(call => call.kind === 'graphics.fillCircle' && call.args[0] === point.x && call.args[1] === point.y && call.args[2] === 24)).toBe(true);
+    }
+    expect(fixture.calls.filter(call => call.kind === 'image').map(call => call.args[2])).toEqual(['map_ancient_border_keep']);
+  });
   it('composites the loaded plate with the actual route and clearings, then caches per variant map id', () => {
     const base = resolveCampaignMap(CAMPAIGN_LEVELS[0]);
     const variant = resolveCampaignMap(CAMPAIGN_LEVELS[1]);
