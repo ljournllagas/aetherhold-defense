@@ -130,42 +130,43 @@ export class MainMenuScene extends Phaser.Scene {
       this.add.text(W / 2, best ? bestY + 16 : bestY, `Legacy era ${legacy.scoreVersion} best  ·  ${legacy.score.toLocaleString('en-US')} pts  ·  Wave ${legacy.wave}`, style(12, C.textSecondary)).setOrigin(0.5).setWordWrapWidth(bestWrap);
     }
 
-    // The saved-score action lives in the footer band: above the button stack on the
-    // narrow phone layout, and below it everywhere else, so it never overlaps the
-    // legacy bests or Play.
-    let savedY = H - SAVED_BAND_HEIGHT;
+    const savedY = H - SAVED_BAND_HEIGHT;
     if (narrowCompact) {
       const width = Math.min(360, W - 32);
       const height = 44;
       const gap = 8;
-      const startY = Math.max(H * 0.52 + SAVED_BAND_HEIGHT, H - (height * 4 + gap * 3) - 18);
-      savedY = startY - SAVED_BAND_HEIGHT;
+      const startY = H - SAVED_BAND_HEIGHT - (height * 4 + gap * 3) - 12;
       addButton(this, (W - width) / 2, startY, width, height, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave');
-      addButton(this, (W - width) / 2, startY + height + gap, width, height, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score');
-      addButton(this, (W - width) / 2, startY + (height + gap) * 2, width, height, 'Settings', false, () => this.scene.start('Settings'));
-      addButton(this, (W - width) / 2, startY + (height + gap) * 3, width, height, 'Progression', false, () => this.scene.start('Progression'));
+      addButton(this, (W - width) / 2, startY + height + gap, width, height, 'Classic Siege', true, () => this.scene.start('Difficulty'), 'hud_wave');
+      addButton(this, (W - width) / 2, startY + (height + gap) * 2, width, height, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score');
+      const half = (width - gap) / 2;
+      const lastY = startY + (height + gap) * 3;
+      addButton(this, (W - width) / 2, lastY, half, height, 'Settings', false, () => this.scene.start('Settings'));
+      addButton(this, (W - width) / 2 + half + gap, lastY, half, height, 'Progression', false, () => this.scene.start('Progression'));
     } else if (compact) {
       const gap = 12;
       const margin = 24;
-      const width = (W - margin * 2 - gap * 3) / 4;
-      const total = width * 4 + gap * 3;
-      const startX = (W - total) / 2;
-      const height = 48;
-      const y = Math.min(H - height - 20, H * (best ? 0.64 : 0.61));
-      addButton(this, startX, y, width, height, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave');
-      addButton(this, startX + width + gap, y, width, height, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score');
-      addButton(this, startX + (width + gap) * 2, y, width, height, 'Settings', false, () => this.scene.start('Settings'));
-      addButton(this, startX + (width + gap) * 3, y, width, height, 'Progression', false, () => this.scene.start('Progression'));
+      const total = W - margin * 2;
+      const modeWidth = (total - gap) / 2;
+      const width = (total - gap * 2) / 3;
+      const height = 44;
+      const y = H - SAVED_BAND_HEIGHT - 12 - height * 2 - gap;
+      addButton(this, margin, y, modeWidth, height, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave');
+      addButton(this, margin + modeWidth + gap, y, modeWidth, height, 'Classic Siege', true, () => this.scene.start('Difficulty'), 'hud_wave');
+      addButton(this, margin, y + height + gap, width, height, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score');
+      addButton(this, margin + width + gap, y + height + gap, width, height, 'Settings', false, () => this.scene.start('Settings'));
+      addButton(this, margin + (width + gap) * 2, y + height + gap, width, height, 'Progression', false, () => this.scene.start('Progression'));
     } else {
-      const width = Math.min(500, Math.max(320, W * 0.29));
+      const width = Math.min(680, Math.max(600, W * 0.4));
       const startY = H * (best ? 0.588 : 0.566);
       const playHeight = Math.min(98, H * 0.105);
       const secondaryHeight = Math.min(76, H * 0.082);
       const gap = Math.max(12, Math.min(16, H * 0.018));
-      addButton(this, (W - width) / 2, startY, width, playHeight, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave');
+      const half = (width - 12) / 2;
+      addButton(this, (W - width) / 2, startY, half, playHeight, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave');
+      addButton(this, (W - width) / 2 + half + 12, startY, half, playHeight, 'Classic Siege', true, () => this.scene.start('Difficulty'), 'hud_wave');
       addButton(this, (W - width) / 2, startY + playHeight + gap, width, secondaryHeight, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score');
       const lastY = startY + playHeight + gap + secondaryHeight + gap;
-      const half = (width - 12) / 2;
       addButton(this, (W - width) / 2, lastY, half, secondaryHeight, 'Settings', false, () => this.scene.start('Settings'));
       addButton(this, (W - width) / 2 + half + 12, lastY, half, secondaryHeight, 'Progression', false, () => this.scene.start('Progression'));
     }

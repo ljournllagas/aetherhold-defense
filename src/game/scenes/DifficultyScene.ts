@@ -174,7 +174,7 @@ export class DifficultyScene extends Phaser.Scene {
       const description = compact ? compactDescriptions[difficulty.id] : difficulty.description;
       this.add.text(x + cardWidth / 2, descriptionY, description, style(compact ? 12 : 13, C.textSecondary))
         .setOrigin(0.5, 0).setWordWrapWidth(cardWidth - 34).setAlign('center');
-      const statTop = cardY + cardHeight - (compact ? 53 : 128);
+      const statTop = cardY + cardHeight - (compact ? 53 : 114);
       const rowGap = compact ? 16 : 35;
       const statRows = [
         [`STARTING GOLD`, `${difficulty.startingGold.toLocaleString('en-US')}`, 'hud_gold'],

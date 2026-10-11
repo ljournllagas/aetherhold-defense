@@ -31,13 +31,13 @@ afterAll(async () => {
   const fs = await import(moduleName) as { writeFileSync(path: string, text: string): void };
   fs.writeFileSync(path,JSON.stringify({ task: 'P3', simulationStepMs: SIMULATION_STEP_MS, strategy: '600 gold / 20 lives; Ranger3 opener for unarmored units, Arcane3 for physical armor; double Arcane2 then max Arcane/Frost for all-heavy unwarded roster. Build at best route coverage. Execute purchased upgrades during preparation and every simulated second. Use Strongest for Arcane/Frost in heavy rosters, Weakest for Rangers, First otherwise, all Strongest on boss waves. Discard relics; no sidegrades, grants, selling, or permanent stat bonuses.', results: balanceTraces },null,2));
 });
-function repo(through: number): CampaignRepository {
+function repo(through: number, completionOnly = false): CampaignRepository {
   const repository = new CampaignRepository(null);
-  for (let level = 1; level <= through; level++) repository.recordClear(level,100000,20);
+  for (let level = 1; level <= through; level++) repository.recordClear(level,completionOnly ? 0 : 100000,completionOnly ? 1 : 20);
   return repository;
 }
-function fixture(level = 1, through = 30): any {
-  const repository = repo(through);
+function fixture(level = 1, through = 30, completionOnly = false): any {
+  const repository = repo(through, completionOnly);
   vi.spyOn(campaignRepository,'view').mockImplementation(() => repository.view());
   vi.spyOn(campaignRepository,'recordClear').mockImplementation((id,score,lives) => repository.recordClear(id,score,lives));
   vi.spyOn(SoundManager,'get').mockReturnValue(anyStub());
@@ -149,8 +149,10 @@ function bestPlot(map: MapDef, occupied: ReadonlySet<number>, range: number): nu
 // best route coverage, and cheapest remaining upgrades;
 // no relics, selling, sidegrades, QA grants, or persistent bonuses.
 describe('all authored campaign battles in the shared fixed-step simulation', () => {
-  it.each(CAMPAIGN_LEVELS)('level $level can clear with ordinary foundation towers', definition => {
-    const run = fixture(definition.level);
+  it.each(CAMPAIGN_LEVELS.flatMap(level => ['completion-only', 'unlocked-replay'].map(profile => ({ ...level, profile }))))('$profile level $level can clear with ordinary foundation towers', definition => {
+    const run = fixture(definition.level, definition.profile === 'completion-only' ? definition.level - 1 : 30, definition.profile === 'completion-only');
+    expect(run.debugAssisted).toBe(false);
+    expect([run.gold, run.lives]).toEqual([600, 20]);
     const purchases: unknown[] = [];
     const build = run.tryBuild.bind(run), upgradeSelected = run.upgradeSelected.bind(run);
     run.tryBuild = (id: string, plot: number) => {
@@ -217,6 +219,7 @@ describe('all authored campaign battles in the shared fixed-step simulation', ()
     expect(run.campaignResult?.outcome,`level ${definition.level}, wave ${run.wave}, lives ${run.lives}`).toBe('victory');
     expect(run.campaignResult?.lives).toBeGreaterThanOrEqual(definition.mastery.minimumLivesForStar);
     expect(run.campaignResult?.score,`level ${definition.level} target ${definition.mastery.scoreTarget}`).toBeGreaterThanOrEqual(definition.mastery.scoreTarget);
-    balanceTraces.push({ level: definition.level, waves: run.wave, outcome: run.campaignResult?.outcome, score: run.campaignResult?.score, scoreTarget: definition.mastery.scoreTarget, lives: run.lives, livesTarget: definition.mastery.minimumLivesForStar, bossesKilled: run.bossesKilled, kills: run.enemiesKilled, durationSeconds: Math.round(run.gameTimeMs/1000), purchases });
+    expect(run.campaignResult?.clear?.progress).toMatchObject({ completionStar: true, livesStar: true, scoreStar: true });
+    balanceTraces.push({ profile: definition.profile, progressionStarsBefore: definition.profile === 'completion-only' ? definition.level - 1 : 90, debugAssisted: run.debugAssisted, randomValue: 0.99, startingGold: 600, startingLives: 20, relicUses: [], remainingGold: run.gold, mastery: run.campaignResult?.clear?.progress, level: definition.level, waves: run.wave, outcome: run.campaignResult?.outcome, score: run.campaignResult?.score, scoreTarget: definition.mastery.scoreTarget, lives: run.lives, livesTarget: definition.mastery.minimumLivesForStar, bossesKilled: run.bossesKilled, kills: run.enemiesKilled, durationSeconds: Math.round(run.gameTimeMs/1000), purchases });
   },30000);
 });

@@ -211,6 +211,8 @@ export function installQA(game: Phaser.Game): void {
           finalScore: 18900
         }
       };
+      // Gameplay readiness replaces menu icon textures; stop their live Images first.
+      game.scene.stop('MainMenu');
       game.scene.start('Preload', { stage: 'gameplay', destination: 'GameOver', data } satisfies LoadingRequest);
       return;
     }

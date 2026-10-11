@@ -219,7 +219,7 @@ const menuFallbacks = new WeakSet<Phaser.Textures.Texture>();
 
 export function ensureMenuTextures(scene: Phaser.Scene): void {
   if (scene.textures.exists('hud_icons_atlas')) { ensureHudAtlasTextures(scene); return; }
-  for (const [key, draw] of [['hud_wave', swords], ['hud_score', star]] as const) {
+  for (const [key, draw] of [['hud_wave', swords], ['hud_score', star], ['hud_gold', coin], ['hud_lives', heart]] as const) {
     if (scene.textures.exists(key)) continue;
     tex(scene, key, 48, g => draw(g, 24, 13, 6));
     menuFallbacks.add(scene.textures.get(key));
@@ -227,7 +227,7 @@ export function ensureMenuTextures(scene: Phaser.Scene): void {
 }
 
 export function ensureArtTextures(scene: Phaser.Scene): void {
-  if (scene.textures.exists('hud_icons_atlas')) for (const key of ['hud_wave', 'hud_score']) {
+  if (scene.textures.exists('hud_icons_atlas')) for (const key of ['hud_wave', 'hud_score', 'hud_gold', 'hud_lives']) {
     if (scene.textures.exists(key) && menuFallbacks.has(scene.textures.get(key))) scene.textures.remove(key);
   }
   ensureHudAtlasTextures(scene);

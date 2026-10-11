@@ -1,6 +1,6 @@
 # Feature, artwork, balance and mode-entry audit
 
-Date: 2026-10-11. Tier: Spec-only. Status: awaiting written-spec approval.
+Date: 2026-10-11. Tier: Spec-only. Status: approved; execution and evidence recorded in [the audit](../../FEATURE_ART_BALANCE_AUDIT.md).
 
 ## Intent and agreed scope
 

@@ -9,7 +9,8 @@ const screenMocks = vi.hoisted(() => ({
   fetchLeaderboard: vi.fn(),
   sound: { stopMusic: vi.fn(), click: vi.fn(), unlock: vi.fn() },
   refreshStronghold: vi.fn(),
-  legacyBest: null as null | { score: number; wave: number; difficulty: string; date: string; scoreVersion: number }
+  legacyBest: null as null | { score: number; wave: number; difficulty: string; date: string; scoreVersion: number },
+  best: null as null | { score: number; wave: number }
 }));
 
 vi.mock('phaser', () => {
@@ -167,7 +168,7 @@ vi.mock('../src/game/systems/ScoreRetry.ts', async (importOriginal) => {
   };
 });
 vi.mock('../src/game/systems/Settings.ts', () => ({
-  loadBest: () => null,
+  loadBest: () => screenMocks.best,
   loadLegacyBest: () => screenMocks.legacyBest,
   loadLegacyBests: () => (screenMocks.legacyBest ? [screenMocks.legacyBest] : []),
   loadSettings: () => ({ masterVolume: 1, musicVolume: 0.5, sfxVolume: 0.7, musicOn: true, sfxOn: true, gameSpeed: 1, difficulty: 'medium', playerName: '' })
@@ -255,6 +256,7 @@ describe('screen lifecycle and leaderboard states', () => {
     screenMocks.fetchLeaderboard.mockReset().mockResolvedValue({ ok: true, scores: [] });
     screenMocks.refreshStronghold.mockClear();
     screenMocks.legacyBest = null;
+    screenMocks.best = null;
     const memory = memoryStore();
     retryBytes = memory.bytes;
     screenMocks.scoreRetryRepository = new ScoreRetryRepository(memory.store, serialLock());
@@ -279,6 +281,38 @@ describe('screen lifecycle and leaderboard states', () => {
     expect(campaignButton).toBeDefined();
     campaignButton.fire('pointerdown');
     expect(scene.scene.start).toHaveBeenCalledWith('Preload', { stage: 'campaign', destination: 'Campaign' });
+    scene.events.emit('shutdown');
+  });
+
+  it.each([[360, 640], [390, 844], [844, 390], [1280, 720], [1920, 1080]])('offers direct Classic and preserves menu routes at %ix%i', async (width, height) => {
+    screenMocks.best = { score: 12345, wave: 30 };
+    screenMocks.legacyBest = { score: 54321, wave: 40, difficulty: 'medium', date: '2026-10-01', scoreVersion: 2 };
+    await screenMocks.scoreRetryRepository.stage(retryPayload('run-menu-modes-01'));
+    const scene = new MainMenuScene(); (scene.scale as any).width = width; (scene.scale as any).height = height; scene.create();
+    await flushPromises();
+    for (const label of ['Campaign', 'Classic Siege', 'Hall of Legends', 'Settings', 'Progression', 'Saved Score']) {
+      expect(texts().filter(text => text === label), label).toHaveLength(1);
+    }
+    const buttons = (scene as any).children.list.filter((display: any) => display.kind === 'rectangle' && display.handlers.has('pointerdown'));
+    for (const button of buttons) {
+      expect(button.x).toBeGreaterThanOrEqual(0); expect(button.y).toBeGreaterThanOrEqual(0);
+      expect(button.x + button.width).toBeLessThanOrEqual(width);
+      expect(button.y + button.height).toBeLessThanOrEqual(height);
+      expect(button.height).toBeGreaterThanOrEqual(44);
+      for (const other of buttons) {
+        if (button === other) continue;
+        expect(button.x + button.width <= other.x || other.x + other.width <= button.x || button.y + button.height <= other.y || other.y + other.height <= button.y).toBe(true);
+      }
+    }
+    buttons[1].fire('pointerdown');
+    expect(scene.scene.start).toHaveBeenLastCalledWith('Difficulty');
+    for (const [index, route, data] of [[2, 'Leaderboard', {}], [3, 'Settings', undefined], [4, 'Progression', undefined]] as const) {
+      buttons[index].fire('pointerdown');
+      if (data) expect(scene.scene.start).toHaveBeenLastCalledWith(route, data);
+      else expect(scene.scene.start).toHaveBeenLastCalledWith(route);
+    }
+    expect(screenMocks.submitScore).not.toHaveBeenCalled();
+    expect((await screenMocks.scoreRetryRepository.view()).record?.payload.runId).toBe('run-menu-modes-01');
     scene.events.emit('shutdown');
   });
 

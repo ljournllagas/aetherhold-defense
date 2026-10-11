@@ -323,14 +323,14 @@ describe('development campaign fixtures', () => {
 
 describe('QA bootstrap before Phaser scene registration', () => {
   afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
-  it('waits for a registered Game scene, installs once, and starts the requested staged fixture', () => {
+  it.each(['campaign', 'gameover'])('waits for registration and stops the menu before loading the %s fixture', state => {
     const nodes: any[] = [], append = vi.fn(), beforeUnload = vi.fn();
     const element = () => {
       const node = { style: {}, dataset: {}, appendChild: vi.fn(), setAttribute: vi.fn(), addEventListener: vi.fn(), remove: vi.fn() };
       nodes.push(node); return node;
     };
     vi.stubGlobal('document',{ createElement: element, body: { appendChild: append }, querySelector: () => null });
-    vi.stubGlobal('window',{ location: { search: '?qa=campaign-boss&level=10&bossPhase=guarded',origin: 'http://127.0.0.1:5183' }, fetch: vi.fn(), addEventListener: beforeUnload });
+    vi.stubGlobal('window',{ location: { search: state === 'campaign' ? '?qa=campaign-boss&level=10&bossPhase=guarded' : '?qa=gameover',origin: 'http://127.0.0.1:5183' }, fetch: vi.fn(), addEventListener: beforeUnload });
     const events = new EventEmitter(), sceneEvents = new EventEmitter();
     let registered = false;
     const scene = { events: sceneEvents };
@@ -343,8 +343,11 @@ describe('QA bootstrap before Phaser scene registration', () => {
     expect(append).toHaveBeenCalledTimes(1); expect(sceneEvents.listenerCount('qa:status')).toBe(1);
     events.emit('step'); events.emit('step');
     expect(start).toHaveBeenCalledTimes(1);
-    expect(start).toHaveBeenCalledWith('Preload',expect.objectContaining({ destination: 'Game', data: expect.objectContaining({ mode: 'campaign',campaignLevel: 10,qaCampaignFixture: { state: 'campaign-boss',level: 10,bossPhase: 'guarded' } }) }));
+    expect(start).toHaveBeenCalledWith('Preload',expect.objectContaining(state === 'campaign'
+      ? { destination: 'Game', data: expect.objectContaining({ mode: 'campaign',campaignLevel: 10,qaCampaignFixture: { state: 'campaign-boss',level: 10,bossPhase: 'guarded' } }) }
+      : { destination: 'GameOver', data: expect.objectContaining({ runId: 'qa-fixture-gameover' }) }));
     expect(stop).toHaveBeenCalledWith('MainMenu');
+    expect(stop.mock.invocationCallOrder[0]).toBeLessThan(start.mock.invocationCallOrder[0]);
     beforeUnload.mock.calls[0][1]();
     expect(events.listenerCount('step')).toBe(0); expect(sceneEvents.listenerCount('qa:status')).toBe(0);
     expect(nodes[0].remove).toHaveBeenCalledTimes(1);
