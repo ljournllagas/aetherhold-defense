@@ -1,6 +1,6 @@
 # Responsive game experience
 
-Status: independent review cleared in one round, 9/10, zero blockers; awaiting user approval.
+Status: independent review cleared in one round, 9/10, zero blockers; user approved on 2026-10-11. Implementation planning in progress.
 Tier: Full. Execution route remains Light; implementation method is selected after plan approval.
 
 ## Purpose and scope
