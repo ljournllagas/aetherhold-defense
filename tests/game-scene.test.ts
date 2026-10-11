@@ -3,8 +3,8 @@ import { gameLayout, worldToViewport, viewportToWorld } from '../src/game/ui/lay
 
 describe('adaptive battlefield coordinates', () => {
   it('uses canonical desktop anatomy and a compact short-landscape drawer', () => {
-    expect(gameLayout(1280, 720)).toMatchObject({ hud: 56, tray: 80, inspector: 240, compact: false });
-    expect(gameLayout(844, 390)).toMatchObject({ hud: 56, tray: 64, inspector: 0, compact: true });
+    expect(gameLayout(1280, 720)).toMatchObject({ hud: 56, tray: 76, inspector: 240, compact: false });
+    expect(gameLayout(844, 390)).toMatchObject({ hud: 56, tray: 76, inspector: 0, compact: true });
     expect(gameLayout(1024, 768).inspector).toBe(0);
   });
   it('round-trips route, placement and meteor coordinates at all target viewports', () => {

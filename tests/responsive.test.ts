@@ -7,8 +7,8 @@ import { PauseState } from '../src/game/systems/PauseState.ts';
 describe('portrait playability', () => {
   it('reserves two readable HUD rows and leaves a positive battlefield on a phone', () => {
     const l = gameLayout(360, 640);
-    expect(l.hud).toBe(104);
-    expect(l.field.height).toBe(472);
+    expect(l.hud).toBe(88);
+    expect(l.field.height).toBe(424);
     expect(l.inspector).toBe(0);
   });
   it('fits the whole battlefield without distorting its aspect ratio', () => {

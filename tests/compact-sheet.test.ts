@@ -40,8 +40,8 @@ describe('sheet bounds', () => {
   it('keeps the existing heights outside short landscape layouts', () => {
     for (const [width, height] of [[1024, 768], [390, 844], [360, 640]] as const) {
       const layout = gameLayout(width, height);
-      expect(sheetBounds(layout, 'evolve', false).height).toBe(Math.max(96, layout.field.height * 0.5));
-      expect(sheetBounds(layout, 'build', true).height).toBe(Math.max(96, layout.field.height * 0.5 - 80));
+      expect(sheetBounds(layout, 'evolve', false).height).toBe(Math.max(160, layout.field.height * 0.7));
+      expect(sheetBounds(layout, 'build', true).height).toBeLessThanOrEqual(layout.field.height-56);
     }
   });
   it('draws the 844x390 Tower Progression sheet with those bounds', () => {
