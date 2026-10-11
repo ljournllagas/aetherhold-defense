@@ -1,5 +1,10 @@
 # Domain glossary
 
+- **Tower tray:** The visible set of tower choices used for tap selection or dragging a new tower onto a build plot.
+- **Tower drag:** An uncommitted placement gesture originating from a tower choice; a valid release builds one new tower.
+- **Prerequisite checklist:** The requirements for an action, each shown with its current fulfilled or unfulfilled state.
+- **Contextual guide:** Skippable instruction shown when a player first encounters a relevant control or progression concept.
+
 - **Player account:** The game's identity linked to one Google identity, owning cloud achievements and scores.
 - **Cloud progress:** Completed Campaign achievements, Classic branch achievements, and personal bests retained for a player account across devices.
 - **Guest import:** A once-only claim of a browser's existing anonymous save by its first signed-in player account.
