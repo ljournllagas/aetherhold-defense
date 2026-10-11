@@ -1,5 +1,11 @@
 # Domain glossary
 
+- **Player account:** The game's identity linked to one Google identity, owning cloud achievements and scores.
+- **Cloud progress:** Completed Campaign achievements, Classic branch achievements, and personal bests retained for a player account across devices.
+- **Guest import:** A once-only claim of a browser's existing anonymous save by its first signed-in player account.
+- **Pending sync:** Account-owned progress or terminal results retained locally but not yet acknowledged by the server.
+- **Account generation:** The lifetime of a player account; deletion ends it and a later registration begins a separate lifetime.
+
 - **Run:** One game session from difficulty selection until defeat, siege failure, finishing at victory, restart, or quit; endless continuation remains part of the same run.
 - **Battlefield:** The Ancient Border Keep map containing the enemy route, build plots, and stronghold.
 - **Build plot:** A predefined clearing where one tower can be built. In Classic and Campaign Worlds 1–3, Levels 1–30, every plot must let every base tower attack a useful stretch of road immediately, with visual clearance from the road. Measure plot-to-road distance in game-world units so the rule is independent of screen size and zoom.
