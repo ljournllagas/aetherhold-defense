@@ -1,6 +1,6 @@
 # Responsive game experience
 
-Status: scope confirmed; awaiting independent specification review and user approval.
+Status: independent review cleared in one round, 9/10, zero blockers; awaiting user approval.
 Tier: Full. Execution route remains Light; implementation method is selected after plan approval.
 
 ## Purpose and scope
@@ -35,7 +35,7 @@ Touch contact on a tray card starts undecided. A release within 10 CSS pixels se
 
 During tower dragging suppress battlefield pan, tower selection, and ordinary tap placement for that pointer. Highlight available build plots and show a tower ghost, range, price, and valid/invalid reason. Touch ghost/target anchor is 48 CSS pixels above the finger; mouse/stylus anchor is the pointer. The highlighted plot is the exact plot checked on release. Snap to the nearest plot center within 28 CSS pixels of the anchor; ties select the lowest plot index. Occupied plots may be targeted but show Occupied; unaffordable placement shows the gold shortage. Revalidate affordability, occupancy, lifecycle, and placement rules at release through the existing shared build action.
 
-Valid drop commits exactly one tower and charges exactly once; select the newly built tower and show its inspector. Invalid drop cancels without charge and shows a brief reason. End the drag and return the tray to idle in either case. Pointer cancellation, release outside the app, second contact, resizing, hiding the page, opening a panel, pause, restart, quit, or terminal result cancels without placement and clears highlights. A second contact cancels the tower drag before handing contacts to pinch zoom; releasing either finger must not generate a tap/build. No accidental purchase from a scroll or pinch.
+Valid drop commits exactly one tower and charges exactly once; select the newly built tower and show its inspector. The physical release position must be inside the battlefield and outside every control overlay: release over the tray, HUD, inspector, or another control cancels even if the offset anchor points at a valid plot. Invalid drop cancels without charge and shows a brief reason. End the drag and return the tray to idle in either case. Pointer cancellation, release outside the app, second contact, resizing, hiding the page, opening a panel, pause, restart, quit, or terminal result cancels without placement and clears highlights. A second contact cancels the tower drag before handing contacts to pinch zoom; releasing either finger must not generate a tap/build. No accidental purchase from a scroll or pinch.
 
 While dragging, an anchor inside the battlefield's 32px edge band pans at a continuous speed from zero at the band's inner edge to 180 CSS pixels/second at the outer edge, clamped by existing camera bounds. It never pans while the anchor is over HUD/tray/inspector or outside the battlefield. Recompute target from the current transform each frame; never use a stale plot after panning. Overview cancels placement before restoring the full map.
 
@@ -76,7 +76,7 @@ Retain existing layout/view-transform, PointerGesture, control-sheet, PauseState
 ## Acceptance and verification
 
 1. At every listed viewport, essential actions are visible/reachable, no text/actions are clipped, and panels scroll without scrolling/purchasing the battlefield. Test selected/unselected tower, long explanations, full Relic inventory, boss HUD, rewards, victory, defeat, empty/max progression, Account errors, and long nickname/leaderboard content.
-2. Automated gesture checks distinguish tap, horizontal scroll, drag, pinch and cancellation; transformed/zoomed targets and edge panning place exactly the highlighted valid plot. Rejected drops and all cancellations leave gold/tower count unchanged. Valid drop spends once. Tap confirmation and mouse placement pass equivalent mutation checks.
+2. Automated gesture checks distinguish tap, horizontal scroll, drag, pinch and cancellation; transformed/zoomed targets and edge panning place exactly the highlighted valid plot. Rejected drops and all cancellations leave gold/tower count unchanged, including physical release over controls with an otherwise valid offset anchor. Valid drop spends once. Tap confirmation and mouse placement pass equivalent mutation checks.
 3. Pause tests prove simulation/Auto stay stopped in Details, nested close preserves other reasons, and every detailed-panel mutation closes/revalidates without bypassing user/background/terminal guards. Fast gestures and repeated clicks cannot double-purchase.
 4. Prerequisite view tests cover multiple unmet gates, completed/missed Classic checkpoint, maximum ranks, Campaign threshold boundaries, all-earned/empty progress, pending sync and storage failure. Compare against existing authoritative domain behavior. No changes to balance/save versions/cloud endpoints.
 5. Resize/orientation tests preserve an active run and cancel drags. Verify pan/pinch and Overview after cancellation; lifecycle subscriptions clean up on scene shutdown.
