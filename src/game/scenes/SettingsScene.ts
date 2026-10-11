@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { mountAccountButton } from '../ui/accountControls.ts';
 import { loadSettings, saveSettings } from '../systems/Settings.ts';
 import { SoundManager } from '../systems/SoundManager.ts';
 import { C, FONT_DISPLAY, style } from '../ui/tokens.ts';
@@ -30,6 +31,7 @@ export class SettingsScene extends Phaser.Scene {
   }
 
   create(): void {
+    mountAccountButton(this);
     const W = this.scale.width;
     const H = this.scale.height;
     if (W < 768) { this.createPhone(); return; }

@@ -1,0 +1,11 @@
+CREATE TABLE players (id TEXT PRIMARY KEY, generation TEXT NOT NULL UNIQUE, issuer TEXT NOT NULL, subject TEXT NOT NULL, nickname TEXT NOT NULL, nickname_initialized INTEGER NOT NULL DEFAULT 0 CHECK(nickname_initialized IN(0,1)), revision INTEGER NOT NULL DEFAULT 0, progress_json TEXT NOT NULL, UNIQUE(issuer,subject));
+CREATE TABLE sessions (token_hash TEXT PRIMARY KEY, player_id TEXT NOT NULL REFERENCES players(id) ON DELETE CASCADE, generation TEXT NOT NULL, expires_at INTEGER NOT NULL, csrf TEXT NOT NULL, reauthenticated_at INTEGER);
+CREATE TABLE oauth_attempts (state_hash TEXT PRIMARY KEY, browser_hash TEXT NOT NULL, verifier TEXT NOT NULL, nonce TEXT NOT NULL, expires_at INTEGER NOT NULL, purpose TEXT NOT NULL CHECK(purpose IN ('login','delete')), player_id TEXT, generation TEXT);
+CREATE TABLE guest_imports (import_id TEXT PRIMARY KEY, player_id TEXT REFERENCES players(id) ON DELETE SET NULL, generation TEXT, consumed INTEGER NOT NULL DEFAULT 0 CHECK(consumed IN(0,1)), result_digest TEXT);
+CREATE TABLE revoked_sessions (token_hash TEXT PRIMARY KEY, reason TEXT NOT NULL CHECK(reason='deleted'), expires_at INTEGER NOT NULL);
+CREATE TABLE campaign_scores (id INTEGER PRIMARY KEY AUTOINCREMENT, run_id TEXT NOT NULL UNIQUE, player_id TEXT NOT NULL REFERENCES players(id) ON DELETE CASCADE, generation TEXT NOT NULL, nickname TEXT NOT NULL, payload_json TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')));
+ALTER TABLE scores ADD COLUMN player_id TEXT REFERENCES players(id) ON DELETE CASCADE;
+ALTER TABLE scores ADD COLUMN account_generation TEXT;
+ALTER TABLE scores ADD COLUMN result_json TEXT;
+CREATE INDEX sessions_expiry ON sessions(expires_at);
+CREATE INDEX scores_owner ON scores(player_id);

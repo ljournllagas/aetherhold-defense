@@ -72,3 +72,13 @@ canvas {
 @media (orientation: portrait) and (max-width: 700px) {
   #rotate-notice { display: block; }
 }
+/* Accessible account controls overlay the canvas without changing battlefield layout. */
+.account-access { position:absolute;top:12px;right:12px;z-index:30;background:#142027;color:#ead3a0;border:1px solid #7c6944;border-radius:6px;padding:8px 12px;font:500 13px Inter,sans-serif;cursor:pointer;max-width:45%; }
+.account-overlay { position:absolute;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:20px;background:#0a0e1299;overflow:auto;box-sizing:border-box; }
+.account-panel { width:min(420px,100%);max-height:100%;overflow:auto;padding:28px;box-sizing:border-box;background:#101820f5;color:#ede4d2;border:1px solid #897249;border-radius:12px;box-shadow:0 15px 70px #0008;font:500 15px/1.5 Inter,sans-serif; }
+.account-panel h1 { font:600 25px Cinzel,serif;color:#dfc083;margin-top:0; }
+.account-panel button,.account-panel input { display:block;width:100%;box-sizing:border-box;min-height:44px;margin-top:12px;padding:10px 14px;border:1px solid #897249;border-radius:6px;background:#1b2a32;color:#ede4d2;font:inherit; }
+.account-panel button { cursor:pointer; }.account-panel button:disabled { opacity:.5;cursor:default; }
+.account-panel label { display:block;margin-top:20px; }.account-panel input { margin-top:4px; }
+.account-panel button.account-danger { border-color:#b16d61;color:#efaaa0; }
+.account-warning { color:#efc186; }.account-panel :focus-visible,.account-access:focus-visible { outline:3px solid #e7bb62;outline-offset:3px; }

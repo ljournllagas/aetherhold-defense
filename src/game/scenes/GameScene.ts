@@ -1,4 +1,7 @@
 import Phaser from 'phaser';
+import { accountSystem } from '../systems/AccountSystem.ts';
+import { accountEntryAllowed } from '../ui/accountControls.ts';
+import type { AccountRef } from '../../shared/account.ts';
 import type { GameOverData } from './GameOverScene.ts';
 import type { GameStartData, LoadingRequest } from './PreloadScene.ts';
 import { MAP1, HUD_HEIGHT, type MapDef } from '../maps/map1.ts';
@@ -86,6 +89,7 @@ export class GameScene extends Phaser.Scene {
   private towerFreezeViews = new Map<number, Phaser.GameObjects.Arc>();
   private difficultyId: DifficultyId = 'medium';
   private playerName = 'Warden';
+  private runAccount: AccountRef | null = null;
   private runId = '';
   private gold = 600;
   private lives = 20;
@@ -293,6 +297,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   init(data: Partial<GameStartData>): void {
+    this.unlockRepository = sharedUnlockRepository;
     this.pauseState = new PauseState(); this.gesture.cancel(); this.cameraView.reset();
     this.touchPreview = null; this.touchMode = false; this.sheetKind = null; this.sheet = null;
     this.modalRenderer = null; this.modalSheet = null; this.backgroundOverlay = null; this.gestureHintShown = false;
@@ -312,7 +317,7 @@ export class GameScene extends Phaser.Scene {
     }
     this.map = this.campaign?.map ?? MAP1;
     this.difficultyId = this.campaign ? 'medium' : getDifficulty(data.difficulty ?? s.difficulty).id;
-    this.playerName = runPlayerName(data.playerName ?? s.playerName);
+    this.playerName = runPlayerName(accountSystem.view().session?.nickname ?? data.playerName ?? s.playerName);
     const d = getDifficulty(this.difficultyId);
     this.gold = d.startingGold;
     this.lives = d.startingLives;
@@ -401,7 +406,12 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
+    if (!accountEntryAllowed()) { this.scene.start('Login'); return; }
     if (this.campaignStartRejected) { this.scene.start('Campaign', { error: 'That campaign level is locked or unavailable.' }); return; }
+    this.runAccount = accountSystem.captureAccount();
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      if (!this.ended) void accountSystem.discardBattle();
+    });
     const snd = SoundManager.get();
     const settings = loadSettings();
     Object.assign(snd, { masterVolume: settings.masterVolume, musicOn: settings.musicOn, sfxOn: settings.sfxOn, musicVolume: settings.musicVolume, sfxVolume: settings.sfxVolume });
@@ -2673,6 +2683,7 @@ export class GameScene extends Phaser.Scene {
     const known = this.unlockRepository.view().profile.earned;
     for (const id of earned) if (!known[id] && !this.unlocksEarnedThisRun.includes(id)) this.unlocksEarnedThisRun.push(id);
     if (!this.campaign) this.unlockRepository.earn(earned);
+    if (earned.length && this.runAccount) void accountSystem.progressChanged(this.runAccount);
     this.notifyAchievements();
     const bonus = waveClearBonus(this.wave); this.gold += bonus;
     this.floatText(this.map.width / 2, 140, `Wave ${this.wave} cleared! +${bonus} gold`, C.health, 18);
@@ -2720,6 +2731,7 @@ export class GameScene extends Phaser.Scene {
   private gameOver(): void { this.finishRun('defeat'); }
 
   private restartRun(): void {
+    if (!accountEntryAllowed()) { this.scene.start('Login'); return; }
     this.scene.restart({ difficulty: this.difficultyId, playerName: this.playerName, ...(this.campaign ? { mode: 'campaign', campaignLevel: this.campaign.definition.level, campaignVisualTier: this.towerVisualTier } : {}), ...(import.meta.env.DEV && this.qaCampaignFixture ? { qaCampaignFixture: this.qaCampaignFixture } : {}) } satisfies GameStartData);
   }
 
@@ -2733,6 +2745,12 @@ export class GameScene extends Phaser.Scene {
     const fixtureRepository = import.meta.env.DEV ? this.qaCampaignRepository : null;
     const clear = outcome === 'victory' && (!this.debugAssisted || fixtureRepository) ? (fixtureRepository ?? campaignRepository).recordClear(campaign.definition.level, score, this.lives) : null;
     this.campaignResult = { outcome, score, lives: this.lives, clear };
+    if (this.runAccount && !this.debugAssisted && !this.qaCampaignFixture) {
+      void accountSystem.settle(this.runAccount, { mode: 'campaign', payload: {
+        runId: this.runId, campaignVersion: 1, progressionVersion: 1, level: campaign.definition.level,
+        outcome, finalScore: score, remainingLives: this.lives, gameDurationSeconds: Math.floor(this.runningDurationMs / 1000), gameVersion: GAME_VERSION
+      }});
+    }
     this.spawnQueue = [];
     for (const flight of this.flights) flight.view.destroy(true);
     for (const effect of this.effects) effect.view.destroy();
@@ -2818,6 +2836,15 @@ export class GameScene extends Phaser.Scene {
         enemies: this.enemies.filter(e => e.alive).map(e => ({ archetype: e.archetype, x: e.x, y: e.y, hpFraction: Math.max(0, e.hp / e.maxHp) }))
       }
     };
+    if (this.runAccount && !this.debugAssisted) {
+      void accountSystem.settle(this.runAccount, { mode: 'classic', payload: {
+        playerName: result.playerName, difficulty: result.difficulty, highestWave: result.highestWave,
+        finalScore: result.finalScore, enemiesKilled: result.enemiesKilled, bossesKilled: result.bossesKilled,
+        remainingLives: result.remainingLives, gameDurationSeconds: result.gameDurationSeconds, runId: result.runId,
+        gameVersion: result.gameVersion, scoreVersion: result.scoreVersion, wavesCompleted: result.wavesCompleted,
+        outcome: result.outcome, siegeBossesDefeated: result.siegeBossesDefeated
+      }});
+    }
     if (result.worldSnapshot && result.worldSnapshot.strongholdRatio <= .02) {
       this.scene.start('Preload', { stage: 'defeat', destination: 'GameOver', data: result } satisfies LoadingRequest);
     } else this.scene.start('GameOver', result);

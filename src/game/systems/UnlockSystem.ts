@@ -79,6 +79,11 @@ export class UnlockRepository {
   private memory: Partial<Record<BranchId, string>> = {};
   private persisted: Partial<Record<BranchId, string>> = {};
   private unsaved = new Set<BranchId>();
+
+  applyCloud(earned: Partial<Record<BranchId, string>>): void {
+    this.memory = mergeEarned(this.memory, earned);
+    this.sync();
+  }
   private warning: string | null = null;
 
   constructor(storage: Store | null, now: () => string = () => new Date().toISOString()) {
@@ -161,4 +166,5 @@ function browserStorage(): Store | null {
   }
 }
 
-export const unlockRepository: UnlockRepository = new UnlockRepository(browserStorage());
+export let unlockRepository: UnlockRepository = new UnlockRepository(browserStorage());
+export function setUnlockAccountStorage(storage: Store | null): void { unlockRepository = new UnlockRepository(storage); }

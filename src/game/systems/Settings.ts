@@ -1,5 +1,7 @@
 import { SCORE_VERSION } from '../../shared/version.ts';
 import { editPlayerName } from '../../shared/playerName.ts';
+import type { AccountRef, PersonalBest } from '../../shared/account.ts';
+import { accountKey } from '../../shared/account.ts';
 
 export interface Settings {
   masterVolume: number;
@@ -14,6 +16,8 @@ export interface Settings {
 
 const KEY = 'aetherhold-settings-v1';
 const BEST_KEY = 'aetherhold-best-score-v3';
+let bestPrefix = '';
+export function setBestAccount(ref: AccountRef | null): void { bestPrefix = ref ? `account:${accountKey(ref)}:` : ''; }
 /** Retained legacy bests, newest era first. Only these keys may infer their era when the field is absent. */
 const LEGACY_BEST_KEYS: ReadonlyArray<readonly [key: string, era: number]> = [
   ['aetherhold-best-score-v2', 2],
@@ -82,7 +86,7 @@ export interface LocalBest {
  */
 function parseBest(key: string, expectedEra: number, implicitEra?: number): LocalBest | null {
   try {
-    const raw = localStorage.getItem(key);
+    const raw = localStorage.getItem(bestPrefix + key);
     if (!raw) return null;
     const v = JSON.parse(raw) as Partial<LocalBest> | null;
     if (!v || typeof v !== 'object' || Array.isArray(v)) return null;
@@ -120,7 +124,17 @@ export function saveBest(b: Omit<LocalBest, 'scoreVersion'>): void {
   try {
     const prev = loadBest();
     if (!prev || b.score > prev.score) {
-      localStorage.setItem(BEST_KEY, JSON.stringify({ ...b, scoreVersion: SCORE_VERSION }));
+      localStorage.setItem(bestPrefix + BEST_KEY, JSON.stringify({ ...b, scoreVersion: SCORE_VERSION }));
     }
   } catch { /* ignore */ }
+}
+
+export function applyAccountBests(bests: PersonalBest[]): void {
+  for (const best of bests) {
+    const key = best.scoreVersion === SCORE_VERSION ? BEST_KEY : LEGACY_BEST_KEYS.find(([, era]) => era === best.scoreVersion)?.[0];
+    if (!key) continue;
+    const raw = localStorage.getItem(bestPrefix + key), old = parseBest(key, best.scoreVersion, best.scoreVersion);
+    if (raw !== null && !old) throw new Error('Personal best save is unreadable and was protected');
+    if (!old || best.score > old.score) localStorage.setItem(bestPrefix + key, JSON.stringify(best));
+  }
 }

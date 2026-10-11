@@ -5,6 +5,7 @@ main = "worker/index.ts"
 [assets]
 directory = "./dist"
 not_found_handling = "single-page-application"
+run_worker_first = ["/api/*"]
 
 [[d1_databases]]
 binding = "DB"
@@ -14,6 +15,8 @@ migrations_dir = "migrations"
 
 [vars]
 ENVIRONMENT = "production"
+APP_ORIGIN = "https://aetherhold-defense.ljournllagas.workers.dev"
+ACCOUNT_LOGIN_REQUIRED = "0"
 
 [[ratelimits]]
 name = "SCORE_RATE_LIMITER"

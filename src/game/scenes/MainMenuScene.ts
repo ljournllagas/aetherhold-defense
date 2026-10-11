@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { accountSystem } from '../systems/AccountSystem.ts';
+import { accountEntryAllowed, mountAccountButton } from '../ui/accountControls.ts';
 import { loadBest, loadLegacyBest, loadSettings } from '../systems/Settings.ts';
 import { scoreRetryRepository, submitRetainedScore, type RetryView, type SavedSubmission } from '../systems/ScoreRetry.ts';
 import { SoundManager } from '../systems/SoundManager.ts';
@@ -78,6 +80,9 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   create(): void {
+    if (!accountEntryAllowed()) { this.scene.start('Login'); return; }
+    mountAccountButton(this);
+    void accountSystem.refresh();
     const W = this.scale.width;
     const H = this.scale.height;
     const generation = ++this.sceneGeneration;
@@ -199,6 +204,7 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   private async loadSavedScore(generation: number, savedY: number, W: number): Promise<void> {
+    if (accountSystem.view().playMode === 'account') return;
     const view = await scoreRetryRepository.view();
     if (this.sceneGeneration !== generation) return;
     this.savedView = view;

@@ -1,6 +1,9 @@
 import { SCORE_VERSION, validateScorePayload } from '../src/shared/validation.ts';
+import { handleAuth, type AuthEnv, fail } from './auth.ts';
+import { handleAccount } from './accounts.ts';
+import { handleAccountScore } from './accountScores.ts';
 
-export interface Env {
+export interface Env extends AuthEnv {
   DB: D1Database;
   /** Native per-location score limiter binding (`[[ratelimits]]` in wrangler.toml). */
   SCORE_RATE_LIMITER: RateLimit;
@@ -89,6 +92,8 @@ export default {
     }
 
     try {
+      const accountResponse = await handleAuth(request, env) ?? await handleAccountScore(request, env) ?? await handleAccount(request, env);
+      if (accountResponse) return accountResponse;
       if (path === '/api/health' && request.method === 'GET') {
         // Touch DB to prove wiring
         await env.DB.prepare('SELECT 1').first();
@@ -147,6 +152,7 @@ export default {
         if (!bounded.ok) {
           return apiError('INVALID_JSON', 'Request body is not valid JSON.', 400);
         }
+        if (env.ACCOUNT_LOGIN_REQUIRED !== '0') return fail('AUTH_REQUIRED', 'Use the authenticated score endpoint.', 401);
         let body: unknown;
         try { body = JSON.parse(bounded.text); }
         catch { return apiError('INVALID_JSON', 'Request body is not valid JSON.', 400); }

@@ -87,7 +87,7 @@ function allowLimiter(): LimiterSpy {
 /** Fresh in-memory DB plus a fresh allow limiter; pass `null` to omit the binding entirely. */
 function makeEnv(limiter: LimiterSpy | null = allowLimiter()): { db: ReturnType<typeof makeDb>; env: Env } {
   const db = makeDb();
-  const env = (limiter === null ? { DB: db } : { DB: db, SCORE_RATE_LIMITER: limiter }) as unknown as Env;
+  const env = (limiter === null ? { ACCOUNT_LOGIN_REQUIRED: String(0), DB: db } : { ACCOUNT_LOGIN_REQUIRED: String(0), DB: db, SCORE_RATE_LIMITER: limiter }) as unknown as Env;
   return { db, env };
 }
 
@@ -183,7 +183,7 @@ describe('worker api', () => {
 
   it('does not write when native quota denies the request', async () => {
     const db = makeDb();
-    const env = { DB: db, SCORE_RATE_LIMITER: { limit: async () => ({ success: false }) } } as unknown as Env;
+    const env = { ACCOUNT_LOGIN_REQUIRED: String(0), DB: db, SCORE_RATE_LIMITER: { limit: async () => ({ success: false }) } } as unknown as Env;
     const response = await post(env, validPayload());
     expect(response.status).toBe(429);
     expect(response.headers.get('Retry-After')).toBe('60');
@@ -198,7 +198,7 @@ describe('worker api', () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '198.51.100.7' },
       body: JSON.stringify(validPayload())
-    }), { DB: makeDb(), SCORE_RATE_LIMITER: trusted } as unknown as Env);
+    }), { ACCOUNT_LOGIN_REQUIRED: String(0), DB: makeDb(), SCORE_RATE_LIMITER: trusted } as unknown as Env);
     expect(trusted.calls).toEqual([{ key: 'scores:198.51.100.7' }]);
 
     const anonymous = allowLimiter();
@@ -206,13 +206,13 @@ describe('worker api', () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Forwarded-For': '203.0.113.9' },
       body: JSON.stringify(validPayload())
-    }), { DB: makeDb(), SCORE_RATE_LIMITER: anonymous } as unknown as Env);
+    }), { ACCOUNT_LOGIN_REQUIRED: String(0), DB: makeDb(), SCORE_RATE_LIMITER: anonymous } as unknown as Env);
     expect(anonymous.calls).toEqual([{ key: 'scores:anon' }]);
   });
 
   it('never consults the limiter for reads or preflight', async () => {
     const limiter = allowLimiter();
-    const env = { DB: makeDb(), SCORE_RATE_LIMITER: limiter } as unknown as Env;
+    const env = { ACCOUNT_LOGIN_REQUIRED: String(0), DB: makeDb(), SCORE_RATE_LIMITER: limiter } as unknown as Env;
     expect((await worker.fetch(req('/api/leaderboard'), env)).status).toBe(200);
     expect((await worker.fetch(req('/api/health'), env)).status).toBe(200);
     expect((await worker.fetch(req('/api/scores', { method: 'OPTIONS' }), env)).status).toBe(204);
@@ -222,8 +222,8 @@ describe('worker api', () => {
   it.each(['missing', 'throwing'] as const)('returns 503 without a database call when the binding is %s', async (kind) => {
     const db = makeDb();
     const env = (kind === 'missing'
-      ? { DB: db }
-      : { DB: db, SCORE_RATE_LIMITER: { limit: async () => { throw new Error('binding failed'); } } }) as unknown as Env;
+      ? { ACCOUNT_LOGIN_REQUIRED: String(0), DB: db }
+      : { ACCOUNT_LOGIN_REQUIRED: String(0), DB: db, SCORE_RATE_LIMITER: { limit: async () => { throw new Error('binding failed'); } } }) as unknown as Env;
     const response = await post(env, validPayload());
     expect(response.status).toBe(503);
     expect(((await response.json()) as { error: { code: string } }).error.code).toBe('SCORE_API_UNAVAILABLE');
@@ -240,7 +240,7 @@ describe('worker api', () => {
       gameDurationSeconds: 10000, gameVersion: GAME_VERSION, scoreVersion: SCORE_VERSION - 1,
       createdAt: '2026-01-01T00:00:00.000Z'
     });
-    const res = await worker.fetch(req('/api/leaderboard?difficulty=hard'), { DB: db, SCORE_RATE_LIMITER: allowLimiter() } as unknown as Env);
+    const res = await worker.fetch(req('/api/leaderboard?difficulty=hard'), { ACCOUNT_LOGIN_REQUIRED: String(0), DB: db, SCORE_RATE_LIMITER: allowLimiter() } as unknown as Env);
     expect(res.status).toBe(200);
     expect(((await res.json()) as { scores: unknown[] }).scores).toEqual([]);
   });

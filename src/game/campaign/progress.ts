@@ -264,6 +264,10 @@ function normalizeStoredProfile(value: Record<string, unknown>): CampaignProfile
   });
 }
 
+export function parseCampaignProfile(value: unknown): CampaignProfile | null {
+  return isPlainObject(value) ? normalizeStoredProfile(value) : null;
+}
+
 type ReadResult =
   | { kind: 'unavailable' | 'unreadable' | 'newer' }
   | { kind: 'absent' }
@@ -414,6 +418,13 @@ export class CampaignRepository {
       unsavedLevels: this.unsavedLevels(),
       warning: this.warning
     };
+  }
+
+  applyCloud(levels: CampaignProfile['levels']): void {
+    const incoming = { ...createEmptyCampaignProfile(), levels };
+    this.profile = mergeProgress(this.profile, incoming);
+    for (const key of Object.keys(levels)) this.pendingLevels.add(Number(key));
+    this.sync();
   }
 
   recordClear(level: number, score: number, lives: number): CampaignClearResult | null {
@@ -644,4 +655,7 @@ function browserStorage(): CampaignStorage | null {
   }
 }
 
-export const campaignRepository = new CampaignRepository(browserStorage());
+export let campaignRepository = new CampaignRepository(browserStorage());
+export function setCampaignAccountStorage(storage: CampaignStorage | null): void {
+  campaignRepository = new CampaignRepository(storage);
+}

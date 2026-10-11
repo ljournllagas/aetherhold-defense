@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { accountEntryAllowed, mountAccountButton } from '../ui/accountControls.ts';
 import { CAMPAIGN_LEVELS, CAMPAIGN_SIGILS, CAMPAIGN_WORLDS, getCampaignLevel, getCampaignWorld } from '../campaign/config.ts';
 import { campaignRepository, isWorldUnlocked } from '../campaign/progress.ts';
 import { getTowerSpecializations } from '../campaign/specializations.ts';
@@ -79,6 +80,8 @@ export class CampaignScene extends Phaser.Scene {
   }
 
   create(): void {
+    if (!accountEntryAllowed()) { this.scene.start('Login'); return; }
+    mountAccountButton(this);
     this.campaignView = campaignRepository.view();
     if (!this.lastResult && this.selectedLevel === 1) this.selectedLevel = this.campaignView.highestUnlockedLevel;
     this.draw();

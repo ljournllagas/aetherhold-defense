@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { accountSystem } from '../systems/AccountSystem.ts';
+import { accountEntryAllowed, mountAccountButton } from '../ui/accountControls.ts';
 import type { LoadingRequest } from './PreloadScene.ts';
 import { DIFFICULTY_LIST } from '../config/difficulties.ts';
 import type { DifficultyId } from '../../shared/types.ts';
@@ -50,6 +52,8 @@ export class DifficultyScene extends Phaser.Scene {
   }
 
   create(): void {
+    if (!accountEntryAllowed()) { this.scene.start('Login'); return; }
+    mountAccountButton(this);
     const W = this.scale.width;
     const H = this.scale.height;
     const compact = H < 560 || W < 900;

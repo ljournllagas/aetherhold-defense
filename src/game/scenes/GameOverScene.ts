@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { accountSystem } from '../systems/AccountSystem.ts';
+import { accountStatus, mountAccountButton } from '../ui/accountControls.ts';
 import type { LoadingRequest } from './PreloadScene.ts';
 import type { DifficultyId, EnemyArchetype, GameResultPayload, ScoreBreakdown } from '../../shared/types.ts';
 import type { BranchId, EvolutionRank, RunOutcome } from '../../shared/progression.ts';
@@ -89,6 +91,7 @@ export class GameOverScene extends Phaser.Scene {
   }
 
   create(data: Data): void {
+    mountAccountButton(this);
     this.submitState = 'idle';
     this.runGeneration++;
     const generation = this.runGeneration;
@@ -112,7 +115,7 @@ export class GameOverScene extends Phaser.Scene {
       gameVersion: data.gameVersion,
       scoreVersion: data.scoreVersion
     });
-    this.submitMessage = IDLE_MESSAGE;
+    this.submitMessage = accountSystem.view().playMode === 'account' ? accountStatus(accountSystem.view()) : IDLE_MESSAGE;
     this.scoreAttempt = null;
     this.retryNotice = null;
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -136,6 +139,7 @@ export class GameOverScene extends Phaser.Scene {
    * stages anything; the notice only explains what an explicit Submit will do.
    */
   private async refreshRetryNotice(generation: number): Promise<void> {
+    if (accountSystem.view().playMode === 'account') return;
     const view = await scoreRetryRepository.view();
     const current = this.payload;
     if (!current || !this.runData || this.runGeneration !== generation || this.activeRunId !== current.runId) return;
@@ -356,10 +360,12 @@ export class GameOverScene extends Phaser.Scene {
   }
 
   private canSubmit(): boolean {
+    if (accountSystem.view().playMode === 'account') return false;
     return this.submitState === 'idle' || this.submitState === 'failed';
   }
 
   private submitLabel(): string {
+    if (accountSystem.view().playMode === 'account') return 'Automatic upload';
     if (this.submitState === 'submitting') return 'Submitting…';
     if (this.submitState === 'submitted') return 'Score Submitted';
     return 'Submit Score';
