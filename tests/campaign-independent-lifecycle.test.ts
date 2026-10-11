@@ -76,6 +76,17 @@ function routeBestPlot(run: any, towerId: TowerId): number {
 }
 
 describe('campaign settlement gates in the scene', () => {
+  it('adds resource bonuses once at Campaign settlement and keeps the HUD on that total', () => {
+    const run = fixture(1); openFinalWave(run);
+    run.wavesCompleted = 5; run.enemiesKilled = 20; run.gold = 600; run.lives = 20;
+    expect(run.scoreSoFar()).toBe(1237); // (200 + 625) * 1.5, floored
+    run.finishRun('victory');
+    expect(run.campaignResult.score).toBe(2182);
+    expect(run.scoreSoFar()).toBe(2182);
+    expect(campaignRepository.recordClear).toHaveBeenCalledWith(1, 2182, 20);
+    run.finishRun('victory');
+    expect(campaignRepository.recordClear).toHaveBeenCalledTimes(1);
+  });
   it('waits for every queued spawn, living enemy, flight, and burning field before awarding a clear', () => {
     const run = fixture(1); openFinalWave(run);
     const earnClassicAchievement = vi.spyOn(run.unlockRepository, 'earn');

@@ -284,6 +284,17 @@ describe('screen lifecycle and leaderboard states', () => {
     scene.events.emit('shutdown');
   });
 
+  it.each([[360,360],[844,390],[768,1024]])('keeps both best-score rows clear of menu actions at %ix%i', (width,height) => {
+    screenMocks.best = { score: 10000000, wave: 500 };
+    screenMocks.legacyBest = { score: 10000000, wave: 500, difficulty: 'medium', date: '2026-10-01', scoreVersion: 2 };
+    const scene = new MainMenuScene(); (scene.scale as any).width = width; (scene.scale as any).height = height; scene.create();
+    const firstAction = screenMocks.displays.find(d => d.kind === 'rectangle' && d.handlers.has('pointerdown'))!;
+    for (const row of screenMocks.displays.filter(d => d.kind === 'text' && /^(Personal best|Legacy era)/.test(d.initialText))) {
+      expect(row.y + row.height + 12).toBeLessThanOrEqual(firstAction.y);
+    }
+    scene.events.emit('shutdown');
+  });
+
   it.each([[360, 640], [390, 844], [844, 390], [1280, 720], [1920, 1080]])('offers direct Classic and preserves menu routes at %ix%i', async (width, height) => {
     screenMocks.best = { score: 12345, wave: 30 };
     screenMocks.legacyBest = { score: 54321, wave: 40, difficulty: 'medium', date: '2026-10-01', scoreVersion: 2 };

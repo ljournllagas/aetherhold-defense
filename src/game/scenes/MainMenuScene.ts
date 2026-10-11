@@ -33,11 +33,12 @@ function addButton(
     .setStrokeStyle(primary ? 2 : 1, edge, 1);
   const trim = etchedFrame(scene, x, y, width, height, primary);
   const labelSize = primary ? (height >= 80 ? 22 : 17) : (height >= 60 ? 17 : 15);
-  const text = scene.add.text(0, 0, label, style(labelSize, primary ? C.goldBright : C.textPrimary, true, FONT_DISPLAY)).setOrigin(0.5);
+  const text = scene.add.text(0, 0, label, style(labelSize, primary ? C.goldBright : C.textPrimary, true, FONT_DISPLAY))
+    .setWordWrapWidth(width - 16).setAlign('center').setOrigin(0.5);
   text.setStroke('#171a18', primary ? 2 : 1).setShadow(0, 2, '#05080a', 0.65, true, true);
   const centerY = y + height / 2;
-  if (iconKey) {
-    const iconSize = Math.min(primary ? 42 : 28, height * 0.58);
+  const iconSize = Math.min(primary ? 42 : 28, height * 0.58);
+  if (iconKey && iconSize + 12 + text.width <= width - 16) {
     const groupWidth = iconSize + 12 + text.width;
     const groupLeft = x + (width - groupWidth) / 2;
     scene.add.image(groupLeft + iconSize / 2, centerY, iconKey).setDisplaySize(iconSize, iconSize);
@@ -95,45 +96,40 @@ export class MainMenuScene extends Phaser.Scene {
     paintVista(this, 'menu');
     if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) this.tweens.getTweens().forEach((tween) => tween.stop());
 
-    const emblemSize = compact ? Math.min(62, H * 0.16) : Math.min(205, W * 0.14, H * 0.205);
-    const emblemY = compact ? H * 0.12 : H * 0.20;
-    this.add.image(W / 2, emblemY, emblemKey()).setDisplaySize(emblemSize, emblemSize);
-
-    // The two-line title and substantial painted emblem make this a game title
-    // screen, while leaving the same scenic keep visible around the mark.
-    const firstLineSize = compact ? 20 : Math.min(64, W * 0.04);
-    const secondLineSize = compact ? Math.min(36, W * 0.047) : Math.min(90, W * 0.054);
-    const firstLineY = compact ? H * 0.255 : H * 0.315;
-    const secondLineY = compact ? H * 0.35 : H * 0.405;
-    const firstLine = this.add.text(W / 2, firstLineY, 'Aegis of the', style(firstLineSize, C.goldBright, true, FONT_DISPLAY)).setOrigin(0.5);
-    const secondLine = this.add.text(W / 2, secondLineY, 'Borderkeep', style(secondLineSize, C.goldBright, true, FONT_DISPLAY)).setOrigin(0.5);
+    const best = loadBest();
+    const legacy = loadLegacyBest();
+    const actionTop = narrowCompact ? H - SAVED_BAND_HEIGHT - 200 - 12
+      : compact ? H - SAVED_BAND_HEIGHT - 112 - 12 : H * (best ? 0.588 : 0.566);
+    const wrap = Math.max(220, Math.min(680, W - 48));
+    const firstLineSize = compact ? (H < 480 ? 18 : 20) : Math.min(64, W * 0.04);
+    const secondLineSize = compact ? (H < 480 ? 28 : 36) : Math.min(90, W * 0.054);
+    const firstLine = this.add.text(W / 2, 0, 'Aegis of the', style(firstLineSize, C.goldBright, true, FONT_DISPLAY)).setOrigin(0.5, 0);
+    const secondLine = this.add.text(W / 2, 0, 'Borderkeep', style(secondLineSize, C.goldBright, true, FONT_DISPLAY)).setOrigin(0.5, 0);
     for (const titleLine of [firstLine, secondLine]) {
       titleLine.setStroke('#211b16', 3).setShadow(0, 3, '#080a0c', 0.76, true, true);
     }
-    const ruleY = compact ? H * 0.433 : H * 0.475;
-    const rule = this.add.graphics();
-    rule.lineStyle(1.5, 0xd7aa4e, 0.82);
-    rule.lineBetween(W / 2 - Math.min(compact ? 120 : 230, W * 0.28), ruleY, W / 2 - 12, ruleY);
-    rule.lineBetween(W / 2 + 12, ruleY, W / 2 + Math.min(compact ? 120 : 230, W * 0.28), ruleY);
-    rule.lineStyle(2, 0xf0cd72, 1);
-    rule.lineBetween(W / 2, ruleY - 5, W / 2 + 5, ruleY);
-    rule.lineBetween(W / 2 + 5, ruleY, W / 2, ruleY + 5);
-    rule.lineBetween(W / 2, ruleY + 5, W / 2 - 5, ruleY);
-    rule.lineBetween(W / 2 - 5, ruleY, W / 2, ruleY - 5);
-
-    const subtitleY = compact ? H * 0.47 : H * 0.51;
-    this.add.text(W / 2, subtitleY, 'ANCIENT BORDER KEEP  ·  DEFEND THE PASS', style(12, C.textPrimary, true)).setOrigin(0.5);
-
-    const best = loadBest();
-    const legacy = loadLegacyBest();
-    const bestY = compact ? H * 0.515 : H * 0.545;
-    const bestWrap = Math.max(220, W - 32);
+    const rows = [firstLine, secondLine,
+      this.add.text(W / 2, 0, 'ANCIENT BORDER KEEP  ·  DEFEND THE PASS', style(14, C.textPrimary, true)).setOrigin(0.5, 0).setWordWrapWidth(wrap).setAlign('center')];
     if (best) {
-      this.add.text(W / 2, bestY, `Personal best  ·  ${best.score.toLocaleString('en-US')} pts  ·  Wave ${best.wave}`, style(12, C.textSecondary)).setOrigin(0.5).setWordWrapWidth(bestWrap);
+      rows.push(this.add.text(W / 2, 0, `Personal best  ·  ${best.score.toLocaleString('en-US')} pts  ·  Wave ${best.wave}`, style(14, C.textPrimary, true)).setOrigin(0.5, 0).setWordWrapWidth(wrap).setAlign('center'));
     }
     if (legacy) {
-      this.add.text(W / 2, best ? bestY + 16 : bestY, `Legacy era ${legacy.scoreVersion} best  ·  ${legacy.score.toLocaleString('en-US')} pts  ·  Wave ${legacy.wave}`, style(12, C.textSecondary)).setOrigin(0.5).setWordWrapWidth(bestWrap);
+      rows.push(this.add.text(W / 2, 0, `Legacy era ${legacy.scoreVersion} best  ·  ${legacy.score.toLocaleString('en-US')} pts  ·  Wave ${legacy.wave}`, style(14, C.textPrimary, true)).setOrigin(0.5, 0).setWordWrapWidth(wrap).setAlign('center'));
     }
+    const textHeight = rows.reduce((sum, row) => sum + row.height, 0) + (rows.length - 1) * 8;
+    const desiredEmblem = compact ? 62 : Math.min(205, W * 0.14, H * 0.205);
+    const availableEmblem = Math.max(0, actionTop - 36 - textHeight);
+    const emblemSize = availableEmblem >= 36 ? Math.min(desiredEmblem, availableEmblem) : 0;
+    const blockHeight = textHeight + (emblemSize ? emblemSize + 8 : 0);
+    let rowY = Math.max(8, (actionTop - 12 - blockHeight) / 2);
+    const backingTop = rowY - 6;
+    this.add.rectangle((W - Math.min(720, W - 24)) / 2, backingTop, Math.min(720, W - 24), blockHeight + 12, C.bgPanel, 1)
+      .setOrigin(0).setStrokeStyle(1, 0x6b6047, 0.8).setDepth(-6);
+    if (emblemSize) {
+      this.add.image(W / 2, rowY + emblemSize / 2, emblemKey()).setDisplaySize(emblemSize, emblemSize);
+      rowY += emblemSize + 8;
+    }
+    for (const row of rows) { row.setY(rowY); rowY += row.height + 8; }
 
     const savedY = H - SAVED_BAND_HEIGHT;
     if (narrowCompact) {

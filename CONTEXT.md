@@ -35,6 +35,8 @@
 - **Victory decision:** The frozen phase after the siege is won, in which pending rewards are resolved and the player chooses Finish Run or Continue Endless.
 - **Siege failure:** A terminal result caused by a required boss (wave 10 or wave 30) escaping while lives remain.
 - **Score era:** The set of scores sharing one score version; rankings and personal-best comparisons use only the current era.
+- **Live score:** Combat points earned through kills, completed waves and defeated bosses during play, adjusted for difficulty.
+- **Final score:** A settled score including combat points and the remaining-lives and unused-gold bonuses.
 - **Terminal result:** The single end-of-run record, created only by a lives-zero defeat, a siege failure or Finish Run; only a terminal result can be submitted as a score.
 - **Discarded run:** A run ended by Restart or Quit; it creates no terminal result and no score submission.
 - **Auto mode:** A player-controlled mode with one switch that jointly enables automatic wave starts and situational relic use.

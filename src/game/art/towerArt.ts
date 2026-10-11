@@ -102,6 +102,30 @@ const PORTRAIT_BACKGROUNDS: Record<TowerId, string> = {
   longbow: '#344132', ember: '#443128', glacier: '#293944', starfire: '#352b46', tempest: '#293e3b'
 };
 
+// Source-pixel distance from the front edge to the center of the stone footprint,
+// measured on the family/stage review grid (not the tip of the tower silhouette).
+const GROUND_INSETS: Record<TowerId, readonly number[]> = {
+  longbow: [58, 76, 92, 103], ember: [135, 194, 190, 100],
+  glacier: [75, 82, 92, 106], starfire: [80, 88, 100, 115],
+  tempest: [79, 88, 96, 104]
+};
+// Occupied bounds of the 192px Campaign PNGs, excluding transparent padding.
+const CAMPAIGN_BOUNDS: Record<TowerId, readonly AlphaBounds[]> = {
+  longbow: [{ left:36, top:6, width:131, height:186, bottom:191 }, { left:33, top:5, width:133, height:187, bottom:191 }],
+  ember: [{ left:10, top:17, width:178, height:171, bottom:187 }, { left:10, top:18, width:177, height:168, bottom:185 }],
+  glacier: [{ left:30, top:14, width:133, height:170, bottom:183 }, { left:32, top:13, width:131, height:168, bottom:180 }],
+  starfire: [{ left:36, top:12, width:120, height:167, bottom:178 }, { left:35, top:6, width:122, height:175, bottom:180 }],
+  tempest: [{ left:26, top:15, width:136, height:171, bottom:185 }, { left:27, top:12, width:139, height:173, bottom:184 }]
+};
+
+function placedArt(id: TowerId, stage: number, visualTier: 1 | 2 | 3 = 1): TowerStageArt & { groundInset: number } {
+  const art = stageArt(id, ART[id], stage);
+  if (visualTier === 1) return { ...art, groundInset: GROUND_INSETS[id][stage] };
+  const bounds = CAMPAIGN_BOUNDS[id][visualTier - 2];
+  return { ...art, textureKey: campaignTowerTextureKey(id, visualTier), frameIndex: undefined,
+    sourceWidth: 192, sourceHeight: 192, bounds, groundInset: bounds.width * 0.2 };
+}
+
 export interface TowerView {
   /** Container origin is the build-plot ground anchor. */
   view: Phaser.GameObjects.Container;
@@ -154,39 +178,38 @@ export function buildTowerVisual(scene: Phaser.Scene, towerId: string, level: nu
   const id = normalizeTowerId(towerId);
   const spec = ART[id];
   const stage = Math.max(1, Math.min(4, Math.floor(level))) - 1;
-  const art = stageArt(id, spec, stage);
+  const productionKey = visualTier === 2 || visualTier === 3 ? campaignTowerTextureKey(id, visualTier) : '';
+  const hasProductionArt = productionKey !== '' && scene.textures.exists(productionKey);
+  const art = placedArt(id, stage, hasProductionArt ? visualTier : 1);
   const bounds = art.bounds;
   const scale = art.targetHeight / bounds.height;
   const sourceCenterX = bounds.left + bounds.width / 2;
   const centerOffsetX = sourceCenterX - art.sourceWidth / 2;
   const bottomMargin = art.sourceHeight - 1 - bounds.bottom;
+  const groundOffset = art.groundInset * scale;
   const view = scene.add.container(0, 0);
-  const shadow = contactShadow(scene, 0, 2, 62, 25).setAlpha(0.42);
-  const productionKey = visualTier === 2 || visualTier === 3 ? campaignTowerTextureKey(id, visualTier) : '';
-  const hasProductionArt = productionKey !== '' && scene.textures.exists(productionKey);
-  const productionSource = hasProductionArt ? scene.textures.get(productionKey).getSourceImage() as HTMLImageElement | HTMLCanvasElement : null;
-  const productionWidth = productionSource ? art.targetHeight * productionSource.width / productionSource.height : 0;
-  const sprite = hasProductionArt
-    ? scene.add.image(0, 0, productionKey).setOrigin(0.5, 1).setDisplaySize(productionWidth, art.targetHeight)
-    : (art.frameIndex === undefined
-      ? scene.add.image(-centerOffsetX * scale, bottomMargin * scale, art.textureKey)
-      : scene.add.image(-centerOffsetX * scale, bottomMargin * scale, art.textureKey, art.frameIndex))
+  const shadow = contactShadow(scene, 0, 0, 62, 25).setAlpha(0.42);
+  const sprite = (art.frameIndex === undefined
+      ? scene.add.image(-centerOffsetX * scale, bottomMargin * scale + groundOffset, art.textureKey)
+      : scene.add.image(-centerOffsetX * scale, bottomMargin * scale + groundOffset, art.textureKey, art.frameIndex))
       .setOrigin(0.5, 1).setScale(scale);
   const crown = scene.add.container(0, 0);
   view.add([shadow, sprite, crown]);
-  if ((visualTier === 2 || visualTier === 3) && !hasProductionArt) addCampaignTierOverlay(scene, view, visualTier);
+  if ((visualTier === 2 || visualTier === 3) && !hasProductionArt) {
+    const overlay = scene.add.container(0, groundOffset);
+    addCampaignTierOverlay(scene, overlay, visualTier); view.add(overlay);
+  }
 
-  const visualWidth = hasProductionArt ? productionWidth : bounds.width * scale;
-  const visualHeight = hasProductionArt ? art.targetHeight : bounds.height * scale;
-  const displayBounds = hasProductionArt
-    ? { left: -visualWidth / 2, top: -visualHeight, width: visualWidth, height: visualHeight }
-    : { left: (bounds.left - sourceCenterX) * scale, top: (bounds.top - bounds.bottom) * scale, width: visualWidth, height: visualHeight };
+  const visualWidth = bounds.width * scale;
+  const visualHeight = bounds.height * scale;
+  const displayBounds = { left: (bounds.left - sourceCenterX) * scale,
+    top: (bounds.top - bounds.bottom) * scale + groundOffset, width: visualWidth, height: visualHeight };
 
   return {
     view,
     crown,
     muzzleX: Math.round(art.focus.x * art.targetHeight),
-    muzzleY: Math.round(art.focus.y * art.targetHeight),
+    muzzleY: Math.round(art.focus.y * art.targetHeight + groundOffset),
     footprintPx: 64,
     visualWidth,
     visualHeight,
@@ -357,25 +380,25 @@ export function decorateEvolution(scene: Phaser.Scene, parent: Phaser.GameObject
 }
 
 /** Read-only geometry for render audits and the consuming scene's contracts. */
-export function towerArtGeometry(towerId: string, level: number): TowerView['displayBounds'] & {
+export function towerArtGeometry(towerId: string, level: number, visualTier: 1 | 2 | 3 = 1): TowerView['displayBounds'] & {
   footprintPx: number; visualWidth: number; visualHeight: number; muzzleX: number; muzzleY: number;
 } {
   const id = normalizeTowerId(towerId);
   const spec = ART[id];
   const stage = Math.max(1, Math.min(4, Math.floor(level))) - 1;
-  const art = stageArt(id, spec, stage);
+  const art = placedArt(id, stage, visualTier);
   const bounds = art.bounds;
   const scale = art.targetHeight / bounds.height;
   const center = bounds.left + bounds.width / 2;
   return {
     left: (bounds.left - center) * scale,
-    top: (bounds.top - bounds.bottom) * scale,
+    top: (bounds.top - bounds.bottom + art.groundInset) * scale,
     width: bounds.width * scale,
     height: bounds.height * scale,
     footprintPx: 64,
     visualWidth: bounds.width * scale,
     visualHeight: bounds.height * scale,
     muzzleX: Math.round(art.focus.x * art.targetHeight),
-    muzzleY: Math.round(art.focus.y * art.targetHeight)
+    muzzleY: Math.round(art.focus.y * art.targetHeight + art.groundInset * scale)
   };
 }

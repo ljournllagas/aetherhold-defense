@@ -99,7 +99,8 @@ retaining 14px text and an 8px health track; if a name wraps, use the needed
 height rather than overlaying its status. Supported minimum viewport is 360x360.
 When the compact selected-tower inspector would occupy the same top-of-field
 space, move the inspector below the boss panel if both fit. Otherwise route its
-actions into the existing tower control sheet, keeping the tray selectable;
+actions into the existing tower control sheet through a compact Details action,
+keeping the tray selectable. Closing the sheet must leave it closed;
 do not cover the boss panel with a second persistent inspector. An intentionally
 opened sheet/modal may temporarily cover it and restores it on close.
 

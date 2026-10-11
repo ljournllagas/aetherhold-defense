@@ -114,14 +114,14 @@ describe('campaign ability callout', () => {
     const { run } = fixture(width,height);
     run.campaign = {}; run.campaignBosses = { phase: () => 3 };
     run.bossBarText = { setText: vi.fn() }; run.bossBarHp = { setText: vi.fn() };
-    for (const [id,name,shortName] of [['hollow_warden','The Hollow Warden','Hollow Warden'],['cinder_colossus','Cinder Colossus','Cinder Colossus'],['frostbound_matriarch','Frostbound Matriarch','Frost Matriarch']]) {
+    for (const [id,name] of [['hollow_warden','The Hollow Warden'],['cinder_colossus','Cinder Colossus'],['frostbound_matriarch','Frostbound Matriarch']]) {
       run.enemies = [{ id: 1,campaignId: id,name,alive: true,isBoss: true,hp: 24,maxHp: 100 }];
       run.updateBossBar();
-      expect(run.bossBarText.setText).toHaveBeenLastCalledWith(shortName);
-      expect(run.bossBarHp.setText).toHaveBeenLastCalledWith('Phase 3 · HP 24%');
+      expect(run.bossBarText.setText).toHaveBeenLastCalledWith(name);
+      expect(run.bossBarHp.setText).toHaveBeenLastCalledWith('HP 24% · Phase 3');
     }
     run.campaign = null; run.updateBossBar();
-    expect(run.bossBarText.setText).toHaveBeenLastCalledWith('Frostbound Matriarch · Enraged');
-    expect(run.bossBarHp.setText).toHaveBeenLastCalledWith('HP 24%');
+    expect(run.bossBarText.setText).toHaveBeenLastCalledWith('Frostbound Matriarch');
+    expect(run.bossBarHp.setText).toHaveBeenLastCalledWith('HP 24% · Enraged');
   });
 });

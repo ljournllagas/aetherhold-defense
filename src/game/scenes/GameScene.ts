@@ -28,7 +28,7 @@ import {campaignRequirements} from '../ui/prerequisites.ts';
 import {achievementViews} from '../ui/progressionView.ts';
 import {loadLegacyBests} from '../systems/Settings.ts';
 import { button, panel, statRow } from '../ui/components.ts';
-import { calculateScore } from '../systems/ScoreSystem.ts';
+import { calculateLiveScore, calculateScore } from '../systems/ScoreSystem.ts';
 import { killReward, waveClearBonus, canAfford } from '../systems/EconomySystem.ts';
 import { rollPowerUp, shouldDropOnKill } from '../systems/PowerUpSystem.ts';
 import { pickTarget } from '../systems/CombatSystem.ts';
@@ -269,6 +269,9 @@ export class GameScene extends Phaser.Scene {
   private bossBar: Phaser.GameObjects.Container | null = null;
   private bossBarFill: Phaser.GameObjects.Rectangle | null = null;
   private bossBarText: Phaser.GameObjects.Text | null = null;
+  private bossBarBackdrop: Phaser.GameObjects.Rectangle | null = null;
+  private bossBarTrack: Phaser.GameObjects.Rectangle | null = null;
+  private bossPanelHeight = 0;
   private compactBossActive = false;
   private plotMarkers: Phaser.GameObjects.Arc[] = [];
   private occupied = new Set<number>();
@@ -458,6 +461,7 @@ export class GameScene extends Phaser.Scene {
     this.modal = null;
     this.bossBar = null;
     this.bossBarHp = null;
+    this.bossBarBackdrop = null; this.bossBarTrack = null; this.bossPanelHeight = 0;
     this.infoPanel = null;
     this.towerCommands = null;
     this.placePanel = null;
@@ -800,6 +804,7 @@ export class GameScene extends Phaser.Scene {
     this.floaters = [];
     this.infoPanel = null; this.towerCommands = null; this.placePanel = null; this.powerupRow = null; this.catalog = null;
     this.bossBar = null; this.bossBarHp = null; this.bossBarText = null; this.bossBarFill = null;
+    this.bossBarBackdrop = null; this.bossBarTrack = null; this.bossPanelHeight = 0;
     const f = this.layout.field;
     this.applyView();
     if (this.worldRoot) {
@@ -1233,12 +1238,12 @@ export class GameScene extends Phaser.Scene {
   }
 
   private scoreSoFar(): number {
+    if (this.campaignResult) return this.campaignResult.score;
     const d = getDifficulty(this.difficultyId);
-    const b = calculateScore(
+    return calculateLiveScore(
       { enemiesKilled: this.enemiesKilled, elitesKilled: this.elitesKilled, wavesCompleted: this.wavesCompleted, bossesKilled: this.bossesKilled, remainingLives: this.lives, unusedGold: this.gold },
       d
     );
-    return b.finalScore;
   }
 
   private updateHUD(): void {
@@ -1281,7 +1286,7 @@ export class GameScene extends Phaser.Scene {
       this.startBtnLabel?.setText(`Wave ${this.wave} · In battle`);
       this.startBtn?.setFillStyle(0x121920, 1).setStrokeStyle(1, 0x2c3945, 1);
     }
-    this.startBtnLabel?.setVisible(!(this.layout.compact && this.compactBossActive));
+    this.startBtnLabel?.setVisible(true);
     this.tweens.timeScale = this.paused || this.pausedByModal ? 0 : this.speed;
     this.time.paused = this.paused || this.pauseState.has('background');
     this.syncEnemyAnimationPlayback();
@@ -1312,8 +1317,20 @@ export class GameScene extends Phaser.Scene {
       const t=this.selectedTower;if(!t||this.sheetKind)return;
       const w=Math.min(560,this.layout.width-16),h=108;
       const screen=this.cameraView.project(t);
-      const y=this.layout.width<this.layout.height?this.layout.height-this.layout.tray-h-4:
+      let y=this.layout.width<this.layout.height?this.layout.height-this.layout.tray-h-4:
         screen.y>this.layout.hud+this.layout.field.height/2?this.layout.hud+4:this.layout.height-this.layout.tray-h-4;
+      if (this.bossBar?.visible && y < this.bossBar.y + this.bossPanelHeight + 8) {
+        y = this.bossBar.y + this.bossPanelHeight + 8;
+        if (y + h > this.layout.field.y + this.layout.field.height - 4) {
+          const detailsY = this.layout.field.y + this.layout.field.height - 48;
+          const c = this.add.container((this.layout.width - w) / 2, detailsY);
+          this.uiRoot!.add(c); this.infoPanel = c;
+          this.compactInspectorBounds = {x:c.x,y:detailsY,width:w,height:44};
+          button(this, c, 0, 0, w - 48, `${t.cfg.name} · Details`, () => this.openDetails('tower'), 'primary');
+          button(this, c, w - 44, 0, 44, '×', () => { this.selectedTower = null; this.refreshInfoPanel(); });
+          return;
+        }
+      }
       const x=(this.layout.width-w)/2,c=this.add.container(x,y);this.uiRoot!.add(c);this.infoPanel=c;
       this.compactInspectorBounds={x,y,width:w,height:h};
       panel(this,c,0,0,w,h).setInteractive().on('pointerdown',(_p:unknown,_x:number,_y:number,e:Phaser.Types.Input.EventData)=>e.stopPropagation());
@@ -1859,28 +1876,18 @@ export class GameScene extends Phaser.Scene {
   private bossBarHp: Phaser.GameObjects.Text | null = null;
 
   private drawBossBar(): void {
-    this.compactBossActive = this.layout.compact && this.enemies.some(e => e.alive && e.isBoss);
-    if (this.layout.compact) {
-      // Reuse the wave-status button: the HUD already names the boss wave, so its
-      // 44px content area can carry the live boss name, health percentage, and bar.
-      const width = 136;
-      const x = 88;
-      const y = this.layout.height - this.layout.tray + 10;
-      const c = this.add.container(x, y).setVisible(this.compactBossActive); this.uiRoot!.add(c);
-      this.bossBarText = this.add.text(8, 0, '', style(12, C.dangerBright, true)).setWordWrapWidth(width - 16);
-      this.bossBarHp = this.add.text(8, 15, '', style(12, C.textSecondary, true));
-      this.bossBarFill = this.add.rectangle(8, 32, width - 16, 5, 0xd85f59).setOrigin(0);
-      c.add([this.bossBarText, this.bossBarHp, this.bossBarFill]); this.bossBar = c;
-      return;
-    }
-    const width = Math.min(440, this.layout.field.width - 32);
-    const c = this.add.container((this.layout.field.width - width) / 2, 64).setVisible(false); this.uiRoot!.add(c);
-    panel(this, c, 0, 0, width, 48, 0xd85f59);
-    c.add(this.add.image(24, 22, 'hud_skull').setDisplaySize(24, 24));
-    this.bossBarText = this.add.text(44, 8, '', style(14, C.dangerBright, true));
-    this.bossBarHp = this.add.text(width - 12, 8, '', style(12, C.textSecondary, true)).setOrigin(1,0);
-    this.bossBarFill = this.add.rectangle(44, 32, width - 56, 8, 0xd85f59).setOrigin(0);
-    c.add([this.bossBarText, this.bossBarHp, this.bossBarFill]); this.bossBar = c;
+    const field = this.layout.field;
+    const width = Math.min(440, field.width - 16);
+    const c = this.add.container(field.x + (field.width - width) / 2, field.y + 8).setVisible(false);
+    this.uiRoot!.add(c);
+    this.bossBarBackdrop = this.add.rectangle(0, 0, width, 76, C.bgPanel, 1).setOrigin(0).setStrokeStyle(1, 0xd85f59);
+    this.bossBarText = this.add.text(12, 8, '', style(16, C.textPrimary, true)).setWordWrapWidth(width - 24);
+    this.bossBarHp = this.add.text(12, 34, '', style(14, C.textPrimary, true)).setWordWrapWidth(width - 24);
+    this.bossBarTrack = this.add.rectangle(12, 60, width - 24, 8, 0x493438).setOrigin(0);
+    this.bossBarFill = this.add.rectangle(12, 60, width - 24, 8, 0xee7b71).setOrigin(0);
+    c.add([this.bossBarBackdrop, this.bossBarText, this.bossBarHp, this.bossBarTrack, this.bossBarFill]);
+    this.bossBar = c; this.bossPanelHeight = 0;
+    this.updateBossBar();
   }
 
   private updateBossBar(): void {
@@ -1888,22 +1895,27 @@ export class GameScene extends Phaser.Scene {
     const compactActive = this.layout.compact && !!boss;
     const compactChanged = compactActive !== this.compactBossActive;
     this.compactBossActive = compactActive;
-    this.startBtnLabel?.setVisible(!compactActive);
+    this.startBtnLabel?.setVisible(true);
     this.bossBar?.setVisible(!!boss);
-    if (!boss) { if (compactChanged) this.updateHUD(); return; }
-    const pct = Math.max(0, boss.hp / boss.maxHp);
-    const maxWidth = this.layout.compact ? 120 : Math.min(440, this.layout.field.width - 32) - 56;
-    this.bossBarFill?.setDisplaySize(maxWidth * pct, this.layout.compact ? 5 : 8);
-    if (this.campaign && this.layout.compact) {
-      // Keep the identity to one line; phase and HP share a separate status row.
-      const name = boss.campaignId === 'hollow_warden' ? 'Hollow Warden' : boss.campaignId === 'cinder_colossus' ? 'Cinder Colossus' : 'Frost Matriarch';
-      this.bossBarText?.setText(name);
-      this.bossBarHp?.setText(`Phase ${this.campaignBosses.phase(boss.id)} · HP ${Math.ceil(pct * 100)}%`);
-    } else {
-      this.bossBarText?.setText(`${boss.name}${this.campaign ? ` · Phase ${this.campaignBosses.phase(boss.id)}` : pct < 0.3 ? ' · Enraged' : ''}`);
-      this.bossBarHp?.setText(this.layout.compact ? `HP ${Math.ceil(pct * 100)}%` : `${Math.ceil(pct * 100)}%`);
+    if (!boss) {
+      if (compactChanged) { this.updateHUD(); this.drawCatalog(); }
+      return;
     }
-    if (this.layout.compact && !(import.meta.env.DEV && this.qaCampaignFixture)) this.hudStatus?.setVisible(false);
+    const pct = Math.max(0, Math.min(1, boss.maxHp > 0 ? boss.hp / boss.maxHp : 0));
+    this.bossBarText?.setText(boss.name);
+    this.bossBarHp?.setText(`HP ${Math.ceil(pct * 100)}%${this.campaign ? ` · Phase ${this.campaignBosses.phase(boss.id)}` : pct < 0.3 ? ' · Enraged' : ''}`);
+    if (!this.bossBarBackdrop || !this.bossBarText || !this.bossBarHp) return;
+    const width = Math.min(440, this.layout.field.width - 16);
+    const statusY = 8 + this.bossBarText.height + 8;
+    const trackY = statusY + this.bossBarHp.height + 8;
+    const panelHeight = trackY + 16;
+    this.bossBarHp.setPosition(12, statusY);
+    this.bossBarTrack?.setPosition(12, trackY);
+    this.bossBarFill?.setPosition(12, trackY).setDisplaySize((width - 24) * pct, 8);
+    this.bossBarBackdrop.setSize(width, panelHeight);
+    const changed = panelHeight !== this.bossPanelHeight;
+    this.bossPanelHeight = panelHeight;
+    if (compactChanged || changed) this.drawCatalog();
   }
 
   // ---------- power-ups ----------
@@ -2850,7 +2862,9 @@ export class GameScene extends Phaser.Scene {
     const unresolved = this.spawnQueue.length + this.enemies.filter(e => e.alive).length + this.flights.length + this.evolutionCombat.activeFieldCount;
     if (outcome === 'victory' && !campaign.readyToClear(this.wave, this.lives, unresolved)) return;
     campaign.settled = true; this.ended = true; this.waveActive = false;
-    const score = this.scoreSoFar();
+    const score = calculateScore({ enemiesKilled: this.enemiesKilled, elitesKilled: this.elitesKilled,
+      wavesCompleted: this.wavesCompleted, bossesKilled: this.bossesKilled,
+      remainingLives: this.lives, unusedGold: this.gold }, getDifficulty(this.difficultyId)).finalScore;
     const fixtureRepository = import.meta.env.DEV ? this.qaCampaignRepository : null;
     const clear = outcome === 'victory' && (!this.debugAssisted || fixtureRepository) ? (fixtureRepository ?? campaignRepository).recordClear(campaign.definition.level, score, this.lives) : null;
     this.campaignResult = { outcome, score, lives: this.lives, clear };

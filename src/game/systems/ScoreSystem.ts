@@ -10,6 +10,11 @@ export interface ScoreInput {
   unusedGold?: number;
 }
 
+/** Points earned in combat; resource bonuses belong to final settlement. */
+export function calculateLiveScore(input: ScoreInput, difficulty: DifficultyConfig): number {
+  return calculateScore({ ...input, remainingLives: 0, unusedGold: 0 }, difficulty).finalScore;
+}
+
 export function calculateScore(input: ScoreInput, difficulty: DifficultyConfig): ScoreBreakdown {
   const killScore = input.enemiesKilled * SCORING.killScoreBase + input.elitesKilled * SCORING.eliteKillBonus;
   // Wave bonus: sum of arithmetic series base + perWave*i
