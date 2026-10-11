@@ -80,6 +80,7 @@ export class GameOverScene extends Phaser.Scene {
   private shadeRoot: Phaser.GameObjects.Container | null = null;
   private panelRoot: Phaser.GameObjects.Container | null = null;
   private submitMessage = IDLE_MESSAGE;
+  private accountResult = false;
   private readonly handleResize = (): void => {
     if (!this.runData) return;
     this.drawBackground(this.runData);
@@ -92,6 +93,8 @@ export class GameOverScene extends Phaser.Scene {
 
   create(data: Data): void {
     mountAccountButton(this);
+    const accountView = accountSystem.view();
+    this.accountResult = accountView.playMode === 'account' || accountView.session !== null || accountView.config?.loginRequired === true;
     this.submitState = 'idle';
     this.runGeneration++;
     const generation = this.runGeneration;
@@ -115,7 +118,7 @@ export class GameOverScene extends Phaser.Scene {
       gameVersion: data.gameVersion,
       scoreVersion: data.scoreVersion
     });
-    this.submitMessage = accountSystem.view().playMode === 'account' ? accountStatus(accountSystem.view()) : IDLE_MESSAGE;
+    this.submitMessage = this.accountResult ? accountStatus(accountSystem.view()) : IDLE_MESSAGE;
     this.scoreAttempt = null;
     this.retryNotice = null;
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -131,6 +134,12 @@ export class GameOverScene extends Phaser.Scene {
     SoundManager.get().stopMusic();
     this.drawBackground(data);
     this.drawPanel(data);
+    const unsubscribe = accountSystem.subscribe(view => {
+      if (!this.accountResult) return;
+      const message = accountStatus(view);
+      if (message !== this.submitMessage) { this.submitMessage = message; if (this.runData) this.drawPanel(this.runData); }
+    });
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubscribe);
     void this.refreshRetryNotice(generation);
   }
 
@@ -139,7 +148,7 @@ export class GameOverScene extends Phaser.Scene {
    * stages anything; the notice only explains what an explicit Submit will do.
    */
   private async refreshRetryNotice(generation: number): Promise<void> {
-    if (accountSystem.view().playMode === 'account') return;
+    if (this.accountResult) return;
     const view = await scoreRetryRepository.view();
     const current = this.payload;
     if (!current || !this.runData || this.runGeneration !== generation || this.activeRunId !== current.runId) return;
@@ -360,12 +369,12 @@ export class GameOverScene extends Phaser.Scene {
   }
 
   private canSubmit(): boolean {
-    if (accountSystem.view().playMode === 'account') return false;
+    if (this.accountResult) return false;
     return this.submitState === 'idle' || this.submitState === 'failed';
   }
 
   private submitLabel(): string {
-    if (accountSystem.view().playMode === 'account') return 'Automatic upload';
+    if (this.accountResult) return 'Automatic upload';
     if (this.submitState === 'submitting') return 'Submitting…';
     if (this.submitState === 'submitted') return 'Score Submitted';
     return 'Submit Score';

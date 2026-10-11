@@ -59,7 +59,7 @@ export class DifficultyScene extends Phaser.Scene {
     const compact = H < 560 || W < 900;
     const settings = loadSettings();
     this.selectedDiff = settings.difficulty;
-    this.playerName = settings.playerName || '';
+    this.playerName = accountSystem.view().session?.nickname ?? settings.playerName ?? '';
     this.diffCards = [];
     if (W < 1180 || H < 540) { this.createPhone(); return; }
 
@@ -98,6 +98,8 @@ export class DifficultyScene extends Phaser.Scene {
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.value = this.playerName;
+    nameInput.readOnly = accountSystem.view().playMode === 'account';
+    if (nameInput.readOnly) nameInput.title = 'Change your public nickname through Account.';
     nameInput.maxLength = 20;
     nameInput.autocomplete = 'name';
     nameInput.spellcheck = false;
@@ -247,6 +249,8 @@ export class DifficultyScene extends Phaser.Scene {
     paintVista(this, 'menu');
     this.phoneRoot = this.add.container(0, 0).setDepth(100);
     const input = document.createElement('input'); input.value = this.playerName; input.maxLength = 20; input.autocomplete = 'name';
+    input.readOnly = accountSystem.view().playMode === 'account';
+    if (input.readOnly) input.title = 'Change your public nickname through Account.';
     input.setAttribute('aria-label', 'Defender name, 20 characters maximum'); input.placeholder = 'Defender name';
     input.style.cssText = 'position:fixed;height:44px;box-sizing:border-box;z-index:1000;background:#0a0e12;color:#f3ebdd;border:1px solid #d7aa4e;padding:8px 12px;font:16px Inter,system-ui';
     let composing = false;

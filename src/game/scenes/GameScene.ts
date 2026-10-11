@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { accountSystem } from '../systems/AccountSystem.ts';
-import { accountEntryAllowed } from '../ui/accountControls.ts';
+import { accountEntryAllowed, accountStatus } from '../ui/accountControls.ts';
 import type { AccountRef } from '../../shared/account.ts';
 import type { GameOverData } from './GameOverScene.ts';
 import type { GameStartData, LoadingRequest } from './PreloadScene.ts';
@@ -412,6 +412,10 @@ export class GameScene extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       if (!this.ended) void accountSystem.discardBattle();
     });
+    const unsubscribeAccount = accountSystem.subscribe(() => {
+      if (this.campaignResult && this.ended && this.runAccount) this.renderCampaignResult();
+    });
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubscribeAccount);
     const snd = SoundManager.get();
     const settings = loadSettings();
     Object.assign(snd, { masterVolume: settings.masterVolume, musicOn: settings.musicOn, sfxOn: settings.sfxOn, musicVolume: settings.musicVolume, sfxVolume: settings.sfxVolume });
@@ -2776,6 +2780,7 @@ export class GameScene extends Phaser.Scene {
     const line = (message: string, color: string = C.textSecondary) => { const text = sheet.text(y, message, color); y += text.height + 12; };
     if (import.meta.env.DEV && this.qaCampaignFixture) line('DEV CAMPAIGN FIXTURE · Reward preview · Not saved', C.gold);
     line(`Score ${result.score} · Lives ${result.lives}/${this.maxLives}`, C.gold);
+    if (this.runAccount) line(accountStatus(accountSystem.view()));
     if (result.clear) {
       const progress = result.clear.progress;
       line(`Mastery: Completion ${progress.completionStar ? 'earned' : 'missing'} · Stronghold ${progress.livesStar ? 'earned' : 'missing'} · Score ${progress.scoreStar ? 'earned' : 'missing'}`);

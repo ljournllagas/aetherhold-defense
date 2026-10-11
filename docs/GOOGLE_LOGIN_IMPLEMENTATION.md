@@ -22,3 +22,9 @@ Ruling: use oauth4webapi for actual OIDC protocol verification and fake-indexedd
 Ruling: authenticated Campaign terminal results remain separate from public Classic scores. Preserve legacy manual submission controls only while explicit disabled rollout allows guest play.
 Ruling: first account import retains its browser-local Campaign preparation fields by seeding only a validated absent account storage key; preferences are never uploaded.
 Ruling: perform one integrated implementation checkpoint before publication, because the contracts, imports, and browser adapters must build together. No partial deployment.
+
+Independent whole-implementation review: five important client lifecycle/storage findings, no critical or minor findings. All five received failing regression tests before fixes: mismatched session/profile rejection; late refresh after logout; active-battle offline owner preservation; server logout when IndexedDB fails; unreadable outbox never synced; account personal-best memory retention with failed localStorage. Focused fix verification: 41 tests passed; scene/lifecycle follow-up: 88 tests passed. Full post-fix suite: 1,066 passed, 11 existing skips; build passed.
+
+Review rulings: real Google consent/reauth and live acceptance are release gates, not assumed from token fixtures. Actual Google current-key behavior is still externally dependent; generated signed-token verification and failed JWKS paths pass. Local login controls were inspected at desktop and 390x844 phone size and remained visible/enabled.
+
+Additional correctness: mark settlement pending before asynchronous queue persistence; defer uploads until persistence finishes. Result screens subscribe to acknowledgement state. Expired account results retain automatic upload semantics; readonly difficulty nickname directs account users to their editable account nickname.

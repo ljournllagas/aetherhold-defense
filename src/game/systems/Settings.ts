@@ -17,6 +17,9 @@ export interface Settings {
 const KEY = 'aetherhold-settings-v1';
 const BEST_KEY = 'aetherhold-best-score-v3';
 let bestPrefix = '';
+const accountBestMemory = new Map<string, LocalBest>();
+const accountBestWarnings = new Map<string, string>();
+export function accountBestWarning(): string | null { return accountBestWarnings.get(bestPrefix) ?? null; }
 export function setBestAccount(ref: AccountRef | null): void { bestPrefix = ref ? `account:${accountKey(ref)}:` : ''; }
 /** Retained legacy bests, newest era first. Only these keys may infer their era when the field is absent. */
 const LEGACY_BEST_KEYS: ReadonlyArray<readonly [key: string, era: number]> = [
@@ -103,7 +106,8 @@ function parseBest(key: string, expectedEra: number, implicitEra?: number): Loca
 }
 
 export function loadBest(): LocalBest | null {
-  return parseBest(BEST_KEY, SCORE_VERSION);
+  const stored = parseBest(BEST_KEY, SCORE_VERSION), memory = accountBestMemory.get(bestPrefix + BEST_KEY);
+  return memory && (!stored || memory.score > stored.score) ? memory : stored;
 }
 
 /** Both retained legacy bests, newest era first; malformed or other-era records are omitted. */
@@ -121,20 +125,33 @@ export function loadLegacyBest(): LocalBest | null {
 }
 
 export function saveBest(b: Omit<LocalBest, 'scoreVersion'>): void {
+  if (bestPrefix) {
+    const previous = loadBest();
+    if (!previous || b.score > previous.score) accountBestMemory.set(bestPrefix + BEST_KEY, { ...b, scoreVersion: SCORE_VERSION });
+  }
   try {
-    const prev = loadBest();
-    if (!prev || b.score > prev.score) {
-      localStorage.setItem(bestPrefix + BEST_KEY, JSON.stringify({ ...b, scoreVersion: SCORE_VERSION }));
+    const prev = parseBest(BEST_KEY, SCORE_VERSION), desired = bestPrefix ? loadBest()! : { ...b, scoreVersion: SCORE_VERSION };
+    if (bestPrefix && localStorage.getItem(bestPrefix + BEST_KEY) !== null && !prev) {
+      accountBestWarnings.set(bestPrefix, 'Unreadable personal best was protected; new best is retained in this session.'); return;
     }
-  } catch { /* ignore */ }
+    if (!prev || desired.score > prev.score) {
+      localStorage.setItem(bestPrefix + BEST_KEY, JSON.stringify(desired));
+    }
+  } catch {
+    if (bestPrefix) accountBestWarnings.set(bestPrefix, 'Personal best is retained in this session; browser storage could not save it.');
+  }
 }
 
 export function applyAccountBests(bests: PersonalBest[]): void {
   for (const best of bests) {
     const key = best.scoreVersion === SCORE_VERSION ? BEST_KEY : LEGACY_BEST_KEYS.find(([, era]) => era === best.scoreVersion)?.[0];
     if (!key) continue;
-    const raw = localStorage.getItem(bestPrefix + key), old = parseBest(key, best.scoreVersion, best.scoreVersion);
-    if (raw !== null && !old) throw new Error('Personal best save is unreadable and was protected');
-    if (!old || best.score > old.score) localStorage.setItem(bestPrefix + key, JSON.stringify(best));
+    const memory = accountBestMemory.get(bestPrefix + key);
+    if (!memory || best.score > memory.score) accountBestMemory.set(bestPrefix + key, { ...best });
+    try {
+      const raw = localStorage.getItem(bestPrefix + key), old = parseBest(key, best.scoreVersion, best.scoreVersion);
+      if (raw !== null && !old) { accountBestWarnings.set(bestPrefix, 'Unreadable personal best was protected; new best is retained in this session.'); continue; }
+      if (!old || best.score > old.score) localStorage.setItem(bestPrefix + key, JSON.stringify(best));
+    } catch { accountBestWarnings.set(bestPrefix, 'Personal best is retained in this session; browser storage could not save it.'); }
   }
 }
