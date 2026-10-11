@@ -29,5 +29,5 @@ export function seedGuestPreferences(ref:AccountRef):void {
   if(storage.getItem(target)!==null)return;const raw=storage.getItem(CAMPAIGN_STORAGE_KEY);if(raw!==null&&parseCampaignProfile(JSON.parse(raw)))storage.setItem(target,raw);
 }
 export function readActiveCloudProgress():CloudProgress {return {...emptyCloudProgress(),levels:campaignRepository.view().profile.levels,earned:unlockRepository.view().profile.earned,bests:[loadBest(),...loadLegacyBests()].filter((x):x is NonNullable<typeof x>=>x!==null) as CloudProgress['bests']};}
-export function applyCloudProgress(progress:CloudProgress):void {campaignRepository.applyCloud(progress.levels);unlockRepository.applyCloud(progress.earned);if(browserStore())applyAccountBests(progress.bests);}
+export function applyCloudProgress(progress:CloudProgress):void {campaignRepository.applyCloud(progress.levels);unlockRepository.applyCloud(progress.earned);applyAccountBests(progress.bests);}
 export function purgeLocalAccount(ref:AccountRef):void {const s=browserStore();if(!s)return;const prefix=`account:${accountKey(ref)}:`;for(let i=s.length-1;i>=0;i--){const key=s.key(i);if(key?.startsWith(prefix))s.removeItem(key);}}
