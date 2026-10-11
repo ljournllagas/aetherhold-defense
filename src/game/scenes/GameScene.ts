@@ -6,7 +6,7 @@ import type { GameOverData } from './GameOverScene.ts';
 import type { GameStartData, LoadingRequest } from './PreloadScene.ts';
 import { MAP1, HUD_HEIGHT, type MapDef } from '../maps/map1.ts';
 import { BUILD_PLOT_POLICY } from '../maps/buildPlotPolicy.ts';
-import { TOWER_LIST, towerTotalInvested, isTowerId } from '../config/towers.ts';
+import { TOWER_LIST, TOWERS, towerTotalInvested, isTowerId } from '../config/towers.ts';
 import { ENEMIES, BOSS_BEHAVIOR, BONUS_TARGET_HP_PER_WAVE } from '../config/enemies.ts';
 import { getDifficulty } from '../config/difficulties.ts';
 import { POWERUPS, POWERUP_EFFECTS, POWERUP_DROP_CHANCE_PER_KILL, POWERUP_INVENTORY_LIMIT } from '../config/powerUps.ts';
@@ -21,6 +21,12 @@ import { gameLayout, readSafeInsets, sheetBounds, viewportToWorld, worldToViewpo
 import {TowerTray} from '../ui/TowerTray.ts';
 import {TowerTrayGesture,edgePan,type TrayInput,type TrayIntent} from '../systems/TowerTrayGesture.ts';
 import type {TowerId} from '../../shared/progression.ts';
+import {localGuide,type GuideStep} from '../systems/ContextualGuide.ts';
+import {HELP_TOPICS} from '../ui/helpContent.ts';
+import {campaignProgressionLines,progressionPanelLines} from './ProgressionScene.ts';
+import {campaignRequirements} from '../ui/prerequisites.ts';
+import {achievementViews} from '../ui/progressionView.ts';
+import {loadLegacyBests} from '../systems/Settings.ts';
 import { button, panel, statRow } from '../ui/components.ts';
 import { calculateScore } from '../systems/ScoreSystem.ts';
 import { killReward, waveClearBonus, canAfford } from '../systems/EconomySystem.ts';
@@ -159,7 +165,14 @@ export class GameScene extends Phaser.Scene {
   private touchMode = false;
   private sheet: ScrollSheet | null = null;
   private refreshProgressionActions: (() => void) | null = null;
-  private sheetKind: 'build' | 'tower' | 'more' | 'relics' | 'next' | 'evolve' | null = null;
+  private sheetKind: 'build' | 'tower' | 'more' | 'relics' | 'next' | 'evolve' | 'help' | 'progression' | null = null;
+  private guide=localGuide();
+  private progressionTab:'campaign'|'classic'='campaign';
+  private guideStep:GuideStep|null=null;
+  private showGuide(step:GuideStep):void {
+    if(!this.guide.shouldShow(step)||this.ended||this.modal||this.sheetKind)return;
+    this.guideStep=step;this.openDetails('help');
+  }
   private confirmStrip: Phaser.GameObjects.Container | null = null;
   private modalRenderer: (() => void) | null = null;
   private modalSheet: ScrollSheet | null = null;
@@ -493,6 +506,7 @@ export class GameScene extends Phaser.Scene {
     if (import.meta.env.DEV) this.events.on('qa:action', this.handleQAAction, this);
     this.attachProgressionListeners();
     if (import.meta.env.DEV && this.qaCampaignFixture) this.seedQACampaignFixture();
+    if(!this.qaCampaignFixture)this.time.delayedCall(0,()=>this.showGuide('placement'));
   }
 
   private attachProgressionListeners(): void {
@@ -518,14 +532,14 @@ export class GameScene extends Phaser.Scene {
     this.cancelGesture();
     if (kind === 'build') this.selectedTower = null;
     this.sheetKind = this.sheetKind === kind ? null : kind;
-    this.pauseState.set('details',this.sheetKind==='tower'||this.sheetKind==='evolve');
+    this.pauseState.set('details',['tower','evolve','help','progression'].includes(this.sheetKind??''));
     this.drawSheet(); this.showTouchPreview();
   }
   private detailsPurchaseContext():PurchaseContext {
     return {...this.purchaseContext(),blocked:this.ended||this.siege.phase==='victory'||this.siege.phase==='terminal'||this.pauseState.blockedExcept('details')};
   }
-  private openDetails(kind:'tower'|'evolve'):void {this.sheetKind=kind;this.pauseState.set('details',true);this.drawSheet();}
-  private closeDetails():void {this.sheetKind=null;this.pauseState.set('details',false);this.sheet?.destroy();this.sheet=null;this.refreshInfoPanel();}
+  private openDetails(kind:'tower'|'evolve'|'help'|'progression'):void {this.sheetKind=kind;this.pauseState.set('details',true);this.drawSheet();}
+  private closeDetails():void {if(this.guideStep)this.guide.complete(this.guideStep);this.guideStep=null;this.sheetKind=null;this.pauseState.set('details',false);this.sheet?.destroy();this.sheet=null;this.refreshInfoPanel();}
   private performDetailedAction(action:()=>void):void {
     const kind=this.sheetKind==='evolve'?'evolve':'tower',gold=this.gold,revision=this.selectedTower?.progression.revision,
       count=this.towers.length,target=this.selectedTower?.targeting;
@@ -544,10 +558,22 @@ export class GameScene extends Phaser.Scene {
     if (!this.sheetKind || !this.uiRoot) return;
     const kind = this.sheetKind;
     const bounds = sheetBounds(this.layout, kind, this.touchPreview !== null);
-    const title = { build: 'Build Towers', tower: 'Selected Tower', more: 'Battle Controls', relics: 'Relics', next: 'Next Wave', evolve: 'Tower Progression' }[kind];
+    const title = { build: 'Build Towers', tower: 'Selected Tower', more: 'Battle Controls', relics: 'Relics', next: 'Next Wave', evolve: 'Tower Progression',help:'How to play',progression:'Progression' }[kind];
     const sheet = new ScrollSheet(this, this.uiRoot, bounds, title, () => { this.closeDetails();this.showTouchPreview(); }); this.sheet = sheet;
     sheet.root.setData('progressionContext', context);
-    if (kind === 'build') {
+    if(kind==='help'){
+      let y=0;const topics=this.guideStep?HELP_TOPICS.filter(t=>t.id===this.guideStep):HELP_TOPICS;
+      for(const t of topics){const title=sheet.text(y,t.title,C.gold,18);y+=title.height+8;const body=sheet.text(y,t.body,C.textSecondary,16);y+=body.height+20;}
+      sheet.action(y,this.guideStep?'Dismiss hint':'Back to battle',()=>this.closeDetails());
+      sheet.action(y+52,this.guideStep?'Skip all hints':'Replay hints',()=>{if(this.guideStep)this.guide.skip();else this.guide.replay();this.closeDetails();});
+    }else if(kind==='progression'){
+      sheet.pair(0,'Campaign','Classic',()=>{this.progressionTab='campaign';this.drawSheet();},()=>{this.progressionTab='classic';this.drawSheet();});
+      const lines=this.progressionTab==='campaign'?campaignProgressionLines(campaignRepository.view()):progressionPanelLines(this.unlockRepository.view(),loadBest(),loadLegacyBests());
+      let y=60;for(const value of lines){const t=sheet.text(y,value,C.textSecondary,16);y+=t.height+12;}
+      if(this.campaign&&this.progressionTab==='campaign')for(const r of campaignRequirements(campaignRepository.view(),this.campaign.definition.level)){const t=sheet.text(y,`${r.met?'✓':'○'} ${r.label}: ${r.progress} · ${r.nextStep}`);y+=t.height+12;}
+      if(!this.campaign&&this.progressionTab==='classic')for(const a of achievementViews(this.unlockRepository.view(),this.towers,this.wavesCompleted)){if(a.earned)continue;const t=sheet.text(y,`${TOWERS[a.towerId].name}: ${this.wavesCompleted>=20?'Try in a new Classic run.':a.qualifiesNow?`On track · Wave ${this.wavesCompleted}/20`:'Build the starter branch and reach rank 2 before completing wave 20.'}`);y+=t.height+12;}
+      sheet.action(y,'Back to battle',()=>this.closeDetails());
+    }else if (kind === 'build') {
       let rowY = 0;
       TOWER_LIST.forEach(cfg => {
         const title = sheet.text(rowY, `${cfg.name} · ${cfg.role} · ${cfg.levels[0].cost} gold`, C.gold); rowY += title.height + 8;
@@ -575,6 +601,8 @@ export class GameScene extends Phaser.Scene {
       sheet.action(y + 52, 'Next Wave', () => this.openSheet('next'));
       sheet.pair(y + 104, 'Zoom In', 'Zoom Out', () => this.changeZoom(1.25), () => this.changeZoom(.8));
       sheet.action(y + 156, 'Reset View', () => { this.cameraView.reset(); this.applyView(); });
+      sheet.action(y+208,'Progression and requirements',()=>this.openDetails('progression'));
+      sheet.action(y+260,'Help',()=>this.openDetails('help'));
     } else if (kind === 'relics') {
       let rowY = 0;
       for (let i = 0; i < 3; i++) {
@@ -592,6 +620,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   private drawProgressionModel(sheet: ScrollSheet, t: Tower, startY: number): number {
+    if(this.guide.shouldShow('prerequisites')){
+      this.guideStep='prerequisites';
+      const hint=sheet.text(startY,'✓ means a requirement is met; ○ shows your next step. Permanent achievements and this-run conditions are separate.',C.gold,16);
+      startY+=hint.height+16;
+    }
     if (this.campaign) {
       const stats = t.stats;
       const specialization = t.specialization ? getCampaignSpecialization(t.specialization) : null;
@@ -629,7 +662,15 @@ export class GameScene extends Phaser.Scene {
       }
       for(const requirement of action.requirements)line(`${requirement.met?'✓':'○'} ${requirement.label} · ${requirement.progress}${requirement.met?'':` · ${requirement.nextStep}`}`,C.textSecondary,16);
       const control = sheet.action(y, action.reason ? `${action.label} · ${action.reason}` : action.label, () => {
-        if (!action.reason) this.performDetailedAction(()=>this.purchaseSelected(action.intent,t.id,action.revision));
+        if (!action.reason) {
+          if(action.intent.kind==='evolve'){
+            this.sheet?.destroy();
+            const confirm=new ScrollSheet(this,this.uiRoot!,sheetBounds(this.layout,'evolve',false),'Confirm evolution',()=>this.drawSheet());this.sheet=confirm;
+            const text=confirm.text(0,'Branch choice is permanent for this tower. Review the benefits and requirements before committing.',C.textSecondary,16);
+            confirm.action(text.height+16,`Confirm: ${action.label}`,()=>this.performDetailedAction(()=>this.purchaseSelected(action.intent,t.id,action.revision)),'primary');
+            confirm.action(text.height+72,'Cancel',()=>this.drawSheet());
+          }else this.performDetailedAction(()=>this.purchaseSelected(action.intent,t.id,action.revision));
+        }
       }, 'primary', action.reason === null);
       y += 52;
       return { action, control };
@@ -1268,6 +1309,7 @@ export class GameScene extends Phaser.Scene {
     this.autoButton = button(this, this.uiRoot!, w - 248, y, 88, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => this.setAutoEnabled(!this.auto.enabled));
     this.speedBtnLabel = button(this, this.uiRoot!, w - 152, y, 64, `${this.speed}×`, () => this.cycleSpeed()).text;
     button(this, this.uiRoot!, w - 80, y, 68, 'Pause', () => this.togglePauseMenu());
+    if(this.layout.narrow)button(this,this.uiRoot!,8,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
   }
 
   private speedBtnLabel: Phaser.GameObjects.Text | null = null;
@@ -1522,6 +1564,7 @@ export class GameScene extends Phaser.Scene {
     this.refreshPlacePanel();
     this.hideGhost();
     this.updateHUD();
+    if(!this.debugAssisted)this.time?.delayedCall(0,()=>this.showGuide('upgrade'));
   }
 
   private isRunBlocked(): boolean {

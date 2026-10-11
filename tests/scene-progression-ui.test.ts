@@ -76,7 +76,7 @@ describe('progression controls', () => {
     run.gold = 517; run.updateHUD();
     expect(run.sheet).toBe(sheet); expect(sheet.scrollOffset).toBe(offset);
     expect(action.label).toBe('Evolve: Marksman · 510 gold');
-    action.action(); expect(run.purchaseSelected).toHaveBeenCalledWith({ kind: 'evolve', branchId: 'marksman' }, t.id, 0);
+    action.action();expect(run.purchaseSelected).not.toHaveBeenCalled();find('Confirm: Evolve: Marksman')!.action(); expect(run.purchaseSelected).toHaveBeenCalledWith({ kind: 'evolve', branchId: 'marksman' }, t.id, 0);
   });
   it('disables an open action when gold falls and keeps the locked alternative inert', () => {
     const { run } = liveSheetFixture('evolve'); run.drawSheet();
@@ -90,7 +90,7 @@ describe('progression controls', () => {
     run.pauseState.set(reason, true); run.updateHUD();
     expect(action.label).toContain('Unavailable while paused or ended'); action.action(); expect(run.purchaseSelected).not.toHaveBeenCalled();
     run.pauseState.set(reason, false); run.updateHUD();
-    expect(action.label).toBe('Evolve: Marksman · 510 gold'); action.action(); expect(run.purchaseSelected).toHaveBeenCalledTimes(1);
+    expect(action.label).toBe('Evolve: Marksman · 510 gold'); action.action();find('Confirm: Evolve: Marksman')!.action(); expect(run.purchaseSelected).toHaveBeenCalledTimes(1);
   });
   it('preserves same-tower scroll on readiness rebuild and resets it for a different tower or sheet', () => {
     const { run } = liveSheetFixture('tower'); run.siege = new SiegeSystem(); run.drawSheet();
@@ -128,6 +128,7 @@ describe('progression controls', () => {
   it('renders the evolve sheet and dispatches the captured intent and revision', () => {
     const { run, t } = sceneFixture(); run.sheetKind = 'evolve'; run.drawSheet();
     find('Evolve: Marksman · 510 gold')!.action();
+    expect(run.purchaseSelected).not.toHaveBeenCalled();find('Confirm: Evolve: Marksman')!.action();
     expect(run.purchaseSelected).toHaveBeenCalledWith({ kind: 'evolve', branchId: 'marksman' }, t.id, 0);
     find('Evolve: Volley · 510 gold · Complete the branch achievement')!.action();
     expect(run.purchaseSelected).toHaveBeenCalledTimes(1);

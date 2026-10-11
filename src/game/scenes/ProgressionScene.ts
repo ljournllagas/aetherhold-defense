@@ -7,6 +7,20 @@ import type { UnlockView } from '../systems/UnlockSystem.ts';
 import { achievementViews } from '../ui/progressionView.ts';
 import { ScrollSheet } from '../ui/ScrollSheet.ts';
 import { C } from '../ui/tokens.ts';
+import {campaignRepository} from '../campaign/progress.ts';
+import {CAMPAIGN_MILESTONES,CAMPAIGN_SIGILS} from '../campaign/config.ts';
+import {campaignNextStep} from '../ui/prerequisites.ts';
+import type {CampaignView} from '../campaign/types.ts';
+import {accountSystem} from '../systems/AccountSystem.ts';
+import {accountStatus} from '../ui/accountControls.ts';
+
+export function campaignProgressionLines(view:CampaignView):string[]{
+ const lines=[`Campaign stars · ${view.totalMasteryStars}/90`,campaignNextStep(view).text];
+ if(view.warning)lines.push(view.warning);
+ for(const m of CAMPAIGN_MILESTONES)lines.push(`${view.totalMasteryStars>=m.stars?'Unlocked':'Locked'} · ${m.stars} stars · ${m.unlocks.map(id=>id.replace(/_/g,' ')).join(', ')} · ${view.totalMasteryStars}/${m.stars}`);
+ for(const s of CAMPAIGN_SIGILS)lines.push(`${view.profile.worldSigils.includes(s.id)?'Earned':'Locked'} · ${s.id.replace(/_/g,' ')} · Complete Level ${s.level} · Unlocks ${s.unlocks.map(id=>id.replace(/_/g,' ')).join(', ')}`);
+ return lines;
+}
 
 const STATE_PREFIX = /^(Locked|Unlocked) · /;
 
@@ -24,6 +38,11 @@ export function progressionPanelLines(view: UnlockView, currentBest: LocalBest |
 }
 
 export class ProgressionScene extends Phaser.Scene {
+  private activeTab:'campaign'|'classic'='classic';
+  private returnTo='MainMenu';
+  private root:Phaser.GameObjects.Container|null=null;
+  private savedScroll=0;
+  init(data?:{tab?:'campaign'|'classic';returnTo?:string}):void{this.activeTab=data?.tab??this.activeTab;this.returnTo=data?.returnTo??'MainMenu';}
   private sheet: ScrollSheet | null = null;
   private readonly handleResize = (): void => { this.scene.restart(); };
 
@@ -35,25 +54,34 @@ export class ProgressionScene extends Phaser.Scene {
     const W = this.scale.width;
     const H = this.scale.height;
     this.add.rectangle(0, 0, W, H, 0x0a0e12, 1).setOrigin(0);
-    const root = this.add.container(0, 0);
+    const root = this.add.container(0, 0);this.root=root;
     const width = Math.min(560, W - 24);
     const sheet = new ScrollSheet(this, root, { x: (W - width) / 2, y: 12, width, height: H - 24 }, 'Progression', () => this.scene.start('MainMenu'));
     this.sheet = sheet;
     const view = unlockRepository.view();
-    let y = 0;
-    for (const line of progressionPanelLines(view, loadBest(), loadLegacyBests())) {
+    sheet.pair(0,'Campaign','Classic',()=>{this.activeTab='campaign';this.renderProgression();},()=>{this.activeTab='classic';this.renderProgression();});
+    let y = 60;
+    for (const line of this.activeTab==='campaign'?campaignProgressionLines(campaignRepository.view()):progressionPanelLines(view, loadBest(), loadLegacyBests())) {
       const requirement = STATE_PREFIX.test(line);
       const color = line === view.warning ? C.dangerBright : requirement ? C.textSecondary : C.textPrimary;
-      const text = sheet.text(y, line, color, requirement ? 12 : 14);
+      const text = sheet.text(y, line, color, 16);
       y += text.height + (requirement ? 12 : 4);
     }
-    sheet.action(y + 8, 'Back', () => this.scene.start('MainMenu'));
+    if(this.activeTab==='campaign')sheet.action(y+8,'Open Campaign levels and star targets',()=>this.scene.start('Campaign'));
+    sheet.action(y+68,'Help',()=>this.scene.start('Help',{returnTo:'Progression'}));
+    sheet.action(y+120,'Back',()=>this.scene.start(this.returnTo));
+    const sync=sheet.text(y+176,accountStatus(accountSystem.view()),C.textSecondary,16);
+    sheet.scrollTo(this.savedScroll);
+    let revision=accountSystem.view().profile?.revision;
+    const unsubscribe=accountSystem.subscribe(v=>{sync.setText(accountStatus(v));if(v.profile?.revision!==revision){revision=v.profile?.revision;this.savedScroll=sheet.scrollOffset;this.renderProgression();}});
 
     this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.sheet?.destroy();
       this.sheet = null;
+      unsubscribe();
       this.scale.off(Phaser.Scale.Events.RESIZE, this.handleResize, this);
     });
   }
+  private renderProgression():void {this.scene.restart({tab:this.activeTab,returnTo:this.returnTo});}
 }

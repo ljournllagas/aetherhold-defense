@@ -52,7 +52,7 @@ export function viewportToWorld(layout: GameLayout, point: { x: number; y: numbe
   return { x: (point.x - f.x - (f.width - 1040 * s) / 2) / s, y: 56 + (point.y - f.y - (f.height - 584 * s) / 2) / s };
 }
 
-export function sheetBounds(layout: GameLayout, kind: 'build' | 'tower' | 'more' | 'relics' | 'next' | 'evolve', touchPreview: boolean): GameLayout['field'] {
+export function sheetBounds(layout: GameLayout, kind: 'build' | 'tower' | 'more' | 'relics' | 'next' | 'evolve' | 'help' | 'progression', touchPreview: boolean): GameLayout['field'] {
   const width = Math.min(560, layout.width - layout.safe.left - layout.safe.right - 16);
   const shortLandscape = layout.compact && layout.width > layout.height && !touchPreview && (kind === 'tower' || kind === 'evolve');
   const availableHeight=Math.max(96,layout.field.height-(touchPreview?56:0));

@@ -16,6 +16,7 @@ import { GameScene } from './game/scenes/GameScene.ts';
 import { GameOverScene } from './game/scenes/GameOverScene.ts';
 import { LeaderboardScene } from './game/scenes/LeaderboardScene.ts';
 import { ProgressionScene } from './game/scenes/ProgressionScene.ts';
+import { HelpScene } from './game/scenes/HelpScene.ts';
 
 document.title = 'Aegis of the Borderkeep';
 const host = document.getElementById('game-root')!;
@@ -34,7 +35,7 @@ const config: Phaser.Types.Core.GameConfig = {
     keyboard: true,
     activePointers: 3
   },
-  scene: [BootScene, PreloadScene, LoginScene, MainMenuScene, CampaignScene, DifficultyScene, SettingsScene, GameScene, GameOverScene, LeaderboardScene, ProgressionScene]
+  scene: [BootScene, PreloadScene, LoginScene, MainMenuScene, CampaignScene, DifficultyScene, SettingsScene, GameScene, GameOverScene, LeaderboardScene, ProgressionScene, HelpScene]
 };
 
 // eslint-disable-next-line no-new
