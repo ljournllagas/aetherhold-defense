@@ -2,7 +2,8 @@
 
 - **Run:** One game session from difficulty selection until defeat, siege failure, finishing at victory, restart, or quit; endless continuation remains part of the same run.
 - **Battlefield:** The Ancient Border Keep map containing the enemy route, build plots, and stronghold.
-- **Build plot:** A predefined clearing where one tower can be built.
+- **Build plot:** A predefined clearing where one tower can be built. In Classic and Campaign Worlds 1–3, Levels 1–30, every plot must let every base tower attack a useful stretch of road immediately, with visual clearance from the road. Measure plot-to-road distance in game-world units so the rule is independent of screen size and zoom.
+- **Road coverage:** The stretch of the enemy route within a tower's attack range from a build plot.
 - **Overview:** A camera view showing the entire battlefield without cropping.
 - **View transform:** The mapping between battlefield world coordinates and screen coordinates.
 - **Touch preview:** An uncommitted build plot or Meteor target selected by a completed tap.
