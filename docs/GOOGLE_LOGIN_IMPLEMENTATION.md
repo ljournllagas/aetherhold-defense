@@ -33,6 +33,8 @@ Additional correctness: mark settlement pending before asynchronous queue persis
 
 2026-10-11: migration 0005 applied successfully to existing Cloudflare D1. All 18 historical anonymous scores remain intact. Google client ID/secret names verified without reading values. The user completed actual Google sign-in and returned to the game, then completed deletion reauthentication and cancelled without deleting data. Production account count, session creation, and consumed guest import were independently confirmed with aggregate queries.
 
+The user confirmed the final deletion button was visible after reauthentication, cancelled, then signed out. The subsequent session contains no reauthentication timestamp, consistent with revoking the verified session and starting a separate login session; no production account was deleted.
+
 Required login enabled (`ACCOUNT_LOGIN_REQUIRED=1`). Final `npm run deploy` passed 1,067 tests (11 pre-existing skips) and TypeScript/Vite build, then published Worker version `cba3a0ff-34d3-495f-9fce-c215a013aeeb`.
 
 Live URL: https://aetherhold-defense.ljournllagas.workers.dev/
