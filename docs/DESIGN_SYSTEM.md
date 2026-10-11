@@ -1795,3 +1795,11 @@ visible realm intersection and size their slate backings to the rendered lines.
 Panel paths, fingerprints, acceptance and remaining production targets are
 tracked in [`CAMPAIGN_PRODUCTION_ASSETS.md`](CAMPAIGN_PRODUCTION_ASSETS.md) and
 [`CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md`](CAMPAIGN_WORLD_MAP_ART_PROVENANCE.md).
+## Responsive interaction update — 2026-10-11
+
+Battle controls use a persistent tower tray with stable portraits, names and prices. Horizontal touch movement scrolls the tray; movement toward the battlefield drags. Tap and keyboard placement require confirmation. Valid drag release builds once. Overview remains available at every size.
+
+Compact inspectors show current tower, quick upgrade cost/stat change, Details and Close. Details pauses independently of user/background pause; actions close and revalidate. Requirements use text with ✓/○ rather than color alone.
+
+Primary controls have 44px hit targets. Explanatory ScrollSheet text defaults to 16px. Strong borders use #6B7F8E in canvas and CSS. Long panels scroll with fixed Close. Account controls use a compact label where adjacent navigation needs space.
+

@@ -40,3 +40,11 @@ it('second finger cancels drop and cannot produce a tap',()=>{
  d.handlePointerUp({id:2,x:100,y:400,wasTouch:true});d.handlePointerUp({id:1,x:40,y:760,wasTouch:true});
  expect(run.placingTowerId).toBeNull();expect(run.gold).toBe(1000);expect(run.towers).toHaveLength(0);
 });
+it('keyboard tap alternative requires a plot and commits only once',()=>{
+ const {run,loose}=autoScene();
+ const d=loose as unknown as {handleBuildKey(e:KeyboardEvent):void};run.gold=1000;
+ const key=(key:string)=>d.handleBuildKey({key,repeat:false,preventDefault(){}} as KeyboardEvent);
+ key('1');key('Enter');expect(run.gold).toBe(1000);
+ key('ArrowRight');key('Enter');expect(run.gold).toBe(900);expect(run.towers).toHaveLength(1);
+ key('Enter');expect(run.gold).toBe(900);
+});

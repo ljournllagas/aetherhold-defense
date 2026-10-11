@@ -42,7 +42,7 @@ export class ScrollSheet {
       control.box.emit('pointerout');
       enabled = available;
       const edge = enabled ? kind : 'secondary';
-      control.box.setStrokeStyle(edge === 'primary' ? 2 : 1, edge === 'primary' ? 0xd7aa4e : edge === 'danger' ? 0xd85f59 : 0x445564);
+      control.box.setStrokeStyle(edge === 'primary' ? 2 : 1, edge === 'primary' ? 0xd7aa4e : edge === 'danger' ? 0xd85f59 : 0x6b7f8e);
       control.text.setText(value).setAlpha(enabled ? 1 : 0.6).setColor(edge === 'danger' ? C.dangerBright : C.textPrimary);
     } };
   }

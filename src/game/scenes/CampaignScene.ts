@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 import { accountEntryAllowed, mountAccountButton } from '../ui/accountControls.ts';
 import { CAMPAIGN_LEVELS, CAMPAIGN_SIGILS, CAMPAIGN_WORLDS, getCampaignLevel, getCampaignWorld } from '../campaign/config.ts';
-import { campaignRepository, isWorldUnlocked } from '../campaign/progress.ts';
-import { getTowerSpecializations } from '../campaign/specializations.ts';
+import { campaignRepository, isWorldUnlocked, PREPARATION_PRESET_UNLOCK_STARS } from '../campaign/progress.ts';
+import { getTowerSpecializations, CAMPAIGN_SPECIALIZATION_UNLOCK_STARS } from '../campaign/specializations.ts';
 import {
   campaignClearStatus, campaignCompactDetailMeta, campaignEnemyPreviewText,
   campaignHeaderBadgeLines, campaignLevelDetail, campaignMilestones, campaignWarningCompactMessage
@@ -81,7 +81,7 @@ export class CampaignScene extends Phaser.Scene {
 
   create(): void {
     if (!accountEntryAllowed()) { this.scene.start('Login'); return; }
-    mountAccountButton(this);
+    mountAccountButton(this,90,true);
     this.campaignView = campaignRepository.view();
     if (!this.lastResult && this.selectedLevel === 1) this.selectedLevel = this.campaignView.highestUnlockedLevel;
     this.draw();
@@ -123,7 +123,7 @@ export class CampaignScene extends Phaser.Scene {
       const tier = this.campaignView.profile.unlockedFeatures.includes('tower_visual_tier_iii') ? 'III · RUNIC'
         : this.campaignView.profile.unlockedFeatures.includes('tower_visual_tier_ii') ? 'II · REINFORCED' : 'I · STANDARD';
       const [masteryLine, tierLine] = campaignHeaderBadgeLines(this.campaignView.totalMasteryStars, this.campaignView.profile.worldSigils.length, tier);
-      root.add(this.add.text(16, 9, 'AEGIS OF THE BORDERKEEP', style(16, C.goldBright, true, FONT_DISPLAY)));
+      root.add(this.add.text(16, 9, 'CAMPAIGN', style(16, C.goldBright, true, FONT_DISPLAY)));
       root.add(this.add.text(16, 29, masteryLine, style(12, C.textSecondary, true)));
       root.add(this.add.text(16, 43, tierLine, style(12, C.textSecondary, true)));
       addAction(this, root, width - 80, 4, 64, 'Back', () => this.scene.start('MainMenu'));
@@ -406,7 +406,7 @@ export class CampaignScene extends Phaser.Scene {
     let y = 0;
     sheet.text(y, `Campaign setup · ${starsNow} Mastery Stars`, C.goldBright, 16); y += 34;
     if (!unlocked20) {
-      sheet.text(y, `Targeting preferences and saved presets unlock at 20 stars. You have ${starsNow}/20.`); y += 48;
+      const text=sheet.text(y, `Targeting preferences and saved presets unlock at ${PREPARATION_PRESET_UNLOCK_STARS} stars. You have ${starsNow}/${PREPARATION_PRESET_UNLOCK_STARS}.`); y += text.height+16;
     } else {
       sheet.text(y, 'Tower targeting'); y += 26;
       for (const id of TOWER_IDS) {
@@ -435,13 +435,13 @@ export class CampaignScene extends Phaser.Scene {
 
     y += 8; sheet.text(y, 'Tower specialization sidegrades', C.goldBright, 16); y += 32;
     if (!unlocked30) {
-      sheet.text(y, `Unlocks at 30 Mastery Stars. You have ${starsNow}/30. Choices remain reversible between levels.`);
+      sheet.text(y, `Unlocks at ${CAMPAIGN_SPECIALIZATION_UNLOCK_STARS} Mastery Stars. You have ${starsNow}/${CAMPAIGN_SPECIALIZATION_UNLOCK_STARS}. Choices remain reversible between levels.`);
     } else {
       for (const id of TOWER_IDS) {
         const options = getTowerSpecializations(id), chosen = this.campaignView.profile.choices[id];
         sheet.text(y, `${TOWERS[id].name} · ${chosen ? options.find(option => option.id === chosen)?.name : 'No specialization'}`, C.textPrimary, 14); y += 22;
         for (const option of options) {
-          sheet.text(y, `${option.name}: ${option.description}`, C.textSecondary, 12); y += 34;
+          const description=sheet.text(y, `${option.name}: ${option.description}`, C.textSecondary, 16); y += description.height+12;
           const isChosen = chosen === option.id;
           sheet.action(y, isChosen ? `Selected · ${option.name}` : `Choose · ${option.name}`, () => {
             campaignRepository.setSpecialization(id, option.id); this.campaignView = campaignRepository.view(); this.openPreparation();

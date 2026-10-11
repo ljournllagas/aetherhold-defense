@@ -9,15 +9,18 @@ it('details quote excludes only its own pause',()=>{
  for(const reason of ['user','modal','background'] as const){
   run.pauseState.set(reason,true);expect(p.detailsPurchaseContext().blocked).toBe(true);run.pauseState.set(reason,false);
  }
+ loose.refreshProgressionActions=()=>{throw Error('disposed panel');};
  run.pauseState.set('user',true);p.closeDetails();expect(run.pauseState.blocked).toBe(true);
+ expect(loose.refreshProgressionActions).toBeNull();
  expect(run.pauseState.has('details' as any)).toBe(false);
 });
 it('detailed actions close before mutation and retain background block',()=>{
  const {run,loose}=autoScene();
- const p=loose as unknown as {performDetailedAction(fn:()=>void):void};
+ const p=loose as unknown as {performDetailedAction(fn:()=>boolean):void};
  run.pauseState.set('details' as any,true);
- let changed=false;p.performDetailedAction(()=>{expect(run.pauseState.blocked).toBe(false);changed=true;});
+ let changed=false;p.performDetailedAction(()=>{expect(run.pauseState.blocked).toBe(false);changed=true;return true;});
  expect(changed).toBe(true);
+ expect(loose.sheetKind).toBeNull();
  run.pauseState.set('background',true);changed=false;
- p.performDetailedAction(()=>{changed=true;});expect(changed).toBe(false);
+ p.performDetailedAction(()=>{changed=true;return true;});expect(changed).toBe(false);
 });

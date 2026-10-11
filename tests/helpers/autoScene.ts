@@ -48,6 +48,7 @@ export class Display extends EventEmitter {
   setOrigin(){return this;}setStrokeStyle(){return this;}setInteractive(){return this;}setFillStyle(){return this;}
   setText(value:string){this.text=value;return this;}setWordWrapWidth(){return this;}setVisible(value:boolean){this.visible=value;return this;}
   setAlpha(){return this;}setColor(){return this;}
+  setAlign(){return this;}
 }
 export function installButtons(loose:Record<string,unknown>):void {
   const add=chain();add.rectangle=()=>new Display();add.text=(_x:number,_y:number,value:string)=>{const d=new Display();d.text=value;return d;};loose.add=add;

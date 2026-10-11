@@ -71,7 +71,7 @@ export function etchedFrame(
 }
 
 export function button(scene: Phaser.Scene, parent: Phaser.GameObjects.Container, x: number, y: number, width: number, label: string, action: () => void, kind: 'primary' | 'secondary' | 'danger' = 'secondary', height = 44): { box: Phaser.GameObjects.Rectangle; text: Phaser.GameObjects.Text } {
-  const color = kind === 'danger' ? 0xd85f59 : kind === 'primary' ? 0xd7aa4e : 0x445564;
+  const color = kind === 'danger' ? 0xd85f59 : kind === 'primary' ? 0xd7aa4e : 0x6b7f8e;
   const box = scene.add.rectangle(x, y, width, height, C.bgRaised).setOrigin(0).setStrokeStyle(kind === 'primary' ? 2 : 1, color);
   const text = scene.add.text(x + width / 2, y + height / 2, label, style(14, kind === 'danger' ? C.dangerBright : C.textPrimary, true)).setOrigin(0.5);
   box.setInteractive({ useHandCursor: true });

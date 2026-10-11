@@ -17,7 +17,7 @@ import { GAME_VERSION, SCORE_VERSION } from '../../shared/version.ts';
 import { buildWave, scheduleWave, enemyHpForWave, enemySpeedForWave } from '../systems/WaveSystem.ts';
 import { RelicVault, advanceFlights } from '../systems/RunSimulation.ts';
 import { AutoSystem, chooseAutoRelic, type AutoContext, type AutoRelicIntent } from '../systems/AutoSystem.ts';
-import { gameLayout, readSafeInsets, sheetBounds, viewportToWorld, worldToViewport, type GameLayout } from '../ui/layout.ts';
+import { gameLayout, sheetBounds, viewportToWorld, worldToViewport, type GameLayout } from '../ui/layout.ts';
 import {TowerTray} from '../ui/TowerTray.ts';
 import {TowerTrayGesture,edgePan,type TrayInput,type TrayIntent} from '../systems/TowerTrayGesture.ts';
 import type {TowerId} from '../../shared/progression.ts';
@@ -149,8 +149,11 @@ export class GameScene extends Phaser.Scene {
       this.refreshInfoPanel();this.refreshPlots();this.showTouchPreview();return;
     }
     if(intent.type==='drag'){
+      const changed=this.placingTowerId!==intent.towerId;
       this.placingTowerId=intent.towerId;this.selectedTower=null;this.trayDrag=intent;
+      if(changed)this.refreshPlots();
       this.infoPanel?.destroy(true);this.infoPanel=null;this.compactInspectorBounds=null;
+      this.confirmStrip?.destroy(true);this.confirmStrip=null;this.touchPreview=null;
       const index=this.cameraView.nearest(this.map.buildable,intent.anchor,28);
       const point=index>=0?this.map.buildable[index]:this.cameraView.unproject(intent.anchor);
       this.updateGhost(point.x,point.y);return;
@@ -348,6 +351,23 @@ export class GameScene extends Phaser.Scene {
     this.autoLastKeyAt = event.timeStamp;
     this.setAutoEnabled(!this.auto.enabled);
   };
+  private readonly handleBuildKey=(event:KeyboardEvent):void=>{
+    const target=event.target as HTMLElement|null;
+    if(event.repeat||this.isRunBlocked()||this.modal||this.sheetKind||target?.isContentEditable||['INPUT','TEXTAREA','SELECT'].includes(target?.tagName??''))return;
+    if(/^[1-5]$/.test(event.key)){
+      this.cancelGesture();this.touchMode=true;this.selectedTower=null;this.placingTowerId=TOWER_LIST[Number(event.key)-1].id;
+      this.refreshPlots();this.showTouchPreview();return;
+    }
+    if(!this.placingTowerId)return;
+    if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){
+      event.preventDefault();
+      const delta=event.key==='ArrowLeft'||event.key==='ArrowUp'?-1:1;
+      const plot=((this.touchPreview?.plot??-1)+delta+this.map.buildable.length)%this.map.buildable.length;
+      this.touchPreview={point:this.map.buildable[plot],plot};this.showTouchPreview();
+    }else if(event.key==='Enter'&&this.touchPreview?.plot!==null&&this.touchPreview?.plot!==undefined){
+      this.tryBuild(this.placingTowerId,this.touchPreview.plot);this.showTouchPreview();
+    }
+  };
 
   constructor() {
     super('Game');
@@ -478,7 +498,7 @@ export class GameScene extends Phaser.Scene {
     Object.assign(snd, { masterVolume: settings.masterVolume, musicOn: settings.musicOn, sfxOn: settings.sfxOn, musicVolume: settings.musicVolume, sfxVolume: settings.sfxVolume });
     snd.applyVolumes(); snd.unlock();
     if (settings.musicOn) snd.startMusic();
-    this.layout = gameLayout(this.scale.width, this.scale.height,readSafeInsets());
+    this.layout = gameLayout(this.scale.width, this.scale.height);
     this.cameraView.resize(this.layout.field);
     this.worldRoot = this.add.container(0, 0);
     this.drawMap();
@@ -501,6 +521,7 @@ export class GameScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-SPACE', this.handleSpaceKey);
     this.input.keyboard?.on('keydown-P', this.handlePauseKey);
     this.input.keyboard?.on('keydown-A', this.handleAutoKey);
+    this.input.keyboard?.on('keydown',this.handleBuildKey);
     this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.shutdownRun, this);
     if (import.meta.env.DEV) this.events.on('qa:action', this.handleQAAction, this);
@@ -539,14 +560,12 @@ export class GameScene extends Phaser.Scene {
     return {...this.purchaseContext(),blocked:this.ended||this.siege.phase==='victory'||this.siege.phase==='terminal'||this.pauseState.blockedExcept('details')};
   }
   private openDetails(kind:'tower'|'evolve'|'help'|'progression'):void {this.sheetKind=kind;this.pauseState.set('details',true);this.drawSheet();}
-  private closeDetails():void {if(this.guideStep)this.guide.complete(this.guideStep);this.guideStep=null;this.sheetKind=null;this.pauseState.set('details',false);this.sheet?.destroy();this.sheet=null;this.refreshInfoPanel();}
-  private performDetailedAction(action:()=>void):void {
-    const kind=this.sheetKind==='evolve'?'evolve':'tower',gold=this.gold,revision=this.selectedTower?.progression.revision,
-      count=this.towers.length,target=this.selectedTower?.targeting;
+  private closeDetails():void {if(this.guideStep)this.guide.complete(this.guideStep);this.guideStep=null;this.sheetKind=null;this.pauseState.set('details',false);this.refreshProgressionActions=null;this.sheet?.destroy();this.sheet=null;this.refreshInfoPanel();}
+  private performDetailedAction(action:()=>boolean):void {
+    const kind=this.sheetKind==='evolve'?'evolve':'tower';
     this.closeDetails();
     if(this.isRunBlocked()){this.showBanner('Resume the battle before making changes.',C.gold);this.openDetails(kind);return;}
-    action();
-    if(this.gold===gold&&this.selectedTower?.progression.revision===revision&&this.towers.length===count&&this.selectedTower?.targeting===target)this.openDetails(kind);
+    if(!action())this.openDetails(kind);
   }
 
   private drawSheet(restoreOffset?: number): void {
@@ -593,7 +612,7 @@ export class GameScene extends Phaser.Scene {
       let y = this.drawProgressionModel(sheet, t, 0);
       sheet.action(y, `Sell · ${investedRefund(t.progression)} gold`, () => this.performDetailedAction(()=>this.sellSelected()), 'danger',!this.detailsPurchaseContext().blocked); y += 60;
       sheet.text(y, 'Targeting'); y += 28;
-      TARGET_MODES.forEach((mode, i) => sheet.action(y + i * 52, `${t.targeting === mode ? '✓ ' : ''}${mode[0].toUpperCase() + mode.slice(1)}`, () => this.performDetailedAction(()=>{if(this.selectedTower===t&&this.towers.includes(t))t.targeting=mode;}),'secondary',!this.detailsPurchaseContext().blocked));
+      TARGET_MODES.forEach((mode, i) => sheet.action(y + i * 52, `${t.targeting === mode ? '✓ ' : ''}${mode[0].toUpperCase() + mode.slice(1)}`, () => this.performDetailedAction(()=>{if(this.selectedTower!==t||!this.towers.includes(t))return false;t.targeting=mode;return true;}),'secondary',!this.detailsPurchaseContext().blocked));
     } else if (kind === 'more') {
       this.autoDetailText = sheet.text(0, this.autoDetail());
       const y = this.autoDetailText.height + 12;
@@ -640,9 +659,9 @@ export class GameScene extends Phaser.Scene {
     const view = towerProgressionView(t, this.detailsPurchaseContext(), this.wavesCompleted, this.towers);
     const st = view.stats;
     let y = startY;
-    const line = (value: string, color: string = C.textSecondary, size = 14) => { const text = sheet.text(y, value, color, size); y += text.height + 8; };
+    const line = (value: string, color: string = C.textSecondary, size = 16) => { const text = sheet.text(y, value, color, size); y += text.height + 8; };
     line(view.title, C.gold);
-    line(view.role, C.textSecondary, 12);
+    line(view.role, C.textSecondary, 16);
     line(`Damage ${formatStat('damage', st.damage)} · Range ${formatStat('range', st.range)} · Attack ${formatStat('attackInterval', st.attackInterval)}s · ${st.damageType}`);
     const next = view.actions[0]?.nextStats ?? null;
     if (next) {
@@ -656,7 +675,7 @@ export class GameScene extends Phaser.Scene {
       if (action.intent.kind === 'evolve') {
         const branchId = action.intent.branchId;
         const branch = view.branches.find(b => b.id === branchId)!;
-        line(`${branch.name}${branch.starter ? ' (starter)' : ''} — ${branch.description}`, C.textSecondary, 12);
+        line(`${branch.name}${branch.starter ? ' (starter)' : ''} — ${branch.description}`, C.textSecondary, 16);
         line(`Damage ${formatStat('damage', st.damage)} → ${formatStat('damage', branch.stats.damage)} · Attack ${formatStat('attackInterval', st.attackInterval)}s → ${formatStat('attackInterval', branch.stats.attackInterval)}s · Range ${formatStat('range', st.range)} → ${formatStat('range', branch.stats.range)}`, C.textSecondary, 12);
         if (branch.locked) line(`Locked · ${branch.requirement}${branch.qualifiesNow ? ' · On track this run' : ''}`, C.textMuted, 12);
       }
@@ -664,7 +683,7 @@ export class GameScene extends Phaser.Scene {
       const control = sheet.action(y, action.reason ? `${action.label} · ${action.reason}` : action.label, () => {
         if (!action.reason) {
           if(action.intent.kind==='evolve'){
-            this.sheet?.destroy();
+            this.refreshProgressionActions=null;this.sheet?.destroy();
             const confirm=new ScrollSheet(this,this.uiRoot!,sheetBounds(this.layout,'evolve',false),'Confirm evolution',()=>this.drawSheet());this.sheet=confirm;
             const text=confirm.text(0,'Branch choice is permanent for this tower. Review the benefits and requirements before committing.',C.textSecondary,16);
             confirm.action(text.height+16,`Confirm: ${action.label}`,()=>this.performDetailedAction(()=>this.purchaseSelected(action.intent,t.id,action.revision)),'primary');
@@ -748,7 +767,7 @@ export class GameScene extends Phaser.Scene {
   private readonly handleResize = (): void => {
     this.cancelGesture();
     this.pauseAutoButton = null;
-    this.layout = gameLayout(this.scale.width, this.scale.height,readSafeInsets());
+    this.layout = gameLayout(this.scale.width, this.scale.height);
     this.cameraView.resize(this.layout.field);
     const render = this.modalRenderer;
     this.modalSheet?.destroy(); this.modalSheet = null;
@@ -843,6 +862,7 @@ export class GameScene extends Phaser.Scene {
   private detachInputListeners(): void {
     this.input.off('pointerup', this.handlePointerUp); this.input.off('pointerupoutside', this.cancelGesture);
     this.input.off('pointerdown', this.handlePointerDown);
+    this.input.keyboard?.off('keydown',this.handleBuildKey);
     this.input.off('pointermove', this.handlePointerMove);
     this.input.keyboard?.off('keydown-ESC', this.handleEscapeKey);
     this.input.keyboard?.off('keydown-SPACE', this.handleSpaceKey);
@@ -1150,6 +1170,19 @@ export class GameScene extends Phaser.Scene {
 
   private drawHUD(): void {
     const w = this.layout.width;
+    if(this.layout.compact&&this.layout.width>=this.layout.height){
+      panel(this,this.uiRoot!,0,0,w,this.layout.hud);
+      const cell=(w-268)/4;
+      const metric=(i:number,label:string,color:string)=>{
+        this.uiRoot!.add(this.add.text(8+i*cell,4,label,style(12,C.textSecondary,true)));
+        const t=this.add.text(8+i*cell,24,'',style(16,color,true));this.uiRoot!.add(t);return t;
+      };
+      this.hudWaveValue=metric(0,'WAVE',C.textPrimary);this.hudGoldValue=metric(1,'GOLD',C.gold);
+      this.hudLivesValue=metric(2,'LIVES',C.textPrimary);this.hudScoreValue=metric(3,'SCORE',C.textPrimary);
+      this.hudWaveLabel=null;this.hudDiff=this.add.text(0,0,'',style(14,C.textSecondary)).setVisible(false);
+      this.autoStatusText=null;this.hudStatus=this.add.text(8,this.layout.hud+4,'',style(14,C.gold)).setWordWrapWidth(w-16);
+      this.uiRoot!.add([this.hudDiff,this.hudStatus]);return;
+    }
     if (this.layout.narrow) {
       panel(this, this.uiRoot!, 0, 0, w, this.layout.hud);
       const cell = (w - 16) / 4;
@@ -1161,8 +1194,8 @@ export class GameScene extends Phaser.Scene {
       this.uiRoot!.add(this.hudWaveLabel);
       this.hudWaveValue = this.add.text(8, 24, '', style(16, C.textPrimary, true)); this.uiRoot!.add(this.hudWaveValue);
       this.hudGoldValue = metric(1, 'GOLD', C.gold); this.hudLivesValue = metric(2, 'LIVES', C.textPrimary); this.hudScoreValue = metric(3, 'SCORE', C.textPrimary);
-      this.hudDiff = this.add.text(8, 62, '', style(14, C.textSecondary, true)); this.uiRoot!.add(this.hudDiff);
-      this.autoStatusText = this.add.text(8, 82, '', style(12, C.gold)).setWordWrapWidth(w - 272); this.uiRoot!.add(this.autoStatusText);
+      this.hudDiff = this.add.text(8, 62, '', style(14, C.textSecondary, true)).setVisible(false); this.uiRoot!.add(this.hudDiff);
+      this.autoStatusText = null;
       this.hudStatus = this.add.text(8, this.layout.hud + 4, '', style(12, C.gold)).setWordWrapWidth(w - 16); this.uiRoot!.add(this.hudStatus);
       return;
     }
@@ -1173,7 +1206,7 @@ export class GameScene extends Phaser.Scene {
       this.uiRoot!.add(this.add.image(32, 28, emblemKey()).setDisplaySize(40, 40));
       this.uiRoot!.add(this.add.text(60, 8, 'Aegis of the\nBorderkeep', style(16, C.goldBright, true, FONT_DISPLAY)));
     }
-    const step = Math.max(96, Math.min(144, (w - offset - 264) / 5));
+    const step = Math.max(80, Math.min(144, (w - offset - 352) / 5));
     this.hudWaveValue = this.hudMetric(offset, 'hud_wave', 'WAVE', 22, C.textPrimary);
     this.hudWaveLabel = this.uiRoot!.list[this.uiRoot!.list.length - 2] as Phaser.GameObjects.Text;
     this.hudGoldValue = this.hudMetric(offset + step, 'hud_gold', 'GOLD', 18, C.gold);
@@ -1257,6 +1290,7 @@ export class GameScene extends Phaser.Scene {
         this.startNextWave();
       }, 'primary', 44);
       this.startBtn = wave.box; this.startBtnLabel = wave.text;
+      wave.text.setWordWrapWidth(width-140).setAlign('center');
       button(this, this.uiRoot!, x+width-58, y + 8, 54, 'More', () => this.openSheet('more'), 'secondary', 44);
   }
 
@@ -1305,11 +1339,18 @@ export class GameScene extends Phaser.Scene {
 
   private drawControls(): void {
     const w = this.layout.width;
-    const y = this.layout.narrow ? 54 : 6;
+    const portrait=this.layout.width<this.layout.height&&this.layout.narrow;
+    const y = portrait ? 54 : 6;
+    if(this.layout.compact&&!portrait){
+      this.autoButton=button(this,this.uiRoot!,w-252,y,84,this.auto.enabled?'Auto ON':'Auto OFF',()=>this.setAutoEnabled(!this.auto.enabled));
+      button(this,this.uiRoot!,w-164,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
+      button(this,this.uiRoot!,w-72,y,64,'Pause',()=>this.togglePauseMenu());return;
+    }
     this.autoButton = button(this, this.uiRoot!, w - 248, y, 88, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => this.setAutoEnabled(!this.auto.enabled));
     this.speedBtnLabel = button(this, this.uiRoot!, w - 152, y, 64, `${this.speed}×`, () => this.cycleSpeed()).text;
     button(this, this.uiRoot!, w - 80, y, 68, 'Pause', () => this.togglePauseMenu());
-    if(this.layout.narrow)button(this,this.uiRoot!,8,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
+    if(portrait)button(this,this.uiRoot!,8,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
+    else button(this,this.uiRoot!,w-344,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
   }
 
   private speedBtnLabel: Phaser.GameObjects.Text | null = null;
@@ -1575,12 +1616,12 @@ export class GameScene extends Phaser.Scene {
     return { gold: this.gold, evolutionOpen: !this.campaign && this.siege.evolutionOpen, endless: !this.campaign && this.siege.phase === 'endless', blocked: this.isRunBlocked(), unlocked: this.runUnlocks };
   }
 
-  private purchaseSelected(intent: PurchaseIntent, expectedTowerId: number, expectedRevision: number): void {
-    if (this.campaign && intent.kind !== 'foundation-upgrade') return;
+  private purchaseSelected(intent: PurchaseIntent, expectedTowerId: number, expectedRevision: number): boolean {
+    if (this.campaign && intent.kind !== 'foundation-upgrade') return false;
     const tower = this.selectedTower;
-    if (!tower || tower.id !== expectedTowerId || !this.towers.includes(tower)) { this.showBanner(PURCHASE_REASON_TEXT['stale action'], C.dangerBright); return; }
+    if (!tower || tower.id !== expectedTowerId || !this.towers.includes(tower)) { this.showBanner(PURCHASE_REASON_TEXT['stale action'], C.dangerBright); return false; }
     const result = purchaseEvolution(tower.towerId, tower.progression, intent, this.purchaseContext(), expectedRevision);
-    if (!result.ok) { this.floatText(tower.x, tower.y - 30, PURCHASE_REASON_TEXT[result.reason], C.dangerBright); return; }
+    if (!result.ok) { this.floatText(tower.x, tower.y - 30, PURCHASE_REASON_TEXT[result.reason], C.dangerBright); return false; }
     const evolved = tower.progression.branchId === null && result.state.branchId !== null;
     this.gold = result.gold; tower.progression = result.state;
     if (evolved) tower.counter = { successes: 0 };
@@ -1589,6 +1630,7 @@ export class GameScene extends Phaser.Scene {
     this.refreshTowerVisual(tower);
     this.refreshInfoPanel();
     this.updateHUD();
+    return true;
   }
 
   private refreshTowerVisual(t: Tower): void {
@@ -1604,15 +1646,15 @@ export class GameScene extends Phaser.Scene {
     t.crown = rebuilt.crown;
   }
 
-  private upgradeSelected(): void {
+  private upgradeSelected(): boolean {
     const t = this.selectedTower;
-    if (t) this.purchaseSelected({ kind: 'foundation-upgrade' }, t.id, t.progression.revision);
+    return !!t&&this.purchaseSelected({ kind: 'foundation-upgrade' }, t.id, t.progression.revision);
   }
 
-  private sellSelected(): void {
-    if (this.isRunBlocked()) return;
+  private sellSelected(): boolean {
+    if (this.isRunBlocked()) return false;
     const t = this.selectedTower;
-    if (!t) return;
+    if (!t||!this.towers.includes(t)) return false;
     const sv = investedRefund(t.progression);
     this.gold += sv;
     SoundManager.get().sell();
@@ -1627,6 +1669,7 @@ export class GameScene extends Phaser.Scene {
     this.refreshPlots();
     this.hideGhost();
     this.updateHUD();
+    return true;
   }
 
   // ---------- waves ----------
@@ -2837,6 +2880,9 @@ export class GameScene extends Phaser.Scene {
     const line = (message: string, color: string = C.textSecondary) => { const text = sheet.text(y, message, color); y += text.height + 12; };
     if (import.meta.env.DEV && this.qaCampaignFixture) line('DEV CAMPAIGN FIXTURE · Reward preview · Not saved', C.gold);
     line(`Score ${result.score} · Lives ${result.lives}/${this.maxLives}`, C.gold);
+    for(const r of campaignRequirements((this.qaCampaignRepository??campaignRepository).view(),level).filter(r=>r.id!=='previous')){
+      line(`${r.met?'★':'☆'} ${r.label} · ${r.progress}${r.met?'':` · ${r.nextStep}`}`);
+    }
     if (this.runAccount) line(accountStatus(accountSystem.view()));
     if (result.clear) {
       const progress = result.clear.progress;

@@ -8,7 +8,7 @@ export const C = {
   bgRaised: 0x19232d,
   bgHover: 0x22303c,
   borderSubtle: '#2C3945',
-  borderStrong: '#445564',
+  borderStrong: '#6B7F8E',
   textPrimary: '#F3EBDD',
   textSecondary: '#B7C0C7',
   textMuted: '#7F8C97',

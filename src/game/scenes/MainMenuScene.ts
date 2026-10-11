@@ -91,7 +91,7 @@ export class MainMenuScene extends Phaser.Scene {
     this.savedRetryAction = null;
     this.savedSubmitting = false;
     const compact = H < 520 || W < 780;
-    const narrowCompact = compact && W < 720;
+    const narrowCompact = compact && W < 720 && W < H;
     paintVista(this, 'menu');
     if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) this.tweens.getTweens().forEach((tween) => tween.stop());
 
@@ -179,7 +179,7 @@ export class MainMenuScene extends Phaser.Scene {
     const settings = loadSettings();
     if (settings.playerName) {
       const name = settings.playerName.slice(0, 20);
-      this.add.text(W - 18, 16, `DEFENDER  ${name}`, style(12, C.textPrimary, true)).setOrigin(1, 0);
+      this.add.text(12, 16, `DEFENDER  ${name}`, style(12, C.textPrimary, true)).setWordWrapWidth(Math.max(120,W-190));
     }
 
     this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);

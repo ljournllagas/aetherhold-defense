@@ -20,7 +20,7 @@ export function gameLayout(width: number, height: number, safe: Insets = {top:0,
   const inspector = width >= 1180 && !compact ? 240 : 0;
   const narrow = width < 768;
   const portrait = width < height && narrow;
-  const hud = (portrait ? 88 : 56) + safe.top;
+  const hud = (portrait ? 104 : 56) + safe.top;
   const tray = (portrait ? 128 : 76) + safe.bottom;
   const available = Math.max(44,width-safe.left-safe.right);
   const y = height-tray;

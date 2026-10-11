@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import {button} from '../ui/components.ts';
 import { mountAccountButton } from '../ui/accountControls.ts';
 import { loadSettings, saveSettings } from '../systems/Settings.ts';
 import { SoundManager } from '../systems/SoundManager.ts';
@@ -12,14 +13,10 @@ const BORDER = 0x58636b;
 const GOLD = 0xd7aa4e;
 
 function drawControl(scene: Phaser.Scene, x: number, y: number, width: number, height: number, label: string, selected: boolean, action: () => void): { box: Phaser.GameObjects.Rectangle; label: Phaser.GameObjects.Text } {
-  const box = scene.add.rectangle(x, y, width, height, selected ? 0x263529 : 0x19232d, 0.98)
-    .setOrigin(0).setStrokeStyle(selected ? 2 : 1, selected ? GOLD : BORDER);
-  const text = scene.add.text(x + width / 2, y + height / 2, label, style(12, selected ? C.goldBright : C.textPrimary, true)).setOrigin(0.5);
-  box.setInteractive({ useHandCursor: true });
-  box.on('pointerover', () => box.setStrokeStyle(2, 0xf0cd72));
-  box.on('pointerout', () => box.setStrokeStyle(selected ? 2 : 1, selected ? GOLD : BORDER));
-  box.on('pointerdown', action);
-  return { box, label: text };
+  const root=scene.add.container(0,0);
+  const view=button(scene,root,x,y,width,label,action,selected?'primary':'secondary',height);
+  view.text.setColor(selected?C.goldBright:C.textPrimary);
+  return {box:view.box,label:view.text};
 }
 
 export class SettingsScene extends Phaser.Scene {
@@ -31,7 +28,7 @@ export class SettingsScene extends Phaser.Scene {
   }
 
   create(): void {
-    mountAccountButton(this);
+    mountAccountButton(this,70,true);
     const W = this.scale.width;
     const H = this.scale.height;
     if (W < 768) { this.createPhone(); return; }

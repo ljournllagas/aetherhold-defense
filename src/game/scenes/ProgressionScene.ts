@@ -8,7 +8,8 @@ import { achievementViews } from '../ui/progressionView.ts';
 import { ScrollSheet } from '../ui/ScrollSheet.ts';
 import { C } from '../ui/tokens.ts';
 import {campaignRepository} from '../campaign/progress.ts';
-import {CAMPAIGN_MILESTONES,CAMPAIGN_SIGILS} from '../campaign/config.ts';
+import {CAMPAIGN_MILESTONES,CAMPAIGN_SIGILS,CAMPAIGN_WORLDS} from '../campaign/config.ts';
+import {CAMPAIGN_MILESTONE_LABELS} from '../campaign/presentation.ts';
 import {campaignNextStep} from '../ui/prerequisites.ts';
 import type {CampaignView} from '../campaign/types.ts';
 import {accountSystem} from '../systems/AccountSystem.ts';
@@ -17,8 +18,8 @@ import {accountStatus} from '../ui/accountControls.ts';
 export function campaignProgressionLines(view:CampaignView):string[]{
  const lines=[`Campaign stars · ${view.totalMasteryStars}/90`,campaignNextStep(view).text];
  if(view.warning)lines.push(view.warning);
- for(const m of CAMPAIGN_MILESTONES)lines.push(`${view.totalMasteryStars>=m.stars?'Unlocked':'Locked'} · ${m.stars} stars · ${m.unlocks.map(id=>id.replace(/_/g,' ')).join(', ')} · ${view.totalMasteryStars}/${m.stars}`);
- for(const s of CAMPAIGN_SIGILS)lines.push(`${view.profile.worldSigils.includes(s.id)?'Earned':'Locked'} · ${s.id.replace(/_/g,' ')} · Complete Level ${s.level} · Unlocks ${s.unlocks.map(id=>id.replace(/_/g,' ')).join(', ')}`);
+ for(const m of CAMPAIGN_MILESTONES)lines.push(`${view.totalMasteryStars>=m.stars?'Unlocked':'Locked'} · ${m.stars} stars · ${CAMPAIGN_MILESTONE_LABELS[m.stars]} · ${view.totalMasteryStars}/${m.stars}`);
+ for(const s of CAMPAIGN_SIGILS)lines.push(`${view.profile.worldSigils.includes(s.id)?'Earned':'Locked'} · ${CAMPAIGN_WORLDS.find(w=>w.sigilId===s.id)?.name} Sigil · Complete Level ${s.level} · Unlocks ${s.unlocks.map(id=>id.replace(/_/g,' ')).join(', ')}`);
  return lines;
 }
 
@@ -44,7 +45,7 @@ export class ProgressionScene extends Phaser.Scene {
   private savedScroll=0;
   init(data?:{tab?:'campaign'|'classic';returnTo?:string}):void{this.activeTab=data?.tab??this.activeTab;this.returnTo=data?.returnTo??'MainMenu';}
   private sheet: ScrollSheet | null = null;
-  private readonly handleResize = (): void => { this.scene.restart(); };
+  private readonly handleResize = (): void => { this.savedScroll=this.sheet?.scrollOffset??0;this.scene.restart({tab:this.activeTab,returnTo:this.returnTo}); };
 
   constructor() {
     super('Progression');
@@ -60,7 +61,8 @@ export class ProgressionScene extends Phaser.Scene {
     this.sheet = sheet;
     const view = unlockRepository.view();
     sheet.pair(0,'Campaign','Classic',()=>{this.activeTab='campaign';this.renderProgression();},()=>{this.activeTab='classic';this.renderProgression();});
-    let y = 60;
+    const sync=sheet.text(60,accountStatus(accountSystem.view()),C.textSecondary,16);
+    let y = 60+sync.height+16;
     for (const line of this.activeTab==='campaign'?campaignProgressionLines(campaignRepository.view()):progressionPanelLines(view, loadBest(), loadLegacyBests())) {
       const requirement = STATE_PREFIX.test(line);
       const color = line === view.warning ? C.dangerBright : requirement ? C.textSecondary : C.textPrimary;
@@ -70,7 +72,6 @@ export class ProgressionScene extends Phaser.Scene {
     if(this.activeTab==='campaign')sheet.action(y+8,'Open Campaign levels and star targets',()=>this.scene.start('Campaign'));
     sheet.action(y+68,'Help',()=>this.scene.start('Help',{returnTo:'Progression'}));
     sheet.action(y+120,'Back',()=>this.scene.start(this.returnTo));
-    const sync=sheet.text(y+176,accountStatus(accountSystem.view()),C.textSecondary,16);
     sheet.scrollTo(this.savedScroll);
     let revision=accountSystem.view().profile?.revision;
     const unsubscribe=accountSystem.subscribe(v=>{sync.setText(accountStatus(v));if(v.profile?.revision!==revision){revision=v.profile?.revision;this.savedScroll=sheet.scrollOffset;this.renderProgression();}});
