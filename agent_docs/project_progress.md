@@ -1,13 +1,16 @@
 # Project progress
 
-## Campaign v5 — application deployed, Git synchronization pending
+## Campaign v5 — complete
 
 Heavy deployment `campaign-v5-20261012` implements
 `artifacts/CODEX_V5_IMPLEMENTATION_PROMPT.md`. The verified 100-level/ten-world
 campaign is published at https://aetherhold-defense.ljournllagas.workers.dev/ ,
 version `cb1eb993-64e5-4f3c-9d17-5d7aee12b1e2`.
-Current continuation: finish verified documentation, commit/push task files and
-verify local HEAD equals the remote branch; then complete the read-only handoff.
+Application commit `52531f6d231ac849bd2ea37cdeab051404eea33b` was pushed to
+`origin/codex/campaign-v5-20261012`; local HEAD matched the fetched remote.
+All 143 assigned paths are synchronized, including specifications and 77 assets.
+Only unrelated `.scratch/` and `.superpowers/` remain outside the commit.
+Application work is complete. Final-art approval is the separate next milestone.
 
 Exact first-thirty definitions/rewards/waves, version-1 saves and Classic flow
 are preserved. All 120 paid expansion cases earn three stars; all 100 levels

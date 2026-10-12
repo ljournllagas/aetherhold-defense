@@ -7,7 +7,11 @@ Deployment `campaign-v5-20261012`, Heavy route, branch
 application acceptance gates pass. Published version
 `cb1eb993-64e5-4f3c-9d17-5d7aee12b1e2` is live at
 https://aetherhold-defense.ljournllagas.workers.dev/ .
-Final documentation is being completed before the authorized commit/push.
+Application commit `52531f6d231ac849bd2ea37cdeab051404eea33b` was pushed to
+`origin/codex/campaign-v5-20261012` and verified equal to local HEAD after fetch.
+All 143 assigned paths are committed; only unrelated scratch trees remain.
+Deployment state is complete; these verified handoff notes receive a final
+documentation-only synchronization before the read-only closure report.
 Preserve unrelated `.scratch/` and `.superpowers/`; raw pack/evidence remains
 ignored. No production account or D1 row was changed by verification.
 

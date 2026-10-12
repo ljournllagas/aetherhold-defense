@@ -2,6 +2,11 @@
 
 ## Lasting decisions and lessons
 
+- v5 application closure: published Worker and exact live bundle/health passed;
+  application commit `52531f6d231ac849bd2ea37cdeab051404eea33b` matched the
+  fetched remote branch. Keep final-art approval separate from gameplay and
+  avoid embedding a documentation commit's own hash in its contents.
+
 - Final v5 publication used a temporary single Vitest worker after parallel
   geometry checks timed out. All 1,431 tests passed without assertion changes;
   retain the expensive forty-route test's local timeout rather than weakening
