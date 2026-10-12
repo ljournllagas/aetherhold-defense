@@ -14,8 +14,9 @@ export function validateCloudProgress(v:unknown):CloudProgress|null {
   if(!plain(v)||!only(v,['version','campaignVersion','progressionVersion','levels','earned','bests'])||v.version!==1||v.campaignVersion!==1||v.progressionVersion!==1||!plain(v.levels)||!plain(v.earned)||!Array.isArray(v.bests)||v.bests.length>3) return null;
   const result=emptyCloudProgress();
   for(const [key,p] of Object.entries(v.levels)) {
-    if(!/^(?:[1-9]|[12]\d|30)$/.test(key)||!plain(p)||!only(p,['completed','completionStar','livesStar','scoreStar','bestScore','bestRemainingLives'])) return null;
-    const level=getCampaignLevel(Number(key));
+    const levelId=Number(key);
+    if(String(levelId)!==key||!plain(p)||!only(p,['completed','completionStar','livesStar','scoreStar','bestScore','bestRemainingLives'])) return null;
+    const level=getCampaignLevel(levelId);
     if(!level||!['completed','completionStar','livesStar','scoreStar'].every(k=>typeof p[k]==='boolean')||!integer(p.bestScore,0,10000000)||!integer(p.bestRemainingLives,0,25)||p.completed!==p.completionStar||((p.livesStar||p.scoreStar)&&!p.completed)||p.livesStar&&p.bestRemainingLives<level.mastery.minimumLivesForStar||p.scoreStar&&p.bestScore<level.mastery.scoreTarget) return null;
     result.levels[Number(key)]={completed:!!p.completed,completionStar:!!p.completionStar,livesStar:!!p.livesStar,scoreStar:!!p.scoreStar,bestScore:p.bestScore,bestRemainingLives:p.bestRemainingLives};
   }

@@ -8,7 +8,7 @@ import {
   campaignHeaderBadgeLines, campaignLevelDetail, campaignMilestones, campaignWarningCompactMessage
 } from '../campaign/presentation.ts';
 import {
-  CAMPAIGN_MAP_WORLD_WIDTH, CAMPAIGN_NODE_HIT_SIZE,
+  CAMPAIGN_MAP_WORLD_WIDTH, CAMPAIGN_NODE_HIT_SIZE, campaignMapScrollForWorld, campaignWorldTabsPerPage,
   campaignDetailContentLayout, campaignMapRoute, campaignScreenLayout, campaignWorldCaptionLayout
 } from '../campaign/mapLayout.ts';
 import { getCampaignEnemy } from '../campaign/enemies.ts';
@@ -24,20 +24,39 @@ import { drawCampaignEnemyBadge, paintCampaignWorldMap } from '../art/campaignAr
 
 const TARGETING_MODES: readonly TargetingMode[] = ['first', 'last', 'strongest', 'weakest', 'closest'];
 const TOWER_IDS: readonly TowerId[] = ['longbow', 'ember', 'glacier', 'starfire', 'tempest'];
-const WORLD_ACCENTS: Readonly<Record<CampaignWorldId, number>> = { borderkeep: 0x8cae70, emberfall: 0xe27737, frostveil: 0xa8d4e4 };
+const WORLD_ACCENTS: Readonly<Record<CampaignWorldId, number>> = {
+  borderkeep: 0x8cae70, emberfall: 0xe27737, frostveil: 0xa8d4e4, whisperfen: 0x83bf72,
+  sunken_aether: 0x55c7c6, ironroot: 0xd58b57, sky_isles: 0x83c7ee,
+  dreadmoon: 0xb38de3, astral_rift: 0xd579e8, aether_crown: 0xf1d27a
+};
 const TACTICS: Readonly<Record<string, string>> = {
   marchling: 'Steady front-line attacker.', skitter: 'Fast runner; cover long route bends early.', stoneback: 'High vitality; use focused damage.',
   ironhide: 'Resists physical damage; pair with arcane towers.', veilborn: 'Resists arcane damage; use physical towers.',
   cinderling: 'Compact basalt infantry with no special resistance.', ashrunner: 'Fast low-profile runner.', magmahide: 'Armored plates resist physical damage.',
   ember_brute: 'Large, durable attacker.', ashcaller: 'Support totem briefly speeds nearby enemies.', snowstalker: 'Fast runner; prioritize before the bend.',
   icebound: 'Balanced front-line attacker.', frostback: 'High vitality; use sustained fire.', glacier_knight: 'Resists slowing effects.',
-  frost_shaman: 'Support focus briefly increases nearby slow resistance.'
+  frost_shaman: 'Support focus briefly increases nearby slow resistance.',
+  bogling: 'Steady front-line attacker; watch for the Hydra brood call.', fen_skitter: 'Fast runner; cover the long fen route bends.',
+  rotback: 'Armored shell resists physical damage; add arcane coverage.', mossguard: 'Durable brute that rewards focused fire.',
+  rootwretch: 'Support unit heals nearby enemies; remove it early.'
 };
 const BOSS_FEATURE: Readonly<Record<string, CampaignFeatureId>> = {
   hollow_warden: 'hollow_warden_codex_entry', cinder_colossus: 'cinder_colossus_codex_entry', frostbound_matriarch: 'frostbound_matriarch_codex_entry'
 };
+const BOSS_CODEX_GUIDANCE: Readonly<Record<string, string>> = {
+  hollow_warden: 'Temporary damage ward; summons Marchlings at half health; quickens below 25% health.',
+  cinder_colossus: 'High starting armor breaks in stages; its exposed core takes increased damage.',
+  frostbound_matriarch: 'Resists slowing and telegraphs temporary tower freezes; later freezes can catch two towers.',
+  mireheart_hydra: 'Regenerates over time and gathers a Bogling brood after major health thresholds; watch for the cast tell.',
+  drowned_oracle: 'Its resistance shifts Physical → Arcane → Elemental. Match tower damage to the active ward.',
+  iron_tyrant: 'Breaks its armor plates in stages to expose the core; it accelerates in the final phase.',
+  stormmaw_prime: 'A storm warning precedes its surge. Keep damage coverage across the route.',
+  umbral_regent: 'Echo marks signal the decoy phase. Keep the true Regent covered while the afterimages fade.',
+  rift_sovereign: 'A portal ring signals a short route advance. Cover the later bend before it crosses the gate.',
+  aether_devourer: 'Its four phases are Normal, Resistance, Rift, and Exposed Core. Hold damage for the core opening.'
+};
 
-interface CampaignSceneData { selectedLevel?: number; result?: CampaignClearResult; }
+interface CampaignSceneData { selectedLevel?: number; result?: CampaignClearResult; mapScroll?: number; }
 
 function addAction(
   scene: Phaser.Scene, parent: Phaser.GameObjects.Container, x: number, y: number, width: number, label: string,
@@ -55,28 +74,36 @@ function worldIndex(worldId: CampaignWorldId): number {
 }
 
 function worldLabel(worldId: CampaignWorldId): string {
-  return worldId === 'borderkeep' ? 'Borderkeep' : worldId === 'emberfall' ? 'Emberfall' : 'Frostveil';
+  return getCampaignWorld(worldId).name.replace(/^The\s+/i, '');
 }
+
+const WORLD_TAB_LABELS: Readonly<Record<CampaignWorldId, string>> = {
+  borderkeep: 'BORDER', emberfall: 'EMBER', frostveil: 'FROST', whisperfen: 'FEN',
+  sunken_aether: 'SUNKEN', ironroot: 'IRON', sky_isles: 'SKY', dreadmoon: 'MOON',
+  astral_rift: 'RIFT', aether_crown: 'CROWN'
+};
 
 /** Connected, responsive world map and pre-battle campaign preparation. */
 export class CampaignScene extends Phaser.Scene {
   private selectedLevel = 1;
-  private mapScroll = 0;
+  private mapScroll: number | null = null;
+  private worldPage: number | null = null;
   private campaignView!: CampaignView;
   private mapRoot: Phaser.GameObjects.Container | null = null;
   private mapMask: ViewportMaskController | null = null;
   private sheet: ScrollSheet | null = null;
   private sheetRoot: Phaser.GameObjects.Container | null = null;
   private lastResult: CampaignClearResult | undefined;
-  private readonly handleResize = (): void => { this.scene.restart({ selectedLevel: this.selectedLevel, result: this.lastResult }); };
+  private readonly handleResize = (): void => { this.scene.restart({ selectedLevel: this.selectedLevel, result: this.lastResult, mapScroll: this.mapScroll ?? 0 }); };
   private readonly handleEscape = (): void => { this.scene.start('MainMenu'); };
 
   constructor() { super('Campaign'); }
 
   init(data?: CampaignSceneData): void {
-    this.selectedLevel = Number.isInteger(data?.selectedLevel) ? Math.max(1, Math.min(30, data!.selectedLevel!)) : 1;
+    this.selectedLevel = Number.isInteger(data?.selectedLevel) ? Math.max(1, Math.min(CAMPAIGN_LEVELS.length, data!.selectedLevel!)) : 1;
     this.lastResult = data?.result;
-    this.mapScroll = 0;
+    this.mapScroll = Number.isFinite(data?.mapScroll) ? Math.max(0, data!.mapScroll!) : null;
+    this.worldPage = null;
   }
 
   create(): void {
@@ -139,7 +166,7 @@ export class CampaignScene extends Phaser.Scene {
       : this.campaignView.profile.unlockedFeatures.includes('tower_visual_tier_ii') ? 'II · REINFORCED' : 'I · STANDARD';
     root.add(this.add.text(16, 9, 'AEGIS OF THE BORDERKEEP', style(width < 520 ? 16 : 20, C.goldBright, true, FONT_DISPLAY)));
     const sigils = this.campaignView.profile.worldSigils.length;
-    const badge = `MASTERY ${this.campaignView.totalMasteryStars}/90  ·  SIGILS ${sigils}/3  ·  TIER ${tier}${veteran ? '  ·  VETERAN' : ''}${conqueror ? '  ·  CONQUEROR' : ''}`;
+    const badge = `MASTERY ${this.campaignView.totalMasteryStars}/${CAMPAIGN_LEVELS.length * 3}  ·  SIGILS ${sigils}/${CAMPAIGN_SIGILS.length}  ·  TIER ${tier}${veteran ? '  ·  VETERAN' : ''}${conqueror ? '  ·  CONQUEROR' : ''}`;
     root.add(this.add.text(16, 30, badge, style(12, C.textSecondary, true)).setWordWrapWidth(width - 108));
     addAction(this, root, width - 80, 4, 64, 'Back', () => this.scene.start('MainMenu'));
     const actionY = 52, gap = 8, buttonW = (width - 32 - gap * 2) / 3;
@@ -149,14 +176,25 @@ export class CampaignScene extends Phaser.Scene {
   }
 
   private drawWorldTabs(root: Phaser.GameObjects.Container, width: number, active: CampaignWorldId, y: number): void {
-    const gap = 8, tabW = (width - 32 - gap * 2) / 3;
-    for (const [index, world] of CAMPAIGN_WORLDS.entries()) {
-      const x = 16 + index * (tabW + gap), unlocked = isWorldUnlocked(world.id, this.campaignView);
-      const label = `${worldLabel(world.id)}${unlocked ? '' : ' · Locked'}`;
-      const control = button(this, root, x, y, tabW, label, () => this.focusWorld(world.id), active === world.id ? 'primary' : 'secondary', 44);
-      control.text.setFontSize(width < 520 ? '12px' : '13px');
+    const margin = 12, arrowW = 44, gap = 6, tabGap = 6;
+    const pageSize = campaignWorldTabsPerPage(width), pageCount = Math.ceil(CAMPAIGN_WORLDS.length / pageSize);
+    const activeIndex = worldIndex(active);
+    if (this.worldPage === null) this.worldPage = Math.floor(activeIndex / pageSize);
+    this.worldPage = Math.max(0, Math.min(pageCount - 1, this.worldPage));
+    const pageStart = this.worldPage * pageSize;
+    const visibleWorlds = CAMPAIGN_WORLDS.slice(pageStart, pageStart + pageSize);
+    const tabWidth = Math.max(44, (width - margin * 2 - arrowW * 2 - gap * 2 - tabGap * (visibleWorlds.length - 1)) / visibleWorlds.length);
+    addAction(this, root, margin, y, arrowW, '‹', () => { this.worldPage = Math.max(0, this.worldPage! - 1); this.draw(); }, 'secondary', this.worldPage > 0);
+    const tabsX = margin + arrowW + gap;
+    for (const [offset, world] of visibleWorlds.entries()) {
+      const unlocked = isWorldUnlocked(world.id, this.campaignView);
+      const label = `W${world.worldNumber} ${WORLD_TAB_LABELS[world.id]}\n${unlocked ? 'OPEN' : 'LOCKED'}`;
+      const control = button(this, root, tabsX + offset * (tabWidth + tabGap), y, tabWidth, label,
+        () => this.focusWorld(world.id), active === world.id ? 'primary' : 'secondary', 44);
+      control.text.setFontSize(tabWidth < 80 ? '10px' : '12px');
       if (!unlocked) { control.text.setColor(C.textMuted); control.box.setAlpha(0.72); }
     }
+    addAction(this, root, width - margin - arrowW, y, arrowW, '›', () => { this.worldPage = Math.min(pageCount - 1, this.worldPage! + 1); this.draw(); }, 'secondary', this.worldPage < pageCount - 1);
   }
 
   private drawMap(root: Phaser.GameObjects.Container, width: number, top: number, height: number, active: CampaignWorldId): void {
@@ -167,12 +205,17 @@ export class CampaignScene extends Phaser.Scene {
     const mapRoot = this.add.container(0, 0); root.add(mapRoot); this.mapRoot = mapRoot;
     paintCampaignWorldMap(this, mapRoot, route.width, route.height);
     const routeGraphics = this.add.graphics(); mapRoot.add(routeGraphics);
-    // All 30 nodes exist before roads are built, so both world crossings have endpoints.
+    // All 100 nodes exist before roads are built, so every world crossing has endpoints.
     const centers = route.nodes;
-    const scrollMax = Math.max(0, route.width - viewportW / scale);
-    this.mapScroll = Math.max(0, Math.min(scrollMax, centers[this.selectedLevel - 1].x - viewportW / scale / 2));
+    const selectedX = centers[this.selectedLevel - 1].x;
+    const activeWorldNodes = centers.filter(node => node.worldId === active);
+    const mapScroll = campaignMapScrollForWorld(
+      this.mapScroll, selectedX, activeWorldNodes[0].x, activeWorldNodes[activeWorldNodes.length - 1].x,
+      route.width, viewportW / scale
+    );
+    this.mapScroll = mapScroll;
     const centeredOffset = Math.max(0, (viewportW - route.width) / 2);
-    const visibleMapStart = this.mapScroll - centeredOffset;
+    const visibleMapStart = mapScroll - centeredOffset;
     for (const world of CAMPAIGN_WORLDS) {
       const wi = worldIndex(world.id), worldNodes = centers.filter(node => node.worldId === world.id);
       routeGraphics.lineStyle(18, 0x172025, 0.94);
@@ -239,7 +282,7 @@ export class CampaignScene extends Phaser.Scene {
       mapRoot.add(hit);
     }
 
-    mapRoot.setPosition(viewportX + centeredOffset - this.mapScroll * scale, top).setScale(scale);
+    mapRoot.setPosition(viewportX + centeredOffset - mapScroll * scale, top).setScale(scale);
     this.mapMask = new ViewportMaskController(this, mapRoot, viewport);
   }
 
@@ -317,6 +360,7 @@ export class CampaignScene extends Phaser.Scene {
   private focusWorld(worldId: CampaignWorldId): void {
     const world = getCampaignWorld(worldId), preferred = Math.max(world.levelStart, Math.min(world.levelEnd, this.campaignView.highestUnlockedLevel));
     this.selectedLevel = isWorldUnlocked(worldId, this.campaignView) ? preferred : world.levelStart;
+    this.worldPage = Math.floor(worldIndex(worldId) / campaignWorldTabsPerPage(this.scale.width));
     this.lastResult = undefined; this.draw();
   }
 
@@ -344,7 +388,7 @@ export class CampaignScene extends Phaser.Scene {
   private openMastery(): void {
     const sheet = this.makeSheet('Mastery · Stars and Sigils');
     let y = 0;
-    sheet.text(y, `Mastery Stars  ${this.campaignView.totalMasteryStars}/90`, C.goldBright, 16); y += 36;
+    sheet.text(y, `Mastery Stars  ${this.campaignView.totalMasteryStars}/${CAMPAIGN_LEVELS.length * 3}`, C.goldBright, 16); y += 36;
     for (const milestone of campaignMilestones(this.campaignView)) {
       sheet.text(y, `${milestone.earned ? 'UNLOCKED' : 'LOCKED'}  ·  ${milestone.stars} stars  ·  ${milestone.label}`, milestone.earned ? C.textPrimary : C.textMuted);
       y += 42;
@@ -352,7 +396,8 @@ export class CampaignScene extends Phaser.Scene {
     y += 8;
     for (const sigil of CAMPAIGN_SIGILS) {
       const earned = this.campaignView.profile.worldSigils.includes(sigil.id);
-      const name = sigil.id === 'border_sigil' ? 'Border Sigil' : sigil.id === 'ember_sigil' ? 'Ember Sigil' : 'Frost Sigil';
+      const world = CAMPAIGN_WORLDS.find(candidate => candidate.sigilId === sigil.id);
+      const name = `${world ? worldLabel(world.id) : sigil.id.replace('_sigil', '').replace(/_/g, ' ')} Sigil`;
       sheet.text(y, `${earned ? 'EARNED' : `LEVEL ${sigil.level}`}  ·  ${name}`, earned ? C.goldBright : C.textMuted);
       y += 32;
     }
@@ -382,13 +427,13 @@ export class CampaignScene extends Phaser.Scene {
     }
     for (const world of CAMPAIGN_WORLDS) {
       const enemy = getCampaignEnemy(world.bossEnemyId), feature = BOSS_FEATURE[world.bossEnemyId];
-      const unlocked = feature !== undefined && this.campaignView.profile.unlockedFeatures.includes(feature);
+      const unlocked = feature !== undefined
+        ? this.campaignView.profile.unlockedFeatures.includes(feature)
+        : this.campaignView.profile.worldSigils.includes(world.sigilId);
       sheet.text(y, `${unlocked ? 'CODEX ENTRY' : `REQUIRES ${world.sigilId.replace('_', ' ').toUpperCase()}`}  ·  ${enemy.name}`, unlocked ? C.goldBright : C.textMuted);
       y += 22;
       if (unlocked) {
-        const description = sheet.text(y, world.bossEnemyId === 'hollow_warden' ? 'Temporary damage ward; summons Marchlings at half health; quickens below 25% health.'
-          : world.bossEnemyId === 'cinder_colossus' ? 'High starting armor breaks in stages; its exposed core takes increased damage.'
-          : 'Resists slowing and telegraphs temporary tower freezes; later freezes can catch two towers.');
+        const description = sheet.text(y, BOSS_CODEX_GUIDANCE[world.bossEnemyId] ?? 'Observe its phases and protect the stronghold.');
         y += description.height + 22;
         if (this.campaignView.profile.unlockedFeatures.includes('advanced_codex_stats')) {
           sheet.text(y, `HP ${enemy.baseHp} · Speed ${enemy.baseSpeed} · Physical armor ${Math.round(enemy.physicalArmor * 100)}% · Ward ${Math.round(enemy.wardArmor * 100)}%`, C.textMuted, 12); y += 36;

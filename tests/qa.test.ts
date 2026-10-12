@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { EventEmitter } from 'eventemitter3';
 import { GameScene } from '../src/game/scenes/GameScene.ts';
 import { parseQARequest, QA_STATES, isQACampaignFixture, installQA, type QACampaignFixture } from '../src/game/qa.ts';
+import { CAMPAIGN_BOSS_PHASE_LABELS } from '../src/game/campaign/bosses.ts';
 import { CampaignRepository, campaignRepository } from '../src/game/campaign/progress.ts';
 import { campaignVisualTier } from '../src/game/campaign/battle.ts';
 import * as settingsModule from '../src/game/systems/Settings.ts';
@@ -216,10 +217,21 @@ describe('development campaign fixtures', () => {
   const fixture = (level: number, bossPhase: QACampaignFixture['bossPhase'] = 'initial', state: QACampaignFixture['state'] = 'campaign-boss'): QACampaignFixture => ({ state,level,bossPhase });
   it('validates explicit levels and boss-specific phase requests', () => {
     expect(parseQARequest('?qa=campaign&level=21')).toEqual({ state: 'campaign', campaignFixture: fixture(21,'initial','campaign') });
+    expect(parseQARequest('?qa=campaign&level=31')).toEqual({ state: 'campaign', campaignFixture: fixture(31,'initial','campaign') });
+    expect(parseQARequest('?qa=campaign&level=100')).toEqual({ state: 'campaign', campaignFixture: fixture(100,'initial','campaign') });
+    expect(parseQARequest('?qa=campaign-boss&level=40&bossPhase=phase2')?.campaignFixture).toEqual(fixture(40,'phase2'));
     expect(parseQARequest('?qa=campaign-boss&level=20&bossPhase=core')?.campaignFixture).toEqual(fixture(20,'core'));
     expect(parseQARequest('?qa=campaign-results&level=10')?.campaignFixture).toEqual(fixture(10,'initial','campaign-results'));
-    for (const query of ['?qa=campaign&level=31','?qa=campaign&level=1.5','?qa=campaign&level=1e1','?qa=campaign-boss&level=11','?qa=campaign-boss&level=10&bossPhase=core','?qa=campaign-boss&level=30&bossPhase=guarded','?qa=campaign-results&level=10&bossPhase=core']) expect(parseQARequest(query)).toBeNull();
+    for (const query of ['?qa=campaign&level=101','?qa=campaign&level=1.5','?qa=campaign&level=1e1','?qa=campaign-boss&level=11','?qa=campaign-boss&level=51','?qa=campaign-boss&level=40&bossPhase=freeze','?qa=campaign-boss&level=10&bossPhase=core','?qa=campaign-boss&level=30&bossPhase=guarded','?qa=campaign-results&level=10&bossPhase=core']) expect(parseQARequest(query)).toBeNull();
     expect(isQACampaignFixture(null)).toBe(false); expect(isQACampaignFixture(fixture(NaN))).toBe(false);
+    expect(isQACampaignFixture(fixture(100,'initial','campaign'))).toBe(true);
+  });
+  it('accepts every canonical presentation label while keeping legacy phases boss-specific', () => {
+    for (const label of CAMPAIGN_BOSS_PHASE_LABELS) {
+      expect(parseQARequest(`?qa=campaign-boss&level=40&bossPhase=${label}`)?.campaignFixture).toEqual(fixture(40,label));
+    }
+    expect(parseQARequest('?qa=campaign-boss&level=41&bossPhase=oracle_arcane')).toBeNull();
+    expect(parseQARequest('?qa=campaign-boss&level=40&bossPhase=freeze')).toBeNull();
   });
   it.each([1,2,3] as const)('constructs cosmetic tier %i on legal lower plots without changing foundation stats or progress', visualTier => {
     const request = parseQARequest(`?qa=campaign&level=1&tier=${visualTier}`)!;
@@ -257,12 +269,15 @@ describe('development campaign fixtures', () => {
     expect(run.campaign.visualTier).toBe(3);
     expect(run.towerVisualTier).toBe(3);
   });
-  it.each([1,11,21])('seeds level %i using the actual campaign map, roster, and fixed-step wave', level => {
+  it.each([1,11,21,31])('seeds level %i using the actual campaign map, roster, and fixed-step wave', level => {
     const sharedView = vi.spyOn(campaignRepository,'view'), sharedClear = vi.spyOn(campaignRepository,'recordClear');
     const run: any = qaScene(fixture(level,'initial','campaign')); run.seedQACampaignFixture();
     expect([run.campaign.definition.level,run.wave,run.waveActive,run.debugAssisted,run.paused]).toEqual([level,1,true,true,true]);
     expect(run.map.id).toBe(run.campaign.definition.mapLayoutId);
-    expect(run.towers).toHaveLength(5); expect(run.spawnQueue.length).toBeGreaterThan(0);
+    expect(run.towers).toHaveLength(5);
+    expect(run.spawnQueue.length + run.enemies.filter((enemy: Enemy) => enemy.alive).length).toBeGreaterThan(0);
+    const inFlightEnemyIds = [...run.spawnQueue.map((spawn: { enemyId: string }) => spawn.enemyId), ...run.enemies.map((enemy: Enemy) => enemy.campaignId)];
+    expect(inFlightEnemyIds.some(id => run.campaign.definition.enemyIds.includes(id))).toBe(true);
     expect(run.gameTimeMs).toBeCloseTo(5000);
     expect(sharedView).not.toHaveBeenCalled(); expect(sharedClear).not.toHaveBeenCalled();
     const status = run.events.emit.mock.calls[run.events.emit.mock.calls.length-1][1];
@@ -271,7 +286,8 @@ describe('development campaign fixtures', () => {
   it.each([
     [10,'guarded',1,true,0],[10,'enraged',3,false,0],
     [20,'initial',1,false,0],[20,'broken',2,false,0],[20,'core',3,false,0],
-    [30,'initial',1,false,0],[30,'telegraph',1,false,1],[30,'freeze',1,false,0],[30,'phase2',2,false,2]
+    [30,'initial',1,false,0],[30,'telegraph',1,false,1],[30,'freeze',1,false,0],[30,'phase2',2,false,2],
+    [40,'initial',1,false,0],[40,'phase2',2,false,0],[40,'enraged',3,false,0]
   ] as const)('shows the real level %i %s boss state', (level,phase,expectedPhase,guarded,targets) => {
     const run: any = qaScene(fixture(level,phase)); run.seedQACampaignFixture();
     const boss = run.enemies.find((enemy: Enemy) => enemy.isBoss);
@@ -281,7 +297,9 @@ describe('development campaign fixtures', () => {
     expect(run.towers.filter((tower: Tower) => tower.frozenUntil > run.gameTimeMs)).toHaveLength(phase === 'freeze' ? 1 : 0);
     expect(run.debugAssisted).toBe(true); expect(run.paused).toBe(true);
     if (phase === 'core') expect(boss.damageTakenMultiplier).toBe(1.3);
-    if (phase === 'enraged') expect(run.enemies.filter((enemy: Enemy) => enemy.campaignId === 'marchling')).toHaveLength(3);
+    if (phase === 'enraged' && level === 10) expect(run.enemies.filter((enemy: Enemy) => enemy.campaignId === 'marchling')).toHaveLength(3);
+    if (phase === 'enraged' && level === 40) expect(run.campaignBosses.presentation(boss.id,run.gameTimeMs).telegraph).toBe(true);
+    if (level === 40 && phase !== 'initial') expect(run.campaignBosses.presentation(boss.id,run.gameTimeMs).telegraph).toBe(true);
   });
   it('derives the mastery/Sigil results in memory without shared progress, storage, best, or submission writes', () => {
     const write = vi.fn(); vi.stubGlobal('localStorage',{ getItem: () => null, setItem: write });
@@ -314,7 +332,7 @@ describe('development campaign fixtures', () => {
   it('rejects mismatched level and phase fixture data instead of bypassing ordinary unlocks', () => {
     const run: any = qaScene(), empty = new CampaignRepository(null);
     vi.spyOn(campaignRepository,'view').mockReturnValue(empty.view());
-    for (const [level,qaCampaignFixture] of [[30,fixture(20,'core')],[10,fixture(10,'core')],[31,fixture(31,'initial','campaign')]] as const) {
+    for (const [level,qaCampaignFixture] of [[30,fixture(20,'core')],[10,fixture(10,'core')],[31,fixture(40,'phase2')],[40,fixture(31,'initial','campaign')]] as const) {
       run.init({ mode: 'campaign',campaignLevel: level,qaCampaignFixture });
       expect(run.campaignStartRejected).toBe(true); expect(run.qaCampaignRepository).toBeNull(); expect(run.debugAssisted).toBe(false);
     }

@@ -17,12 +17,19 @@ export function campaignVisualTier(view: Pick<CampaignView, 'unlockedFeatures'>)
 }
 
 // Unspecified battle tuning is isolated here. Starter mastery targets are untouched.
-const WAVE_COUNTS = [5,6,6,7,8,8,9,10,10,10,10,11,12,13,13,14,14,15,15,15,16,16,19,20,18,22,20,20,21,21];
+const ORIGINAL_WAVE_COUNTS = [5,6,6,7,8,8,9,10,10,10,10,11,12,13,13,14,14,15,15,15,16,16,19,20,18,22,20,20,21,21] as const;
+const ESTABLISHED_WORLD_PROFILE = [16,16,19,20,18,22,20,20,21,21] as const;
+const EXPANSION_WAVE_COUNTS = Array.from({ length: 60 }, (_, index) => 32 + Math.round(index * 20 / 59));
+const WAVE_COUNTS = [
+  ...ORIGINAL_WAVE_COUNTS,
+  ...Array.from({ length: 10 }, (_, index) => ESTABLISHED_WORLD_PROFILE[index % ESTABLISHED_WORLD_PROFILE.length]),
+  ...EXPANSION_WAVE_COUNTS
+];
 export const CAMPAIGN_BATTLE_TUNING = {
   hpGrowthPerWave: 0.055, levelHpGrowth: 0.018, speedGrowthPerWave: 0.012,
   openingThreatHp: 60, lateThreatHp: 120, openingWaves: 4, threatGrowthPerWave: 4,
   heavyOpeningIntervalMs: 2100, heavyIntervalDecayMs: 50, heavyMinimumIntervalMs: 1100,
-  supportRadius: 145, supportIntervalMs: 5500, supportDurationMs: 2200,
+  supportRadius: 145, supportIntervalMs: 5500, supportDurationMs: 2200, whisperfenCountMultiplier: 0.65,
   ...CAMPAIGN_STATUS_TUNING
 } as const;
 
@@ -67,7 +74,8 @@ export class CampaignBattle {
       const threatHp = Math.min(CAMPAIGN_BATTLE_TUNING.lateThreatHp, CAMPAIGN_BATTLE_TUNING.openingThreatHp + Math.max(0, wave - CAMPAIGN_BATTLE_TUNING.openingWaves) * CAMPAIGN_BATTLE_TUNING.threatGrowthPerWave);
       const threatWeight = Math.max(1, cfg.baseHp / threatHp);
       const baseCount = isBossWave ? (group === 0 ? 6 : 2) : Math.max(2, Math.round((12 + wave * 2) / members.length / threatWeight));
-      const count = Math.max(1, Math.round(baseCount * countMultiplier));
+      const worldCountMultiplier = def.worldId === 'whisperfen' ? CAMPAIGN_BATTLE_TUNING.whisperfenCountMultiplier : 1;
+      const count = Math.max(1, Math.round(baseCount * countMultiplier * worldCountMultiplier));
       const interval = heavy ? Math.max(CAMPAIGN_BATTLE_TUNING.heavyMinimumIntervalMs, CAMPAIGN_BATTLE_TUNING.heavyOpeningIntervalMs - wave * CAMPAIGN_BATTLE_TUNING.heavyIntervalDecayMs) : Math.max(280, 730 - wave * 12 - (def.level % 3) * 35);
       for (let i = 0; i < count; i++) spawns.push({ enemyId: id, atMs: 800 + group * 2100 + i * interval, hpBonus: def.warnings.includes('elite_mix') && group > 0 ? 1.2 : 1 });
     });

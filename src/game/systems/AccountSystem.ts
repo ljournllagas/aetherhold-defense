@@ -59,7 +59,7 @@ export class AccountSystem {
       if(this.activeBattle&&!sameAccount(this.activeBattle,session.account)){this.data.state='expired';this.data.playMode='blocked';this.data.warning='Account changed in another tab. Finish this battle, then sign in.';this.emit();return;}
       if(logout&&sameAccount(logout,session.account)){const r=await this.client.logoutSession(session.csrf);if(r.ok){await this.storage.writeMeta('logout',null);await this.storage.writeMeta('last-account',null);}this.data.state='signed-out';this.data.playMode='blocked';this.data.warning=r.ok?null:r.message;this.emit();return;}
       if(deletion&&sameAccount(deletion,session.account)){this.data.session=session;this.data.state='deleting';this.data.playMode='blocked';this.emit();return;}
-      const fetched=await this.client.getProfile();if(!fetched.ok){this.data.state='error';this.data.playMode='blocked';this.data.warning=fetched.message;this.emit();return;}
+      const fetched=await this.client.getProfile();if(!fetched.ok){this.data.state='error';this.data.playMode='blocked';this.data.warning=fetched.code==='INCOMPATIBLE_SAVE'?`${fetched.message} Reload or update the game before syncing; saved data is protected.`:fetched.message;this.emit();return;}
       if(lifecycle!==this.lifecycle)return;
       if(!sameAccount(fetched.value.account,session.account)){this.data.state='expired';this.data.playMode='blocked';this.data.warning='Account changed during loading. Sign in again.';this.emit();return;}
       let profile=fetched.value;

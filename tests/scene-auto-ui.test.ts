@@ -71,6 +71,108 @@ it('house Auto button respects drag, pointerout and cancellation',()=>{
   box.emit('pointerdown',down,0,0,event);box.emit('pointerout');box.emit('pointerup',down,0,0,event);expect(run.auto.enabled).toBe(false);
   release(box);expect(run.auto.enabled).toBe(true);
 });
+it.each([
+  {width:390,height:844,y:54,overviewX:8,autoX:142,speedX:238,pauseX:310},
+  {width:1280,height:720,y:6,overviewX:936,autoX:1032,speedX:1128,pauseX:1200}
+])('keeps direct speed controls reachable at $width×$height without overlap',({width,height,y,overviewX,autoX,speedX,pauseX})=>{
+  const {run,loose}=autoScene();run.layout=gameLayout(width,height);
+  type PlacedDisplay=Display&{x:number;y:number;width:number;height:number};
+  const boxes:PlacedDisplay[]=[],labels:Display[]=[];
+  loose.add={
+    rectangle:(x:number,y:number,width:number,height:number)=>{
+      const box=Object.assign(new Display(),{x,y,width,height});boxes.push(box);return box;
+    },
+    text:(x:number,y:number,value:string)=>{
+      const label=Object.assign(new Display(),{x,y});label.text=value;labels.push(label);return label;
+    }
+  };
+  run.drawControls();
+  const controls=boxes.map((box,index)=>({box,label:labels[index]}));
+  expect(controls.map(control=>control.label.text)).toEqual(['Auto OFF','1×','Pause','Overview']);
+  expect(controls.map(({box})=>[box.x,box.y,box.width,box.height])).toEqual([
+    [autoX,y,88,44],[speedX,y,64,44],[pauseX,y,68,44],[overviewX,y,88,44]
+  ]);
+  const leftToRight=[...controls].sort((a,b)=>a.box.x-b.box.x);
+  for(let index=0;index<leftToRight.length;index++){
+    const {box}=leftToRight[index];
+    expect(box.x).toBeGreaterThanOrEqual(0);expect(box.x+box.width).toBeLessThanOrEqual(width);
+    if(index>0)expect(leftToRight[index-1].box.x+leftToRight[index-1].box.width).toBeLessThanOrEqual(box.x);
+  }
+  const speed=controls.find(control=>control.label.text==='1×')!;
+  expect(loose.speed).toBe(1);
+  release(speed.box as never);expect([loose.speed,speed.label.text]).toEqual([2,'2×']);
+  release(speed.box as never);expect([loose.speed,speed.label.text]).toEqual([3,'3×']);
+  release(speed.box as never);expect([loose.speed,speed.label.text]).toEqual([1,'1×']);
+});
+
+it('keeps compact landscape header clear of a 10,000,000 score and cycles speed through the native More menu',()=>{
+  const {run,loose}=autoScene();run.layout=gameLayout(844,390);
+  class LayoutDisplay extends Display {
+    x=0;y=0;width=0;height=14;type='Text';input={enabled:true};
+    setCrop(){return this;}
+    setDisplaySize(width:number,height:number){this.width=width;this.height=height;return this;}
+  }
+  class LayoutContainer {
+    x:number;y:number;list:any[]=[];private data=new Map<string,unknown>();
+    constructor(x=0,y=0){this.x=x;this.y=y;}
+    add(children:any|any[]){this.list.push(...(Array.isArray(children)?children:[children]));return this;}
+    getWorldTransformMatrix(){return {tx:this.x,ty:this.y};}
+    setData(key:string,value:unknown){this.data.set(key,value);return this;}
+    getData(key:string){return this.data.get(key);}
+    setPosition(x:number,y:number){this.x=x;this.y=y;return this;}
+    setScale(){return this;}
+    sort(){return this;}
+    removeAll(){this.list=[];return this;}
+    destroy(){this.list=[];return this;}
+  }
+  type Box=LayoutDisplay&{x:number;y:number;width:number;height:number};
+  const boxes:Box[]=[],labels:LayoutDisplay[]=[];
+  const graphics=()=>new Proxy(function(){return graphics();},{
+    get:(_target,key)=>key==='then'?undefined:key===Symbol.toPrimitive?()=>0:graphics,
+    apply:()=>graphics()
+  });
+  loose.add={
+    rectangle:(x:number,y:number,width:number,height:number)=>{const box=Object.assign(new LayoutDisplay(),{x,y,width,height,type:'Rectangle'});boxes.push(box);return box;},
+    text:(x:number,y:number,value:string)=>{const label=Object.assign(new LayoutDisplay(),{x,y,text:value});labels.push(label);return label;},
+    container:(x:number,y:number)=>new LayoutContainer(x,y),
+    image:(x:number,y:number)=>Object.assign(new LayoutDisplay(),{x,y,type:'Image'}),
+    graphics
+  };
+  loose.uiRoot=new LayoutContainer();
+  loose.game={canvas:{addEventListener:vi.fn(),removeEventListener:vi.fn()}};
+  const drawHud=(GameScene.prototype as unknown as {drawHUD():void}).drawHUD;
+  drawHud.call(run);
+  const score=loose.hudScoreValue as LayoutDisplay;
+  score.setText('10,000,000');
+  const highScoreBounds={left:440,right:584};
+
+  run.drawControls();
+  expect(boxes.slice(-3).map(({x,y,width,height})=>[x,y,width,height])).toEqual([
+    [592,6,84,44],[680,6,88,44],[772,6,64,44]
+  ]);
+  expect(labels.slice(-3).map(label=>label.text)).toEqual(['Auto OFF','Overview','Pause']);
+  expect(loose.speedBtnLabel).toBeNull();
+  expect(boxes.slice(-3).every(box=>box.x>=highScoreBounds.right||box.x+box.width<=highScoreBounds.left)).toBe(true);
+
+  const drawSheet=(GameScene.prototype as unknown as {drawSheet(offset?:number):void}).drawSheet;
+  const openSheet=(GameScene.prototype as unknown as {openSheet(kind:'more'):void}).openSheet;
+  loose.drawSheet=drawSheet.bind(run);
+  openSheet.call(run,'more');
+  const clickSpeed=(expected:number)=>{
+    const label=[...labels].reverse().find(candidate=>candidate.text===`Speed ${expected}×`)!;
+    expect(label).toBeDefined();
+    const box=boxes.find(candidate=>Math.abs(candidate.x+candidate.width/2-label.x)<1&&Math.abs(candidate.y+candidate.height/2-label.y)<1)!;
+    expect(box.input.enabled).toBe(true);
+    release(box as never);
+    expect(loose.speed).toBe(expected===3?1:expected+1);
+  };
+  (run.sheet as unknown as ScrollSheet).scrollTo(312);
+  clickSpeed(1);
+  (run.sheet as unknown as ScrollSheet).scrollTo(312);
+  clickSpeed(2);
+  (run.sheet as unknown as ScrollSheet).scrollTo(312);
+  clickSpeed(3);
+});
 it('detach removes the Auto handler; replay attachment is verified in the real browser',()=>{
   const {run}=autoScene();run.input.keyboard.on('keydown-A',run.handleAutoKey);
   expect(run.input.keyboard.listenerCount('keydown-A')).toBe(1);run.detachInputListeners();

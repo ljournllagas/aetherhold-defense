@@ -21,8 +21,15 @@ it('empty Campaign points to first level with exact configured star thresholds',
  const r=campaignRequirements(v,1);expect(r.find(x=>x.id==='lives')?.nextStep).toContain('12');expect(r.find(x=>x.id==='score')?.nextStep).toContain('1950');
  expect(campaignRequirements(v,2).find(x=>x.id==='previous')?.met).toBe(false);
 });
-it('all-star profile has no invented next quest',()=>{
+it('30 completed levels offer Level 31 without inventing its clear',()=>{
  const v=empty();for(let i=1;i<=30;i++)v.profile.levels[i]={completed:true,completionStar:true,livesStar:true,scoreStar:true,bestScore:999999,bestRemainingLives:20};
- v.highestUnlockedLevel=30;expect(campaignNextStep(v).level).toBeNull();
+ v.highestUnlockedLevel=31;v.profile.highestUnlockedLevel=31;
+ expect(campaignNextStep(v)).toEqual({level:31,text:'Complete Level 31 to continue.'});
+ expect(v.profile.levels[31]).toBeUndefined();
+});
+it('100-level all-star profile has no invented next quest',()=>{
+ const v=empty();for(let i=1;i<=100;i++)v.profile.levels[i]={completed:true,completionStar:true,livesStar:true,scoreStar:true,bestScore:999999,bestRemainingLives:20};
+ v.highestUnlockedLevel=100;v.profile.highestUnlockedLevel=100;
+ expect(campaignNextStep(v).level).toBeNull();
  v.profile.levels[3]!.scoreStar=false;expect(campaignNextStep(v).level).toBe(3);
 });

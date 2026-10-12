@@ -1,5 +1,7 @@
 import { MAP1, type MapDef, type MapPoint } from '../maps/map1.ts';
 import type { CampaignLevelDefinition } from './types.ts';
+import { CAMPAIGN_WORLDS } from './config.ts';
+import { EXPANSION_ROUTES } from './expansionRoutes.ts';
 import { BUILD_PLOT_POLICY, resolveBuildPlots } from '../maps/buildPlotPolicy.ts';
 import { TOWERS } from '../config/towers.ts';
 
@@ -18,7 +20,8 @@ export const CAMPAIGN_ROUTES: Readonly<Record<string, Route>> = {
   frostveil_a: [[0,480],[240,480],[240,210],[560,210],[560,490],[850,490],[850,280],[1000,280]],
   frostveil_b: [[0,160],[360,160],[360,460],[660,460],[660,210],[850,210],[850,500],[1000,500]],
   frostveil_c: [[0,530],[770,530],[770,345],[180,345],[180,145],[910,145],[910,330],[1000,330]],
-  frostveil_d: [[0,340],[160,340],[160,150],[800,150],[800,530],[410,530],[410,340],[1000,340]]
+  frostveil_d: [[0,340],[160,340],[160,150],[800,150],[800,530],[410,530],[410,340],[1000,340]],
+  ...EXPANSION_ROUTES
 };
 
 export function distanceToRoute(point: MapPoint, route: readonly MapPoint[]): number {
@@ -32,8 +35,10 @@ export function distanceToRoute(point: MapPoint, route: readonly MapPoint[]): nu
 }
 
 export function resolveCampaignMap(level: CampaignLevelDefinition): MapDef {
-  const match = /^(borderkeep|emberfall|frostveil)_([abcd])/.exec(level.mapLayoutId);
-  const family = match ? `${match[1]}_${match[2]}` : '';
+  const world = CAMPAIGN_WORLDS.find(candidate => level.mapLayoutId.startsWith(`${candidate.id}_`));
+  const worldLayout = world ? level.mapLayoutId.slice(world.id.length + 1) : '';
+  const routeLetter = /^[abcd]/.exec(worldLayout)?.[0];
+  const family = world && routeLetter ? `${world.id}_${routeLetter}` : '';
   const route = CAMPAIGN_ROUTES[family];
   if (!route) throw new Error(`Unknown campaign map: ${level.mapLayoutId}`);
   const variant = level.mapLayoutId.endsWith('2') ? 1 : level.mapLayoutId.endsWith('3') ? 2 : 0;

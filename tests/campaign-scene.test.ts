@@ -148,9 +148,10 @@ function bestPlot(map: MapDef, occupied: ReadonlySet<number>, range: number): nu
 // One reproducible baseline: a level-3 counter tower, then a mixed roster,
 // best route coverage, and cheapest remaining upgrades;
 // no relics, selling, sidegrades, QA grants, or persistent bonuses.
-describe('all authored campaign battles in the shared fixed-step simulation', () => {
-  it.each(CAMPAIGN_LEVELS.flatMap(level => ['completion-only', 'unlocked-replay'].map(profile => ({ ...level, profile }))))('$profile level $level can clear with ordinary foundation towers', definition => {
-    const run = fixture(definition.level, definition.profile === 'completion-only' ? definition.level - 1 : 30, definition.profile === 'completion-only');
+describe('accepted campaign battles in the shared fixed-step simulation', () => {
+  // World 4 is the mechanics gate; later-world profiles are catalog-only until their own gates.
+  it.each(CAMPAIGN_LEVELS.slice(0, 40).flatMap(level => ['completion-only', 'unlocked-replay'].map(profile => ({ ...level, profile }))))('$profile level $level can clear with ordinary foundation towers', definition => {
+    const run = fixture(definition.level, definition.profile === 'completion-only' ? definition.level - 1 : CAMPAIGN_LEVELS.length, definition.profile === 'completion-only');
     expect(run.debugAssisted).toBe(false);
     expect([run.gold, run.lives]).toEqual([600, 20]);
     const purchases: unknown[] = [];
@@ -220,6 +221,6 @@ describe('all authored campaign battles in the shared fixed-step simulation', ()
     expect(run.campaignResult?.lives).toBeGreaterThanOrEqual(definition.mastery.minimumLivesForStar);
     expect(run.campaignResult?.score,`level ${definition.level} target ${definition.mastery.scoreTarget}`).toBeGreaterThanOrEqual(definition.mastery.scoreTarget);
     expect(run.campaignResult?.clear?.progress).toMatchObject({ completionStar: true, livesStar: true, scoreStar: true });
-    balanceTraces.push({ profile: definition.profile, progressionStarsBefore: definition.profile === 'completion-only' ? definition.level - 1 : 90, debugAssisted: run.debugAssisted, randomValue: 0.99, startingGold: 600, startingLives: 20, relicUses: [], remainingGold: run.gold, mastery: run.campaignResult?.clear?.progress, level: definition.level, waves: run.wave, outcome: run.campaignResult?.outcome, score: run.campaignResult?.score, scoreTarget: definition.mastery.scoreTarget, lives: run.lives, livesTarget: definition.mastery.minimumLivesForStar, bossesKilled: run.bossesKilled, kills: run.enemiesKilled, durationSeconds: Math.round(run.gameTimeMs/1000), purchases });
+    balanceTraces.push({ profile: definition.profile, progressionStarsBefore: definition.profile === 'completion-only' ? definition.level - 1 : CAMPAIGN_LEVELS.length * 3, debugAssisted: run.debugAssisted, randomValue: 0.99, startingGold: 600, startingLives: 20, relicUses: [], remainingGold: run.gold, mastery: run.campaignResult?.clear?.progress, level: definition.level, waves: run.wave, outcome: run.campaignResult?.outcome, score: run.campaignResult?.score, scoreTarget: definition.mastery.scoreTarget, lives: run.lives, livesTarget: definition.mastery.minimumLivesForStar, bossesKilled: run.bossesKilled, kills: run.enemiesKilled, durationSeconds: Math.round(run.gameTimeMs/1000), purchases });
   },30000);
 });

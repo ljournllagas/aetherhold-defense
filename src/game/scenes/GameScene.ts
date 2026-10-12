@@ -58,10 +58,10 @@ import { unlockRepository as sharedUnlockRepository, earnedBranches, SAVE_FAILED
 import { formatStat, towerProgressionView, wavePresentation } from '../ui/progressionView.ts';
 import type { BranchId, RunOutcome, ShotSnapshot } from '../../shared/progression.ts';
 import { CampaignBattle, CAMPAIGN_BATTLE_TUNING, campaignTowerStats, specializeShot, type CampaignShot, type CampaignSpawn } from '../campaign/battle.ts';
-import { CampaignBossSystem, CAMPAIGN_BOSS_TUNING } from '../campaign/bosses.ts';
+import { CAMPAIGN_BOSS_PHASE_LABELS, CampaignBossSystem, CAMPAIGN_BOSS_TUNING, type CampaignBossPhaseLabel } from '../campaign/bosses.ts';
 import { getCampaignEnemy, isClassicEnemy } from '../campaign/enemies.ts';
 import { CampaignRepository, campaignRepository, CAMPAIGN_STORAGE_KEY } from '../campaign/progress.ts';
-import { getCampaignLevel } from '../campaign/config.ts';
+import { CAMPAIGN_LEVELS, getCampaignLevel } from '../campaign/config.ts';
 import { getCampaignSpecialization } from '../campaign/specializations.ts';
 import type { CampaignClearResult } from '../campaign/types.ts';
 
@@ -1006,17 +1006,66 @@ export class GameScene extends Phaser.Scene {
         const index = Math.min(3, this.map.waypoints.length - 2);
         boss.x = this.map.waypoints[index].x; boss.y = this.map.waypoints[index].y; boss.waypointIndex = index + 1;
         boss.distanceTraveled = this.map.waypoints.slice(1, index + 1).reduce((sum, point, i) => sum + Math.hypot(point.x - this.map.waypoints[i].x, point.y - this.map.waypoints[i].y), 0);
-        if (fixture.bossPhase === 'enraged' || fixture.bossPhase === 'core') boss.hp = boss.maxHp * 0.24;
-        if (fixture.bossPhase === 'broken') boss.hp = boss.maxHp * 0.6;
-        if (fixture.bossPhase === 'phase2') boss.hp = boss.maxHp * 0.4;
-        this.gameTimeMs = fixture.level === 10 && fixture.bossPhase !== 'guarded' ? CAMPAIGN_BOSS_TUNING.shieldDurationMs : ['telegraph','freeze','phase2'].includes(fixture.bossPhase) ? CAMPAIGN_BOSS_TUNING.freezeIntervalMs : 0;
-        this.tickCampaignBosses();
-        if (fixture.bossPhase === 'freeze') { this.gameTimeMs += CAMPAIGN_BOSS_TUNING.freezeTelegraphMs; this.tickCampaignBosses(); }
+        const fixtureLabel = (CAMPAIGN_BOSS_PHASE_LABELS as readonly string[]).includes(String(fixture.bossPhase)) ? String(fixture.bossPhase) as CampaignBossPhaseLabel : null;
+        if (fixtureLabel) this.seedNamedCampaignBossFixture(boss, fixtureLabel);
+        else {
+          if (fixture.bossPhase === 'enraged' || fixture.bossPhase === 'core') boss.hp = boss.maxHp * 0.24;
+          if (fixture.bossPhase === 'broken') boss.hp = boss.maxHp * 0.6;
+          if (fixture.bossPhase === 'phase2') boss.hp = boss.maxHp * 0.4;
+          this.gameTimeMs = fixture.level === 10 && fixture.bossPhase !== 'guarded' ? CAMPAIGN_BOSS_TUNING.shieldDurationMs : ['telegraph','freeze','phase2'].includes(fixture.bossPhase) ? CAMPAIGN_BOSS_TUNING.freezeIntervalMs : 0;
+          this.tickCampaignBosses();
+          if (fixture.bossPhase === 'freeze') { this.gameTimeMs += CAMPAIGN_BOSS_TUNING.freezeTelegraphMs; this.tickCampaignBosses(); }
+        }
       }
     }
     this.refreshInfoPanel(); this.refreshPlots(); this.updateNextPreview();
     if (!this.ended) { this.renderFrame(0); this.paused = true; }
     this.updateHUD(); this.publishQAStatus();
+  }
+
+  private seedNamedCampaignBossFixture(boss: Enemy, phaseLabel: CampaignBossPhaseLabel): void {
+    const tickAt = (timeMs: number): void => { this.gameTimeMs = timeMs; this.tickCampaignBosses(); };
+    switch (phaseLabel) {
+      case 'oracle_physical': tickAt(0); return;
+      case 'oracle_arcane': tickAt(0); tickAt(CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs); return;
+      case 'oracle_elemental':
+        tickAt(0);
+        tickAt(CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs);
+        tickAt(CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs);
+        tickAt(CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs * 2 + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs); return;
+      case 'tyrant_plates': boss.hp = boss.maxHp * 0.8; tickAt(0); return;
+      case 'tyrant_break': boss.hp = boss.maxHp * 0.6; tickAt(0); return;
+      case 'tyrant_core': boss.hp = boss.maxHp * 0.25; tickAt(0); tickAt(CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs); return;
+      case 'storm_surge': {
+        const ally = this.spawnEnemy('cloud_skitter', 1);
+        ally.x = boss.x - 40; ally.y = boss.y;
+        tickAt(CAMPAIGN_BOSS_TUNING.stormmawIntervalMs); return;
+      }
+      case 'regent_decoys': boss.hp = boss.maxHp * 0.6; tickAt(0); return;
+      case 'sovereign_portal': tickAt(CAMPAIGN_BOSS_TUNING.sovereignIntervalMs); return;
+      case 'devourer_normal': boss.hp = boss.maxHp * 0.8; tickAt(0); return;
+      case 'devourer_resistance': boss.hp = boss.maxHp * 0.6; tickAt(0); return;
+      case 'devourer_rift':
+        boss.hp = boss.maxHp * 0.4; tickAt(0); tickAt(CAMPAIGN_BOSS_TUNING.devourerPortalIntervalMs); return;
+      case 'devourer_core': boss.hp = boss.maxHp * 0.19; tickAt(0); return;
+      case 'aether_shield': this.seedNamedSupportFixture('aetherbound', 'tideborn', CAMPAIGN_BOSS_TUNING.aetherboundIntervalMs, tickAt); return;
+      case 'foundry_armor': this.seedNamedSupportFixture('foundry_core', 'scrapling', CAMPAIGN_BOSS_TUNING.foundryCoreIntervalMs, tickAt); return;
+      case 'tempest_haste': this.seedNamedSupportFixture('tempest_herald', 'galeclaw', CAMPAIGN_BOSS_TUNING.tempestHeraldIntervalMs, tickAt); return;
+      case 'echo_decoys': this.seedNamedSupportFixture('echo_shade', null, CAMPAIGN_BOSS_TUNING.echoShadeIntervalMs, tickAt); return;
+      case 'rift_jump': this.seedNamedSupportFixture('rift_weaver', null, CAMPAIGN_BOSS_TUNING.riftWeaverIntervalMs, tickAt); return;
+      case 'crown_ward': this.seedNamedSupportFixture('crown_archon', 'aetherborn', CAMPAIGN_BOSS_TUNING.crownArchonIntervalMs, tickAt); return;
+    }
+  }
+
+  private seedNamedSupportFixture(supportId: string, allyId: string | null, intervalMs: number, tickAt: (timeMs: number) => void): void {
+    const position = this.map.waypoints[Math.min(3, this.map.waypoints.length - 1)];
+    const support = this.spawnEnemy(supportId, 1);
+    support.x = position.x; support.y = position.y;
+    if (allyId) {
+      const ally = this.spawnEnemy(allyId, 1);
+      ally.x = position.x + 36; ally.y = position.y;
+    }
+    tickAt(intervalMs);
   }
 
   private publishQAStatus(): void {
@@ -1058,7 +1107,18 @@ export class GameScene extends Phaser.Scene {
       progression: this.towers.map((t) => ({ towerId: t.towerId, branchId: t.progression.branchId, rank: t.progression.rank, masteryRank: t.progression.masteryRank, invested: t.progression.invested, visualTier: this.towerVisualTier })),
       campaignLevel: this.campaign?.definition.level ?? null,
       campaignFixture: this.qaCampaignFixture ? `${this.qaCampaignFixture.state}/${this.qaCampaignFixture.bossPhase} · DEV FIXTURE · unsaved` : null,
-      campaignBoss: (() => { const boss = this.enemies.find(e => e.alive && e.isBoss && e.campaignId); return boss ? { id: boss.campaignId!, ...this.campaignBosses.presentation(boss.id, this.gameTimeMs), targets: this.campaignBosses.telegraphTargets() } : null; })(),
+      campaignBoss: (() => {
+        const supportFixtures: Partial<Record<CampaignBossPhaseLabel, string>> = {
+          aether_shield: 'aetherbound', foundry_armor: 'foundry_core', tempest_haste: 'tempest_herald',
+          echo_decoys: 'echo_shade', rift_jump: 'rift_weaver', crown_ward: 'crown_archon'
+        };
+        const fixtureLabel = this.qaCampaignFixture?.bossPhase as CampaignBossPhaseLabel | undefined;
+        const fixtureSupportId = fixtureLabel ? supportFixtures[fixtureLabel] : undefined;
+        const subject = fixtureSupportId
+          ? this.enemies.find(e => e.alive && e.campaignId === fixtureSupportId)
+          : this.enemies.find(e => e.alive && e.isBoss && e.campaignId);
+        return subject ? { id: subject.campaignId!, ...this.campaignBosses.presentation(subject.id, this.gameTimeMs), targets: this.campaignBosses.telegraphTargets() } : null;
+      })(),
       campaignOutcome: this.campaignResult?.outcome ?? null,
       campaignBossLabels: this.campaign && this.bossBarText && this.bossBarHp ? { name: labelGeometry(this.bossBarText), status: labelGeometry(this.bossBarHp) } : null,
       campaignCallout: this.campaignCallout && this.campaignCalloutView ? { ...this.campaignCallout, bounds: (() => { const { x, y, width, height } = this.campaignCalloutView!.getBounds(); return { x, y, width, height }; })() } : null
@@ -1370,10 +1430,12 @@ export class GameScene extends Phaser.Scene {
     const w = this.layout.width;
     const portrait=this.layout.width<this.layout.height&&this.layout.narrow;
     const y = portrait ? 54 : 6;
-    if(this.layout.compact&&!portrait){
-      this.autoButton=button(this,this.uiRoot!,w-252,y,84,this.auto.enabled?'Auto ON':'Auto OFF',()=>this.setAutoEnabled(!this.auto.enabled));
-      button(this,this.uiRoot!,w-164,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
-      button(this,this.uiRoot!,w-72,y,64,'Pause',()=>this.togglePauseMenu());return;
+    if (this.layout.compact && !portrait) {
+      this.autoButton = button(this, this.uiRoot!, w - 252, y, 84, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => this.setAutoEnabled(!this.auto.enabled));
+      this.speedBtnLabel = null;
+      button(this, this.uiRoot!, w - 164, y, 88, 'Overview', () => { this.cancelGesture(); this.cameraView.reset(); this.applyView(); });
+      button(this, this.uiRoot!, w - 72, y, 64, 'Pause', () => this.togglePauseMenu());
+      return;
     }
     this.autoButton = button(this, this.uiRoot!, w - 248, y, 88, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => this.setAutoEnabled(!this.auto.enabled));
     this.speedBtnLabel = button(this, this.uiRoot!, w - 152, y, 64, `${this.speed}×`, () => this.cycleSpeed()).text;
@@ -1751,8 +1813,9 @@ export class GameScene extends Phaser.Scene {
     if (source === 'auto' && (!this.auto.enabled || expectedRunId !== this.runId || expectedAutoRevision !== this.auto.revision)) return;
     if (this.ended || this.waveActive || this.paused || this.pausedByModal || this.modal || this.pendingMeteor || (!this.auto.enabled && this.vault.pending.length)) return;
     if (this.isRunBlocked()) return;
-    // Last: startWave records siege state, so it only runs once the scene will start the wave.
-    if (!this.siege.startWave(this.wave + 1)) return;
+    // Classic uses the 30-wave siege state machine. Campaign battles have their own
+    // finite wave budget and must not inherit the Classic cap or its victory phase.
+    if (!this.campaign && !this.siege.startWave(this.wave + 1)) return;
     this.auto.cancelCountdown();
     this.wave++;
     const d = getDifficulty(this.difficultyId);
@@ -1844,12 +1907,12 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private spawnEnemy(enemyId: string, hpBonus: number): Enemy {
+  private spawnEnemy(enemyId: string, hpBonus: number, campaignVisualId?: string): Enemy {
     if (this.campaign && enemyId !== 'pilferer') {
       const cfg = getCampaignEnemy(enemyId);
       const hp = Math.round(cfg.baseHp * (1 + CAMPAIGN_BATTLE_TUNING.hpGrowthPerWave * (this.wave - 1) + CAMPAIGN_BATTLE_TUNING.levelHpGrowth * (this.campaign.definition.level - 1)) * hpBonus);
       const enemy = new Enemy(cfg.visualArchetype, hp, cfg.baseSpeed * (1 + CAMPAIGN_BATTLE_TUNING.speedGrowthPerWave * (this.wave - 1)), cfg.baseReward, cfg);
-      enemy.campaignId = cfg.id; enemy.slowResistance = cfg.slowResistance;
+      enemy.campaignId = campaignVisualId ?? cfg.id; enemy.slowResistance = cfg.slowResistance;
       enemy.x = this.map.spawn.x; enemy.y = this.map.spawn.y;
       this.campaignBosses.register(enemy, this.gameTimeMs);
       this.makeEnemyVisual(enemy); this.enemies.push(enemy); return enemy;
@@ -2425,7 +2488,8 @@ export class GameScene extends Phaser.Scene {
   private damageEnemy(e: Enemy, raw: number, type: DamageType, shot?: CampaignShot): number {
     if (this.ended || !e.alive) return 0;
     const slowed = this.evolutionCombat.statuses(e.id, this.gameTimeMs).slowFactor > 0;
-    const dealt = this.evolutionCombat.damage(raw * e.damageTakenMultiplier * (slowed ? shot?.specialization?.slowedTargetDamageMultiplier ?? 1 : 1), type, e, this.gameTimeMs, shot);
+    const campaignResistance = this.campaign ? this.campaignBosses.incomingDamageMultiplier(e.id, type, this.gameTimeMs) : 1;
+    const dealt = this.evolutionCombat.damage(raw * e.damageTakenMultiplier * campaignResistance * (slowed ? shot?.specialization?.slowedTargetDamageMultiplier ?? 1 : 1), type, e, this.gameTimeMs, shot);
     e.hp -= dealt;
     e.flashUntil = this.gameTimeMs + 110; // 50–100ms-class hit reaction (§63)
     if (e.hp <= 0 && e.alive) this.killEnemy(e);
@@ -2436,7 +2500,7 @@ export class GameScene extends Phaser.Scene {
     if (this.ended || !e.alive) return;
     e.alive = false;
     if (this.campaign && e.campaignId === this.campaign.definition.bossEnemyId) this.campaign.bossKilled = true;
-    this.campaignBosses.remove(e.id);
+    this.clearCampaignOwnedSummons(this.campaignBosses.remove(e.id));
     this.evolutionCombat.removeEnemy(e.id);
     const siegeWave = this.scheduledBossIds.get(e.id);
     if (siegeWave !== undefined) { this.siege.bossKilled(siegeWave); this.scheduledBossIds.delete(e.id); this.refreshInfoPanel(); }
@@ -2558,13 +2622,65 @@ export class GameScene extends Phaser.Scene {
         (event.boss.view?.getData('enemyVisual') as EnemyView | undefined)?.playAction('buff');
       }
       this.showCampaignCallout(event.text);
-      if (!event.summon) continue;
-      for (let i = 0; i < event.summon.count; i++) {
-        const add = this.spawnEnemy(event.summon.enemyId, 1);
-        add.x = event.boss.x; add.y = event.boss.y;
-        add.waypointIndex = event.boss.waypointIndex; add.distanceTraveled = event.boss.distanceTraveled;
+      if (event.summon) {
+        const visualId = event.summon.kind === 'regent-clone' ? 'umbral_regent' : undefined;
+        for (let i = 0; i < event.summon.count; i++) {
+          const add = this.spawnEnemy(event.summon.enemyId, event.summon.hpBonus ?? 1, visualId);
+          add.x = event.boss.x; add.y = event.boss.y;
+          add.waypointIndex = event.boss.waypointIndex; add.distanceTraveled = event.boss.distanceTraveled;
+          if (event.summon.kind === 'regent-clone' || event.summon.kind === 'echo-decoy') {
+            const ownerId = event.summon.ownerId ?? event.boss.id;
+            add.campaignBossOwnerId = ownerId;
+            add.campaignCloneKind = event.summon.kind === 'regent-clone' ? 'regent_echo' : 'echo_decoy';
+            add.name = event.summon.kind === 'regent-clone' ? 'Regent Echo' : 'Echo Decoy';
+            add.reward = 0; add.isElite = false;
+            this.campaignBosses.trackOwnedSummon(ownerId, add.id, event.summon.kind);
+          }
+        }
       }
+      if (event.routeAdvanceFraction) this.advanceEnemyAlongRoute(event.boss, event.routeAdvanceFraction);
     }
+  }
+
+  private advanceEnemyAlongRoute(enemy: Enemy, routeFraction: number): void {
+    const waypoints = this.map.waypoints;
+    if (!enemy.alive || waypoints.length < 2 || !Number.isFinite(routeFraction) || routeFraction <= 0) return;
+    let totalDistance = 0;
+    for (let index = 1; index < waypoints.length; index++) totalDistance += Math.hypot(waypoints[index].x - waypoints[index - 1].x, waypoints[index].y - waypoints[index - 1].y);
+    const guardDistance = totalDistance * CAMPAIGN_BOSS_TUNING.sovereignStrongholdGuardFraction;
+    const currentDistance = Math.max(0, enemy.distanceTraveled);
+    if (currentDistance >= guardDistance) return;
+    const destinationDistance = Math.min(guardDistance, currentDistance + totalDistance * Math.min(routeFraction, CAMPAIGN_BOSS_TUNING.sovereignRouteFraction));
+    if (destinationDistance <= currentDistance) return;
+
+    let traversed = 0;
+    for (let index = 1; index < waypoints.length; index++) {
+      const start = waypoints[index - 1], end = waypoints[index];
+      const segmentLength = Math.hypot(end.x - start.x, end.y - start.y);
+      if (destinationDistance < traversed + segmentLength) {
+        const progress = segmentLength > 0 ? (destinationDistance - traversed) / segmentLength : 0;
+        enemy.x = start.x + (end.x - start.x) * progress;
+        enemy.y = start.y + (end.y - start.y) * progress;
+        enemy.waypointIndex = index;
+        enemy.distanceTraveled = destinationDistance;
+        enemy.heading = Math.atan2(end.y - start.y, end.x - start.x);
+        return;
+      }
+      traversed += segmentLength;
+    }
+  }
+
+  private clearCampaignOwnedSummons(childIds: readonly number[]): void {
+    if (!childIds.length) return;
+    const children = new Set(childIds);
+    for (const child of this.enemies) {
+      if (!children.has(child.id)) continue;
+      child.alive = false;
+      this.campaignBosses.remove(child.id);
+      this.evolutionCombat.removeEnemy(child.id);
+      this.destroyView(child);
+    }
+    this.enemies = this.enemies.filter(enemy => !children.has(enemy.id));
   }
 
   private syncEnemyAnimationPlayback(): void {
@@ -2771,7 +2887,7 @@ export class GameScene extends Phaser.Scene {
   private handleLeak(e: Enemy): boolean {
     e.alive = false;
     e.reachedEnd = true;
-    this.campaignBosses.remove(e.id);
+    this.clearCampaignOwnedSummons(this.campaignBosses.remove(e.id));
     this.evolutionCombat.removeEnemy(e.id);
     this.lives = Math.max(0, this.lives - e.livesLost);
     SoundManager.get().leak();
@@ -2797,9 +2913,12 @@ export class GameScene extends Phaser.Scene {
   // Wave clear → bonus + guaranteed milestone relic on non-boss 5th waves (SPEC §22).
   private checkWaveClear(): void {
     if (!this.waveActive) return;
-    const event = this.siege.completeWave({ wave: this.wave, lives: this.lives, spawns: this.spawnQueue.length, enemies: this.enemies.filter((e) => e.alive).length, flights: this.flights.length, fields: this.evolutionCombat.activeFieldCount });
+    const clearInput = { wave: this.wave, lives: this.lives, spawns: this.spawnQueue.length, enemies: this.enemies.filter((e) => e.alive).length, flights: this.flights.length, fields: this.evolutionCombat.activeFieldCount };
+    const event = this.campaign
+      ? clearInput.lives > 0 && clearInput.spawns + clearInput.enemies + clearInput.flights + clearInput.fields === 0 ? 'wave-cleared' : 'none'
+      : this.siege.completeWave(clearInput);
     if (event === 'none') return;
-    this.waveActive = false; this.wavesCompleted = this.siege.wavesCompleted;
+    this.waveActive = false; this.wavesCompleted = this.campaign ? this.wave : this.siege.wavesCompleted;
     const earned = this.campaign ? [] : earnedBranches(this.wave, this.lives, this.towers, this.debugAssisted);
     const known = this.unlockRepository.view().profile.earned;
     for (const id of earned) if (!known[id] && !this.unlocksEarnedThisRun.includes(id)) this.unlocksEarnedThisRun.push(id);
@@ -2890,7 +3009,7 @@ export class GameScene extends Phaser.Scene {
     this.modalSheet?.destroy(); this.modalSheet = null;
     this.modal?.destroy(true); this.modal = null;
     this.modalRenderer = () => this.renderCampaignResult();
-    const result = this.campaignResult, level = this.campaign.definition.level;
+    const result = this.campaignResult, level = this.campaign.definition.level, totalMasteryStars = CAMPAIGN_LEVELS.length * 3;
     const width = Math.min(480, this.layout.width - 24), height = Math.min(450, this.layout.height - 24);
     const root = this.modalFrame(width, height);
     const sheet = new ScrollSheet(this, root, { x: 0, y: 0, width, height }, result.outcome === 'victory' ? `Level ${level} cleared` : result.outcome === 'siege-failed' ? 'Boss escaped · Battle failed' : 'Stronghold lost', () => this.scene.start('Campaign'));
@@ -2906,7 +3025,7 @@ export class GameScene extends Phaser.Scene {
     if (result.clear) {
       const progress = result.clear.progress;
       line(`Mastery: Completion ${progress.completionStar ? 'earned' : 'missing'} · Stronghold ${progress.livesStar ? 'earned' : 'missing'} · Score ${progress.scoreStar ? 'earned' : 'missing'}`);
-      line(result.clear.newlyEarnedStars.length ? `New stars: ${result.clear.newlyEarnedStars.join(', ')} · Total ${result.clear.totalMasteryStars}/90` : `Total ${result.clear.totalMasteryStars}/90 · Stars retained from earlier clears`);
+      line(result.clear.newlyEarnedStars.length ? `New stars: ${result.clear.newlyEarnedStars.join(', ')} · Total ${result.clear.totalMasteryStars}/${totalMasteryStars}` : `Total ${result.clear.totalMasteryStars}/${totalMasteryStars} · Stars retained from earlier clears`);
       if (result.clear.newlyEarnedSigils.length) line(`World Sigil earned: ${result.clear.newlyEarnedSigils.map(id => id.replace(/_/g, ' ')).join(', ')}`, C.gold);
       if (result.clear.newlyUnlockedFeatures.length) line(`Unlocked: ${result.clear.newlyUnlockedFeatures.map(id => id.replace(/_/g, ' ')).join(', ')}`, C.gold);
       const view = (import.meta.env.DEV && this.qaCampaignRepository ? this.qaCampaignRepository : campaignRepository).view();
@@ -2915,7 +3034,7 @@ export class GameScene extends Phaser.Scene {
     } else line(result.outcome === 'victory' ? 'Assisted battle · Campaign progress was not awarded' : 'No stars awarded · Replay to clear this level');
     sheet.action(y, 'Restart Level', () => this.restartRun(), 'primary'); y += 52;
     sheet.action(y, 'World Map', () => this.scene.start('Campaign')); y += 52;
-    if (result.outcome === 'victory' && level < 30 && (import.meta.env.DEV && this.qaCampaignRepository ? this.qaCampaignRepository : campaignRepository).view().highestUnlockedLevel > level) sheet.action(y, `Next · Level ${level + 1}`, () => this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: this.playerName, mode: 'campaign', campaignLevel: level + 1, ...(import.meta.env.DEV && this.qaCampaignFixture ? { qaCampaignFixture: { state: 'campaign', level: level + 1, bossPhase: 'initial' } satisfies QACampaignFixture } : {}) } } satisfies LoadingRequest), 'primary');
+    if (result.outcome === 'victory' && level < CAMPAIGN_LEVELS.length && (import.meta.env.DEV && this.qaCampaignRepository ? this.qaCampaignRepository : campaignRepository).view().highestUnlockedLevel > level) sheet.action(y, `Next · Level ${level + 1}`, () => this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: this.playerName, mode: 'campaign', campaignLevel: level + 1, ...(import.meta.env.DEV && this.qaCampaignFixture ? { qaCampaignFixture: { state: 'campaign', level: level + 1, bossPhase: 'initial' } satisfies QACampaignFixture } : {}) } } satisfies LoadingRequest), 'primary');
   }
 
   private finishRun(outcome: RunOutcome): void {

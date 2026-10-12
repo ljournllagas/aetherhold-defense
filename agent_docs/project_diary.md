@@ -2,6 +2,41 @@
 
 ## Lasting decisions and lessons
 
+- Final v5 publication used a temporary single Vitest worker after parallel
+  geometry checks timed out. All 1,431 tests passed without assertion changes;
+  retain the expensive forty-route test's local timeout rather than weakening
+  validation or global failure visibility.
+
+- An active boss phase label is not a pre-effect warning. Keep the old combat
+  state during a simulation-time telegraph, resolve only at its deadline, and
+  discard pending effects on death/reset. Independent code and runtime review
+  caught and verified the Oracle, Tyrant and Regent correction.
+- Visual evidence must assert the placed entity exists before claiming tower
+  overlap coverage. Preserve failed harness records and distinguish repaired
+  captures; a descriptive string cannot prove placement.
+
+- Worlds 5–10 supplied mastery targets exceed their short-wave scoring budget
+  even under generous perfect-play ceilings. Preserve targets and global scoring;
+  calibrate expansion-only finite wave budgets and enemy strength, freezing the
+  accepted first forty levels. Later levels require more combat volume. Retain
+  the failed 120-case baseline for comparison.
+- Compact speed already exists in More. A fourth header control overlapped a
+  valid high score; reuse the existing control instead of adding another.
+
+- Keep maintained regression fixtures and asset-contract snapshots under
+  tracked `tests/fixtures/`. Imports from the ignored expansion pack can pass
+  locally while making a fresh checkout fail. Pack-only source/hash audits
+  remain verification evidence outside the maintained test dependency graph.
+
+- v5 keeps the version-1 progress shape and existing monotonic revision-checked
+  cloud merge. Expansion must widen both progress-key and campaign-result
+  validation; fixing only local parsing leaves account result uploads blocked.
+  An unreadable existing cloud row must report incompatibility, never account
+  deletion, because clients purge account-local data on deletion responses.
+- Preserve original Worlds 1–3 definitions, including the Frost Sigil's legacy
+  rewards. World 4 availability derives from the completed Level 30 boundary;
+  expansion availability must not use the old catch-all World 3 unlock branch.
+
 - Responsive progression coverage must include fully unlocked content, not only early milestones. The 90-Star Codex exposed 14px boss paragraph/stats overlaps missed by the 10-Star view; advance text layout by measured rendered height.
 - Phaser 4.2.1 GeometryMask/setMask is Canvas-only. WebGL fixed viewport clips require external parent-space Mask filters, visible off-display-list source Graphics, controlled refresh and separate input bounds checks. An accepted screenshot can still miss narrow gutter spill; inspect actual viewport boundaries and unsupported API warnings.
 

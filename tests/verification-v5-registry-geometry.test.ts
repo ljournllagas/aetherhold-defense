@@ -1,0 +1,300 @@
+import { describe, expect, it } from 'vitest';
+import { CAMPAIGN_LEVELS, CAMPAIGN_MILESTONES, CAMPAIGN_SIGILS, CAMPAIGN_WORLDS } from '../src/game/campaign/config.ts';
+import { CampaignBattle } from '../src/game/campaign/battle.ts';
+import { CAMPAIGN_ROUTES, resolveCampaignMap } from '../src/game/campaign/maps.ts';
+import { CAMPAIGN_ENEMIES } from '../src/game/campaign/enemies.ts';
+import { CampaignRepository } from '../src/game/campaign/progress.ts';
+import {
+  AVAILABLE_CAMPAIGN_ART_PATHS, CAMPAIGN_ART_MANIFEST, CAMPAIGN_PROVISIONAL_STARTER_PATHS,
+  campaignGameplayAssetsForLevel
+} from '../src/game/campaign/artManifest.ts';
+import { requiredAssets, requiredAssetsForRequest } from '../src/game/art/assetManifest.ts';
+import { TOWER_LIST } from '../src/game/config/towers.ts';
+import { BUILD_PLOT_POLICY, longestRoadCoverage, plotRoadClearance } from '../src/game/maps/buildPlotPolicy.ts';
+import registryArtContract from './fixtures/campaign-v5/registry-art-contract.json';
+
+const LEGACY_WORLD_IDS = ['borderkeep', 'emberfall', 'frostveil'] as const;
+const LEGACY_ROUTE_KEYS = LEGACY_WORLD_IDS.flatMap(id => ['a', 'b', 'c', 'd'].map(family => `${id}_${family}`));
+const LEGACY_NORMAL_ENEMIES: Record<(typeof LEGACY_WORLD_IDS)[number], readonly string[]> = {
+  borderkeep: ['marchling', 'skitter', 'stoneback', 'ironhide', 'veilborn'],
+  emberfall: ['cinderling', 'ashrunner', 'magmahide', 'ember_brute', 'ashcaller'],
+  frostveil: ['snowstalker', 'icebound', 'frostback', 'glacier_knight', 'frost_shaman']
+};
+const LEGACY_BOSSES = ['hollow_warden', 'cinder_colossus', 'frostbound_matriarch'] as const;
+const TOWER_IDS = ['longbow', 'ember', 'glacier', 'starfire', 'tempest'] as const;
+interface RegistryAssetContract {
+  id: string;
+  category: string;
+  path: string;
+  width: number;
+  height: number;
+  baselineSha256: string;
+  candidateStatus: string;
+  candidateSha256: string | null;
+  approved: boolean;
+  registration: {
+    id: string;
+    key: string;
+    path: string;
+    kind: string;
+    width: number;
+    height: number;
+    frameWidth?: number;
+    frameHeight?: number;
+    states: Record<string, { row: number; frames: number } | undefined>;
+    state: string;
+    temporary: string | null;
+  };
+}
+
+interface LegacyFinalAssetContract {
+  path: string;
+  baselineSha256: string;
+}
+
+const PROVISIONAL_EXPANSION_PATHS = registryArtContract.assets.map(asset => asset.path);
+
+async function sha256(value: string | Uint8Array): Promise<string> {
+  const source = typeof value === 'string' ? new TextEncoder().encode(value) : value;
+  const bytes = new Uint8Array(source.byteLength);
+  bytes.set(source);
+  const digest = await globalThis.crypto.subtle.digest('SHA-256', bytes.buffer);
+  return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+function unlockedCampaignView() {
+  const repository = new CampaignRepository(null);
+  for (let level = 1; level <= 100; level++) repository.recordClear(level, 100_000, 20);
+  return repository.view();
+}
+
+function pngDimensions(bytes: Uint8Array): [number, number] {
+  expect(Array.from(bytes.subarray(0, 8))).toEqual([137, 80, 78, 71, 13, 10, 26, 10]);
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  return [view.getUint32(16, false), view.getUint32(20, false)];
+}
+
+describe('v5 campaign registry and route verification', () => {
+  it('keeps the original 30-level data, routes, counts and sigils identical to baseline b33ea38', async () => {
+    const view = unlockedCampaignView();
+    const baselineProjection = {
+      worlds: CAMPAIGN_WORLDS.slice(0, 3),
+      levels: CAMPAIGN_LEVELS.slice(0, 30),
+      milestones: CAMPAIGN_MILESTONES,
+      sigils: CAMPAIGN_SIGILS.slice(0, 3),
+      routes: Object.fromEntries(LEGACY_ROUTE_KEYS.map(key => [key, CAMPAIGN_ROUTES[key]])),
+      waveCounts: CAMPAIGN_LEVELS.slice(0, 30).map(level => new CampaignBattle(level.level, view).waveCount)
+    };
+
+    // Snapshot digest generated from the checked-in b33ea38 baseline's public campaign contracts.
+    expect(await sha256(JSON.stringify(baselineProjection))).toBe('d9278455ad3d5c9c997362d9278049e7bd7ae993efac3b6018247ccec57dda7a');
+  });
+
+  it('registers ten contiguous worlds, all 100 levels, exact boss boundaries and valid wave spawns', () => {
+    expect(CAMPAIGN_WORLDS.map(({ id, worldNumber, levelStart, levelEnd, bossLevel }) => [id, worldNumber, levelStart, levelEnd, bossLevel])).toEqual([
+      ['borderkeep', 1, 1, 10, 10], ['emberfall', 2, 11, 20, 20], ['frostveil', 3, 21, 30, 30],
+      ['whisperfen', 4, 31, 40, 40], ['sunken_aether', 5, 41, 50, 50], ['ironroot', 6, 51, 60, 60],
+      ['sky_isles', 7, 61, 70, 70], ['dreadmoon', 8, 71, 80, 80], ['astral_rift', 9, 81, 90, 90],
+      ['aether_crown', 10, 91, 100, 100]
+    ]);
+    expect(CAMPAIGN_LEVELS.map(level => level.level)).toEqual(Array.from({ length: 100 }, (_, index) => index + 1));
+    expect(CAMPAIGN_LEVELS.map(level => level.waveProfileId)).toEqual(Array.from({ length: 100 }, (_, index) => `campaign_level_${index + 1}`));
+    expect(CAMPAIGN_WORLDS.map(world => world.bossEnemyId)).toEqual([
+      'hollow_warden', 'cinder_colossus', 'frostbound_matriarch', 'mireheart_hydra', 'drowned_oracle',
+      'iron_tyrant', 'stormmaw_prime', 'umbral_regent', 'rift_sovereign', 'aether_devourer'
+    ]);
+    const view = unlockedCampaignView();
+    expect(CAMPAIGN_LEVELS.slice(40).map(level => new CampaignBattle(level.level, view).waveCount)).toEqual([
+      32, 32, 33, 33, 33, 34, 34, 34, 35, 35, 35, 36, 36, 36, 37, 37, 37, 38, 38, 38,
+      39, 39, 39, 40, 40, 40, 41, 41, 41, 42, 42, 43, 43, 43, 44, 44, 44, 45, 45, 45,
+      46, 46, 46, 47, 47, 47, 48, 48, 48, 49, 49, 49, 50, 50, 50, 51, 51, 51, 52, 52
+    ]);
+
+    for (const level of CAMPAIGN_LEVELS) {
+      const world = CAMPAIGN_WORLDS.find(candidate => candidate.id === level.worldId)!;
+      expect(level.level).toBeGreaterThanOrEqual(world.levelStart);
+      expect(level.level).toBeLessThanOrEqual(world.levelEnd);
+      expect(level.difficultyRating).toBeGreaterThanOrEqual(1);
+      expect(level.difficultyRating).toBeLessThanOrEqual(5);
+      expect(level.enemyIds.length).toBeGreaterThan(0);
+      for (const id of level.enemyIds) expect(CAMPAIGN_ENEMIES[id]).toBeDefined();
+      expect(level.bossEnemyId).toBe(level.level === world.bossLevel ? world.bossEnemyId : null);
+      if (level.bossEnemyId) expect(CAMPAIGN_ENEMIES[level.bossEnemyId]).toBeDefined();
+
+      const battle = new CampaignBattle(level.level, view);
+      expect(Number.isSafeInteger(battle.waveCount)).toBe(true);
+      expect(battle.waveCount).toBeGreaterThan(0);
+      for (let waveNumber = 1; waveNumber <= battle.waveCount; waveNumber++) {
+        const wave = battle.wave(waveNumber);
+        const isBossBoundary = waveNumber === battle.waveCount && level.bossEnemyId !== null;
+        expect(wave.isBossWave).toBe(isBossBoundary);
+        expect(wave.spawns.length).toBeGreaterThan(0);
+        for (const spawn of wave.spawns) {
+          expect(Number.isFinite(spawn.atMs)).toBe(true);
+          expect(spawn.atMs).toBeGreaterThanOrEqual(0);
+          expect(Number.isFinite(spawn.hpBonus)).toBe(true);
+          expect(spawn.hpBonus).toBeGreaterThan(0);
+          expect(CAMPAIGN_ENEMIES[spawn.enemyId]).toBeDefined();
+          expect(level.enemyIds.includes(spawn.enemyId) || (isBossBoundary && spawn.enemyId === level.bossEnemyId)).toBe(true);
+        }
+        expect(wave.spawns.filter(spawn => spawn.enemyId === level.bossEnemyId)).toHaveLength(isBossBoundary ? 1 : 0);
+      }
+    }
+  }, 30_000);
+
+  it('resolves all 40 route families and validates every level’s road clearance and minimum tower coverage', () => {
+    const expectedRouteKeys = CAMPAIGN_WORLDS.flatMap(world => ['a', 'b', 'c', 'd'].map(family => `${world.id}_${family}`));
+    expect(Object.keys(CAMPAIGN_ROUTES).sort()).toEqual(expectedRouteKeys.sort());
+    expect(new Set(Object.values(CAMPAIGN_ROUTES).map(route => JSON.stringify(route))).size).toBe(40);
+
+    const minimumTowerRange = Math.min(...TOWER_LIST.map(tower => tower.levels[0].range));
+    for (const level of CAMPAIGN_LEVELS) {
+      const world = CAMPAIGN_WORLDS.find(candidate => candidate.id === level.worldId)!;
+      const family = `${world.id}_${level.mapLayoutId.slice(world.id.length + 1, world.id.length + 2)}`;
+      expect(CAMPAIGN_ROUTES[family]).toBeDefined();
+      const map = resolveCampaignMap(level);
+      expect(map.id).toBe(level.mapLayoutId);
+      expect(map.waypoints.length).toBeGreaterThanOrEqual(2);
+      expect(map.spawn).toEqual(map.waypoints[0]);
+      expect(map.gate).toEqual(map.waypoints[map.waypoints.length - 1]);
+      expect(map.waypoints.every(point => Number.isFinite(point.x) && Number.isFinite(point.y))).toBe(true);
+      expect(map.buildable.length).toBeGreaterThanOrEqual(8);
+
+      const road = { route: map.waypoints, radii: map.waypoints.slice(1).map(() => BUILD_PLOT_POLICY.campaignRoadRadius) };
+      for (const [index, plot] of map.buildable.entries()) {
+        const clearance = plotRoadClearance(plot, road);
+        expect(clearance, `${level.mapLayoutId} plot ${index} road clearance`).toBeGreaterThanOrEqual(BUILD_PLOT_POLICY.minClearance - 1e-6);
+        expect(clearance, `${level.mapLayoutId} plot ${index} road clearance`).toBeLessThanOrEqual(BUILD_PLOT_POLICY.maxClearance + 1e-6);
+        expect(longestRoadCoverage(plot, map.waypoints, minimumTowerRange), `${level.mapLayoutId} plot ${index} minimum-range coverage`)
+          .toBeGreaterThanOrEqual(BUILD_PLOT_POLICY.minimumCoverage);
+        expect(plot.x - BUILD_PLOT_POLICY.radius).toBeGreaterThanOrEqual(map.field.x);
+        expect(plot.x + BUILD_PLOT_POLICY.radius).toBeLessThanOrEqual(map.field.x + map.field.width);
+        expect(plot.y - BUILD_PLOT_POLICY.radius).toBeGreaterThanOrEqual(map.field.y);
+        expect(plot.y + BUILD_PLOT_POLICY.radius).toBeLessThanOrEqual(map.field.y + map.field.height);
+        for (const other of map.buildable.slice(index + 1)) {
+          expect(Math.hypot(plot.x - other.x, plot.y - other.y)).toBeGreaterThanOrEqual(BUILD_PLOT_POLICY.spacing - 1e-6);
+        }
+      }
+    }
+  });
+
+  it('matches all 77 staged source-to-destination contracts, file hashes, PNG dimensions and withheld art states', async () => {
+    const contract = registryArtContract as {
+      baselineCommit: string;
+      assets: RegistryAssetContract[];
+    };
+    const moduleName = 'node:fs';
+    const { existsSync, readFileSync } = await import(moduleName);
+    const registered = CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final_required');
+    expect(contract.baselineCommit).toBe('b33ea38e01754f2e6469eadf1660cd84b7520ee5');
+    expect(contract.assets).toHaveLength(77);
+    expect(registered).toHaveLength(77);
+    expect(new Set(contract.assets.map(item => item.path)).size).toBe(77);
+    expect(new Set(registered.map(item => item.path)).size).toBe(77);
+
+    const registeredByPath = new Map(registered.map(item => [item.path, item]));
+    for (const item of contract.assets) {
+      const source = registeredByPath.get(item.path);
+      expect(source, `${item.id} runtime registration`).toBeDefined();
+      expect(item.approved).toBe(false);
+      expect(item.candidateStatus).toBe(item.category === 'boss' ? 'NONE' : 'UNAPPROVED_PREVIEW');
+      if (item.category === 'boss') expect(item.candidateSha256).toBeNull();
+      else expect(item.candidateSha256).toMatch(/^[a-f0-9]{64}$/);
+      expect(item.registration).toMatchObject({ state: 'final_required', temporary: 'procedural', path: item.path, width: item.width, height: item.height });
+      expect(source!.id).toBe(item.registration.id);
+      expect(source!.key).toBe(item.registration.key);
+      expect(source!.path).toBe(item.registration.path);
+      expect(source!.kind).toBe(item.registration.kind);
+      expect(source!.width).toBe(item.registration.width);
+      expect(source!.height).toBe(item.registration.height);
+      expect(source!.frameWidth).toBe(item.registration.frameWidth);
+      expect(source!.frameHeight).toBe(item.registration.frameHeight);
+      expect(source!.states).toEqual(item.registration.states);
+      expect(source!.state).toBe(item.registration.state);
+
+      const target = new URL(`../public${item.path}`, import.meta.url);
+      expect(existsSync(target), `${item.path} staged target exists`).toBe(true);
+      const bytes: Uint8Array = readFileSync(target);
+      expect(await sha256(bytes), `${item.path} matches source baseline hash`).toBe(item.baselineSha256);
+      expect(pngDimensions(bytes), `${item.path} PNG dimensions`).toEqual([item.width, item.height]);
+    }
+
+    expect(registered.every(asset => !AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(true);
+  });
+
+  it('keeps the 43 original final paths and gates all 77 baseline expansion files provisionally', async () => {
+    const expectedFinalPaths = [
+      ...LEGACY_WORLD_IDS.flatMap(world => ['a', 'b', 'c', 'd'].map(family => `/assets/campaign/maps/${world}_${family}-v1.png`)),
+      ...LEGACY_WORLD_IDS.flatMap((world, index) => [
+        `/assets/campaign/world-map/${world}-v1.png`,
+        ...LEGACY_NORMAL_ENEMIES[world].map(id => `/assets/campaign/enemies/${world}/${id}-atlas-v1.png`),
+        `/assets/campaign/bosses/${LEGACY_BOSSES[index]}-atlas-v1.png`
+      ]),
+      ...TOWER_IDS.flatMap(id => [2, 3].map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.png`))
+    ];
+    const contract = registryArtContract as unknown as { legacyFinalAssets: LegacyFinalAssetContract[] };
+    expect(expectedFinalPaths).toHaveLength(43);
+    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(expectedFinalPaths);
+    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path)).toEqual(expectedFinalPaths);
+    expect(contract.legacyFinalAssets).toHaveLength(43);
+    expect(contract.legacyFinalAssets.map(asset => asset.path)).toEqual(expectedFinalPaths);
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toHaveLength(77);
+    expect([...CAMPAIGN_PROVISIONAL_STARTER_PATHS].sort()).toEqual([...PROVISIONAL_EXPANSION_PATHS].sort());
+    expect(new Set([...expectedFinalPaths, ...PROVISIONAL_EXPANSION_PATHS]).size).toBe(120);
+    const moduleName = 'node:fs';
+    const { existsSync, readFileSync } = await import(moduleName);
+    for (const asset of contract.legacyFinalAssets) {
+      const bytes: Uint8Array = readFileSync(new URL(`../public${asset.path}`, import.meta.url));
+      expect(await sha256(bytes), `${asset.path} unchanged from baseline b33ea38`).toBe(asset.baselineSha256);
+    }
+    for (const path of [...expectedFinalPaths, ...PROVISIONAL_EXPANSION_PATHS]) {
+      expect(existsSync(new URL(`../public${path}`, import.meta.url)), `${path} active file exists`).toBe(true);
+    }
+  });
+
+  it('selects only stage-ready art for each current level and resolves every requested file', async () => {
+    const activePaths = new Set([...AVAILABLE_CAMPAIGN_ART_PATHS, ...PROVISIONAL_EXPANSION_PATHS]);
+    const baselineGameplay = requiredAssets('gameplay');
+    const stageAssets = [...requiredAssets('menu'), ...requiredAssets('campaign'), ...baselineGameplay];
+    const moduleName = 'node:fs';
+    const { existsSync } = await import(moduleName);
+    for (const asset of stageAssets) expect(existsSync(new URL(`../public${asset.path}`, import.meta.url)), `${asset.path} stage file exists`).toBe(true);
+    expect(requiredAssets('menu').every(asset => !PROVISIONAL_EXPANSION_PATHS.includes(asset.path))).toBe(true);
+    const provisionalPathsRequestedByStage = new Set([
+      ...requiredAssets('campaign'),
+      ...CAMPAIGN_LEVELS.slice(30).flatMap(level => campaignGameplayAssetsForLevel(level, 1))
+    ].map(asset => asset.path).filter(path => PROVISIONAL_EXPANSION_PATHS.includes(path)));
+    expect([...provisionalPathsRequestedByStage].sort()).toEqual([...PROVISIONAL_EXPANSION_PATHS].sort());
+
+    for (const level of CAMPAIGN_LEVELS) {
+      const world = CAMPAIGN_WORLDS.find(candidate => candidate.id === level.worldId)!;
+      const family = level.mapLayoutId.slice(world.id.length + 1, world.id.length + 2);
+      const expectedPaths = new Set<string>();
+      const mapPath = `/assets/campaign/maps/${world.id}_${family}-v1.png`;
+      if (activePaths.has(mapPath)) expectedPaths.add(mapPath);
+      for (const enemyId of level.enemyIds) {
+        const path = `/assets/campaign/enemies/${world.id}/${enemyId}-atlas-v1.png`;
+        if (activePaths.has(path)) expectedPaths.add(path);
+      }
+      if (level.bossEnemyId) {
+        const bossPath = `/assets/campaign/bosses/${level.bossEnemyId}-atlas-v1.png`;
+        if (activePaths.has(bossPath)) expectedPaths.add(bossPath);
+        if (level.bossEnemyId === 'mireheart_hydra' && activePaths.has('/assets/campaign/enemies/whisperfen/bogling-atlas-v1.png')) {
+          expectedPaths.add('/assets/campaign/enemies/whisperfen/bogling-atlas-v1.png');
+        }
+      }
+
+      const selected = campaignGameplayAssetsForLevel(level, 1);
+      expect(new Set(selected.map(asset => asset.path)), `level ${level.level} selected art`).toEqual(expectedPaths);
+      for (const asset of selected) {
+        expect(activePaths.has(asset.path), `level ${level.level} selected active path ${asset.path}`).toBe(true);
+        expect(existsSync(new URL(`../public${asset.path}`, import.meta.url)), `level ${level.level} selected file ${asset.path}`).toBe(true);
+      }
+      expect(requiredAssetsForRequest('gameplay', { mode: 'campaign', campaignLevel: level.level }))
+        .toEqual([...baselineGameplay, ...selected]);
+    }
+
+    expect(requiredAssetsForRequest('gameplay', { mode: 'campaign', campaignLevel: 0 })).toEqual(baselineGameplay);
+    expect(requiredAssetsForRequest('gameplay', { mode: 'campaign', campaignLevel: 101 })).toEqual(baselineGameplay);
+  });
+});

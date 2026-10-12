@@ -1,7 +1,7 @@
 import { isTowerId, TOWER_IDS } from '../config/towers.ts';
 import type { PowerUpId, TargetingMode } from '../../shared/types.ts';
 import type { TowerId } from '../../shared/progression.ts';
-import { CAMPAIGN_LEVELS, CAMPAIGN_MILESTONES, CAMPAIGN_SIGILS, featuresForSigils, getCampaignLevel } from './config.ts';
+import { CAMPAIGN_LEVELS, CAMPAIGN_MILESTONES, CAMPAIGN_SIGILS, CAMPAIGN_WORLDS, featuresForSigils, getCampaignLevel } from './config.ts';
 import { CAMPAIGN_SPECIALIZATION_UNLOCK_STARS, CAMPAIGN_SPECIALIZATIONS, getCampaignSpecialization } from './specializations.ts';
 import type {
   CampaignClearResult,
@@ -220,8 +220,8 @@ function normalizeStoredProfile(value: Record<string, unknown>): CampaignProfile
   if (!isPlainObject(value.levels) || !Array.isArray(value.worldSigils) || !Array.isArray(value.unlockedFeatures) || !Array.isArray(value.preparationPresets)) return null;
   const levels: CampaignProfile['levels'] = {};
   for (const [key, rawProgress] of Object.entries(value.levels)) {
-    if (!/^(?:[1-9]|[12]\d|30)$/.test(key)) return null;
     const level = Number(key);
+    if (String(level) !== key) return null;
     const progress = normalizeProgress(rawProgress, level);
     if (!progress) return null;
     levels[level] = progress;
@@ -374,9 +374,11 @@ export function isLevelUnlocked(level: number, source: CampaignProfile | Campaig
 }
 
 export function isWorldUnlocked(worldId: CampaignWorldId, source: CampaignProfile | CampaignView): boolean {
-  if (worldId === 'borderkeep') return true;
-  const features = new Set(featuresForProfile(sourceProfile(source)));
-  return worldId === 'emberfall' ? features.has('world_2') : features.has('world_3');
+  const world = CAMPAIGN_WORLDS.find(({ id }) => id === worldId);
+  if (!world) return false;
+  if (world.worldNumber === 1) return true;
+  if (world.worldNumber === 4) return isLevelUnlocked(world.levelStart, source);
+  return featuresForProfile(sourceProfile(source)).includes(`world_${world.worldNumber}` as CampaignFeatureId);
 }
 
 const BASE_CAMPAIGN_POWER_UPS: readonly CampaignPowerUpId[] = [

@@ -20,6 +20,16 @@ it('does not report dirty progress as synced with an empty outbox',async()=>{
 it('rejects a profile belonging to a different session account',async()=>{
   const f=fixture();f.client.getProfile=async()=>({ok:true,value:{account:{playerId:'b',generation:'g-b'},nickname:'B',revision:0,progress:emptyCloudProgress()}});await f.system.initialize();expect(f.system.canStartBattle()).toBe(false);expect(f.system.view().profile).toBeNull();f.system.stop();await f.storage.close();
 });
+it('gives an update hint for incompatible cloud saves without purging cached account data',async()=>{
+  const f=fixture(),profile={account:ref,nickname:'Warden',revision:1,progress:emptyCloudProgress()},session={account:ref,nickname:'Warden',csrf:'csrf',expiresAt:1000,canDelete:false};
+  await f.storage.writeCache(profile,session);await f.storage.writeMeta('last-account',ref);
+  f.client.getProfile=async()=>({ok:false,code:'INCOMPATIBLE_SAVE',message:'Cloud save is incompatible.',status:409});
+  await f.system.initialize();
+  expect(f.system.view()).toMatchObject({state:'error',playMode:'blocked'});
+  expect(f.system.view().warning).toMatch(/reload or update the game/i);
+  expect(await f.storage.readCache(ref)).not.toBeNull();
+  f.system.stop();await f.storage.close();
+});
 it('does not re-adopt a late refresh after logout',async()=>{
   const f=fixture();await f.system.initialize();let resolve!:(x:Awaited<ReturnType<AccountClient['getProfile']>>)=>void;f.client.getProfile=()=>new Promise(r=>{resolve=r;});const refreshing=f.system.refresh();for(let i=0;i<30&&!resolve;i++)await new Promise(r=>setTimeout(r,1));await f.system.logout();resolve({ok:true,value:{account:ref,nickname:'Warden',revision:0,progress:emptyCloudProgress()}});await refreshing;expect(f.system.view().session).toBeNull();expect(f.system.canStartBattle()).toBe(false);f.system.stop();await f.storage.close();
 });

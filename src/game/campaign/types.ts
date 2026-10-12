@@ -1,7 +1,9 @@
 import type { PowerUpId, TargetingMode } from '../../shared/types.ts';
 import type { TowerId } from '../../shared/progression.ts';
 
-export type CampaignWorldId = 'borderkeep' | 'emberfall' | 'frostveil';
+export type CampaignWorldId =
+  | 'borderkeep' | 'emberfall' | 'frostveil' | 'whisperfen' | 'sunken_aether'
+  | 'ironroot' | 'sky_isles' | 'dreadmoon' | 'astral_rift' | 'aether_crown';
 export type CampaignVisualTier = 1 | 2 | 3;
 export type CampaignSpecializationId =
   | 'longbow_bastion' | 'repeater_tower'
@@ -9,9 +11,12 @@ export type CampaignSpecializationId =
   | 'glacial_spire' | 'shatter_spire'
   | 'aether_obelisk' | 'prism_tower'
   | 'storm_conduit' | 'thunder_crown';
-export type CampaignSigilId = 'border_sigil' | 'ember_sigil' | 'frost_sigil';
+export type CampaignSigilId =
+  | 'border_sigil' | 'ember_sigil' | 'frost_sigil' | 'mire_sigil' | 'tide_sigil'
+  | 'iron_sigil' | 'sky_sigil' | 'moon_sigil' | 'rift_sigil' | 'crown_sigil';
 export type CampaignFeatureId =
-  | 'world_2' | 'world_3' | 'worlds_1_3_milestone_complete'
+  | 'world_2' | 'world_3' | 'world_4' | 'world_5' | 'world_6' | 'world_7' | 'world_8' | 'world_9' | 'world_10'
+  | 'campaign_100_clear' | 'worlds_1_3_milestone_complete'
   | 'tower_visual_tier_ii' | 'tower_visual_tier_iii'
   | 'aether_codex_tactics' | 'hollow_warden_codex_entry' | 'cinder_colossus_codex_entry' | 'frostbound_matriarch_codex_entry'
   | 'battle_preparation_presets' | 'tower_specialization_i' | 'one_powerup_reroll_per_level'
@@ -22,7 +27,7 @@ export type CampaignStarKind = 'completion' | 'lives' | 'score';
 
 export interface CampaignWorldDefinition {
   id: CampaignWorldId;
-  worldNumber: 1 | 2 | 3;
+  worldNumber: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   name: string;
   levelStart: number;
   levelEnd: number;
@@ -51,7 +56,7 @@ export interface CampaignLevelDefinition {
 
 export interface CampaignSigilDefinition {
   id: CampaignSigilId;
-  level: 10 | 20 | 30;
+  level: 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100;
   unlocks: readonly CampaignFeatureId[];
 }
 

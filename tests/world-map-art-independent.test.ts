@@ -1,33 +1,40 @@
 import { describe, expect, it } from 'vitest';
 import { STAGE_ASSETS, requiredAssets } from '../src/game/art/assetManifest.ts';
+import { CAMPAIGN_WORLDS } from '../src/game/campaign/config.ts';
 import {
-  AVAILABLE_CAMPAIGN_ART_PATHS, CAMPAIGN_ART_MANIFEST, campaignArtAssetsForLoader,
+  AVAILABLE_CAMPAIGN_ART_PATHS, CAMPAIGN_ART_MANIFEST, CAMPAIGN_PROVISIONAL_STARTER_PATHS, campaignArtAssetsForLoader,
   resolveCampaignArtAssets
 } from '../src/game/campaign/artManifest.ts';
 
-const worlds = ['borderkeep', 'emberfall', 'frostveil'] as const;
+const worlds = CAMPAIGN_WORLDS.map(world => world.id);
 const worldPanels = worlds.map(worldId => CAMPAIGN_ART_MANIFEST.find(asset => asset.id === `world-panel:${worldId}`)!);
 
 describe('independent campaign world-map art acceptance', () => {
-  it('keeps the three approved panels final with no temporary-art warning', () => {
-    expect(worldPanels).toHaveLength(3);
+  it('preserves three approved panels and loads all seven expansion panels provisionally', () => {
+    expect(worldPanels).toHaveLength(10);
     expect(worldPanels.map(({ path, width, height, stage, state }) => ({ path, width, height, stage, state }))).toEqual(
-      worlds.map(worldId => ({
+      worlds.map((worldId, index) => ({
         path: `/assets/campaign/world-map/${worldId}-v1.png`, width: 768, height: 432,
-        stage: 'campaign', state: 'final'
+        stage: 'campaign', state: index < 3 ? 'final' : 'final_required'
       }))
     );
-    expect(worldPanels.every(asset => !asset.qualityFlags.includes('final_art_unverified') && asset.temporary === null)).toBe(true);
+    expect(worldPanels.slice(0, 3).every(asset => !asset.qualityFlags.includes('final_art_unverified') && asset.temporary === null)).toBe(true);
+    expect(worldPanels.slice(3).every(asset => asset.qualityFlags.includes('provisional_starter_art') && asset.temporary === 'procedural')).toBe(true);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path));
-    expect(campaignArtAssetsForLoader('campaign')).toEqual(worlds.map(worldId => ({
-      kind: 'image', key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-v1.png`
-    })));
+    expect(campaignArtAssetsForLoader('campaign')).toEqual([
+      ...worlds.map(worldId => ({ kind: 'image' as const, key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-v1.png` })),
+    ]);
+    for (const worldId of worlds.slice(3)) {
+      expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === `world-panel:${worldId}`)).toMatchObject({ state: 'final_required', temporary: 'procedural' });
+    }
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toContain('/assets/campaign/world-map/whisperfen-v1.png');
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toContain('/assets/campaign/world-map/sunken_aether-v1.png');
   });
 
   it('loads exactly the approved campaign panels from their exact production paths', () => {
     const assets = resolveCampaignArtAssets(worldPanels, 'campaign', AVAILABLE_CAMPAIGN_ART_PATHS);
 
-    expect(assets).toEqual(worlds.map(worldId => ({
+    expect(assets).toEqual(worlds.slice(0, 3).map(worldId => ({
       kind: 'image', key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-v1.png`
     })));
     expect(resolveCampaignArtAssets(worldPanels, 'menu', AVAILABLE_CAMPAIGN_ART_PATHS)).toEqual([]);

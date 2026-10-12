@@ -1,8 +1,30 @@
-# Campaign Production Assets — Worlds 1–3
+# Campaign Production Assets — Worlds 1–10
 
-## Current status — 2026-10-11
+## Current status — 2026-10-12
 
-All 43 raster targets are now manifest-final and allowlisted, including the eighteen completed enemy/boss atlases and their 472 required frames. The earlier missing-art allowance has been superseded by the completed production artwork. Current asset prompts, sources, hashes, placement rules and verification are documented in [Road clearance and monster artwork](ROAD_CLEARANCE_AND_MONSTER_ART.md).
+The original 43 Worlds 1–3 raster targets remain final and approved. The v5
+expansion adds 77 staged starter assets, all provisionally active within their
+campaign stages while remaining registered as `final_required`. Final-art
+approval for all 77 expansion targets remains UNVERIFIED. Fresh validation
+confirmed all 43 approved legacy hashes are unchanged, all 77 staged asset
+hashes and PNG dimensions match their source files, and all 70 candidate hashes
+match their recorded references. These integrity checks do not approve
+expansion art; seven boss portraits have no candidate source/hash. V3 reviewed
+all 70 candidates and passed a corrected placed-context comparison of 28 map
+candidates against five actual registered tower views each and three approved
+Worlds 1–3 baselines. The Aether Crown world-panel candidate was rejected for
+embedded `LD` text; the seven portraits were excluded. No candidates were
+promoted and the 77 expansion approvals remain UNVERIFIED. The comparison used
+still captures and synthetic, unsaved QA fixtures; it does not approve
+animation, mobile layout, collision, tower balance, or gameplay fit. See
+the [V3 context review](../artifacts/campaign-v5-20261012/verification/v3-candidate-art/qa-tower-context/qa-tower-context-report.md),
+the [registry and asset report](../artifacts/campaign-v5-20261012/verification/v2/registry-geometry-final-report.md),
+[staged-file hash/dimension check](../artifacts/campaign-v5-20261012/verification/v2/source-asset-check.log),
+and [legacy final-asset hash check](../artifacts/campaign-v5-20261012/verification/v2/legacy-final-asset-check.log). See
+[`CAMPAIGN_WORLDS_4_10.md`](CAMPAIGN_WORLDS_4_10.md) and the pack's
+[`ART_STAGING_AND_PROMOTION.md`](../artifacts/integration-v5/docs/ART_STAGING_AND_PROMOTION.md),
+[asset install manifest](../artifacts/integration-v5/manifests/ASSET_INSTALL_MANIFEST.json),
+and [art registration review](../artifacts/integration-v5/manifests/EXPANSION_ART_REGISTRATION_REVIEW.json).
 
 ## Historical release record — 2026-10-10
 

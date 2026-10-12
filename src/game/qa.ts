@@ -2,8 +2,9 @@ import type Phaser from 'phaser';
 import type { GameOverData } from './scenes/GameOverScene.ts';
 import type { LoadingRequest } from './scenes/PreloadScene.ts';
 import type { DifficultyId, PowerUpId } from '../shared/types.ts';
-import { getCampaignLevel } from './campaign/config.ts';
+import { CAMPAIGN_LEVELS, getCampaignLevel } from './campaign/config.ts';
 import { CampaignRepository } from './campaign/progress.ts';
+import { CAMPAIGN_BOSS_PHASE_LABELS, type CampaignBossPhaseLabel } from './campaign/bosses.ts';
 
 export const QA_STATES = [
   'menu',
@@ -26,13 +27,14 @@ export const QA_STATES = [
 
 export type QAState = (typeof QA_STATES)[number];
 export type LeaderboardFixture = 'empty' | 'failure';
+export type QACampaignBossPhase = 'initial' | 'guarded' | 'enraged' | 'broken' | 'core' | 'telegraph' | 'freeze' | 'phase2' | CampaignBossPhaseLabel;
 const GAME_QA_STATES = ['normal', 'heavy', 'placement', 'selected', 'reward', 'boss', 'evolution', 'victory', 'mastery'] as const;
 type GameQAState = (typeof GAME_QA_STATES)[number];
 
 export interface QACampaignFixture {
   state: 'campaign' | 'campaign-boss' | 'campaign-results';
   level: number;
-  bossPhase: 'initial' | 'guarded' | 'enraged' | 'broken' | 'core' | 'telegraph' | 'freeze' | 'phase2';
+  bossPhase: QACampaignBossPhase;
   /** DEV-only cosmetic comparison; does not change campaign power or unlocks. */
   visualTier?: 1 | 2 | 3;
 }
@@ -41,11 +43,25 @@ export function isQACampaignFixture(value: unknown): value is QACampaignFixture 
   if (!value || typeof value !== 'object') return false;
   const fixture = value as Partial<QACampaignFixture>;
   if (fixture.visualTier !== undefined && ![1,2,3].includes(fixture.visualTier)) return false;
-  if (!Number.isInteger(fixture.level) || fixture.level! < 1 || fixture.level! > 30) return false;
+  const level = fixture.level;
+  if (typeof level !== 'number' || !Number.isSafeInteger(level) || level < 1 || level > CAMPAIGN_LEVELS.length) return false;
   if (fixture.state === 'campaign' || fixture.state === 'campaign-results') return fixture.bossPhase === 'initial';
   if (fixture.state !== 'campaign-boss') return false;
-  const phases = fixture.level === 10 ? ['initial','guarded','enraged'] : fixture.level === 20 ? ['initial','broken','core'] : fixture.level === 30 ? ['initial','telegraph','freeze','phase2'] : [];
-  return phases.includes(fixture.bossPhase ?? '');
+  const bossId = getCampaignLevel(level)?.bossEnemyId;
+  const phases: readonly string[] = bossId === 'hollow_warden' ? ['initial','guarded','enraged']
+    : bossId === 'cinder_colossus' ? ['initial','broken','core']
+      : bossId === 'frostbound_matriarch' ? ['initial','telegraph','freeze','phase2']
+        : bossId === 'mireheart_hydra' ? ['initial','phase2','enraged']
+          : bossId === 'drowned_oracle' ? ['initial','oracle_physical','oracle_arcane','oracle_elemental']
+            : bossId === 'iron_tyrant' ? ['initial','tyrant_plates','tyrant_break','tyrant_core']
+              : bossId === 'stormmaw_prime' ? ['initial','storm_surge']
+                : bossId === 'umbral_regent' ? ['initial','regent_decoys']
+                  : bossId === 'rift_sovereign' ? ['initial','sovereign_portal']
+                    : bossId === 'aether_devourer' ? ['initial','devourer_normal','devourer_resistance','devourer_rift','devourer_core'] : [];
+  const phase = fixture.bossPhase ?? '';
+  const legacyPhase = ['initial','guarded','enraged','broken','core','telegraph','freeze','phase2'].includes(phase);
+  const namedPhase = CAMPAIGN_BOSS_PHASE_LABELS.some(label => label === phase);
+  return Boolean(bossId) && (legacyPhase ? phases.includes(phase) : namedPhase);
 }
 
 export function createQACampaignRepository(fixture: QACampaignFixture): CampaignRepository {
@@ -120,7 +136,7 @@ export function parseQARequest(search: string): QARequest | null {
   }
   if (state === 'campaign' || state === 'campaign-boss' || state === 'campaign-results') {
     const rawLevel = params.get('level');
-    if (rawLevel !== null && !/^(?:[1-9]|[12]\d|30)$/.test(rawLevel)) return null;
+    if (rawLevel !== null && !/^[1-9]\d*$/.test(rawLevel)) return null;
     const tier = params.get('tier');
     if (tier !== null && !/^[123]$/.test(tier)) return null;
     const fixture = { state, level: rawLevel === null ? state === 'campaign-boss' ? 20 : state === 'campaign-results' ? 10 : 1 : Number(rawLevel), bossPhase: params.get('bossPhase') ?? 'initial', ...(tier === null ? {} : { visualTier: Number(tier) }) };

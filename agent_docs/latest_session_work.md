@@ -1,6 +1,64 @@
 # Latest session work
 
-## Active handoff
+## Campaign v5 verified deployment — 2026-10-12
+
+Deployment `campaign-v5-20261012`, Heavy route, branch
+`codex/campaign-v5-20261012`. The supplied v5 prompt is implemented and all
+application acceptance gates pass. Published version
+`cb1eb993-64e5-4f3c-9d17-5d7aee12b1e2` is live at
+https://aetherhold-defense.ljournllagas.workers.dev/ .
+Final documentation is being completed before the authorized commit/push.
+Preserve unrelated `.scratch/` and `.superpowers/`; raw pack/evidence remains
+ignored. No production account or D1 row was changed by verification.
+
+The campaign has 100 levels, ten worlds and forty route families. Exact original
+thirty definitions, rewards and wave counts remain intact; accepted World 4
+counts and global tower/economy/scoring rules remain frozen. Version-1 local and
+cloud shapes/key stay compatible; canonical IDs 1–100, monotonic merge, guest
+import/account isolation and unreadable-record protection passed independent
+Miniflare checks. Old thirty-level completion unlocks 31 without fabricated
+progress; 100 never unlocks 101.
+
+World 4 earned a real saved Level 40 clear and native Next→41. All 120 paid
+41–100 cases pass three stars without debug assistance or relics; 6,904 purchases
+passed an independent affordability/debit audit. Fixed targets required
+expansion-only tuning to 32–52 waves: 643–2,455 simulated seconds per run
+(average 1,261). Actual Phaser Level 99 saved 138,394 score/20 lives and opened
+100; Level 100 saved 134,284/20 lives and a terminal result without 101.
+Prior unlocks through 98 were synthetic; target clears were earned.
+All 100 levels loaded/rendered via actual PreloadScene/GameScene without missing
+textures or failed asset requests. Four target viewports, all seven new bosses
+and support mechanics, pause/speed/retry/cleanup and Classic's wave-30 boundary
+passed. Oracle/Tyrant/Regent now warn for 1,200 simulation ms before effects;
+independent runtime and code delta reviews pass. Both map-tab and high-score
+compact HUD regressions are repaired and accepted.
+
+Fresh isolated npm ci/typecheck/strict tsc/build passed. The final deploy's exact
+test/build chain passed 1,431 tests with 11 configured skips using temporary
+VITEST_MAX_WORKERS=1 after parallel geometry checks timed out; assertions and
+global timeouts were not weakened. The forty-route test alone has a justified
+10-second timeout. Live HTML, current bundle and /api/health return 200.
+Bundle /assets/index-CcWiL_Dr.js is 2,150,945 bytes; SHA-256
+b167192c56c964567c8a02c4a117c51f222ccd20df1b46f1c2b6275925ec25db matches local.
+Health is {"ok":true,"scoreVersion":3}; browser welcome/background rendered.
+The large-chunk advisory remains; authenticated production gameplay was not run.
+
+All 43 original final assets and 77 staged expansion source/destination hashes
+remain correct. Expansion entries are explicitly provisional and final_required.
+Post-gameplay comparison covered all 70 candidates, with 28 actual tower-context
+maps and approved W1–3 references. The Crown panel's embedded LD artifact is
+rejected; seven portraits stay reference-only. No candidate was promoted.
+All 77 final-art approvals remain UNVERIFIED. Diagnostic enemy-art comparison
+does not certify animation or mobile natural play.
+
+Evidence root: artifacts/campaign-v5-20261012/ .
+Canonical detailed gates: verification/v1-final-runtime/v1-final-runtime-report.md,
+v1-boss-warning-delta-report.md, verification/v2/registry-geometry-final-report.md,
+verification/v3-candidate-art/qa-tower-context/qa-tower-context-report.md.
+Failed baselines and harness runs are preserved. Headless fixed-step natural
+runs establish earned local results, not human pacing or a clean-account
+1→100 production playthrough.
+## Prior deployment history (Worlds 1–3)
 
 Heavy deployment campaign-production-completion-20261010; baseline main 22ee273447e6c252cad5ea7adf92446d3db88a79. User authorizes automatic verified deployment and commit/push. Preserve unrelated .scratch/audit-fixes-d1 SQLite/WAL files and ignored artifacts. Worlds 4-10 are excluded.
 

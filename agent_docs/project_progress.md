@@ -1,6 +1,34 @@
 # Project progress
 
-## Current campaign completion
+## Campaign v5 — application deployed, Git synchronization pending
+
+Heavy deployment `campaign-v5-20261012` implements
+`artifacts/CODEX_V5_IMPLEMENTATION_PROMPT.md`. The verified 100-level/ten-world
+campaign is published at https://aetherhold-defense.ljournllagas.workers.dev/ ,
+version `cb1eb993-64e5-4f3c-9d17-5d7aee12b1e2`.
+Current continuation: finish verified documentation, commit/push task files and
+verify local HEAD equals the remote branch; then complete the read-only handoff.
+
+Exact first-thirty definitions/rewards/waves, version-1 saves and Classic flow
+are preserved. All 120 paid expansion cases earn three stars; all 100 levels
+load/render; independent saved 40→41 and 99→100/terminal results pass. Save/cloud,
+guest/account isolation, all seven new bosses and support roles, lifecycle,
+four-size responsive UI and code-review repairs are accepted. Fixed mastery
+targets required 32–52 waves in Levels 41–100, averaging 21 simulated minutes
+(range approximately 11–41); first 1–40 counts and global scoring stay unchanged.
+
+Fresh isolated installation/typechecking/build and final deployment checks pass.
+Final deployment tests: 1,431 passed, 11 configured skips, using one test worker
+after parallel geometry timeouts. Live HTML/current bundle/health and browser
+welcome render pass. The existing large-bundle advisory remains. No real
+production account write or clean-account 1→100 human playthrough was performed.
+
+The original 43 final assets retain their hashes. All 77 expansion assets are
+stage-scoped provisional registrations and remain final_required. Candidate
+comparison is complete, including actual towers on all 28 map candidates; no
+candidate is promoted, and the Crown panel text artifact is rejected.
+All 77 final-art approvals remain UNVERIFIED and form a separate art follow-up.
+## Prior deployment history (Worlds 1–3)
 
 Heavy deployment: campaign-production-completion-20261010. Baseline: main at 22ee273447e6c252cad5ea7adf92446d3db88a79. Goal: complete the agreed Worlds 1-3 expansion, preserve the existing combat and Classic systems, and satisfy the explicit missing-production-art allowance.
 

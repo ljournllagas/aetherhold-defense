@@ -27,7 +27,7 @@ const slow = { slowFactor: 0.5, frozen: false, stunned: false, vulnerability: 1 
 describe('campaign combat profiles', () => {
   it('rejects locked, malformed, and forged unlock starts', () => {
     const view = new CampaignRepository(null).view();
-    for (const level of [0, 2, 31, 1.5, NaN]) expect(() => new CampaignBattle(level, view)).toThrow();
+    for (const level of [0, 2, 31, 101, 1.5, NaN]) expect(() => new CampaignBattle(level, view)).toThrow();
     expect(() => new CampaignBattle(2, { ...view, highestUnlockedLevel: 30 })).toThrow();
     expect(new CampaignBattle(1, view).definition.level).toBe(1);
   });
@@ -41,10 +41,10 @@ describe('campaign combat profiles', () => {
     expect(new CampaignBattle(1, repository(20).view()).visualTier).toBe(3);
     expect(new CampaignBattle(1, new CampaignRepository(null).view()).powerUpPool).not.toContain('meteor_strike');
   });
-  it('uses twelve route families with safe build zones and authored variants', () => {
-    expect(Object.keys(CAMPAIGN_ROUTES)).toHaveLength(12);
-    expect(new Set(Object.values(CAMPAIGN_ROUTES).map(route => JSON.stringify(route))).size).toBe(12);
-    const view = repository().view();
+  it('uses forty route families with safe build zones and authored variants', () => {
+    expect(Object.keys(CAMPAIGN_ROUTES)).toHaveLength(40);
+    expect(new Set(Object.values(CAMPAIGN_ROUTES).map(route => JSON.stringify(route))).size).toBe(40);
+    const view = repository(100).view();
     for (const level of CAMPAIGN_LEVELS) {
       const battle = new CampaignBattle(level.level, view), map = battle.map;
       expect(map.id).toBe(level.mapLayoutId); expect(map.waypoints[0]).toEqual(map.spawn); expect(map.waypoints[map.waypoints.length - 1]).toEqual(map.gate);
@@ -60,6 +60,40 @@ describe('campaign combat profiles', () => {
       }
     }
     expect(new CampaignBattle(1, view).map.waypoints).not.toEqual(new CampaignBattle(2, view).map.waypoints);
+  }, 10_000);
+  it('preserves original and World 4 wave counts, then gives Levels 41–100 finite score-bearing wave plans', () => {
+    const view = repository(100).view();
+    const waveCounts = CAMPAIGN_LEVELS.map(level => new CampaignBattle(level.level, view).waveCount);
+    expect(waveCounts.slice(0, 30)).toEqual([5,6,6,7,8,8,9,10,10,10,10,11,12,13,13,14,14,15,15,15,16,16,19,20,18,22,20,20,21,21]);
+    const establishedProfile = [16,16,19,20,18,22,20,20,21,21];
+    expect(waveCounts.slice(30, 40)).toEqual(establishedProfile);
+    expect(waveCounts.slice(40)).toEqual(Array.from({ length: 60 }, (_, index) => 32 + Math.round(index * 20 / 59)));
+    expect(waveCounts.slice(40).every((count, index, values) => count >= 32 && count <= 52 && (!index || count >= values[index - 1]))).toBe(true);
+    expect(new CampaignBattle(31, view).wave(1).spawns).toHaveLength(7);
+    expect(new CampaignBattle(21, view).wave(1).spawns).toHaveLength(10);
+  });
+  it('registers all 42 expansion enemy and boss profiles with bounded stat domains', () => {
+    const expansionIds = [
+      'bogling','fen_skitter','mossguard','rotback','rootwretch','mireheart_hydra',
+      'tideborn','crystal_wisp','deepcrawler','relic_guardian','aetherbound','drowned_oracle',
+      'scrapling','furnace_hound','siege_golem','ironbound','foundry_core','iron_tyrant',
+      'cloud_skitter','galeclaw','aether_drake','stormguard','tempest_herald','stormmaw_prime',
+      'shadeborn','dusk_runner','moonstalker','grave_hulk','echo_shade','umbral_regent',
+      'riftling','phase_hound','astral_horror','voidplate','rift_weaver','rift_sovereign',
+      'aetherborn','crown_runner','aether_seer','sentry_colossus','crown_archon','aether_devourer'
+    ];
+    expect(expansionIds).toHaveLength(42);
+    for (const id of expansionIds) {
+      const config = getCampaignEnemy(id);
+      expect(config.baseHp).toBeGreaterThan(0);
+      expect(config.baseSpeed).toBeGreaterThan(0);
+      expect(config.baseReward).toBeGreaterThanOrEqual(0);
+      expect(config.physicalArmor).toBeGreaterThanOrEqual(0);
+      expect(config.physicalArmor).toBeLessThanOrEqual(0.9);
+      expect(config.wardArmor).toBeGreaterThanOrEqual(0);
+      expect(config.wardArmor).toBeLessThanOrEqual(0.9);
+      expect(Number.isFinite(config.slowResistance)).toBe(true);
+    }
   });
   it('only settles the final fully resolved battle with its boss killed and lives intact', () => {
     const battle = new CampaignBattle(10, repository().view());
@@ -113,6 +147,22 @@ describe('campaign support and bosses', () => {
     expect(knight.effectiveSpeed(5500,0,slow)).toBeCloseTo(57 * 0.75);
     expect(ally.effectiveSpeed(5500,6000,slow)).toBe(0);
   });
+  it('Rootwretch heals nearby allies in a bounded simulation-time pulse', () => {
+    const system = new CampaignBossSystem(), rootwretch = campaignEnemy('rootwretch'), ally = campaignEnemy('bogling');
+    rootwretch.x = 0; rootwretch.y = 0; ally.x = 40; ally.y = 0; ally.hp = ally.maxHp / 2;
+    system.register(rootwretch, 0);
+    system.tick([rootwretch, ally], [], 5499);
+    expect(ally.hp).toBe(ally.maxHp / 2);
+    expect(system.tick([rootwretch, ally], [], 5500).map(event => event.text)).toContain('Rootwretch · Healing roots');
+    expect(ally.hp).toBeCloseTo(ally.maxHp * 0.54);
+    system.tick([rootwretch, ally], [], 11000);
+    expect(ally.hp).toBeCloseTo(ally.maxHp * 0.54);
+    system.tick([rootwretch, ally], [], 16500);
+    expect(ally.hp).toBeCloseTo(ally.maxHp * 0.58);
+    const hydra = campaignEnemy('mireheart_hydra'); hydra.hp = hydra.maxHp / 2;
+    system.tick([rootwretch, hydra], [], 22000);
+    expect(hydra.hp).toBe(hydra.maxHp / 2);
+  });
   it('Warden guards temporarily, summons once near half HP, then enrages below 25%', () => {
     const system = new CampaignBossSystem(), boss = campaignEnemy('hollow_warden'); system.register(boss,0);
     system.tick([boss],[],0); expect(boss.damageTakenMultiplier).toBe(0.55);
@@ -147,5 +197,34 @@ describe('campaign support and bosses', () => {
     expect(boss.effectiveSpeed(16500,0,slow)).toBeCloseTo(boss.baseSpeed * 0.8);
     system.clear(); expect(system.telegraphTargets()).toHaveLength(0); expect(system.phase(boss.id)).toBe(1);
     expect(CAMPAIGN_BOSS_TUNING.towerFreezeMs).toBeLessThan(CAMPAIGN_BOSS_TUNING.freezeIntervalMs);
+  });
+  it('Hydra regeneration is period-capped and its Bogling summons are telegraphed and capped', () => {
+    const system = new CampaignBossSystem(), boss = campaignEnemy('mireheart_hydra');
+    system.register(boss, 0);
+    boss.hp = boss.maxHp * 0.5;
+    expect(system.tick([boss], [], 1000).some(event => event.text.includes('brood gathering'))).toBe(true);
+    expect(system.presentation(boss.id, 1000)).toEqual({ phase: 2, telegraph: true, guarded: false });
+    expect(system.tick([boss], [], 2499).filter(event => event.summon)).toHaveLength(0);
+    expect(system.tick([boss], [], 2500).find(event => event.summon)?.summon).toEqual({ enemyId: 'bogling', count: 2 });
+    expect(system.presentation(boss.id, 2500).telegraph).toBe(false);
+
+    boss.hp = boss.maxHp * 0.25;
+    expect(system.tick([boss], [], 3700).some(event => event.text.includes('brood gathering'))).toBe(true);
+    expect(system.tick([boss], [], 5200).find(event => event.summon)?.summon).toEqual({ enemyId: 'bogling', count: 2 });
+    boss.hp = boss.maxHp * 0.1;
+    expect(system.tick([boss], [], 8000).filter(event => event.summon)).toHaveLength(0);
+    expect(system.phase(boss.id)).toBe(3);
+
+    const healing = new CampaignBossSystem(), regenerator = campaignEnemy('mireheart_hydra');
+    healing.register(regenerator, 0); regenerator.hp = 0;
+    for (const nowMs of [6000, 12000, 18000]) healing.tick([regenerator], [], nowMs);
+    expect(regenerator.hp / regenerator.maxHp).toBeCloseTo(CAMPAIGN_BOSS_TUNING.hydraHealPeriodCapFraction);
+    healing.tick([regenerator], [], 24000);
+    expect(regenerator.hp / regenerator.maxHp).toBeCloseTo(0.055);
+    healing.remove(regenerator.id);
+    const hpAtRemoval = regenerator.hp;
+    healing.tick([regenerator], [], 30000);
+    expect(regenerator.hp).toBe(hpAtRemoval);
+    expect(healing.phase(regenerator.id)).toBe(1);
   });
 });

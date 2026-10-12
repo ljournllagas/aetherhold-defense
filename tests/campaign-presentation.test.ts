@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   campaignClearStatus, campaignCompactDetailMeta, campaignEnemyPreviewText,
-  campaignHeaderBadgeLines, campaignLevelDetail, campaignWarningCompactMessage
+  campaignHeaderBadgeLines, campaignLevelDetail, campaignWarningCompactMessage, CAMPAIGN_PHASE_CUE_GUIDANCE
 } from '../src/game/campaign/presentation.ts';
+import { CAMPAIGN_BOSS_PHASE_LABELS } from '../src/game/campaign/bosses.ts';
 import { CAMPAIGN_UNAVAILABLE_WARNING, CampaignRepository } from '../src/game/campaign/progress.ts';
 import { getCampaignEnemy } from '../src/game/campaign/enemies.ts';
 import { campaignDetailContentLayout, campaignScreenLayout } from '../src/game/campaign/mapLayout.ts';
@@ -11,7 +12,7 @@ import type { CampaignClearResult } from '../src/game/campaign/types.ts';
 describe('campaign presentation detail', () => {
   it('keeps the narrow mastery header complete in two short semantic lines', () => {
     expect(campaignHeaderBadgeLines(27, 2, 'III · RUNIC')).toEqual([
-      'MASTERY 27/90 · SIGILS 2/3',
+      'MASTERY 27/300 · SIGILS 2/10',
       'TOWER TIER III · RUNIC'
     ]);
   });
@@ -82,6 +83,21 @@ describe('campaign presentation detail', () => {
     const detail = campaignLevelDetail(10, repository.view());
     expect(detail).toMatchObject({ level: 10, canStart: true, boss: { id: 'hollow_warden', name: expect.any(String), guidance: expect.stringContaining('ward') } });
     expect(detail!.enemyIds).toContain('hollow_warden');
+  });
+
+  it('provides boss guidance for the World 4 golden slice and every registered boss', () => {
+    const detail = campaignLevelDetail(40, new CampaignRepository(null).view());
+    expect(detail?.boss).toMatchObject({ id: 'mireheart_hydra', guidance: expect.stringContaining('Bogling brood') });
+
+    const guidance = Array.from({ length: 10 }, (_, index) => campaignLevelDetail((index + 1) * 10, new CampaignRepository(null).view())?.boss?.guidance);
+    expect(guidance).toHaveLength(10);
+    expect(guidance.every(text => typeof text === 'string' && text.length > 20)).toBe(true);
+    expect(guidance[9]).toContain('Normal, Resistance, Rift, and Exposed Core');
+  });
+
+  it('documents the visible cue for every canonical boss and support phase label', () => {
+    expect(Object.keys(CAMPAIGN_PHASE_CUE_GUIDANCE).sort()).toEqual([...CAMPAIGN_BOSS_PHASE_LABELS].sort());
+    for (const description of Object.values(CAMPAIGN_PHASE_CUE_GUIDANCE)) expect(description.length).toBeGreaterThan(20);
   });
 
   it('distinguishes a persisted clear from an earned session-only clear in result copy', () => {

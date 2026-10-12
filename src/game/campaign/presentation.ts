@@ -1,7 +1,8 @@
 import { getCampaignEnemy } from './enemies.ts';
-import { CAMPAIGN_MILESTONES, getCampaignLevel, getCampaignWorld } from './config.ts';
+import { CAMPAIGN_LEVELS, CAMPAIGN_MILESTONES, CAMPAIGN_SIGILS, getCampaignLevel, getCampaignWorld } from './config.ts';
 import { isLevelUnlocked } from './progress.ts';
 import type { CampaignClearResult, CampaignLevelProgress, CampaignView, CampaignWorldId } from './types.ts';
+import type { CampaignBossPhaseLabel } from './bosses.ts';
 
 export const CAMPAIGN_MILESTONE_LABELS: Readonly<Record<number, string>> = {
   10: 'Aether Codex tactics', 20: 'Preparation presets', 30: 'Tower specializations',
@@ -11,7 +12,7 @@ export const CAMPAIGN_MILESTONE_LABELS: Readonly<Record<number, string>> = {
 /** Two short, complete lines for the narrow campaign header. */
 export function campaignHeaderBadgeLines(totalMasteryStars: number, sigilCount: number, tier: string): readonly [string, string] {
   return [
-    `MASTERY ${totalMasteryStars}/90 · SIGILS ${sigilCount}/3`,
+    `MASTERY ${totalMasteryStars}/${CAMPAIGN_LEVELS.length * 3} · SIGILS ${sigilCount}/${CAMPAIGN_SIGILS.length}`,
     `TOWER TIER ${tier}`
   ];
 }
@@ -24,7 +25,37 @@ export function campaignEnemyPreviewText(names: readonly string[]): string {
 const BOSS_GUIDANCE: Readonly<Record<string, string>> = {
   hollow_warden: 'Break through its temporary ward. Watch for Marchling summons and a late speed surge.',
   cinder_colossus: 'Its basalt armor breaks in stages. The exposed core is more vulnerable and moves faster.',
-  frostbound_matriarch: 'Resists slows. Freeze casts are telegraphed and can briefly lock one or two towers.'
+  frostbound_matriarch: 'Resists slows. Freeze casts are telegraphed and can briefly lock one or two towers.',
+  mireheart_hydra: 'Its cast signals a Bogling brood; focus damage between summons to offset its regeneration.',
+  drowned_oracle: 'Its resistance shifts Physical → Arcane → Elemental. Read the phase cue and change damage types as its ward changes.',
+  iron_tyrant: 'Break its layered plates to expose the core. Its final phase moves faster, so keep coverage along the route.',
+  stormmaw_prime: 'A storm warning precedes its surge. Keep sustained damage covering the approach and the later bends.',
+  umbral_regent: 'Echo marks signal its decoy phase. Keep the true Regent covered while the afterimages fade.',
+  rift_sovereign: 'A portal ring signals a short route advance. Cover the later bend before it crosses the gate.',
+  aether_devourer: 'Its four phases are Normal, Resistance, Rift, and Exposed Core. Hold sustained damage for the core opening.'
+};
+
+/** Human-readable visual references for QA review and future phase callouts. */
+export const CAMPAIGN_PHASE_CUE_GUIDANCE: Readonly<Record<CampaignBossPhaseLabel, string>> = {
+  oracle_physical: 'Gold shield rails mark the active physical resistance.',
+  oracle_arcane: 'A cyan diamond ring marks the active arcane resistance.',
+  oracle_elemental: 'Amber flame marks the active elemental resistance.',
+  tyrant_plates: 'Both iron plates remain intact.',
+  tyrant_break: 'One plate is broken; the core is still covered.',
+  tyrant_core: 'The plates vanish and the core shines exposed.',
+  storm_surge: 'Lightning above the boss marks the storm warning.',
+  regent_decoys: 'Twin echo glyphs flank the Regent while decoys remain.',
+  sovereign_portal: 'A bright portal ring marks the route-advance tell.',
+  devourer_normal: 'A warm outer ring marks its normal phase.',
+  devourer_resistance: 'Paired teal rings mark its resistance phase.',
+  devourer_rift: 'A violet fracture sigil marks the rift phase.',
+  devourer_core: 'A bright cross and exposed center mark its core phase.',
+  aether_shield: 'A teal shield frame marks the Aether shield action.',
+  foundry_armor: 'Bronze side plates mark the armor reinforcement action.',
+  tempest_haste: 'Blue lightning above the Herald marks the haste tell.',
+  echo_decoys: 'Twin echo marks signal the decoy summon.',
+  rift_jump: 'A purple portal ring marks the phase-jump tell.',
+  crown_ward: 'A gold crown ring marks the nearby Aether ward.'
 };
 
 export interface CampaignLevelDetail {

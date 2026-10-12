@@ -1,4 +1,5 @@
 import type { AssetSpec } from '../art/assetManifest.ts';
+import { CAMPAIGN_LEVELS, CAMPAIGN_WORLDS } from './config.ts';
 import type { CampaignLevelDefinition, CampaignVisualTier, CampaignWorldId } from './types.ts';
 
 export type CampaignArtState = 'final_required' | 'final';
@@ -21,19 +22,26 @@ export interface CampaignArtSource {
   temporary: 'procedural' | null;
 }
 
-const WORLDS: readonly CampaignWorldId[] = ['borderkeep', 'emberfall', 'frostveil'];
+const LEGACY_WORLD_IDS: readonly CampaignWorldId[] = CAMPAIGN_WORLDS.slice(0, 3).map(world => world.id);
+const EXPANSION_WORLD_IDS: readonly CampaignWorldId[] = CAMPAIGN_WORLDS.slice(3).map(world => world.id);
 const FAMILIES = ['a', 'b', 'c', 'd'] as const;
-const NORMAL_ENEMIES: Readonly<Record<CampaignWorldId, readonly string[]>> = {
+const LEGACY_NORMAL_ENEMIES: Readonly<Record<string, readonly string[]>> = {
   borderkeep: ['marchling', 'skitter', 'stoneback', 'ironhide', 'veilborn'],
   emberfall: ['cinderling', 'ashrunner', 'magmahide', 'ember_brute', 'ashcaller'],
   frostveil: ['snowstalker', 'icebound', 'frostback', 'glacier_knight', 'frost_shaman']
 };
-const BOSSES: Readonly<Record<CampaignWorldId, string>> = {
-  borderkeep: 'hollow_warden', emberfall: 'cinder_colossus', frostveil: 'frostbound_matriarch'
-};
+const NORMAL_ENEMIES = Object.fromEntries(CAMPAIGN_WORLDS.map(world => [world.id,
+  LEGACY_NORMAL_ENEMIES[world.id] ?? [...new Set(CAMPAIGN_LEVELS.filter(level => level.worldId === world.id).flatMap(level => level.enemyIds))]
+])) as Readonly<Record<CampaignWorldId, readonly string[]>>;
+const BOSSES = Object.fromEntries(CAMPAIGN_WORLDS.map(world => [world.id, world.bossEnemyId])) as Readonly<Record<CampaignWorldId, string>>;
 const TOWERS = ['longbow', 'ember', 'glacier', 'starfire', 'tempest'] as const;
 const NORMAL_STATES = { idle: { row: 0, frames: 4 }, walk: { row: 1, frames: 6 }, attack: { row: 2, frames: 6 }, death: { row: 3, frames: 6 } } as const;
 const SUPPORT_STATES = { ...NORMAL_STATES, buff: { row: 4, frames: 6 } } as const;
+const EXPANSION_SUPPORT_ENEMIES = new Set(['rootwretch', 'aetherbound', 'foundry_core', 'tempest_herald', 'echo_shade', 'rift_weaver', 'crown_archon']);
+const EXPANSION_BOSS_STATES = {
+  idle: { row: 0, frames: 6 }, walk: { row: 1, frames: 8 }, attack: { row: 2, frames: 8 },
+  special: { row: 3, frames: 8 }, phase_two: { row: 4, frames: 8 }, death: { row: 5, frames: 8 }
+} as const;
 const BOSS_STATES: Readonly<Record<string, { row: number; frames: number }>> = {
   idle: { row: 0, frames: 6 }, walk: { row: 1, frames: 8 }, attack: { row: 2, frames: 8 },
   armor_break: { row: 3, frames: 8 }, exposed_core: { row: 4, frames: 8 }, death: { row: 5, frames: 8 }
@@ -76,14 +84,14 @@ function imageSource(
 
 /** Final art targets. Their explicit state keeps the preload contract from requesting absent files. */
 export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
-  ...WORLDS.flatMap(worldId => FAMILIES.map(family => {
+  ...LEGACY_WORLD_IDS.flatMap(worldId => FAMILIES.map(family => {
     return imageSource(
       `map:${worldId}:${family}`, `campaign_${worldId}_${family}`,
       `/assets/campaign/maps/${worldId}_${family}-v1.png`, 1672, 940, 'gameplay',
       ['terrain_plate', 'runtime_geometry_overlay'], 'final', null
     );
   })),
-  ...WORLDS.flatMap(worldId => [
+  ...LEGACY_WORLD_IDS.flatMap(worldId => [
     imageSource(`world-panel:${worldId}`, `campaign_worldmap_${worldId}`,
       `/assets/campaign/world-map/${worldId}-v1.png`, 768, 432, 'campaign', ['biome_illustration'], 'final', null),
     ...NORMAL_ENEMIES[worldId].map(id => {
@@ -113,13 +121,43 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
   ...TOWERS.flatMap(id => ([2, 3] as const).map(tier => imageSource(
     `tower:${id}:tier${tier}`, `campaign_tower_${id}_tier${tier}`,
     `/assets/campaign/towers/${id}-tier${tier}-v1.png`, 192, 192, 'gameplay', ['transparent_png_required', 'cosmetic_only', 'classic_art_unchanged'], 'final', null
-  )))
+  ))),
+  ...EXPANSION_WORLD_IDS.flatMap(worldId => [
+    ...FAMILIES.map(family => imageSource(
+      `map:${worldId}:${family}`, `campaign_${worldId}_${family}`,
+      `/assets/campaign/maps/${worldId}_${family}-v1.png`, 1672, 940, 'gameplay',
+      ['final_art_unverified', 'provisional_starter_art', 'terrain_plate', 'runtime_geometry_overlay'], 'final_required', 'procedural'
+    )),
+    imageSource(`world-panel:${worldId}`, `campaign_worldmap_${worldId}`,
+      `/assets/campaign/world-map/${worldId}-v1.png`, 768, 432, 'campaign',
+      ['final_art_unverified', 'provisional_starter_art', 'biome_illustration'], 'final_required', 'procedural'),
+    ...NORMAL_ENEMIES[worldId].map(id => {
+      const support = EXPANSION_SUPPORT_ENEMIES.has(id);
+      const states = support ? SUPPORT_STATES : NORMAL_STATES;
+      const rows = Math.max(...Object.values(states).map(state => state.row)) + 1;
+      return {
+        id: `enemy:${id}`, key: `campaign_enemy_${id}`, path: `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.png`,
+        state: 'final_required' as const, stage: 'gameplay' as const, kind: 'sheet' as const, width: 768, height: rows * 128,
+        frameWidth: 128, frameHeight: 128, states,
+        qualityFlags: ['final_art_unverified', 'provisional_starter_art', 'transparent_png_required', 'consistent_feet_anchor', 'no_baked_ui_or_large_shadow', ...(support ? ['support_buff_playback_verified'] : [])],
+        temporary: 'procedural' as const
+      };
+    }),
+    {
+      id: `boss:${BOSSES[worldId]}`, key: `campaign_enemy_${BOSSES[worldId]}`,
+      path: `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v1.png`,
+      state: 'final_required' as const, stage: 'gameplay' as const, kind: 'sheet' as const,
+      width: 2048, height: 1536, frameWidth: 256, frameHeight: 256, states: EXPANSION_BOSS_STATES,
+      qualityFlags: ['final_art_unverified', 'provisional_starter_art', 'transparent_png_required', 'consistent_feet_anchor', 'phase_state_readability_verified'],
+      temporary: 'procedural' as const
+    }
+  ])
 ];
 
 /** A production file is queued only after its manifest entry is promoted and its exact path is listed here. */
 export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
-  ...WORLDS.flatMap(worldId => FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v1.png`)),
-  ...WORLDS.flatMap(worldId => [
+  ...LEGACY_WORLD_IDS.flatMap(worldId => FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v1.png`)),
+  ...LEGACY_WORLD_IDS.flatMap(worldId => [
     `/assets/campaign/world-map/${worldId}-v1.png`,
     ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.png`),
     `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v1.png`
@@ -137,11 +175,41 @@ export function resolveCampaignArtAssets(
     : { kind: 'image' as const, key: asset.key, path: asset.path });
 }
 
-export function campaignArtAssetsForLoader(stage: 'menu' | 'campaign' | 'gameplay', availablePaths: readonly string[] = AVAILABLE_CAMPAIGN_ART_PATHS): AssetSpec[] {
-  return resolveCampaignArtAssets(CAMPAIGN_ART_MANIFEST, stage, availablePaths);
+export function campaignArtAssetsForLoader(
+  stage: 'menu' | 'campaign' | 'gameplay',
+  availablePaths: readonly string[] = AVAILABLE_CAMPAIGN_ART_PATHS,
+  provisionalStarterPaths: readonly string[] = CAMPAIGN_PROVISIONAL_STARTER_PATHS
+): AssetSpec[] {
+  const finalAssets = resolveCampaignArtAssets(CAMPAIGN_ART_MANIFEST, stage, availablePaths);
+  if (stage !== 'campaign') return finalAssets;
+  return [...finalAssets, ...resolveCampaignProvisionalStarterAssets(
+    CAMPAIGN_ART_MANIFEST, stage, provisionalStarterPaths
+  )];
 }
 
-const BOSS_SUMMONS: Readonly<Record<string, readonly string[]>> = { hollow_warden: ['marchling'] };
+/** Exact provisional art bundle for expansion worlds, ordered from World 4 through World 10. */
+export const CAMPAIGN_PROVISIONAL_STARTER_PATHS: readonly string[] = EXPANSION_WORLD_IDS.flatMap(worldId => [
+  ...FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v1.png`),
+  `/assets/campaign/world-map/${worldId}-v1.png`,
+  ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.png`),
+  `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v1.png`
+]);
+
+/** Starter files need both final_required registration and an exact explicit provisional path approval. */
+export function resolveCampaignProvisionalStarterAssets(
+  manifest: readonly CampaignArtSource[], stage: 'campaign' | 'gameplay', approvedStarterPaths: readonly string[]
+): AssetSpec[] {
+  const approved = new Set(approvedStarterPaths);
+  return manifest.filter(asset => asset.stage === stage && asset.state === 'final_required'
+    && asset.temporary === 'procedural' && asset.qualityFlags.includes('provisional_starter_art') && approved.has(asset.path))
+    .map(asset => asset.kind === 'sheet'
+      ? { kind: 'sheet' as const, key: asset.key, path: asset.path, frameWidth: asset.frameWidth!, frameHeight: asset.frameHeight! }
+      : { kind: 'image' as const, key: asset.key, path: asset.path });
+}
+
+const BOSS_SUMMONS: Readonly<Record<string, readonly string[]>> = {
+  hollow_warden: ['marchling'], mireheart_hydra: ['bogling']
+};
 
 /** Select only the current level's family, visual tier, and registered roster/boss/summon art. */
 export function campaignGameplayAssetsForLevel(
@@ -149,15 +217,21 @@ export function campaignGameplayAssetsForLevel(
   manifest: readonly CampaignArtSource[] = CAMPAIGN_ART_MANIFEST,
   availablePaths: readonly string[] = AVAILABLE_CAMPAIGN_ART_PATHS
 ): AssetSpec[] {
-  const family = /^(borderkeep|emberfall|frostveil)_([abcd])/.exec(level.mapLayoutId);
-  if (!family || family[1] !== level.worldId) return [];
+  const familyPrefix = `${level.worldId}_`;
+  if (!level.mapLayoutId.startsWith(familyPrefix)) return [];
+  const family = level.mapLayoutId.slice(familyPrefix.length, familyPrefix.length + 1);
+  if (!FAMILIES.includes(family as typeof FAMILIES[number])) return [];
   const ids = new Set([
-    `map:${level.worldId}:${family[2]}`,
+    `map:${level.worldId}:${family}`,
     ...level.enemyIds.map(id => `enemy:${id}`),
     ...(level.bossEnemyId ? [`boss:${level.bossEnemyId}`, ...(BOSS_SUMMONS[level.bossEnemyId] ?? []).map(id => `enemy:${id}`)] : []),
     ...(visualTier === 1 ? [] : TOWERS.map(id => `tower:${id}:tier${visualTier}`))
   ]);
-  return resolveCampaignArtAssets(manifest.filter(asset => ids.has(asset.id)), 'gameplay', availablePaths);
+  const selected = manifest.filter(asset => ids.has(asset.id));
+  return [
+    ...resolveCampaignArtAssets(selected, 'gameplay', availablePaths),
+    ...resolveCampaignProvisionalStarterAssets(selected, 'gameplay', CAMPAIGN_PROVISIONAL_STARTER_PATHS)
+  ];
 }
 
 export function missingCampaignProductionAssets(): CampaignArtSource[] {

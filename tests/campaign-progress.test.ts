@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { getCampaignLevel } from '../src/game/campaign/config.ts';
+import legacyLocalCompleted30 from './fixtures/campaign-v5/legacy_local_completed_30.json';
+import legacyLocalPartial7 from './fixtures/campaign-v5/legacy_local_partial_7.json';
+import { CAMPAIGN_SIGILS, CAMPAIGN_WORLDS, getCampaignLevel } from '../src/game/campaign/config.ts';
 import {
   CAMPAIGN_STORAGE_KEY,
   CAMPAIGN_UNAVAILABLE_WARNING,
@@ -10,9 +12,11 @@ import {
   createEmptyCampaignProfile,
   isLevelUnlocked,
   isWorldUnlocked,
+  parseCampaignProfile,
   totalMasteryStars,
   type CampaignStorage
 } from '../src/game/campaign/progress.ts';
+import type { CampaignProfile } from '../src/game/campaign/types.ts';
 
 class MemoryStore implements CampaignStorage {
   value: string | null;
@@ -58,6 +62,44 @@ describe('campaign progress', () => {
     expect(isLevelUnlocked(1, view)).toBe(true);
     expect(isLevelUnlocked(2, view)).toBe(false);
     expect(store.writes).toBe(0);
+  });
+
+  it('keeps v1 level 30 saves and round-trips new registered levels without changing old Sigils or preferences', () => {
+    const legacy = parseCampaignProfile(legacyLocalCompleted30)!;
+    legacy.choices.longbow = 'longbow_bastion';
+    legacy.targeting.ember = 'last';
+    legacy.preparationPresets.push({ id: 'opening', name: 'Opening', choices: { ...legacy.choices }, targeting: { ...legacy.targeting } });
+    const store = new MemoryStore(JSON.stringify(legacy));
+    const repository = new CampaignRepository(store);
+    const completion = { completed: true, completionStar: true, livesStar: false, scoreStar: false, bestScore: 0, bestRemainingLives: 0 };
+    const additional: CampaignProfile['levels'] = { 31: completion, 40: completion, 100: completion };
+    repository.applyCloud(additional);
+
+    const saved = JSON.parse(store.value!) as CampaignProfile;
+    const reloaded = new CampaignRepository(store).view();
+    expect([saved.campaignVersion, saved.progressionVersion]).toEqual([1, 1]);
+    expect(reloaded.profile.levels[31]).toEqual(completion);
+    expect(reloaded.profile.levels[40]).toEqual(completion);
+    expect(reloaded.profile.levels[100]).toEqual(completion);
+    expect(reloaded.profile.choices.longbow).toBe('longbow_bastion');
+    expect(reloaded.profile.targeting.ember).toBe('last');
+    expect(reloaded.profile.preparationPresets[0]?.id).toBe('opening');
+    expect(reloaded.profile.worldSigils).toContain('frost_sigil');
+    expect(CAMPAIGN_SIGILS.find(({ id }) => id === 'frost_sigil')?.level).toBe(30);
+    expect(isLevelUnlocked(31, reloaded)).toBe(true);
+    expect(isLevelUnlocked(101, reloaded)).toBe(false);
+    expect(isWorldUnlocked(CAMPAIGN_WORLDS[3]!.id, reloaded)).toBe(true);
+    expect(reloaded.unlockedFeatures).toContain('campaign_100_clear');
+  });
+
+  it('rejects noncanonical and unregistered local level keys while preserving partial legacy unlocks', () => {
+    const partial = parseCampaignProfile(legacyLocalPartial7)!;
+    expect(partial.highestUnlockedLevel).toBe(8);
+    expect(isWorldUnlocked(CAMPAIGN_WORLDS[1]!.id, partial)).toBe(false);
+    for (const key of ['01', '101', '1e0']) {
+      const profile = { ...createEmptyCampaignProfile(), levels: { [key]: { completed: true, completionStar: true, livesStar: false, scoreStar: false, bestScore: 0, bestRemainingLives: 0 } } };
+      expect(parseCampaignProfile(profile)).toBeNull();
+    }
   });
 
   it('accumulates each star independently and keeps best score and lives on replay', () => {
@@ -116,9 +158,10 @@ describe('campaign progress', () => {
       'frostveil_conqueror_crest', 'frostbound_matriarch_codex_entry', 'time_lock_powerup'
     ]));
     expect(isLevelUnlocked(30, frost)).toBe(true);
-    expect(isLevelUnlocked(31, frost)).toBe(false);
+    expect(isLevelUnlocked(31, frost)).toBe(true);
+    expect(isWorldUnlocked(CAMPAIGN_WORLDS[3]!.id, frost)).toBe(true);
     expect(campaignPowerUpPool(frost)).toEqual(expect.arrayContaining(['meteor_strike', 'battle_cry', 'time_freeze']));
-    expect(repository.view().profile.highestUnlockedLevel).toBe(30);
+    expect(repository.view().profile.highestUnlockedLevel).toBe(31);
   });
 
   it('gates specialization and preparation controls, persists at most three presets, and reloads them', () => {

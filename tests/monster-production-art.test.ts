@@ -4,14 +4,24 @@ import { CAMPAIGN_LEVELS } from '../src/game/campaign/config.ts';
 
 describe('complete production monster artwork', () => {
   const sheets = CAMPAIGN_ART_MANIFEST.filter(asset => asset.kind === 'sheet');
-  it('has final artwork for all fifteen Campaign enemies and three bosses', () => {
-    expect(sheets).toHaveLength(18);
-    expect(missingCampaignProductionAssets()).toEqual([]);
-    for (const asset of sheets) {
+  it('preserves the original final atlases and withholds expansion atlases from the final allowlist', () => {
+    const finalSheets = sheets.filter(asset => asset.state === 'final');
+    const expansionSheets = sheets.filter(asset => asset.state === 'final_required');
+    expect(sheets).toHaveLength(60);
+    expect(finalSheets).toHaveLength(18);
+    expect(expansionSheets).toHaveLength(42);
+    expect(missingCampaignProductionAssets()).toHaveLength(77);
+    for (const asset of finalSheets) {
       expect(asset.state, asset.id).toBe('final');
       expect(asset.temporary, asset.id).toBeNull();
       expect(asset.qualityFlags).not.toContain('final_art_unverified');
       expect(AVAILABLE_CAMPAIGN_ART_PATHS).toContain(asset.path);
+    }
+    for (const asset of expansionSheets) {
+      expect(asset.state, asset.id).toBe('final_required');
+      expect(asset.temporary, asset.id).toBe('procedural');
+      expect(asset.qualityFlags).toContain('final_art_unverified');
+      expect(AVAILABLE_CAMPAIGN_ART_PATHS).not.toContain(asset.path);
     }
   });
 
@@ -31,12 +41,21 @@ describe('complete production monster artwork', () => {
     }
   });
 
-  it('loads final roster, boss and summon textures for every Campaign level', () => {
+  it('loads only each current level’s registered atlas roster across the ten-world campaign', () => {
     for (const level of CAMPAIGN_LEVELS) {
       const requested = campaignGameplayAssetsForLevel(level, 1).map(asset => asset.key);
       for (const id of level.enemyIds) expect(requested, `level ${level.level}`).toContain(`campaign_enemy_${id}`);
       if (level.bossEnemyId) expect(requested).toContain(`campaign_enemy_${level.bossEnemyId}`);
       if (level.bossEnemyId === 'hollow_warden') expect(requested).toContain('campaign_enemy_marchling');
+      if (level.bossEnemyId === 'mireheart_hydra') expect(requested).toContain('campaign_enemy_bogling');
+      const family = level.mapLayoutId.slice(level.worldId.length + 1, level.worldId.length + 2);
+      expect(requested).toContain(`campaign_${level.worldId}_${family}`);
+      expect(requested.filter(key => key.startsWith('campaign_enemy_')).every(key =>
+        level.enemyIds.some(id => key === `campaign_enemy_${id}`)
+        || key === `campaign_enemy_${level.bossEnemyId}`
+        || (level.bossEnemyId === 'hollow_warden' && key === 'campaign_enemy_marchling')
+        || (level.bossEnemyId === 'mireheart_hydra' && key === 'campaign_enemy_bogling')
+      )).toBe(true);
     }
   });
 });

@@ -45,7 +45,20 @@ it('rejects invalid bounds and crops each illustrated region before display', ()
   };
   paintCampaignWorldMap(scene as never, { add: () => {} } as never, 1800, 328);
 
-  expect(cropCalls).toHaveLength(3);
-  expect(cropCalls[0]).toEqual([0, expect.closeTo(6.08), 768, expect.closeTo(419.84)]);
-  expect(scales).toEqual([0.78125, 0.78125, 0.78125]);
+  const crop = campaignWorldMapCoverCrop(768, 432, 180, 328)!;
+  expect(cropCalls).toHaveLength(10);
+  expect(cropCalls).toEqual(Array.from({ length: 10 }, () => [crop.x, crop.y, crop.width, crop.height]));
+  expect(scales).toEqual(Array.from({ length: 10 }, () => crop.scale));
+});
+
+it('paints a palette-backed fallback panel for every world without a loaded illustration', () => {
+  const graphics: any = {};
+  for (const method of ['lineStyle', 'lineBetween', 'strokeRect', 'strokeCircle', 'fillStyle', 'fillRect', 'fillPoints', 'beginPath', 'moveTo', 'lineTo', 'strokePath', 'fillEllipse', 'fillCircle', 'fillTriangle']) {
+    graphics[method] = vi.fn(() => graphics);
+  }
+  const scene = { textures: { exists: () => false }, add: { graphics: () => graphics } };
+  paintCampaignWorldMap(scene as never, { add: () => {} } as never, 6000, 250);
+
+  const worldBackgrounds = graphics.fillRect.mock.calls.filter(([, y, width, height]: number[]) => y === 0 && width === 600 && height === 250);
+  expect(worldBackgrounds.map(([x]: number[]) => x)).toEqual(Array.from({ length: 10 }, (_, index) => index * 600));
 });

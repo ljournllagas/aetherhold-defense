@@ -101,17 +101,28 @@ function earnThreeStars(repository: CampaignRepository, level: number) {
 }
 
 describe('independent campaign acceptance', () => {
-  it('matches the 30 authored level sequence from the expansion data', () => {
-    expect(CAMPAIGN_WORLDS.map(({ id, name, levelStart, levelEnd, bossLevel, bossEnemyId }) => [id, name, levelStart, levelEnd, bossLevel, bossEnemyId])).toEqual([
+  it('preserves the exact 30 originally authored world and level definitions', () => {
+    expect(CAMPAIGN_WORLDS.slice(0, 3).map(({ id, name, levelStart, levelEnd, bossLevel, bossEnemyId }) => [id, name, levelStart, levelEnd, bossLevel, bossEnemyId])).toEqual([
       ['borderkeep', 'The Borderkeep', 1, 10, 10, 'hollow_warden'],
       ['emberfall', 'Emberfall Highlands', 11, 20, 20, 'cinder_colossus'],
       ['frostveil', 'Frostveil Pass', 21, 30, 30, 'frostbound_matriarch']
     ]);
-    expect(CAMPAIGN_LEVELS).toHaveLength(30);
-    expect(CAMPAIGN_LEVELS.map(({ level, worldId, mapLayoutId, enemyIds, bossEnemyId, mastery, warnings }) => [
+    expect(CAMPAIGN_LEVELS.slice(0, 30)).toHaveLength(30);
+    expect(CAMPAIGN_LEVELS.slice(0, 30).map(({ level, worldId, mapLayoutId, enemyIds, bossEnemyId, mastery, warnings }) => [
       level, worldId, mapLayoutId, [...enemyIds], bossEnemyId,
       mastery.minimumLivesForStar, mastery.scoreTarget, [...warnings]
     ])).toEqual(AUTHORED_LEVELS);
+  });
+
+  it('adds a separate, contiguous 100-level registry across ten worlds', () => {
+    expect(CAMPAIGN_WORLDS).toHaveLength(10);
+    expect(CAMPAIGN_LEVELS).toHaveLength(100);
+    expect(CAMPAIGN_LEVELS.map(({ level }) => level)).toEqual(Array.from({ length: 100 }, (_, index) => index + 1));
+    for (const world of CAMPAIGN_WORLDS) {
+      expect(CAMPAIGN_LEVELS.slice(world.levelStart - 1, world.levelEnd).every(({ worldId }) => worldId === world.id)).toBe(true);
+    }
+    expect(getCampaignLevel(31)?.worldId).toBe(CAMPAIGN_WORLDS[3]!.id);
+    expect(getCampaignLevel(100)?.worldId).toBe(CAMPAIGN_WORLDS[9]!.id);
   });
 
   it('rejects invalid and locked clears, earns three distinct stars over replay, and never removes or duplicates them', () => {
@@ -276,12 +287,15 @@ describe('independent campaign acceptance', () => {
     expect(frost.newlyEarnedSigils).toEqual(['frost_sigil']);
     expect(repository.view().unlockedFeatures).toEqual(expect.arrayContaining(['worlds_1_3_milestone_complete', 'frostbound_matriarch_codex_entry', 'time_lock_powerup']));
     expect(campaignPowerUpPool(repository.view())).toEqual([...BASE_POWER_UPS, 'meteor_strike', 'battle_cry', 'time_freeze']);
-    expect(isLevelUnlocked(31, repository.view())).toBe(false);
+    expect(isLevelUnlocked(31, repository.view())).toBe(true);
+    expect(isWorldUnlocked(CAMPAIGN_WORLDS[3]!.id, repository.view())).toBe(true);
+    expect(repository.view().profile.levels[31]).toBeUndefined();
     expect(repository.recordClear(30, 30000, 30)!.totalMasteryStars).toBe(90);
+    expect(repository.view().profile.levels[31]).toBeUndefined();
     expect(totalMasteryStars(repository.view().profile)).toBe(90);
 
     const reloaded = new CampaignRepository(store).view();
-    expect(reloaded.highestUnlockedLevel).toBe(30);
+    expect(reloaded.highestUnlockedLevel).toBe(31);
     expect(totalMasteryStars(reloaded.profile)).toBe(90);
     expect(reloaded.profile.worldSigils).toEqual(['border_sigil', 'ember_sigil', 'frost_sigil']);
     expect(reloaded.profile.choices.ember).toBeNull();
@@ -291,8 +305,12 @@ describe('independent campaign acceptance', () => {
     expect(reloaded.profile.progressionVersion).toBe(1);
     expect(JSON.parse(store.value!).campaignVersion).toBe(1);
     expect(JSON.parse(store.value!).progressionVersion).toBe(1);
-    expect(CAMPAIGN_SIGILS.map(({ id, level }) => [id, level])).toEqual([
+    expect(CAMPAIGN_SIGILS.slice(0, 3).map(({ id, level }) => [id, level])).toEqual([
       ['border_sigil', 10], ['ember_sigil', 20], ['frost_sigil', 30]
+    ]);
+    expect(CAMPAIGN_SIGILS.slice(3).map(({ id, level }) => [id, level])).toEqual([
+      ['mire_sigil', 40], ['tide_sigil', 50], ['iron_sigil', 60], ['sky_sigil', 70],
+      ['moon_sigil', 80], ['rift_sigil', 90], ['crown_sigil', 100]
     ]);
     expect(CAMPAIGN_MILESTONES.map(({ stars, unlocks }) => [stars, [...unlocks]])).toEqual([
       [10, ['aether_codex_tactics']],

@@ -27,8 +27,10 @@ describe('useful build plots beside the road', () => {
 
   it('keeps every full plot circle in the field and separates hit targets', () => {
     const counts = [12, 10, 13, 17, 22, 17, 18, 18, 18, 12, 17, 15, 14, 11, 13, 12, 11, 9, 10, 12, 18, 14, 14, 14, 15, 14, 12, 12, 12, 14];
-    expect(CAMPAIGN_LEVELS.map(level => resolveCampaignMap(level).buildable.length)).toEqual(counts);
-    for (const map of [MAP1, ...CAMPAIGN_LEVELS.map(resolveCampaignMap)]) {
+    const campaignMaps = CAMPAIGN_LEVELS.map(resolveCampaignMap);
+    expect(campaignMaps.slice(0, 30).map(map => map.buildable.length)).toEqual(counts);
+    expect(campaignMaps.slice(30).every(map => map.buildable.length >= 8)).toBe(true);
+    for (const map of [MAP1, ...campaignMaps]) {
       for (const [index, point] of map.buildable.entries()) {
         expect(point.x - 23.5).toBeGreaterThanOrEqual(map.field.x);
         expect(point.x + 23.5).toBeLessThanOrEqual(map.field.x + map.field.width);
