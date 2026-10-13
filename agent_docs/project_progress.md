@@ -2,22 +2,21 @@
 
 ## Final campaign artwork - active
 
-Heavy campaign-final-art-20261012 follows approved77-asset scope.
-Worlds4-8 complete and live:55new finals deployed,98 active final paths,
-22provisional assets remaining. Original43/77rollback assets unchanged.
-World9sixassetrepair active;World10eleven candidates underindependentrawreview.
+Heavycampaign-final-art-20261012 approved77-asset scope.
+Worlds4-8 and10 complete/live:66new finals deployed,109active final paths,
+11provisional(World9) remaining. Original43/77rollback bytesunchanged.
+World9sixfailedassets repairactive;fiveotherrawpasses retained.
 
 Live https://aetherhold-defense.ljournllagas.workers.dev/
-Version645072e7-4cf7-4426-94e2-0cbb440319a3.
-Deploy1518pass11configuredskip,typecheck/build PASS. LiveHTML/currentJS exact
-SHA25619388b4603455f05fb8b65f79cd3e5ba4bdccd867fd174782d9024564a08475b;
-health200 scoreVersion3;all55PNG exacthashes/repeatcache52HIT3MISS.
-O7 boundedcommit/push/actualremote equality pending.
-World8raw10plusRegentidlefocusedrepairPASS/staging/public gates PASS.
-All100loaders andbaselinepreservation pass. Publicrender/panelchecked;
-authenticatedlivegameplay behindsign-in unverified. Compactdetail/crowding/
-breakpoint/physicaltouch/fullmatch limitations remain inlatest_session_work.md.
-Continue22remaining;noall77 completion/closure yet.
+Versionb5e0a607-12fc-4852-8898-477cca86e649.
+Deploy1518pass11configuredskip,typecheck/build PASS. Currentbundle exactSHA256
+0f44b527e6002d57cdad1a2334bc413bfd88f636adaf2fd3bd56d561e57b9b5d;
+health200scoreVersion3;66PNG exacthashes/cache65HIT1MISS.
+O8 boundedcommit/push/remote equality pending.
+World10quietcourtsraw/runtime/actualpublic PASS;all100loader/preservation PASS.
+Publicpage/panelrender checked;authenticatedlivegameplay behindsign-in unverified.
+Compactdetails/crowding/breakpoint/physicaltouch/fullmatch limitationsretained.
+ContinueWorld9/noall77completionyet;latest_session_work.md exacthandoff/evidence.
 
 ## Campaign v5 — complete
 

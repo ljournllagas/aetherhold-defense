@@ -2,75 +2,81 @@
 
 ## Active Heavy deployment
 
-Deployment campaign-final-art-20261012 continues artifacts/CODEX_FINAL_ART_IMPLEMENTATION_PROMPT.md.
-Complete all77 World4-10 assets, preserving43 originals/gameplay/saves. Start
-marker emitted; no closure. Worlds4-8 now accepted/integrated/live;22 remain.
+campaign-final-art-20261012 continues the approved final-art prompt. Complete
+all77 World4-10 assets while preserving43 originals/gameplay/saves. Start marker
+emitted; no closure. Worlds4-8 and10 accepted/integrated/live. World9 remains.
 
 ## Verified published milestone, 2026-10-14
 
-55 new assets deployed,98 active finals,22 provisional remaining. All43 original
-finals,77 v1 rollback files and prior promoted PNGs unchanged. Stable keys/IDs/
-animation bindings retained.
+66 new finals deployed,109 active final paths,11 provisional(World9). Original43
+finals/77v1 rollback files and priorv2 hashes unchanged. StableIDs/keys/animations.
 Live https://aetherhold-defense.ljournllagas.workers.dev/
-Worker version645072e7-4cf7-4426-94e2-0cbb440319a3.
-O7 serializeddeploy:1518 passed/11 configured skips,typecheck/build PASS.
-HTML200/currentJS /assets/index-DDRbdTep.js matchdist:2169057bytes,
-SHA25619388b4603455f05fb8b65f79cd3e5ba4bdccd867fd174782d9024564a08475b.
-Health200 ok scoreVersion3. New11 Dreadmoon +44 retained PNGs200 exacthashes;
-repeatcache52HIT/3MISS. Publicsign-in/nativeDreadmoonpanel visuallyPASS.
-Authenticated production gameplay unverified behind Google gate;noaccount/D1
-writes. Independent local GameScene reviews pass. O7 pending boundedcommit/push
-andactualremoteequality. Branch codex/campaign-v5-20261012,previous synchronized
-application4a1746dded6d9307e105b86445a5a89a3c76f174.
+Worker version b5e0a607-12fc-4852-8898-477cca86e649.
+O8 serializeddeploy1518pass11configuredskip,typecheck/build PASS.
+HTML200/currentJS /assets/index-Diwsj0b-.js exactdist:2169072bytes,
+SHA2560f44b527e6002d57cdad1a2334bc413bfd88f636adaf2fd3bd56d561e57b9b5d.
+Health200 ok scoreVersion3;11newWorld10+55priorPNG200 exacthashes;
+repeatcache65HIT/1MISS. Publicsign-in/Crownnativepanel visuallyPASS.
+Authenticated production gameplay unverified behindGoogle;noaccount/D1writes.
+Independent local GameScene reviews pass. O8 boundedcommit/push/actualremote
+equality pending its report. Branch codex/campaign-v5-20261012 previous synchronized
+applicationffb29f1d16ca72fd9a375463c9a4def6bed4760b.
 Preserve .scratch/ .superpowers/ unknownzero-byte (c[a.currentStatus] androot
-verification/ prior testartifacts;no unfinishedcandidate staging.
+verification/ priorarttest artifacts;do notstageunfinishedW9candidates.
 
-## Accepted evidence
+## Acceptance evidence
 
 Artifactroot artifacts/campaign-final-art-20261012/:
-integration/world4-promotion-report.md,world5-6-promotion-report.md,
-world7-promotion-report.md,world8-promotion-report.md and asset-status.json.
-World8raw10PASS/originalRegentidleFAIL remains recorded; selectedsoloidle repair
-SHA84be00d661c6257be484845715d45308b61fb1028fa5e937db2b4b8aec79fba4 passes
-verification/world8-raw/regent-idle-recheck.md. Otherboss5rows unchanged.
-verification/world8-runtime/W8-V2-verification-report.md stagedPASS and
-verification/v14-postpromotion-world8/V14-report.md actuallocalpublicPASS:
-11 hashes/178HTTPresponses/all100loaders/55manifestentries/120baselinefiles/
-44priorv2 preserved;24map+6panelcontexts,Regent6actions/bothfacings/1200warning,
-Echonaturalresolutionbuff/controls/cleanup/profile safety PASS.
-MapC movedreference exactbytes preserved via world8/repair-v1/provenance/
-world8-lineage-clarification-20261013.json;rejectedpromptpathmismatches history
-only. Never rewrite/backdate sidecars.
-integration/o7-live-check.json andsmallselected-lineage summary pin live/current
-acceptedgeneration records. Earlier World4-7 raw/staging/public/live reports
-remain retained and linked by promotion reports/ledger.
-CurrentGameScene640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4.
-S3typed resolutionbuff marker/R10coldreview clear;combatvalues/timing/warnings/
-scoring/save unchanged. S2compactcontentfit/deathrestore accepted;oneSenior reused.
-Prior failedart/source/harness attempts remain evidence.
+integration/world{4,7,8,10}-promotion-report.md,world5-6-promotion-report.md,
+asset-status.json andpromotion-checklist.md track77exacttargets/acceptedhashes.
+World10raworiginal7PASS/4mapFAIL retained;13repair-v1attemptsstillfailed actual
+majorplotstructureclearance. PairedI15 evidence distinguishesflatpaving/scuffs
+fromtruecolumns/arches/crystals;fromscratchquietmaterialcourts accepted.
+World10repair-v2 fourmaphashes in verification/world10-raw/REPORT.md:
+A2a5a18c73d4914f8451b0d8b74c9a936f8a611c2db1879c2269a468fa339daa9,
+B066eda646130c0847701b1f1694104f276fa24fccd81ec07c688ae445f11097b,
+C024234dcf969ccea0f76141471a2b200815bb15e0cb4b99be46bbc7b5db2d964,
+D49e427473869ca967add41f80d237e2b2978b467dc3218cc0f0493e0da6926cb.
+All10variants/142plotcentres/46roadcorridors/84towerclearances rawPASS.
+verification/world10-runtime/W10-V2-runtime-report.md fullactions/hooks/lifecycle;
+repair-v2/W10-V2-repair-v2-runtime-report.md focused60cases raw/runtimePASS.
+Directorviewednative844/320captures quietcourtscoherent/unitcontrast/readability.
+Inherited64footprint-shape diagnostic inconclusive as square;actualrendered
+shadow/circle/plotrimclears,no geometrychange. Invalidsmokeproxy logs overwritten
+anddocumented,notpresentedaspreservedpassedproof.
+verification/v15-postpromotion-world10/V15-report.md actualpublic11hashes/all100
+loaders/120manifestrows/66v2 registrations/supportCrownresolutionbuff/cleanupPASS.
+CrownRunner tableSHA transcription correctedfromexactlocalacceptedbytes;noartchange.
+integration/o8-live-check.json +smallV15summary/selected-lineage records retain
+exactacceptedgeneration/prompt/ref/output hashpins;failedrepair historyretained.
+EarlierWorld4-8 raw/stage/public/live evidence linked inpromotionreports. W8MapC
+immutablemovedreferenceaddendum andRegentidlefocusedrepair caveats retained.
+FrozenGameScene640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4.
+S2compactcontentfit/deathrestore andS3typedresolutionbuff accepted;oneSenior reused.
+Combatvalues/timing/warnings/scoring/saves unchanged.
 
-## Remaining packages and next gates
+## Sole remaining package: World9
 
-World9raw5PASS6FAIL: fourmaps quietroutecorridors crossabyss/cliff lips,Weaver
-attack/death andSovereignphase2/death foreignneighborstrips. Producerowns6asset
-repair-v1/;preserve5passes andfailedattempts. Reportverification/world9-raw/REPORT.md.
-Useexactauthoredroute/plot overlays;connectedquietground underFULL46-unitroad
-corridors/plotrims,distinctcosmiclandmarksoutside. WholeOWNcomponent extraction
-can removeforeignneighborcomponents ifownposeintact;truecontamination/clip needs
-builtinImageGen regeneration. Weaverbuffbodymatch also reviewed.
-World10all11candidatesassembled, W10-V1 independentrawreviewactive; noacceptance/
-promotion/runtime yet. Aggregateworld10/selfchecks/world10-package-selfcheck.json.
-AfterO7sync,resumeWorld9repairrecheck/runtime andWorld10raw/runtime asready.
-Eachneedsindependentacceptance/soleintegration/actualLOCALpublicgate before
-authorizeddeploy/livecheck/boundedGitpush. Remote missingnewv2 beforepublication
-is expected baseline,not blocker.
+Rawreview5PASS6FAIL:panel+fourordinaryatlasesPASS; allfourmaps failquietroute
+corridors(chasm/clifflips),Weaverattack/death+Sovereignphase2/death foreignstrips.
+Report verification/world9-raw/REPORT.md. Producerworld9/repair-v1/ owns6replacements,
+preserves5passes/failedsources;Weaverbuffnormalbodymatching included.
+Wholeowncomponent extraction excludesneighborfragments ifownposeintact;connected
+contamination/trueclippingneedsbuiltinImageGennewpose. Fourmaprepairusesfull
+46roadcapsules/allvariantplotrim+towerquietunion,notcenterlineonly.
+World10quietmaterialplate recoverysharedasoptionifchasm-richrefskeepintruding:
+Astralbasalt/cosmiclighting/mineralgrain underwholecleararea,panelcarriesportal.
+No proceduralpaintover/geometrystatechange/acceptancewaiver.
+When6replacementhashesready, independentrawrecheck andWorld9fullruntime/support
+RiftWeaverresolutionbuff/nophasewarningrepeat. ThenA11solepublicpromotion,all77
+asset/all100loader/final120active0provisional gate,deploy/liveall77 hashes/Gitpush.
+Remote missingnewv2 BEFOREpublication isexpectedbaseline,notblocker.
 
-Limits: compact320fine-detail loss/densecrowds/767768layoutjump,physicaltouch/full
-uninterruptedmatch/authenticatedlivegameplay unverified. Ordinaryattacks use
-explicitpresentationQA;seededsupport targets notnatural-earnedclear claims.
-Largebundlewarning/11configuredskips retained.
-BuiltinImageGen/precallsidecars/rawoutputsIDs/hashes;largerperactionpose sources,
-uniformdownsample/no lowresupscale/consistentbody scale/no inventedposes.
-RawGIFpolicydenied:nobypass. ActualGameScenePNG/frameevents separatelyauthorized;
-unsavedfixtures/mockaccountAPIs,noD1writes. Rootmain3docs;actualcomplete/pause/
-blocker onlythen oneArchivistclosure withsameID/new exact6column tokenreport.
+Limits:compact320fine-details/densecrowds/767768layoutjump,physicaltouch/full
+uninterruptedmatch/authenticatedlivegameplayunverified;largebundlewarning/11skips.
+Ordinaryattacks explicitpresentationQA;seededsupporttargetnotearnedclearclaim.
+BuiltinImageGen/precallsidecars/rawIDs/hashes,uniformdownsample/no lowresupscale/
+wholeOWNpose softedges/consistentbodyscale/no inventedposes.
+RawGIFpolicydenied:nobypass. ActualGameScenePNG/frameevents authorized;unsavedQA/
+mockaccountAPIs/noD1writes. Rootmain3docs. Actualcomplete/pause/blocker onlyafter
+writers/main3finalized then ONE closureArchivist sameID/new exact6columntokenreport.

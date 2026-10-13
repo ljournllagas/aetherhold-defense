@@ -1,5 +1,11 @@
 ﻿# Project diary
 
+World10 repeated-map lesson: correct coordinates and opaque white guide masks
+did not overcome architectural source references and preserve-composition edits.
+Paired evidence/prompt investigations distinguish harmless flat floor texture
+from true columns/arches/crystals at plot centres. Generate quiet continuous
+material courts from scratch rather than repeatedly editing object-rich maps;
+keep geometry fixed and retain identity through palette/material/lighting.
 World6 repair lesson: nominal grid seam crossings alone are not lost pixels.
 Whole-sheet component audit found22/28 isolated complete actors with no outer
 canvas contact; extracting their complete bounds salvages those poses. A buff
@@ -119,3 +125,4 @@ poses per action source, then uniform downsampling into the final atlas.
 2026-10-13 Worlds5/6 release: staged acceptance then actual local public gate then deploy/live hashes. Remote missing v2 files before publication are expected baseline, not an integration blocker. Typed support markers separate telegraph and resolution, ensuring one buff per cast without text matching or combat changes.
 2026-10-13 World7 release: decorative near-lane props passed actual road/plot inspection; exact public loader and live checks followed staged acceptance. Repeat cache can mix HIT/MISS while all bytes match; do not report all HIT. Runtime warning captures must sample true telegraph interval, not infer atlas special action during vector warnings.
 2026-10-14 World8 release: idle solo-character requirement is distinct from authored phase echoes. Repair only required idle row while retaining accepted other rows. Moved reference paths need immutable hash-preserved lineage addenda, not rewritten or backdated originals.
+2026-10-14 World10 quiet-court raw/runtime/public/live gates pass with all geometry unchanged. Whole material plates preserve gameplay clearance after masked architecture edits failed; family differences now come from paving, grain and light. Keep inherited conservative footprint ambiguity separate from new map-art integrity.
