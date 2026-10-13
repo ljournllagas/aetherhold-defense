@@ -8,6 +8,9 @@ export interface GameLayout {
   inspector: number;
   compact: boolean;
   narrow: boolean;
+  stackedHud: boolean;
+  portraitBossCommands: boolean;
+  bossStatusHeight: number;
   safe: Insets;
   trayBounds: Rect;
   waveBounds: Rect;
@@ -15,20 +18,25 @@ export interface GameLayout {
   field: { x: number; y: number; width: number; height: number };
 }
 
-export function gameLayout(width: number, height: number, safe: Insets = {top:0,right:0,bottom:0,left:0}): GameLayout {
+export function gameLayout(width: number, height: number, safe: Insets = {top:0,right:0,bottom:0,left:0}, options: { portraitBossCommands?: boolean; bossStatusHeight?: number } = {}): GameLayout {
   const compact = width < 768 || height < 540;
   const inspector = width >= 1180 && !compact ? 240 : 0;
   const narrow = width < 768;
   const portrait = width < height && narrow;
-  const hud = (portrait ? 104 : 56) + safe.top;
-  const tray = (portrait ? 128 : 76) + safe.bottom;
+  const stackedHud = portrait || width < 600;
+  const portraitBossCommands = stackedHud && options.portraitBossCommands === true;
+  const bossStatusHeight = compact ? options.bossStatusHeight ?? 0 : 0;
+  const hud = (stackedHud ? 104 + bossStatusHeight : 56 + Math.max(0,bossStatusHeight-24)) + safe.top;
+  const tray = (portraitBossCommands ? 52 : portrait ? 128 : 76) + safe.bottom;
   const available = Math.max(44,width-safe.left-safe.right);
   const y = height-tray;
-  const trayBounds={x:safe.left,y,width:portrait?available:Math.max(44,available-240),height:76};
-  const waveBounds={x:portrait?safe.left:width-safe.right-240,y:portrait?y+76:y,width:portrait?available:240,height:portrait?52:76};
+  const trayBounds={x:safe.left,y,width:portrait?available:Math.max(44,available-240),height:portraitBossCommands?0:76};
+  const waveBounds=portraitBossCommands
+    ? {x:safe.left,y,width:available,height:52}
+    : {x:portrait?safe.left:width-safe.right-240,y:portrait?y+76:y,width:portrait?available:240,height:portrait?52:76};
   const field={x:safe.left,y:hud,width:Math.max(1,available-inspector),height:Math.max(1,height-hud-tray)};
   const inspectorBounds=inspector?{x:width-safe.right-inspector,y:hud,width:inspector,height:field.height}:null;
-  return {width,height,hud,tray,inspector,compact,narrow,safe,trayBounds,waveBounds,inspectorBounds,field};
+  return {width,height,hud,tray,inspector,compact,narrow,stackedHud,portraitBossCommands,bossStatusHeight,safe,trayBounds,waveBounds,inspectorBounds,field};
 }
 
 export function readSafeInsets():Insets {

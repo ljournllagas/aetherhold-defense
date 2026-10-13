@@ -4,6 +4,7 @@ import atlasMetadata from './enemyAtlasFrames.json';
 import { ensureCampaignEnemyTexture, type CampaignBossArtState } from './campaignArt.ts';
 import { CAMPAIGN_ATLAS_CONTENT_FRACTION, CAMPAIGN_ATLAS_GROUND_ORIGIN, campaignAnimationDefinitions } from '../campaign/artManifest.ts';
 import { P2 } from './artkit.ts';
+import type { Rect } from '../ui/viewport.ts';
 
 type Facing = 'left' | 'right';
 export type EnemyAnimationAction = 'attack' | 'buff' | 'death' | 'armor_break' | 'exposed_core' | 'freeze_cast' | 'phase_two' | 'special';
@@ -47,6 +48,26 @@ export interface EnemyView {
   /** Play an authored one-shot without coupling presentation to combat resolution. */
   playAction(action: EnemyAnimationAction): number | null;
   setCampaignState?(state: CampaignBossArtState): void;
+}
+
+const SUPPORT_CACHE = new WeakMap<EnemyView, Rect>();
+
+/** Stable all-action support, including both facings, edge, bob and damage pop. */
+export function enemyVisualSupport(visual: EnemyView): Rect {
+  const cached = SUPPORT_CACHE.get(visual);
+  if (cached) return cached;
+  const sprite = visual.sprite, texture = sprite.texture;
+  const names = visual.atlas?.startsWith('campaign_enemy_') && texture?.getFrameNames ? texture.getFrameNames() : [];
+  const frames = names.length ? names.map(name => texture.get(name)) : [...visual.frameRectangles.right, ...visual.frameRectangles.left];
+  const width = Math.max(...frames.map(frame => frame.width)), height = Math.max(...frames.map(frame => frame.height));
+  const sourceScale = Math.abs(sprite.scaleX), originY = sprite.originY ?? 1;
+  const halfWidth = width * sourceScale * 1.045 / 2;
+  const top = Math.min(-height * sourceScale * originY, 1 - height * sourceScale * 1.045);
+  const bottom = Math.max(height * sourceScale * (1 - originY), 1);
+  const rect = { x: -halfWidth * 1.16, y: top * 1.16 - (visual.bobAmp ?? 0), width: halfWidth * 2 * 1.16,
+    height: (bottom - top) * 1.16 + (visual.bobAmp ?? 0) };
+  SUPPORT_CACHE.set(visual, rect);
+  return rect;
 }
 
 const ACTION_PRIORITY: Record<EnemyAnimationAction, number> = {

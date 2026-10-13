@@ -2752,5 +2752,813 @@
       "path": "/assets/campaign/towers/tempest-tier3-v1.png",
       "baselineSha256": "b84478b91cabab8fc5002904fe390f34ed90737847872b941c3efc5034476870"
     }
-  ]
+  ],
+  "livePromotions": {
+    "reviewPath": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
+    "acceptedForIntegration": true,
+    "assets": [
+      {
+        "id": "map:whisperfen:a",
+        "baselineV1Path": "/assets/campaign/maps/whisperfen_a-v1.png",
+        "baselineSha256": "12599b41516debd92f1bd2379f464c4891f3448f4ee4f7d6a5cfd14fd3c430dc",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen_a-v2-candidate.png",
+        "candidateSha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797",
+        "promotedPath": "/assets/campaign/maps/whisperfen_a-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:whisperfen:a",
+          "key": "campaign_whisperfen_a",
+          "path": "/assets/campaign/maps/whisperfen_a-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:whisperfen:b",
+        "baselineV1Path": "/assets/campaign/maps/whisperfen_b-v1.png",
+        "baselineSha256": "47d6359ca7038cdec1fb4821bfec5b7cffeecec9e588e26f89dc692f9941a382",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen_b-v2-candidate.png",
+        "candidateSha256": "ee69916e9344e97ce8f9b7bc9d1aed0b451cd3f87f7195665f602f57329258d2",
+        "promotedPath": "/assets/campaign/maps/whisperfen_b-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:whisperfen:b",
+          "key": "campaign_whisperfen_b",
+          "path": "/assets/campaign/maps/whisperfen_b-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:whisperfen:c",
+        "baselineV1Path": "/assets/campaign/maps/whisperfen_c-v1.png",
+        "baselineSha256": "9a6c28ab96395a9373e5be4284881f18d479193b192e4b8f6c3981658e36bc71",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen_c-v2-candidate.png",
+        "candidateSha256": "2a9bcdbf759048c2026295878e6c264ba0ba749642890a7a3cd239bf3b912d5a",
+        "promotedPath": "/assets/campaign/maps/whisperfen_c-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:whisperfen:c",
+          "key": "campaign_whisperfen_c",
+          "path": "/assets/campaign/maps/whisperfen_c-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:whisperfen:d",
+        "baselineV1Path": "/assets/campaign/maps/whisperfen_d-v1.png",
+        "baselineSha256": "8f9af49470911f9e9aaeef91d4b036293da2ad4f4e9da48aae61aa3987d39316",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen_d-v2-candidate.png",
+        "candidateSha256": "0617810e89ca06ef608fad09882ddce04265b4507d3c5cf30a0ac7b8e00299da",
+        "promotedPath": "/assets/campaign/maps/whisperfen_d-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:whisperfen:d",
+          "key": "campaign_whisperfen_d",
+          "path": "/assets/campaign/maps/whisperfen_d-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "world-panel:whisperfen",
+        "baselineV1Path": "/assets/campaign/world-map/whisperfen-v1.png",
+        "baselineSha256": "cb76061c7cc1ed0873e057163cc63c30ba98f5872dfbabf751cdf080737fd153",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen-v2-candidate.png",
+        "candidateSha256": "c585a31df7245d4b99f00a916c8226ffbb877ed95178fbe883db66443f77a2c9",
+        "promotedPath": "/assets/campaign/world-map/whisperfen-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "world-panel:whisperfen",
+          "key": "campaign_worldmap_whisperfen",
+          "path": "/assets/campaign/world-map/whisperfen-v2.png",
+          "kind": "image",
+          "width": 768,
+          "height": 432,
+          "states": {},
+          "state": "final",
+          "stage": "campaign",
+          "temporary": null,
+          "qualityFlags": [
+            "biome_illustration"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "enemy:bogling",
+        "baselineV1Path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v1.png",
+        "baselineSha256": "ccf03b98537a384a7aaa888b9b6b65640bbaa27ad30c3aa3efabe08b27e623c8",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world4/atlases/final/A10-bogling-atlas-candidate-v1.png",
+        "candidateSha256": "1ebb5f24fe3e6e09192d2508679c6e7a4f949c7520b50ba27b87404af0105873",
+        "promotedPath": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:bogling",
+          "key": "campaign_enemy_bogling",
+          "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_bogling_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_bogling_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_bogling_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_bogling_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:fen_skitter",
+        "baselineV1Path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v1.png",
+        "baselineSha256": "fc1b8ab86e247bf237aa0df2f045f41bc1f924656eb2502cce87966eee101a38",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world4/fen-gait-extreme-pilot/continuation/final/fen-skitter-atlas-extreme-cycle-candidate.png",
+        "candidateSha256": "d67e435f9f9263e6cce676974b3aa15cc558976951cb9012aa55bc1c755fa79e",
+        "promotedPath": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:fen_skitter",
+          "key": "campaign_enemy_fen_skitter",
+          "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_fen_skitter_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_fen_skitter_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_fen_skitter_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_fen_skitter_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:mossguard",
+        "baselineV1Path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v1.png",
+        "baselineSha256": "ea57448d5789e92db3887a077b6704f0b9d2749d2dafa02124fa28bc20aca5af",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world4/atlases/final/A10-mossguard-atlas-candidate-v1.png",
+        "candidateSha256": "c19d9b8ce50736c225d9e4b6c6ea56eec246bbda75923162190cfba26bb4ea10",
+        "promotedPath": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:mossguard",
+          "key": "campaign_enemy_mossguard",
+          "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_mossguard_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_mossguard_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_mossguard_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_mossguard_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:rotback",
+        "baselineV1Path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v1.png",
+        "baselineSha256": "5b6c9e68aa501cc81cd75901ec48476fffd6540d46710f043af4f3d7c9cb6ee3",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world4/atlases/final/A10-rotback-atlas-candidate-v1.png",
+        "candidateSha256": "93ce8dab3a75d253e0c989c26c58ffc720444b2ca7e03b4bb648c7ae7e9c5ec7",
+        "promotedPath": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:rotback",
+          "key": "campaign_enemy_rotback",
+          "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_rotback_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rotback_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rotback_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rotback_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:rootwretch",
+        "baselineV1Path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v1.png",
+        "baselineSha256": "b1abec98a6ca346366099e098c7159f8d468848d247c7a639f99922296fbf579",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world4/atlases/final/A10-rootwretch-atlas-candidate-v1.png",
+        "candidateSha256": "09eaaccab4034bf36e79920c6e697c444ff95ef0da4f583b7634c697f1a72b74",
+        "promotedPath": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:rootwretch",
+          "key": "campaign_enemy_rootwretch",
+          "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 640,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            },
+            "buff": {
+              "row": 4,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow",
+            "support_buff_playback_verified"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_rootwretch_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rootwretch_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rootwretch_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rootwretch_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rootwretch_buff",
+              "state": "buff",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "buff_0",
+                "buff_1",
+                "buff_2",
+                "buff_3",
+                "buff_4",
+                "buff_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "boss:mireheart_hydra",
+        "baselineV1Path": "/assets/campaign/bosses/mireheart_hydra-atlas-v1.png",
+        "baselineSha256": "9cced307ee1dee8c8736cabaeaa46d94cc61498238b1cf6d22c49019a887001d",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world4/hydra-atlas/finalcandidate/mireheart_hydra-atlas-v3-candidate.png",
+        "candidateSha256": "cbed46bbc139e37cbda59775203e850d8a320161c586cc91a033f70ba5da7500",
+        "promotedPath": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "boss:mireheart_hydra",
+          "key": "campaign_enemy_mireheart_hydra",
+          "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.png",
+          "kind": "sheet",
+          "width": 2048,
+          "height": 1536,
+          "frameWidth": 256,
+          "frameHeight": 256,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 6
+            },
+            "walk": {
+              "row": 1,
+              "frames": 8
+            },
+            "attack": {
+              "row": 2,
+              "frames": 8
+            },
+            "special": {
+              "row": 3,
+              "frames": 8
+            },
+            "phase_two": {
+              "row": 4,
+              "frames": 8
+            },
+            "death": {
+              "row": 5,
+              "frames": 8
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "phase_state_readability_verified"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_mireheart_hydra_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3",
+                "idle_4",
+                "idle_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_mireheart_hydra_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5",
+                "walk_6",
+                "walk_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_mireheart_hydra_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5",
+                "attack_6",
+                "attack_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_mireheart_hydra_special",
+              "state": "special",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "special_0",
+                "special_1",
+                "special_2",
+                "special_3",
+                "special_4",
+                "special_5",
+                "special_6",
+                "special_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_mireheart_hydra_phase_two",
+              "state": "phase_two",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "phase_two_0",
+                "phase_two_1",
+                "phase_two_2",
+                "phase_two_3",
+                "phase_two_4",
+                "phase_two_5",
+                "phase_two_6",
+                "phase_two_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_mireheart_hydra_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5",
+                "death_6",
+                "death_7"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
 }

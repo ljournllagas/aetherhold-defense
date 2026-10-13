@@ -53,16 +53,43 @@ describe('campaign ability callout', () => {
     if (campaignId === 'ashcaller') expect(ally.speedBuffUntil).toBe(run.gameTimeMs + CAMPAIGN_BATTLE_TUNING.supportDurationMs);
     else expect(ally.slowResistanceUntil).toBe(run.gameTimeMs + CAMPAIGN_BATTLE_TUNING.supportDurationMs);
   });
+  it('routes the real Rootwretch heal pulse into buff playback without changing cadence, radius or target cooldown', () => {
+    const { run } = fixture();
+    const visual = { playAction: vi.fn(() => 0) };
+    const support = { id: 7, campaignId: 'rootwretch', alive: true, isBoss: false, x: 0, y: 0, hp: 100, maxHp: 100, view: { getData: () => visual } };
+    const ally = { id: 8, alive: true, isBoss: false, x: 145, y: 0, hp: 50, maxHp: 100 };
+    const outside = { ...ally, id: 9, x: 146 };
+    const boss = { ...ally, id: 10, x: 40, isBoss: true };
+    const bosses = new CampaignBossSystem(); bosses.register(support as unknown as Enemy, 0);
+    run.campaignBosses = bosses; run.enemies = [support, ally, outside, boss]; run.towers = [];
+    run.gameTimeMs = 5499; run.tickCampaignBosses();
+    expect(visual.playAction).not.toHaveBeenCalled(); expect(ally.hp).toBe(50);
+    run.gameTimeMs = 5500; run.tickCampaignBosses();
+    expect(visual.playAction).toHaveBeenCalledExactlyOnceWith('buff');
+    expect(run.campaignCallout.text).toBe('Rootwretch · Healing roots');
+    expect(ally.hp).toBe(54); expect(outside.hp).toBe(50); expect(boss.hp).toBe(50);
+    run.tickCampaignBosses(); // An unchanged simulation clock cannot repeat a pulse.
+    expect(visual.playAction).toHaveBeenCalledTimes(1);
+    run.gameTimeMs = 11000; run.tickCampaignBosses();
+    expect(visual.playAction).toHaveBeenCalledTimes(2); expect(ally.hp).toBe(54);
+    run.gameTimeMs = 16500; run.tickCampaignBosses();
+    expect(visual.playAction).toHaveBeenCalledTimes(3); expect(ally.hp).toBe(58);
+    // The existing provisional view may have no authored EnemyView at all.
+    support.view.getData = () => undefined as any;
+    run.gameTimeMs = 22000; expect(() => run.tickCampaignBosses()).not.toThrow();
+  });
   it('starts the authored death clip while retaining detached-view cleanup and clip duration', () => {
     const { run } = fixture();
     const visual = { playAction: vi.fn(() => 750) };
-    const view = { getData: () => visual };
+    const data=new Map<string,unknown>([['enemyVisual',visual]]);
+    const view = { getData: (key:string) => data.get(key), setData: (key:string,value:unknown) => {data.set(key,value);return view;} };
     const enemy: any = { isBoss: false, view, shadow: null, slowRing: null, hpBar: { clear: vi.fn() }, body: {} };
     run.gameTimeMs = 120;
 
     run.startDeathAnim(enemy);
 
     expect(visual.playAction).toHaveBeenCalledWith('death');
+    expect(view.getData('deathScreenScale')).toBeGreaterThan(0);
     expect(run.dying[0]).toMatchObject({ view, t0: 120, duration: 750 });
     expect(enemy).toMatchObject({ view: null, body: null, shadow: null, slowRing: null, hpBar: null });
     expect(enemy.hpBar).toBeNull();

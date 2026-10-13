@@ -2,6 +2,35 @@
 
 ## Lasting decisions and lessons
 
+- Size motion in final gameplay pixels before producing a full action cycle.
+  Fen Skitter's source body rhythm reduced below one screen pixel; genuine
+  distinct frames and correct playback still failed readable gait acceptance.
+  Test opposing extreme silhouettes and open leg gaps at the native footprint
+  before generating intermediates. Preserve source scale and ground landmarks.
+- Boss-panel clearance must include transformed actor and floating-text bounds,
+  not only map corners. Fixed-position captures can miss moving boss overhang;
+  check route movement, camera pan/zoom and reservation/restoration lifecycle.
+  Camera reflow must also reproject detached dying views and reapply their
+  existing shrink/fade progress, preserving action start and cleanup deadlines.
+- Boss clearance is not whole-field readability. Extra HUD reservation plus
+  camera headroom reduced a 459px map to 167px while painted NPCs kept their
+  screen size and towers shrank. Compare actual roads, plots, towers and actors
+  against the regular field before accepting a fit solution.
+- Use production-equivalent atlas dimensions in geometry fixtures and actual
+  candidate captures for visual acceptance. A narrower synthetic frame can
+  understate horizontal support; reconcile guards and units before acting on
+  a review finding.
+- Final-art source sheets may cross nominal grid lines while complete poses
+  remain separate. Extract reviewed whole alpha silhouettes, retain edge/detail
+  pixels, use a consistent creature scale and foot landmark, and verify actual
+  playback; fixed-cell crops can unnecessarily clip otherwise usable art.
+- Judge RGBA transparency on explicit light/dark composites and full-sheet
+  alpha bounds. Direct previews can suggest background haze that is absent in
+  the composite; nominal cell-edge crossings do not establish canvas clipping.
+- Save exact prompts/reference arrays before image-generation calls. A compacted
+  worker lost prompt wording, but its actual session tool-call records recovered
+  the four accepted Fen Skitter row prompts without inventing provenance.
+
 - v5 application closure: published Worker and exact live bundle/health passed;
   application commit `52531f6d231ac849bd2ea37cdeab051404eea33b` matched the
   fetched remote branch. Keep final-art approval separate from gameplay and
@@ -79,3 +108,5 @@
 - Phaser 4 WebGL requires an external Mask filter for fixed pane clipping; GeometryMask/setMask is Canvas-only. Keep the mask source visible off the display list, refresh the static controller after redraw, and guard input bounds separately. Native pixel-band comparisons and restart/resize listener counts exposed and verified the repair across map, battlefield and leaderboard.
 - Verify the fully unlocked campaign UI at exact threshold profiles and narrow portrait sizes. Measured description height prevents boss Codex paragraphs colliding with stats; lower-Star fixtures cannot establish the 30/90-Star layout.
 - Campaign production completion 20261010 published Worker af75da8f-9800-42ce-919d-e823a0ad471a after independent native acceptance and939 passing tests/11 configured skips. Live current bundle, health and25 images matched the build. Eighteen absent atlases remain explicitly UNVERIFIED under the user's fallback allowance; raw art and exact prompts are retained separately from production files.
+2026-10-13: Preserve failed harness logs when focused reruns correct fixture assumptions. Full-map portrait visibility legitimately clamps vertical pan. A QA-staged injured target verifies the scheduled support caller and buff, not a natural wave. Retain breakpoint composition and physical-device input limits explicitly.
+2026-10-13: World4 public gate and live HTML/bundle/health/all11hashes PASS. Eleven published finals remain distinct from66pending; this milestone is not closure.

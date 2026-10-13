@@ -42,6 +42,28 @@ describe('battlefield camera', () => {
     expect(view.unproject({ x: 422, y: 191 })).toEqual({ x: 520, y: 348 });
     expect(view.nearest([{ x: 520, y: 348 }, { x: 535, y: 348 }], { x: 423, y: 191 })).toBe(0);
   });
+  it('keeps pointer inversion and zoom anchors coherent with boss-art headroom inside the outer field', () => {
+    const field = { x: 8, y: 100, width: 320, height: 110 };
+    const view = new BattlefieldView(field);
+    view.setTopHeadroom(40);
+    expect(view.field).toEqual(field);
+    expect(view.fitField).toEqual({ x: 8, y: 140, width: 320, height: 70 });
+    expect(view.inField({ x: 12, y: 110 })).toBe(true);
+    expect(view.contains({ x: 12, y: 110 })).toBe(false);
+
+    const anchor = { x: 168, y: 172 };
+    const world = view.unproject(anchor);
+    expect(view.project(world).x).toBeCloseTo(anchor.x);
+    expect(view.project(world).y).toBeCloseTo(anchor.y);
+    view.zoomAt(2, anchor);
+    expect(view.project(world).x).toBeCloseTo(anchor.x);
+    expect(view.project(world).y).toBeCloseTo(anchor.y);
+    view.pan(18, -8);
+    const afterPan = view.project(view.unproject({ x: 100, y: 170 }));
+    expect(afterPan.x).toBeCloseTo(100);
+    expect(afterPan.y).toBeCloseTo(170);
+    expect(view.field).toEqual(field);
+  });
 });
 
 describe('touch gestures', () => {

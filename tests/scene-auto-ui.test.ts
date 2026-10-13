@@ -6,6 +6,15 @@ import type { ScrollSheet } from '../src/game/ui/ScrollSheet.ts';
 import type { QAStatus } from '../src/game/qa.ts';
 afterEach(() => vi.restoreAllMocks());
 
+it('keeps exact compact HUD values available in the live More detail after status refresh',()=>{
+  const {run,loose}=autoScene();run.layout=gameLayout(844,390);run.gold=987654321;
+  loose.scoreSoFar=()=>123456789;
+  const detail=new Display();loose.autoDetailText=detail;run.sheetKind='more';run.sheet={scrollOffset:40} as unknown as ScrollSheet;
+  run.refreshAutoDisplay();
+  expect(detail.text).toContain('Gold 987654321');expect(detail.text).toContain('Score 123456789');
+  expect(detail.text).toContain(`Lives ${run.lives}/${run.maxLives}`);expect(run.sheet.scrollOffset).toBe(40);
+});
+
 it('does not toggle again when Phaser replays an older keydown from its frame queue', () => {
   const { run } = autoScene();
   const press = { repeat: false, target: null, timeStamp: 100 } as KeyboardEvent;
@@ -72,9 +81,9 @@ it('house Auto button respects drag, pointerout and cancellation',()=>{
   release(box);expect(run.auto.enabled).toBe(true);
 });
 it.each([
-  {width:390,height:844,y:54,overviewX:8,autoX:142,speedX:238,pauseX:310},
-  {width:1280,height:720,y:6,overviewX:936,autoX:1032,speedX:1128,pauseX:1200}
-])('keeps direct speed controls reachable at $width×$height without overlap',({width,height,y,overviewX,autoX,speedX,pauseX})=>{
+  {width:390,height:844,labels:['Overview','Auto OFF','1×','Pause'],bounds:[[8,54,90.5,44],[102.5,54,90.5,44],[197,54,90.5,44],[291.5,54,90.5,44]]},
+  {width:1280,height:720,labels:['Auto OFF','1×','Pause','Overview'],bounds:[[1032,6,88,44],[1128,6,64,44],[1200,6,68,44],[936,6,88,44]]}
+])('keeps direct speed controls reachable at $width×$height without overlap',({width,height,labels:expectedLabels,bounds})=>{
   const {run,loose}=autoScene();run.layout=gameLayout(width,height);
   type PlacedDisplay=Display&{x:number;y:number;width:number;height:number};
   const boxes:PlacedDisplay[]=[],labels:Display[]=[];
@@ -88,10 +97,8 @@ it.each([
   };
   run.drawControls();
   const controls=boxes.map((box,index)=>({box,label:labels[index]}));
-  expect(controls.map(control=>control.label.text)).toEqual(['Auto OFF','1×','Pause','Overview']);
-  expect(controls.map(({box})=>[box.x,box.y,box.width,box.height])).toEqual([
-    [autoX,y,88,44],[speedX,y,64,44],[pauseX,y,68,44],[overviewX,y,88,44]
-  ]);
+  expect(controls.map(control=>control.label.text)).toEqual(expectedLabels);
+  expect(controls.map(({box})=>[box.x,box.y,box.width,box.height])).toEqual(bounds);
   const leftToRight=[...controls].sort((a,b)=>a.box.x-b.box.x);
   for(let index=0;index<leftToRight.length;index++){
     const {box}=leftToRight[index];

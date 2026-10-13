@@ -6,7 +6,7 @@ import { CAMPAIGN_ENEMIES } from '../src/game/campaign/enemies.ts';
 import { CampaignRepository } from '../src/game/campaign/progress.ts';
 import {
   AVAILABLE_CAMPAIGN_ART_PATHS, CAMPAIGN_ART_MANIFEST, CAMPAIGN_PROVISIONAL_STARTER_PATHS,
-  campaignGameplayAssetsForLevel
+  campaignAnimationDefinitions, campaignGameplayAssetsForLevel
 } from '../src/game/campaign/artManifest.ts';
 import { requiredAssets, requiredAssetsForRequest } from '../src/game/art/assetManifest.ts';
 import { TOWER_LIST } from '../src/game/config/towers.ts';
@@ -52,7 +52,36 @@ interface LegacyFinalAssetContract {
   baselineSha256: string;
 }
 
-const PROVISIONAL_EXPANSION_PATHS = registryArtContract.assets.map(asset => asset.path);
+interface LivePromotionContract {
+  id: string;
+  baselineV1Path: string;
+  baselineSha256: string;
+  candidatePath: string;
+  candidateSha256: string;
+  promotedPath: string;
+  approved: boolean;
+  registration: RegistryAssetContract['registration'] & {
+    stage: string;
+    qualityFlags: string[];
+    animations: unknown[];
+  };
+}
+
+interface RegistryArtContract {
+  baselineCommit: string;
+  assets: RegistryAssetContract[];
+  legacyFinalAssets: LegacyFinalAssetContract[];
+  livePromotions: {
+    reviewPath: string;
+    acceptedForIntegration: boolean;
+    assets: LivePromotionContract[];
+  };
+}
+
+const registryContract = registryArtContract as unknown as RegistryArtContract;
+const promotedBaselinePaths = new Set(registryContract.livePromotions.assets.map(asset => asset.baselineV1Path));
+const PROVISIONAL_EXPANSION_PATHS = registryContract.assets
+  .map(asset => asset.path).filter(path => !promotedBaselinePaths.has(path));
 
 async function sha256(value: string | Uint8Array): Promise<string> {
   const source = typeof value === 'string' ? new TextEncoder().encode(value) : value;
@@ -178,51 +207,77 @@ describe('v5 campaign registry and route verification', () => {
     }
   });
 
-  it('matches all 77 staged source-to-destination contracts, file hashes, PNG dimensions and withheld art states', async () => {
-    const contract = registryArtContract as {
-      baselineCommit: string;
-      assets: RegistryAssetContract[];
-    };
+  it('preserves all v1 baselines and verifies every promoted v2 candidate and remaining provisional registration', async () => {
+    const contract = registryContract;
     const moduleName = 'node:fs';
     const { existsSync, readFileSync } = await import(moduleName);
     const registered = CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final_required');
     expect(contract.baselineCommit).toBe('b33ea38e01754f2e6469eadf1660cd84b7520ee5');
     expect(contract.assets).toHaveLength(77);
-    expect(registered).toHaveLength(77);
+    expect(contract.livePromotions.acceptedForIntegration).toBe(true);
+    expect(contract.livePromotions.assets).toHaveLength(11);
+    expect(registered).toHaveLength(66);
     expect(new Set(contract.assets.map(item => item.path)).size).toBe(77);
-    expect(new Set(registered.map(item => item.path)).size).toBe(77);
+    expect(new Set(registered.map(item => item.path)).size).toBe(66);
 
     const registeredByPath = new Map(registered.map(item => [item.path, item]));
+    const promotionsByBaselinePath = new Map(contract.livePromotions.assets.map(item => [item.baselineV1Path, item]));
     for (const item of contract.assets) {
-      const source = registeredByPath.get(item.path);
-      expect(source, `${item.id} runtime registration`).toBeDefined();
-      expect(item.approved).toBe(false);
-      expect(item.candidateStatus).toBe(item.category === 'boss' ? 'NONE' : 'UNAPPROVED_PREVIEW');
-      if (item.category === 'boss') expect(item.candidateSha256).toBeNull();
-      else expect(item.candidateSha256).toMatch(/^[a-f0-9]{64}$/);
-      expect(item.registration).toMatchObject({ state: 'final_required', temporary: 'procedural', path: item.path, width: item.width, height: item.height });
-      expect(source!.id).toBe(item.registration.id);
-      expect(source!.key).toBe(item.registration.key);
-      expect(source!.path).toBe(item.registration.path);
-      expect(source!.kind).toBe(item.registration.kind);
-      expect(source!.width).toBe(item.registration.width);
-      expect(source!.height).toBe(item.registration.height);
-      expect(source!.frameWidth).toBe(item.registration.frameWidth);
-      expect(source!.frameHeight).toBe(item.registration.frameHeight);
-      expect(source!.states).toEqual(item.registration.states);
-      expect(source!.state).toBe(item.registration.state);
+      const baselineTarget = new URL(`../public${item.path}`, import.meta.url);
+      expect(existsSync(baselineTarget), `${item.path} v1 rollback file remains`).toBe(true);
+      const baselineBytes: Uint8Array = readFileSync(baselineTarget);
+      expect(await sha256(baselineBytes), `${item.path} v1 baseline hash remains unchanged`).toBe(item.baselineSha256);
+      expect(pngDimensions(baselineBytes), `${item.path} v1 baseline dimensions`).toEqual([item.width, item.height]);
 
-      const target = new URL(`../public${item.path}`, import.meta.url);
-      expect(existsSync(target), `${item.path} staged target exists`).toBe(true);
-      const bytes: Uint8Array = readFileSync(target);
-      expect(await sha256(bytes), `${item.path} matches source baseline hash`).toBe(item.baselineSha256);
-      expect(pngDimensions(bytes), `${item.path} PNG dimensions`).toEqual([item.width, item.height]);
+      const promotion = promotionsByBaselinePath.get(item.path);
+      if (promotion) {
+        expect(promotion.approved).toBe(true);
+        expect(promotion.baselineSha256).toBe(item.baselineSha256);
+        expect(promotion.registration).toMatchObject({
+          id: item.registration.id, key: item.registration.key, kind: item.registration.kind,
+          width: item.width, height: item.height, state: 'final', stage: item.category === 'world-panel' ? 'campaign' : 'gameplay', temporary: null
+        });
+        const live = CAMPAIGN_ART_MANIFEST.find(asset => asset.id === promotion.id);
+        const { animations, ...liveRegistration } = promotion.registration;
+        expect(live, `${promotion.id} promoted runtime registration`).toMatchObject(liveRegistration);
+        expect(campaignAnimationDefinitions(live!.key), `${promotion.id} stable animation contract`).toEqual(animations);
+        expect(live!.path).toBe(promotion.promotedPath);
+        expect(live!.key).toBe(item.registration.key);
+        expect(AVAILABLE_CAMPAIGN_ART_PATHS).toContain(promotion.promotedPath);
+        expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain(item.path);
+
+        const candidateBytes: Uint8Array = readFileSync(new URL(`../${promotion.candidatePath}`, import.meta.url));
+        const promotedTarget = new URL(`../public${promotion.promotedPath}`, import.meta.url);
+        expect(existsSync(promotedTarget), `${promotion.promotedPath} promoted target exists`).toBe(true);
+        const promotedBytes: Uint8Array = readFileSync(promotedTarget);
+        expect(await sha256(candidateBytes), `${promotion.id} accepted candidate hash`).toBe(promotion.candidateSha256);
+        expect(await sha256(promotedBytes), `${promotion.promotedPath} exact candidate bytes`).toBe(promotion.candidateSha256);
+        expect(pngDimensions(promotedBytes), `${promotion.promotedPath} PNG dimensions`).toEqual([item.width, item.height]);
+      } else {
+        const source = registeredByPath.get(item.path);
+        expect(source, `${item.id} remaining provisional registration`).toBeDefined();
+        expect(item.approved).toBe(false);
+        expect(item.candidateStatus).toBe(item.category === 'boss' ? 'NONE' : 'UNAPPROVED_PREVIEW');
+        if (item.category === 'boss') expect(item.candidateSha256).toBeNull();
+        else expect(item.candidateSha256).toMatch(/^[a-f0-9]{64}$/);
+        expect(item.registration).toMatchObject({ state: 'final_required', temporary: 'procedural', path: item.path, width: item.width, height: item.height });
+        expect(source!.id).toBe(item.registration.id);
+        expect(source!.key).toBe(item.registration.key);
+        expect(source!.path).toBe(item.registration.path);
+        expect(source!.kind).toBe(item.registration.kind);
+        expect(source!.width).toBe(item.registration.width);
+        expect(source!.height).toBe(item.registration.height);
+        expect(source!.frameWidth).toBe(item.registration.frameWidth);
+        expect(source!.frameHeight).toBe(item.registration.frameHeight);
+        expect(source!.states).toEqual(item.registration.states);
+        expect(source!.state).toBe(item.registration.state);
+        expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toContain(item.path);
+        expect(AVAILABLE_CAMPAIGN_ART_PATHS).not.toContain(item.path);
+      }
     }
-
-    expect(registered.every(asset => !AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(true);
   });
 
-  it('keeps the 43 original final paths and gates all 77 baseline expansion files provisionally', async () => {
+  it('keeps the 43 original final paths, promotes eleven accepted v2 paths, and gates the other 66 baseline expansion files', async () => {
     const expectedFinalPaths = [
       ...LEGACY_WORLD_IDS.flatMap(world => ['a', 'b', 'c', 'd'].map(family => `/assets/campaign/maps/${world}_${family}-v1.png`)),
       ...LEGACY_WORLD_IDS.flatMap((world, index) => [
@@ -232,28 +287,38 @@ describe('v5 campaign registry and route verification', () => {
       ]),
       ...TOWER_IDS.flatMap(id => [2, 3].map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.png`))
     ];
-    const contract = registryArtContract as unknown as { legacyFinalAssets: LegacyFinalAssetContract[] };
+    const contract = registryContract;
     expect(expectedFinalPaths).toHaveLength(43);
-    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(expectedFinalPaths);
-    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path)).toEqual(expectedFinalPaths);
+    const promotedPaths = contract.livePromotions.assets.map(asset => asset.promotedPath);
+    expect(promotedPaths).toHaveLength(11);
+    expect(AVAILABLE_CAMPAIGN_ART_PATHS.slice(0, expectedFinalPaths.length)).toEqual(expectedFinalPaths);
+    expect(new Set(AVAILABLE_CAMPAIGN_ART_PATHS.slice(expectedFinalPaths.length))).toEqual(new Set(promotedPaths));
+    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toHaveLength(54);
+    const currentFinalPaths = CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path);
+    expect(currentFinalPaths).toHaveLength(54);
+    expect(currentFinalPaths.slice(0, expectedFinalPaths.length)).toEqual(expectedFinalPaths);
+    expect(new Set(currentFinalPaths.slice(expectedFinalPaths.length))).toEqual(new Set(promotedPaths));
     expect(contract.legacyFinalAssets).toHaveLength(43);
     expect(contract.legacyFinalAssets.map(asset => asset.path)).toEqual(expectedFinalPaths);
-    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toHaveLength(77);
+    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path)).toEqual(AVAILABLE_CAMPAIGN_ART_PATHS);
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toHaveLength(66);
     expect([...CAMPAIGN_PROVISIONAL_STARTER_PATHS].sort()).toEqual([...PROVISIONAL_EXPANSION_PATHS].sort());
-    expect(new Set([...expectedFinalPaths, ...PROVISIONAL_EXPANSION_PATHS]).size).toBe(120);
+    expect(new Set([...expectedFinalPaths, ...promotedPaths, ...PROVISIONAL_EXPANSION_PATHS]).size).toBe(120);
     const moduleName = 'node:fs';
     const { existsSync, readFileSync } = await import(moduleName);
     for (const asset of contract.legacyFinalAssets) {
       const bytes: Uint8Array = readFileSync(new URL(`../public${asset.path}`, import.meta.url));
       expect(await sha256(bytes), `${asset.path} unchanged from baseline b33ea38`).toBe(asset.baselineSha256);
     }
-    for (const path of [...expectedFinalPaths, ...PROVISIONAL_EXPANSION_PATHS]) {
+    for (const path of [...expectedFinalPaths, ...promotedPaths, ...PROVISIONAL_EXPANSION_PATHS]) {
       expect(existsSync(new URL(`../public${path}`, import.meta.url)), `${path} active file exists`).toBe(true);
     }
   });
 
   it('selects only stage-ready art for each current level and resolves every requested file', async () => {
     const activePaths = new Set([...AVAILABLE_CAMPAIGN_ART_PATHS, ...PROVISIONAL_EXPANSION_PATHS]);
+    const promotedPathByV1 = new Map(registryContract.livePromotions.assets.map(asset => [asset.baselineV1Path, asset.promotedPath]));
+    const currentPath = (v1Path: string) => promotedPathByV1.get(v1Path) ?? v1Path;
     const baselineGameplay = requiredAssets('gameplay');
     const stageAssets = [...requiredAssets('menu'), ...requiredAssets('campaign'), ...baselineGameplay];
     const moduleName = 'node:fs';
@@ -270,17 +335,18 @@ describe('v5 campaign registry and route verification', () => {
       const world = CAMPAIGN_WORLDS.find(candidate => candidate.id === level.worldId)!;
       const family = level.mapLayoutId.slice(world.id.length + 1, world.id.length + 2);
       const expectedPaths = new Set<string>();
-      const mapPath = `/assets/campaign/maps/${world.id}_${family}-v1.png`;
+      const mapPath = currentPath(`/assets/campaign/maps/${world.id}_${family}-v1.png`);
       if (activePaths.has(mapPath)) expectedPaths.add(mapPath);
       for (const enemyId of level.enemyIds) {
-        const path = `/assets/campaign/enemies/${world.id}/${enemyId}-atlas-v1.png`;
+        const path = currentPath(`/assets/campaign/enemies/${world.id}/${enemyId}-atlas-v1.png`);
         if (activePaths.has(path)) expectedPaths.add(path);
       }
       if (level.bossEnemyId) {
-        const bossPath = `/assets/campaign/bosses/${level.bossEnemyId}-atlas-v1.png`;
+        const bossPath = currentPath(`/assets/campaign/bosses/${level.bossEnemyId}-atlas-v1.png`);
         if (activePaths.has(bossPath)) expectedPaths.add(bossPath);
-        if (level.bossEnemyId === 'mireheart_hydra' && activePaths.has('/assets/campaign/enemies/whisperfen/bogling-atlas-v1.png')) {
-          expectedPaths.add('/assets/campaign/enemies/whisperfen/bogling-atlas-v1.png');
+        const summonPath = currentPath('/assets/campaign/enemies/whisperfen/bogling-atlas-v1.png');
+        if (level.bossEnemyId === 'mireheart_hydra' && activePaths.has(summonPath)) {
+          expectedPaths.add(summonPath);
         }
       }
 

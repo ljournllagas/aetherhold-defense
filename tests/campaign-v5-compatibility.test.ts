@@ -51,7 +51,7 @@ describe('Campaign v5 save compatibility', () => {
     }
   });
 
-  it('keeps unapproved expansion art out of the available runtime asset paths', () => {
+  it('allows the accepted World 4 art and withholds every other expansion asset', () => {
     const newWorlds = ['whisperfen', 'sunken_aether', 'ironroot', 'sky_isles', 'dreadmoon', 'astral_rift', 'aether_crown'];
     const oldEnemies = ['marchling', 'skitter', 'stoneback', 'ironhide', 'veilborn', 'cinderling', 'ashrunner', 'magmahide', 'ember_brute', 'ashcaller', 'snowstalker', 'icebound', 'frostback', 'glacier_knight', 'frost_shaman'];
     const oldBosses = ['hollow_warden', 'cinder_colossus', 'frostbound_matriarch'];
@@ -61,8 +61,22 @@ describe('Campaign v5 save compatibility', () => {
       asset.id.startsWith('boss:') && !oldBosses.includes(asset.id.slice(5))
     );
     expect(newAssets).toHaveLength(77);
-    expect(newAssets.every(asset => asset.state === 'final_required' || asset.qualityFlags.includes('runtime_visual_approved'))).toBe(true);
-    for (const asset of newAssets.filter(asset => asset.state !== 'final')) expect(AVAILABLE_CAMPAIGN_ART_PATHS).not.toContain(asset.path);
+    const acceptedWorld4Ids = new Set([
+      'map:whisperfen:a', 'map:whisperfen:b', 'map:whisperfen:c', 'map:whisperfen:d', 'world-panel:whisperfen',
+      'enemy:bogling', 'enemy:fen_skitter', 'enemy:mossguard', 'enemy:rotback', 'enemy:rootwretch', 'boss:mireheart_hydra'
+    ]);
+    const accepted = newAssets.filter(asset => asset.state === 'final');
+    expect(accepted.map(asset => asset.id).sort()).toEqual([...acceptedWorld4Ids].sort());
+    expect(accepted.every(asset => asset.temporary === null
+      && !asset.qualityFlags.includes('final_art_unverified')
+      && !asset.qualityFlags.includes('provisional_starter_art')
+      && AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(true);
+    const withheld = newAssets.filter(asset => asset.state === 'final_required');
+    expect(withheld).toHaveLength(66);
+    for (const asset of withheld) {
+      expect(AVAILABLE_CAMPAIGN_ART_PATHS).not.toContain(asset.path);
+      expect(asset.qualityFlags).toContain('final_art_unverified');
+    }
   });
 
   it('round-trips actual v1 save fixtures and merges expanded progress without changing legacy settings', () => {

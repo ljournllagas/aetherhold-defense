@@ -12,34 +12,36 @@ describe('campaign art replacement contract', () => {
     const missing = missingCampaignProductionAssets();
     const required = [...requiredAssets('menu'), ...requiredAssets('campaign'), ...requiredAssets('gameplay')];
 
-    expect(missing).toHaveLength(77);
+    expect(missing).toHaveLength(66);
     expect(missing.every(asset => asset.path.startsWith('/assets/campaign/'))).toBe(true);
     expect(missing.every(asset => asset.qualityFlags.includes('final_art_unverified'))).toBe(true);
     expect(missing.every(asset => asset.state === 'final_required' && asset.temporary === 'procedural')).toBe(true);
     const withheldPaths = new Set(missing.map(asset => asset.path));
     expect(required.filter(asset => withheldPaths.has(asset.path)).map(asset => asset.path)).toEqual(
-      CAMPAIGN_WORLDS.slice(3).map(world => `/assets/campaign/world-map/${world.id}-v1.png`)
+      CAMPAIGN_WORLDS.slice(4).map(world => `/assets/campaign/world-map/${world.id}-v1.png`)
     );
     expect(campaignArtAssetsForLoader('menu', missing.map(asset => asset.path))).toEqual([]);
     expect(campaignArtAssetsForLoader('campaign', missing.map(asset => asset.path), [])).toEqual([]);
     expect(campaignArtAssetsForLoader('gameplay', missing.map(asset => asset.path))).toEqual([]);
     expect(required.filter(asset => asset.path.startsWith('/assets/campaign/'))).toEqual(campaignArtAssetsForLoader('campaign'));
-    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(43);
+    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(54);
     expect(CAMPAIGN_ART_MANIFEST).toHaveLength(120);
   });
 
-  it('promotes the twelve raw-accepted terrain plates and ten approved tower tiers', () => {
+  it('registers the original and accepted World 4 terrain plates with the approved tower tiers', () => {
     const maps = CAMPAIGN_ART_MANIFEST.filter(asset => asset.id.startsWith('map:') && asset.state === 'final');
     const expansion = CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final_required');
     const towers = CAMPAIGN_ART_MANIFEST.filter(asset => asset.id.startsWith('tower:'));
-    expect(maps).toHaveLength(12);
+    expect(maps).toHaveLength(16);
     expect(maps.map(asset => asset.path)).toEqual([
       '/assets/campaign/maps/borderkeep_a-v1.png', '/assets/campaign/maps/borderkeep_b-v1.png',
       '/assets/campaign/maps/borderkeep_c-v1.png', '/assets/campaign/maps/borderkeep_d-v1.png',
       '/assets/campaign/maps/emberfall_a-v1.png', '/assets/campaign/maps/emberfall_b-v1.png',
       '/assets/campaign/maps/emberfall_c-v1.png', '/assets/campaign/maps/emberfall_d-v1.png',
       '/assets/campaign/maps/frostveil_a-v1.png', '/assets/campaign/maps/frostveil_b-v1.png',
-      '/assets/campaign/maps/frostveil_c-v1.png', '/assets/campaign/maps/frostveil_d-v1.png'
+      '/assets/campaign/maps/frostveil_c-v1.png', '/assets/campaign/maps/frostveil_d-v1.png',
+      '/assets/campaign/maps/whisperfen_a-v2.png', '/assets/campaign/maps/whisperfen_b-v2.png',
+      '/assets/campaign/maps/whisperfen_c-v2.png', '/assets/campaign/maps/whisperfen_d-v2.png'
     ]);
     expect(maps.every(asset => asset.state === 'final' && asset.temporary === null
       && asset.qualityFlags.join(',') === 'terrain_plate,runtime_geometry_overlay')).toBe(true);
@@ -48,14 +50,14 @@ describe('campaign art replacement contract', () => {
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual([
       ...CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path)
     ]);
-    expect(expansion).toHaveLength(77);
-    expect(expansion.filter(asset => asset.id.startsWith('map:'))).toHaveLength(28);
-    expect(expansion.filter(asset => asset.id.startsWith('world-panel:'))).toHaveLength(7);
-    expect(expansion.filter(asset => asset.id.startsWith('enemy:'))).toHaveLength(35);
-    expect(expansion.filter(asset => asset.id.startsWith('boss:'))).toHaveLength(7);
+    expect(expansion).toHaveLength(66);
+    expect(expansion.filter(asset => asset.id.startsWith('map:'))).toHaveLength(24);
+    expect(expansion.filter(asset => asset.id.startsWith('world-panel:'))).toHaveLength(6);
+    expect(expansion.filter(asset => asset.id.startsWith('enemy:'))).toHaveLength(30);
+    expect(expansion.filter(asset => asset.id.startsWith('boss:'))).toHaveLength(6);
     expect(expansion.some(asset => AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(false);
-    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toHaveLength(77);
-    expect(new Set(CAMPAIGN_PROVISIONAL_STARTER_PATHS).size).toBe(77);
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toHaveLength(66);
+    expect(new Set(CAMPAIGN_PROVISIONAL_STARTER_PATHS).size).toBe(66);
     expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final_required').map(asset => asset.path).sort())
       .toEqual([...CAMPAIGN_PROVISIONAL_STARTER_PATHS].sort());
   });
@@ -79,7 +81,7 @@ describe('campaign art replacement contract', () => {
     }]);
   });
 
-  it('requests the three approved panels and only the explicitly gated World 4 starter panel on entry', () => {
+  it('requests four approved panels and only the remaining gated starter panels on entry', () => {
     const panels = CAMPAIGN_ART_MANIFEST.filter(asset => asset.id.startsWith('world-panel:'));
     const campaign = campaignArtAssetsForLoader('campaign');
     const requested = requiredAssets('campaign');
@@ -88,12 +90,12 @@ describe('campaign art replacement contract', () => {
       ...CAMPAIGN_WORLDS.map(world => `campaign_worldmap_${world.id}`)
     ]);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path));
-    expect(panels.filter(asset => asset.state === 'final')).toHaveLength(3);
-    expect(panels.filter(asset => asset.state === 'final_required')).toHaveLength(7);
+    expect(panels.filter(asset => asset.state === 'final')).toHaveLength(4);
+    expect(panels.filter(asset => asset.state === 'final_required')).toHaveLength(6);
     expect(panels.filter(asset => asset.state === 'final').every(asset => asset.temporary === null
       && !asset.qualityFlags.includes('final_art_unverified'))).toBe(true);
     expect(resolveCampaignProvisionalStarterAssets(panels, 'campaign', CAMPAIGN_PROVISIONAL_STARTER_PATHS).map(asset => asset.key)).toEqual(
-      CAMPAIGN_WORLDS.slice(3).map(world => `campaign_worldmap_${world.id}`)
+      CAMPAIGN_WORLDS.slice(4).map(world => `campaign_worldmap_${world.id}`)
     );
     expect(resolveCampaignProvisionalStarterAssets(panels, 'campaign', []).map(asset => asset.key)).toEqual([]);
     expect(requested).toEqual([...requiredAssets('menu'), ...campaign]);
@@ -118,15 +120,15 @@ describe('campaign art replacement contract', () => {
     expect(requiredAssetsForRequest('gameplay', { mode: 'campaign', campaignLevel: 1, campaignVisualTier: 2 }).filter(asset => asset.path.startsWith('/assets/campaign/'))).toEqual(tierTwo);
     const whisperfen = campaignGameplayAssetsForLevel(getCampaignLevel(31)!, 1);
     expect(whisperfen.map(asset => asset.path)).toEqual([
-      '/assets/campaign/maps/whisperfen_a-v1.png',
-      '/assets/campaign/enemies/whisperfen/bogling-atlas-v1.png'
+      '/assets/campaign/maps/whisperfen_a-v2.png',
+      '/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png'
     ]);
     const hydraAssets = campaignGameplayAssetsForLevel(getCampaignLevel(40)!, 1).map(asset => asset.path);
     expect(hydraAssets).toEqual(expect.arrayContaining([
-      '/assets/campaign/maps/whisperfen_d-v1.png',
-      '/assets/campaign/enemies/whisperfen/bogling-atlas-v1.png',
-      '/assets/campaign/enemies/whisperfen/rootwretch-atlas-v1.png',
-      '/assets/campaign/bosses/mireheart_hydra-atlas-v1.png'
+      '/assets/campaign/maps/whisperfen_d-v2.png',
+      '/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png',
+      '/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png',
+      '/assets/campaign/bosses/mireheart_hydra-atlas-v2.png'
     ]));
     const sunkenAether = campaignGameplayAssetsForLevel(getCampaignLevel(41)!, 1);
     expect(sunkenAether.map(asset => asset.path)).toEqual([

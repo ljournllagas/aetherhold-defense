@@ -122,36 +122,47 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
     `tower:${id}:tier${tier}`, `campaign_tower_${id}_tier${tier}`,
     `/assets/campaign/towers/${id}-tier${tier}-v1.png`, 192, 192, 'gameplay', ['transparent_png_required', 'cosmetic_only', 'classic_art_unchanged'], 'final', null
   ))),
-  ...EXPANSION_WORLD_IDS.flatMap(worldId => [
-    ...FAMILIES.map(family => imageSource(
-      `map:${worldId}:${family}`, `campaign_${worldId}_${family}`,
-      `/assets/campaign/maps/${worldId}_${family}-v1.png`, 1672, 940, 'gameplay',
-      ['final_art_unverified', 'provisional_starter_art', 'terrain_plate', 'runtime_geometry_overlay'], 'final_required', 'procedural'
-    )),
-    imageSource(`world-panel:${worldId}`, `campaign_worldmap_${worldId}`,
-      `/assets/campaign/world-map/${worldId}-v1.png`, 768, 432, 'campaign',
-      ['final_art_unverified', 'provisional_starter_art', 'biome_illustration'], 'final_required', 'procedural'),
-    ...NORMAL_ENEMIES[worldId].map(id => {
-      const support = EXPANSION_SUPPORT_ENEMIES.has(id);
-      const states = support ? SUPPORT_STATES : NORMAL_STATES;
-      const rows = Math.max(...Object.values(states).map(state => state.row)) + 1;
-      return {
-        id: `enemy:${id}`, key: `campaign_enemy_${id}`, path: `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.png`,
-        state: 'final_required' as const, stage: 'gameplay' as const, kind: 'sheet' as const, width: 768, height: rows * 128,
-        frameWidth: 128, frameHeight: 128, states,
-        qualityFlags: ['final_art_unverified', 'provisional_starter_art', 'transparent_png_required', 'consistent_feet_anchor', 'no_baked_ui_or_large_shadow', ...(support ? ['support_buff_playback_verified'] : [])],
-        temporary: 'procedural' as const
-      };
-    }),
-    {
-      id: `boss:${BOSSES[worldId]}`, key: `campaign_enemy_${BOSSES[worldId]}`,
-      path: `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v1.png`,
-      state: 'final_required' as const, stage: 'gameplay' as const, kind: 'sheet' as const,
-      width: 2048, height: 1536, frameWidth: 256, frameHeight: 256, states: EXPANSION_BOSS_STATES,
-      qualityFlags: ['final_art_unverified', 'provisional_starter_art', 'transparent_png_required', 'consistent_feet_anchor', 'phase_state_readability_verified'],
-      temporary: 'procedural' as const
-    }
-  ])
+  ...EXPANSION_WORLD_IDS.flatMap(worldId => {
+    const isReleasedWorld4 = worldId === 'whisperfen';
+    const pathVersion = isReleasedWorld4 ? 'v2' : 'v1';
+    const state: CampaignArtState = isReleasedWorld4 ? 'final' : 'final_required';
+    const temporary: 'procedural' | null = isReleasedWorld4 ? null : 'procedural';
+    const qualityFlags = (retained: readonly string[]) => isReleasedWorld4
+      ? retained
+      : ['final_art_unverified', 'provisional_starter_art', ...retained];
+
+    return [
+      ...FAMILIES.map(family => imageSource(
+        `map:${worldId}:${family}`, `campaign_${worldId}_${family}`,
+        `/assets/campaign/maps/${worldId}_${family}-${pathVersion}.png`, 1672, 940, 'gameplay',
+        qualityFlags(['terrain_plate', 'runtime_geometry_overlay']), state, temporary
+      )),
+      imageSource(`world-panel:${worldId}`, `campaign_worldmap_${worldId}`,
+        `/assets/campaign/world-map/${worldId}-${pathVersion}.png`, 768, 432, 'campaign',
+        qualityFlags(['biome_illustration']), state, temporary),
+      ...NORMAL_ENEMIES[worldId].map(id => {
+        const support = EXPANSION_SUPPORT_ENEMIES.has(id);
+        const states = support ? SUPPORT_STATES : NORMAL_STATES;
+        const rows = Math.max(...Object.values(states).map(state => state.row)) + 1;
+        return {
+          id: `enemy:${id}`, key: `campaign_enemy_${id}`,
+          path: `/assets/campaign/enemies/${worldId}/${id}-atlas-${pathVersion}.png`,
+          state, stage: 'gameplay' as const, kind: 'sheet' as const, width: 768, height: rows * 128,
+          frameWidth: 128, frameHeight: 128, states,
+          qualityFlags: qualityFlags(['transparent_png_required', 'consistent_feet_anchor', 'no_baked_ui_or_large_shadow', ...(support ? ['support_buff_playback_verified'] : [])]),
+          temporary
+        };
+      }),
+      {
+        id: `boss:${BOSSES[worldId]}`, key: `campaign_enemy_${BOSSES[worldId]}`,
+        path: `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-${pathVersion}.png`,
+        state, stage: 'gameplay' as const, kind: 'sheet' as const,
+        width: 2048, height: 1536, frameWidth: 256, frameHeight: 256, states: EXPANSION_BOSS_STATES,
+        qualityFlags: qualityFlags(['transparent_png_required', 'consistent_feet_anchor', 'phase_state_readability_verified']),
+        temporary
+      }
+    ];
+  })
 ];
 
 /** A production file is queued only after its manifest entry is promoted and its exact path is listed here. */
@@ -162,7 +173,11 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
     ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.png`),
     `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v1.png`
   ]),
-  ...TOWERS.flatMap(id => ([2, 3] as const).map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.png`))
+  ...TOWERS.flatMap(id => ([2, 3] as const).map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.png`)),
+  ...FAMILIES.map(family => `/assets/campaign/maps/whisperfen_${family}-v2.png`),
+  '/assets/campaign/world-map/whisperfen-v2.png',
+  ...NORMAL_ENEMIES.whisperfen.map(id => `/assets/campaign/enemies/whisperfen/${id}-atlas-v2.png`),
+  '/assets/campaign/bosses/mireheart_hydra-atlas-v2.png'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
@@ -188,7 +203,7 @@ export function campaignArtAssetsForLoader(
 }
 
 /** Exact provisional art bundle for expansion worlds, ordered from World 4 through World 10. */
-export const CAMPAIGN_PROVISIONAL_STARTER_PATHS: readonly string[] = EXPANSION_WORLD_IDS.flatMap(worldId => [
+export const CAMPAIGN_PROVISIONAL_STARTER_PATHS: readonly string[] = EXPANSION_WORLD_IDS.filter(worldId => worldId !== 'whisperfen').flatMap(worldId => [
   ...FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v1.png`),
   `/assets/campaign/world-map/${worldId}-v1.png`,
   ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.png`),

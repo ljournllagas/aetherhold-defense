@@ -1,5 +1,14 @@
 # Project progress
 
+## Final campaign artwork - active
+
+Heavy campaign-final-art-20261012 follows approved finalartprompt. World4 goldenpilot complete:11finals promoted/deployed,54activefinals,66provisional remaining. World5/6 productionactive;7-10pending. Original43/77rollback bytesunchanged.
+Live https://aetherhold-defense.ljournllagas.workers.dev/
+Version d1107304-ef7a-4e9b-9682-b98efe2bb744.
+Deploy1510pass11skip/typecheck/build PASS;liveHTML/JS matchbuild SHA2565cca51c4a3c8c0b1230759500f540b5c281bf83f5464d53d6a22ce4046160796;health200 scoreVersion3;elevenassets200/HIT exacthashes.
+O3 commit/push/remote equality pending. V9 actualpublic100contexts/120baselines/runtime PASS;V11original/Classic PASS;R9sourceclear. Latest_session_work.md holdscontinuation/evidence.
+Remaininglimits:767/768px compositionjump,compactcrowding,physicaltouch/fullmatch unverified. Continueall77;no closure yet.
+
 ## Campaign v5 — complete
 
 Heavy deployment `campaign-v5-20261012` implements

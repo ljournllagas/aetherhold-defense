@@ -1,115 +1,18 @@
 # Latest session work
 
-## Campaign v5 verified deployment — 2026-10-12
+Heavy deployment campaign-final-art-20261012 continues all77 World4-10 final assets. World4 complete:11 accepted/promoted/deployed;54 active finals,66 provisional remaining. Original43 and77 rollback files unchanged. World5/6 production active;continue7-10 later,not closure.
+Live https://aetherhold-defense.ljournllagas.workers.dev/
+Version d1107304-ef7a-4e9b-9682-b98efe2bb744.
+O3 deploy1510pass11skip/typecheck/build PASS. LiveHTML/JS match build SHA2565cca51c4a3c8c0b1230759500f540b5c281bf83f5464d53d6a22ce4046160796;health200 scoreVersion3;all11assets200/HIT exacthashes.
+O3 commit/push/remote equality pending;branch codex/campaign-v5-20261012 previousHEAD bd596225ebaef939651107720950074a60b8c5c8. Preserve .scratch/ .superpowers/ unknownzero-byte (c[a.currentStatus] and unfinishedart.
 
-Deployment `campaign-v5-20261012`, Heavy route, branch
-`codex/campaign-v5-20261012`. The supplied v5 prompt is implemented and all
-application acceptance gates pass. Published version
-`cb1eb993-64e5-4f3c-9d17-5d7aee12b1e2` is live at
-https://aetherhold-defense.ljournllagas.workers.dev/ .
-Application commit `52531f6d231ac849bd2ea37cdeab051404eea33b` was pushed to
-`origin/codex/campaign-v5-20261012` and verified equal to local HEAD after fetch.
-All 143 assigned paths are committed; only unrelated scratch trees remain.
-Deployment state is complete; these verified handoff notes receive a final
-documentation-only synchronization before the read-only closure report.
-Preserve unrelated `.scratch/` and `.superpowers/`; raw pack/evidence remains
-ignored. No production account or D1 row was changed by verification.
-
-The campaign has 100 levels, ten worlds and forty route families. Exact original
-thirty definitions, rewards and wave counts remain intact; accepted World 4
-counts and global tower/economy/scoring rules remain frozen. Version-1 local and
-cloud shapes/key stay compatible; canonical IDs 1–100, monotonic merge, guest
-import/account isolation and unreadable-record protection passed independent
-Miniflare checks. Old thirty-level completion unlocks 31 without fabricated
-progress; 100 never unlocks 101.
-
-World 4 earned a real saved Level 40 clear and native Next→41. All 120 paid
-41–100 cases pass three stars without debug assistance or relics; 6,904 purchases
-passed an independent affordability/debit audit. Fixed targets required
-expansion-only tuning to 32–52 waves: 643–2,455 simulated seconds per run
-(average 1,261). Actual Phaser Level 99 saved 138,394 score/20 lives and opened
-100; Level 100 saved 134,284/20 lives and a terminal result without 101.
-Prior unlocks through 98 were synthetic; target clears were earned.
-All 100 levels loaded/rendered via actual PreloadScene/GameScene without missing
-textures or failed asset requests. Four target viewports, all seven new bosses
-and support mechanics, pause/speed/retry/cleanup and Classic's wave-30 boundary
-passed. Oracle/Tyrant/Regent now warn for 1,200 simulation ms before effects;
-independent runtime and code delta reviews pass. Both map-tab and high-score
-compact HUD regressions are repaired and accepted.
-
-Fresh isolated npm ci/typecheck/strict tsc/build passed. The final deploy's exact
-test/build chain passed 1,431 tests with 11 configured skips using temporary
-VITEST_MAX_WORKERS=1 after parallel geometry checks timed out; assertions and
-global timeouts were not weakened. The forty-route test alone has a justified
-10-second timeout. Live HTML, current bundle and /api/health return 200.
-Bundle /assets/index-CcWiL_Dr.js is 2,150,945 bytes; SHA-256
-b167192c56c964567c8a02c4a117c51f222ccd20df1b46f1c2b6275925ec25db matches local.
-Health is {"ok":true,"scoreVersion":3}; browser welcome/background rendered.
-The large-chunk advisory remains; authenticated production gameplay was not run.
-
-All 43 original final assets and 77 staged expansion source/destination hashes
-remain correct. Expansion entries are explicitly provisional and final_required.
-Post-gameplay comparison covered all 70 candidates, with 28 actual tower-context
-maps and approved W1–3 references. The Crown panel's embedded LD artifact is
-rejected; seven portraits stay reference-only. No candidate was promoted.
-All 77 final-art approvals remain UNVERIFIED. Diagnostic enemy-art comparison
-does not certify animation or mobile natural play.
-
-Evidence root: artifacts/campaign-v5-20261012/ .
-Canonical detailed gates: verification/v1-final-runtime/v1-final-runtime-report.md,
-v1-boss-warning-delta-report.md, verification/v2/registry-geometry-final-report.md,
-verification/v3-candidate-art/qa-tower-context/qa-tower-context-report.md.
-Failed baselines and harness runs are preserved. Headless fixed-step natural
-runs establish earned local results, not human pacing or a clean-account
-1→100 production playthrough.
-## Prior deployment history (Worlds 1–3)
-
-Heavy deployment campaign-production-completion-20261010; baseline main 22ee273447e6c252cad5ea7adf92446d3db88a79. User authorizes automatic verified deployment and commit/push. Preserve unrelated .scratch/audit-fixes-d1 SQLite/WAL files and ignored artifacts. Worlds 4-10 are excluded.
-
-P2 completed actual support-buff/death and boss-phase animation hooks, one-shot priority, pause/speed handling and persistent phase restoration. Boss effect Graphics now use display-size origin offsets and a mirrored parent matching the sprite. Transformed-geometry tests cover all three bosses, phases, facings and procedural/final-atlas paths. No ordinary enemy attack event exists in current combat; explicit attack clips are supported without adding combat timing or life-loss delay. Final-atlas appearance remains UNVERIFIED because the production sheets are absent.
-
-P3 completed twelve original opaque RGB 1672x940 terrain plates, including five exact bottom-row crops of preserved 941-high sources. All artifact/runtime/provenance hashes and retained pixels match. Final terrain is composed with authoritative variant roads/build clearings and approved health-state spire art in all campaign worlds. Dynamic texture commands are flushed before source cleanup; rounded, varied cobblestone finish replaced the rejected flat pilot. Classic geometry remains unchanged.
-
-P5 staged all twelve terrain entries and exact paths: 25 final / 18 final_required. Menu remains six core images, Classic gameplay fifteen core assets, Campaign entry three panels. Battles request only their selected family, effective visual tier and any approved required roster/boss/summon art. One required set governs queue, readiness, retry and errors. Isolated QA progression and loader tier selection share the same seed; production QA entry is guarded.
-
-P1's ten tower II/III images passed independent raw/placed world and desktop/phone review with real active effects. V7 accepted every raw terrain plate individually, including quiet centers, no baked gameplay geometry, coherent palettes and boss space. V6 and V8 also passed the final stable combined runtime scopes; root accepted them after inspecting representative contacts.
-
-P4 stopped after four rejected Marchling diagnostics: cell fit, transparency, readable gait and painted style did not pass. No public atlas was created. The exact eighteen missing paths match the manifest; seventeen subjects were unattempted. The user's missing-final-art allowance is implemented through correct contracts, coherent temporary art, exact missing list and UNVERIFIED final-art status.
-
-## Fresh verification
-
-V3 independently passed thirty natural battle simulations at original score/lives targets, progression and milestone gates, replay Stars, Sigils, Specialization I, Codex, boss mechanics/supports and restart/Classic separation. Its isolated browser save/reload and future-version byte preservation passed.
-
-V5 fresh combined-source gates passed: npm test 935 tests / 67 files, 11 configured skips / four files; npm run typecheck and npm run build passed. Bundle index-DRnyiUB5.js SHA-256 7EFF9EB5C10A65FC0454733E432F76FB50F263880E813E9F0961145B1E8A529B. Source and dist have exactly twenty-five campaign files with matching hashes, no absent atlas copies and no Worlds 4-10 assets.
-
-V5 actual ordinary Level 1 loading recovery also passed: three automatic aborted map requests produced the failure screen; user Retry returned 200 and entered gameplay. Holding Retry, choosing Back to Keep, then releasing the request produced no late transition. Isolated contexts wrote no localStorage keys or score POSTs. Intentional net::ERR_FAILED logs are expected.
-
-Evidence under artifacts/campaign-production-completion-20261010/verification: functional/functional-verification.md, loading/verification-report.md, loading/native-preload-failure-results.json, loading/final-gate-report.md, loading/final-gate-evidence.json, terrain-raw/report.md, tower-batch/tower-batch-review.md and maps-animation/independent-review.md. Detailed prompts/originals remain under maps/, towers/ and atlases/. Durable ledger/provenance: docs/CAMPAIGN_PRODUCTION_ASSETS.md and docs/CAMPAIGN_PRODUCTION_ART_PROVENANCE.md.
-
-## Continuation
-
-V6 completed twenty boss phase/facing captures, phase thresholds, pause/speed/restart cleanup and six-size map/detail/flow/Codex/preparation UI. V8 completed actual final-loader maps, all thirty variant geometries and tower II/III compatibility across all worlds with active effects. Their runs recorded zero browser errors, failed requests and API mutations. V8 wrote no storage; responsive milestone profiles were isolated. Fresh evidence: verification/boss-overlays/boss-overlay-results.json and verification/maps-runtime-v8/actual-map-loader-results.json under the deployment artifacts, plus artifacts/campaign/visual/final/visual-results-responsive.json and visual-results-responsive-milestones.json (fresh captures on 2026-10-10).
-
-D1 Archivist prepared verified public/framework documentation, exact missing eighteen paths and accepted-asset provenance. It left the main-owned progress/diary/latest files untouched. After runtime acceptance and release, main updates those three documents, then gives D1 the sole closure capsule and exact deployment ID for documentation sealing and the required six-column Deployment Token Report.
-
-R1 completed npm run deploy: 935 tests / 11 configured skips and successful typecheck/build. Worker 47f81e7f-3310-4889-bde8-493826b7627c is live; HTML/current JS/CSS and all twenty-five PNGs returned 200 and matched dist. Health is 200 ok:true, scoreVersion:3; existing bindings preserved, no migrations. Bundle remains index-DRnyiUB5.js with the SHA-256 above. Ordinary campaign Level 1 restart/return and Classic Medium restart/return passed without starting a wave or reaching score settlement. Original browser smoke lacked network instrumentation; the completed instrumented follow-up below identified real clipping failure. Live evidence: verification/release/live-verification.json under deployment artifacts.
-
-V6 completed the extra unlocked-state checks: exact 29/30-Star gating, all ten choices, portrait select/remove, all three Sigils and fully unlocked Codex passed functionally. It found two unique 14px paragraph/stats overlaps for Hollow Warden and Frostbound Matriarch at 360x640; evidence is artifacts/campaign/visual/final/unlocked-states/final-unlocked-ui-results.json and codex-90-stars-360x640-scroll-4.png. ScrollSheet manual cropping stayed within its pane.
-
-R1's instrumented live follow-up recorded 32 GETs, no failed requests/HTTP/page/console errors or mutating requests. Empty storage remained empty; one existing aetherhold-settings-v1 setItem attempt on Classic entry was intercepted as a no-op, and no campaign-profile write occurred. Seven exact unsupported-WebGL Mask.setMask warnings exposed real map content spilling into the outer gutters. Evidence: verification/release/native-live-smoke-r1.json. Incidental ReadPixels driver warnings had no visible impact.
-
-I3 verified installed Phaser 4.2.1: old GeometryMask/setMask is Canvas-only, while WebGL supports target.filters.external.addMask(source, false, mainCamera, world). External parent-space masking keeps viewport rectangles fixed under container transformations. Source Graphics must remain visible but off display list; static controllers disable autoUpdate and refresh via setGameObject after redraw. Render masks do not constrain input. The same unsupported caller exists in LeaderboardScene. ScrollSheet already manually clips and needs no filter.
-
-P6 implemented ui/ViewportMask.ts with external WebGL filtering, static source refresh/reuse/cleanup and Canvas fallback across the three scene callers; it also guarded hidden node events and measured boss Codex spacing. Stale Leaderboard Container doubles were corrected without weakening assertions. Independent V5 fresh full suite passed 939 tests / 11 configured skips, 68 files passed / four skipped, including all thirty campaign battle cases and four mask/Codex cases; typecheck passed. Production hashes match the successful P6 build: index-De2JS_7L.js SHA-256 42C5D68374993BDE0FB41DBCB942DCD9A953E6742BE1C7A5CE2B4104CB90922D. Evidence: verification/loading/final-p6-recheck-report.md and final-p6-recheck-npm-test-verbose.log.
-
-Independent V6 passed all eighteen repaired 29/30/90-Star UI cases across six sizes with zero collisions, all ten specialization choices, all three Sigils, and all twenty boss phase/facing captures with pause/speed/restart checks. V9 passed all three mask callers in actual Edge WebGL: six map sizes, hidden-node input, zero changed pixels outside panes, campaign worlds and Classic pan/zoom/pause/restart/resize/rotation/re-entry, one filter/listener set and controller reuse/cleanup, plus empty/filled leaderboard desktop/portrait scrolling. Canvas fallback 4/4 passed. Zero browser errors/warnings, failed requests or API mutation attempts; stable source hashes. Evidence: verification/v9-viewport-mask/v9-viewport-mask-results.json. Physical-device hardware remains unverified. Final repair deployment and live verification passed; Git synchronization follows documentation readiness.
-
-Final R1 publication passed npm run deploy with 939 tests / 11 configured skips, typecheck and build. Worker af75da8f-9800-42ce-919d-e823a0ad471a serves index-De2JS_7L.js, SHA-256 42C5D68374993BDE0FB41DBCB942DCD9A953E6742BE1C7A5CE2B4104CB90922D. Live HTML/JS/CSS and all25 PNGs returned200 and matched dist; health200 ok:true scoreVersion:3. Instrumented ordinary Campaign/Classic restart/navigation passed, clear16px gutter and zero mask warnings.32GETs/no mutations/profilewrites/pageerrors; four screenshot ReadPixels driver warnings had no visible impact. Evidence verification/release/live-verification-p6.json and native-live-smoke-p6.json. Existing bindings preserved, no migrations.
-
-Git operator R2 committed55task-owned files as d4d54623ccc5e4a833908e5fe127958f9b072c58 and pushed origin/main. Fetch confirmed local HEAD equals remote with ahead/behind0/0 and clean tracked tree. All23unrelated scratch SQLite/SHM/WAL files and ignored originals were preserved. Final closure handoff is synchronized separately as documentation only.
-
-## Authority and limits
-
-Original expansion pack is present under ignored artifacts/Aetherhold_Defense_Worlds_1_3_Expansion_Pack_v2/. Its written specifications and JSON control gameplay; reference PNGs are concepts only. Exact-path searches or --no-ignore are needed for that pack. Current production is Worker af75da8f-9800-42ce-919d-e823a0ad471a at https://aetherhold-defense.ljournllagas.workers.dev/.
-
-Remaining limits: eighteen production atlases, physical-device input and human balance UNVERIFIED; existing large-bundle warning. Built-in imagegen produced the accepted art, with only documented mechanical formatting and no concept-board crops or duplicated static animation frames promoted.
+Evidence root artifacts/campaign-final-art-20261012/:
+integration/world4-promotion-report.md and ledger/checklist exactprovenance/hashes.
+verification/resume-v9/newcohort-harness/final-review.md staging23contexts PASS.
+verification/resume-v9/postpromotion/final-review.md/json actualpublic/all100contexts/120baselinefiles/fresh4familyruntime/compactlifecycle PASS.
+verification/original-hud-v11/s2-verification/Task-V11-s2-report.md original/Classic PASS;director inspectedcaptures.
+S2 frozen GameScene d79bb40596d8c7a82e0fa6c3f99ae578614ae328ac7397868e2bc268de9cbbcc; source-hashes.json in s2-compact-content-fit holdsothers. R9 blocking size finding withdrawn after Math.max clamp reconciliation. OneSenior reused. Fen extreme gait/HydraV3 monotonicdeath accepted;failedattempts preserved.
+Rootwretch natural scheduledcaller triggers heal/buff usingQA injuredtarget,notnaturalwavesurvival;combatvalues preserved. Future supports need state/overlay review.
+Limits:767/768px compositionjump,compactdensecrowding,physicaltouch/fullmatch unverified;largechunkwarning/11skip retained. Ordinaryattacks presentationQA only.
+BuiltinImageGen only;exactsidecars beforecalls/raw/outputIDs/hashes;distinctposes/nativegait/fixedcamera/monotonicdeath/truealpha/matteaudit. No rawGIF policybypass. Independentapproval then soleA6integration/publiccheck/deploy/push;no wholeignoredpack forceadd.
+Rootmain3docs;actualclosure onlyafterall77 orrealblocker then oneArchivist/new6columntokenreport. Startmarker alreadyemitted. Priorv5complete100levels/10worlds/40routes/gameplay/savecontracts preserved.
