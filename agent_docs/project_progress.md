@@ -1,22 +1,27 @@
 # Project progress
 
-## Final campaign artwork - active
+## Final campaign artwork - application published, synchronization in progress
 
-Heavycampaign-final-art-20261012 approved77-asset scope.
-Worlds4-8 and10 complete/live:66new finals deployed,109active final paths,
-11provisional(World9) remaining. Original43/77rollback bytesunchanged.
-World9sixfailedassets repairactive;fiveotherrawpasses retained.
+Heavy deployment campaign-final-art-20261012 completes the approved77-asset scope:
+28 terrain maps,7 world panels,35 monster atlases,7 boss atlases. All77 accepted,
+integrated and deployed. Active manifest120 final/zero provisional. Original43
+finals and77v1 rollback assets preserve hashes and dimensions.
 
 Live https://aetherhold-defense.ljournllagas.workers.dev/
-Versionb5e0a607-12fc-4852-8898-477cca86e649.
-Deploy1518pass11configuredskip,typecheck/build PASS. Currentbundle exactSHA256
-0f44b527e6002d57cdad1a2334bc413bfd88f636adaf2fd3bd56d561e57b9b5d;
-health200scoreVersion3;66PNG exacthashes/cache65HIT1MISS.
-O8 applicationb47fa220b1ae32deff67dbaa691217b3be837681 pushed;actualremote matched.
-World10quietcourtsraw/runtime/actualpublic PASS;all100loader/preservation PASS.
-Publicpage/panelrender checked;authenticatedlivegameplay behindsign-in unverified.
-Compactdetails/crowding/breakpoint/physicaltouch/fullmatch limitationsretained.
-ContinueWorld9/noall77completionyet;latest_session_work.md exacthandoff/evidence.
+Version e1ef97b3-1b51-4489-8e57-d87d7115423e.
+Deploy1524 tests passed/11 configured skips,typecheck/build PASS. Currentbundle
+SHA25643c8b496695ee80826d05e31c236d2df7d798825f877b8ee960afe011e6eac0f matchesbuild;
+health200scoreVersion3;all197 active/rollback PNG paths exacthashes.
+Independentcurrent-source100/100 actuallevel renders and197texture checks PASS;
+sevennaturalboss flows and lifecycle PASS. R12 coldreview no blockingfinding.
+No art work remains. O9 selectedcommit/push/remote equality and Heavy closure
+documentation/report pending. Canonical continuation/evidence: latest_session_work.md.
+
+Compactdetail/crowding/breakpoint, physicaltouch/fullmatch/authenticatedlivegameplay
+limits remain documented; one exploratory repeated-request Hydra QA probe is
+unexplained. Do not infer missing gameplay phases or claim unsupported coverage.
+All combat/save/warning contracts retained; final content uses genuine generated
+poses/maps with exact lineage, not stand-in flags or low-resolution enlargement.
 
 ## Campaign v5 — complete
 

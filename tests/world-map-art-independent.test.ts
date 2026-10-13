@@ -7,28 +7,28 @@ import {
 } from '../src/game/campaign/artManifest.ts';
 
 const worlds = CAMPAIGN_WORLDS.map(world => world.id);
-const campaignLoadOrder = [...worlds.slice(0, 8), worlds[9]!, worlds[8]!];
+const campaignLoadOrder = worlds;
 const worldPanels = worlds.map(worldId => CAMPAIGN_ART_MANIFEST.find(asset => asset.id === `world-panel:${worldId}`)!);
 
 describe('independent campaign world-map art acceptance', () => {
-  it('preserves legacy panels, promotes accepted World 4–8 and World 10 panels, and withholds World 9 provisionally', () => {
+  it('loads all ten accepted panels while preserving legacy panel paths', () => {
     expect(worldPanels).toHaveLength(10);
     expect(worldPanels.map(({ path, width, height, stage, state }) => ({ path, width, height, stage, state }))).toEqual(
       worlds.map((worldId, index) => ({
-        path: `/assets/campaign/world-map/${worldId}-${index >= 3 && index < 8 || index === 9 ? 'v2' : 'v1'}.png`, width: 768, height: 432,
-        stage: 'campaign', state: index < 8 || index === 9 ? 'final' : 'final_required'
+        path: `/assets/campaign/world-map/${worldId}-${index >= 3 ? 'v2' : 'v1'}.png`, width: 768, height: 432,
+        stage: 'campaign', state: 'final'
       }))
     );
-    const acceptedPanels = [...worldPanels.slice(0, 8), worldPanels[9]!];
-    expect(acceptedPanels.every(asset => !asset.qualityFlags.includes('final_art_unverified') && asset.temporary === null)).toBe(true);
-    expect(worldPanels.filter(asset => asset.state === 'final_required')).toEqual([worldPanels[8]]);
-    expect(worldPanels[8]!.qualityFlags).toContain('provisional_starter_art');
-    expect(worldPanels[8]!.temporary).toBe('procedural');
+    expect(worldPanels.every(asset => !asset.qualityFlags.includes('final_art_unverified')
+      && !asset.qualityFlags.includes('provisional_starter_art') && asset.temporary === null)).toBe(true);
+    expect(worldPanels.filter(asset => asset.state === 'final_required')).toEqual([]);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path));
     expect(campaignArtAssetsForLoader('campaign')).toEqual([
-      ...campaignLoadOrder.map(worldId => ({ kind: 'image' as const, key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-${worldId === 'aether_crown' || worlds.indexOf(worldId) >= 3 && worlds.indexOf(worldId) < 8 ? 'v2' : 'v1'}.png` })),
+      ...campaignLoadOrder.map(worldId => ({ kind: 'image' as const, key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-${worlds.indexOf(worldId) >= 3 ? 'v2' : 'v1'}.png` })),
     ]);
-    expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:astral_rift')).toMatchObject({ state: 'final_required', temporary: 'procedural' });
+    expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:astral_rift')).toMatchObject({
+      path: '/assets/campaign/world-map/astral_rift-v2.png', state: 'final', temporary: null
+    });
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:aether_crown')).toMatchObject({
       path: '/assets/campaign/world-map/aether_crown-v2.png', state: 'final', temporary: null
     });
@@ -46,13 +46,13 @@ describe('independent campaign world-map art acceptance', () => {
     expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/sky_isles-v1.png');
     expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/dreadmoon-v1.png');
     expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/aether_crown-v1.png');
-    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toContain('/assets/campaign/world-map/astral_rift-v1.png');
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toEqual([]);
   });
 
   it('loads exactly the approved campaign panels from their exact production paths', () => {
     const assets = resolveCampaignArtAssets(worldPanels, 'campaign', AVAILABLE_CAMPAIGN_ART_PATHS);
 
-    expect(assets).toEqual([...worlds.slice(0, 8), 'aether_crown'].map((worldId, index) => ({
+    expect(assets).toEqual(worlds.map((worldId, index) => ({
       kind: 'image', key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-${index >= 3 ? 'v2' : 'v1'}.png`
     })));
     expect(resolveCampaignArtAssets(worldPanels, 'menu', AVAILABLE_CAMPAIGN_ART_PATHS)).toEqual([]);

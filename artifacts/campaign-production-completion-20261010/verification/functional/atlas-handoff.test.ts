@@ -32,7 +32,7 @@ it('retains the historical missing-atlas inventory and verifies its completed pr
   const marchling = CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'enemy:marchling')!;
   expect(marchling).toMatchObject({ state: 'final', temporary: null, width: 768, height: 512, frameWidth: 128, frameHeight: 128 });
   expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.kind === 'sheet' && asset.state === 'final').every(asset => asset.temporary === null && !asset.qualityFlags.includes('final_art_unverified'))).toBe(true);
-  expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.kind === 'sheet' && asset.state === 'final_required')).toHaveLength(6);
+  expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.kind === 'sheet' && asset.state === 'final_required')).toHaveLength(0);
   expect(readdirSync(resolve(atlasFolder, 'marchling')).filter(file => file.endsWith('-generated.png')).sort()).toEqual([
     'marchling-atlas-v1-fit-correction-generated.png',
     'marchling-atlas-v1-initial-generated.png',

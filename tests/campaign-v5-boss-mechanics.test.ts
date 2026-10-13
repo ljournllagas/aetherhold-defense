@@ -297,3 +297,91 @@ describe('World 10 campaign mechanics', () => {
     expect(system.incomingDamageMultiplier(ally.id, 'arcane', castAt)).toBe(1);
   });
 });
+
+describe('natural expansion boss presentation actions', () => {
+  it('marks warnings as special and only the first real Phase 2 effect as phase_two', () => {
+    const oracleSystem = new CampaignBossSystem(), oracle = campaignEnemy('drowned_oracle');
+    oracleSystem.register(oracle, 0);
+    oracleSystem.tick([oracle], [], 0);
+    const oracleWarnAt = CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs;
+    const oracleWarning = oracleSystem.tick([oracle], [], oracleWarnAt)[0];
+    expect(oracleWarning).toMatchObject({ presentationAction: 'special' });
+    expect(oracleSystem.presentation(oracle.id, oracleWarnAt)).toMatchObject({ phase: 1, telegraph: true, resistanceType: 'physical' });
+    expect(oracleSystem.tick([oracle], [], oracleWarnAt)).toHaveLength(0);
+    const oracleResolveAt = oracleWarnAt + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs;
+    expect(oracleSystem.tick([oracle], [], oracleResolveAt)[0]).toMatchObject({ presentationAction: 'phase_two' });
+    expect(oracleSystem.presentation(oracle.id, oracleResolveAt)).toMatchObject({ phase: 2, telegraph: false, resistanceType: 'arcane' });
+    const nextOracleWarnAt = oracleResolveAt + CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs;
+    expect(oracleSystem.tick([oracle], [], nextOracleWarnAt)[0]).toMatchObject({ presentationAction: 'special' });
+    const nextOracleResolveAt = nextOracleWarnAt + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs;
+    expect(oracleSystem.tick([oracle], [], nextOracleResolveAt)[0]).not.toHaveProperty('presentationAction', 'phase_two');
+
+    const tyrantSystem = new CampaignBossSystem(), tyrant = campaignEnemy('iron_tyrant');
+    tyrantSystem.register(tyrant, 0); tyrant.hp = tyrant.maxHp * 0.649;
+    expect(tyrantSystem.tick([tyrant], [], 100)[0]).toMatchObject({ presentationAction: 'special' });
+    expect(tyrantSystem.presentation(tyrant.id, 100)).toMatchObject({ phase: 1, telegraph: true });
+    expect(tyrantSystem.tick([tyrant], [], 100)).toHaveLength(0);
+    expect(tyrantSystem.tick([tyrant], [], 100 + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs)[0]).toMatchObject({ presentationAction: 'phase_two' });
+    tyrant.hp = tyrant.maxHp * 0.299;
+    const coreAt = 100 + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs + 100;
+    expect(tyrantSystem.tick([tyrant], [], coreAt)[0]).toMatchObject({ presentationAction: 'special' });
+    expect(tyrantSystem.tick([tyrant], [], coreAt + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs)[0]).not.toHaveProperty('presentationAction', 'phase_two');
+
+    const regentSystem = new CampaignBossSystem(), regent = campaignEnemy('umbral_regent');
+    regentSystem.register(regent, 0); regent.hp = regent.maxHp * 0.64;
+    expect(regentSystem.tick([regent], [], 100)[0]).toMatchObject({ presentationAction: 'special' });
+    expect(regentSystem.presentation(regent.id, 100)).toMatchObject({ phase: 1, telegraph: true });
+    expect(regentSystem.tick([regent], [], 100)).toHaveLength(0);
+    expect(regentSystem.tick([regent], [], 100 + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs)[0]).toMatchObject({ presentationAction: 'phase_two', summon: { count: 2 } });
+
+    const sovereignSystem = new CampaignBossSystem(), sovereign = campaignEnemy('rift_sovereign');
+    sovereignSystem.register(sovereign, 0);
+    const sovereignWarnAt = CAMPAIGN_BOSS_TUNING.sovereignIntervalMs;
+    expect(sovereignSystem.tick([sovereign], [], sovereignWarnAt)[0]).toMatchObject({ presentationAction: 'special' });
+    expect(sovereignSystem.presentation(sovereign.id, sovereignWarnAt)).toMatchObject({ phase: 1, telegraph: true });
+    const sovereignResolveAt = sovereignWarnAt + CAMPAIGN_BOSS_TUNING.sovereignTelegraphMs;
+    expect(sovereignSystem.tick([sovereign], [], sovereignResolveAt)[0]).toMatchObject({ presentationAction: 'phase_two', routeAdvanceFraction: CAMPAIGN_BOSS_TUNING.sovereignRouteFraction });
+    expect(sovereignSystem.presentation(sovereign.id, sovereignResolveAt)).toMatchObject({ phase: 2, telegraph: false });
+
+    const devourerSystem = new CampaignBossSystem(), devourer = campaignEnemy('aether_devourer');
+    devourerSystem.register(devourer, 0); devourerSystem.tick([devourer], [], 0);
+    devourer.hp = devourer.maxHp * 0.69;
+    expect(devourerSystem.tick([devourer], [], 100)[0]).toMatchObject({ presentationAction: 'phase_two' });
+    expect(devourerSystem.presentation(devourer.id, 100)).toMatchObject({ phase: 2, telegraph: false });
+    devourer.hp = devourer.maxHp * 0.44;
+    devourerSystem.tick([devourer], [], 200);
+    const devourerWarnAt = 200 + CAMPAIGN_BOSS_TUNING.devourerPortalIntervalMs;
+    expect(devourerSystem.tick([devourer], [], devourerWarnAt)[0]).toMatchObject({ presentationAction: 'special' });
+    expect(devourerSystem.presentation(devourer.id, devourerWarnAt)).toMatchObject({ phase: 3, telegraph: true });
+  });
+
+  it('plays Hydra special at warning onset and phase_two only after the first summons resolve', () => {
+    const system = new CampaignBossSystem(), boss = campaignEnemy('mireheart_hydra');
+    system.register(boss, 0); boss.hp = boss.maxHp * CAMPAIGN_BOSS_TUNING.hydraSummonHp;
+
+    const warning = system.tick([boss], [], 0)[0];
+    expect(warning).toMatchObject({ presentationAction: 'special' });
+    expect(system.presentation(boss.id, 0)).toMatchObject({ phase: 2, telegraph: true });
+    expect(system.tick([boss], [], 0)).toHaveLength(0);
+
+    const resolveAt = CAMPAIGN_BOSS_TUNING.hydraTelegraphMs;
+    expect(system.tick([boss], [], resolveAt - 1)).toHaveLength(0);
+    expect(system.presentation(boss.id, resolveAt - 1).telegraph).toBe(true);
+    expect(system.tick([boss], [], resolveAt)[0]).toMatchObject({ presentationAction: 'phase_two', summon: { enemyId: 'bogling', count: 2 } });
+    expect(system.presentation(boss.id, resolveAt)).toMatchObject({ phase: 2, telegraph: false });
+    expect(system.tick([boss], [], resolveAt)).toHaveLength(0);
+  });
+
+  it('marks Stormmaw warnings as special without creating a Phase 2 action or phase', () => {
+    const system = new CampaignBossSystem(), boss = campaignEnemy('stormmaw_prime'), ally = campaignEnemy('cloud_skitter');
+    ally.x = 30; system.register(boss, 0);
+    const warnAt = CAMPAIGN_BOSS_TUNING.stormmawIntervalMs;
+    expect(system.tick([boss, ally], [], warnAt)[0]).toMatchObject({ presentationAction: 'special' });
+    expect(system.presentation(boss.id, warnAt)).toMatchObject({ phase: 1, telegraph: true });
+    const resolveAt = warnAt + CAMPAIGN_BOSS_TUNING.stormmawTelegraphMs;
+    const event = system.tick([boss, ally], [], resolveAt)[0];
+    expect(event).not.toHaveProperty('presentationAction', 'phase_two');
+    expect(system.presentation(boss.id, resolveAt)).toMatchObject({ phase: 1, telegraph: false });
+    expect(ally.speedBuffUntil).toBe(resolveAt + CAMPAIGN_BOSS_TUNING.stormmawBuffDurationMs);
+  });
+});

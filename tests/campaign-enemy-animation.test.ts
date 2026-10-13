@@ -240,25 +240,43 @@ describe('campaign enemy animation playback', () => {
     expect(sprite.frame.name).toBe('special_7');
   });
 
-  it('uses and holds the Hydra three-neck special pose for each rising cast telegraph', () => {
+  it('holds Hydra phase poses while event actions avoid duplicate telegraph and phase requests', () => {
     const { scene, sprite } = fixture();
     const visual = buildEnemyVisual(scene, 'warlord', 'mireheart_hydra');
     visual.setWalking(true);
     visual.setCampaignState?.({ phase: 1, telegraph: false, guarded: false });
+    expect(visual.playAction('special')).toBe(1000);
     visual.setCampaignState?.({ phase: 1, telegraph: true, guarded: false });
     expect(sprite.play).toHaveBeenLastCalledWith('campaign_enemy_mireheart_hydra_special');
+    expect(sprite.play).toHaveBeenCalledTimes(3); // idle, walk, event-owned special
     sprite.complete('campaign_enemy_mireheart_hydra_special');
     expect(sprite.frame.name).toBe('special_7');
 
     visual.setCampaignState?.({ phase: 1, telegraph: false, guarded: false });
     expect(sprite.play).toHaveBeenLastCalledWith('campaign_enemy_mireheart_hydra_walk');
+    expect(visual.playAction('phase_two')).toBe(1000);
     visual.setCampaignState?.({ phase: 2, telegraph: false, guarded: false });
     expect(sprite.play).toHaveBeenLastCalledWith('campaign_enemy_mireheart_hydra_phase_two');
+    expect(sprite.play).toHaveBeenCalledTimes(5); // walk resumed, then event-owned phase_two
     sprite.complete('campaign_enemy_mireheart_hydra_phase_two');
     expect(sprite.frame.name).toBe('phase_two_7');
 
+    expect(visual.playAction('special')).toBe(1000);
     visual.setCampaignState?.({ phase: 2, telegraph: true, guarded: false });
     expect(sprite.play).toHaveBeenLastCalledWith('campaign_enemy_mireheart_hydra_special');
+    expect(sprite.play).toHaveBeenCalledTimes(6); // the state update does not restart the event action
+  });
+
+  it('keeps Hydra natural-action requests behind the authored death lock', () => {
+    const { scene, sprite } = fixture();
+    const visual = buildEnemyVisual(scene, 'warlord', 'mireheart_hydra');
+
+    expect(visual.playAction('death')).toBe(1000);
+    expect(visual.playAction('special')).toBeNull();
+    expect(visual.playAction('phase_two')).toBeNull();
+    sprite.complete('campaign_enemy_mireheart_hydra_death');
+    expect(visual.playAction('special')).toBeNull();
+    expect(sprite.play).toHaveBeenLastCalledWith('campaign_enemy_mireheart_hydra_death');
   });
 
   it('maps the six expanded boss phase labels to distinct procedural combat cues', () => {

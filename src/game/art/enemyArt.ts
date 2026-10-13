@@ -421,8 +421,6 @@ function buildCampaignEnemyVisual(scene: Phaser.Scene, archetype: EnemyArchetype
         } else if (campaignId === 'mireheart_hydra') {
           phaseAura?.setVisible(phase >= 2 || state.telegraph);
           nextPhasePose = state.telegraph ? 'special' : phase >= 2 ? 'phase_two' : null;
-          if (state.telegraph && !previousTelegraph) preferAction('special');
-          else if (phase > previousPhase) preferAction('phase_two');
         } else if (campaignId === 'hollow_warden') {
           ward?.setVisible(state.guarded);
           phaseAura?.setVisible(phase >= 2);

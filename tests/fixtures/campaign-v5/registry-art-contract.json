@@ -2754,7 +2754,7 @@
     }
   ],
   "livePromotions": {
-    "reviewPath": "artifacts/campaign-final-art-20261012/verification/world10-runtime/repair-v2/W10-V2-repair-v2-runtime-report.md",
+    "reviewPath": "artifacts/campaign-final-art-20261012/verification/world9-runtime/full-atlas-gate/W9-V3-runtime-report.md",
     "acceptedForIntegration": true,
     "assets": [
       {
@@ -7568,6 +7568,808 @@
             }
           ]
         }
+      },
+      {
+        "id": "world-panel:astral_rift",
+        "baselineV1Path": "/assets/campaign/world-map/astral_rift-v1.png",
+        "baselineSha256": "30c3c6442d1c1240a663369b93bc26fe2fa7082cf33bcb4734d8a8e6c4c40b27",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world9/candidates/world-panel-astral-rift-candidate.png",
+        "candidateSha256": "dab7467998334b9e5bb630506cca0ab684d9c55fed8098a04f5cf0a2bff4908a",
+        "promotedPath": "/assets/campaign/world-map/astral_rift-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "world-panel:astral_rift",
+          "key": "campaign_worldmap_astral_rift",
+          "path": "/assets/campaign/world-map/astral_rift-v2.png",
+          "kind": "image",
+          "width": 768,
+          "height": 432,
+          "states": {},
+          "state": "final",
+          "stage": "campaign",
+          "temporary": null,
+          "qualityFlags": [
+            "biome_illustration"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:astral_rift:a",
+        "baselineV1Path": "/assets/campaign/maps/astral_rift_a-v1.png",
+        "baselineSha256": "0fc52438c3074e5cbad93b4f529ccae643e76a0f48143f23ce30d251247ff0b3",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/astral-rift-map-a-repair-v2.png",
+        "candidateSha256": "be0ecbc01bfcd5b4fda7ffedd7a88485e7c9bf02d5978e9a28baa3f57ebd2b2e",
+        "promotedPath": "/assets/campaign/maps/astral_rift_a-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:astral_rift:a",
+          "key": "campaign_astral_rift_a",
+          "path": "/assets/campaign/maps/astral_rift_a-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:astral_rift:b",
+        "baselineV1Path": "/assets/campaign/maps/astral_rift_b-v1.png",
+        "baselineSha256": "d03059e7adde4b252cec53ed6f30107bf08da1cfaf476c1136309600c7aba407",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/astral-rift-map-b-repair-v2.png",
+        "candidateSha256": "cf0e176ef41c74728f03256a5243bc77e73bc01c46de8d04bebe05b9456f3dab",
+        "promotedPath": "/assets/campaign/maps/astral_rift_b-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:astral_rift:b",
+          "key": "campaign_astral_rift_b",
+          "path": "/assets/campaign/maps/astral_rift_b-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:astral_rift:c",
+        "baselineV1Path": "/assets/campaign/maps/astral_rift_c-v1.png",
+        "baselineSha256": "f00309f8b34c699966d6b5745998c6a30a448ac1bc97dbbc36a005b8462bfebc",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/astral-rift-map-c-repair-v2.png",
+        "candidateSha256": "94b137421d54dcb87e46cde7adc71c0ab5ff5f1ae790443f66555bcb71652536",
+        "promotedPath": "/assets/campaign/maps/astral_rift_c-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:astral_rift:c",
+          "key": "campaign_astral_rift_c",
+          "path": "/assets/campaign/maps/astral_rift_c-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:astral_rift:d",
+        "baselineV1Path": "/assets/campaign/maps/astral_rift_d-v1.png",
+        "baselineSha256": "8db2a745f6dabca73ed1cae6ae9ad5c1b934131a34c8156af07368bf3a527254",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/astral-rift-map-d-repair-v3.png",
+        "candidateSha256": "3119f0db247fe479181964205235ed936f182f952362e31c8b75ecdbcd7814ab",
+        "promotedPath": "/assets/campaign/maps/astral_rift_d-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:astral_rift:d",
+          "key": "campaign_astral_rift_d",
+          "path": "/assets/campaign/maps/astral_rift_d-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "enemy:riftling",
+        "baselineV1Path": "/assets/campaign/enemies/astral_rift/riftling-atlas-v1.png",
+        "baselineSha256": "02ca9a1cdf19e107e0f32d8691b0054122de167d6e461da6111a9f3e3cf865d4",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world9/candidates/riftling-atlas-candidate.png",
+        "candidateSha256": "767eea2dec08a2825a323fb5cb62656c2857a247ce48aae40d93985f988695f6",
+        "promotedPath": "/assets/campaign/enemies/astral_rift/riftling-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:riftling",
+          "key": "campaign_enemy_riftling",
+          "path": "/assets/campaign/enemies/astral_rift/riftling-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_riftling_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_riftling_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_riftling_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_riftling_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:phase_hound",
+        "baselineV1Path": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v1.png",
+        "baselineSha256": "e680a5111ea38ecd776ea3e00f9a83413c42af8fcfe46c910bb2d2ebeb178ab0",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world9/candidates/phase-hound-atlas-candidate.png",
+        "candidateSha256": "6b26a78225e14baf8d7c39f8729b6f613ce4d637b3abae66666752f995750c13",
+        "promotedPath": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:phase_hound",
+          "key": "campaign_enemy_phase_hound",
+          "path": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_phase_hound_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_phase_hound_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_phase_hound_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_phase_hound_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:astral_horror",
+        "baselineV1Path": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v1.png",
+        "baselineSha256": "c93b45a7bd95ec778d25217d11a1513c17fd2210e93d6f37bc541a2ecf107d43",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world9/candidates/astral-horror-atlas-candidate.png",
+        "candidateSha256": "15917d79ae4d4e05bc51c36470d94ea3ff87db27a12eba79cc798d319aae1140",
+        "promotedPath": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:astral_horror",
+          "key": "campaign_enemy_astral_horror",
+          "path": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_astral_horror_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_astral_horror_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_astral_horror_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_astral_horror_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:voidplate",
+        "baselineV1Path": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v1.png",
+        "baselineSha256": "47aafc8a058513d7041ffebaf34a83e7521c8ac9c1ff17923fe09d2b19722179",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world9/candidates/voidplate-atlas-candidate.png",
+        "candidateSha256": "61b31d9a92649908e8c51dc77a83aea9c677f7789170532db9f607dbf52240b4",
+        "promotedPath": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:voidplate",
+          "key": "campaign_enemy_voidplate",
+          "path": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_voidplate_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_voidplate_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_voidplate_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_voidplate_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:rift_weaver",
+        "baselineV1Path": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v1.png",
+        "baselineSha256": "9157637796ed0f7d0bf8e028f6ab4f39d8998d3e79cfd2a0cd560e2c9c3a5050",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/rift-weaver-atlas-repair-v1.png",
+        "candidateSha256": "025a247ebbc0115c4ebd18f2aca659ae1a158c32a84d002e79f63e5cdbc39b18",
+        "promotedPath": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:rift_weaver",
+          "key": "campaign_enemy_rift_weaver",
+          "path": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 640,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            },
+            "buff": {
+              "row": 4,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow",
+            "support_buff_playback_verified"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_rift_weaver_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rift_weaver_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rift_weaver_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rift_weaver_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rift_weaver_buff",
+              "state": "buff",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "buff_0",
+                "buff_1",
+                "buff_2",
+                "buff_3",
+                "buff_4",
+                "buff_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "boss:rift_sovereign",
+        "baselineV1Path": "/assets/campaign/bosses/rift_sovereign-atlas-v1.png",
+        "baselineSha256": "d2ab29b09662f173373b0768b46075701228f464abfdb56cd97a1ba0c29cf660",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/rift-sovereign-atlas-repair-v1.png",
+        "candidateSha256": "afeb43fde71948dcd9b45bf2e6ee528dd0ef4d4f1b4b01f42b55e00422408620",
+        "promotedPath": "/assets/campaign/bosses/rift_sovereign-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "boss:rift_sovereign",
+          "key": "campaign_enemy_rift_sovereign",
+          "path": "/assets/campaign/bosses/rift_sovereign-atlas-v2.png",
+          "kind": "sheet",
+          "width": 2048,
+          "height": 1536,
+          "frameWidth": 256,
+          "frameHeight": 256,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 6
+            },
+            "walk": {
+              "row": 1,
+              "frames": 8
+            },
+            "attack": {
+              "row": 2,
+              "frames": 8
+            },
+            "special": {
+              "row": 3,
+              "frames": 8
+            },
+            "phase_two": {
+              "row": 4,
+              "frames": 8
+            },
+            "death": {
+              "row": 5,
+              "frames": 8
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "phase_state_readability_verified"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_rift_sovereign_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3",
+                "idle_4",
+                "idle_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rift_sovereign_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5",
+                "walk_6",
+                "walk_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rift_sovereign_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5",
+                "attack_6",
+                "attack_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rift_sovereign_special",
+              "state": "special",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "special_0",
+                "special_1",
+                "special_2",
+                "special_3",
+                "special_4",
+                "special_5",
+                "special_6",
+                "special_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rift_sovereign_phase_two",
+              "state": "phase_two",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "phase_two_0",
+                "phase_two_1",
+                "phase_two_2",
+                "phase_two_3",
+                "phase_two_4",
+                "phase_two_5",
+                "phase_two_6",
+                "phase_two_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_rift_sovereign_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5",
+                "death_6",
+                "death_7"
+              ]
+            }
+          ]
+        }
       }
     ],
     "reviewPaths": {
@@ -7600,6 +8402,15 @@
         "candidateInputs": "artifacts/campaign-final-art-20261012/verification/world10-runtime/repair-v2/candidate-inputs.json",
         "rawRepairAudit": "artifacts/campaign-final-art-20261012/verification/world10-raw/repair-v2-audit.json",
         "focusedRuntimeAudit": "artifacts/campaign-final-art-20261012/verification/world10-runtime/repair-v2/repair-v2-stage-gate-report.json"
+      },
+      "astral_rift": {
+        "raw": "artifacts/campaign-final-art-20261012/verification/world9-raw/REPORT.md",
+        "runtime": "artifacts/campaign-final-art-20261012/verification/world9-runtime/full-atlas-gate/W9-V3-runtime-report.md",
+        "candidateInputs": "artifacts/campaign-final-art-20261012/verification/world9-runtime/full-atlas-gate/full-atlas-inputs.json",
+        "mapResolver": "artifacts/campaign-final-art-20261012/verification/world9-raw/runtime-geometry.json",
+        "mapSubset": "artifacts/campaign-final-art-20261012/verification/world9-runtime/maps/MAP-subset-report.md",
+        "rawMapIntegrity": "artifacts/campaign-final-art-20261012/verification/world9-raw/world9-map-independent-integrity.json",
+        "rawAtlasIntegrity": "artifacts/campaign-final-art-20261012/verification/world9-raw/world9-atlas-independent-integrity.json"
       }
     },
     "acceptedWorldIds": [
@@ -7608,9 +8419,10 @@
       "ironroot",
       "sky_isles",
       "dreadmoon",
+      "astral_rift",
       "aether_crown"
     ],
-    "integrationReport": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md",
-    "previousIntegrationReport": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+    "integrationReport": "artifacts/campaign-final-art-20261012/integration/final-expansion-art-integration-report.md",
+    "previousIntegrationReport": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md"
   }
 }

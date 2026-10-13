@@ -24,7 +24,7 @@ export interface CampaignArtSource {
 
 const LEGACY_WORLD_IDS: readonly CampaignWorldId[] = CAMPAIGN_WORLDS.slice(0, 3).map(world => world.id);
 const EXPANSION_WORLD_IDS: readonly CampaignWorldId[] = CAMPAIGN_WORLDS.slice(3).map(world => world.id);
-const RELEASED_EXPANSION_WORLD_IDS = new Set<CampaignWorldId>(['whisperfen', 'sunken_aether', 'ironroot', 'sky_isles', 'dreadmoon', 'aether_crown']);
+const RELEASED_EXPANSION_WORLD_IDS = new Set<CampaignWorldId>(['whisperfen', 'sunken_aether', 'ironroot', 'sky_isles', 'dreadmoon', 'astral_rift', 'aether_crown']);
 const FAMILIES = ['a', 'b', 'c', 'd'] as const;
 const LEGACY_NORMAL_ENEMIES: Readonly<Record<string, readonly string[]>> = {
   borderkeep: ['marchling', 'skitter', 'stoneback', 'ironhide', 'veilborn'],

@@ -8,31 +8,25 @@ import {
 } from '../src/game/campaign/artManifest.ts';
 
 describe('campaign art replacement contract', () => {
-  it('keeps final-required expansion entries out of ordinary runtime loaders', () => {
+  it('loads the complete accepted campaign art set without provisional registrations', () => {
     const missing = missingCampaignProductionAssets();
     const required = [...requiredAssets('menu'), ...requiredAssets('campaign'), ...requiredAssets('gameplay')];
 
-    expect(missing).toHaveLength(11);
-    expect(missing.every(asset => asset.path.startsWith('/assets/campaign/'))).toBe(true);
-    expect(missing.every(asset => asset.qualityFlags.includes('final_art_unverified'))).toBe(true);
-    expect(missing.every(asset => asset.state === 'final_required' && asset.temporary === 'procedural')).toBe(true);
-    const withheldPaths = new Set(missing.map(asset => asset.path));
-    expect(required.filter(asset => withheldPaths.has(asset.path)).map(asset => asset.path)).toEqual(
-      ['/assets/campaign/world-map/astral_rift-v1.png']
-    );
-    expect(campaignArtAssetsForLoader('menu', missing.map(asset => asset.path))).toEqual([]);
-    expect(campaignArtAssetsForLoader('campaign', missing.map(asset => asset.path), [])).toEqual([]);
-    expect(campaignArtAssetsForLoader('gameplay', missing.map(asset => asset.path))).toEqual([]);
+    expect(missing).toEqual([]);
+    expect(required.every(asset => !asset.path.startsWith('/assets/campaign/')
+      || AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(true);
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toEqual([]);
     expect(required.filter(asset => asset.path.startsWith('/assets/campaign/'))).toEqual(campaignArtAssetsForLoader('campaign'));
-    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(109);
+    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(120);
+    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final_required')).toEqual([]);
     expect(CAMPAIGN_ART_MANIFEST).toHaveLength(120);
   });
 
-  it('registers the original and accepted World 4–8 and World 10 terrain plates with the approved tower tiers', () => {
+  it('registers the original and accepted World 4–10 terrain plates with the approved tower tiers', () => {
     const maps = CAMPAIGN_ART_MANIFEST.filter(asset => asset.id.startsWith('map:') && asset.state === 'final');
     const expansion = CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final_required');
     const towers = CAMPAIGN_ART_MANIFEST.filter(asset => asset.id.startsWith('tower:'));
-    expect(maps).toHaveLength(36);
+    expect(maps).toHaveLength(40);
     expect(maps.map(asset => asset.path)).toEqual([
       '/assets/campaign/maps/borderkeep_a-v1.png', '/assets/campaign/maps/borderkeep_b-v1.png',
       '/assets/campaign/maps/borderkeep_c-v1.png', '/assets/campaign/maps/borderkeep_d-v1.png',
@@ -50,6 +44,8 @@ describe('campaign art replacement contract', () => {
       '/assets/campaign/maps/sky_isles_c-v2.png', '/assets/campaign/maps/sky_isles_d-v2.png',
       '/assets/campaign/maps/dreadmoon_a-v2.png', '/assets/campaign/maps/dreadmoon_b-v2.png',
       '/assets/campaign/maps/dreadmoon_c-v2.png', '/assets/campaign/maps/dreadmoon_d-v2.png',
+      '/assets/campaign/maps/astral_rift_a-v2.png', '/assets/campaign/maps/astral_rift_b-v2.png',
+      '/assets/campaign/maps/astral_rift_c-v2.png', '/assets/campaign/maps/astral_rift_d-v2.png',
       '/assets/campaign/maps/aether_crown_a-v2.png', '/assets/campaign/maps/aether_crown_b-v2.png',
       '/assets/campaign/maps/aether_crown_c-v2.png', '/assets/campaign/maps/aether_crown_d-v2.png'
     ]);
@@ -60,16 +56,11 @@ describe('campaign art replacement contract', () => {
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual([
       ...CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path)
     ]);
-    expect(expansion).toHaveLength(11);
-    expect(expansion.filter(asset => asset.id.startsWith('map:'))).toHaveLength(4);
-    expect(expansion.filter(asset => asset.id.startsWith('world-panel:'))).toHaveLength(1);
-    expect(expansion.filter(asset => asset.id.startsWith('enemy:'))).toHaveLength(5);
-    expect(expansion.filter(asset => asset.id.startsWith('boss:'))).toHaveLength(1);
-    expect(expansion.some(asset => AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(false);
-    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toHaveLength(11);
-    expect(new Set(CAMPAIGN_PROVISIONAL_STARTER_PATHS).size).toBe(11);
-    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final_required').map(asset => asset.path).sort())
-      .toEqual([...CAMPAIGN_PROVISIONAL_STARTER_PATHS].sort());
+    expect(expansion).toEqual([]);
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toEqual([]);
+    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').every(asset => asset.temporary === null
+      && !asset.qualityFlags.includes('final_art_unverified')
+      && !asset.qualityFlags.includes('provisional_starter_art'))).toBe(true);
   });
 
   it('queues only promoted assets whose exact production paths are approved', () => {
@@ -91,23 +82,21 @@ describe('campaign art replacement contract', () => {
     }]);
   });
 
-  it('requests approved panels and only the remaining gated starter panels on entry', () => {
+  it('requests all ten accepted panels on campaign entry without a provisional tail', () => {
     const panels = CAMPAIGN_ART_MANIFEST.filter(asset => asset.id.startsWith('world-panel:'));
     const campaign = campaignArtAssetsForLoader('campaign');
     const requested = requiredAssets('campaign');
 
     expect(campaign.map(asset => asset.key)).toEqual([
       ...CAMPAIGN_WORLDS.slice(0, 8).map(world => `campaign_worldmap_${world.id}`),
-      'campaign_worldmap_aether_crown', 'campaign_worldmap_astral_rift'
+      'campaign_worldmap_astral_rift', 'campaign_worldmap_aether_crown'
     ]);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path));
-    expect(panels.filter(asset => asset.state === 'final')).toHaveLength(9);
-    expect(panels.filter(asset => asset.state === 'final_required')).toHaveLength(1);
+    expect(panels.filter(asset => asset.state === 'final')).toHaveLength(10);
+    expect(panels.filter(asset => asset.state === 'final_required')).toHaveLength(0);
     expect(panels.filter(asset => asset.state === 'final').every(asset => asset.temporary === null
       && !asset.qualityFlags.includes('final_art_unverified'))).toBe(true);
-    expect(resolveCampaignProvisionalStarterAssets(panels, 'campaign', CAMPAIGN_PROVISIONAL_STARTER_PATHS).map(asset => asset.key)).toEqual(
-      ['campaign_worldmap_astral_rift']
-    );
+    expect(resolveCampaignProvisionalStarterAssets(panels, 'campaign', CAMPAIGN_PROVISIONAL_STARTER_PATHS)).toEqual([]);
     expect(resolveCampaignProvisionalStarterAssets(panels, 'campaign', []).map(asset => asset.key)).toEqual([]);
     expect(requested).toEqual([...requiredAssets('menu'), ...campaign]);
     expect(requested.some(asset => STAGE_ASSETS.gameplay.some(gameplay => gameplay.key === asset.key))).toBe(false);
@@ -125,6 +114,14 @@ describe('campaign art replacement contract', () => {
     ]);
     expect(campaignGameplayAssetsForLevel(level, 1).map(asset => asset.path)).toEqual(tierTwo.filter(asset => !asset.path.includes('/towers/')).map(asset => asset.path));
     expect(campaignGameplayAssetsForLevel(level, 3).filter(asset => asset.path.includes('/towers/')).every(asset => asset.path.includes('-tier3-'))).toBe(true);
+    const astralRift = campaignGameplayAssetsForLevel(getCampaignLevel(81)!, 1).map(asset => asset.path);
+    expect(astralRift).toContain('/assets/campaign/maps/astral_rift_a-v2.png');
+    expect(astralRift).toContain('/assets/campaign/enemies/astral_rift/riftling-atlas-v2.png');
+    const astralRiftBoss = campaignGameplayAssetsForLevel(getCampaignLevel(90)!, 1).map(asset => asset.path);
+    expect(astralRiftBoss).toEqual(expect.arrayContaining([
+      '/assets/campaign/maps/astral_rift_d-v2.png',
+      '/assets/campaign/bosses/rift_sovereign-atlas-v2.png'
+    ]));
     const otherFamily = campaignGameplayAssetsForLevel(getCampaignLevel(11)!, 2);
     expect(otherFamily.some(asset => asset.path === '/assets/campaign/maps/emberfall_a-v1.png')).toBe(true);
     expect(otherFamily.some(asset => asset.key === 'campaign_borderkeep_a')).toBe(false);

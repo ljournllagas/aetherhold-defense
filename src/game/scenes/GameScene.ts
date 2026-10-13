@@ -3089,9 +3089,6 @@ export class GameScene extends Phaser.Scene {
 
   private tickCampaignBosses(): void {
     for (const event of this.campaignBosses.tick(this.enemies, this.towers, this.gameTimeMs)) {
-      if (event.presentationAction === 'buff') {
-        (event.boss.view?.getData('enemyVisual') as EnemyView | undefined)?.playAction('buff');
-      }
       this.showCampaignCallout(event.text);
       if (event.summon) {
         const visualId = event.summon.kind === 'regent-clone' ? 'umbral_regent' : undefined;
@@ -3110,6 +3107,9 @@ export class GameScene extends Phaser.Scene {
         }
       }
       if (event.routeAdvanceFraction) this.advanceEnemyAlongRoute(event.boss, event.routeAdvanceFraction);
+      if (event.presentationAction) {
+        (event.boss.view?.getData('enemyVisual') as EnemyView | undefined)?.playAction(event.presentationAction);
+      }
     }
   }
 

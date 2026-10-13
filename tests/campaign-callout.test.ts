@@ -3,9 +3,10 @@ import { GameScene } from '../src/game/scenes/GameScene.ts';
 import { gameLayout } from '../src/game/ui/layout.ts';
 import { SoundManager } from '../src/game/systems/SoundManager.ts';
 import { CampaignBossSystem, CAMPAIGN_BOSS_TUNING } from '../src/game/campaign/bosses.ts';
+import { getCampaignEnemy } from '../src/game/campaign/enemies.ts';
 import { CAMPAIGN_BATTLE_TUNING } from '../src/game/campaign/battle.ts';
 import { SIMULATION_STEP_MS } from '../src/game/systems/SimulationClock.ts';
-import type { Enemy } from '../src/game/entities/Enemy.ts';
+import { Enemy } from '../src/game/entities/Enemy.ts';
 
 vi.mock('phaser', () => ({ default: { Scene: class { constructor(_key?: string) {} } } }));
 function stub(): any {
@@ -23,6 +24,20 @@ function fixture(width = 1280, height = 720) {
     views.push(view); return view;
   }) };
   return { run, views };
+}
+function campaignBossActionFixture(campaignId: string) {
+  const { run } = fixture();
+  const cfg = getCampaignEnemy(campaignId);
+  const boss = new Enemy(cfg.visualArchetype, cfg.baseHp, cfg.baseSpeed, cfg.baseReward, cfg);
+  boss.campaignId = campaignId; boss.slowResistance = cfg.slowResistance;
+  const visual = { playAction: vi.fn((_action: string) => 1000) };
+  (boss as any).view = { getData: (key: string) => key === 'enemyVisual' ? visual : undefined };
+  const system = new CampaignBossSystem(); system.register(boss, 0);
+  run.campaign = {} as any; run.campaignBosses = system; run.enemies = [boss]; run.towers = [];
+  let summonId = 100;
+  run.spawnEnemy = vi.fn(() => ({ id: summonId++, x: 0, y: 0, waypointIndex: 1, distanceTraveled: 0 }));
+  run.advanceEnemyAlongRoute = vi.fn();
+  return { run, boss, visual, system };
 }
 afterEach(() => vi.restoreAllMocks());
 
@@ -53,6 +68,103 @@ describe('campaign ability callout', () => {
     expect(run.spawnEnemy).toHaveBeenCalledTimes(3);
     expect(views[0]).toMatchObject({ text: 'Marchlings summoned', style: { backgroundColor: '#121920', padding: { x: 8, y: 4 } } });
     expect(run.campaignCallout).toEqual({ text: 'Marchlings summoned', until: 3000 });
+  });
+  it('dispatches marked actions once from real expansion boss events', () => {
+    const actions = (visual: ReturnType<typeof campaignBossActionFixture>['visual']) => visual.playAction.mock.calls.map(([action]) => action);
+    const at = (ctx: ReturnType<typeof campaignBossActionFixture>, time: number, expected: string[], hpFraction?: number) => {
+      if (hpFraction !== undefined) ctx.boss.hp = ctx.boss.maxHp * hpFraction;
+      ctx.run.gameTimeMs = time; ctx.run.tickCampaignBosses();
+      expect(actions(ctx.visual)).toEqual(expected);
+      return ctx.system.presentation(ctx.boss.id, time);
+    };
+
+    const oracle = campaignBossActionFixture('drowned_oracle');
+    at(oracle, 0, []);
+    const oracleWarnAt = CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs;
+    expect(at(oracle, oracleWarnAt, ['special'])).toMatchObject({ phase: 1, telegraph: true, resistanceType: 'physical' });
+    at(oracle, oracleWarnAt, ['special']);
+    at(oracle, oracleWarnAt + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs - 1, ['special']);
+    expect(at(oracle, oracleWarnAt + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs, ['special', 'phase_two']))
+      .toMatchObject({ phase: 2, telegraph: false, resistanceType: 'arcane' });
+
+    const tyrant = campaignBossActionFixture('iron_tyrant');
+    expect(at(tyrant, 100, ['special'], 0.649)).toMatchObject({ phase: 1, telegraph: true });
+    at(tyrant, 100, ['special']);
+    at(tyrant, 1299, ['special']);
+    expect(at(tyrant, 1300, ['special', 'phase_two'])).toMatchObject({ phase: 2, telegraph: false });
+
+    const hydra = campaignBossActionFixture('mireheart_hydra');
+    hydra.visual.playAction.mockImplementation(action => {
+      if (action === 'phase_two') expect(hydra.run.spawnEnemy).toHaveBeenCalledTimes(2);
+      return 1000;
+    });
+    expect(at(hydra, 0, ['special'], CAMPAIGN_BOSS_TUNING.hydraSummonHp)).toMatchObject({ phase: 2, telegraph: true });
+    at(hydra, 0, ['special']);
+    at(hydra, CAMPAIGN_BOSS_TUNING.hydraTelegraphMs - 1, ['special']);
+    expect(at(hydra, CAMPAIGN_BOSS_TUNING.hydraTelegraphMs, ['special', 'phase_two']))
+      .toMatchObject({ phase: 2, telegraph: false });
+
+    const stormmaw = campaignBossActionFixture('stormmaw_prime');
+    const ally = new Enemy('swiftwisp', 100, 30, 1, getCampaignEnemy('cloud_skitter'));
+    ally.x = 30; stormmaw.run.enemies.push(ally);
+    const stormWarnAt = CAMPAIGN_BOSS_TUNING.stormmawIntervalMs;
+    expect(at(stormmaw, stormWarnAt, ['special'])).toMatchObject({ phase: 1, telegraph: true });
+    const stormResolveAt = stormWarnAt + CAMPAIGN_BOSS_TUNING.stormmawTelegraphMs;
+    expect(at(stormmaw, stormResolveAt, ['special'])).toMatchObject({ phase: 1, telegraph: false });
+    expect(ally.speedBuffUntil).toBe(stormResolveAt + CAMPAIGN_BOSS_TUNING.stormmawBuffDurationMs);
+
+    const regent = campaignBossActionFixture('umbral_regent');
+    regent.visual.playAction.mockImplementation(action => {
+      if (action === 'phase_two') expect(regent.run.spawnEnemy).toHaveBeenCalledTimes(2);
+      return 1000;
+    });
+    expect(at(regent, 100, ['special'], 0.64)).toMatchObject({ phase: 1, telegraph: true });
+    at(regent, 100 + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs - 1, ['special']);
+    expect(at(regent, 100 + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs, ['special', 'phase_two']))
+      .toMatchObject({ phase: 2, telegraph: false });
+
+    const sovereign = campaignBossActionFixture('rift_sovereign');
+    const sovereignWarnAt = CAMPAIGN_BOSS_TUNING.sovereignIntervalMs;
+    expect(at(sovereign, sovereignWarnAt, ['special'])).toMatchObject({ phase: 1, telegraph: true });
+    const sovereignResolveAt = sovereignWarnAt + CAMPAIGN_BOSS_TUNING.sovereignTelegraphMs;
+    expect(at(sovereign, sovereignResolveAt, ['special', 'phase_two'])).toMatchObject({ phase: 2, telegraph: false });
+
+    const devourer = campaignBossActionFixture('aether_devourer');
+    at(devourer, 0, []);
+    expect(at(devourer, 100, ['phase_two'], 0.69)).toMatchObject({ phase: 2, telegraph: false });
+    at(devourer, 200, ['phase_two'], 0.44);
+    const devourerWarnAt = 200 + CAMPAIGN_BOSS_TUNING.devourerPortalIntervalMs;
+    expect(at(devourer, devourerWarnAt, ['phase_two', 'special'])).toMatchObject({ phase: 3, telegraph: true });
+    at(devourer, devourerWarnAt + CAMPAIGN_BOSS_TUNING.devourerPortalTelegraphMs, ['phase_two', 'special']);
+  });
+  it('holds an Oracle warning through pause and dispatches Phase 2 only after simulation time resumes', () => {
+    const { run, boss, visual, system } = campaignBossActionFixture('drowned_oracle');
+    run.gameTimeMs = 0; run.tickCampaignBosses();
+    for (const method of ['updateAchievementNotices', 'renderFrame', 'moveEnemies', 'updateFlights', 'processFieldTicks', 'fireTowers', 'checkWaveClear', 'tickAuto', 'refreshAutoDisplay', 'presentReward', 'publishQAStatus']) run[method] = vi.fn();
+    run.gameTimeMs = CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs - SIMULATION_STEP_MS;
+    run.simulationClock.reset();
+
+    run.update(0, SIMULATION_STEP_MS);
+    expect(run.gameTimeMs).toBeCloseTo(CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs);
+    expect(visual.playAction).toHaveBeenCalledExactlyOnceWith('special');
+    expect(system.presentation(boss.id, run.gameTimeMs)).toMatchObject({ phase: 1, telegraph: true, resistanceType: 'physical' });
+
+    run.pauseState.set('user', true);
+    const pausedAt = run.gameTimeMs;
+    run.update(1000, 5000);
+    expect(run.gameTimeMs).toBe(pausedAt);
+    expect(visual.playAction).toHaveBeenCalledExactlyOnceWith('special');
+    expect(system.presentation(boss.id, run.gameTimeMs).telegraph).toBe(true);
+
+    run.pauseState.set('user', false);
+    run.update(6000, 1000); // The simulation clock caps each rendered frame at one second.
+    expect(system.presentation(boss.id, run.gameTimeMs)).toMatchObject({ phase: 1, telegraph: true, resistanceType: 'physical' });
+    expect(visual.playAction.mock.calls.map(([action]) => action)).toEqual(['special']);
+    run.update(7017, 250);
+    expect(system.presentation(boss.id, run.gameTimeMs)).toMatchObject({ phase: 2, telegraph: false, resistanceType: 'arcane' });
+    expect(visual.playAction.mock.calls.map(([action]) => action)).toEqual(['special', 'phase_two']);
+    run.update(7034, SIMULATION_STEP_MS);
+    expect(visual.playAction.mock.calls.map(([action]) => action)).toEqual(['special', 'phase_two']);
   });
   it.each(['ashcaller', 'frost_shaman'])('plays the authored buff clip on a real %s pulse', (campaignId) => {
     const { run } = fixture();

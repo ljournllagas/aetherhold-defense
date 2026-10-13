@@ -93,7 +93,7 @@ interface TemporaryMitigation {
 export interface CampaignBossEvent {
   boss: Enemy;
   text: string;
-  presentationAction?: 'buff';
+  presentationAction?: 'buff' | 'special' | 'phase_two';
   summon?: {
     enemyId: string;
     count: number;
@@ -270,14 +270,18 @@ export class CampaignBossSystem {
       state.nextAt = nowMs + CAMPAIGN_BOSS_TUNING.hydraSummonCooldownMs;
       if (count > 0) {
         state.hydraSummoned += count;
-        events.push({ boss: enemy, text: 'Hydra · Boglings summoned', summon: { enemyId: 'bogling', count } });
+        events.push({
+          boss: enemy, text: 'Hydra · Boglings summoned',
+          ...(state.hydraSummonPhase === 2 ? { presentationAction: 'phase_two' as const } : {}),
+          summon: { enemyId: 'bogling', count }
+        });
       }
     }
     if (!state.telegraphUntil && nowMs >= state.nextAt && state.phase > state.hydraSummonPhase && state.hydraSummoned < CAMPAIGN_BOSS_TUNING.hydraMaximumSummons) {
       state.hydraSummonPhase = state.phase;
       state.hydraPendingSummons = Math.min(CAMPAIGN_BOSS_TUNING.hydraSummonCount, CAMPAIGN_BOSS_TUNING.hydraMaximumSummons - state.hydraSummoned);
       state.telegraphUntil = nowMs + CAMPAIGN_BOSS_TUNING.hydraTelegraphMs;
-      events.push({ boss: enemy, text: 'Hydra · Bogling brood gathering' });
+      events.push({ boss: enemy, text: 'Hydra · Bogling brood gathering', presentationAction: 'special' });
     }
   }
 
@@ -299,7 +303,10 @@ export class CampaignBossSystem {
       state.phase = RESISTANCE_TYPES.indexOf(resistanceType) + 1;
       state.phaseLabel = this.oracleLabel(resistanceType);
       state.nextAt = nowMs + CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs;
-      events.push({ boss: enemy, text: `Drowned Oracle · ${this.damageTypeName(resistanceType)} resistance` });
+      events.push({
+        boss: enemy, text: `Drowned Oracle · ${this.damageTypeName(resistanceType)} resistance`,
+        ...(resistanceType === 'arcane' ? { presentationAction: 'phase_two' as const } : {})
+      });
       return;
     }
     if (nowMs < state.nextAt) return;
@@ -308,7 +315,7 @@ export class CampaignBossSystem {
     state.pendingResistanceType = resistanceType;
     state.phaseLabel = this.oracleLabel(resistanceType);
     state.telegraphUntil = nowMs + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs;
-    events.push({ boss: enemy, text: `Drowned Oracle · ${this.damageTypeName(resistanceType)} resistance forming` });
+    events.push({ boss: enemy, text: `Drowned Oracle · ${this.damageTypeName(resistanceType)} resistance forming`, presentationAction: 'special' });
   }
 
   private tickTyrant(enemy: Enemy, state: BossState, hp: number, nowMs: number, events: CampaignBossEvent[]): void {
@@ -317,13 +324,16 @@ export class CampaignBossSystem {
       state.telegraphUntil = 0;
       state.phase = Math.min(3, state.phase + 1);
       state.phaseLabel = state.phase === 2 ? 'tyrant_break' : 'tyrant_core';
-      events.push({ boss: enemy, text: state.phase === 2 ? 'Iron Tyrant · Armor broken' : 'Iron Tyrant · Core exposed' });
+      events.push({
+        boss: enemy, text: state.phase === 2 ? 'Iron Tyrant · Armor broken' : 'Iron Tyrant · Core exposed',
+        ...(state.phase === 2 ? { presentationAction: 'phase_two' as const } : {})
+      });
     }
     if (!state.telegraphUntil && state.phase < targetPhase) {
       const nextPhase = state.phase + 1;
       state.phaseLabel = nextPhase === 2 ? 'tyrant_break' : 'tyrant_core';
       state.telegraphUntil = nowMs + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs;
-      events.push({ boss: enemy, text: nextPhase === 2 ? 'Iron Tyrant · Armor plates fracturing' : 'Iron Tyrant · Core exposure imminent' });
+      events.push({ boss: enemy, text: nextPhase === 2 ? 'Iron Tyrant · Armor plates fracturing' : 'Iron Tyrant · Core exposure imminent', presentationAction: 'special' });
     }
     if (state.phase === 1) {
       if (!state.telegraphUntil) state.phaseLabel = 'tyrant_plates';
@@ -354,7 +364,7 @@ export class CampaignBossSystem {
     if (!state.enemyTargets.length) { state.nextAt = nowMs + CAMPAIGN_BOSS_TUNING.stormmawIntervalMs; return; }
       state.phaseLabel = 'storm_surge';
     state.telegraphUntil = nowMs + CAMPAIGN_BOSS_TUNING.stormmawTelegraphMs;
-    events.push({ boss: enemy, text: 'Stormmaw · Storm Surge gathering' });
+    events.push({ boss: enemy, text: 'Stormmaw · Storm Surge gathering', presentationAction: 'special' });
   }
 
   private tickRegent(enemy: Enemy, state: BossState, hp: number, nowMs: number, events: CampaignBossEvent[]): void {
@@ -365,7 +375,7 @@ export class CampaignBossSystem {
       state.phase = 2;
       state.phaseLabel = 'regent_decoys';
       events.push({
-        boss: enemy, text: 'Umbral Regent · Two echoes emerge',
+        boss: enemy, text: 'Umbral Regent · Two echoes emerge', presentationAction: 'phase_two',
         summon: { enemyId: 'echo_shade', count: CAMPAIGN_BOSS_TUNING.regentMaximumClones, kind: 'regent-clone', ownerId: enemy.id, hpBonus: CAMPAIGN_BOSS_TUNING.regentCloneHpBonus }
       });
       return;
@@ -373,7 +383,7 @@ export class CampaignBossSystem {
     if (hp > CAMPAIGN_BOSS_TUNING.regentCloneHp || state.summoned) return;
     state.phaseLabel = 'regent_decoys';
     state.telegraphUntil = nowMs + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs;
-    events.push({ boss: enemy, text: 'Umbral Regent · Echoes forming' });
+    events.push({ boss: enemy, text: 'Umbral Regent · Echoes forming', presentationAction: 'special' });
   }
 
   private tickSovereign(enemy: Enemy, state: BossState, nowMs: number, events: CampaignBossEvent[]): void {
@@ -382,13 +392,17 @@ export class CampaignBossSystem {
       state.jumpCount++;
       state.phase = state.jumpCount + 1;
       state.nextAt = nowMs + CAMPAIGN_BOSS_TUNING.sovereignIntervalMs;
-      events.push({ boss: enemy, text: 'Rift Sovereign · Portal jump', routeAdvanceFraction: CAMPAIGN_BOSS_TUNING.sovereignRouteFraction });
+      events.push({
+        boss: enemy, text: 'Rift Sovereign · Portal jump',
+        ...(state.phase === 2 ? { presentationAction: 'phase_two' as const } : {}),
+        routeAdvanceFraction: CAMPAIGN_BOSS_TUNING.sovereignRouteFraction
+      });
       return;
     }
     if (state.telegraphUntil > 0 || state.jumpCount >= CAMPAIGN_BOSS_TUNING.sovereignMaximumJumps || nowMs < state.nextAt) return;
     state.phaseLabel = 'sovereign_portal';
     state.telegraphUntil = nowMs + CAMPAIGN_BOSS_TUNING.sovereignTelegraphMs;
-    events.push({ boss: enemy, text: 'Rift Sovereign · Portal opening ahead' });
+    events.push({ boss: enemy, text: 'Rift Sovereign · Portal opening ahead', presentationAction: 'special' });
   }
 
   private tickDevourer(enemy: Enemy, state: BossState, hp: number, nowMs: number, events: CampaignBossEvent[]): void {
@@ -400,7 +414,7 @@ export class CampaignBossSystem {
         state.resistanceType = 'physical';
         state.resistanceMultiplier = CAMPAIGN_BOSS_TUNING.devourerResistanceMultiplier;
         state.nextAt = nowMs + CAMPAIGN_BOSS_TUNING.devourerResistanceIntervalMs;
-        events.push({ boss: enemy, text: 'Aether Devourer · Resistance shift' });
+        events.push({ boss: enemy, text: 'Aether Devourer · Resistance shift', presentationAction: 'phase_two' });
       } else if (state.phase === 3) {
         state.phaseLabel = 'devourer_rift';
         state.resistanceType = null; state.resistanceMultiplier = 1;
@@ -435,7 +449,7 @@ export class CampaignBossSystem {
     }
     if (state.telegraphUntil > 0 || state.jumpCount >= CAMPAIGN_BOSS_TUNING.devourerPortalMaximumJumps || nowMs < state.nextAt) return;
     state.telegraphUntil = nowMs + CAMPAIGN_BOSS_TUNING.devourerPortalTelegraphMs;
-    events.push({ boss: enemy, text: 'Aether Devourer · Rift portal opening' });
+    events.push({ boss: enemy, text: 'Aether Devourer · Rift portal opening', presentationAction: 'special' });
   }
 
   private tickWorldSupport(enemy: Enemy, enemies: readonly Enemy[], nowMs: number, events: CampaignBossEvent[]): void {
