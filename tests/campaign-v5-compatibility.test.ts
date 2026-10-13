@@ -52,7 +52,7 @@ describe('Campaign v5 save compatibility', () => {
     }
   });
 
-  it('allows only the accepted World 4–6 art and withholds every other expansion asset', () => {
+  it('allows only the accepted World 4–7 art and withholds every other expansion asset', () => {
     const newWorlds = ['whisperfen', 'sunken_aether', 'ironroot', 'sky_isles', 'dreadmoon', 'astral_rift', 'aether_crown'];
     const oldEnemies = ['marchling', 'skitter', 'stoneback', 'ironhide', 'veilborn', 'cinderling', 'ashrunner', 'magmahide', 'ember_brute', 'ashcaller', 'snowstalker', 'icebound', 'frostback', 'glacier_knight', 'frost_shaman'];
     const oldBosses = ['hollow_warden', 'cinder_colossus', 'frostbound_matriarch'];
@@ -70,7 +70,7 @@ describe('Campaign v5 save compatibility', () => {
       && !asset.qualityFlags.includes('provisional_starter_art')
       && AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(true);
     const withheld = newAssets.filter(asset => asset.state === 'final_required');
-    expect(withheld).toHaveLength(44);
+    expect(withheld).toHaveLength(33);
     for (const asset of withheld) {
       expect(AVAILABLE_CAMPAIGN_ART_PATHS).not.toContain(asset.path);
       expect(asset.qualityFlags).toContain('final_art_unverified');

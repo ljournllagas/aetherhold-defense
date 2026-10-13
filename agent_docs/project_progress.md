@@ -2,15 +2,22 @@
 
 ## Final campaign artwork - active
 
-Heavy deployment campaign-final-art-20261012 implements the approved final-art prompt. Goal: finish, independently accept, integrate and publish all 77 World 4-10 assets while preserving 43 originals and gameplay/save behavior.
+Heavy campaign-final-art-20261012 completes the approved77-asset final-art scope,
+preserving43 originals and gameplay/save contracts.
+Worlds4-7 complete and live:44 new finals deployed,87 total active final paths,
+33 provisional assets remaining. World8 candidates assembled/raw reviewpending;
+World9/10 production active. All43 originals/77v1 rollback files unchanged.
 
-Worlds 4-6 are complete and live: 33 new finals deployed, 76 total active final assets, 44 provisional assets remaining. Original 43 finals and all 77 v1 rollback files retain their baseline bytes. World 7 raw review passes; runtime clearance review remains pending. World 8/9 production is active; World 10 pending.
-
-Live: https://aetherhold-defense.ljournllagas.workers.dev/
-Worker version 1ddd2a66-c5b9-48a3-9653-f40a6a563e98.
-Deployment passed 1,518 tests with 11 configured skips, typecheck and build. Live HTML/current JS match build SHA256 0b750bf85c5a1088fe42b5f51f7c4725d50aaa8298ae73683c2e22d5f9272280; health 200 with scoreVersion 3; all 33 promoted PNGs match accepted hashes. O5 commit/push and remote equality pending its report.
-Public render/panels checked; authenticated live gameplay unverified behind sign-in. Independent local GameScene and all 100 loader contexts pass. Compact fine-detail loss, crowding, 767/768 layout jump, physical touch and full-match limits remain explicit.
-S3 support animation now follows typed resolution events without combat changes; cold review and natural runtime callers pass. Prior failed candidates/fixtures remain evidence. Latest_session_work.md holds exact continuation and report links. Continue remaining 44 assets; this is not closure.
+Live https://aetherhold-defense.ljournllagas.workers.dev/
+Version7d5df65a-355f-41ad-8ee4-8da215147930.
+Deploy1518 tests passed,11 configured skips,typecheck/build PASS. LiveHTML/current
+JS exact SHA25685f367d99d7c0ad26cdd04791b8b505f7e6a3f1d66e745a1a1ed4bbe331c289e;
+health200 scoreVersion3;44PNG exacthashes,repeatcache29HIT/15MISS.
+O6 boundedcommit/push andactualremote equality pending its report.
+World7 raw/runtime/actuallocalpublic gates PASS, all100loaders andpreservation
+audits PASS. Public page/panelrender checked; authenticatedlivegameplay unverified
+behind sign-in. Compactdetail/crowding/breakpoint/physicaltouch/fullmatch limits
+remain explicit in latest_session_work.md. Continue remaining33;not closure.
 
 ## Campaign v5 — complete
 

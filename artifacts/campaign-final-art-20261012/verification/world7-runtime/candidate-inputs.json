@@ -1,0 +1,265 @@
+{
+  "taskId": "W7-V2",
+  "capturedAtUtc": "2026-10-13T12:36:14.785Z",
+  "rawReport": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+  "inputs": [
+    {
+      "id": "world7-panel",
+      "sourceId": "world-panel:sky_isles",
+      "key": "campaign_worldmap_sky_isles",
+      "runtimePath": "/assets/campaign/world-map/sky_isles-v1.png",
+      "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-world-panel.png",
+      "expectedSha256": "dc83257253d0f9906f916153aa236ee5b693cb988e2b760503df7de5d83b9494",
+      "kind": "image",
+      "width": 768,
+      "height": 432,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {}
+    },
+    {
+      "id": "world7-map-a",
+      "sourceId": "map:sky_isles:a",
+      "key": "campaign_sky_isles_a",
+      "runtimePath": "/assets/campaign/maps/sky_isles_a-v1.png",
+      "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-a.png",
+      "expectedSha256": "98f5adff17d7b9b8e469238b12ef09bc39ab95ec3c8eb9b7fcad1c665e023a26",
+      "kind": "image",
+      "width": 1672,
+      "height": 940,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {}
+    },
+    {
+      "id": "world7-map-b",
+      "sourceId": "map:sky_isles:b",
+      "key": "campaign_sky_isles_b",
+      "runtimePath": "/assets/campaign/maps/sky_isles_b-v1.png",
+      "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-b.png",
+      "expectedSha256": "79c4bb5d3831c648b35c192f0c35aeeec1fa14db73830c75f915cce3eef9a660",
+      "kind": "image",
+      "width": 1672,
+      "height": 940,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {}
+    },
+    {
+      "id": "world7-map-c",
+      "sourceId": "map:sky_isles:c",
+      "key": "campaign_sky_isles_c",
+      "runtimePath": "/assets/campaign/maps/sky_isles_c-v1.png",
+      "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-c.png",
+      "expectedSha256": "e8967fcf6b32700efcf0105183313fc3fd6015bb43eaed681147d06d3b556fb0",
+      "kind": "image",
+      "width": 1672,
+      "height": 940,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {}
+    },
+    {
+      "id": "world7-map-d",
+      "sourceId": "map:sky_isles:d",
+      "key": "campaign_sky_isles_d",
+      "runtimePath": "/assets/campaign/maps/sky_isles_d-v1.png",
+      "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-d.png",
+      "expectedSha256": "b1e1caddce8899a663f8bb6312584fc102e6bba3df111c91c24ed0643d02818c",
+      "kind": "image",
+      "width": 1672,
+      "height": 940,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {}
+    },
+    {
+      "id": "aether-drake",
+      "sourceId": "enemy:aether_drake",
+      "key": "campaign_enemy_aether_drake",
+      "runtimePath": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v1.png",
+      "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-aether-drake-atlas.png",
+      "expectedSha256": "6127080ff7abdbe60dbf514836e59ac1fce1a398fe7c74b5e958701b89dc8d3a",
+      "kind": "sheet",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "frames": 4,
+          "row": 0
+        },
+        "walk": {
+          "frames": 6,
+          "row": 1
+        },
+        "attack": {
+          "frames": 6,
+          "row": 2
+        },
+        "death": {
+          "frames": 6,
+          "row": 3
+        }
+      }
+    },
+    {
+      "id": "cloud-skitter",
+      "sourceId": "enemy:cloud_skitter",
+      "key": "campaign_enemy_cloud_skitter",
+      "runtimePath": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v1.png",
+      "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-cloud-skitter-atlas.png",
+      "expectedSha256": "f2581cf68be8769764dc2b347be104a0f9b8fbb5b4ea88bbfb345920f879de96",
+      "kind": "sheet",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "frames": 4
+        },
+        "walk": {
+          "frames": 6
+        },
+        "attack": {
+          "frames": 6
+        },
+        "death": {
+          "frames": 6
+        }
+      }
+    },
+    {
+      "id": "galeclaw",
+      "sourceId": "enemy:galeclaw",
+      "key": "campaign_enemy_galeclaw",
+      "runtimePath": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v1.png",
+      "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-galeclaw-atlas.png",
+      "expectedSha256": "b2b8cde192c826776fabb8356490928c4c80611d0b203f6d70da8d27f0cfb2ec",
+      "kind": "sheet",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "frames": 4,
+          "row": 0
+        },
+        "walk": {
+          "frames": 6,
+          "row": 1
+        },
+        "attack": {
+          "frames": 6,
+          "row": 2
+        },
+        "death": {
+          "frames": 6,
+          "row": 3
+        }
+      }
+    },
+    {
+      "id": "stormguard",
+      "sourceId": "enemy:stormguard",
+      "key": "campaign_enemy_stormguard",
+      "runtimePath": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v1.png",
+      "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-stormguard-atlas.png",
+      "expectedSha256": "ee13c36d209f3a750bce70b5fe16b408b225434ebe5007556944eca4fa37c5f3",
+      "kind": "sheet",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "frames": 4,
+          "row": 0
+        },
+        "walk": {
+          "frames": 6,
+          "row": 1
+        },
+        "attack": {
+          "frames": 6,
+          "row": 2
+        },
+        "death": {
+          "frames": 6,
+          "row": 3
+        }
+      }
+    },
+    {
+      "id": "tempest-herald",
+      "sourceId": "enemy:tempest_herald",
+      "key": "campaign_enemy_tempest_herald",
+      "runtimePath": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v1.png",
+      "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-tempest-herald-atlas.png",
+      "expectedSha256": "8aac34b5a6783fc943b1333c8e035c19689840f26d03d2ada6a20bef86e20d49",
+      "kind": "sheet",
+      "width": 768,
+      "height": 640,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "frames": 4,
+          "row": 0
+        },
+        "walk": {
+          "frames": 6,
+          "row": 1
+        },
+        "attack": {
+          "frames": 6,
+          "row": 2
+        },
+        "death": {
+          "frames": 6,
+          "row": 3
+        },
+        "buff": {
+          "frames": 6,
+          "row": 4
+        }
+      }
+    },
+    {
+      "id": "stormmaw-prime",
+      "sourceId": "boss:stormmaw_prime",
+      "key": "campaign_enemy_stormmaw_prime",
+      "runtimePath": "/assets/campaign/bosses/stormmaw_prime-atlas-v1.png",
+      "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-stormmaw-prime-boss-atlas.png",
+      "expectedSha256": "43eb4be1cda70caa1aa89830ecce8964952370312ffeb08110845864e6cb165b",
+      "kind": "sheet",
+      "width": 2048,
+      "height": 1536,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "states": {
+        "idle": {
+          "frames": 6
+        },
+        "walk": {
+          "frames": 8
+        },
+        "attack": {
+          "frames": 8
+        },
+        "special": {
+          "frames": 8
+        },
+        "phase_two": {
+          "frames": 8
+        },
+        "death": {
+          "frames": 8
+        }
+      }
+    }
+  ]
+}

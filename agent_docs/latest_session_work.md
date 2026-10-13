@@ -2,41 +2,84 @@
 
 ## Active Heavy deployment
 
-Deployment campaign-final-art-20261012 follows artifacts/CODEX_FINAL_ART_IMPLEMENTATION_PROMPT.md. Complete all 77 World 4-10 final assets, preserving 43 originals and gameplay/save contracts. The start marker was emitted; no closure yet. Continue the remaining 44 assets absent a concrete blocker.
+Deployment campaign-final-art-20261012 continues the approved final-art prompt.
+Complete all 77 World 4-10 final assets, preserving 43 originals and gameplay/save
+contracts. Start marker already emitted; no closure. Continue remaining 33.
 
-## Published milestone, 2026-10-13
+## Verified published milestone
 
-Worlds 4, 5 and 6 are accepted, integrated and live: 33 promoted/deployed assets, 76 active finals, 44 provisional assets remaining. All 43 original finals, 77 v1 rollback files and previous World 4 v2 bytes remain unchanged. Stable IDs, keys, animation definitions and origins are preserved.
+Worlds 4-7 accepted, integrated and live: 44 promoted/deployed assets, 87 active
+final paths, 33 provisional remaining. Original 43 finals, all 77 v1 rollback
+files and prior promoted PNGs retain exact baseline/accepted bytes.
 Live: https://aetherhold-defense.ljournllagas.workers.dev/
-Worker version: 1ddd2a66-c5b9-48a3-9653-f40a6a563e98.
-O5 deployment: 1,518 tests passed, 11 configured skips; typecheck and build passed. Initial parallel-worker timeouts stopped before publication; serialized retry passed without assertion or source changes.
-Live HTML and /assets/index-D1ejOb0O.js match the build: 2,169,033 bytes, SHA256 0b750bf85c5a1088fe42b5f51f7c4725d50aaa8298ae73683c2e22d5f9272280. Health 200, ok, scoreVersion 3. All 22 new and 11 prior PNGs return 200 with exact accepted hashes; repeated cache observations recorded.
-Public sign-in render and World 5/6 panels were visually checked. Authenticated production gameplay remains unverified behind Google sign-in; no account/D1 writes. Local independent actual GameScene reviews passed.
-O5 owns bounded commit/push and actual remote equality; pending its report. Current branch codex/campaign-v5-20261012; previous synchronized docs HEAD 518c5c9ad319b413c2b43529dfc7c160a9976c54. Preserve unrelated .scratch/, .superpowers/ and unknown zero-byte (c[a.currentStatus]. Exclude unfinished art.
+Worker version 7d5df65a-355f-41ad-8ee4-8da215147930.
+O6 deployment: 1,518 tests passed, 11 configured skips; typecheck/build passed.
+Live HTML and /assets/index-D9yVZ9fU.js match dist: 2,169,045 bytes,
+SHA256 85f367d99d7c0ad26cdd04791b8b505f7e6a3f1d66e745a1a1ed4bbe331c289e.
+Health 200, ok, scoreVersion 3. Eleven new World 7 plus 33 retained PNGs return
+200 PNG with exact hashes; repeated cache observations 29 HIT / 15 MISS.
+Public sign-in page and native Sky Isles panel visually pass. Authenticated live
+gameplay remains unverified behind Google sign-in; no account/D1 writes.
+Independent local actual GameScene reviews passed.
+O6 owns pending bounded commit/push and actual remote equality. Branch
+codex/campaign-v5-20261012; previous application commit549742ef9875e011810efe8af18da051908b8098
+was synchronized. Preserve .scratch/, .superpowers/, unknown zero-byte
+(c[a.currentStatus] and root verification/ prior test artifacts; exclude
+unfinished candidates. No broad force-add of ignored packs.
 
 ## Acceptance evidence
 
-Root artifacts/campaign-final-art-20261012/:
-- integration/world4-promotion-report.md and world5-6-promotion-report.md: exact accepted/public paths, hashes and provenance; asset-status.json and checklist track 77 targets.
-- verification/resume-v9/postpromotion/final-review.md: World 4 actual-public gate.
-- verification/world5-raw/review-report.md: all 11 PASS, choosing Aetherbound repair-r3 and Oracle repair-r2; original nine hash pins preserved.
-- verification/world6-raw/verification-report.md: five landscapes and six repair-v3 atlases PASS.
-- verification/world5-runtime/w5-verification-report.md and verification/world6-runtime/repair-v3/w6-verification-report.md: full staged runtime PASS; director inspected 844/320 captures.
-- verification/v12-postpromotion-world56/V12-report.md: actual local public responses without substitutions, all 100 loader contexts, 120 rollback files and 33 integrated rows PASS.
-- integration/o5-live-check.json: current production bundle, health, 33 PNGs and cache observations.
-- s3-support-presentation/report.md: typed support presentation marker. R10 cold review found no blocking issue; source and tests match its report.
+Artifact root artifacts/campaign-final-art-20261012/:
+- integration/world4-promotion-report.md, world5-6-promotion-report.md and
+  world7-promotion-report.md: exact accepted/public paths, hashes and lineage.
+- integration/asset-status.json and promotion-checklist.md: all77 targets.
+- verification/resume-v9/postpromotion/final-review.md: World4 public gate.
+- verification/world5-raw/review-report.md:11PASS, repaired Aetherbound r3 and
+  Oracle r2. World6 raw report: all repair-v3 atlases and unchanged maps PASS.
+- verification/world5-runtime/w5-verification-report.md and
+  verification/world6-runtime/repair-v3/w6-verification-report.md: staged PASS.
+- verification/v12-postpromotion-world56/V12-report.md: actual local public
+  responses, all100 loader contexts,120 rollback files and33 rows PASS.
+- verification/world7-raw/REPORT.md, world7-runtime/W7-V2-report.md and
+  v13-postpromotion-world7/V13-report.md: raw/stage/public World7 PASS.
+  Decorative map edges do not consume rendered road/plot clearance.
+- integration/o6-live-check.json and V13 curated-result-summary.json: live
+  release and compact evidence pins; earlier O3/O5 evidence retained.
+- s3-support-presentation/report.md: typed resolution marker, R10 cold review
+  no blocking issue; natural registered Aetherbound/Foundry/Tempest buffs pass.
 
-Current GameScene SHA256 640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4; bosses.ts 3502b60287ad07ed13d858387589e8b0742ea93064ef1e2cd4d1ba0e14963ac1; callout test 565ec470544326048c9f177e29aa766deba806a59e3d5b4cddfc9bd525f0a80a.
-S3 requests one buff at resolution, zero on Tempest/Echo/Rift telegraphs; legacy/Aetherbound/Foundry/Crown pulses still request one. Natural support callers were verified on seeded targets through real registered views. Combat timing, values, warnings, scoring and saves remain unchanged.
-S2 compact status/content fit and death restoration are accepted; one Senior Executor was reused. Previous failed HUD, gait, death and fixture attempts remain evidence.
+Current frozen GameScene SHA256640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4.
+S2 compact status/content fit and death restoration accepted; one Senior reused.
+S3 requests one buff at resolution, zero on Tempest/Echo/Rift telegraphs;
+other authored pulses request one. Combat values, timing, warning behavior,
+scoring and saves unchanged. Full1518 tests cover current integrated release.
+Failed source/art/harness attempts remain evidence, not overwritten passes.
 
-Limits: reduced fine detail at 320 pixels, dense compact crowds, abrupt 767/768 boss layout transition, physical-device touch pan and full uninterrupted matches unverified. Ordinary enemy attacks use explicit presentation QA. Existing large bundle warning and 11 skips remain.
+Limits: fine-detail reduction at320px, dense compact crowds, abrupt767/768boss
+layout transition, physical touch pan/full uninterrupted match unverified.
+Ordinary enemy attacks are explicit presentation QA. Large bundle warning and
+11 configured skips retained. Staged targets do not imply natural earned clears.
 
 ## Current packages and next gates
 
-World 7 eleven candidates are assembled and independent raw review passes. Runtime staging remains unrun: maps A-C decorative edges near route/build clearance require actual GameScene validation.
-World 8 and World 9 separate producers are active in ignored candidate folders. World 10 remains pending. Authored briefs are under artifacts/review-and-production-v3/art-production/w4-w10/prompts/.
-After O5 completes synchronization, resume V12's separate World 7 runtime package. Each remaining world needs independent raw/runtime acceptance, single-owner integration, actual local public checks, authorized deployment/live checks and bounded commit/push.
-Builtin ImageGen only; exact prompt/reference sidecars before calls, raw outputs/output IDs/hashes retained. Whole isolated pose extraction across nominal grids is allowed; bbox crops must exclude neighboring components while retaining own soft edges. No low-resolution upscale or invented poses. Large per-action sources avoid full-atlas resolution ceilings; body scale stays consistent across actions.
-Raw GIF playback was policy-denied; no workaround. Actual GameScene PNG/frame-event QA is separately authorized. Unsaved fixtures and mocked account endpoints prevent profile/account writes.
-Root maintains progress, diary and latest. At actual complete/pause/blocker, finish writers/main docs then invoke one closure Archivist with this deployment ID and the new six-column token report. No closure at this milestone.
+World8 eleven self-reviewed candidates complete, independent raw review pending:
+world8/SELF_CHECK.md and manifests/world8-final-art-selfcheck.json. Assess extra
+Regent idle echo shadows against brief and mapA-C near-edge clearance. Rejected
+attempt sidecars with base-path/attempt-hash mismatch must be honestly explained;
+accepted generation lineage must be exact.
+World9 and World10 producers active in separate ignored candidate folders.
+Next assign World8 raw/runtime review, then World9/10 as packages arrive.
+Each needs independent acceptance, sole integration owner, actual LOCAL public
+gate without substitutions, authorized deploy/live checks and bounded Git sync.
+Remote missing newv2 files BEFORE publication are expected old-release baseline.
+
+Builtin ImageGen only; exact prompt/ref sidecars before calls, raw outputs/IDs/
+hashes retained. Extract whole own pose components across grids, exclude foreign
+neighbor components while retaining soft edges. No low-res upscaling or invented
+poses. Larger per-action sources avoid full-atlas resolution ceilings; consistent
+body scale across actions. Quadruped low silhouette needs anatomy-aware native
+review, not distorted proportions to force a height percentage.
+Raw GIF playback policy denied; no bypass. Actual GameScene PNG/frame-event QA
+is separately authorized; unsaved fixtures/mock account endpoints only.
+Root owns main3docs. At actual complete/pause/blocker, finish writers/main3 then
+one closure Archivist with same deploymentID/new six-column token report.

@@ -30,62 +30,31 @@
   ],
   "promotionGate": {
     "released": true,
-    "releaseScope": "World5 and World6 deployment with S3 support presentation; World4 retained.",
-    "reason": "Parent accepted the complete World5 and World6 eleven-asset packages after independent raw and staged-runtime review, with compact fine-detail limitations documented.",
+    "releaseScope": "World7 deployment; World4-6 retained.",
+    "reason": "Parent accepted World7 after W7-V1 independent raw PASS, W7-V2 staged runtime PASS, and direct compact-capture inspection; preserve the documented Stormmaw fine-detail limitation.",
     "frozenHudSource": {
       "path": "src/game/scenes/GameScene.ts",
       "sha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4"
     },
     "acceptanceEvidence": [
-      "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
-      "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
-      "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
-      "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md"
+      "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+      "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json",
+      "parent direct compact-capture acceptance in Task A8"
     ],
-    "releaseDecision": "authorized and deployed after V12 PASS",
+    "releaseDecision": "authorized and deployed after V13 PASS",
     "deploymentAllowed": true,
     "pendingReviews": [
       {
-        "review": "Independent post-promotion runtime gate for World5 and World6",
+        "review": "Independent post-promotion local public gate for World7",
         "status": "passed",
-        "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
-        "required": "Fresh-page texture loading and exact response hashes for the 22 newly promoted v2 paths, plus current-source runtime contexts for World5 and World6.",
-        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
-        "summary": "Independent local V12 PASS followed by O5 exact live release checks."
-      },
-      {
-        "review": "Independent post-promotion runtime gate",
-        "status": "passed",
-        "evidencePath": "artifacts/campaign-final-art-20261012/verification/resume-v9/postpromotion/final-review.md",
-        "required": "Fresh-page texture load and current-source checks across the accepted relevant viewport and gameplay contexts.",
-        "verifiedAtUtc": "2026-10-13T07:19:58.792Z",
-        "summary": "PASS: current-source fresh-page review; all 11 promoted assets hash-match live responses; 120 v1 baseline rows preserved."
+        "evidencePath": "artifacts/campaign-final-art-20261012/verification/v13-postpromotion-world7/V13-report.md",
+        "required": "Load a fresh page, verify all eleven exact World7 v2 public hashes and current-source runtime behavior, then return for any separate deployment authorization.",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "summary": "Independent local V13 PASS followed by O6 exact live release checks."
       }
     ],
-    "publicationDecision": "World5/World6 independently passed V12 and were deployed with S3 support presentation. Exact live HTML/JS, health scoreVersion3, all 22 new PNGs and 11 retained World4 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes.",
-    "previousGateDecision": {
-      "scope": "pre-integration",
-      "released": false,
-      "dateUtc": "2026-10-13",
-      "reason": "World 4 publication was held after the V11 compact battlefield readability failure at 844x390 and 320x390; I10 bounded composition investigation was pending.",
-      "pendingReview": {
-        "review": "I10 bounded composition investigation",
-        "status": "pending",
-        "evidencePath": "artifacts/campaign-final-art-20261012/verification/original-hud-v11/readability-visual-assessment.md",
-        "sourceSha256": "5d997e4558399edf6524eac528e6845a1472f0c0ac646850745922e3163a011f"
-      },
-      "publicationDecision": "rejected pending I10; no promotion authorized",
-      "supersededBy": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md"
-    },
-    "historicalWorld4Publication": {
-      "releaseScope": "World4 only",
-      "frozenHudSource": {
-        "path": "src/game/scenes/GameScene.ts",
-        "sha256": "d79bb40596d8c7a82e0fa6c3f99ae578614ae328ac7397868e2bc268de9cbbcc"
-      },
-      "deploymentAllowed": true,
-      "publicationDecision": "World4 was previously published and independently verified under Worker version d1107304-ef7a-4e9b-9682-b98efe2bb744."
-    }
+    "publicationDecision": "World7 independently passed V13 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Sky Isles PNGs and 33 retained World4-6 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
   },
   "pathAndRollbackPolicy": {
     "plannedV2Rule": "Replace the terminal -v1.png suffix with -v2.png for each planned production path.",
@@ -95,8 +64,8 @@
     "provisionalRule": "After a released promotion, remove only promoted v1 starter paths from the provisional list; retain remaining pending v1 paths."
   },
   "countsByStatus": {
-    "deployed": 33,
-    "pending": 44
+    "deployed": 44,
+    "pending": 33
   },
   "assets": [
     {
@@ -7086,7 +7055,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -7123,25 +7092,108 @@
       "runtimeContract": {
         "id": "map:sky_isles:a",
         "key": "campaign_sky_isles_a",
-        "path": "/assets/campaign/maps/sky_isles_a-v1.png",
+        "path": "/assets/campaign/maps/sky_isles_a-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W7-V1/W7-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-a.png",
+          "candidateSha256": "98f5adff17d7b9b8e469238b12ef09bc39ab95ec3c8eb9b7fcad1c665e023a26",
+          "dimensions": {
+            "width": 1672,
+            "height": 940
+          }
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/w7-stage-gate-summary.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "98f5adff17d7b9b8e469238b12ef09bc39ab95ec3c8eb9b7fcad1c665e023a26",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Runtime report left compact readability parent-owned; parent direct capture inspection accepted with the documented fine-detail limitation.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            }
+          ],
+          "compactBossViewports": [
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "notes": "Exact candidate transport and registered stable-key checks passed. Map D and Stormmaw were exercised at compact sizes. Map A-C roads and plot clearance were visually accepted. Tempest natural buff resolution played once and telegraph played none."
+        },
+        "parentAcceptance": {
+          "taskId": "A8",
+          "status": "accepted-for-local-integration",
+          "decision": "World7 golden gate accepted after W7-V1 raw PASS, W7-V2 runtime PASS, and direct compact-capture inspection."
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V13 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "taskId": "A8",
+        "status": "accepted-for-integration",
+        "acceptedBy": "parent",
+        "scope": "World7 eleven-asset package for local integration",
+        "evidencePaths": [
+          "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json"
+        ],
+        "limitations": [
+          "Compact Stormmaw fine detail is reduced at 320×390 and 360×360; actual boss pixels remain visible and route/plot geometry remains visible.",
+          "No full uninterrupted campaign match is claimed."
+        ]
+      },
+      "promoted": {
+        "path": "/assets/campaign/maps/sky_isles_a-v2.png",
+        "sha256": "98f5adff17d7b9b8e469238b12ef09bc39ab95ec3c8eb9b7fcad1c665e023a26",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-a.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "7d5df65a-355f-41ad-8ee4-8da215147930",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/sky_isles_a-v2.png",
+        "sha256": "98f5adff17d7b9b8e469238b12ef09bc39ab95ec3c8eb9b7fcad1c665e023a26",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      }
     },
     {
       "id": "map:sky_isles:b",
@@ -7154,7 +7206,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -7191,25 +7243,108 @@
       "runtimeContract": {
         "id": "map:sky_isles:b",
         "key": "campaign_sky_isles_b",
-        "path": "/assets/campaign/maps/sky_isles_b-v1.png",
+        "path": "/assets/campaign/maps/sky_isles_b-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W7-V1/W7-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-b.png",
+          "candidateSha256": "79c4bb5d3831c648b35c192f0c35aeeec1fa14db73830c75f915cce3eef9a660",
+          "dimensions": {
+            "width": 1672,
+            "height": 940
+          }
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/w7-stage-gate-summary.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "79c4bb5d3831c648b35c192f0c35aeeec1fa14db73830c75f915cce3eef9a660",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Runtime report left compact readability parent-owned; parent direct capture inspection accepted with the documented fine-detail limitation.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            }
+          ],
+          "compactBossViewports": [
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "notes": "Exact candidate transport and registered stable-key checks passed. Map D and Stormmaw were exercised at compact sizes. Map A-C roads and plot clearance were visually accepted. Tempest natural buff resolution played once and telegraph played none."
+        },
+        "parentAcceptance": {
+          "taskId": "A8",
+          "status": "accepted-for-local-integration",
+          "decision": "World7 golden gate accepted after W7-V1 raw PASS, W7-V2 runtime PASS, and direct compact-capture inspection."
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V13 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "taskId": "A8",
+        "status": "accepted-for-integration",
+        "acceptedBy": "parent",
+        "scope": "World7 eleven-asset package for local integration",
+        "evidencePaths": [
+          "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json"
+        ],
+        "limitations": [
+          "Compact Stormmaw fine detail is reduced at 320×390 and 360×360; actual boss pixels remain visible and route/plot geometry remains visible.",
+          "No full uninterrupted campaign match is claimed."
+        ]
+      },
+      "promoted": {
+        "path": "/assets/campaign/maps/sky_isles_b-v2.png",
+        "sha256": "79c4bb5d3831c648b35c192f0c35aeeec1fa14db73830c75f915cce3eef9a660",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-b.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "7d5df65a-355f-41ad-8ee4-8da215147930",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/sky_isles_b-v2.png",
+        "sha256": "79c4bb5d3831c648b35c192f0c35aeeec1fa14db73830c75f915cce3eef9a660",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      }
     },
     {
       "id": "map:sky_isles:c",
@@ -7222,7 +7357,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -7259,25 +7394,108 @@
       "runtimeContract": {
         "id": "map:sky_isles:c",
         "key": "campaign_sky_isles_c",
-        "path": "/assets/campaign/maps/sky_isles_c-v1.png",
+        "path": "/assets/campaign/maps/sky_isles_c-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W7-V1/W7-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-c.png",
+          "candidateSha256": "e8967fcf6b32700efcf0105183313fc3fd6015bb43eaed681147d06d3b556fb0",
+          "dimensions": {
+            "width": 1672,
+            "height": 940
+          }
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/w7-stage-gate-summary.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "e8967fcf6b32700efcf0105183313fc3fd6015bb43eaed681147d06d3b556fb0",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Runtime report left compact readability parent-owned; parent direct capture inspection accepted with the documented fine-detail limitation.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            }
+          ],
+          "compactBossViewports": [
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "notes": "Exact candidate transport and registered stable-key checks passed. Map D and Stormmaw were exercised at compact sizes. Map A-C roads and plot clearance were visually accepted. Tempest natural buff resolution played once and telegraph played none."
+        },
+        "parentAcceptance": {
+          "taskId": "A8",
+          "status": "accepted-for-local-integration",
+          "decision": "World7 golden gate accepted after W7-V1 raw PASS, W7-V2 runtime PASS, and direct compact-capture inspection."
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V13 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "taskId": "A8",
+        "status": "accepted-for-integration",
+        "acceptedBy": "parent",
+        "scope": "World7 eleven-asset package for local integration",
+        "evidencePaths": [
+          "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json"
+        ],
+        "limitations": [
+          "Compact Stormmaw fine detail is reduced at 320×390 and 360×360; actual boss pixels remain visible and route/plot geometry remains visible.",
+          "No full uninterrupted campaign match is claimed."
+        ]
+      },
+      "promoted": {
+        "path": "/assets/campaign/maps/sky_isles_c-v2.png",
+        "sha256": "e8967fcf6b32700efcf0105183313fc3fd6015bb43eaed681147d06d3b556fb0",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-c.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "7d5df65a-355f-41ad-8ee4-8da215147930",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/sky_isles_c-v2.png",
+        "sha256": "e8967fcf6b32700efcf0105183313fc3fd6015bb43eaed681147d06d3b556fb0",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      }
     },
     {
       "id": "map:sky_isles:d",
@@ -7290,7 +7508,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -7327,25 +7545,108 @@
       "runtimeContract": {
         "id": "map:sky_isles:d",
         "key": "campaign_sky_isles_d",
-        "path": "/assets/campaign/maps/sky_isles_d-v1.png",
+        "path": "/assets/campaign/maps/sky_isles_d-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W7-V1/W7-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-d.png",
+          "candidateSha256": "b1e1caddce8899a663f8bb6312584fc102e6bba3df111c91c24ed0643d02818c",
+          "dimensions": {
+            "width": 1672,
+            "height": 940
+          }
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/w7-stage-gate-summary.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "b1e1caddce8899a663f8bb6312584fc102e6bba3df111c91c24ed0643d02818c",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Runtime report left compact readability parent-owned; parent direct capture inspection accepted with the documented fine-detail limitation.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            }
+          ],
+          "compactBossViewports": [
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "notes": "Exact candidate transport and registered stable-key checks passed. Map D and Stormmaw were exercised at compact sizes. Map A-C roads and plot clearance were visually accepted. Tempest natural buff resolution played once and telegraph played none."
+        },
+        "parentAcceptance": {
+          "taskId": "A8",
+          "status": "accepted-for-local-integration",
+          "decision": "World7 golden gate accepted after W7-V1 raw PASS, W7-V2 runtime PASS, and direct compact-capture inspection."
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V13 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "taskId": "A8",
+        "status": "accepted-for-integration",
+        "acceptedBy": "parent",
+        "scope": "World7 eleven-asset package for local integration",
+        "evidencePaths": [
+          "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json"
+        ],
+        "limitations": [
+          "Compact Stormmaw fine detail is reduced at 320×390 and 360×360; actual boss pixels remain visible and route/plot geometry remains visible.",
+          "No full uninterrupted campaign match is claimed."
+        ]
+      },
+      "promoted": {
+        "path": "/assets/campaign/maps/sky_isles_d-v2.png",
+        "sha256": "b1e1caddce8899a663f8bb6312584fc102e6bba3df111c91c24ed0643d02818c",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-d.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "7d5df65a-355f-41ad-8ee4-8da215147930",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/sky_isles_d-v2.png",
+        "sha256": "b1e1caddce8899a663f8bb6312584fc102e6bba3df111c91c24ed0643d02818c",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      }
     },
     {
       "id": "world-panel:sky_isles",
@@ -7358,7 +7659,7 @@
         "width": 768,
         "height": 432
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -7395,24 +7696,107 @@
       "runtimeContract": {
         "id": "world-panel:sky_isles",
         "key": "campaign_worldmap_sky_isles",
-        "path": "/assets/campaign/world-map/sky_isles-v1.png",
+        "path": "/assets/campaign/world-map/sky_isles-v2.png",
         "kind": "image",
         "width": 768,
         "height": 432,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "campaign",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "biome_illustration"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W7-V1/W7-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-world-panel.png",
+          "candidateSha256": "dc83257253d0f9906f916153aa236ee5b693cb988e2b760503df7de5d83b9494",
+          "dimensions": {
+            "width": 768,
+            "height": 432
+          }
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/w7-stage-gate-summary.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "dc83257253d0f9906f916153aa236ee5b693cb988e2b760503df7de5d83b9494",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Runtime report left compact readability parent-owned; parent direct capture inspection accepted with the documented fine-detail limitation.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            }
+          ],
+          "compactBossViewports": [
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "notes": "Exact candidate transport and registered stable-key checks passed. Map D and Stormmaw were exercised at compact sizes. Map A-C roads and plot clearance were visually accepted. Tempest natural buff resolution played once and telegraph played none."
+        },
+        "parentAcceptance": {
+          "taskId": "A8",
+          "status": "accepted-for-local-integration",
+          "decision": "World7 golden gate accepted after W7-V1 raw PASS, W7-V2 runtime PASS, and direct compact-capture inspection."
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V13 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "taskId": "A8",
+        "status": "accepted-for-integration",
+        "acceptedBy": "parent",
+        "scope": "World7 eleven-asset package for local integration",
+        "evidencePaths": [
+          "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json"
+        ],
+        "limitations": [
+          "Compact Stormmaw fine detail is reduced at 320×390 and 360×360; actual boss pixels remain visible and route/plot geometry remains visible.",
+          "No full uninterrupted campaign match is claimed."
+        ]
+      },
+      "promoted": {
+        "path": "/assets/campaign/world-map/sky_isles-v2.png",
+        "sha256": "dc83257253d0f9906f916153aa236ee5b693cb988e2b760503df7de5d83b9494",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-world-panel.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "7d5df65a-355f-41ad-8ee4-8da215147930",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/world-map/sky_isles-v2.png",
+        "sha256": "dc83257253d0f9906f916153aa236ee5b693cb988e2b760503df7de5d83b9494",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      }
     },
     {
       "id": "enemy:cloud_skitter",
@@ -7425,7 +7809,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -7481,7 +7865,7 @@
       "runtimeContract": {
         "id": "enemy:cloud_skitter",
         "key": "campaign_enemy_cloud_skitter",
-        "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -7505,12 +7889,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -7572,7 +7954,94 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W7-V1/W7-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-cloud-skitter-atlas.png",
+          "candidateSha256": "f2581cf68be8769764dc2b347be104a0f9b8fbb5b4ea88bbfb345920f879de96",
+          "dimensions": {
+            "width": 768,
+            "height": 512
+          }
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/w7-stage-gate-summary.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "f2581cf68be8769764dc2b347be104a0f9b8fbb5b4ea88bbfb345920f879de96",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Runtime report left compact readability parent-owned; parent direct capture inspection accepted with the documented fine-detail limitation.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            }
+          ],
+          "compactBossViewports": [
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "notes": "Exact candidate transport and registered stable-key checks passed. Map D and Stormmaw were exercised at compact sizes. Map A-C roads and plot clearance were visually accepted. Tempest natural buff resolution played once and telegraph played none."
+        },
+        "parentAcceptance": {
+          "taskId": "A8",
+          "status": "accepted-for-local-integration",
+          "decision": "World7 golden gate accepted after W7-V1 raw PASS, W7-V2 runtime PASS, and direct compact-capture inspection."
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V13 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "taskId": "A8",
+        "status": "accepted-for-integration",
+        "acceptedBy": "parent",
+        "scope": "World7 eleven-asset package for local integration",
+        "evidencePaths": [
+          "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json"
+        ],
+        "limitations": [
+          "Compact Stormmaw fine detail is reduced at 320×390 and 360×360; actual boss pixels remain visible and route/plot geometry remains visible.",
+          "No full uninterrupted campaign match is claimed."
+        ]
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png",
+        "sha256": "f2581cf68be8769764dc2b347be104a0f9b8fbb5b4ea88bbfb345920f879de96",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-cloud-skitter-atlas.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "7d5df65a-355f-41ad-8ee4-8da215147930",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png",
+        "sha256": "f2581cf68be8769764dc2b347be104a0f9b8fbb5b4ea88bbfb345920f879de96",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      }
     },
     {
       "id": "enemy:galeclaw",
@@ -7585,7 +8054,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -7641,7 +8110,7 @@
       "runtimeContract": {
         "id": "enemy:galeclaw",
         "key": "campaign_enemy_galeclaw",
-        "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -7665,12 +8134,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -7732,7 +8199,94 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W7-V1/W7-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-galeclaw-atlas.png",
+          "candidateSha256": "b2b8cde192c826776fabb8356490928c4c80611d0b203f6d70da8d27f0cfb2ec",
+          "dimensions": {
+            "width": 768,
+            "height": 512
+          }
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/w7-stage-gate-summary.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "b2b8cde192c826776fabb8356490928c4c80611d0b203f6d70da8d27f0cfb2ec",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Runtime report left compact readability parent-owned; parent direct capture inspection accepted with the documented fine-detail limitation.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            }
+          ],
+          "compactBossViewports": [
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "notes": "Exact candidate transport and registered stable-key checks passed. Map D and Stormmaw were exercised at compact sizes. Map A-C roads and plot clearance were visually accepted. Tempest natural buff resolution played once and telegraph played none."
+        },
+        "parentAcceptance": {
+          "taskId": "A8",
+          "status": "accepted-for-local-integration",
+          "decision": "World7 golden gate accepted after W7-V1 raw PASS, W7-V2 runtime PASS, and direct compact-capture inspection."
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V13 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "taskId": "A8",
+        "status": "accepted-for-integration",
+        "acceptedBy": "parent",
+        "scope": "World7 eleven-asset package for local integration",
+        "evidencePaths": [
+          "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json"
+        ],
+        "limitations": [
+          "Compact Stormmaw fine detail is reduced at 320×390 and 360×360; actual boss pixels remain visible and route/plot geometry remains visible.",
+          "No full uninterrupted campaign match is claimed."
+        ]
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.png",
+        "sha256": "b2b8cde192c826776fabb8356490928c4c80611d0b203f6d70da8d27f0cfb2ec",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-galeclaw-atlas.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "7d5df65a-355f-41ad-8ee4-8da215147930",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.png",
+        "sha256": "b2b8cde192c826776fabb8356490928c4c80611d0b203f6d70da8d27f0cfb2ec",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      }
     },
     {
       "id": "enemy:aether_drake",
@@ -7745,7 +8299,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -7801,7 +8355,7 @@
       "runtimeContract": {
         "id": "enemy:aether_drake",
         "key": "campaign_enemy_aether_drake",
-        "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -7825,12 +8379,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -7892,7 +8444,94 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W7-V1/W7-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-aether-drake-atlas.png",
+          "candidateSha256": "6127080ff7abdbe60dbf514836e59ac1fce1a398fe7c74b5e958701b89dc8d3a",
+          "dimensions": {
+            "width": 768,
+            "height": 512
+          }
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/w7-stage-gate-summary.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "6127080ff7abdbe60dbf514836e59ac1fce1a398fe7c74b5e958701b89dc8d3a",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Runtime report left compact readability parent-owned; parent direct capture inspection accepted with the documented fine-detail limitation.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            }
+          ],
+          "compactBossViewports": [
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "notes": "Exact candidate transport and registered stable-key checks passed. Map D and Stormmaw were exercised at compact sizes. Map A-C roads and plot clearance were visually accepted. Tempest natural buff resolution played once and telegraph played none."
+        },
+        "parentAcceptance": {
+          "taskId": "A8",
+          "status": "accepted-for-local-integration",
+          "decision": "World7 golden gate accepted after W7-V1 raw PASS, W7-V2 runtime PASS, and direct compact-capture inspection."
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V13 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "taskId": "A8",
+        "status": "accepted-for-integration",
+        "acceptedBy": "parent",
+        "scope": "World7 eleven-asset package for local integration",
+        "evidencePaths": [
+          "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json"
+        ],
+        "limitations": [
+          "Compact Stormmaw fine detail is reduced at 320×390 and 360×360; actual boss pixels remain visible and route/plot geometry remains visible.",
+          "No full uninterrupted campaign match is claimed."
+        ]
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.png",
+        "sha256": "6127080ff7abdbe60dbf514836e59ac1fce1a398fe7c74b5e958701b89dc8d3a",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-aether-drake-atlas.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "7d5df65a-355f-41ad-8ee4-8da215147930",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.png",
+        "sha256": "6127080ff7abdbe60dbf514836e59ac1fce1a398fe7c74b5e958701b89dc8d3a",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      }
     },
     {
       "id": "enemy:stormguard",
@@ -7905,7 +8544,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -7961,7 +8600,7 @@
       "runtimeContract": {
         "id": "enemy:stormguard",
         "key": "campaign_enemy_stormguard",
-        "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -7985,12 +8624,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -8052,7 +8689,94 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W7-V1/W7-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-stormguard-atlas.png",
+          "candidateSha256": "ee13c36d209f3a750bce70b5fe16b408b225434ebe5007556944eca4fa37c5f3",
+          "dimensions": {
+            "width": 768,
+            "height": 512
+          }
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/w7-stage-gate-summary.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "ee13c36d209f3a750bce70b5fe16b408b225434ebe5007556944eca4fa37c5f3",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Runtime report left compact readability parent-owned; parent direct capture inspection accepted with the documented fine-detail limitation.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            }
+          ],
+          "compactBossViewports": [
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "notes": "Exact candidate transport and registered stable-key checks passed. Map D and Stormmaw were exercised at compact sizes. Map A-C roads and plot clearance were visually accepted. Tempest natural buff resolution played once and telegraph played none."
+        },
+        "parentAcceptance": {
+          "taskId": "A8",
+          "status": "accepted-for-local-integration",
+          "decision": "World7 golden gate accepted after W7-V1 raw PASS, W7-V2 runtime PASS, and direct compact-capture inspection."
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V13 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "taskId": "A8",
+        "status": "accepted-for-integration",
+        "acceptedBy": "parent",
+        "scope": "World7 eleven-asset package for local integration",
+        "evidencePaths": [
+          "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json"
+        ],
+        "limitations": [
+          "Compact Stormmaw fine detail is reduced at 320×390 and 360×360; actual boss pixels remain visible and route/plot geometry remains visible.",
+          "No full uninterrupted campaign match is claimed."
+        ]
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.png",
+        "sha256": "ee13c36d209f3a750bce70b5fe16b408b225434ebe5007556944eca4fa37c5f3",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-stormguard-atlas.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "7d5df65a-355f-41ad-8ee4-8da215147930",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.png",
+        "sha256": "ee13c36d209f3a750bce70b5fe16b408b225434ebe5007556944eca4fa37c5f3",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      }
     },
     {
       "id": "enemy:tempest_herald",
@@ -8065,7 +8789,7 @@
         "width": 768,
         "height": 640
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -8125,7 +8849,7 @@
       "runtimeContract": {
         "id": "enemy:tempest_herald",
         "key": "campaign_enemy_tempest_herald",
-        "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 640,
@@ -8153,12 +8877,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow",
@@ -8235,7 +8957,94 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W7-V1/W7-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-tempest-herald-atlas.png",
+          "candidateSha256": "8aac34b5a6783fc943b1333c8e035c19689840f26d03d2ada6a20bef86e20d49",
+          "dimensions": {
+            "width": 768,
+            "height": 640
+          }
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/w7-stage-gate-summary.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "8aac34b5a6783fc943b1333c8e035c19689840f26d03d2ada6a20bef86e20d49",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Runtime report left compact readability parent-owned; parent direct capture inspection accepted with the documented fine-detail limitation.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            }
+          ],
+          "compactBossViewports": [
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "notes": "Exact candidate transport and registered stable-key checks passed. Map D and Stormmaw were exercised at compact sizes. Map A-C roads and plot clearance were visually accepted. Tempest natural buff resolution played once and telegraph played none."
+        },
+        "parentAcceptance": {
+          "taskId": "A8",
+          "status": "accepted-for-local-integration",
+          "decision": "World7 golden gate accepted after W7-V1 raw PASS, W7-V2 runtime PASS, and direct compact-capture inspection."
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V13 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "taskId": "A8",
+        "status": "accepted-for-integration",
+        "acceptedBy": "parent",
+        "scope": "World7 eleven-asset package for local integration",
+        "evidencePaths": [
+          "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json"
+        ],
+        "limitations": [
+          "Compact Stormmaw fine detail is reduced at 320×390 and 360×360; actual boss pixels remain visible and route/plot geometry remains visible.",
+          "No full uninterrupted campaign match is claimed."
+        ]
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.png",
+        "sha256": "8aac34b5a6783fc943b1333c8e035c19689840f26d03d2ada6a20bef86e20d49",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-tempest-herald-atlas.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "7d5df65a-355f-41ad-8ee4-8da215147930",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.png",
+        "sha256": "8aac34b5a6783fc943b1333c8e035c19689840f26d03d2ada6a20bef86e20d49",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      }
     },
     {
       "id": "boss:stormmaw_prime",
@@ -8248,7 +9057,7 @@
         "width": 2048,
         "height": 1536
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -8312,7 +9121,7 @@
       "runtimeContract": {
         "id": "boss:stormmaw_prime",
         "key": "campaign_enemy_stormmaw_prime",
-        "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v1.png",
+        "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v2.png",
         "kind": "sheet",
         "width": 2048,
         "height": 1536,
@@ -8344,12 +9153,10 @@
             "frames": 8
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "phase_state_readability_verified"
@@ -8451,7 +9258,94 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W7-V1/W7-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-stormmaw-prime-boss-atlas.png",
+          "candidateSha256": "43eb4be1cda70caa1aa89830ecce8964952370312ffeb08110845864e6cb165b",
+          "dimensions": {
+            "width": 2048,
+            "height": 1536
+          }
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/w7-stage-gate-summary.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "43eb4be1cda70caa1aa89830ecce8964952370312ffeb08110845864e6cb165b",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Runtime report left compact readability parent-owned; parent direct capture inspection accepted with the documented fine-detail limitation.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            }
+          ],
+          "compactBossViewports": [
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "notes": "Exact candidate transport and registered stable-key checks passed. Map D and Stormmaw were exercised at compact sizes. Map A-C roads and plot clearance were visually accepted. Tempest natural buff resolution played once and telegraph played none."
+        },
+        "parentAcceptance": {
+          "taskId": "A8",
+          "status": "accepted-for-local-integration",
+          "decision": "World7 golden gate accepted after W7-V1 raw PASS, W7-V2 runtime PASS, and direct compact-capture inspection."
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V13 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "taskId": "A8",
+        "status": "accepted-for-integration",
+        "acceptedBy": "parent",
+        "scope": "World7 eleven-asset package for local integration",
+        "evidencePaths": [
+          "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+          "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json"
+        ],
+        "limitations": [
+          "Compact Stormmaw fine detail is reduced at 320×390 and 360×360; actual boss pixels remain visible and route/plot geometry remains visible.",
+          "No full uninterrupted campaign match is claimed."
+        ]
+      },
+      "promoted": {
+        "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v2.png",
+        "sha256": "43eb4be1cda70caa1aa89830ecce8964952370312ffeb08110845864e6cb165b",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-stormmaw-prime-boss-atlas.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "7d5df65a-355f-41ad-8ee4-8da215147930",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v2.png",
+        "sha256": "43eb4be1cda70caa1aa89830ecce8964952370312ffeb08110845864e6cb165b",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      }
     },
     {
       "id": "map:dreadmoon:a",
@@ -12595,17 +13489,17 @@
     "scope": "Immutable pre-promotion preflight observation; current promoted files are recorded in liveV2PromotionCheck."
   },
   "latestUpdate": {
-    "taskId": "O5",
+    "taskId": "O6",
     "dateUtc": "2026-10-13",
-    "scope": "World5/World6 and S3 production deployment",
+    "scope": "World7 production deployment",
     "sources": [
-      "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
-      "artifacts/campaign-final-art-20261012/integration/o5-live-check.json",
-      "artifacts/campaign-final-art-20261012/s3-support-presentation/report.md"
+      "artifacts/campaign-final-art-20261012/verification/v13-postpromotion-world7/V13-report.md",
+      "artifacts/campaign-final-art-20261012/integration/o6-live-check.json",
+      "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
     ],
-    "notes": "World5/World6 independently passed V12 and were deployed with S3 support presentation. Exact live HTML/JS, health scoreVersion3, all 22 new PNGs and 11 retained World4 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
+    "notes": "World7 independently passed V13 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Sky Isles PNGs and 33 retained World4-6 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
   },
-  "updatedAt": "2026-10-13T12:24:27.378Z",
+  "updatedAt": "2026-10-13T13:49:59.514Z",
   "statusSemantics": "Counts show the strongest accepted evidence scope recorded per asset. Promoted means the exact released candidate is present at its v2 public path with a final manifest registration in local integration; deployed means its v2 URL returned the accepted bytes from the recorded production Worker version. A runtime-review-pass may be scoped; consult each row stageAcceptance and pendingGates. Deployment requires the independent post-promotion runtime gate plus exact live verification.",
   "updateHistory": [
     {
@@ -12691,17 +13585,40 @@
         "artifacts/campaign-final-art-20261012/s3-support-presentation/report.md"
       ],
       "notes": "World5/World6 independently passed V12 and were deployed with S3 support presentation. Exact live HTML/JS, health scoreVersion3, all 22 new PNGs and 11 retained World4 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
+    },
+    {
+      "taskId": "A8",
+      "dateUtc": "2026-10-13",
+      "scope": "World7 exact eleven-asset local v2 promotion",
+      "sources": [
+        "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+        "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json",
+        "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md",
+        "tests/fixtures/campaign-v5/registry-art-contract.json"
+      ],
+      "notes": "Promoted eleven exact World7 candidates to canonical v2 paths and final manifest registrations. Candidate/public SHA-256 and dimensions match. Preserved all 43 original final files, all 77 v1 rollback files, and all 33 previously promoted World4–6 v2 files. Current status is 44 cumulative promotions, 33 deployed from Worlds4–6, 11 locally promoted for World7, and 33 pending; 87 active final paths and 33 provisional paths. Compact Stormmaw detail limitation is retained. Independent local post-promotion gate remains pending; no World7 deployment is claimed."
+    },
+    {
+      "taskId": "O6",
+      "dateUtc": "2026-10-13",
+      "scope": "World7 production deployment",
+      "sources": [
+        "artifacts/campaign-final-art-20261012/verification/v13-postpromotion-world7/V13-report.md",
+        "artifacts/campaign-final-art-20261012/integration/o6-live-check.json",
+        "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      ],
+      "notes": "World7 independently passed V13 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Sky Isles PNGs and 33 retained World4-6 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
     }
   ],
   "cohortAcceptance": {
-    "cohort": "World4-6 final-art packages: World4 Whisperfen plus Worlds5 and 6",
+    "cohort": "World4–7 final-art packages",
     "status": "deployed",
-    "publicationDecision": "World5/World6 independently passed V12 and were deployed with S3 support presentation. Exact live HTML/JS, health scoreVersion3, all 22 new PNGs and 11 retained World4 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes.",
-    "wholeCohortCompactReadability": "World4 PASS with documented compact 31-enemy crowding; World5/World6 PASS with reduced fine detail at the smallest portrait sizes.",
+    "publicationDecision": "World7 independently passed V13 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Sky Isles PNGs and 33 retained World4-6 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes.",
+    "wholeCohortCompactReadability": "World4–6 prior accepted limitations remain recorded. World7 routes and plot geometry remain visible at compact sizes; Stormmaw fine detail is reduced at 320×390 and 360×360 while the boss remains visible.",
     "scopeLimitations": [
-      "No full uninterrupted campaign match is claimed for the World5 or World6 staged reviews.",
-      "At the smallest portrait sizes, complete route geometry, towers, boss status, and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts and gold labels may briefly cover small painted areas.",
-      "World4 compact 31-enemy crowding remains documented from its prior review."
+      "No full uninterrupted campaign match is claimed for World7.",
+      "Stormmaw actual rendered footprint is about 46×31 px at 320×390 and 39×28 px at 360×360; parent accepted this compact fine-detail limitation."
     ],
     "evidence": {
       "world4": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
@@ -12709,46 +13626,719 @@
       "world5Raw": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
       "world6Runtime": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
       "world6Raw": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
-      "frozenGameSceneSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4"
+      "world7Runtime": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+      "world7Raw": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+      "world7CandidateInputs": "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json",
+      "frozenGameSceneSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+      "world7Screenshots": {
+        "compactBoss320x390": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/stormmaw-visible-320x390.png",
+        "compactBoss360x360": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/stormmaw-visible-360x360.png",
+        "mapA844x390": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/game-sky_isles_a-844x390-mixed-walk.png",
+        "mapB844x390": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/game-sky_isles_b-844x390-mixed-walk.png",
+        "mapC844x390": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/game-sky_isles_c-844x390-mixed-walk.png",
+        "tempestSupportResolution": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/tempest-natural-support-resolution-844x390.png"
+      }
     },
     "followUp": {
-      "owner": "O5",
-      "task": "World5/World6 post-promotion and deployment verification",
+      "owner": "O6",
+      "task": "World7 post-promotion and deployment verification",
       "status": "passed",
-      "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
     },
-    "promoted": 33,
+    "cumulativePromoted": 44,
     "localPromoted": 0,
-    "deployed": 33,
-    "pending": 44
+    "deployed": 44,
+    "pending": 33
   },
   "liveV2PromotionCheck": {
     "checkedAtUtc": "2026-10-13",
-    "candidateCount": 33,
+    "candidateCount": 44,
     "exactCandidateAndPublicHashMatches": true,
     "allV1BaselineHashesAndDimensionsPreserved": {
       "expansionRows": 77,
       "originalFinalRows": 43,
       "verified": true
     },
-    "reviewPath": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
+    "reviewPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
     "reviewPaths": [
+      "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
       "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
       "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
       "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
       "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
-      "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json",
-      "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json",
-      "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
-      "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+      "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json",
+      "artifacts/campaign-final-art-20261012/verification/v13-postpromotion-world7/V13-report.md",
+      "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
     ],
-    "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md",
-    "priorPromotionReportPath": "artifacts/campaign-final-art-20261012/integration/world4-promotion-report.md",
-    "activeFinalPathCount": 76,
-    "remainingProvisionalPathCount": 44,
+    "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md",
+    "priorPromotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md",
+    "activeFinalPathCount": 87,
+    "remainingProvisionalPathCount": 33,
+    "deployedCount": 33,
+    "locallyPromotedCount": 11,
+    "pendingCount": 33,
     "independentPostPromotionGate": "passed"
   },
   "productionDeployment": {
+    "status": "verified",
+    "taskId": "O6",
+    "workerName": "aetherhold-defense",
+    "versionId": "7d5df65a-355f-41ad-8ee4-8da215147930",
+    "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+    "publishedAtUtc": "2026-10-13T13:49:59.514Z",
+    "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+    "deployCommand": "npm run deploy",
+    "deploySequence": "npm test && npm run build && wrangler deploy --keep-vars",
+    "testEnvironment": {
+      "VITEST_MAX_WORKERS": "1"
+    },
+    "testResults": {
+      "filesPassed": 106,
+      "filesSkipped": 4,
+      "testsPassed": 1518,
+      "testsSkipped": 11
+    },
+    "build": {
+      "typecheck": "passed",
+      "vite": "passed",
+      "bundlePath": "/assets/index-D9yVZ9fU.js",
+      "bundleBytes": 2169045,
+      "bundleSha256": "85f367d99d7c0ad26cdd04791b8b505f7e6a3f1d66e745a1a1ed4bbe331c289e",
+      "exactLocalBuildMatch": true,
+      "largeChunkWarningRetained": true
+    },
+    "page": {
+      "path": "/",
+      "status": 200,
+      "bytes": 612,
+      "sha256": "a87b59e0a995af7d67c6dceb09814a8efd5d93d0588599c340f168373013a2ca",
+      "contentType": "text/html",
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "cfCacheStatus": "MISS"
+    },
+    "health": {
+      "status": 200,
+      "ok": true,
+      "time": "2026-10-13T13:48:40.233Z",
+      "scoreVersion": 3
+    },
+    "assets": [
+      {
+        "id": "map:whisperfen:a",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/maps/whisperfen_a-v2.png",
+        "status": 200,
+        "bytes": 4284434,
+        "sha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:whisperfen:b",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/maps/whisperfen_b-v2.png",
+        "status": 200,
+        "bytes": 4280858,
+        "sha256": "ee69916e9344e97ce8f9b7bc9d1aed0b451cd3f87f7195665f602f57329258d2",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:whisperfen:c",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/maps/whisperfen_c-v2.png",
+        "status": 200,
+        "bytes": 3909390,
+        "sha256": "2a9bcdbf759048c2026295878e6c264ba0ba749642890a7a3cd239bf3b912d5a",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:whisperfen:d",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/maps/whisperfen_d-v2.png",
+        "status": 200,
+        "bytes": 4337844,
+        "sha256": "0617810e89ca06ef608fad09882ddce04265b4507d3c5cf30a0ac7b8e00299da",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "world-panel:whisperfen",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/world-map/whisperfen-v2.png",
+        "status": 200,
+        "bytes": 903090,
+        "sha256": "c585a31df7245d4b99f00a916c8226ffbb877ed95178fbe883db66443f77a2c9",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:bogling",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png",
+        "status": 200,
+        "bytes": 318931,
+        "sha256": "1ebb5f24fe3e6e09192d2508679c6e7a4f949c7520b50ba27b87404af0105873",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:fen_skitter",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.png",
+        "status": 200,
+        "bytes": 283150,
+        "sha256": "d67e435f9f9263e6cce676974b3aa15cc558976951cb9012aa55bc1c755fa79e",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:mossguard",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.png",
+        "status": 200,
+        "bytes": 388143,
+        "sha256": "c19d9b8ce50736c225d9e4b6c6ea56eec246bbda75923162190cfba26bb4ea10",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:rotback",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.png",
+        "status": 200,
+        "bytes": 200869,
+        "sha256": "93ce8dab3a75d253e0c989c26c58ffc720444b2ca7e03b4bb648c7ae7e9c5ec7",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:rootwretch",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png",
+        "status": 200,
+        "bytes": 434546,
+        "sha256": "09eaaccab4034bf36e79920c6e697c444ff95ef0da4f583b7634c697f1a72b74",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "boss:mireheart_hydra",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.png",
+        "status": 200,
+        "bytes": 3035770,
+        "sha256": "cbed46bbc139e37cbda59775203e850d8a320161c586cc91a033f70ba5da7500",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:sunken_aether:a",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/maps/sunken_aether_a-v2.png",
+        "status": 200,
+        "bytes": 3382505,
+        "sha256": "884c699225f32f88b51a970cf0593fecfb9e7cd73481a3900329a12ebbe332d7",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:sunken_aether:b",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/maps/sunken_aether_b-v2.png",
+        "status": 200,
+        "bytes": 3546597,
+        "sha256": "dfd66ef9fa4c88b678a482af4ef2e6f3a522d03ac4f9ea5026dcb54a2dc1903d",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:sunken_aether:c",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/maps/sunken_aether_c-v2.png",
+        "status": 200,
+        "bytes": 3655160,
+        "sha256": "580c0b22d986c28e74134dbe37932bd3aa477d808dfc6787dd9deef51c053e3e",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:sunken_aether:d",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/maps/sunken_aether_d-v2.png",
+        "status": 200,
+        "bytes": 3304899,
+        "sha256": "47a83efd27dfbc07d7efcf333e2e8c0aa3ba2240d7130fb076148cf457ed6225",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "world-panel:sunken_aether",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/world-map/sunken_aether-v2.png",
+        "status": 200,
+        "bytes": 785083,
+        "sha256": "a8d0b31fa2d7323ee47a0a8f5de2b71d47992db0863358adbba22ea115fad0af",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:tideborn",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
+        "status": 200,
+        "bytes": 379092,
+        "sha256": "c003c2ecd9fc4ec12f1fafad1ac3e52eabf654fdaa5e233bca3541e165a34122",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:crystal_wisp",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
+        "status": 200,
+        "bytes": 430414,
+        "sha256": "fe8be230637cefbef9ad887c6d628671a422fbd20e1094ccd9b50a3cbb28084d",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:deepcrawler",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
+        "status": 200,
+        "bytes": 413045,
+        "sha256": "b4b9ec1910437a7fd270b009bb126c3442b9fa187e2ab9debeb7f2292f84504e",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "enemy:relic_guardian",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
+        "status": 200,
+        "bytes": 446436,
+        "sha256": "2089222291f53968107c7c3d467cd5c298c7b7ca92a1fa5a26dfe17593ca121f",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:aetherbound",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
+        "status": 200,
+        "bytes": 533870,
+        "sha256": "c54ead85262b714e2c3507a9f61689b26d94f04c1bc5ad2db218fa8c0b21dd6b",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "boss:drowned_oracle",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
+        "status": 200,
+        "bytes": 3413054,
+        "sha256": "1710521cc2377ff1c5ca7c0a879c59aa83a523783106481c49f3210a3e205cf7",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:ironroot:a",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/maps/ironroot_a-v2.png",
+        "status": 200,
+        "bytes": 3206621,
+        "sha256": "f094f9dcf725d28be8409430baa1ae0adb6bf82faded6d13f567349db5ef2e2c",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:ironroot:b",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/maps/ironroot_b-v2.png",
+        "status": 200,
+        "bytes": 3305420,
+        "sha256": "5dcdb71ba2d33df1f4cd734b346f6cd216058737285ed597a4cfcaba74787404",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:ironroot:c",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/maps/ironroot_c-v2.png",
+        "status": 200,
+        "bytes": 3268828,
+        "sha256": "53aeece9783bfa5ed5f87ee766a9701939665f06b4bf9f93e350cd3a0aaf2b23",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:ironroot:d",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/maps/ironroot_d-v2.png",
+        "status": 200,
+        "bytes": 3180193,
+        "sha256": "72b13d5e41d2c0fd088fb2fcade469a79fb9f61cebf3bc24921b64baeab5821d",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "world-panel:ironroot",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/world-map/ironroot-v2.png",
+        "status": 200,
+        "bytes": 749900,
+        "sha256": "bb46fa28e5e9e5acf8d77a9bd2e059c0dfc71fead420fbc93ce5205bf98a499e",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:scrapling",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
+        "status": 200,
+        "bytes": 407853,
+        "sha256": "e56efb79c8859dc17ddd79ad5abfd410d310a7c5b4e5836e91022ce8858689ae",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:furnace_hound",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
+        "status": 200,
+        "bytes": 370006,
+        "sha256": "b1ffb21ef0244005289abae0bcfc897a3d8a479a278d327c9f6c2755e4f0e017",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:siege_golem",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
+        "status": 200,
+        "bytes": 498038,
+        "sha256": "2a74f89fd8d4610009ba55fb3b281489dd1aa2eafcd99479bf8ee0cb9862cde2",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "enemy:ironbound",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
+        "status": 200,
+        "bytes": 390939,
+        "sha256": "127fbe7f27c2aa4996cb9a09c95a029520ba9c664d113368ae10788d2694696d",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:foundry_core",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
+        "status": 200,
+        "bytes": 509039,
+        "sha256": "4d9ceee2092c1bc1e514f0e76125b3deaefd26246753df27c968259f889012f1",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "boss:iron_tyrant",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
+        "status": 200,
+        "bytes": 3896212,
+        "sha256": "7efca9d25dbe0f27b370f798c8c5e6035120a1f77e7fb5c473c2da856aa504d9",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:sky_isles:a",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/maps/sky_isles_a-v2.png",
+        "status": 200,
+        "bytes": 3801737,
+        "sha256": "98f5adff17d7b9b8e469238b12ef09bc39ab95ec3c8eb9b7fcad1c665e023a26",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:sky_isles:b",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/maps/sky_isles_b-v2.png",
+        "status": 200,
+        "bytes": 3317913,
+        "sha256": "79c4bb5d3831c648b35c192f0c35aeeec1fa14db73830c75f915cce3eef9a660",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:sky_isles:c",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/maps/sky_isles_c-v2.png",
+        "status": 200,
+        "bytes": 3494531,
+        "sha256": "e8967fcf6b32700efcf0105183313fc3fd6015bb43eaed681147d06d3b556fb0",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:sky_isles:d",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/maps/sky_isles_d-v2.png",
+        "status": 200,
+        "bytes": 3419160,
+        "sha256": "b1e1caddce8899a663f8bb6312584fc102e6bba3df111c91c24ed0643d02818c",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "world-panel:sky_isles",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/world-map/sky_isles-v2.png",
+        "status": 200,
+        "bytes": 688314,
+        "sha256": "dc83257253d0f9906f916153aa236ee5b693cb988e2b760503df7de5d83b9494",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:cloud_skitter",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png",
+        "status": 200,
+        "bytes": 252419,
+        "sha256": "f2581cf68be8769764dc2b347be104a0f9b8fbb5b4ea88bbfb345920f879de96",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:galeclaw",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.png",
+        "status": 200,
+        "bytes": 300189,
+        "sha256": "b2b8cde192c826776fabb8356490928c4c80611d0b203f6d70da8d27f0cfb2ec",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:aether_drake",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.png",
+        "status": 200,
+        "bytes": 340399,
+        "sha256": "6127080ff7abdbe60dbf514836e59ac1fce1a398fe7c74b5e958701b89dc8d3a",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:stormguard",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.png",
+        "status": 200,
+        "bytes": 408752,
+        "sha256": "ee13c36d209f3a750bce70b5fe16b408b225434ebe5007556944eca4fa37c5f3",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:tempest_herald",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.png",
+        "status": 200,
+        "bytes": 464842,
+        "sha256": "8aac34b5a6783fc943b1333c8e035c19689840f26d03d2ada6a20bef86e20d49",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "boss:stormmaw_prime",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v2.png",
+        "status": 200,
+        "bytes": 3027531,
+        "sha256": "43eb4be1cda70caa1aa89830ecce8964952370312ffeb08110845864e6cb165b",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      }
+    ],
+    "visual": {
+      "title": "Aegis of the Borderkeep",
+      "visibleText": "Welcome, Defender\n\nSign in with Google to keep campaign progress and scores across devices.\n\nSign in with Google\nRetry connection",
+      "signInGateObserved": true,
+      "authenticatedGameplayVerified": false,
+      "accountWrites": false,
+      "assetRenders": [
+        {
+          "world": "sky_isles",
+          "width": 768,
+          "height": 432,
+          "complete": true
+        }
+      ],
+      "visuallyInspected": true,
+      "localPostPromotionGate": "artifacts/campaign-final-art-20261012/verification/v13-postpromotion-world7/V13-report.md"
+    },
+    "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json",
+    "scope": "World4-6 retained; World7 newly deployed",
+    "limitations": [
+      "Production authenticated gameplay unverified: sign-in gate.",
+      "Physical touch and full uninterrupted campaign match unverified.",
+      "World7 compact fine-detail and prior crowding limits remain."
+    ]
+  },
+  "previousWorld4CohortAcceptance": {
+    "cohort": "World 4 final-art candidate package: panel, terrain families A-D, five Whisperfen monsters, and Hydra",
+    "status": "accepted-for-integration",
+    "publicationDecision": "PUBLISHED to production after independent post-promotion V9 gate PASS; Worker version d1107304-ef7a-4e9b-9682-b98efe2bb744 verified.",
+    "wholeCohortCompactReadability": "PASS WITH DOCUMENTED COMPACT 31-ENEMY CROWDING LIMITATION",
+    "reviewedContextCount": 23,
+    "correctedHarnessReruns": [
+      "run-s2-reset",
+      "run-s2-motion-final"
+    ],
+    "scopeLimitations": [
+      "No full uninterrupted campaign match was claimed.",
+      "Compact map scale naturally limits fine sprite detail; 31-enemy compact crowding remains documented."
+    ],
+    "evidence": {
+      "reviewPath": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
+      "frozenGameSceneSha256": "d79bb40596d8c7a82e0fa6c3f99ae578614ae328ac7397868e2bc268de9cbbcc"
+    },
+    "priorDecision": {
+      "cohort": "World 4 final-art candidate package: panel, terrain families A-D, five Whisperfen monsters, and Hydra",
+      "status": "held",
+      "publicationDecision": "REJECTED pending bounded composition investigation",
+      "wholeCohortCompactReadability": "FAIL",
+      "affectedViewports": [
+        {
+          "width": 844,
+          "height": 390
+        },
+        {
+          "width": 320,
+          "height": 390
+        }
+      ],
+      "evidence": {
+        "reviewPath": "artifacts/campaign-final-art-20261012/verification/original-hud-v11/readability-visual-assessment.md",
+        "measuredBoundsPath": "artifacts/campaign-final-art-20261012/verification/original-hud-v11/readability-reprobe-report.json",
+        "frozenGameSceneSha256": "5d997e4558399edf6524eac528e6845a1472f0c0ac646850745922e3163a011f"
+      },
+      "finding": "Boss-active battlefield fit scale shrinks terrain, route, plots, and towers enough that the player cannot readily read routes or distinguish build locations. Structural HUD/cap assertions passing do not establish gameplay readability.",
+      "followUp": {
+        "owner": "I10",
+        "task": "bounded composition investigation",
+        "status": "pending"
+      },
+      "promoted": 0,
+      "deployed": 0,
+      "supersededBy": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
+      "supersededByDecision": "Parent accepted the V9/S2 staging gate for integration."
+    },
+    "followUp": {
+      "owner": "A6 integration / independent reviewer",
+      "task": "post-promotion runtime gate",
+      "status": "passed",
+      "evidencePath": "artifacts/campaign-final-art-20261012/verification/resume-v9/postpromotion/final-review.md",
+      "completedAtUtc": "2026-10-13T07:19:58.792Z"
+    },
+    "promoted": 11,
+    "deployed": 11
+  },
+  "previousProductionDeployment": {
     "status": "verified",
     "taskId": "O5",
     "workerName": "aetherhold-defense",
@@ -13224,288 +14814,92 @@
       "failure": "Three existing geometry tests timed out with parallel workers; unchanged assertions passed on serialized retry."
     }
   },
-  "previousWorld4CohortAcceptance": {
-    "cohort": "World 4 final-art candidate package: panel, terrain families A-D, five Whisperfen monsters, and Hydra",
-    "status": "accepted-for-integration",
-    "publicationDecision": "PUBLISHED to production after independent post-promotion V9 gate PASS; Worker version d1107304-ef7a-4e9b-9682-b98efe2bb744 verified.",
-    "wholeCohortCompactReadability": "PASS WITH DOCUMENTED COMPACT 31-ENEMY CROWDING LIMITATION",
-    "reviewedContextCount": 23,
-    "correctedHarnessReruns": [
-      "run-s2-reset",
-      "run-s2-motion-final"
-    ],
+  "previousWorld4to6CohortAcceptance": {
+    "cohort": "World4-6 final-art packages: World4 Whisperfen plus Worlds5 and 6",
+    "status": "deployed",
+    "publicationDecision": "World5/World6 independently passed V12 and were deployed with S3 support presentation. Exact live HTML/JS, health scoreVersion3, all 22 new PNGs and 11 retained World4 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes.",
+    "wholeCohortCompactReadability": "World4 PASS with documented compact 31-enemy crowding; World5/World6 PASS with reduced fine detail at the smallest portrait sizes.",
     "scopeLimitations": [
-      "No full uninterrupted campaign match was claimed.",
-      "Compact map scale naturally limits fine sprite detail; 31-enemy compact crowding remains documented."
+      "No full uninterrupted campaign match is claimed for the World5 or World6 staged reviews.",
+      "At the smallest portrait sizes, complete route geometry, towers, boss status, and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts and gold labels may briefly cover small painted areas.",
+      "World4 compact 31-enemy crowding remains documented from its prior review."
     ],
     "evidence": {
-      "reviewPath": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
-      "frozenGameSceneSha256": "d79bb40596d8c7a82e0fa6c3f99ae578614ae328ac7397868e2bc268de9cbbcc"
-    },
-    "priorDecision": {
-      "cohort": "World 4 final-art candidate package: panel, terrain families A-D, five Whisperfen monsters, and Hydra",
-      "status": "held",
-      "publicationDecision": "REJECTED pending bounded composition investigation",
-      "wholeCohortCompactReadability": "FAIL",
-      "affectedViewports": [
-        {
-          "width": 844,
-          "height": 390
-        },
-        {
-          "width": 320,
-          "height": 390
-        }
-      ],
-      "evidence": {
-        "reviewPath": "artifacts/campaign-final-art-20261012/verification/original-hud-v11/readability-visual-assessment.md",
-        "measuredBoundsPath": "artifacts/campaign-final-art-20261012/verification/original-hud-v11/readability-reprobe-report.json",
-        "frozenGameSceneSha256": "5d997e4558399edf6524eac528e6845a1472f0c0ac646850745922e3163a011f"
-      },
-      "finding": "Boss-active battlefield fit scale shrinks terrain, route, plots, and towers enough that the player cannot readily read routes or distinguish build locations. Structural HUD/cap assertions passing do not establish gameplay readability.",
-      "followUp": {
-        "owner": "I10",
-        "task": "bounded composition investigation",
-        "status": "pending"
-      },
-      "promoted": 0,
-      "deployed": 0,
-      "supersededBy": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
-      "supersededByDecision": "Parent accepted the V9/S2 staging gate for integration."
+      "world4": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
+      "world5Runtime": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+      "world5Raw": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+      "world6Runtime": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+      "world6Raw": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+      "frozenGameSceneSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4"
     },
     "followUp": {
-      "owner": "A6 integration / independent reviewer",
-      "task": "post-promotion runtime gate",
+      "owner": "O5",
+      "task": "World5/World6 post-promotion and deployment verification",
       "status": "passed",
-      "evidencePath": "artifacts/campaign-final-art-20261012/verification/resume-v9/postpromotion/final-review.md",
-      "completedAtUtc": "2026-10-13T07:19:58.792Z"
+      "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
     },
-    "promoted": 11,
-    "deployed": 11
+    "promoted": 33,
+    "localPromoted": 0,
+    "deployed": 33,
+    "pending": 44
   },
-  "previousProductionDeployment": {
-    "status": "verified",
-    "workerName": "aetherhold-defense",
-    "versionId": "d1107304-ef7a-4e9b-9682-b98efe2bb744",
-    "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
-    "publishedAtUtc": "2026-10-13T07:39:26.331Z",
-    "verifiedAtUtc": "2026-10-13T07:39:26.331Z",
-    "deployCommand": "npm run deploy",
-    "deploySequence": "npm test && npm run build && wrangler deploy --keep-vars",
-    "testResults": {
-      "filesPassed": 106,
-      "filesSkipped": 4,
-      "testsPassed": 1510,
-      "testsSkipped": 11
+  "previousWorld5to6PromotionGate": {
+    "released": true,
+    "releaseScope": "World5 and World6 deployment with S3 support presentation; World4 retained.",
+    "reason": "Parent accepted the complete World5 and World6 eleven-asset packages after independent raw and staged-runtime review, with compact fine-detail limitations documented.",
+    "frozenHudSource": {
+      "path": "src/game/scenes/GameScene.ts",
+      "sha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4"
     },
-    "build": {
-      "typecheck": "passed",
-      "vite": "passed",
-      "viteVersion": "6.4.4",
-      "bundlePath": "/assets/index-4zpm3wDu.js",
-      "bundleBytes": 2168862,
-      "bundleSha256": "5cca51c4a3c8c0b1230759500f540b5c281bf83f5464d53d6a22ce4046160796",
-      "exactLocalBuildMatch": true,
-      "world4ManifestMarkers": true
-    },
-    "page": {
-      "status": 200,
-      "title": "Aegis of the Borderkeep — Ancient Border Keep",
-      "cacheControl": "public, max-age=0, must-revalidate",
-      "jsPath": "/assets/index-4zpm3wDu.js"
-    },
-    "health": {
-      "status": 200,
-      "ok": true,
-      "scoreVersion": 3
-    },
-    "sourceHashes": {
-      "src/game/scenes/GameScene.ts": "d79bb40596d8c7a82e0fa6c3f99ae578614ae328ac7397868e2bc268de9cbbcc",
-      "src/game/campaign/mapLayout.ts": "cea4d2fda176622654e3d6455e90db1d5eb58d974e638e2b1540e00e113ab4e8",
-      "src/game/ui/layout.ts": "3dc634f192e79863359e7866781c0e33182cd339521b49f7d0bfd00069877e0a",
-      "src/game/ui/viewport.ts": "d1df0b9f753c429fa3e57cd8d2af87ea087533f315038fd5cb796c7b52642c31",
-      "src/game/art/enemyArt.ts": "1cebc2b6dc9f5bbca348ca206619c88e13ae939c84f18c80ecc2f85dfaae5045",
-      "src/game/campaign/artManifest.ts": "f908a805a4b39ec3112067281d1a6cf2579fdbfd9fb0e69163e569c7bebf14d0",
-      "src/game/art/assetManifest.ts": "abf2d4eca5c79f790bc0909f6642e75e1fa2701985096c45a7e5b5543cc59fbd",
-      "src/game/campaign/config.ts": "10b54137996d465deab7ffeb235e791b4d3ade1875316efd6c702f6b9c625899"
-    },
-    "assets": [
+    "acceptanceEvidence": [
+      "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md"
+    ],
+    "releaseDecision": "authorized and deployed after V12 PASS",
+    "deploymentAllowed": true,
+    "pendingReviews": [
       {
-        "id": "map:whisperfen:a",
-        "path": "/assets/campaign/maps/whisperfen_a-v2.png",
-        "status": 200,
-        "bytes": 4284434,
-        "sha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797",
-        "etag": "\"cfaaa8078f4153d00d7a539b0c2a91b4\"",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "age": null,
-        "expectedSha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797",
-        "match": true
+        "review": "Independent post-promotion runtime gate for World5 and World6",
+        "status": "passed",
+        "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+        "required": "Fresh-page texture loading and exact response hashes for the 22 newly promoted v2 paths, plus current-source runtime contexts for World5 and World6.",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "summary": "Independent local V12 PASS followed by O5 exact live release checks."
       },
       {
-        "id": "map:whisperfen:b",
-        "path": "/assets/campaign/maps/whisperfen_b-v2.png",
-        "status": 200,
-        "bytes": 4280858,
-        "sha256": "ee69916e9344e97ce8f9b7bc9d1aed0b451cd3f87f7195665f602f57329258d2",
-        "etag": "\"d3be27689ce3c38a3e1d73731b83f13c\"",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "age": null,
-        "expectedSha256": "ee69916e9344e97ce8f9b7bc9d1aed0b451cd3f87f7195665f602f57329258d2",
-        "match": true
-      },
-      {
-        "id": "map:whisperfen:c",
-        "path": "/assets/campaign/maps/whisperfen_c-v2.png",
-        "status": 200,
-        "bytes": 3909390,
-        "sha256": "2a9bcdbf759048c2026295878e6c264ba0ba749642890a7a3cd239bf3b912d5a",
-        "etag": "\"0ea2edc96ea91ec5154620694433c28b\"",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "age": null,
-        "expectedSha256": "2a9bcdbf759048c2026295878e6c264ba0ba749642890a7a3cd239bf3b912d5a",
-        "match": true
-      },
-      {
-        "id": "map:whisperfen:d",
-        "path": "/assets/campaign/maps/whisperfen_d-v2.png",
-        "status": 200,
-        "bytes": 4337844,
-        "sha256": "0617810e89ca06ef608fad09882ddce04265b4507d3c5cf30a0ac7b8e00299da",
-        "etag": "\"341205e135105deb585422fcb21183d7\"",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "age": null,
-        "expectedSha256": "0617810e89ca06ef608fad09882ddce04265b4507d3c5cf30a0ac7b8e00299da",
-        "match": true
-      },
-      {
-        "id": "world-panel:whisperfen",
-        "path": "/assets/campaign/world-map/whisperfen-v2.png",
-        "status": 200,
-        "bytes": 903090,
-        "sha256": "c585a31df7245d4b99f00a916c8226ffbb877ed95178fbe883db66443f77a2c9",
-        "etag": "\"3fdc0910c24f7c8f9e7e5f1986fe5e31\"",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "age": null,
-        "expectedSha256": "c585a31df7245d4b99f00a916c8226ffbb877ed95178fbe883db66443f77a2c9",
-        "match": true
-      },
-      {
-        "id": "enemy:bogling",
-        "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png",
-        "status": 200,
-        "bytes": 318931,
-        "sha256": "1ebb5f24fe3e6e09192d2508679c6e7a4f949c7520b50ba27b87404af0105873",
-        "etag": "\"061dcc06d2312fa05fef6c6983fcb7bf\"",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "age": null,
-        "expectedSha256": "1ebb5f24fe3e6e09192d2508679c6e7a4f949c7520b50ba27b87404af0105873",
-        "match": true
-      },
-      {
-        "id": "enemy:fen_skitter",
-        "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.png",
-        "status": 200,
-        "bytes": 283150,
-        "sha256": "d67e435f9f9263e6cce676974b3aa15cc558976951cb9012aa55bc1c755fa79e",
-        "etag": "\"bb28ae240a1aea6fc9cdbf470ab62848\"",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "age": null,
-        "expectedSha256": "d67e435f9f9263e6cce676974b3aa15cc558976951cb9012aa55bc1c755fa79e",
-        "match": true
-      },
-      {
-        "id": "enemy:mossguard",
-        "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.png",
-        "status": 200,
-        "bytes": 388143,
-        "sha256": "c19d9b8ce50736c225d9e4b6c6ea56eec246bbda75923162190cfba26bb4ea10",
-        "etag": "\"4c81ae177dbb50f6c2bda0d2fa901737\"",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "age": null,
-        "expectedSha256": "c19d9b8ce50736c225d9e4b6c6ea56eec246bbda75923162190cfba26bb4ea10",
-        "match": true
-      },
-      {
-        "id": "enemy:rotback",
-        "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.png",
-        "status": 200,
-        "bytes": 200869,
-        "sha256": "93ce8dab3a75d253e0c989c26c58ffc720444b2ca7e03b4bb648c7ae7e9c5ec7",
-        "etag": "\"cd456bcee6324abd66411d9887bb0ead\"",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "age": null,
-        "expectedSha256": "93ce8dab3a75d253e0c989c26c58ffc720444b2ca7e03b4bb648c7ae7e9c5ec7",
-        "match": true
-      },
-      {
-        "id": "enemy:rootwretch",
-        "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png",
-        "status": 200,
-        "bytes": 434546,
-        "sha256": "09eaaccab4034bf36e79920c6e697c444ff95ef0da4f583b7634c697f1a72b74",
-        "etag": "\"3363887476d45343b14c07483cb1c082\"",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "age": null,
-        "expectedSha256": "09eaaccab4034bf36e79920c6e697c444ff95ef0da4f583b7634c697f1a72b74",
-        "match": true
-      },
-      {
-        "id": "boss:mireheart_hydra",
-        "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.png",
-        "status": 200,
-        "bytes": 3035770,
-        "sha256": "cbed46bbc139e37cbda59775203e850d8a320161c586cc91a033f70ba5da7500",
-        "etag": "\"d8a5911e4b62864e3a81f17a9f6fc9b3\"",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "age": null,
-        "expectedSha256": "cbed46bbc139e37cbda59775203e850d8a320161c586cc91a033f70ba5da7500",
-        "match": true
+        "review": "Independent post-promotion runtime gate",
+        "status": "passed",
+        "evidencePath": "artifacts/campaign-final-art-20261012/verification/resume-v9/postpromotion/final-review.md",
+        "required": "Fresh-page texture load and current-source checks across the accepted relevant viewport and gameplay contexts.",
+        "verifiedAtUtc": "2026-10-13T07:19:58.792Z",
+        "summary": "PASS: current-source fresh-page review; all 11 promoted assets hash-match live responses; 120 v1 baseline rows preserved."
       }
     ],
-    "visual": {
-      "localPostPromotionGameGate": {
-        "status": "PASS",
-        "evidencePath": "artifacts/campaign-final-art-20261012/verification/resume-v9/postpromotion/final-review.md",
-        "contexts": 17
+    "publicationDecision": "World5/World6 independently passed V12 and were deployed with S3 support presentation. Exact live HTML/JS, health scoreVersion3, all 22 new PNGs and 11 retained World4 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes.",
+    "previousGateDecision": {
+      "scope": "pre-integration",
+      "released": false,
+      "dateUtc": "2026-10-13",
+      "reason": "World 4 publication was held after the V11 compact battlefield readability failure at 844x390 and 320x390; I10 bounded composition investigation was pending.",
+      "pendingReview": {
+        "review": "I10 bounded composition investigation",
+        "status": "pending",
+        "evidencePath": "artifacts/campaign-final-art-20261012/verification/original-hud-v11/readability-visual-assessment.md",
+        "sourceSha256": "5d997e4558399edf6524eac528e6845a1472f0c0ac646850745922e3163a011f"
       },
-      "liveUnauthenticatedPageRender": {
-        "status": "PASS",
-        "renderer": "headless Chrome via CDP",
-        "title": "Aegis of the Borderkeep",
-        "visibleState": "Welcome, Defender; Google sign-in required",
-        "loginGateObserved": true,
-        "screenshotSha256": "0165c153cc1a25d796039f7a27f1a1f81b12d08787b75b94b58ef4f692219787",
-        "accountWrites": false
-      },
-      "liveWorld4AssetRender": {
-        "status": "PASS",
-        "renderer": "headless Chrome via CDP",
-        "url": "https://aetherhold-defense.ljournllagas.workers.dev/assets/campaign/world-map/whisperfen-v2.png",
-        "assetSha256": "c585a31df7245d4b99f00a916c8226ffbb877ed95178fbe883db66443f77a2c9",
-        "naturalWidth": 768,
-        "naturalHeight": 432,
-        "screenshotSha256": "a53ebd0b6a998517e4e608baaa76c10f79ac3cb24056ffa06c0ac75f95f11d94",
-        "visuallyInspected": true
-      },
-      "liveGameplayScreenshotCaptured": false,
-      "limitation": "Production gameplay screen requires Google sign-in; no sign-in was performed. Local V9 fresh-Chromium gameplay render gate is PASS."
+      "publicationDecision": "rejected pending I10; no promotion authorized",
+      "supersededBy": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md"
     },
-    "limitations": [
-      "Compact 31-enemy crowding is documented.",
-      "Physical touch gestures and a full uninterrupted campaign match remain unverified."
-    ],
-    "scope": "World4 only; World5 and World6 local promotions are not included in this deployment record."
+    "historicalWorld4Publication": {
+      "releaseScope": "World4 only",
+      "frozenHudSource": {
+        "path": "src/game/scenes/GameScene.ts",
+        "sha256": "d79bb40596d8c7a82e0fa6c3f99ae578614ae328ac7397868e2bc268de9cbbcc"
+      },
+      "deploymentAllowed": true,
+      "publicationDecision": "World4 was previously published and independently verified under Worker version d1107304-ef7a-4e9b-9682-b98efe2bb744."
+    }
   }
 }
