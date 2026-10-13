@@ -18,8 +18,8 @@ SHA2560f44b527e6002d57cdad1a2334bc413bfd88f636adaf2fd3bd56d561e57b9b5d.
 Health200 ok scoreVersion3;11newWorld10+55priorPNG200 exacthashes;
 repeatcache65HIT/1MISS. Publicsign-in/Crownnativepanel visuallyPASS.
 Authenticated production gameplay unverified behindGoogle;noaccount/D1writes.
-Independent local GameScene reviews pass. O8 boundedcommit/push/actualremote
-equality pending its report. Branch codex/campaign-v5-20261012 previous synchronized
+Independent local GameScene reviews pass. O8 application commit
+b47fa220b1ae32deff67dbaa691217b3be837681 pushed;local and actual remote HEAD match. Branch codex/campaign-v5-20261012 previous synchronized
 applicationffb29f1d16ca72fd9a375463c9a4def6bed4760b.
 Preserve .scratch/ .superpowers/ unknownzero-byte (c[a.currentStatus] androot
 verification/ priorarttest artifacts;do notstageunfinishedW9candidates.
