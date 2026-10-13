@@ -2,22 +2,22 @@
 
 ## Final campaign artwork - active
 
-Heavy campaign-final-art-20261012 completes the approved77-asset final-art scope,
-preserving43 originals and gameplay/save contracts.
-Worlds4-7 complete and live:44 new finals deployed,87 total active final paths,
-33 provisional assets remaining. World8 candidates assembled/raw reviewpending;
-World9/10 production active. All43 originals/77v1 rollback files unchanged.
+Heavy campaign-final-art-20261012 follows approved77-asset scope.
+Worlds4-8 complete and live:55new finals deployed,98 active final paths,
+22provisional assets remaining. Original43/77rollback assets unchanged.
+World9sixassetrepair active;World10eleven candidates underindependentrawreview.
 
 Live https://aetherhold-defense.ljournllagas.workers.dev/
-Version7d5df65a-355f-41ad-8ee4-8da215147930.
-Deploy1518 tests passed,11 configured skips,typecheck/build PASS. LiveHTML/current
-JS exact SHA25685f367d99d7c0ad26cdd04791b8b505f7e6a3f1d66e745a1a1ed4bbe331c289e;
-health200 scoreVersion3;44PNG exacthashes,repeatcache29HIT/15MISS.
-O6 boundedcommit/push andactualremote equality pending its report.
-World7 raw/runtime/actuallocalpublic gates PASS, all100loaders andpreservation
-audits PASS. Public page/panelrender checked; authenticatedlivegameplay unverified
-behind sign-in. Compactdetail/crowding/breakpoint/physicaltouch/fullmatch limits
-remain explicit in latest_session_work.md. Continue remaining33;not closure.
+Version645072e7-4cf7-4426-94e2-0cbb440319a3.
+Deploy1518pass11configuredskip,typecheck/build PASS. LiveHTML/currentJS exact
+SHA25619388b4603455f05fb8b65f79cd3e5ba4bdccd867fd174782d9024564a08475b;
+health200 scoreVersion3;all55PNG exacthashes/repeatcache52HIT3MISS.
+O7 boundedcommit/push/actualremote equality pending.
+World8raw10plusRegentidlefocusedrepairPASS/staging/public gates PASS.
+All100loaders andbaselinepreservation pass. Publicrender/panelchecked;
+authenticatedlivegameplay behindsign-in unverified. Compactdetail/crowding/
+breakpoint/physicaltouch/fullmatch limitations remain inlatest_session_work.md.
+Continue22remaining;noall77 completion/closure yet.
 
 ## Campaign v5 — complete
 

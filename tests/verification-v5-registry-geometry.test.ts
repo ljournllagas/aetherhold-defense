@@ -215,10 +215,10 @@ describe('v5 campaign registry and route verification', () => {
     expect(contract.baselineCommit).toBe('b33ea38e01754f2e6469eadf1660cd84b7520ee5');
     expect(contract.assets).toHaveLength(77);
     expect(contract.livePromotions.acceptedForIntegration).toBe(true);
-    expect(contract.livePromotions.assets).toHaveLength(44);
-    expect(registered).toHaveLength(33);
+    expect(contract.livePromotions.assets).toHaveLength(55);
+    expect(registered).toHaveLength(22);
     expect(new Set(contract.assets.map(item => item.path)).size).toBe(77);
-    expect(new Set(registered.map(item => item.path)).size).toBe(33);
+    expect(new Set(registered.map(item => item.path)).size).toBe(22);
 
     const registeredByPath = new Map(registered.map(item => [item.path, item]));
     const promotionsByBaselinePath = new Map(contract.livePromotions.assets.map(item => [item.baselineV1Path, item]));
@@ -277,7 +277,7 @@ describe('v5 campaign registry and route verification', () => {
     }
   });
 
-  it('keeps the 43 original final paths, promotes 44 accepted v2 paths, and gates the other 33 baseline expansion files', async () => {
+  it('keeps the 43 original final paths, promotes 55 accepted v2 paths, and gates the other 22 baseline expansion files', async () => {
     const expectedFinalPaths = [
       ...LEGACY_WORLD_IDS.flatMap(world => ['a', 'b', 'c', 'd'].map(family => `/assets/campaign/maps/${world}_${family}-v1.png`)),
       ...LEGACY_WORLD_IDS.flatMap((world, index) => [
@@ -290,18 +290,18 @@ describe('v5 campaign registry and route verification', () => {
     const contract = registryContract;
     expect(expectedFinalPaths).toHaveLength(43);
     const promotedPaths = contract.livePromotions.assets.map(asset => asset.promotedPath);
-    expect(promotedPaths).toHaveLength(44);
+    expect(promotedPaths).toHaveLength(55);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS.slice(0, expectedFinalPaths.length)).toEqual(expectedFinalPaths);
     expect(new Set(AVAILABLE_CAMPAIGN_ART_PATHS.slice(expectedFinalPaths.length))).toEqual(new Set(promotedPaths));
-    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toHaveLength(87);
+    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toHaveLength(98);
     const currentFinalPaths = CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path);
-    expect(currentFinalPaths).toHaveLength(87);
+    expect(currentFinalPaths).toHaveLength(98);
     expect(currentFinalPaths.slice(0, expectedFinalPaths.length)).toEqual(expectedFinalPaths);
     expect(new Set(currentFinalPaths.slice(expectedFinalPaths.length))).toEqual(new Set(promotedPaths));
     expect(contract.legacyFinalAssets).toHaveLength(43);
     expect(contract.legacyFinalAssets.map(asset => asset.path)).toEqual(expectedFinalPaths);
     expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path)).toEqual(AVAILABLE_CAMPAIGN_ART_PATHS);
-    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toHaveLength(33);
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toHaveLength(22);
     expect([...CAMPAIGN_PROVISIONAL_STARTER_PATHS].sort()).toEqual([...PROVISIONAL_EXPANSION_PATHS].sort());
     expect(new Set([...expectedFinalPaths, ...promotedPaths, ...PROVISIONAL_EXPANSION_PATHS]).size).toBe(120);
     const moduleName = 'node:fs';

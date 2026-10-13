@@ -1,0 +1,42 @@
+{
+  "taskId": "W8-R1",
+  "recordType": "supplemental immutable lineage clarification",
+  "createdUtc": "2026-10-13T14:24:25Z",
+  "scope": "World 8 only; clarifies the retained Map C reference bytes and rejected history without editing historical records.",
+  "mapCSelectedGenerationReference": {
+    "originalSidecarPath": "prompts/maps/map-c-attempt3.references.json",
+    "originalSidecarSha256": "df6e67e6204b12a73b3b123bc95cf7a8821ca8a7327049bb9059ffe4a5bc699c",
+    "originalRecordedReferencePath": "candidates/dreadmoon-map-c.png",
+    "originalRecordedReferenceSha256": "a33a8124455f36c7022fd5c301c5fbed04c99ca9aa27be74b7a6d42a70a411ea",
+    "originalRecordedReferenceBytes": 3328614,
+    "currentBytesAtFormerPath": {
+      "path": "candidates/dreadmoon-map-c.png",
+      "sha256": "b052f72f6a0e9ef861728d52b0fc39c7e6ef995b618c8378a50519fb5af11095",
+      "bytes": 3057522
+    },
+    "preservedOriginalReferenceBytes": {
+      "path": "raw/maps/map-c-attempt2-candidate.png",
+      "sha256": "a33a8124455f36c7022fd5c301c5fbed04c99ca9aa27be74b7a6d42a70a411ea",
+      "bytes": 3328614
+    },
+    "finding": "The attempt-3 sidecar's path is stale: its recorded SHA-256 and byte length match the preserved raw/maps file, while the old candidates path now contains a different final Map C. The input bytes are retained and hash-verifiable at the raw/maps path. The original sidecar was not rewritten or backdated."
+  },
+  "rejectedPromptPathHistoryOnly": [
+    {
+      "sidecarPath": "prompts/maps/map-a-attempt1.references.json",
+      "sidecarSha256": "d269ed82e62aac18d50b06d44613e51579fd438b778f385482419bdcee568411",
+      "finding": "Rejected attempt; declared base-prompt path differs from the attempt-specific prompt represented by its prompt hash. Not consumed by a selected candidate."
+    },
+    {
+      "sidecarPath": "prompts/maps/map-a-attempt2.references.json",
+      "sidecarSha256": "56151520f56f2f363f712936e6a65d59f31efbccb77d1cedc90bfb7db93152b9",
+      "finding": "Rejected attempt; declared base-prompt path differs from the attempt-specific prompt represented by its prompt hash. Not consumed by a selected candidate."
+    },
+    {
+      "sidecarPath": "prompts/maps/map-c-attempt1.references.json",
+      "sidecarSha256": "29103cd8cced8b116e881413aa1858faf2a04f3861bb6f13a382bb9f76e328e2",
+      "finding": "Rejected attempt; declared base-prompt path differs from the attempt-specific prompt represented by its prompt hash. Not consumed by a selected candidate."
+    }
+  ],
+  "recordIntegrity": "This addendum supplements historical records. It does not alter or replace any original prompt, reference sidecar, provenance file, or candidate."
+}

@@ -4,13 +4,13 @@ import { CAMPAIGN_LEVELS } from '../src/game/campaign/config.ts';
 
 describe('complete production monster artwork', () => {
   const sheets = CAMPAIGN_ART_MANIFEST.filter(asset => asset.kind === 'sheet');
-  it('preserves original final atlases and allows only the accepted World 4–7 expansion atlases', () => {
+  it('preserves original final atlases and allows only the accepted World 4–8 expansion atlases', () => {
     const finalSheets = sheets.filter(asset => asset.state === 'final');
     const expansionSheets = sheets.filter(asset => asset.state === 'final_required');
     expect(sheets).toHaveLength(60);
-    expect(finalSheets).toHaveLength(42);
-    expect(expansionSheets).toHaveLength(18);
-    expect(missingCampaignProductionAssets()).toHaveLength(33);
+    expect(finalSheets).toHaveLength(48);
+    expect(expansionSheets).toHaveLength(12);
+    expect(missingCampaignProductionAssets()).toHaveLength(22);
     for (const asset of finalSheets) {
       expect(asset.state, asset.id).toBe('final');
       expect(asset.temporary, asset.id).toBeNull();
@@ -24,25 +24,29 @@ describe('complete production monster artwork', () => {
       expect(AVAILABLE_CAMPAIGN_ART_PATHS).not.toContain(asset.path);
     }
 
-    const world4to6AcceptedIds = [
+    const world4to8AcceptedIds = [
       'enemy:bogling', 'enemy:fen_skitter', 'enemy:mossguard', 'enemy:rotback', 'enemy:rootwretch', 'boss:mireheart_hydra'
       ,'enemy:tideborn', 'enemy:crystal_wisp', 'enemy:deepcrawler', 'enemy:relic_guardian', 'enemy:aetherbound', 'boss:drowned_oracle'
       ,'enemy:scrapling', 'enemy:furnace_hound', 'enemy:ironbound', 'enemy:foundry_core', 'enemy:siege_golem', 'boss:iron_tyrant'
       ,'enemy:aether_drake', 'enemy:cloud_skitter', 'enemy:galeclaw', 'enemy:stormguard', 'enemy:tempest_herald', 'boss:stormmaw_prime'
+      ,'enemy:shadeborn', 'enemy:dusk_runner', 'enemy:moonstalker', 'enemy:grave_hulk', 'enemy:echo_shade', 'boss:umbral_regent'
     ];
-    const world4to6Accepted = world4to6AcceptedIds.map(id => sheets.find(asset => asset.id === id)!);
-    expect(world4to6Accepted.every(asset => asset.state === 'final' && asset.temporary === null
+    const world4to8Accepted = world4to8AcceptedIds.map(id => sheets.find(asset => asset.id === id)!);
+    expect(world4to8Accepted).toHaveLength(30);
+    expect(world4to8Accepted.every(asset => asset.state === 'final' && asset.temporary === null
       && !asset.qualityFlags.includes('final_art_unverified')
       && !asset.qualityFlags.includes('provisional_starter_art')
       && AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(true);
-    expect(world4to6Accepted.find(asset => asset.id === 'enemy:rootwretch')?.qualityFlags).toContain('support_buff_playback_verified');
-    expect(world4to6Accepted.find(asset => asset.id === 'enemy:aetherbound')?.qualityFlags).toContain('support_buff_playback_verified');
-    expect(world4to6Accepted.find(asset => asset.id === 'enemy:foundry_core')?.qualityFlags).toContain('support_buff_playback_verified');
-    expect(world4to6Accepted.find(asset => asset.id === 'enemy:tempest_herald')?.qualityFlags).toContain('support_buff_playback_verified');
-    expect(world4to6Accepted.find(asset => asset.id === 'boss:mireheart_hydra')?.qualityFlags).toContain('phase_state_readability_verified');
-    expect(world4to6Accepted.find(asset => asset.id === 'boss:drowned_oracle')?.qualityFlags).toContain('phase_state_readability_verified');
-    expect(world4to6Accepted.find(asset => asset.id === 'boss:iron_tyrant')?.qualityFlags).toContain('phase_state_readability_verified');
-    expect(world4to6Accepted.find(asset => asset.id === 'boss:stormmaw_prime')?.qualityFlags).toContain('phase_state_readability_verified');
+    expect(world4to8Accepted.find(asset => asset.id === 'enemy:rootwretch')?.qualityFlags).toContain('support_buff_playback_verified');
+    expect(world4to8Accepted.find(asset => asset.id === 'enemy:aetherbound')?.qualityFlags).toContain('support_buff_playback_verified');
+    expect(world4to8Accepted.find(asset => asset.id === 'enemy:foundry_core')?.qualityFlags).toContain('support_buff_playback_verified');
+    expect(world4to8Accepted.find(asset => asset.id === 'enemy:tempest_herald')?.qualityFlags).toContain('support_buff_playback_verified');
+    expect(world4to8Accepted.find(asset => asset.id === 'enemy:echo_shade')?.qualityFlags).toContain('support_buff_playback_verified');
+    expect(world4to8Accepted.find(asset => asset.id === 'boss:mireheart_hydra')?.qualityFlags).toContain('phase_state_readability_verified');
+    expect(world4to8Accepted.find(asset => asset.id === 'boss:drowned_oracle')?.qualityFlags).toContain('phase_state_readability_verified');
+    expect(world4to8Accepted.find(asset => asset.id === 'boss:iron_tyrant')?.qualityFlags).toContain('phase_state_readability_verified');
+    expect(world4to8Accepted.find(asset => asset.id === 'boss:stormmaw_prime')?.qualityFlags).toContain('phase_state_readability_verified');
+    expect(world4to8Accepted.find(asset => asset.id === 'boss:umbral_regent')?.qualityFlags).toContain('phase_state_readability_verified');
   });
 
   it('packages every required row in an RGBA PNG with the declared cell dimensions', async () => {

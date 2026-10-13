@@ -31,4 +31,4 @@ Per-asset evidence, the current integration/deployment gate, and live counts bel
 
 ## Release evidence
 
-The current production checks are recorded in [o5-live-check.json](o5-live-check.json), with the independent local gate in [V12-report.md](../verification/v12-postpromotion-world56/V12-report.md). Exact live bundle, health, PNG bytes, cache observations, and public rendering passed. Authenticated gameplay requires sign-in and remains unverified; refer to the ledger for current release status.
+Production and post-promotion evidence, current ownership, and release status are recorded in [asset-status.json](asset-status.json), with the relevant evidence paths linked there. This checklist does not duplicate rollout counts or certify the current release. Consult the ledger before any publication decision; authenticated gameplay status is also recorded there.

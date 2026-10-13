@@ -30,19 +30,20 @@
   ],
   "promotionGate": {
     "released": true,
-    "releaseScope": "World7 deployment; World4-6 retained.",
-    "reason": "Parent accepted World7 after W7-V1 independent raw PASS, W7-V2 staged runtime PASS, and direct compact-capture inspection; preserve the documented Stormmaw fine-detail limitation.",
+    "releaseScope": "World8 deployment; World4-7 retained.",
+    "reason": "Parent accepted all eleven exact World8 candidates after raw review (including a separate focused Regent idle repair), W8-V2 current-source runtime PASS, and direct 844x390/320x390 capture inspection.",
     "frozenHudSource": {
       "path": "src/game/scenes/GameScene.ts",
       "sha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4"
     },
     "acceptanceEvidence": [
-      "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
-      "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
-      "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json",
-      "parent direct compact-capture acceptance in Task A8"
+      "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+      "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+      "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+      "Parent direct compact-capture acceptance in Task A9"
     ],
-    "releaseDecision": "authorized and deployed after V13 PASS",
+    "releaseDecision": "authorized and deployed after V14 PASS",
     "deploymentAllowed": true,
     "pendingReviews": [
       {
@@ -52,9 +53,17 @@
         "required": "Load a fresh page, verify all eleven exact World7 v2 public hashes and current-source runtime behavior, then return for any separate deployment authorization.",
         "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
         "summary": "Independent local V13 PASS followed by O6 exact live release checks."
+      },
+      {
+        "review": "Independent post-promotion local public gate for World8",
+        "status": "passed",
+        "evidencePath": "artifacts/campaign-final-art-20261012/verification/v14-postpromotion-world8/V14-report.md",
+        "required": "Load a fresh page; verify all eleven World8 v2 public hashes and the current source at relevant map, panel, action, warning, and compact contexts. Return results for a separate deployment decision.",
+        "summary": "Independent local V14 PASS followed by O7 exact live release checks.",
+        "verifiedAtUtc": "2026-10-13T16:32:08.256Z"
       }
     ],
-    "publicationDecision": "World7 independently passed V13 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Sky Isles PNGs and 33 retained World4-6 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
+    "publicationDecision": "World8 independently passed V14 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Dreadmoon PNGs and 44 retained World4-7 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
   },
   "pathAndRollbackPolicy": {
     "plannedV2Rule": "Replace the terminal -v1.png suffix with -v2.png for each planned production path.",
@@ -64,8 +73,8 @@
     "provisionalRule": "After a released promotion, remove only promoted v1 starter paths from the provisional list; retain remaining pending v1 paths."
   },
   "countsByStatus": {
-    "deployed": 44,
-    "pending": 33
+    "deployed": 55,
+    "pending": 22
   },
   "assets": [
     {
@@ -9358,7 +9367,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -9395,25 +9404,125 @@
       "runtimeContract": {
         "id": "map:dreadmoon:a",
         "key": "campaign_dreadmoon_a",
-        "path": "/assets/campaign/maps/dreadmoon_a-v1.png",
+        "path": "/assets/campaign/maps/dreadmoon_a-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W8-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+          "auditPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/audit.json",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-map-a.png",
+          "candidateSha256": "1e9948f299017acf0a1831d911496f859666205d9245d8797a3422feb59dc9a8",
+          "dimensions": {
+            "width": 1672,
+            "height": 940,
+            "mode": "RGB"
+          },
+          "candidateProvenanceSha256": "36cd9d59dc60f41dd92e83fa5c7d679b4e5d70c506325d29d259e21b909a3bda",
+          "initialBatchContext": "The initial W8-V1 raw gate passed this candidate; the overall batch failed only on the original Regent idle row, which was repaired and independently rechecked."
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/w8-stage-gate-report.json",
+          "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "1e9948f299017acf0a1831d911496f859666205d9245d8797a3422feb59dc9a8",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Parent accepted direct compact captures at 844x390 and 320x390. W8-V2 report documents visual inspection; its JSON visualReview=PENDING is an initial harness placeholder superseded by that review.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            },
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "mapCases": 24,
+          "candidateRequests": 178,
+          "allCandidateRequestsServedExactHashes": true,
+          "browserErrors": 0,
+          "failedRequests": 0,
+          "httpErrors": 0,
+          "blockedApiRequests": 0,
+          "assertionFailures": 0,
+          "notes": "W8-V2 local staging served all 11 exact candidate hashes across 178 candidate requests with zero browser, request, HTTP, API, or assertion failures. The 24 real map cases kept all route points in the battlefield mask and all plot-circle bounds inside the field. Parent direct 844x390 and 320x390 captures accepted the cohort; compact creature detail is reduced and must not be promised."
+        },
+        "parentAcceptance": {
+          "taskId": "A9",
+          "acceptedForIntegration": true,
+          "scope": "All eleven exact World8 candidates for local v2 integration.",
+          "basis": "Independent raw acceptance (ten initial candidates plus focused Regent idle repair), W8-V2 current-source staging PASS, and parent direct compact capture inspection.",
+          "evidencePaths": [
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json"
+          ],
+          "limitations": [
+            "Compact fine creature detail is reduced; routes, plots, actors and panel remain readable in accepted captures.",
+            "No World8 deployment or live-site claim is made."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V14 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "rawReview": "PASS",
+        "runtimeReview": "PASS",
+        "wholeWorld8Cohort": "accepted for local integration by parent Task A9",
+        "scope": "World8 eleven-asset package; compact fine-detail limitation retained."
+      },
+      "pendingGates": [
+        "Independent post-promotion local public gate",
+        "Separate production deployment authorization"
+      ],
+      "promoted": {
+        "path": "/assets/campaign/maps/dreadmoon_a-v2.png",
+        "sha256": "1e9948f299017acf0a1831d911496f859666205d9245d8797a3422feb59dc9a8",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-map-a.png",
+        "promotedAtUtc": "2026-10-14",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "645072e7-4cf7-4426-94e2-0cbb440319a3",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/dreadmoon_a-v2.png",
+        "sha256": "1e9948f299017acf0a1831d911496f859666205d9245d8797a3422feb59dc9a8",
+        "verifiedAtUtc": "2026-10-13T16:32:08.256Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
+      }
     },
     {
       "id": "map:dreadmoon:b",
@@ -9426,7 +9535,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -9463,25 +9572,125 @@
       "runtimeContract": {
         "id": "map:dreadmoon:b",
         "key": "campaign_dreadmoon_b",
-        "path": "/assets/campaign/maps/dreadmoon_b-v1.png",
+        "path": "/assets/campaign/maps/dreadmoon_b-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W8-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+          "auditPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/audit.json",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-map-b.png",
+          "candidateSha256": "b48f3e80abb216782fbc24fc28ce215f126947a7878eeaf3758dec148c07d5e1",
+          "dimensions": {
+            "width": 1672,
+            "height": 940,
+            "mode": "RGB"
+          },
+          "candidateProvenanceSha256": "cbdfb966920f98fb4030063cd7fe6c600a4f5318235f05a4f547603f2079a311",
+          "initialBatchContext": "The initial W8-V1 raw gate passed this candidate; the overall batch failed only on the original Regent idle row, which was repaired and independently rechecked."
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/w8-stage-gate-report.json",
+          "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "b48f3e80abb216782fbc24fc28ce215f126947a7878eeaf3758dec148c07d5e1",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Parent accepted direct compact captures at 844x390 and 320x390. W8-V2 report documents visual inspection; its JSON visualReview=PENDING is an initial harness placeholder superseded by that review.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            },
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "mapCases": 24,
+          "candidateRequests": 178,
+          "allCandidateRequestsServedExactHashes": true,
+          "browserErrors": 0,
+          "failedRequests": 0,
+          "httpErrors": 0,
+          "blockedApiRequests": 0,
+          "assertionFailures": 0,
+          "notes": "W8-V2 local staging served all 11 exact candidate hashes across 178 candidate requests with zero browser, request, HTTP, API, or assertion failures. The 24 real map cases kept all route points in the battlefield mask and all plot-circle bounds inside the field. Parent direct 844x390 and 320x390 captures accepted the cohort; compact creature detail is reduced and must not be promised."
+        },
+        "parentAcceptance": {
+          "taskId": "A9",
+          "acceptedForIntegration": true,
+          "scope": "All eleven exact World8 candidates for local v2 integration.",
+          "basis": "Independent raw acceptance (ten initial candidates plus focused Regent idle repair), W8-V2 current-source staging PASS, and parent direct compact capture inspection.",
+          "evidencePaths": [
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json"
+          ],
+          "limitations": [
+            "Compact fine creature detail is reduced; routes, plots, actors and panel remain readable in accepted captures.",
+            "No World8 deployment or live-site claim is made."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V14 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "rawReview": "PASS",
+        "runtimeReview": "PASS",
+        "wholeWorld8Cohort": "accepted for local integration by parent Task A9",
+        "scope": "World8 eleven-asset package; compact fine-detail limitation retained."
+      },
+      "pendingGates": [
+        "Independent post-promotion local public gate",
+        "Separate production deployment authorization"
+      ],
+      "promoted": {
+        "path": "/assets/campaign/maps/dreadmoon_b-v2.png",
+        "sha256": "b48f3e80abb216782fbc24fc28ce215f126947a7878eeaf3758dec148c07d5e1",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-map-b.png",
+        "promotedAtUtc": "2026-10-14",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "645072e7-4cf7-4426-94e2-0cbb440319a3",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/dreadmoon_b-v2.png",
+        "sha256": "b48f3e80abb216782fbc24fc28ce215f126947a7878eeaf3758dec148c07d5e1",
+        "verifiedAtUtc": "2026-10-13T16:32:08.256Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
+      }
     },
     {
       "id": "map:dreadmoon:c",
@@ -9494,7 +9703,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -9531,25 +9740,127 @@
       "runtimeContract": {
         "id": "map:dreadmoon:c",
         "key": "campaign_dreadmoon_c",
-        "path": "/assets/campaign/maps/dreadmoon_c-v1.png",
+        "path": "/assets/campaign/maps/dreadmoon_c-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W8-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+          "auditPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/audit.json",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-map-c.png",
+          "candidateSha256": "b052f72f6a0e9ef861728d52b0fc39c7e6ef995b618c8378a50519fb5af11095",
+          "dimensions": {
+            "width": 1672,
+            "height": 940,
+            "mode": "RGB"
+          },
+          "candidateProvenanceSha256": "a64d29267357746569b4a7aa3e33af651e645f8d8da0330f1a7d5b4ee5bef3e5",
+          "lineageClarificationPath": "artifacts/campaign-final-art-20261012/world8/repair-v1/provenance/world8-lineage-clarification-20261013.json",
+          "lineageCaveat": "Selected attempt-3 reference path is stale; the exact reference bytes and SHA are preserved at raw/maps/map-c-attempt2-candidate.png. Historical sidecar and rejected prompt-path records remain unchanged.",
+          "initialBatchContext": "The initial W8-V1 raw gate passed this candidate; the overall batch failed only on the original Regent idle row, which was repaired and independently rechecked."
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/w8-stage-gate-report.json",
+          "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "b052f72f6a0e9ef861728d52b0fc39c7e6ef995b618c8378a50519fb5af11095",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Parent accepted direct compact captures at 844x390 and 320x390. W8-V2 report documents visual inspection; its JSON visualReview=PENDING is an initial harness placeholder superseded by that review.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            },
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "mapCases": 24,
+          "candidateRequests": 178,
+          "allCandidateRequestsServedExactHashes": true,
+          "browserErrors": 0,
+          "failedRequests": 0,
+          "httpErrors": 0,
+          "blockedApiRequests": 0,
+          "assertionFailures": 0,
+          "notes": "W8-V2 local staging served all 11 exact candidate hashes across 178 candidate requests with zero browser, request, HTTP, API, or assertion failures. The 24 real map cases kept all route points in the battlefield mask and all plot-circle bounds inside the field. Parent direct 844x390 and 320x390 captures accepted the cohort; compact creature detail is reduced and must not be promised."
+        },
+        "parentAcceptance": {
+          "taskId": "A9",
+          "acceptedForIntegration": true,
+          "scope": "All eleven exact World8 candidates for local v2 integration.",
+          "basis": "Independent raw acceptance (ten initial candidates plus focused Regent idle repair), W8-V2 current-source staging PASS, and parent direct compact capture inspection.",
+          "evidencePaths": [
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json"
+          ],
+          "limitations": [
+            "Compact fine creature detail is reduced; routes, plots, actors and panel remain readable in accepted captures.",
+            "No World8 deployment or live-site claim is made."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V14 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "rawReview": "PASS",
+        "runtimeReview": "PASS",
+        "wholeWorld8Cohort": "accepted for local integration by parent Task A9",
+        "scope": "World8 eleven-asset package; compact fine-detail limitation retained."
+      },
+      "pendingGates": [
+        "Independent post-promotion local public gate",
+        "Separate production deployment authorization"
+      ],
+      "promoted": {
+        "path": "/assets/campaign/maps/dreadmoon_c-v2.png",
+        "sha256": "b052f72f6a0e9ef861728d52b0fc39c7e6ef995b618c8378a50519fb5af11095",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-map-c.png",
+        "promotedAtUtc": "2026-10-14",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "645072e7-4cf7-4426-94e2-0cbb440319a3",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/dreadmoon_c-v2.png",
+        "sha256": "b052f72f6a0e9ef861728d52b0fc39c7e6ef995b618c8378a50519fb5af11095",
+        "verifiedAtUtc": "2026-10-13T16:32:08.256Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
+      }
     },
     {
       "id": "map:dreadmoon:d",
@@ -9562,7 +9873,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -9599,25 +9910,125 @@
       "runtimeContract": {
         "id": "map:dreadmoon:d",
         "key": "campaign_dreadmoon_d",
-        "path": "/assets/campaign/maps/dreadmoon_d-v1.png",
+        "path": "/assets/campaign/maps/dreadmoon_d-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W8-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+          "auditPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/audit.json",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-map-d.png",
+          "candidateSha256": "75e57c7913b871523513130b1cbb5d1575e613e6e0a901b38600ff8b02d1a100",
+          "dimensions": {
+            "width": 1672,
+            "height": 940,
+            "mode": "RGB"
+          },
+          "candidateProvenanceSha256": "26f31ae0545c6a78c439aec7a8a36efe137e6d7774581fa38dfc655c780bd1e0",
+          "initialBatchContext": "The initial W8-V1 raw gate passed this candidate; the overall batch failed only on the original Regent idle row, which was repaired and independently rechecked."
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/w8-stage-gate-report.json",
+          "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "75e57c7913b871523513130b1cbb5d1575e613e6e0a901b38600ff8b02d1a100",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Parent accepted direct compact captures at 844x390 and 320x390. W8-V2 report documents visual inspection; its JSON visualReview=PENDING is an initial harness placeholder superseded by that review.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            },
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "mapCases": 24,
+          "candidateRequests": 178,
+          "allCandidateRequestsServedExactHashes": true,
+          "browserErrors": 0,
+          "failedRequests": 0,
+          "httpErrors": 0,
+          "blockedApiRequests": 0,
+          "assertionFailures": 0,
+          "notes": "W8-V2 local staging served all 11 exact candidate hashes across 178 candidate requests with zero browser, request, HTTP, API, or assertion failures. The 24 real map cases kept all route points in the battlefield mask and all plot-circle bounds inside the field. Parent direct 844x390 and 320x390 captures accepted the cohort; compact creature detail is reduced and must not be promised."
+        },
+        "parentAcceptance": {
+          "taskId": "A9",
+          "acceptedForIntegration": true,
+          "scope": "All eleven exact World8 candidates for local v2 integration.",
+          "basis": "Independent raw acceptance (ten initial candidates plus focused Regent idle repair), W8-V2 current-source staging PASS, and parent direct compact capture inspection.",
+          "evidencePaths": [
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json"
+          ],
+          "limitations": [
+            "Compact fine creature detail is reduced; routes, plots, actors and panel remain readable in accepted captures.",
+            "No World8 deployment or live-site claim is made."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V14 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "rawReview": "PASS",
+        "runtimeReview": "PASS",
+        "wholeWorld8Cohort": "accepted for local integration by parent Task A9",
+        "scope": "World8 eleven-asset package; compact fine-detail limitation retained."
+      },
+      "pendingGates": [
+        "Independent post-promotion local public gate",
+        "Separate production deployment authorization"
+      ],
+      "promoted": {
+        "path": "/assets/campaign/maps/dreadmoon_d-v2.png",
+        "sha256": "75e57c7913b871523513130b1cbb5d1575e613e6e0a901b38600ff8b02d1a100",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-map-d.png",
+        "promotedAtUtc": "2026-10-14",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "645072e7-4cf7-4426-94e2-0cbb440319a3",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/dreadmoon_d-v2.png",
+        "sha256": "75e57c7913b871523513130b1cbb5d1575e613e6e0a901b38600ff8b02d1a100",
+        "verifiedAtUtc": "2026-10-13T16:32:08.256Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
+      }
     },
     {
       "id": "world-panel:dreadmoon",
@@ -9630,7 +10041,7 @@
         "width": 768,
         "height": 432
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -9667,24 +10078,124 @@
       "runtimeContract": {
         "id": "world-panel:dreadmoon",
         "key": "campaign_worldmap_dreadmoon",
-        "path": "/assets/campaign/world-map/dreadmoon-v1.png",
+        "path": "/assets/campaign/world-map/dreadmoon-v2.png",
         "kind": "image",
         "width": 768,
         "height": 432,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "campaign",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "biome_illustration"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W8-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+          "auditPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/audit.json",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-world-panel.png",
+          "candidateSha256": "5265dc72db5643fcc1aeb053de8c0f106257aa7aa383d2bb1f9e412631ff8f57",
+          "dimensions": {
+            "width": 768,
+            "height": 432,
+            "mode": "RGB"
+          },
+          "candidateProvenanceSha256": "104b86c1ab553be8680133cd8c878c7b7efb60c9e51b4a9c90b29eaa5c1bc5d9",
+          "initialBatchContext": "The initial W8-V1 raw gate passed this candidate; the overall batch failed only on the original Regent idle row, which was repaired and independently rechecked."
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/w8-stage-gate-report.json",
+          "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "5265dc72db5643fcc1aeb053de8c0f106257aa7aa383d2bb1f9e412631ff8f57",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Parent accepted direct compact captures at 844x390 and 320x390. W8-V2 report documents visual inspection; its JSON visualReview=PENDING is an initial harness placeholder superseded by that review.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            },
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "mapCases": 24,
+          "candidateRequests": 178,
+          "allCandidateRequestsServedExactHashes": true,
+          "browserErrors": 0,
+          "failedRequests": 0,
+          "httpErrors": 0,
+          "blockedApiRequests": 0,
+          "assertionFailures": 0,
+          "notes": "W8-V2 local staging served all 11 exact candidate hashes across 178 candidate requests with zero browser, request, HTTP, API, or assertion failures. The 24 real map cases kept all route points in the battlefield mask and all plot-circle bounds inside the field. Parent direct 844x390 and 320x390 captures accepted the cohort; compact creature detail is reduced and must not be promised."
+        },
+        "parentAcceptance": {
+          "taskId": "A9",
+          "acceptedForIntegration": true,
+          "scope": "All eleven exact World8 candidates for local v2 integration.",
+          "basis": "Independent raw acceptance (ten initial candidates plus focused Regent idle repair), W8-V2 current-source staging PASS, and parent direct compact capture inspection.",
+          "evidencePaths": [
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json"
+          ],
+          "limitations": [
+            "Compact fine creature detail is reduced; routes, plots, actors and panel remain readable in accepted captures.",
+            "No World8 deployment or live-site claim is made."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V14 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "rawReview": "PASS",
+        "runtimeReview": "PASS",
+        "wholeWorld8Cohort": "accepted for local integration by parent Task A9",
+        "scope": "World8 eleven-asset package; compact fine-detail limitation retained."
+      },
+      "pendingGates": [
+        "Independent post-promotion local public gate",
+        "Separate production deployment authorization"
+      ],
+      "promoted": {
+        "path": "/assets/campaign/world-map/dreadmoon-v2.png",
+        "sha256": "5265dc72db5643fcc1aeb053de8c0f106257aa7aa383d2bb1f9e412631ff8f57",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-world-panel.png",
+        "promotedAtUtc": "2026-10-14",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "645072e7-4cf7-4426-94e2-0cbb440319a3",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/world-map/dreadmoon-v2.png",
+        "sha256": "5265dc72db5643fcc1aeb053de8c0f106257aa7aa383d2bb1f9e412631ff8f57",
+        "verifiedAtUtc": "2026-10-13T16:32:08.256Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
+      }
     },
     {
       "id": "enemy:shadeborn",
@@ -9697,7 +10208,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -9753,7 +10264,7 @@
       "runtimeContract": {
         "id": "enemy:shadeborn",
         "key": "campaign_enemy_shadeborn",
-        "path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v1.png",
+        "path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -9777,12 +10288,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -9844,7 +10353,111 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W8-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+          "auditPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/audit.json",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-shadeborn-atlas.png",
+          "candidateSha256": "afe8203fd49130e5fc44da7205e941b66f8f552a5ff4753c389e03b048d7ff56",
+          "dimensions": {
+            "width": 768,
+            "height": 512,
+            "mode": "RGBA"
+          },
+          "candidateProvenanceSha256": "0c41047699164e3639ea300db9ed44bf2b19cd13712d33360a9beaa8bb9946bd",
+          "initialBatchContext": "The initial W8-V1 raw gate passed this candidate; the overall batch failed only on the original Regent idle row, which was repaired and independently rechecked."
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/w8-stage-gate-report.json",
+          "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "afe8203fd49130e5fc44da7205e941b66f8f552a5ff4753c389e03b048d7ff56",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Parent accepted direct compact captures at 844x390 and 320x390. W8-V2 report documents visual inspection; its JSON visualReview=PENDING is an initial harness placeholder superseded by that review.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            },
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "mapCases": 24,
+          "candidateRequests": 178,
+          "allCandidateRequestsServedExactHashes": true,
+          "browserErrors": 0,
+          "failedRequests": 0,
+          "httpErrors": 0,
+          "blockedApiRequests": 0,
+          "assertionFailures": 0,
+          "notes": "W8-V2 local staging served all 11 exact candidate hashes across 178 candidate requests with zero browser, request, HTTP, API, or assertion failures. The 24 real map cases kept all route points in the battlefield mask and all plot-circle bounds inside the field. Parent direct 844x390 and 320x390 captures accepted the cohort; compact creature detail is reduced and must not be promised."
+        },
+        "parentAcceptance": {
+          "taskId": "A9",
+          "acceptedForIntegration": true,
+          "scope": "All eleven exact World8 candidates for local v2 integration.",
+          "basis": "Independent raw acceptance (ten initial candidates plus focused Regent idle repair), W8-V2 current-source staging PASS, and parent direct compact capture inspection.",
+          "evidencePaths": [
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json"
+          ],
+          "limitations": [
+            "Compact fine creature detail is reduced; routes, plots, actors and panel remain readable in accepted captures.",
+            "No World8 deployment or live-site claim is made."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V14 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "rawReview": "PASS",
+        "runtimeReview": "PASS",
+        "wholeWorld8Cohort": "accepted for local integration by parent Task A9",
+        "scope": "World8 eleven-asset package; compact fine-detail limitation retained."
+      },
+      "pendingGates": [
+        "Independent post-promotion local public gate",
+        "Separate production deployment authorization"
+      ],
+      "promoted": {
+        "path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v2.png",
+        "sha256": "afe8203fd49130e5fc44da7205e941b66f8f552a5ff4753c389e03b048d7ff56",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-shadeborn-atlas.png",
+        "promotedAtUtc": "2026-10-14",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "645072e7-4cf7-4426-94e2-0cbb440319a3",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v2.png",
+        "sha256": "afe8203fd49130e5fc44da7205e941b66f8f552a5ff4753c389e03b048d7ff56",
+        "verifiedAtUtc": "2026-10-13T16:32:08.256Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
+      }
     },
     {
       "id": "enemy:dusk_runner",
@@ -9857,7 +10470,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -9913,7 +10526,7 @@
       "runtimeContract": {
         "id": "enemy:dusk_runner",
         "key": "campaign_enemy_dusk_runner",
-        "path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v1.png",
+        "path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -9937,12 +10550,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -10004,7 +10615,111 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W8-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+          "auditPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/audit.json",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-dusk-runner-atlas.png",
+          "candidateSha256": "7b0cc66af71cc0f62e1fe0e02dbfc93f3f55b34aa096a990c1821e13791e4a33",
+          "dimensions": {
+            "width": 768,
+            "height": 512,
+            "mode": "RGBA"
+          },
+          "candidateProvenanceSha256": "b85c86bf9ffd15b4af4f673b2dc1d98ff30af3330c33c0e0be36eb044c42f81d",
+          "initialBatchContext": "The initial W8-V1 raw gate passed this candidate; the overall batch failed only on the original Regent idle row, which was repaired and independently rechecked."
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/w8-stage-gate-report.json",
+          "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "7b0cc66af71cc0f62e1fe0e02dbfc93f3f55b34aa096a990c1821e13791e4a33",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Parent accepted direct compact captures at 844x390 and 320x390. W8-V2 report documents visual inspection; its JSON visualReview=PENDING is an initial harness placeholder superseded by that review.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            },
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "mapCases": 24,
+          "candidateRequests": 178,
+          "allCandidateRequestsServedExactHashes": true,
+          "browserErrors": 0,
+          "failedRequests": 0,
+          "httpErrors": 0,
+          "blockedApiRequests": 0,
+          "assertionFailures": 0,
+          "notes": "W8-V2 local staging served all 11 exact candidate hashes across 178 candidate requests with zero browser, request, HTTP, API, or assertion failures. The 24 real map cases kept all route points in the battlefield mask and all plot-circle bounds inside the field. Parent direct 844x390 and 320x390 captures accepted the cohort; compact creature detail is reduced and must not be promised."
+        },
+        "parentAcceptance": {
+          "taskId": "A9",
+          "acceptedForIntegration": true,
+          "scope": "All eleven exact World8 candidates for local v2 integration.",
+          "basis": "Independent raw acceptance (ten initial candidates plus focused Regent idle repair), W8-V2 current-source staging PASS, and parent direct compact capture inspection.",
+          "evidencePaths": [
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json"
+          ],
+          "limitations": [
+            "Compact fine creature detail is reduced; routes, plots, actors and panel remain readable in accepted captures.",
+            "No World8 deployment or live-site claim is made."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V14 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "rawReview": "PASS",
+        "runtimeReview": "PASS",
+        "wholeWorld8Cohort": "accepted for local integration by parent Task A9",
+        "scope": "World8 eleven-asset package; compact fine-detail limitation retained."
+      },
+      "pendingGates": [
+        "Independent post-promotion local public gate",
+        "Separate production deployment authorization"
+      ],
+      "promoted": {
+        "path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v2.png",
+        "sha256": "7b0cc66af71cc0f62e1fe0e02dbfc93f3f55b34aa096a990c1821e13791e4a33",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-dusk-runner-atlas.png",
+        "promotedAtUtc": "2026-10-14",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "645072e7-4cf7-4426-94e2-0cbb440319a3",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v2.png",
+        "sha256": "7b0cc66af71cc0f62e1fe0e02dbfc93f3f55b34aa096a990c1821e13791e4a33",
+        "verifiedAtUtc": "2026-10-13T16:32:08.256Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
+      }
     },
     {
       "id": "enemy:moonstalker",
@@ -10017,7 +10732,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -10073,7 +10788,7 @@
       "runtimeContract": {
         "id": "enemy:moonstalker",
         "key": "campaign_enemy_moonstalker",
-        "path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v1.png",
+        "path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -10097,12 +10812,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -10164,7 +10877,111 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W8-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+          "auditPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/audit.json",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-moonstalker-atlas.png",
+          "candidateSha256": "d3584094b09d7700617fecc591f9b07435ed727b56567290d38a8517ef1776ff",
+          "dimensions": {
+            "width": 768,
+            "height": 512,
+            "mode": "RGBA"
+          },
+          "candidateProvenanceSha256": "851b44c4fd90b556644a70f6b815093638a296f6743443ebd3ca60f0d639fd50",
+          "initialBatchContext": "The initial W8-V1 raw gate passed this candidate; the overall batch failed only on the original Regent idle row, which was repaired and independently rechecked."
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/w8-stage-gate-report.json",
+          "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "d3584094b09d7700617fecc591f9b07435ed727b56567290d38a8517ef1776ff",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Parent accepted direct compact captures at 844x390 and 320x390. W8-V2 report documents visual inspection; its JSON visualReview=PENDING is an initial harness placeholder superseded by that review.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            },
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "mapCases": 24,
+          "candidateRequests": 178,
+          "allCandidateRequestsServedExactHashes": true,
+          "browserErrors": 0,
+          "failedRequests": 0,
+          "httpErrors": 0,
+          "blockedApiRequests": 0,
+          "assertionFailures": 0,
+          "notes": "W8-V2 local staging served all 11 exact candidate hashes across 178 candidate requests with zero browser, request, HTTP, API, or assertion failures. The 24 real map cases kept all route points in the battlefield mask and all plot-circle bounds inside the field. Parent direct 844x390 and 320x390 captures accepted the cohort; compact creature detail is reduced and must not be promised."
+        },
+        "parentAcceptance": {
+          "taskId": "A9",
+          "acceptedForIntegration": true,
+          "scope": "All eleven exact World8 candidates for local v2 integration.",
+          "basis": "Independent raw acceptance (ten initial candidates plus focused Regent idle repair), W8-V2 current-source staging PASS, and parent direct compact capture inspection.",
+          "evidencePaths": [
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json"
+          ],
+          "limitations": [
+            "Compact fine creature detail is reduced; routes, plots, actors and panel remain readable in accepted captures.",
+            "No World8 deployment or live-site claim is made."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V14 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "rawReview": "PASS",
+        "runtimeReview": "PASS",
+        "wholeWorld8Cohort": "accepted for local integration by parent Task A9",
+        "scope": "World8 eleven-asset package; compact fine-detail limitation retained."
+      },
+      "pendingGates": [
+        "Independent post-promotion local public gate",
+        "Separate production deployment authorization"
+      ],
+      "promoted": {
+        "path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v2.png",
+        "sha256": "d3584094b09d7700617fecc591f9b07435ed727b56567290d38a8517ef1776ff",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-moonstalker-atlas.png",
+        "promotedAtUtc": "2026-10-14",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "645072e7-4cf7-4426-94e2-0cbb440319a3",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v2.png",
+        "sha256": "d3584094b09d7700617fecc591f9b07435ed727b56567290d38a8517ef1776ff",
+        "verifiedAtUtc": "2026-10-13T16:32:08.256Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
+      }
     },
     {
       "id": "enemy:grave_hulk",
@@ -10177,7 +10994,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -10233,7 +11050,7 @@
       "runtimeContract": {
         "id": "enemy:grave_hulk",
         "key": "campaign_enemy_grave_hulk",
-        "path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v1.png",
+        "path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -10257,12 +11074,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -10324,7 +11139,111 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W8-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+          "auditPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/audit.json",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-grave-hulk-atlas.png",
+          "candidateSha256": "4cf391664b3403e12fc10c8d70dae25e5346232f9e5f39637baa092092e11294",
+          "dimensions": {
+            "width": 768,
+            "height": 512,
+            "mode": "RGBA"
+          },
+          "candidateProvenanceSha256": "ce6f6f931f8275fe82ef7a797fb3d570b51b287d5f71311eb92e6f188ef72527",
+          "initialBatchContext": "The initial W8-V1 raw gate passed this candidate; the overall batch failed only on the original Regent idle row, which was repaired and independently rechecked."
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/w8-stage-gate-report.json",
+          "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "4cf391664b3403e12fc10c8d70dae25e5346232f9e5f39637baa092092e11294",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Parent accepted direct compact captures at 844x390 and 320x390. W8-V2 report documents visual inspection; its JSON visualReview=PENDING is an initial harness placeholder superseded by that review.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            },
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "mapCases": 24,
+          "candidateRequests": 178,
+          "allCandidateRequestsServedExactHashes": true,
+          "browserErrors": 0,
+          "failedRequests": 0,
+          "httpErrors": 0,
+          "blockedApiRequests": 0,
+          "assertionFailures": 0,
+          "notes": "W8-V2 local staging served all 11 exact candidate hashes across 178 candidate requests with zero browser, request, HTTP, API, or assertion failures. The 24 real map cases kept all route points in the battlefield mask and all plot-circle bounds inside the field. Parent direct 844x390 and 320x390 captures accepted the cohort; compact creature detail is reduced and must not be promised."
+        },
+        "parentAcceptance": {
+          "taskId": "A9",
+          "acceptedForIntegration": true,
+          "scope": "All eleven exact World8 candidates for local v2 integration.",
+          "basis": "Independent raw acceptance (ten initial candidates plus focused Regent idle repair), W8-V2 current-source staging PASS, and parent direct compact capture inspection.",
+          "evidencePaths": [
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json"
+          ],
+          "limitations": [
+            "Compact fine creature detail is reduced; routes, plots, actors and panel remain readable in accepted captures.",
+            "No World8 deployment or live-site claim is made."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V14 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "rawReview": "PASS",
+        "runtimeReview": "PASS",
+        "wholeWorld8Cohort": "accepted for local integration by parent Task A9",
+        "scope": "World8 eleven-asset package; compact fine-detail limitation retained."
+      },
+      "pendingGates": [
+        "Independent post-promotion local public gate",
+        "Separate production deployment authorization"
+      ],
+      "promoted": {
+        "path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v2.png",
+        "sha256": "4cf391664b3403e12fc10c8d70dae25e5346232f9e5f39637baa092092e11294",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-grave-hulk-atlas.png",
+        "promotedAtUtc": "2026-10-14",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "645072e7-4cf7-4426-94e2-0cbb440319a3",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v2.png",
+        "sha256": "4cf391664b3403e12fc10c8d70dae25e5346232f9e5f39637baa092092e11294",
+        "verifiedAtUtc": "2026-10-13T16:32:08.256Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
+      }
     },
     {
       "id": "enemy:echo_shade",
@@ -10337,7 +11256,7 @@
         "width": 768,
         "height": 640
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -10397,7 +11316,7 @@
       "runtimeContract": {
         "id": "enemy:echo_shade",
         "key": "campaign_enemy_echo_shade",
-        "path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v1.png",
+        "path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 640,
@@ -10425,12 +11344,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow",
@@ -10507,7 +11424,118 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W8-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+          "auditPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/audit.json",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-echo-shade-atlas.png",
+          "candidateSha256": "d51cb8c255ef3abab0ae3d52d2fe281b66408b4d4c96d5a5c3d3e28da16e1b97",
+          "dimensions": {
+            "width": 768,
+            "height": 640,
+            "mode": "RGBA"
+          },
+          "candidateProvenanceSha256": "1c588485d7830118a3a6da5c932e99b1ec0bc0a7f192595e190694d012511859",
+          "initialBatchContext": "The initial W8-V1 raw gate passed this candidate; the overall batch failed only on the original Regent idle row, which was repaired and independently rechecked."
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/w8-stage-gate-report.json",
+          "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "d51cb8c255ef3abab0ae3d52d2fe281b66408b4d4c96d5a5c3d3e28da16e1b97",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Parent accepted direct compact captures at 844x390 and 320x390. W8-V2 report documents visual inspection; its JSON visualReview=PENDING is an initial harness placeholder superseded by that review.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            },
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "mapCases": 24,
+          "candidateRequests": 178,
+          "allCandidateRequestsServedExactHashes": true,
+          "browserErrors": 0,
+          "failedRequests": 0,
+          "httpErrors": 0,
+          "blockedApiRequests": 0,
+          "assertionFailures": 0,
+          "notes": "W8-V2 local staging served all 11 exact candidate hashes across 178 candidate requests with zero browser, request, HTTP, API, or assertion failures. The 24 real map cases kept all route points in the battlefield mask and all plot-circle bounds inside the field. Parent direct 844x390 and 320x390 captures accepted the cohort; compact creature detail is reduced and must not be promised.",
+          "supportEvidence": {
+            "telegraphCallout": "Echo Shade - Doubles forming",
+            "telegraphBuffActionCalls": 0,
+            "resolutionCallout": "Echo Shade - Decoys emerge",
+            "resolutionBuffActionCalls": 1,
+            "registeredDecoysAtResolution": 2
+          }
+        },
+        "parentAcceptance": {
+          "taskId": "A9",
+          "acceptedForIntegration": true,
+          "scope": "All eleven exact World8 candidates for local v2 integration.",
+          "basis": "Independent raw acceptance (ten initial candidates plus focused Regent idle repair), W8-V2 current-source staging PASS, and parent direct compact capture inspection.",
+          "evidencePaths": [
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json"
+          ],
+          "limitations": [
+            "Compact fine creature detail is reduced; routes, plots, actors and panel remain readable in accepted captures.",
+            "No World8 deployment or live-site claim is made."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V14 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "rawReview": "PASS",
+        "runtimeReview": "PASS",
+        "wholeWorld8Cohort": "accepted for local integration by parent Task A9",
+        "scope": "World8 eleven-asset package; compact fine-detail limitation retained."
+      },
+      "pendingGates": [
+        "Independent post-promotion local public gate",
+        "Separate production deployment authorization"
+      ],
+      "promoted": {
+        "path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v2.png",
+        "sha256": "d51cb8c255ef3abab0ae3d52d2fe281b66408b4d4c96d5a5c3d3e28da16e1b97",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-echo-shade-atlas.png",
+        "promotedAtUtc": "2026-10-14",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "645072e7-4cf7-4426-94e2-0cbb440319a3",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v2.png",
+        "sha256": "d51cb8c255ef3abab0ae3d52d2fe281b66408b4d4c96d5a5c3d3e28da16e1b97",
+        "verifiedAtUtc": "2026-10-13T16:32:08.256Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
+      }
     },
     {
       "id": "boss:umbral_regent",
@@ -10520,7 +11548,7 @@
         "width": 2048,
         "height": 1536
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -10584,7 +11612,7 @@
       "runtimeContract": {
         "id": "boss:umbral_regent",
         "key": "campaign_enemy_umbral_regent",
-        "path": "/assets/campaign/bosses/umbral_regent-atlas-v1.png",
+        "path": "/assets/campaign/bosses/umbral_regent-atlas-v2.png",
         "kind": "sheet",
         "width": 2048,
         "height": 1536,
@@ -10616,12 +11644,10 @@
             "frames": 8
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "phase_state_readability_verified"
@@ -10723,7 +11749,129 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W8-V2",
+        "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+          "auditPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck/independent-raw-audit.json",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world8/repair-v1/candidates/dreadmoon-umbral-regent-boss-atlas.png",
+          "candidateSha256": "84be00d661c6257be484845715d45308b61fb1028fa5e937db2b4b8aec79fba4",
+          "dimensions": {
+            "width": 2048,
+            "height": 1536,
+            "mode": "RGBA",
+            "alpha": true
+          },
+          "focusedGate": "PASS for idle-row repair only: six distinct complete solo-Regent idle poses in cells 1-6, cells 7-8 blank; rows 1-5 byte-identical to pinned base.",
+          "initialBatchContext": {
+            "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+            "decision": "W8-V1 initial batch remains FAIL overall: ten candidates pass; the original Regent base candidate fails the idle-row prompt.",
+            "rejectedBaseSha256": "48d1313ef42e1d11c877ab3fe1f8dd3deae3be5eb5ec9338e8ca290eadbc6f82"
+          },
+          "provenance": {
+            "rawSha256": "9c67d0b202e2d28837fcaaaf6f5627ac7c26ed10a116d9573c7c455428d340dd",
+            "promptSha256": "af61a97e046c5c94cbf9029ef98eca305dfff5d58f1918b10ef7c5d81e088321",
+            "referenceSidecarSha256": "f693104ffda4934b48f4787c1e0f9d5fd85c7d5517da5acf88c39cd6814b35d7",
+            "candidateProvenanceSha256": "fa68c3f337f2000aa48eeda801dacb99b172ea04630dfa1348c409ca4c50ee3b"
+          }
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+          "summaryPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/w8-stage-gate-report.json",
+          "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "84be00d661c6257be484845715d45308b61fb1028fa5e937db2b4b8aec79fba4",
+          "runtimeOutcome": "PASS",
+          "visualReview": "Parent accepted direct compact captures at 844x390 and 320x390. W8-V2 report documents visual inspection; its JSON visualReview=PENDING is an initial harness placeholder superseded by that review.",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "width": 1280,
+              "height": 720
+            },
+            {
+              "width": 1024,
+              "height": 768
+            },
+            {
+              "width": 844,
+              "height": 390
+            },
+            {
+              "width": 320,
+              "height": 390
+            },
+            {
+              "width": 360,
+              "height": 360
+            }
+          ],
+          "mapCases": 24,
+          "candidateRequests": 178,
+          "allCandidateRequestsServedExactHashes": true,
+          "browserErrors": 0,
+          "failedRequests": 0,
+          "httpErrors": 0,
+          "blockedApiRequests": 0,
+          "assertionFailures": 0,
+          "notes": "W8-V2 local staging served all 11 exact candidate hashes across 178 candidate requests with zero browser, request, HTTP, API, or assertion failures. The 24 real map cases kept all route points in the battlefield mask and all plot-circle bounds inside the field. Parent direct 844x390 and 320x390 captures accepted the cohort; compact creature detail is reduced and must not be promised.",
+          "bossEvidence": {
+            "warningRemainsActiveAtMs": 1199,
+            "warningResolvesAtMs": 1200,
+            "resolvedCallout": "Two echoes emerge",
+            "actionsBothFacings": "idle, walk, attack, special, phase-two, and death frame progression passed at 844x390",
+            "compactDetail": "The full map and boss status remain visible at 320x390; fine facial and costume details are reduced."
+          }
+        },
+        "parentAcceptance": {
+          "taskId": "A9",
+          "acceptedForIntegration": true,
+          "scope": "All eleven exact World8 candidates for local v2 integration.",
+          "basis": "Independent raw acceptance (ten initial candidates plus focused Regent idle repair), W8-V2 current-source staging PASS, and parent direct compact capture inspection.",
+          "evidencePaths": [
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+            "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json"
+          ],
+          "limitations": [
+            "Compact fine creature detail is reduced; routes, plots, actors and panel remain readable in accepted captures.",
+            "No World8 deployment or live-site claim is made."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V14 post-promotion PASS; exact live accepted PNG bytes verified."
+      },
+      "stageAcceptance": {
+        "rawReview": "PASS",
+        "runtimeReview": "PASS",
+        "wholeWorld8Cohort": "accepted for local integration by parent Task A9",
+        "scope": "World8 eleven-asset package; compact fine-detail limitation retained."
+      },
+      "pendingGates": [
+        "Independent post-promotion local public gate",
+        "Separate production deployment authorization"
+      ],
+      "promoted": {
+        "path": "/assets/campaign/bosses/umbral_regent-atlas-v2.png",
+        "sha256": "84be00d661c6257be484845715d45308b61fb1028fa5e937db2b4b8aec79fba4",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world8/repair-v1/candidates/dreadmoon-umbral-regent-boss-atlas.png",
+        "promotedAtUtc": "2026-10-14",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+      },
+      "deployed": {
+        "versionId": "645072e7-4cf7-4426-94e2-0cbb440319a3",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/bosses/umbral_regent-atlas-v2.png",
+        "sha256": "84be00d661c6257be484845715d45308b61fb1028fa5e937db2b4b8aec79fba4",
+        "verifiedAtUtc": "2026-10-13T16:32:08.256Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
+      }
     },
     {
       "id": "map:astral_rift:a",
@@ -13489,17 +14637,17 @@
     "scope": "Immutable pre-promotion preflight observation; current promoted files are recorded in liveV2PromotionCheck."
   },
   "latestUpdate": {
-    "taskId": "O6",
+    "taskId": "O7",
     "dateUtc": "2026-10-13",
-    "scope": "World7 production deployment",
+    "scope": "World8 production deployment",
     "sources": [
-      "artifacts/campaign-final-art-20261012/verification/v13-postpromotion-world7/V13-report.md",
-      "artifacts/campaign-final-art-20261012/integration/o6-live-check.json",
-      "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
+      "artifacts/campaign-final-art-20261012/verification/v14-postpromotion-world8/V14-report.md",
+      "artifacts/campaign-final-art-20261012/integration/o7-live-check.json",
+      "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
     ],
-    "notes": "World7 independently passed V13 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Sky Isles PNGs and 33 retained World4-6 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
+    "notes": "World8 independently passed V14 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Dreadmoon PNGs and 44 retained World4-7 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
   },
-  "updatedAt": "2026-10-13T13:49:59.514Z",
+  "updatedAt": "2026-10-13T16:32:08.256Z",
   "statusSemantics": "Counts show the strongest accepted evidence scope recorded per asset. Promoted means the exact released candidate is present at its v2 public path with a final manifest registration in local integration; deployed means its v2 URL returned the accepted bytes from the recorded production Worker version. A runtime-review-pass may be scoped; consult each row stageAcceptance and pendingGates. Deployment requires the independent post-promotion runtime gate plus exact live verification.",
   "updateHistory": [
     {
@@ -13609,16 +14757,43 @@
         "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md"
       ],
       "notes": "World7 independently passed V13 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Sky Isles PNGs and 33 retained World4-6 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
+    },
+    {
+      "taskId": "A9",
+      "dateUtc": "2026-10-14",
+      "scope": "World8 exact eleven-asset local v2 promotion",
+      "sources": [
+        "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+        "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+        "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+        "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+        "artifacts/campaign-final-art-20261012/world8/repair-v1/provenance/world8-lineage-clarification-20261013.json",
+        "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md",
+        "tests/fixtures/campaign-v5/registry-art-contract.json"
+      ],
+      "notes": "Promoted eleven parent-accepted World8 candidates to canonical v2 paths and final manifest registrations. Exact candidate/public SHA-256 and dimensions match. Preserved all 43 original final assets, all 77 v1 expansion rollback assets, and all 44 previously deployed World4-7 v2 assets. Cumulative counts: 55 promoted, 44 deployed, 11 locally promoted, 22 pending; 98 active final paths and 22 provisional. The initial W8-V1 overall raw failure remains explicit: ten pass, original Regent idle fails; the selected Regent repair independently passes the focused idle-row gate and W8-V2 runtime review. Compact fine-detail limitation and Map C stale reference-path caveat remain recorded. Independent post-promotion local gate pending; no World8 deployment is claimed."
+    },
+    {
+      "taskId": "O7",
+      "dateUtc": "2026-10-13",
+      "scope": "World8 production deployment",
+      "sources": [
+        "artifacts/campaign-final-art-20261012/verification/v14-postpromotion-world8/V14-report.md",
+        "artifacts/campaign-final-art-20261012/integration/o7-live-check.json",
+        "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md"
+      ],
+      "notes": "World8 independently passed V14 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Dreadmoon PNGs and 44 retained World4-7 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
     }
   ],
   "cohortAcceptance": {
-    "cohort": "World4–7 final-art packages",
+    "cohort": "World4-8 final-art packages",
     "status": "deployed",
-    "publicationDecision": "World7 independently passed V13 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Sky Isles PNGs and 33 retained World4-6 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes.",
-    "wholeCohortCompactReadability": "World4–6 prior accepted limitations remain recorded. World7 routes and plot geometry remain visible at compact sizes; Stormmaw fine detail is reduced at 320×390 and 360×360 while the boss remains visible.",
+    "publicationDecision": "World8 independently passed V14 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Dreadmoon PNGs and 44 retained World4-7 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes.",
+    "wholeCohortCompactReadability": "Parent accepted actual World8 844x390 and 320x390 captures with routes, plots, actors and panel visible. Fine creature detail is reduced at compact sizes; preserve that limitation. World7 Stormmaw compact limitation remains recorded.",
     "scopeLimitations": [
-      "No full uninterrupted campaign match is claimed for World7.",
-      "Stormmaw actual rendered footprint is about 46×31 px at 320×390 and 39×28 px at 360×360; parent accepted this compact fine-detail limitation."
+      "No full uninterrupted campaign match is claimed for World8.",
+      "At 320x390 the Regent is small and fine facial/costume detail is not promised.",
+      "Map C attempt-3 reference sidecar records a stale former candidate path; exact reference bytes remain hash-verifiable at the preserved raw/maps path."
     ],
     "evidence": {
       "world4": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
@@ -13628,38 +14803,43 @@
       "world6Raw": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
       "world7Runtime": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
       "world7Raw": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
-      "world7CandidateInputs": "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json",
+      "world8Runtime": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+      "world8Raw": "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+      "world8RegentIdleRecheck": "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+      "world8CandidateInputs": "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+      "world8LineageClarification": "artifacts/campaign-final-art-20261012/world8/repair-v1/provenance/world8-lineage-clarification-20261013.json",
+      "world8PromotionReport": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md",
       "frozenGameSceneSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
-      "world7Screenshots": {
-        "compactBoss320x390": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/stormmaw-visible-320x390.png",
-        "compactBoss360x360": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/stormmaw-visible-360x360.png",
-        "mapA844x390": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/game-sky_isles_a-844x390-mixed-walk.png",
-        "mapB844x390": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/game-sky_isles_b-844x390-mixed-walk.png",
-        "mapC844x390": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/game-sky_isles_c-844x390-mixed-walk.png",
-        "tempestSupportResolution": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/tempest-natural-support-resolution-844x390.png"
+      "world8Screenshots": {
+        "mapA844x390": "artifacts/campaign-final-art-20261012/verification/world8-runtime/screenshots/game-dreadmoon_a-844x390-mixed-walk.png",
+        "mapB844x390": "artifacts/campaign-final-art-20261012/verification/world8-runtime/screenshots/game-dreadmoon_b-844x390-mixed-walk.png",
+        "mapC844x390": "artifacts/campaign-final-art-20261012/verification/world8-runtime/screenshots/game-dreadmoon_c-844x390-mixed-walk.png",
+        "regentCompact": "artifacts/campaign-final-art-20261012/verification/world8-runtime/screenshots/compact-stage-dreadmoon-d-320x390.png",
+        "regentWarningActive": "artifacts/campaign-final-art-20261012/verification/world8-runtime/screenshots/regent-warning-active-844x390.png",
+        "echoShadeResolution": "artifacts/campaign-final-art-20261012/verification/world8-runtime/screenshots/echo-shade-natural-resolution-844x390.png"
       }
     },
     "followUp": {
-      "owner": "O6",
-      "task": "World7 post-promotion and deployment verification",
+      "owner": "O7",
+      "task": "World8 post-promotion and deployment verification",
       "status": "passed",
-      "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
     },
-    "cumulativePromoted": 44,
+    "cumulativePromoted": 55,
     "localPromoted": 0,
-    "deployed": 44,
-    "pending": 33
+    "deployed": 55,
+    "pending": 22
   },
   "liveV2PromotionCheck": {
-    "checkedAtUtc": "2026-10-13",
-    "candidateCount": 44,
+    "checkedAtUtc": "2026-10-14",
+    "candidateCount": 55,
     "exactCandidateAndPublicHashMatches": true,
     "allV1BaselineHashesAndDimensionsPreserved": {
       "expansionRows": 77,
       "originalFinalRows": 43,
       "verified": true
     },
-    "reviewPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+    "reviewPath": "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
     "reviewPaths": [
       "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
       "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
@@ -13668,20 +14848,852 @@
       "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
       "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
       "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
-      "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json",
       "artifacts/campaign-final-art-20261012/verification/v13-postpromotion-world7/V13-report.md",
-      "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      "artifacts/campaign-final-art-20261012/verification/world8-runtime/W8-V2-verification-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world8-raw/REPORT.md",
+      "artifacts/campaign-final-art-20261012/verification/world8-raw/regent-idle-recheck.md",
+      "artifacts/campaign-final-art-20261012/verification/world8-runtime/candidate-inputs.json",
+      "artifacts/campaign-final-art-20261012/verification/world8-runtime/regent-actions-both-facings-report.json",
+      "artifacts/campaign-final-art-20261012/verification/world8-runtime/regent-warning-capture-report.json",
+      "artifacts/campaign-final-art-20261012/world8/repair-v1/provenance/world8-lineage-clarification-20261013.json",
+      "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md",
+      "artifacts/campaign-final-art-20261012/verification/v14-postpromotion-world8/V14-report.md",
+      "artifacts/campaign-final-art-20261012/integration/o7-live-check.json"
     ],
-    "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md",
-    "priorPromotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md",
-    "activeFinalPathCount": 87,
-    "remainingProvisionalPathCount": 33,
-    "deployedCount": 33,
+    "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world8-promotion-report.md",
+    "priorPromotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md",
+    "activeFinalPathCount": 98,
+    "remainingProvisionalPathCount": 22,
+    "deployedCount": 44,
     "locallyPromotedCount": 11,
-    "pendingCount": 33,
-    "independentPostPromotionGate": "passed"
+    "pendingCount": 22,
+    "independentPostPromotionGate": "passed",
+    "frozenHudSource": {
+      "path": "src/game/scenes/GameScene.ts",
+      "sha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4"
+    },
+    "previousWorld7PromotionCheck": {
+      "checkedAtUtc": "2026-10-13",
+      "candidateCount": 44,
+      "exactCandidateAndPublicHashMatches": true,
+      "allV1BaselineHashesAndDimensionsPreserved": {
+        "expansionRows": 77,
+        "originalFinalRows": 43,
+        "verified": true
+      },
+      "reviewPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+      "reviewPaths": [
+        "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
+        "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+        "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+        "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+        "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+        "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+        "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+        "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json",
+        "artifacts/campaign-final-art-20261012/verification/v13-postpromotion-world7/V13-report.md",
+        "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+      ],
+      "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md",
+      "priorPromotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md",
+      "activeFinalPathCount": 87,
+      "remainingProvisionalPathCount": 33,
+      "deployedCount": 33,
+      "locallyPromotedCount": 11,
+      "pendingCount": 33,
+      "independentPostPromotionGate": "passed"
+    }
   },
   "productionDeployment": {
+    "status": "verified",
+    "taskId": "O7",
+    "workerName": "aetherhold-defense",
+    "versionId": "645072e7-4cf7-4426-94e2-0cbb440319a3",
+    "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+    "publishedAtUtc": "2026-10-13T16:32:08.256Z",
+    "verifiedAtUtc": "2026-10-13T16:32:08.256Z",
+    "deployCommand": "npm run deploy",
+    "deploySequence": "npm test && npm run build && wrangler deploy --keep-vars",
+    "testEnvironment": {
+      "VITEST_MAX_WORKERS": "1"
+    },
+    "testResults": {
+      "filesPassed": 106,
+      "filesSkipped": 4,
+      "testsPassed": 1518,
+      "testsSkipped": 11
+    },
+    "build": {
+      "typecheck": "passed",
+      "vite": "passed",
+      "bundlePath": "/assets/index-DDRbdTep.js",
+      "bundleBytes": 2169057,
+      "bundleSha256": "19388b4603455f05fb8b65f79cd3e5ba4bdccd867fd174782d9024564a08475b",
+      "exactLocalBuildMatch": true,
+      "largeChunkWarningRetained": true
+    },
+    "page": {
+      "path": "/",
+      "status": 200,
+      "bytes": 612,
+      "sha256": "30be8c12bea0d47f4af39298ff87a9ede8fe72413155849bc904e3cfa0098aa6",
+      "contentType": "text/html",
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "cfCacheStatus": "MISS"
+    },
+    "health": {
+      "status": 200,
+      "ok": true,
+      "time": "2026-10-13T16:31:03.294Z",
+      "scoreVersion": 3
+    },
+    "assets": [
+      {
+        "id": "map:whisperfen:a",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/maps/whisperfen_a-v2.png",
+        "status": 200,
+        "bytes": 4284434,
+        "sha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:whisperfen:b",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/maps/whisperfen_b-v2.png",
+        "status": 200,
+        "bytes": 4280858,
+        "sha256": "ee69916e9344e97ce8f9b7bc9d1aed0b451cd3f87f7195665f602f57329258d2",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:whisperfen:c",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/maps/whisperfen_c-v2.png",
+        "status": 200,
+        "bytes": 3909390,
+        "sha256": "2a9bcdbf759048c2026295878e6c264ba0ba749642890a7a3cd239bf3b912d5a",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:whisperfen:d",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/maps/whisperfen_d-v2.png",
+        "status": 200,
+        "bytes": 4337844,
+        "sha256": "0617810e89ca06ef608fad09882ddce04265b4507d3c5cf30a0ac7b8e00299da",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "world-panel:whisperfen",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/world-map/whisperfen-v2.png",
+        "status": 200,
+        "bytes": 903090,
+        "sha256": "c585a31df7245d4b99f00a916c8226ffbb877ed95178fbe883db66443f77a2c9",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:bogling",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png",
+        "status": 200,
+        "bytes": 318931,
+        "sha256": "1ebb5f24fe3e6e09192d2508679c6e7a4f949c7520b50ba27b87404af0105873",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:fen_skitter",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.png",
+        "status": 200,
+        "bytes": 283150,
+        "sha256": "d67e435f9f9263e6cce676974b3aa15cc558976951cb9012aa55bc1c755fa79e",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:mossguard",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.png",
+        "status": 200,
+        "bytes": 388143,
+        "sha256": "c19d9b8ce50736c225d9e4b6c6ea56eec246bbda75923162190cfba26bb4ea10",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:rotback",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.png",
+        "status": 200,
+        "bytes": 200869,
+        "sha256": "93ce8dab3a75d253e0c989c26c58ffc720444b2ca7e03b4bb648c7ae7e9c5ec7",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:rootwretch",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png",
+        "status": 200,
+        "bytes": 434546,
+        "sha256": "09eaaccab4034bf36e79920c6e697c444ff95ef0da4f583b7634c697f1a72b74",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "boss:mireheart_hydra",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.png",
+        "status": 200,
+        "bytes": 3035770,
+        "sha256": "cbed46bbc139e37cbda59775203e850d8a320161c586cc91a033f70ba5da7500",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:sunken_aether:a",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/maps/sunken_aether_a-v2.png",
+        "status": 200,
+        "bytes": 3382505,
+        "sha256": "884c699225f32f88b51a970cf0593fecfb9e7cd73481a3900329a12ebbe332d7",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:sunken_aether:b",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/maps/sunken_aether_b-v2.png",
+        "status": 200,
+        "bytes": 3546597,
+        "sha256": "dfd66ef9fa4c88b678a482af4ef2e6f3a522d03ac4f9ea5026dcb54a2dc1903d",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:sunken_aether:c",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/maps/sunken_aether_c-v2.png",
+        "status": 200,
+        "bytes": 3655160,
+        "sha256": "580c0b22d986c28e74134dbe37932bd3aa477d808dfc6787dd9deef51c053e3e",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:sunken_aether:d",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/maps/sunken_aether_d-v2.png",
+        "status": 200,
+        "bytes": 3304899,
+        "sha256": "47a83efd27dfbc07d7efcf333e2e8c0aa3ba2240d7130fb076148cf457ed6225",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "world-panel:sunken_aether",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/world-map/sunken_aether-v2.png",
+        "status": 200,
+        "bytes": 785083,
+        "sha256": "a8d0b31fa2d7323ee47a0a8f5de2b71d47992db0863358adbba22ea115fad0af",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:tideborn",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
+        "status": 200,
+        "bytes": 379092,
+        "sha256": "c003c2ecd9fc4ec12f1fafad1ac3e52eabf654fdaa5e233bca3541e165a34122",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:crystal_wisp",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
+        "status": 200,
+        "bytes": 430414,
+        "sha256": "fe8be230637cefbef9ad887c6d628671a422fbd20e1094ccd9b50a3cbb28084d",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:deepcrawler",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
+        "status": 200,
+        "bytes": 413045,
+        "sha256": "b4b9ec1910437a7fd270b009bb126c3442b9fa187e2ab9debeb7f2292f84504e",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:relic_guardian",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
+        "status": 200,
+        "bytes": 446436,
+        "sha256": "2089222291f53968107c7c3d467cd5c298c7b7ca92a1fa5a26dfe17593ca121f",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:aetherbound",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
+        "status": 200,
+        "bytes": 533870,
+        "sha256": "c54ead85262b714e2c3507a9f61689b26d94f04c1bc5ad2db218fa8c0b21dd6b",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "boss:drowned_oracle",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
+        "status": 200,
+        "bytes": 3413054,
+        "sha256": "1710521cc2377ff1c5ca7c0a879c59aa83a523783106481c49f3210a3e205cf7",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:ironroot:a",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/maps/ironroot_a-v2.png",
+        "status": 200,
+        "bytes": 3206621,
+        "sha256": "f094f9dcf725d28be8409430baa1ae0adb6bf82faded6d13f567349db5ef2e2c",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:ironroot:b",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/maps/ironroot_b-v2.png",
+        "status": 200,
+        "bytes": 3305420,
+        "sha256": "5dcdb71ba2d33df1f4cd734b346f6cd216058737285ed597a4cfcaba74787404",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:ironroot:c",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/maps/ironroot_c-v2.png",
+        "status": 200,
+        "bytes": 3268828,
+        "sha256": "53aeece9783bfa5ed5f87ee766a9701939665f06b4bf9f93e350cd3a0aaf2b23",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:ironroot:d",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/maps/ironroot_d-v2.png",
+        "status": 200,
+        "bytes": 3180193,
+        "sha256": "72b13d5e41d2c0fd088fb2fcade469a79fb9f61cebf3bc24921b64baeab5821d",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "world-panel:ironroot",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/world-map/ironroot-v2.png",
+        "status": 200,
+        "bytes": 749900,
+        "sha256": "bb46fa28e5e9e5acf8d77a9bd2e059c0dfc71fead420fbc93ce5205bf98a499e",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:scrapling",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
+        "status": 200,
+        "bytes": 407853,
+        "sha256": "e56efb79c8859dc17ddd79ad5abfd410d310a7c5b4e5836e91022ce8858689ae",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:furnace_hound",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
+        "status": 200,
+        "bytes": 370006,
+        "sha256": "b1ffb21ef0244005289abae0bcfc897a3d8a479a278d327c9f6c2755e4f0e017",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:siege_golem",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
+        "status": 200,
+        "bytes": 498038,
+        "sha256": "2a74f89fd8d4610009ba55fb3b281489dd1aa2eafcd99479bf8ee0cb9862cde2",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:ironbound",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
+        "status": 200,
+        "bytes": 390939,
+        "sha256": "127fbe7f27c2aa4996cb9a09c95a029520ba9c664d113368ae10788d2694696d",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:foundry_core",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
+        "status": 200,
+        "bytes": 509039,
+        "sha256": "4d9ceee2092c1bc1e514f0e76125b3deaefd26246753df27c968259f889012f1",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "boss:iron_tyrant",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
+        "status": 200,
+        "bytes": 3896212,
+        "sha256": "7efca9d25dbe0f27b370f798c8c5e6035120a1f77e7fb5c473c2da856aa504d9",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:sky_isles:a",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/maps/sky_isles_a-v2.png",
+        "status": 200,
+        "bytes": 3801737,
+        "sha256": "98f5adff17d7b9b8e469238b12ef09bc39ab95ec3c8eb9b7fcad1c665e023a26",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:sky_isles:b",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/maps/sky_isles_b-v2.png",
+        "status": 200,
+        "bytes": 3317913,
+        "sha256": "79c4bb5d3831c648b35c192f0c35aeeec1fa14db73830c75f915cce3eef9a660",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:sky_isles:c",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/maps/sky_isles_c-v2.png",
+        "status": 200,
+        "bytes": 3494531,
+        "sha256": "e8967fcf6b32700efcf0105183313fc3fd6015bb43eaed681147d06d3b556fb0",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:sky_isles:d",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/maps/sky_isles_d-v2.png",
+        "status": 200,
+        "bytes": 3419160,
+        "sha256": "b1e1caddce8899a663f8bb6312584fc102e6bba3df111c91c24ed0643d02818c",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "world-panel:sky_isles",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/world-map/sky_isles-v2.png",
+        "status": 200,
+        "bytes": 688314,
+        "sha256": "dc83257253d0f9906f916153aa236ee5b693cb988e2b760503df7de5d83b9494",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:cloud_skitter",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png",
+        "status": 200,
+        "bytes": 252419,
+        "sha256": "f2581cf68be8769764dc2b347be104a0f9b8fbb5b4ea88bbfb345920f879de96",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:galeclaw",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.png",
+        "status": 200,
+        "bytes": 300189,
+        "sha256": "b2b8cde192c826776fabb8356490928c4c80611d0b203f6d70da8d27f0cfb2ec",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:aether_drake",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.png",
+        "status": 200,
+        "bytes": 340399,
+        "sha256": "6127080ff7abdbe60dbf514836e59ac1fce1a398fe7c74b5e958701b89dc8d3a",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:stormguard",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.png",
+        "status": 200,
+        "bytes": 408752,
+        "sha256": "ee13c36d209f3a750bce70b5fe16b408b225434ebe5007556944eca4fa37c5f3",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:tempest_herald",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.png",
+        "status": 200,
+        "bytes": 464842,
+        "sha256": "8aac34b5a6783fc943b1333c8e035c19689840f26d03d2ada6a20bef86e20d49",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "boss:stormmaw_prime",
+        "worldId": "sky_isles",
+        "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v2.png",
+        "status": 200,
+        "bytes": 3027531,
+        "sha256": "43eb4be1cda70caa1aa89830ecce8964952370312ffeb08110845864e6cb165b",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:dreadmoon:a",
+        "worldId": "dreadmoon",
+        "path": "/assets/campaign/maps/dreadmoon_a-v2.png",
+        "status": 200,
+        "bytes": 3453219,
+        "sha256": "1e9948f299017acf0a1831d911496f859666205d9245d8797a3422feb59dc9a8",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:dreadmoon:b",
+        "worldId": "dreadmoon",
+        "path": "/assets/campaign/maps/dreadmoon_b-v2.png",
+        "status": 200,
+        "bytes": 3410977,
+        "sha256": "b48f3e80abb216782fbc24fc28ce215f126947a7878eeaf3758dec148c07d5e1",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:dreadmoon:c",
+        "worldId": "dreadmoon",
+        "path": "/assets/campaign/maps/dreadmoon_c-v2.png",
+        "status": 200,
+        "bytes": 3057522,
+        "sha256": "b052f72f6a0e9ef861728d52b0fc39c7e6ef995b618c8378a50519fb5af11095",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:dreadmoon:d",
+        "worldId": "dreadmoon",
+        "path": "/assets/campaign/maps/dreadmoon_d-v2.png",
+        "status": 200,
+        "bytes": 3272839,
+        "sha256": "75e57c7913b871523513130b1cbb5d1575e613e6e0a901b38600ff8b02d1a100",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "world-panel:dreadmoon",
+        "worldId": "dreadmoon",
+        "path": "/assets/campaign/world-map/dreadmoon-v2.png",
+        "status": 200,
+        "bytes": 757307,
+        "sha256": "5265dc72db5643fcc1aeb053de8c0f106257aa7aa383d2bb1f9e412631ff8f57",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:shadeborn",
+        "worldId": "dreadmoon",
+        "path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v2.png",
+        "status": 200,
+        "bytes": 356490,
+        "sha256": "afe8203fd49130e5fc44da7205e941b66f8f552a5ff4753c389e03b048d7ff56",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:dusk_runner",
+        "worldId": "dreadmoon",
+        "path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v2.png",
+        "status": 200,
+        "bytes": 360152,
+        "sha256": "7b0cc66af71cc0f62e1fe0e02dbfc93f3f55b34aa096a990c1821e13791e4a33",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:moonstalker",
+        "worldId": "dreadmoon",
+        "path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v2.png",
+        "status": 200,
+        "bytes": 445871,
+        "sha256": "d3584094b09d7700617fecc591f9b07435ed727b56567290d38a8517ef1776ff",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:grave_hulk",
+        "worldId": "dreadmoon",
+        "path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v2.png",
+        "status": 200,
+        "bytes": 444951,
+        "sha256": "4cf391664b3403e12fc10c8d70dae25e5346232f9e5f39637baa092092e11294",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:echo_shade",
+        "worldId": "dreadmoon",
+        "path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v2.png",
+        "status": 200,
+        "bytes": 506431,
+        "sha256": "d51cb8c255ef3abab0ae3d52d2fe281b66408b4d4c96d5a5c3d3e28da16e1b97",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "boss:umbral_regent",
+        "worldId": "dreadmoon",
+        "path": "/assets/campaign/bosses/umbral_regent-atlas-v2.png",
+        "status": 200,
+        "bytes": 3563718,
+        "sha256": "84be00d661c6257be484845715d45308b61fb1028fa5e937db2b4b8aec79fba4",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      }
+    ],
+    "visual": {
+      "title": "Aegis of the Borderkeep",
+      "visibleText": "Welcome, Defender\n\nSign in with Google to keep campaign progress and scores across devices.\n\nSign in with Google\nRetry connection",
+      "signInGateObserved": true,
+      "authenticatedGameplayVerified": false,
+      "accountWrites": false,
+      "assetRenders": [
+        {
+          "world": "dreadmoon",
+          "width": 768,
+          "height": 432,
+          "complete": true
+        }
+      ],
+      "visuallyInspected": true,
+      "localPostPromotionGate": "artifacts/campaign-final-art-20261012/verification/v14-postpromotion-world8/V14-report.md"
+    },
+    "evidencePath": "artifacts/campaign-final-art-20261012/integration/o7-live-check.json",
+    "scope": "World4-7 retained; World8 newly deployed",
+    "limitations": [
+      "Production authenticated gameplay unverified: sign-in gate.",
+      "Physical touch and full uninterrupted campaign match unverified.",
+      "World8 compact fine-detail and prior crowding limits remain."
+    ]
+  },
+  "previousWorld4CohortAcceptance": {
+    "cohort": "World 4 final-art candidate package: panel, terrain families A-D, five Whisperfen monsters, and Hydra",
+    "status": "accepted-for-integration",
+    "publicationDecision": "PUBLISHED to production after independent post-promotion V9 gate PASS; Worker version d1107304-ef7a-4e9b-9682-b98efe2bb744 verified.",
+    "wholeCohortCompactReadability": "PASS WITH DOCUMENTED COMPACT 31-ENEMY CROWDING LIMITATION",
+    "reviewedContextCount": 23,
+    "correctedHarnessReruns": [
+      "run-s2-reset",
+      "run-s2-motion-final"
+    ],
+    "scopeLimitations": [
+      "No full uninterrupted campaign match was claimed.",
+      "Compact map scale naturally limits fine sprite detail; 31-enemy compact crowding remains documented."
+    ],
+    "evidence": {
+      "reviewPath": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
+      "frozenGameSceneSha256": "d79bb40596d8c7a82e0fa6c3f99ae578614ae328ac7397868e2bc268de9cbbcc"
+    },
+    "priorDecision": {
+      "cohort": "World 4 final-art candidate package: panel, terrain families A-D, five Whisperfen monsters, and Hydra",
+      "status": "held",
+      "publicationDecision": "REJECTED pending bounded composition investigation",
+      "wholeCohortCompactReadability": "FAIL",
+      "affectedViewports": [
+        {
+          "width": 844,
+          "height": 390
+        },
+        {
+          "width": 320,
+          "height": 390
+        }
+      ],
+      "evidence": {
+        "reviewPath": "artifacts/campaign-final-art-20261012/verification/original-hud-v11/readability-visual-assessment.md",
+        "measuredBoundsPath": "artifacts/campaign-final-art-20261012/verification/original-hud-v11/readability-reprobe-report.json",
+        "frozenGameSceneSha256": "5d997e4558399edf6524eac528e6845a1472f0c0ac646850745922e3163a011f"
+      },
+      "finding": "Boss-active battlefield fit scale shrinks terrain, route, plots, and towers enough that the player cannot readily read routes or distinguish build locations. Structural HUD/cap assertions passing do not establish gameplay readability.",
+      "followUp": {
+        "owner": "I10",
+        "task": "bounded composition investigation",
+        "status": "pending"
+      },
+      "promoted": 0,
+      "deployed": 0,
+      "supersededBy": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
+      "supersededByDecision": "Parent accepted the V9/S2 staging gate for integration."
+    },
+    "followUp": {
+      "owner": "A6 integration / independent reviewer",
+      "task": "post-promotion runtime gate",
+      "status": "passed",
+      "evidencePath": "artifacts/campaign-final-art-20261012/verification/resume-v9/postpromotion/final-review.md",
+      "completedAtUtc": "2026-10-13T07:19:58.792Z"
+    },
+    "promoted": 11,
+    "deployed": 11
+  },
+  "previousProductionDeployment": {
     "status": "verified",
     "taskId": "O6",
     "workerName": "aetherhold-defense",
@@ -14279,541 +16291,6 @@
       "World7 compact fine-detail and prior crowding limits remain."
     ]
   },
-  "previousWorld4CohortAcceptance": {
-    "cohort": "World 4 final-art candidate package: panel, terrain families A-D, five Whisperfen monsters, and Hydra",
-    "status": "accepted-for-integration",
-    "publicationDecision": "PUBLISHED to production after independent post-promotion V9 gate PASS; Worker version d1107304-ef7a-4e9b-9682-b98efe2bb744 verified.",
-    "wholeCohortCompactReadability": "PASS WITH DOCUMENTED COMPACT 31-ENEMY CROWDING LIMITATION",
-    "reviewedContextCount": 23,
-    "correctedHarnessReruns": [
-      "run-s2-reset",
-      "run-s2-motion-final"
-    ],
-    "scopeLimitations": [
-      "No full uninterrupted campaign match was claimed.",
-      "Compact map scale naturally limits fine sprite detail; 31-enemy compact crowding remains documented."
-    ],
-    "evidence": {
-      "reviewPath": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
-      "frozenGameSceneSha256": "d79bb40596d8c7a82e0fa6c3f99ae578614ae328ac7397868e2bc268de9cbbcc"
-    },
-    "priorDecision": {
-      "cohort": "World 4 final-art candidate package: panel, terrain families A-D, five Whisperfen monsters, and Hydra",
-      "status": "held",
-      "publicationDecision": "REJECTED pending bounded composition investigation",
-      "wholeCohortCompactReadability": "FAIL",
-      "affectedViewports": [
-        {
-          "width": 844,
-          "height": 390
-        },
-        {
-          "width": 320,
-          "height": 390
-        }
-      ],
-      "evidence": {
-        "reviewPath": "artifacts/campaign-final-art-20261012/verification/original-hud-v11/readability-visual-assessment.md",
-        "measuredBoundsPath": "artifacts/campaign-final-art-20261012/verification/original-hud-v11/readability-reprobe-report.json",
-        "frozenGameSceneSha256": "5d997e4558399edf6524eac528e6845a1472f0c0ac646850745922e3163a011f"
-      },
-      "finding": "Boss-active battlefield fit scale shrinks terrain, route, plots, and towers enough that the player cannot readily read routes or distinguish build locations. Structural HUD/cap assertions passing do not establish gameplay readability.",
-      "followUp": {
-        "owner": "I10",
-        "task": "bounded composition investigation",
-        "status": "pending"
-      },
-      "promoted": 0,
-      "deployed": 0,
-      "supersededBy": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
-      "supersededByDecision": "Parent accepted the V9/S2 staging gate for integration."
-    },
-    "followUp": {
-      "owner": "A6 integration / independent reviewer",
-      "task": "post-promotion runtime gate",
-      "status": "passed",
-      "evidencePath": "artifacts/campaign-final-art-20261012/verification/resume-v9/postpromotion/final-review.md",
-      "completedAtUtc": "2026-10-13T07:19:58.792Z"
-    },
-    "promoted": 11,
-    "deployed": 11
-  },
-  "previousProductionDeployment": {
-    "status": "verified",
-    "taskId": "O5",
-    "workerName": "aetherhold-defense",
-    "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
-    "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
-    "publishedAtUtc": "2026-10-13T12:24:27.378Z",
-    "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
-    "deployCommand": "npm run deploy",
-    "deploySequence": "npm test && npm run build && wrangler deploy --keep-vars",
-    "testEnvironment": {
-      "VITEST_MAX_WORKERS": "1"
-    },
-    "testResults": {
-      "filesPassed": 106,
-      "filesSkipped": 4,
-      "testsPassed": 1518,
-      "testsSkipped": 11
-    },
-    "build": {
-      "typecheck": "passed",
-      "vite": "passed",
-      "bundlePath": "/assets/index-D1ejOb0O.js",
-      "bundleBytes": 2169033,
-      "bundleSha256": "0b750bf85c5a1088fe42b5f51f7c4725d50aaa8298ae73683c2e22d5f9272280",
-      "exactLocalBuildMatch": true,
-      "largeChunkWarningRetained": true
-    },
-    "page": {
-      "path": "/",
-      "status": 200,
-      "bytes": 612,
-      "sha256": "06b4679e3296060537defe2a66196a4e2ee30fee149d8ec2013675001598b293",
-      "contentType": "text/html",
-      "cacheControl": "public, max-age=0, must-revalidate",
-      "cfCacheStatus": "MISS"
-    },
-    "health": {
-      "status": 200,
-      "ok": true,
-      "time": "2026-10-13T12:23:38.030Z",
-      "scoreVersion": 3
-    },
-    "assets": [
-      {
-        "id": "map:whisperfen:a",
-        "worldId": "whisperfen",
-        "path": "/assets/campaign/maps/whisperfen_a-v2.png",
-        "status": 200,
-        "bytes": 4284434,
-        "sha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "match": true
-      },
-      {
-        "id": "map:whisperfen:b",
-        "worldId": "whisperfen",
-        "path": "/assets/campaign/maps/whisperfen_b-v2.png",
-        "status": 200,
-        "bytes": 4280858,
-        "sha256": "ee69916e9344e97ce8f9b7bc9d1aed0b451cd3f87f7195665f602f57329258d2",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "map:whisperfen:c",
-        "worldId": "whisperfen",
-        "path": "/assets/campaign/maps/whisperfen_c-v2.png",
-        "status": 200,
-        "bytes": 3909390,
-        "sha256": "2a9bcdbf759048c2026295878e6c264ba0ba749642890a7a3cd239bf3b912d5a",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "match": true
-      },
-      {
-        "id": "map:whisperfen:d",
-        "worldId": "whisperfen",
-        "path": "/assets/campaign/maps/whisperfen_d-v2.png",
-        "status": 200,
-        "bytes": 4337844,
-        "sha256": "0617810e89ca06ef608fad09882ddce04265b4507d3c5cf30a0ac7b8e00299da",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "match": true
-      },
-      {
-        "id": "world-panel:whisperfen",
-        "worldId": "whisperfen",
-        "path": "/assets/campaign/world-map/whisperfen-v2.png",
-        "status": 200,
-        "bytes": 903090,
-        "sha256": "c585a31df7245d4b99f00a916c8226ffbb877ed95178fbe883db66443f77a2c9",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "match": true
-      },
-      {
-        "id": "enemy:bogling",
-        "worldId": "whisperfen",
-        "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png",
-        "status": 200,
-        "bytes": 318931,
-        "sha256": "1ebb5f24fe3e6e09192d2508679c6e7a4f949c7520b50ba27b87404af0105873",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "match": true
-      },
-      {
-        "id": "enemy:fen_skitter",
-        "worldId": "whisperfen",
-        "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.png",
-        "status": 200,
-        "bytes": 283150,
-        "sha256": "d67e435f9f9263e6cce676974b3aa15cc558976951cb9012aa55bc1c755fa79e",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "match": true
-      },
-      {
-        "id": "enemy:mossguard",
-        "worldId": "whisperfen",
-        "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.png",
-        "status": 200,
-        "bytes": 388143,
-        "sha256": "c19d9b8ce50736c225d9e4b6c6ea56eec246bbda75923162190cfba26bb4ea10",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "match": true
-      },
-      {
-        "id": "enemy:rotback",
-        "worldId": "whisperfen",
-        "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.png",
-        "status": 200,
-        "bytes": 200869,
-        "sha256": "93ce8dab3a75d253e0c989c26c58ffc720444b2ca7e03b4bb648c7ae7e9c5ec7",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "match": true
-      },
-      {
-        "id": "enemy:rootwretch",
-        "worldId": "whisperfen",
-        "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png",
-        "status": 200,
-        "bytes": 434546,
-        "sha256": "09eaaccab4034bf36e79920c6e697c444ff95ef0da4f583b7634c697f1a72b74",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "match": true
-      },
-      {
-        "id": "boss:mireheart_hydra",
-        "worldId": "whisperfen",
-        "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.png",
-        "status": 200,
-        "bytes": 3035770,
-        "sha256": "cbed46bbc139e37cbda59775203e850d8a320161c586cc91a033f70ba5da7500",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "HIT",
-        "match": true
-      },
-      {
-        "id": "map:sunken_aether:a",
-        "worldId": "sunken_aether",
-        "path": "/assets/campaign/maps/sunken_aether_a-v2.png",
-        "status": 200,
-        "bytes": 3382505,
-        "sha256": "884c699225f32f88b51a970cf0593fecfb9e7cd73481a3900329a12ebbe332d7",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "map:sunken_aether:b",
-        "worldId": "sunken_aether",
-        "path": "/assets/campaign/maps/sunken_aether_b-v2.png",
-        "status": 200,
-        "bytes": 3546597,
-        "sha256": "dfd66ef9fa4c88b678a482af4ef2e6f3a522d03ac4f9ea5026dcb54a2dc1903d",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "map:sunken_aether:c",
-        "worldId": "sunken_aether",
-        "path": "/assets/campaign/maps/sunken_aether_c-v2.png",
-        "status": 200,
-        "bytes": 3655160,
-        "sha256": "580c0b22d986c28e74134dbe37932bd3aa477d808dfc6787dd9deef51c053e3e",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "map:sunken_aether:d",
-        "worldId": "sunken_aether",
-        "path": "/assets/campaign/maps/sunken_aether_d-v2.png",
-        "status": 200,
-        "bytes": 3304899,
-        "sha256": "47a83efd27dfbc07d7efcf333e2e8c0aa3ba2240d7130fb076148cf457ed6225",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "world-panel:sunken_aether",
-        "worldId": "sunken_aether",
-        "path": "/assets/campaign/world-map/sunken_aether-v2.png",
-        "status": 200,
-        "bytes": 785083,
-        "sha256": "a8d0b31fa2d7323ee47a0a8f5de2b71d47992db0863358adbba22ea115fad0af",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "enemy:tideborn",
-        "worldId": "sunken_aether",
-        "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
-        "status": 200,
-        "bytes": 379092,
-        "sha256": "c003c2ecd9fc4ec12f1fafad1ac3e52eabf654fdaa5e233bca3541e165a34122",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "enemy:crystal_wisp",
-        "worldId": "sunken_aether",
-        "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
-        "status": 200,
-        "bytes": 430414,
-        "sha256": "fe8be230637cefbef9ad887c6d628671a422fbd20e1094ccd9b50a3cbb28084d",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "enemy:deepcrawler",
-        "worldId": "sunken_aether",
-        "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
-        "status": 200,
-        "bytes": 413045,
-        "sha256": "b4b9ec1910437a7fd270b009bb126c3442b9fa187e2ab9debeb7f2292f84504e",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "enemy:relic_guardian",
-        "worldId": "sunken_aether",
-        "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
-        "status": 200,
-        "bytes": 446436,
-        "sha256": "2089222291f53968107c7c3d467cd5c298c7b7ca92a1fa5a26dfe17593ca121f",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "enemy:aetherbound",
-        "worldId": "sunken_aether",
-        "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
-        "status": 200,
-        "bytes": 533870,
-        "sha256": "c54ead85262b714e2c3507a9f61689b26d94f04c1bc5ad2db218fa8c0b21dd6b",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "boss:drowned_oracle",
-        "worldId": "sunken_aether",
-        "path": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
-        "status": 200,
-        "bytes": 3413054,
-        "sha256": "1710521cc2377ff1c5ca7c0a879c59aa83a523783106481c49f3210a3e205cf7",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "map:ironroot:a",
-        "worldId": "ironroot",
-        "path": "/assets/campaign/maps/ironroot_a-v2.png",
-        "status": 200,
-        "bytes": 3206621,
-        "sha256": "f094f9dcf725d28be8409430baa1ae0adb6bf82faded6d13f567349db5ef2e2c",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "map:ironroot:b",
-        "worldId": "ironroot",
-        "path": "/assets/campaign/maps/ironroot_b-v2.png",
-        "status": 200,
-        "bytes": 3305420,
-        "sha256": "5dcdb71ba2d33df1f4cd734b346f6cd216058737285ed597a4cfcaba74787404",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "map:ironroot:c",
-        "worldId": "ironroot",
-        "path": "/assets/campaign/maps/ironroot_c-v2.png",
-        "status": 200,
-        "bytes": 3268828,
-        "sha256": "53aeece9783bfa5ed5f87ee766a9701939665f06b4bf9f93e350cd3a0aaf2b23",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "map:ironroot:d",
-        "worldId": "ironroot",
-        "path": "/assets/campaign/maps/ironroot_d-v2.png",
-        "status": 200,
-        "bytes": 3180193,
-        "sha256": "72b13d5e41d2c0fd088fb2fcade469a79fb9f61cebf3bc24921b64baeab5821d",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "world-panel:ironroot",
-        "worldId": "ironroot",
-        "path": "/assets/campaign/world-map/ironroot-v2.png",
-        "status": 200,
-        "bytes": 749900,
-        "sha256": "bb46fa28e5e9e5acf8d77a9bd2e059c0dfc71fead420fbc93ce5205bf98a499e",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "enemy:scrapling",
-        "worldId": "ironroot",
-        "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
-        "status": 200,
-        "bytes": 407853,
-        "sha256": "e56efb79c8859dc17ddd79ad5abfd410d310a7c5b4e5836e91022ce8858689ae",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "enemy:furnace_hound",
-        "worldId": "ironroot",
-        "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
-        "status": 200,
-        "bytes": 370006,
-        "sha256": "b1ffb21ef0244005289abae0bcfc897a3d8a479a278d327c9f6c2755e4f0e017",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "enemy:siege_golem",
-        "worldId": "ironroot",
-        "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
-        "status": 200,
-        "bytes": 498038,
-        "sha256": "2a74f89fd8d4610009ba55fb3b281489dd1aa2eafcd99479bf8ee0cb9862cde2",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "enemy:ironbound",
-        "worldId": "ironroot",
-        "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
-        "status": 200,
-        "bytes": 390939,
-        "sha256": "127fbe7f27c2aa4996cb9a09c95a029520ba9c664d113368ae10788d2694696d",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "enemy:foundry_core",
-        "worldId": "ironroot",
-        "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
-        "status": 200,
-        "bytes": 509039,
-        "sha256": "4d9ceee2092c1bc1e514f0e76125b3deaefd26246753df27c968259f889012f1",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      },
-      {
-        "id": "boss:iron_tyrant",
-        "worldId": "ironroot",
-        "path": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
-        "status": 200,
-        "bytes": 3896212,
-        "sha256": "7efca9d25dbe0f27b370f798c8c5e6035120a1f77e7fb5c473c2da856aa504d9",
-        "contentType": "image/png",
-        "cacheControl": "public, max-age=0, must-revalidate",
-        "cfCacheStatus": "MISS",
-        "match": true
-      }
-    ],
-    "visual": {
-      "title": "Aegis of the Borderkeep",
-      "visibleText": "Welcome, Defender\n\nSign in with Google to keep campaign progress and scores across devices.\n\nSign in with Google\nRetry connection",
-      "signInGateObserved": true,
-      "authenticatedGameplayVerified": false,
-      "accountWrites": false,
-      "assetRenders": [
-        {
-          "world": "sunken_aether",
-          "width": 768,
-          "height": 432,
-          "complete": true
-        },
-        {
-          "world": "ironroot",
-          "width": 768,
-          "height": 432,
-          "complete": true
-        }
-      ],
-      "visuallyInspected": true,
-      "localPostPromotionGate": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md"
-    },
-    "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json",
-    "scope": "World4 retained; World5 and World6 newly deployed; S3 typed resolution support marker",
-    "limitations": [
-      "Production authenticated gameplay unverified: sign-in gate.",
-      "Physical touch and full uninterrupted campaign match unverified.",
-      "Compact fine detail and World4 crowding limits remain."
-    ],
-    "initialAttempt": {
-      "publication": false,
-      "failure": "Three existing geometry tests timed out with parallel workers; unchanged assertions passed on serialized retry."
-    }
-  },
   "previousWorld4to6CohortAcceptance": {
     "cohort": "World4-6 final-art packages: World4 Whisperfen plus Worlds5 and 6",
     "status": "deployed",
@@ -14901,5 +16378,103 @@
       "deploymentAllowed": true,
       "publicationDecision": "World4 was previously published and independently verified under Worker version d1107304-ef7a-4e9b-9682-b98efe2bb744."
     }
+  },
+  "previousWorld4to7CohortAcceptance": {
+    "cohort": "World4–7 final-art packages",
+    "status": "deployed",
+    "publicationDecision": "World7 independently passed V13 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Sky Isles PNGs and 33 retained World4-6 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes.",
+    "wholeCohortCompactReadability": "World4–6 prior accepted limitations remain recorded. World7 routes and plot geometry remain visible at compact sizes; Stormmaw fine detail is reduced at 320×390 and 360×360 while the boss remains visible.",
+    "scopeLimitations": [
+      "No full uninterrupted campaign match is claimed for World7.",
+      "Stormmaw actual rendered footprint is about 46×31 px at 320×390 and 39×28 px at 360×360; parent accepted this compact fine-detail limitation."
+    ],
+    "evidence": {
+      "world4": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
+      "world5Runtime": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+      "world5Raw": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+      "world6Runtime": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+      "world6Raw": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+      "world7Runtime": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+      "world7Raw": "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+      "world7CandidateInputs": "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json",
+      "frozenGameSceneSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+      "world7Screenshots": {
+        "compactBoss320x390": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/stormmaw-visible-320x390.png",
+        "compactBoss360x360": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/stormmaw-visible-360x360.png",
+        "mapA844x390": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/game-sky_isles_a-844x390-mixed-walk.png",
+        "mapB844x390": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/game-sky_isles_b-844x390-mixed-walk.png",
+        "mapC844x390": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/game-sky_isles_c-844x390-mixed-walk.png",
+        "tempestSupportResolution": "artifacts/campaign-final-art-20261012/verification/world7-runtime/screenshots/tempest-natural-support-resolution-844x390.png"
+      }
+    },
+    "followUp": {
+      "owner": "O6",
+      "task": "World7 post-promotion and deployment verification",
+      "status": "passed",
+      "evidencePath": "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+    },
+    "cumulativePromoted": 44,
+    "localPromoted": 0,
+    "deployed": 44,
+    "pending": 33
+  },
+  "previousWorld7PromotionGate": {
+    "released": true,
+    "releaseScope": "World7 deployment; World4-6 retained.",
+    "reason": "Parent accepted World7 after W7-V1 independent raw PASS, W7-V2 staged runtime PASS, and direct compact-capture inspection; preserve the documented Stormmaw fine-detail limitation.",
+    "frozenHudSource": {
+      "path": "src/game/scenes/GameScene.ts",
+      "sha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4"
+    },
+    "acceptanceEvidence": [
+      "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+      "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json",
+      "parent direct compact-capture acceptance in Task A8"
+    ],
+    "releaseDecision": "authorized and deployed after V13 PASS",
+    "deploymentAllowed": true,
+    "pendingReviews": [
+      {
+        "review": "Independent post-promotion local public gate for World7",
+        "status": "passed",
+        "evidencePath": "artifacts/campaign-final-art-20261012/verification/v13-postpromotion-world7/V13-report.md",
+        "required": "Load a fresh page, verify all eleven exact World7 v2 public hashes and current-source runtime behavior, then return for any separate deployment authorization.",
+        "verifiedAtUtc": "2026-10-13T13:49:59.514Z",
+        "summary": "Independent local V13 PASS followed by O6 exact live release checks."
+      }
+    ],
+    "publicationDecision": "World7 independently passed V13 and was deployed. Exact live HTML/JS, health scoreVersion3, all 11 new Sky Isles PNGs and 33 retained World4-6 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
+  },
+  "previousWorld7LiveV2PromotionCheck": {
+    "checkedAtUtc": "2026-10-13",
+    "candidateCount": 44,
+    "exactCandidateAndPublicHashMatches": true,
+    "allV1BaselineHashesAndDimensionsPreserved": {
+      "expansionRows": 77,
+      "originalFinalRows": 43,
+      "verified": true
+    },
+    "reviewPath": "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+    "reviewPaths": [
+      "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
+      "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world7-runtime/W7-V2-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world7-raw/REPORT.md",
+      "artifacts/campaign-final-art-20261012/verification/world7-runtime/candidate-inputs.json",
+      "artifacts/campaign-final-art-20261012/verification/v13-postpromotion-world7/V13-report.md",
+      "artifacts/campaign-final-art-20261012/integration/o6-live-check.json"
+    ],
+    "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world7-promotion-report.md",
+    "priorPromotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md",
+    "activeFinalPathCount": 87,
+    "remainingProvisionalPathCount": 33,
+    "deployedCount": 33,
+    "locallyPromotedCount": 11,
+    "pendingCount": 33,
+    "independentPostPromotionGate": "passed"
   }
 }
