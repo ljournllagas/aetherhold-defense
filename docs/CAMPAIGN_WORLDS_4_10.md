@@ -98,7 +98,7 @@ and the [100-node map recheck](../artifacts/campaign-v5-20261012/verification/v1
 The V1 report distinguishes actual paid Level 99/100 gameplay from synthetic
 precondition and DEV QA stage-render fixtures.
 
-## Art, release, and continuation
+## Art, release, and continuation — historical v5 snapshot (2026-10-12)
 
 All 77 expansion starter assets are provisionally active within their staged
 campaign stages while remaining registered as `final_required`; all 77
