@@ -1,5 +1,11 @@
 ﻿# Project diary
 
+World6 repair lesson: nominal grid seam crossings alone are not lost pixels.
+Whole-sheet component audit found22/28 isolated complete actors with no outer
+canvas contact; extracting their complete bounds salvages those poses. A buff
+aura connecting four actors is genuine contamination and requires a new source.
+Full48pose generation resolution ceilings can be avoided with fewer larger
+poses per action source, then uniform downsampling into the final atlas.
 ## Lasting decisions and lessons
 
 - Size motion in final gameplay pixels before producing a full action cycle.
@@ -110,3 +116,4 @@
 - Campaign production completion 20261010 published Worker af75da8f-9800-42ce-919d-e823a0ad471a after independent native acceptance and939 passing tests/11 configured skips. Live current bundle, health and25 images matched the build. Eighteen absent atlases remain explicitly UNVERIFIED under the user's fallback allowance; raw art and exact prompts are retained separately from production files.
 2026-10-13: Preserve failed harness logs when focused reruns correct fixture assumptions. Full-map portrait visibility legitimately clamps vertical pan. A QA-staged injured target verifies the scheduled support caller and buff, not a natural wave. Retain breakpoint composition and physical-device input limits explicitly.
 2026-10-13: World4 public gate and live HTML/bundle/health/all11hashes PASS. Eleven published finals remain distinct from66pending; this milestone is not closure.
+2026-10-13 Worlds5/6 release: staged acceptance then actual local public gate then deploy/live hashes. Remote missing v2 files before publication are expected baseline, not an integration blocker. Typed support markers separate telegraph and resolution, ensuring one buff per cast without text matching or combat changes.

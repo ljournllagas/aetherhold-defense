@@ -2,8 +2,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { GameScene } from '../src/game/scenes/GameScene.ts';
 import { gameLayout } from '../src/game/ui/layout.ts';
 import { SoundManager } from '../src/game/systems/SoundManager.ts';
-import { CampaignBossSystem } from '../src/game/campaign/bosses.ts';
+import { CampaignBossSystem, CAMPAIGN_BOSS_TUNING } from '../src/game/campaign/bosses.ts';
 import { CAMPAIGN_BATTLE_TUNING } from '../src/game/campaign/battle.ts';
+import { SIMULATION_STEP_MS } from '../src/game/systems/SimulationClock.ts';
 import type { Enemy } from '../src/game/entities/Enemy.ts';
 
 vi.mock('phaser', () => ({ default: { Scene: class { constructor(_key?: string) {} } } }));
@@ -24,6 +25,23 @@ function fixture(width = 1280, height = 720) {
   return { run, views };
 }
 afterEach(() => vi.restoreAllMocks());
+
+const WORLD_SUPPORT_EVENT_TRACES = [
+  { campaignId: 'aetherbound', events: [{ at: 6500, text: 'Aetherbound · Aether shields raised', telegraph: false, buff: true }] },
+  { campaignId: 'tempest_herald', events: [
+    { at: 6500, text: 'Tempest Herald · Haste gathering', telegraph: true, buff: false },
+    { at: 7500, text: 'Tempest Herald · Nearby enemies hastened', telegraph: false, buff: true }
+  ] },
+  { campaignId: 'echo_shade', events: [
+    { at: 7800, text: 'Echo Shade · Doubles forming', telegraph: true, buff: false },
+    { at: 8700, text: 'Echo Shade · Decoys emerge', telegraph: false, buff: true }
+  ] },
+  { campaignId: 'rift_weaver', events: [
+    { at: 7200, text: 'Rift Weaver · Phase jump gathering', telegraph: true, buff: false },
+    { at: 8200, text: 'Rift Weaver · Phase jump', telegraph: false, buff: true }
+  ] },
+  { campaignId: 'crown_archon', events: [{ at: 7400, text: 'Crown Archon · Aether ward raised', telegraph: false, buff: true }] }
+] as const;
 
 describe('campaign ability callout', () => {
   it('routes real boss events into a backed notice, leaving classic floating text separate', () => {
@@ -52,6 +70,105 @@ describe('campaign ability callout', () => {
     expect(visual.playAction).toHaveBeenCalledWith('buff');
     if (campaignId === 'ashcaller') expect(ally.speedBuffUntil).toBe(run.gameTimeMs + CAMPAIGN_BATTLE_TUNING.supportDurationMs);
     else expect(ally.slowResistanceUntil).toBe(run.gameTimeMs + CAMPAIGN_BATTLE_TUNING.supportDurationMs);
+  });
+  it('plays the authored buff clip once on Foundry Core armor pulse from the real support system', () => {
+    const { run } = fixture();
+    const visual = { playAction: vi.fn() };
+    const support = { id: 7, campaignId: 'foundry_core', alive: true, isBoss: false, x: 0, y: 0, view: { getData: () => visual } };
+    const ally = { id: 8, alive: true, isBoss: false, x: 12, y: 0 };
+    const bosses = new CampaignBossSystem();
+    bosses.register(support as unknown as Enemy, 0);
+    run.campaignBosses = bosses; run.enemies = [support, ally]; run.towers = [];
+    run.gameTimeMs = CAMPAIGN_BOSS_TUNING.foundryCoreIntervalMs;
+
+    run.tickCampaignBosses();
+    expect(run.campaignCallout.text).toBe('Foundry Core · Nearby armor reinforced');
+    expect(bosses.incomingDamageMultiplier(ally.id, 'physical', run.gameTimeMs)).toBe(CAMPAIGN_BOSS_TUNING.foundryCoreArmorMultiplier);
+    expect(visual.playAction).toHaveBeenCalledExactlyOnceWith('buff');
+
+    run.tickCampaignBosses(); // Re-reading one simulation time cannot replay the pulse.
+    expect(visual.playAction).toHaveBeenCalledTimes(1);
+  });
+  it.each(WORLD_SUPPORT_EVENT_TRACES)('plays the authored buff clip once for each real $campaignId support event', ({ campaignId, events }) => {
+    const { run } = fixture();
+    const visual = { playAction: vi.fn() };
+    const support = { id: 7, campaignId, alive: true, isBoss: false, x: 0, y: 0, view: { getData: () => visual } };
+    const ally = { id: 8, alive: true, isBoss: false, x: 12, y: 0, speedBuffUntil: 0 };
+    const bosses = new CampaignBossSystem();
+    bosses.register(support as unknown as Enemy, 0);
+    run.campaignBosses = bosses; run.enemies = [support, ally]; run.towers = [];
+    let summonId = 20;
+    run.spawnEnemy = vi.fn(() => ({ id: summonId++ }));
+
+    events.forEach((event, index) => {
+      run.gameTimeMs = event.at;
+      run.tickCampaignBosses();
+      expect(run.campaignCallout.text).toBe(event.text);
+      expect(bosses.presentation(support.id, event.at).telegraph).toBe(event.telegraph);
+      const expectedCalls = events.slice(0, index + 1).filter(candidate => candidate.buff).length;
+      expect(visual.playAction).toHaveBeenCalledTimes(expectedCalls);
+      if (event.buff) expect(visual.playAction).toHaveBeenLastCalledWith('buff');
+
+      run.tickCampaignBosses(); // No event at the frozen simulation time.
+      run.gameTimeMs = event.at + 1; run.tickCampaignBosses(); // Active state alone does not replay the action.
+      expect(visual.playAction).toHaveBeenCalledTimes(expectedCalls);
+    });
+  });
+  it('holds a Foundry Core support pulse through pause until game time resumes', () => {
+    const { run } = fixture();
+    const visual = { playAction: vi.fn() };
+    const support = { id: 7, campaignId: 'foundry_core', alive: true, isBoss: false, x: 0, y: 0, view: { getData: () => visual } };
+    const ally = { id: 8, alive: true, isBoss: false, x: 12, y: 0 };
+    const bosses = new CampaignBossSystem(); bosses.register(support as unknown as Enemy, 0);
+    run.campaign = {} as any; run.campaignBosses = bosses; run.enemies = [support, ally]; run.towers = [];
+    for (const method of ['updateAchievementNotices', 'renderFrame', 'moveEnemies', 'updateFlights', 'processFieldTicks', 'fireTowers', 'checkWaveClear', 'tickAuto', 'refreshAutoDisplay', 'presentReward', 'publishQAStatus']) run[method] = vi.fn();
+    run.gameTimeMs = CAMPAIGN_BOSS_TUNING.foundryCoreIntervalMs - SIMULATION_STEP_MS;
+    run.simulationClock.reset(); run.pauseState.set('user', true);
+
+    const pausedAt = run.gameTimeMs;
+    run.update(0, CAMPAIGN_BOSS_TUNING.foundryCoreIntervalMs);
+    expect(run.gameTimeMs).toBe(pausedAt);
+    expect(visual.playAction).not.toHaveBeenCalled();
+
+    run.pauseState.set('user', false);
+    run.update(1000, SIMULATION_STEP_MS);
+    expect(run.gameTimeMs).toBeCloseTo(CAMPAIGN_BOSS_TUNING.foundryCoreIntervalMs);
+    expect(visual.playAction).toHaveBeenCalledExactlyOnceWith('buff');
+    run.update(1017, SIMULATION_STEP_MS);
+    expect(visual.playAction).toHaveBeenCalledTimes(1);
+  });
+  it('holds a Tempest Herald cast in telegraph through pause and plays buff only at resolution', () => {
+    const { run } = fixture();
+    const visual = { playAction: vi.fn() };
+    const support = { id: 7, campaignId: 'tempest_herald', alive: true, isBoss: false, x: 0, y: 0, view: { getData: () => visual } };
+    const ally = { id: 8, alive: true, isBoss: false, x: 12, y: 0, speedBuffUntil: 0 };
+    const bosses = new CampaignBossSystem(); bosses.register(support as unknown as Enemy, 0);
+    run.campaign = {} as any; run.campaignBosses = bosses; run.enemies = [support, ally]; run.towers = [];
+    for (const method of ['updateAchievementNotices', 'renderFrame', 'moveEnemies', 'updateFlights', 'processFieldTicks', 'fireTowers', 'checkWaveClear', 'tickAuto', 'refreshAutoDisplay', 'presentReward', 'publishQAStatus']) run[method] = vi.fn();
+    run.gameTimeMs = CAMPAIGN_BOSS_TUNING.tempestHeraldIntervalMs - SIMULATION_STEP_MS;
+    run.simulationClock.reset();
+
+    run.update(0, SIMULATION_STEP_MS);
+    expect(run.campaignCallout.text).toBe('Tempest Herald · Haste gathering');
+    expect(bosses.presentation(support.id, run.gameTimeMs).telegraph).toBe(true);
+    expect(visual.playAction).not.toHaveBeenCalled();
+
+    run.pauseState.set('user', true);
+    const pausedAt = run.gameTimeMs;
+    run.update(1000, 5000);
+    expect(run.gameTimeMs).toBe(pausedAt);
+    expect(bosses.presentation(support.id, run.gameTimeMs).telegraph).toBe(true);
+    expect(visual.playAction).not.toHaveBeenCalled();
+
+    run.pauseState.set('user', false);
+    run.update(6000, CAMPAIGN_BOSS_TUNING.tempestHeraldTelegraphMs + SIMULATION_STEP_MS);
+    run.update(6017, SIMULATION_STEP_MS);
+    expect(run.campaignCallout.text).toBe('Tempest Herald · Nearby enemies hastened');
+    expect(bosses.presentation(support.id, run.gameTimeMs).telegraph).toBe(false);
+    expect(ally.speedBuffUntil).toBeGreaterThan(run.gameTimeMs);
+    expect(visual.playAction).toHaveBeenCalledExactlyOnceWith('buff');
+    run.update(6034, SIMULATION_STEP_MS);
+    expect(visual.playAction).toHaveBeenCalledTimes(1);
   });
   it('routes the real Rootwretch heal pulse into buff playback without changing cadence, radius or target cooldown', () => {
     const { run } = fixture();

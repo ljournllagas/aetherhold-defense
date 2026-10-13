@@ -24,6 +24,7 @@ export interface CampaignArtSource {
 
 const LEGACY_WORLD_IDS: readonly CampaignWorldId[] = CAMPAIGN_WORLDS.slice(0, 3).map(world => world.id);
 const EXPANSION_WORLD_IDS: readonly CampaignWorldId[] = CAMPAIGN_WORLDS.slice(3).map(world => world.id);
+const RELEASED_EXPANSION_WORLD_IDS = new Set<CampaignWorldId>(['whisperfen', 'sunken_aether', 'ironroot']);
 const FAMILIES = ['a', 'b', 'c', 'd'] as const;
 const LEGACY_NORMAL_ENEMIES: Readonly<Record<string, readonly string[]>> = {
   borderkeep: ['marchling', 'skitter', 'stoneback', 'ironhide', 'veilborn'],
@@ -123,11 +124,11 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
     `/assets/campaign/towers/${id}-tier${tier}-v1.png`, 192, 192, 'gameplay', ['transparent_png_required', 'cosmetic_only', 'classic_art_unchanged'], 'final', null
   ))),
   ...EXPANSION_WORLD_IDS.flatMap(worldId => {
-    const isReleasedWorld4 = worldId === 'whisperfen';
-    const pathVersion = isReleasedWorld4 ? 'v2' : 'v1';
-    const state: CampaignArtState = isReleasedWorld4 ? 'final' : 'final_required';
-    const temporary: 'procedural' | null = isReleasedWorld4 ? null : 'procedural';
-    const qualityFlags = (retained: readonly string[]) => isReleasedWorld4
+    const isReleasedWorld = RELEASED_EXPANSION_WORLD_IDS.has(worldId);
+    const pathVersion = isReleasedWorld ? 'v2' : 'v1';
+    const state: CampaignArtState = isReleasedWorld ? 'final' : 'final_required';
+    const temporary: 'procedural' | null = isReleasedWorld ? null : 'procedural';
+    const qualityFlags = (retained: readonly string[]) => isReleasedWorld
       ? retained
       : ['final_art_unverified', 'provisional_starter_art', ...retained];
 
@@ -174,10 +175,12 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
     `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v1.png`
   ]),
   ...TOWERS.flatMap(id => ([2, 3] as const).map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.png`)),
-  ...FAMILIES.map(family => `/assets/campaign/maps/whisperfen_${family}-v2.png`),
-  '/assets/campaign/world-map/whisperfen-v2.png',
-  ...NORMAL_ENEMIES.whisperfen.map(id => `/assets/campaign/enemies/whisperfen/${id}-atlas-v2.png`),
-  '/assets/campaign/bosses/mireheart_hydra-atlas-v2.png'
+  ...EXPANSION_WORLD_IDS.filter(worldId => RELEASED_EXPANSION_WORLD_IDS.has(worldId)).flatMap(worldId => [
+    ...FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v2.png`),
+    `/assets/campaign/world-map/${worldId}-v2.png`,
+    ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v2.png`),
+    `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v2.png`
+  ])
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
@@ -203,7 +206,7 @@ export function campaignArtAssetsForLoader(
 }
 
 /** Exact provisional art bundle for expansion worlds, ordered from World 4 through World 10. */
-export const CAMPAIGN_PROVISIONAL_STARTER_PATHS: readonly string[] = EXPANSION_WORLD_IDS.filter(worldId => worldId !== 'whisperfen').flatMap(worldId => [
+export const CAMPAIGN_PROVISIONAL_STARTER_PATHS: readonly string[] = EXPANSION_WORLD_IDS.filter(worldId => !RELEASED_EXPANSION_WORLD_IDS.has(worldId)).flatMap(worldId => [
   ...FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v1.png`),
   `/assets/campaign/world-map/${worldId}-v1.png`,
   ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.png`),

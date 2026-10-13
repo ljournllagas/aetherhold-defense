@@ -1,0 +1,118 @@
+{
+  "taskId": "V12",
+  "runAt": "2026-10-13T12:17:49.075Z",
+  "count": 11,
+  "checks": [
+    {
+      "id": "map:whisperfen:a",
+      "path": "/assets/campaign/maps/whisperfen_a-v2.png",
+      "sha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797",
+      "dimensions": {
+        "width": 1672,
+        "height": 940
+      },
+      "preserved": true
+    },
+    {
+      "id": "map:whisperfen:b",
+      "path": "/assets/campaign/maps/whisperfen_b-v2.png",
+      "sha256": "ee69916e9344e97ce8f9b7bc9d1aed0b451cd3f87f7195665f602f57329258d2",
+      "dimensions": {
+        "width": 1672,
+        "height": 940
+      },
+      "preserved": true
+    },
+    {
+      "id": "map:whisperfen:c",
+      "path": "/assets/campaign/maps/whisperfen_c-v2.png",
+      "sha256": "2a9bcdbf759048c2026295878e6c264ba0ba749642890a7a3cd239bf3b912d5a",
+      "dimensions": {
+        "width": 1672,
+        "height": 940
+      },
+      "preserved": true
+    },
+    {
+      "id": "map:whisperfen:d",
+      "path": "/assets/campaign/maps/whisperfen_d-v2.png",
+      "sha256": "0617810e89ca06ef608fad09882ddce04265b4507d3c5cf30a0ac7b8e00299da",
+      "dimensions": {
+        "width": 1672,
+        "height": 940
+      },
+      "preserved": true
+    },
+    {
+      "id": "world-panel:whisperfen",
+      "path": "/assets/campaign/world-map/whisperfen-v2.png",
+      "sha256": "c585a31df7245d4b99f00a916c8226ffbb877ed95178fbe883db66443f77a2c9",
+      "dimensions": {
+        "width": 768,
+        "height": 432
+      },
+      "preserved": true
+    },
+    {
+      "id": "enemy:bogling",
+      "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png",
+      "sha256": "1ebb5f24fe3e6e09192d2508679c6e7a4f949c7520b50ba27b87404af0105873",
+      "dimensions": {
+        "width": 768,
+        "height": 512
+      },
+      "preserved": true
+    },
+    {
+      "id": "enemy:fen_skitter",
+      "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.png",
+      "sha256": "d67e435f9f9263e6cce676974b3aa15cc558976951cb9012aa55bc1c755fa79e",
+      "dimensions": {
+        "width": 768,
+        "height": 512
+      },
+      "preserved": true
+    },
+    {
+      "id": "enemy:mossguard",
+      "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.png",
+      "sha256": "c19d9b8ce50736c225d9e4b6c6ea56eec246bbda75923162190cfba26bb4ea10",
+      "dimensions": {
+        "width": 768,
+        "height": 512
+      },
+      "preserved": true
+    },
+    {
+      "id": "enemy:rotback",
+      "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.png",
+      "sha256": "93ce8dab3a75d253e0c989c26c58ffc720444b2ca7e03b4bb648c7ae7e9c5ec7",
+      "dimensions": {
+        "width": 768,
+        "height": 512
+      },
+      "preserved": true
+    },
+    {
+      "id": "enemy:rootwretch",
+      "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png",
+      "sha256": "09eaaccab4034bf36e79920c6e697c444ff95ef0da4f583b7634c697f1a72b74",
+      "dimensions": {
+        "width": 768,
+        "height": 640
+      },
+      "preserved": true
+    },
+    {
+      "id": "boss:mireheart_hydra",
+      "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.png",
+      "sha256": "cbed46bbc139e37cbda59775203e850d8a320161c586cc91a033f70ba5da7500",
+      "dimensions": {
+        "width": 2048,
+        "height": 1536
+      },
+      "preserved": true
+    }
+  ],
+  "outcome": "PASS"
+}

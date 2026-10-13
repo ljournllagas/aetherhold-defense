@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import legacyCloudCompleted30 from './fixtures/campaign-v5/legacy_cloud_completed_30.json';
 import futureVersionRaw from './fixtures/campaign-v5/future_version_must_not_overwrite.json?raw';
+import registryArtContract from './fixtures/campaign-v5/registry-art-contract.json';
 import legacyLocalCompleted30 from './fixtures/campaign-v5/legacy_local_completed_30.json';
 import legacyLocalPartial7 from './fixtures/campaign-v5/legacy_local_partial_7.json';
 import { CAMPAIGN_LEVELS, CAMPAIGN_SIGILS, CAMPAIGN_WORLDS, getCampaignLevel } from '../src/game/campaign/config.ts';
@@ -51,7 +52,7 @@ describe('Campaign v5 save compatibility', () => {
     }
   });
 
-  it('allows the accepted World 4 art and withholds every other expansion asset', () => {
+  it('allows only the accepted World 4–6 art and withholds every other expansion asset', () => {
     const newWorlds = ['whisperfen', 'sunken_aether', 'ironroot', 'sky_isles', 'dreadmoon', 'astral_rift', 'aether_crown'];
     const oldEnemies = ['marchling', 'skitter', 'stoneback', 'ironhide', 'veilborn', 'cinderling', 'ashrunner', 'magmahide', 'ember_brute', 'ashcaller', 'snowstalker', 'icebound', 'frostback', 'glacier_knight', 'frost_shaman'];
     const oldBosses = ['hollow_warden', 'cinder_colossus', 'frostbound_matriarch'];
@@ -61,18 +62,15 @@ describe('Campaign v5 save compatibility', () => {
       asset.id.startsWith('boss:') && !oldBosses.includes(asset.id.slice(5))
     );
     expect(newAssets).toHaveLength(77);
-    const acceptedWorld4Ids = new Set([
-      'map:whisperfen:a', 'map:whisperfen:b', 'map:whisperfen:c', 'map:whisperfen:d', 'world-panel:whisperfen',
-      'enemy:bogling', 'enemy:fen_skitter', 'enemy:mossguard', 'enemy:rotback', 'enemy:rootwretch', 'boss:mireheart_hydra'
-    ]);
+    const acceptedIds = new Set(registryArtContract.livePromotions.assets.map(asset => asset.id));
     const accepted = newAssets.filter(asset => asset.state === 'final');
-    expect(accepted.map(asset => asset.id).sort()).toEqual([...acceptedWorld4Ids].sort());
+    expect(accepted.map(asset => asset.id).sort()).toEqual([...acceptedIds].sort());
     expect(accepted.every(asset => asset.temporary === null
       && !asset.qualityFlags.includes('final_art_unverified')
       && !asset.qualityFlags.includes('provisional_starter_art')
       && AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(true);
     const withheld = newAssets.filter(asset => asset.state === 'final_required');
-    expect(withheld).toHaveLength(66);
+    expect(withheld).toHaveLength(44);
     for (const asset of withheld) {
       expect(AVAILABLE_CAMPAIGN_ART_PATHS).not.toContain(asset.path);
       expect(asset.qualityFlags).toContain('final_art_unverified');

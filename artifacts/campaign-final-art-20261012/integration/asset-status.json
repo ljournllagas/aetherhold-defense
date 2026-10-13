@@ -30,16 +30,29 @@
   ],
   "promotionGate": {
     "released": true,
-    "releaseScope": "World 4 public-asset and manifest integration through verified production publication",
-    "reason": "Parent explicitly released the eleven-asset World 4 cohort for integration after the accepted V9/S2 golden-cohort staging gate.",
+    "releaseScope": "World5 and World6 deployment with S3 support presentation; World4 retained.",
+    "reason": "Parent accepted the complete World5 and World6 eleven-asset packages after independent raw and staged-runtime review, with compact fine-detail limitations documented.",
     "frozenHudSource": {
       "path": "src/game/scenes/GameScene.ts",
-      "sha256": "d79bb40596d8c7a82e0fa6c3f99ae578614ae328ac7397868e2bc268de9cbbcc"
+      "sha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4"
     },
-    "acceptanceEvidence": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
-    "releaseDecision": "accepted for integration",
+    "acceptanceEvidence": [
+      "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md"
+    ],
+    "releaseDecision": "authorized and deployed after V12 PASS",
     "deploymentAllowed": true,
     "pendingReviews": [
+      {
+        "review": "Independent post-promotion runtime gate for World5 and World6",
+        "status": "passed",
+        "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+        "required": "Fresh-page texture loading and exact response hashes for the 22 newly promoted v2 paths, plus current-source runtime contexts for World5 and World6.",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "summary": "Independent local V12 PASS followed by O5 exact live release checks."
+      },
       {
         "review": "Independent post-promotion runtime gate",
         "status": "passed",
@@ -49,7 +62,7 @@
         "summary": "PASS: current-source fresh-page review; all 11 promoted assets hash-match live responses; 120 v1 baseline rows preserved."
       }
     ],
-    "publicationDecision": "Published Worker version d1107304-ef7a-4e9b-9682-b98efe2bb744; live page, current bundle, health, and all eleven World 4 assets verified.",
+    "publicationDecision": "World5/World6 independently passed V12 and were deployed with S3 support presentation. Exact live HTML/JS, health scoreVersion3, all 22 new PNGs and 11 retained World4 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes.",
     "previousGateDecision": {
       "scope": "pre-integration",
       "released": false,
@@ -63,6 +76,15 @@
       },
       "publicationDecision": "rejected pending I10; no promotion authorized",
       "supersededBy": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md"
+    },
+    "historicalWorld4Publication": {
+      "releaseScope": "World4 only",
+      "frozenHudSource": {
+        "path": "src/game/scenes/GameScene.ts",
+        "sha256": "d79bb40596d8c7a82e0fa6c3f99ae578614ae328ac7397868e2bc268de9cbbcc"
+      },
+      "deploymentAllowed": true,
+      "publicationDecision": "World4 was previously published and independently verified under Worker version d1107304-ef7a-4e9b-9682-b98efe2bb744."
     }
   },
   "pathAndRollbackPolicy": {
@@ -73,8 +95,8 @@
     "provisionalRule": "After a released promotion, remove only promoted v1 starter paths from the provisional list; retain remaining pending v1 paths."
   },
   "countsByStatus": {
-    "deployed": 11,
-    "pending": 66
+    "deployed": 33,
+    "pending": 44
   },
   "assets": [
     {
@@ -2810,7 +2832,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -2847,25 +2869,92 @@
       "runtimeContract": {
         "id": "map:sunken_aether:a",
         "key": "campaign_sunken_aether_a",
-        "path": "/assets/campaign/maps/sunken_aether_a-v1.png",
+        "path": "/assets/campaign/maps/sunken_aether_a-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_a-v1-candidate.png",
+          "candidateSha256": "884c699225f32f88b51a970cf0593fecfb9e7cd73481a3900329a12ebbe332d7",
+          "dimensions": {
+            "width": 1672,
+            "height": 940
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "candidateSha256": "884c699225f32f88b51a970cf0593fecfb9e7cd73481a3900329a12ebbe332d7",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World5 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "884c699225f32f88b51a970cf0593fecfb9e7cd73481a3900329a12ebbe332d7",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/maps/sunken_aether_a-v2.png",
+        "sha256": "884c699225f32f88b51a970cf0593fecfb9e7cd73481a3900329a12ebbe332d7",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_a-v1-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/sunken_aether_a-v2.png",
+        "sha256": "884c699225f32f88b51a970cf0593fecfb9e7cd73481a3900329a12ebbe332d7",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "map:sunken_aether:b",
@@ -2878,7 +2967,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -2915,25 +3004,92 @@
       "runtimeContract": {
         "id": "map:sunken_aether:b",
         "key": "campaign_sunken_aether_b",
-        "path": "/assets/campaign/maps/sunken_aether_b-v1.png",
+        "path": "/assets/campaign/maps/sunken_aether_b-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_b-v1-candidate.png",
+          "candidateSha256": "dfd66ef9fa4c88b678a482af4ef2e6f3a522d03ac4f9ea5026dcb54a2dc1903d",
+          "dimensions": {
+            "width": 1672,
+            "height": 940
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "candidateSha256": "dfd66ef9fa4c88b678a482af4ef2e6f3a522d03ac4f9ea5026dcb54a2dc1903d",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World5 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "dfd66ef9fa4c88b678a482af4ef2e6f3a522d03ac4f9ea5026dcb54a2dc1903d",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/maps/sunken_aether_b-v2.png",
+        "sha256": "dfd66ef9fa4c88b678a482af4ef2e6f3a522d03ac4f9ea5026dcb54a2dc1903d",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_b-v1-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/sunken_aether_b-v2.png",
+        "sha256": "dfd66ef9fa4c88b678a482af4ef2e6f3a522d03ac4f9ea5026dcb54a2dc1903d",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "map:sunken_aether:c",
@@ -2946,7 +3102,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -2983,25 +3139,92 @@
       "runtimeContract": {
         "id": "map:sunken_aether:c",
         "key": "campaign_sunken_aether_c",
-        "path": "/assets/campaign/maps/sunken_aether_c-v1.png",
+        "path": "/assets/campaign/maps/sunken_aether_c-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_c-v1-candidate.png",
+          "candidateSha256": "580c0b22d986c28e74134dbe37932bd3aa477d808dfc6787dd9deef51c053e3e",
+          "dimensions": {
+            "width": 1672,
+            "height": 940
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "candidateSha256": "580c0b22d986c28e74134dbe37932bd3aa477d808dfc6787dd9deef51c053e3e",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World5 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "580c0b22d986c28e74134dbe37932bd3aa477d808dfc6787dd9deef51c053e3e",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/maps/sunken_aether_c-v2.png",
+        "sha256": "580c0b22d986c28e74134dbe37932bd3aa477d808dfc6787dd9deef51c053e3e",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_c-v1-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/sunken_aether_c-v2.png",
+        "sha256": "580c0b22d986c28e74134dbe37932bd3aa477d808dfc6787dd9deef51c053e3e",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "map:sunken_aether:d",
@@ -3014,7 +3237,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -3051,25 +3274,92 @@
       "runtimeContract": {
         "id": "map:sunken_aether:d",
         "key": "campaign_sunken_aether_d",
-        "path": "/assets/campaign/maps/sunken_aether_d-v1.png",
+        "path": "/assets/campaign/maps/sunken_aether_d-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_d-v1-candidate.png",
+          "candidateSha256": "47a83efd27dfbc07d7efcf333e2e8c0aa3ba2240d7130fb076148cf457ed6225",
+          "dimensions": {
+            "width": 1672,
+            "height": 940
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "candidateSha256": "47a83efd27dfbc07d7efcf333e2e8c0aa3ba2240d7130fb076148cf457ed6225",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World5 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "47a83efd27dfbc07d7efcf333e2e8c0aa3ba2240d7130fb076148cf457ed6225",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/maps/sunken_aether_d-v2.png",
+        "sha256": "47a83efd27dfbc07d7efcf333e2e8c0aa3ba2240d7130fb076148cf457ed6225",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_d-v1-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/sunken_aether_d-v2.png",
+        "sha256": "47a83efd27dfbc07d7efcf333e2e8c0aa3ba2240d7130fb076148cf457ed6225",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "world-panel:sunken_aether",
@@ -3082,7 +3372,7 @@
         "width": 768,
         "height": 432
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -3119,24 +3409,91 @@
       "runtimeContract": {
         "id": "world-panel:sunken_aether",
         "key": "campaign_worldmap_sunken_aether",
-        "path": "/assets/campaign/world-map/sunken_aether-v1.png",
+        "path": "/assets/campaign/world-map/sunken_aether-v2.png",
         "kind": "image",
         "width": 768,
         "height": 432,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "campaign",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "biome_illustration"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world5/panels/sunken-aether-panel-candidate-v1.png",
+          "candidateSha256": "a8d0b31fa2d7323ee47a0a8f5de2b71d47992db0863358adbba22ea115fad0af",
+          "dimensions": {
+            "width": 768,
+            "height": 432
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "candidateSha256": "a8d0b31fa2d7323ee47a0a8f5de2b71d47992db0863358adbba22ea115fad0af",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World5 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "a8d0b31fa2d7323ee47a0a8f5de2b71d47992db0863358adbba22ea115fad0af",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/world-map/sunken_aether-v2.png",
+        "sha256": "a8d0b31fa2d7323ee47a0a8f5de2b71d47992db0863358adbba22ea115fad0af",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/panels/sunken-aether-panel-candidate-v1.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/world-map/sunken_aether-v2.png",
+        "sha256": "a8d0b31fa2d7323ee47a0a8f5de2b71d47992db0863358adbba22ea115fad0af",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "enemy:tideborn",
@@ -3149,7 +3506,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -3205,7 +3562,7 @@
       "runtimeContract": {
         "id": "enemy:tideborn",
         "key": "campaign_enemy_tideborn",
-        "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -3229,12 +3586,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -3296,7 +3651,78 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/tideborn/tideborn-atlas-candidate-v3.png",
+          "candidateSha256": "c003c2ecd9fc4ec12f1fafad1ac3e52eabf654fdaa5e233bca3541e165a34122",
+          "dimensions": {
+            "width": 768,
+            "height": 512
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "candidateSha256": "c003c2ecd9fc4ec12f1fafad1ac3e52eabf654fdaa5e233bca3541e165a34122",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World5 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "c003c2ecd9fc4ec12f1fafad1ac3e52eabf654fdaa5e233bca3541e165a34122",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
+        "sha256": "c003c2ecd9fc4ec12f1fafad1ac3e52eabf654fdaa5e233bca3541e165a34122",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/tideborn/tideborn-atlas-candidate-v3.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
+        "sha256": "c003c2ecd9fc4ec12f1fafad1ac3e52eabf654fdaa5e233bca3541e165a34122",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "enemy:crystal_wisp",
@@ -3309,7 +3735,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -3365,7 +3791,7 @@
       "runtimeContract": {
         "id": "enemy:crystal_wisp",
         "key": "campaign_enemy_crystal_wisp",
-        "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -3389,12 +3815,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -3456,7 +3880,78 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/crystal-wisp/crystal-wisp-atlas-candidate-v4.png",
+          "candidateSha256": "fe8be230637cefbef9ad887c6d628671a422fbd20e1094ccd9b50a3cbb28084d",
+          "dimensions": {
+            "width": 768,
+            "height": 512
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "candidateSha256": "fe8be230637cefbef9ad887c6d628671a422fbd20e1094ccd9b50a3cbb28084d",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World5 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "fe8be230637cefbef9ad887c6d628671a422fbd20e1094ccd9b50a3cbb28084d",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
+        "sha256": "fe8be230637cefbef9ad887c6d628671a422fbd20e1094ccd9b50a3cbb28084d",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/crystal-wisp/crystal-wisp-atlas-candidate-v4.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
+        "sha256": "fe8be230637cefbef9ad887c6d628671a422fbd20e1094ccd9b50a3cbb28084d",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "enemy:deepcrawler",
@@ -3469,7 +3964,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -3525,7 +4020,7 @@
       "runtimeContract": {
         "id": "enemy:deepcrawler",
         "key": "campaign_enemy_deepcrawler",
-        "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -3549,12 +4044,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -3616,7 +4109,78 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/deepcrawler/deepcrawler-atlas-candidate-v3.png",
+          "candidateSha256": "b4b9ec1910437a7fd270b009bb126c3442b9fa187e2ab9debeb7f2292f84504e",
+          "dimensions": {
+            "width": 768,
+            "height": 512
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "candidateSha256": "b4b9ec1910437a7fd270b009bb126c3442b9fa187e2ab9debeb7f2292f84504e",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World5 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "b4b9ec1910437a7fd270b009bb126c3442b9fa187e2ab9debeb7f2292f84504e",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
+        "sha256": "b4b9ec1910437a7fd270b009bb126c3442b9fa187e2ab9debeb7f2292f84504e",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/deepcrawler/deepcrawler-atlas-candidate-v3.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
+        "sha256": "b4b9ec1910437a7fd270b009bb126c3442b9fa187e2ab9debeb7f2292f84504e",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "enemy:relic_guardian",
@@ -3629,7 +4193,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -3685,7 +4249,7 @@
       "runtimeContract": {
         "id": "enemy:relic_guardian",
         "key": "campaign_enemy_relic_guardian",
-        "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -3709,12 +4273,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -3776,7 +4338,78 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/relic-guardian/relic-guardian-atlas-candidate-v1.png",
+          "candidateSha256": "2089222291f53968107c7c3d467cd5c298c7b7ca92a1fa5a26dfe17593ca121f",
+          "dimensions": {
+            "width": 768,
+            "height": 512
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "candidateSha256": "2089222291f53968107c7c3d467cd5c298c7b7ca92a1fa5a26dfe17593ca121f",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World5 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "2089222291f53968107c7c3d467cd5c298c7b7ca92a1fa5a26dfe17593ca121f",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
+        "sha256": "2089222291f53968107c7c3d467cd5c298c7b7ca92a1fa5a26dfe17593ca121f",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/relic-guardian/relic-guardian-atlas-candidate-v1.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
+        "sha256": "2089222291f53968107c7c3d467cd5c298c7b7ca92a1fa5a26dfe17593ca121f",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "enemy:aetherbound",
@@ -3789,7 +4422,7 @@
         "width": 768,
         "height": 640
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -3849,7 +4482,7 @@
       "runtimeContract": {
         "id": "enemy:aetherbound",
         "key": "campaign_enemy_aetherbound",
-        "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 640,
@@ -3877,12 +4510,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow",
@@ -3959,7 +4590,78 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world5/repair-v1/candidates/aetherbound-atlas-candidate-repair-r3.png",
+          "candidateSha256": "c54ead85262b714e2c3507a9f61689b26d94f04c1bc5ad2db218fa8c0b21dd6b",
+          "dimensions": {
+            "width": 768,
+            "height": 640
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "candidateSha256": "c54ead85262b714e2c3507a9f61689b26d94f04c1bc5ad2db218fa8c0b21dd6b",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World5 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "c54ead85262b714e2c3507a9f61689b26d94f04c1bc5ad2db218fa8c0b21dd6b",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
+        "sha256": "c54ead85262b714e2c3507a9f61689b26d94f04c1bc5ad2db218fa8c0b21dd6b",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/repair-v1/candidates/aetherbound-atlas-candidate-repair-r3.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
+        "sha256": "c54ead85262b714e2c3507a9f61689b26d94f04c1bc5ad2db218fa8c0b21dd6b",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "boss:drowned_oracle",
@@ -3972,7 +4674,7 @@
         "width": 2048,
         "height": 1536
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -4036,7 +4738,7 @@
       "runtimeContract": {
         "id": "boss:drowned_oracle",
         "key": "campaign_enemy_drowned_oracle",
-        "path": "/assets/campaign/bosses/drowned_oracle-atlas-v1.png",
+        "path": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
         "kind": "sheet",
         "width": 2048,
         "height": 1536,
@@ -4068,12 +4770,10 @@
             "frames": 8
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "phase_state_readability_verified"
@@ -4175,7 +4875,78 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world5/repair-v1/candidates/drowned-oracle-atlas-candidate-repair-r2.png",
+          "candidateSha256": "1710521cc2377ff1c5ca7c0a879c59aa83a523783106481c49f3210a3e205cf7",
+          "dimensions": {
+            "width": 2048,
+            "height": 1536
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "candidateSha256": "1710521cc2377ff1c5ca7c0a879c59aa83a523783106481c49f3210a3e205cf7",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World5 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "1710521cc2377ff1c5ca7c0a879c59aa83a523783106481c49f3210a3e205cf7",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
+        "sha256": "1710521cc2377ff1c5ca7c0a879c59aa83a523783106481c49f3210a3e205cf7",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/repair-v1/candidates/drowned-oracle-atlas-candidate-repair-r2.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
+        "sha256": "1710521cc2377ff1c5ca7c0a879c59aa83a523783106481c49f3210a3e205cf7",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "map:ironroot:a",
@@ -4188,7 +4959,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -4225,25 +4996,92 @@
       "runtimeContract": {
         "id": "map:ironroot:a",
         "key": "campaign_ironroot_a",
-        "path": "/assets/campaign/maps/ironroot_a-v1.png",
+        "path": "/assets/campaign/maps/ironroot_a-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-a-v2-candidate.png",
+          "candidateSha256": "f094f9dcf725d28be8409430baa1ae0adb6bf82faded6d13f567349db5ef2e2c",
+          "dimensions": {
+            "width": 1672,
+            "height": 940
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "candidateSha256": "f094f9dcf725d28be8409430baa1ae0adb6bf82faded6d13f567349db5ef2e2c",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World6 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "f094f9dcf725d28be8409430baa1ae0adb6bf82faded6d13f567349db5ef2e2c",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/maps/ironroot_a-v2.png",
+        "sha256": "f094f9dcf725d28be8409430baa1ae0adb6bf82faded6d13f567349db5ef2e2c",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-a-v2-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/ironroot_a-v2.png",
+        "sha256": "f094f9dcf725d28be8409430baa1ae0adb6bf82faded6d13f567349db5ef2e2c",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "map:ironroot:b",
@@ -4256,7 +5094,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -4293,25 +5131,92 @@
       "runtimeContract": {
         "id": "map:ironroot:b",
         "key": "campaign_ironroot_b",
-        "path": "/assets/campaign/maps/ironroot_b-v1.png",
+        "path": "/assets/campaign/maps/ironroot_b-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-b-v2-candidate.png",
+          "candidateSha256": "5dcdb71ba2d33df1f4cd734b346f6cd216058737285ed597a4cfcaba74787404",
+          "dimensions": {
+            "width": 1672,
+            "height": 940
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "candidateSha256": "5dcdb71ba2d33df1f4cd734b346f6cd216058737285ed597a4cfcaba74787404",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World6 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "5dcdb71ba2d33df1f4cd734b346f6cd216058737285ed597a4cfcaba74787404",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/maps/ironroot_b-v2.png",
+        "sha256": "5dcdb71ba2d33df1f4cd734b346f6cd216058737285ed597a4cfcaba74787404",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-b-v2-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/ironroot_b-v2.png",
+        "sha256": "5dcdb71ba2d33df1f4cd734b346f6cd216058737285ed597a4cfcaba74787404",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "map:ironroot:c",
@@ -4324,7 +5229,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -4361,25 +5266,92 @@
       "runtimeContract": {
         "id": "map:ironroot:c",
         "key": "campaign_ironroot_c",
-        "path": "/assets/campaign/maps/ironroot_c-v1.png",
+        "path": "/assets/campaign/maps/ironroot_c-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-c-v2-candidate.png",
+          "candidateSha256": "53aeece9783bfa5ed5f87ee766a9701939665f06b4bf9f93e350cd3a0aaf2b23",
+          "dimensions": {
+            "width": 1672,
+            "height": 940
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "candidateSha256": "53aeece9783bfa5ed5f87ee766a9701939665f06b4bf9f93e350cd3a0aaf2b23",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World6 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "53aeece9783bfa5ed5f87ee766a9701939665f06b4bf9f93e350cd3a0aaf2b23",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/maps/ironroot_c-v2.png",
+        "sha256": "53aeece9783bfa5ed5f87ee766a9701939665f06b4bf9f93e350cd3a0aaf2b23",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-c-v2-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/ironroot_c-v2.png",
+        "sha256": "53aeece9783bfa5ed5f87ee766a9701939665f06b4bf9f93e350cd3a0aaf2b23",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "map:ironroot:d",
@@ -4392,7 +5364,7 @@
         "width": 1672,
         "height": 940
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -4429,25 +5401,92 @@
       "runtimeContract": {
         "id": "map:ironroot:d",
         "key": "campaign_ironroot_d",
-        "path": "/assets/campaign/maps/ironroot_d-v1.png",
+        "path": "/assets/campaign/maps/ironroot_d-v2.png",
         "kind": "image",
         "width": 1672,
         "height": 940,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "terrain_plate",
           "runtime_geometry_overlay"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-d-v2-candidate.png",
+          "candidateSha256": "72b13d5e41d2c0fd088fb2fcade469a79fb9f61cebf3bc24921b64baeab5821d",
+          "dimensions": {
+            "width": 1672,
+            "height": 940
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "candidateSha256": "72b13d5e41d2c0fd088fb2fcade469a79fb9f61cebf3bc24921b64baeab5821d",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World6 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "72b13d5e41d2c0fd088fb2fcade469a79fb9f61cebf3bc24921b64baeab5821d",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/maps/ironroot_d-v2.png",
+        "sha256": "72b13d5e41d2c0fd088fb2fcade469a79fb9f61cebf3bc24921b64baeab5821d",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-d-v2-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/maps/ironroot_d-v2.png",
+        "sha256": "72b13d5e41d2c0fd088fb2fcade469a79fb9f61cebf3bc24921b64baeab5821d",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "world-panel:ironroot",
@@ -4460,7 +5499,7 @@
         "width": 768,
         "height": 432
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -4497,24 +5536,91 @@
       "runtimeContract": {
         "id": "world-panel:ironroot",
         "key": "campaign_worldmap_ironroot",
-        "path": "/assets/campaign/world-map/ironroot-v1.png",
+        "path": "/assets/campaign/world-map/ironroot-v2.png",
         "kind": "image",
         "width": 768,
         "height": 432,
-        "frameWidth": null,
-        "frameHeight": null,
         "states": {},
-        "state": "final_required",
+        "state": "final",
         "stage": "campaign",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "biome_illustration"
         ],
         "animations": []
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-panel-v2-candidate.png",
+          "candidateSha256": "bb46fa28e5e9e5acf8d77a9bd2e059c0dfc71fead420fbc93ce5205bf98a499e",
+          "dimensions": {
+            "width": 768,
+            "height": 432
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "candidateSha256": "bb46fa28e5e9e5acf8d77a9bd2e059c0dfc71fead420fbc93ce5205bf98a499e",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World6 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "bb46fa28e5e9e5acf8d77a9bd2e059c0dfc71fead420fbc93ce5205bf98a499e",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/world-map/ironroot-v2.png",
+        "sha256": "bb46fa28e5e9e5acf8d77a9bd2e059c0dfc71fead420fbc93ce5205bf98a499e",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-panel-v2-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/world-map/ironroot-v2.png",
+        "sha256": "bb46fa28e5e9e5acf8d77a9bd2e059c0dfc71fead420fbc93ce5205bf98a499e",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "enemy:scrapling",
@@ -4527,7 +5633,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -4583,7 +5689,7 @@
       "runtimeContract": {
         "id": "enemy:scrapling",
         "key": "campaign_enemy_scrapling",
-        "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v1.png",
+        "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -4607,12 +5713,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -4674,7 +5778,78 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/scrapling-atlas-repair-v3-candidate.png",
+          "candidateSha256": "e56efb79c8859dc17ddd79ad5abfd410d310a7c5b4e5836e91022ce8858689ae",
+          "dimensions": {
+            "width": 768,
+            "height": 512
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "candidateSha256": "e56efb79c8859dc17ddd79ad5abfd410d310a7c5b4e5836e91022ce8858689ae",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World6 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "e56efb79c8859dc17ddd79ad5abfd410d310a7c5b4e5836e91022ce8858689ae",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
+        "sha256": "e56efb79c8859dc17ddd79ad5abfd410d310a7c5b4e5836e91022ce8858689ae",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/scrapling-atlas-repair-v3-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
+        "sha256": "e56efb79c8859dc17ddd79ad5abfd410d310a7c5b4e5836e91022ce8858689ae",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "enemy:furnace_hound",
@@ -4687,7 +5862,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -4743,7 +5918,7 @@
       "runtimeContract": {
         "id": "enemy:furnace_hound",
         "key": "campaign_enemy_furnace_hound",
-        "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v1.png",
+        "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -4767,12 +5942,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -4834,7 +6007,78 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/furnace-hound-atlas-repair-v3-candidate.png",
+          "candidateSha256": "b1ffb21ef0244005289abae0bcfc897a3d8a479a278d327c9f6c2755e4f0e017",
+          "dimensions": {
+            "width": 768,
+            "height": 512
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "candidateSha256": "b1ffb21ef0244005289abae0bcfc897a3d8a479a278d327c9f6c2755e4f0e017",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World6 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "b1ffb21ef0244005289abae0bcfc897a3d8a479a278d327c9f6c2755e4f0e017",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
+        "sha256": "b1ffb21ef0244005289abae0bcfc897a3d8a479a278d327c9f6c2755e4f0e017",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/furnace-hound-atlas-repair-v3-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
+        "sha256": "b1ffb21ef0244005289abae0bcfc897a3d8a479a278d327c9f6c2755e4f0e017",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "enemy:siege_golem",
@@ -4847,7 +6091,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -4903,7 +6147,7 @@
       "runtimeContract": {
         "id": "enemy:siege_golem",
         "key": "campaign_enemy_siege_golem",
-        "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v1.png",
+        "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -4927,12 +6171,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -4994,7 +6236,78 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/siege-golem-atlas-repair-v3-candidate.png",
+          "candidateSha256": "2a74f89fd8d4610009ba55fb3b281489dd1aa2eafcd99479bf8ee0cb9862cde2",
+          "dimensions": {
+            "width": 768,
+            "height": 512
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "candidateSha256": "2a74f89fd8d4610009ba55fb3b281489dd1aa2eafcd99479bf8ee0cb9862cde2",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World6 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "2a74f89fd8d4610009ba55fb3b281489dd1aa2eafcd99479bf8ee0cb9862cde2",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
+        "sha256": "2a74f89fd8d4610009ba55fb3b281489dd1aa2eafcd99479bf8ee0cb9862cde2",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/siege-golem-atlas-repair-v3-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
+        "sha256": "2a74f89fd8d4610009ba55fb3b281489dd1aa2eafcd99479bf8ee0cb9862cde2",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "enemy:ironbound",
@@ -5007,7 +6320,7 @@
         "width": 768,
         "height": 512
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -5063,7 +6376,7 @@
       "runtimeContract": {
         "id": "enemy:ironbound",
         "key": "campaign_enemy_ironbound",
-        "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v1.png",
+        "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -5087,12 +6400,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow"
@@ -5154,7 +6465,78 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/ironbound-atlas-repair-v3-candidate.png",
+          "candidateSha256": "127fbe7f27c2aa4996cb9a09c95a029520ba9c664d113368ae10788d2694696d",
+          "dimensions": {
+            "width": 768,
+            "height": 512
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "candidateSha256": "127fbe7f27c2aa4996cb9a09c95a029520ba9c664d113368ae10788d2694696d",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World6 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "127fbe7f27c2aa4996cb9a09c95a029520ba9c664d113368ae10788d2694696d",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
+        "sha256": "127fbe7f27c2aa4996cb9a09c95a029520ba9c664d113368ae10788d2694696d",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/ironbound-atlas-repair-v3-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
+        "sha256": "127fbe7f27c2aa4996cb9a09c95a029520ba9c664d113368ae10788d2694696d",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "enemy:foundry_core",
@@ -5167,7 +6549,7 @@
         "width": 768,
         "height": 640
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -5227,7 +6609,7 @@
       "runtimeContract": {
         "id": "enemy:foundry_core",
         "key": "campaign_enemy_foundry_core",
-        "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v1.png",
+        "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
         "kind": "sheet",
         "width": 768,
         "height": 640,
@@ -5255,12 +6637,10 @@
             "frames": 6
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "no_baked_ui_or_large_shadow",
@@ -5337,7 +6717,78 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/foundry-core-atlas-repair-v3-candidate.png",
+          "candidateSha256": "4d9ceee2092c1bc1e514f0e76125b3deaefd26246753df27c968259f889012f1",
+          "dimensions": {
+            "width": 768,
+            "height": 640
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "candidateSha256": "4d9ceee2092c1bc1e514f0e76125b3deaefd26246753df27c968259f889012f1",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World6 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "4d9ceee2092c1bc1e514f0e76125b3deaefd26246753df27c968259f889012f1",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
+        "sha256": "4d9ceee2092c1bc1e514f0e76125b3deaefd26246753df27c968259f889012f1",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/foundry-core-atlas-repair-v3-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
+        "sha256": "4d9ceee2092c1bc1e514f0e76125b3deaefd26246753df27c968259f889012f1",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "boss:iron_tyrant",
@@ -5350,7 +6801,7 @@
         "width": 2048,
         "height": 1536
       },
-      "currentStatus": "pending",
+      "currentStatus": "deployed",
       "ownership": {
         "integrationOwner": "A6",
         "productionOwner": "not assigned in A6 capsule"
@@ -5414,7 +6865,7 @@
       "runtimeContract": {
         "id": "boss:iron_tyrant",
         "key": "campaign_enemy_iron_tyrant",
-        "path": "/assets/campaign/bosses/iron_tyrant-atlas-v1.png",
+        "path": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
         "kind": "sheet",
         "width": 2048,
         "height": 1536,
@@ -5446,12 +6897,10 @@
             "frames": 8
           }
         },
-        "state": "final_required",
+        "state": "final",
         "stage": "gameplay",
-        "temporary": "procedural",
+        "temporary": null,
         "qualityFlags": [
-          "final_art_unverified",
-          "provisional_starter_art",
           "transparent_png_required",
           "consistent_feet_anchor",
           "phase_state_readability_verified"
@@ -5553,7 +7002,78 @@
           }
         ]
       },
-      "evidence": null
+      "evidence": {
+        "reviewTaskId": "W56-V3",
+        "rawReview": {
+          "status": "raw-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/iron-tyrant-atlas-repair-v3-candidate.png",
+          "candidateSha256": "7efca9d25dbe0f27b370f798c8c5e6035120a1f77e7fb5c473c2da856aa504d9",
+          "dimensions": {
+            "width": 2048,
+            "height": 1536
+          },
+          "decision": "PASS"
+        },
+        "runtimeReview": {
+          "status": "runtime-review-pass",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "candidateSha256": "7efca9d25dbe0f27b370f798c8c5e6035120a1f77e7fb5c473c2da856aa504d9",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "visualReview": "PASS with documented reduced fine detail at smallest portrait sizes",
+          "runtimeOutcome": "PASS"
+        },
+        "cohortRuntimeReview": {
+          "taskId": "W56-V3",
+          "status": "runtime-review-pass",
+          "scope": "Accepted full 11-asset World6 staged runtime cohort",
+          "reportPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "sourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+          "candidateSha256": "7efca9d25dbe0f27b370f798c8c5e6035120a1f77e7fb5c473c2da856aa504d9",
+          "limitations": [
+            "No full uninterrupted campaign match is claimed.",
+            "At the smallest portrait sizes, complete maps and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts or gold labels can briefly obscure small painted areas."
+          ]
+        },
+        "stageAcceptance": {
+          "status": "accepted-for-integration",
+          "acceptedBy": "parent",
+          "rawReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+          "runtimeReviewPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+          "compactReadability": "PASS WITH DOCUMENTED REDUCED FINE DETAIL AT SMALLEST PORTRAIT SIZES",
+          "limitations": [
+            "Routes, plots, towers, and actors remained visible in reviewed captures.",
+            "No full uninterrupted campaign match is claimed."
+          ]
+        },
+        "promotionStatus": "Deployed after parent acceptance and independent V12 post-promotion PASS; exact live accepted PNG bytes verified.",
+        "candidateInputsPath": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json"
+      },
+      "promoted": {
+        "path": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
+        "sha256": "7efca9d25dbe0f27b370f798c8c5e6035120a1f77e7fb5c473c2da856aa504d9",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/iron-tyrant-atlas-repair-v3-candidate.png",
+        "promotedAtUtc": "2026-10-13",
+        "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
+      },
+      "pendingGates": [
+        {
+          "gate": "Independent post-promotion runtime gate",
+          "status": "passed",
+          "evidencePath": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+          "required": "Fresh-page texture load, current-source verification, and World5/World6 runtime contexts before any publication.",
+          "verifiedAtUtc": "2026-10-13T12:24:27.378Z"
+        }
+      ],
+      "deployed": {
+        "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+        "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+        "path": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
+        "sha256": "7efca9d25dbe0f27b370f798c8c5e6035120a1f77e7fb5c473c2da856aa504d9",
+        "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+        "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+      }
     },
     {
       "id": "map:sky_isles:a",
@@ -11075,17 +12595,17 @@
     "scope": "Immutable pre-promotion preflight observation; current promoted files are recorded in liveV2PromotionCheck."
   },
   "latestUpdate": {
-    "taskId": "O3",
+    "taskId": "O5",
     "dateUtc": "2026-10-13",
-    "scope": "World 4 production deployment and live verification",
+    "scope": "World5/World6 and S3 production deployment",
     "sources": [
-      "artifacts/campaign-final-art-20261012/verification/resume-v9/postpromotion/final-review.md",
-      "artifacts/campaign-final-art-20261012/verification/resume-v9/postpromotion/final-review.json",
-      "artifacts/campaign-final-art-20261012/integration/world4-promotion-report.md"
+      "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+      "artifacts/campaign-final-art-20261012/integration/o5-live-check.json",
+      "artifacts/campaign-final-art-20261012/s3-support-presentation/report.md"
     ],
-    "notes": "Production publication PASS. Worker aetherhold-defense version d1107304-ef7a-4e9b-9682-b98efe2bb744 at https://aetherhold-defense.ljournllagas.workers.dev. npm run deploy passed 106 test files (4 skipped), 1,510 tests (11 skipped), TypeScript and Vite 6.4.4 build. Live HTML 200; current JS bundle /assets/index-4zpm3wDu.js SHA-256 5cca51c4a3c8c0b1230759500f540b5c281bf83f5464d53d6a22ce4046160796 exactly matches dist; /api/health 200 scoreVersion 3. All eleven promoted v2 asset URLs returned 200 with exact accepted SHA-256 and Cloudflare HIT/ETag. V9 post-promotion fresh-Chromium gameplay render passed 17 contexts. Headless Chrome via CDP rendered the unauthenticated production page (Welcome, Defender sign-in gate) and directly loaded the live World 4 panel at 768x432; no sign-in or account writes. No authenticated production GameScene screenshot was captured. 11 deployed, 66 pending. Compact 31-enemy crowding remains documented; physical touch gestures and a full uninterrupted match remain unverified."
+    "notes": "World5/World6 independently passed V12 and were deployed with S3 support presentation. Exact live HTML/JS, health scoreVersion3, all 22 new PNGs and 11 retained World4 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
   },
-  "updatedAt": "2026-10-13",
+  "updatedAt": "2026-10-13T12:24:27.378Z",
   "statusSemantics": "Counts show the strongest accepted evidence scope recorded per asset. Promoted means the exact released candidate is present at its v2 public path with a final manifest registration in local integration; deployed means its v2 URL returned the accepted bytes from the recorded production Worker version. A runtime-review-pass may be scoped; consult each row stageAcceptance and pendingGates. Deployment requires the independent post-promotion runtime gate plus exact live verification.",
   "updateHistory": [
     {
@@ -11145,9 +12665,566 @@
         "artifacts/campaign-final-art-20261012/integration/world4-promotion-report.md"
       ],
       "notes": "Production publication PASS. Worker aetherhold-defense version d1107304-ef7a-4e9b-9682-b98efe2bb744 at https://aetherhold-defense.ljournllagas.workers.dev. npm run deploy passed 106 test files (4 skipped), 1,510 tests (11 skipped), TypeScript and Vite 6.4.4 build. Live HTML 200; current JS bundle /assets/index-4zpm3wDu.js SHA-256 5cca51c4a3c8c0b1230759500f540b5c281bf83f5464d53d6a22ce4046160796 exactly matches dist; /api/health 200 scoreVersion 3. All eleven promoted v2 asset URLs returned 200 with exact accepted SHA-256 and Cloudflare HIT/ETag. V9 post-promotion fresh-Chromium gameplay render passed 17 contexts. Headless Chrome via CDP rendered the unauthenticated production page (Welcome, Defender sign-in gate) and directly loaded the live World 4 panel at 768x432; no sign-in or account writes. No authenticated production GameScene screenshot was captured. 11 deployed, 66 pending. Compact 31-enemy crowding remains documented; physical touch gestures and a full uninterrupted match remain unverified."
+    },
+    {
+      "taskId": "A7",
+      "dateUtc": "2026-10-13",
+      "scope": "World5 and World6 exact-candidate local promotion",
+      "sources": [
+        "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+        "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json",
+        "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+        "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json",
+        "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+        "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+        "tests/fixtures/campaign-v5/registry-art-contract.json"
+      ],
+      "notes": "Promoted 22 independently accepted World5/World6 candidates to stable v2 public paths and final manifest entries. Exact candidate and public hashes/dimensions match. All 43 original finals, all 77 v1 expansion rollback files, and all 11 prior World4 v2 files remain hash-identical. Cumulative counts: 33 promoted, 11 previously deployed for World4 only, 44 pending; 76 active final paths and 44 provisional. Compact readability passes with reduced fine detail at the smallest portrait sizes. Independent post-promotion runtime gate remains pending; no World5/World6 deployment is claimed."
+    },
+    {
+      "taskId": "O5",
+      "dateUtc": "2026-10-13",
+      "scope": "World5/World6 and S3 production deployment",
+      "sources": [
+        "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+        "artifacts/campaign-final-art-20261012/integration/o5-live-check.json",
+        "artifacts/campaign-final-art-20261012/s3-support-presentation/report.md"
+      ],
+      "notes": "World5/World6 independently passed V12 and were deployed with S3 support presentation. Exact live HTML/JS, health scoreVersion3, all 22 new PNGs and 11 retained World4 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes."
     }
   ],
   "cohortAcceptance": {
+    "cohort": "World4-6 final-art packages: World4 Whisperfen plus Worlds5 and 6",
+    "status": "deployed",
+    "publicationDecision": "World5/World6 independently passed V12 and were deployed with S3 support presentation. Exact live HTML/JS, health scoreVersion3, all 22 new PNGs and 11 retained World4 PNGs verified. Production authenticated gameplay remains unverified due sign-in gate; no account or D1 writes.",
+    "wholeCohortCompactReadability": "World4 PASS with documented compact 31-enemy crowding; World5/World6 PASS with reduced fine detail at the smallest portrait sizes.",
+    "scopeLimitations": [
+      "No full uninterrupted campaign match is claimed for the World5 or World6 staged reviews.",
+      "At the smallest portrait sizes, complete route geometry, towers, boss status, and actors remain visible while fine terrain and sprite detail is reduced. Transient callouts and gold labels may briefly cover small painted areas.",
+      "World4 compact 31-enemy crowding remains documented from its prior review."
+    ],
+    "evidence": {
+      "world4": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
+      "world5Runtime": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+      "world5Raw": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+      "world6Runtime": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+      "world6Raw": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+      "frozenGameSceneSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4"
+    },
+    "followUp": {
+      "owner": "O5",
+      "task": "World5/World6 post-promotion and deployment verification",
+      "status": "passed",
+      "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+    },
+    "promoted": 33,
+    "localPromoted": 0,
+    "deployed": 33,
+    "pending": 44
+  },
+  "liveV2PromotionCheck": {
+    "checkedAtUtc": "2026-10-13",
+    "candidateCount": 33,
+    "exactCandidateAndPublicHashMatches": true,
+    "allV1BaselineHashesAndDimensionsPreserved": {
+      "expansionRows": 77,
+      "originalFinalRows": 43,
+      "verified": true
+    },
+    "reviewPath": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
+    "reviewPaths": [
+      "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+      "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json",
+      "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json",
+      "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md",
+      "artifacts/campaign-final-art-20261012/integration/o5-live-check.json"
+    ],
+    "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md",
+    "priorPromotionReportPath": "artifacts/campaign-final-art-20261012/integration/world4-promotion-report.md",
+    "activeFinalPathCount": 76,
+    "remainingProvisionalPathCount": 44,
+    "independentPostPromotionGate": "passed"
+  },
+  "productionDeployment": {
+    "status": "verified",
+    "taskId": "O5",
+    "workerName": "aetherhold-defense",
+    "versionId": "1ddd2a66-c5b9-48a3-9653-f40a6a563e98",
+    "productionUrl": "https://aetherhold-defense.ljournllagas.workers.dev",
+    "publishedAtUtc": "2026-10-13T12:24:27.378Z",
+    "verifiedAtUtc": "2026-10-13T12:24:27.378Z",
+    "deployCommand": "npm run deploy",
+    "deploySequence": "npm test && npm run build && wrangler deploy --keep-vars",
+    "testEnvironment": {
+      "VITEST_MAX_WORKERS": "1"
+    },
+    "testResults": {
+      "filesPassed": 106,
+      "filesSkipped": 4,
+      "testsPassed": 1518,
+      "testsSkipped": 11
+    },
+    "build": {
+      "typecheck": "passed",
+      "vite": "passed",
+      "bundlePath": "/assets/index-D1ejOb0O.js",
+      "bundleBytes": 2169033,
+      "bundleSha256": "0b750bf85c5a1088fe42b5f51f7c4725d50aaa8298ae73683c2e22d5f9272280",
+      "exactLocalBuildMatch": true,
+      "largeChunkWarningRetained": true
+    },
+    "page": {
+      "path": "/",
+      "status": 200,
+      "bytes": 612,
+      "sha256": "06b4679e3296060537defe2a66196a4e2ee30fee149d8ec2013675001598b293",
+      "contentType": "text/html",
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "cfCacheStatus": "MISS"
+    },
+    "health": {
+      "status": 200,
+      "ok": true,
+      "time": "2026-10-13T12:23:38.030Z",
+      "scoreVersion": 3
+    },
+    "assets": [
+      {
+        "id": "map:whisperfen:a",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/maps/whisperfen_a-v2.png",
+        "status": 200,
+        "bytes": 4284434,
+        "sha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:whisperfen:b",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/maps/whisperfen_b-v2.png",
+        "status": 200,
+        "bytes": 4280858,
+        "sha256": "ee69916e9344e97ce8f9b7bc9d1aed0b451cd3f87f7195665f602f57329258d2",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:whisperfen:c",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/maps/whisperfen_c-v2.png",
+        "status": 200,
+        "bytes": 3909390,
+        "sha256": "2a9bcdbf759048c2026295878e6c264ba0ba749642890a7a3cd239bf3b912d5a",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:whisperfen:d",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/maps/whisperfen_d-v2.png",
+        "status": 200,
+        "bytes": 4337844,
+        "sha256": "0617810e89ca06ef608fad09882ddce04265b4507d3c5cf30a0ac7b8e00299da",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "world-panel:whisperfen",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/world-map/whisperfen-v2.png",
+        "status": 200,
+        "bytes": 903090,
+        "sha256": "c585a31df7245d4b99f00a916c8226ffbb877ed95178fbe883db66443f77a2c9",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:bogling",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png",
+        "status": 200,
+        "bytes": 318931,
+        "sha256": "1ebb5f24fe3e6e09192d2508679c6e7a4f949c7520b50ba27b87404af0105873",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:fen_skitter",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.png",
+        "status": 200,
+        "bytes": 283150,
+        "sha256": "d67e435f9f9263e6cce676974b3aa15cc558976951cb9012aa55bc1c755fa79e",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:mossguard",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.png",
+        "status": 200,
+        "bytes": 388143,
+        "sha256": "c19d9b8ce50736c225d9e4b6c6ea56eec246bbda75923162190cfba26bb4ea10",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:rotback",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.png",
+        "status": 200,
+        "bytes": 200869,
+        "sha256": "93ce8dab3a75d253e0c989c26c58ffc720444b2ca7e03b4bb648c7ae7e9c5ec7",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "enemy:rootwretch",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png",
+        "status": 200,
+        "bytes": 434546,
+        "sha256": "09eaaccab4034bf36e79920c6e697c444ff95ef0da4f583b7634c697f1a72b74",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "boss:mireheart_hydra",
+        "worldId": "whisperfen",
+        "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.png",
+        "status": 200,
+        "bytes": 3035770,
+        "sha256": "cbed46bbc139e37cbda59775203e850d8a320161c586cc91a033f70ba5da7500",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "HIT",
+        "match": true
+      },
+      {
+        "id": "map:sunken_aether:a",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/maps/sunken_aether_a-v2.png",
+        "status": 200,
+        "bytes": 3382505,
+        "sha256": "884c699225f32f88b51a970cf0593fecfb9e7cd73481a3900329a12ebbe332d7",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:sunken_aether:b",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/maps/sunken_aether_b-v2.png",
+        "status": 200,
+        "bytes": 3546597,
+        "sha256": "dfd66ef9fa4c88b678a482af4ef2e6f3a522d03ac4f9ea5026dcb54a2dc1903d",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:sunken_aether:c",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/maps/sunken_aether_c-v2.png",
+        "status": 200,
+        "bytes": 3655160,
+        "sha256": "580c0b22d986c28e74134dbe37932bd3aa477d808dfc6787dd9deef51c053e3e",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:sunken_aether:d",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/maps/sunken_aether_d-v2.png",
+        "status": 200,
+        "bytes": 3304899,
+        "sha256": "47a83efd27dfbc07d7efcf333e2e8c0aa3ba2240d7130fb076148cf457ed6225",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "world-panel:sunken_aether",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/world-map/sunken_aether-v2.png",
+        "status": 200,
+        "bytes": 785083,
+        "sha256": "a8d0b31fa2d7323ee47a0a8f5de2b71d47992db0863358adbba22ea115fad0af",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "enemy:tideborn",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
+        "status": 200,
+        "bytes": 379092,
+        "sha256": "c003c2ecd9fc4ec12f1fafad1ac3e52eabf654fdaa5e233bca3541e165a34122",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "enemy:crystal_wisp",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
+        "status": 200,
+        "bytes": 430414,
+        "sha256": "fe8be230637cefbef9ad887c6d628671a422fbd20e1094ccd9b50a3cbb28084d",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "enemy:deepcrawler",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
+        "status": 200,
+        "bytes": 413045,
+        "sha256": "b4b9ec1910437a7fd270b009bb126c3442b9fa187e2ab9debeb7f2292f84504e",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "enemy:relic_guardian",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
+        "status": 200,
+        "bytes": 446436,
+        "sha256": "2089222291f53968107c7c3d467cd5c298c7b7ca92a1fa5a26dfe17593ca121f",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "enemy:aetherbound",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
+        "status": 200,
+        "bytes": 533870,
+        "sha256": "c54ead85262b714e2c3507a9f61689b26d94f04c1bc5ad2db218fa8c0b21dd6b",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "boss:drowned_oracle",
+        "worldId": "sunken_aether",
+        "path": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
+        "status": 200,
+        "bytes": 3413054,
+        "sha256": "1710521cc2377ff1c5ca7c0a879c59aa83a523783106481c49f3210a3e205cf7",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:ironroot:a",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/maps/ironroot_a-v2.png",
+        "status": 200,
+        "bytes": 3206621,
+        "sha256": "f094f9dcf725d28be8409430baa1ae0adb6bf82faded6d13f567349db5ef2e2c",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:ironroot:b",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/maps/ironroot_b-v2.png",
+        "status": 200,
+        "bytes": 3305420,
+        "sha256": "5dcdb71ba2d33df1f4cd734b346f6cd216058737285ed597a4cfcaba74787404",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:ironroot:c",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/maps/ironroot_c-v2.png",
+        "status": 200,
+        "bytes": 3268828,
+        "sha256": "53aeece9783bfa5ed5f87ee766a9701939665f06b4bf9f93e350cd3a0aaf2b23",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "map:ironroot:d",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/maps/ironroot_d-v2.png",
+        "status": 200,
+        "bytes": 3180193,
+        "sha256": "72b13d5e41d2c0fd088fb2fcade469a79fb9f61cebf3bc24921b64baeab5821d",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "world-panel:ironroot",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/world-map/ironroot-v2.png",
+        "status": 200,
+        "bytes": 749900,
+        "sha256": "bb46fa28e5e9e5acf8d77a9bd2e059c0dfc71fead420fbc93ce5205bf98a499e",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "enemy:scrapling",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
+        "status": 200,
+        "bytes": 407853,
+        "sha256": "e56efb79c8859dc17ddd79ad5abfd410d310a7c5b4e5836e91022ce8858689ae",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "enemy:furnace_hound",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
+        "status": 200,
+        "bytes": 370006,
+        "sha256": "b1ffb21ef0244005289abae0bcfc897a3d8a479a278d327c9f6c2755e4f0e017",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "enemy:siege_golem",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
+        "status": 200,
+        "bytes": 498038,
+        "sha256": "2a74f89fd8d4610009ba55fb3b281489dd1aa2eafcd99479bf8ee0cb9862cde2",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "enemy:ironbound",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
+        "status": 200,
+        "bytes": 390939,
+        "sha256": "127fbe7f27c2aa4996cb9a09c95a029520ba9c664d113368ae10788d2694696d",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "enemy:foundry_core",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
+        "status": 200,
+        "bytes": 509039,
+        "sha256": "4d9ceee2092c1bc1e514f0e76125b3deaefd26246753df27c968259f889012f1",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      },
+      {
+        "id": "boss:iron_tyrant",
+        "worldId": "ironroot",
+        "path": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
+        "status": 200,
+        "bytes": 3896212,
+        "sha256": "7efca9d25dbe0f27b370f798c8c5e6035120a1f77e7fb5c473c2da856aa504d9",
+        "contentType": "image/png",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "cfCacheStatus": "MISS",
+        "match": true
+      }
+    ],
+    "visual": {
+      "title": "Aegis of the Borderkeep",
+      "visibleText": "Welcome, Defender\n\nSign in with Google to keep campaign progress and scores across devices.\n\nSign in with Google\nRetry connection",
+      "signInGateObserved": true,
+      "authenticatedGameplayVerified": false,
+      "accountWrites": false,
+      "assetRenders": [
+        {
+          "world": "sunken_aether",
+          "width": 768,
+          "height": 432,
+          "complete": true
+        },
+        {
+          "world": "ironroot",
+          "width": 768,
+          "height": 432,
+          "complete": true
+        }
+      ],
+      "visuallyInspected": true,
+      "localPostPromotionGate": "artifacts/campaign-final-art-20261012/verification/v12-postpromotion-world56/V12-report.md"
+    },
+    "evidencePath": "artifacts/campaign-final-art-20261012/integration/o5-live-check.json",
+    "scope": "World4 retained; World5 and World6 newly deployed; S3 typed resolution support marker",
+    "limitations": [
+      "Production authenticated gameplay unverified: sign-in gate.",
+      "Physical touch and full uninterrupted campaign match unverified.",
+      "Compact fine detail and World4 crowding limits remain."
+    ],
+    "initialAttempt": {
+      "publication": false,
+      "failure": "Three existing geometry tests timed out with parallel workers; unchanged assertions passed on serialized retry."
+    }
+  },
+  "previousWorld4CohortAcceptance": {
     "cohort": "World 4 final-art candidate package: panel, terrain families A-D, five Whisperfen monsters, and Hydra",
     "status": "accepted-for-integration",
     "publicationDecision": "PUBLISHED to production after independent post-promotion V9 gate PASS; Worker version d1107304-ef7a-4e9b-9682-b98efe2bb744 verified.",
@@ -11206,19 +13283,7 @@
     "promoted": 11,
     "deployed": 11
   },
-  "liveV2PromotionCheck": {
-    "checkedAtUtc": "2026-10-13",
-    "candidateCount": 11,
-    "exactCandidateAndPublicHashMatches": true,
-    "allV1BaselineHashesAndDimensionsPreserved": {
-      "expansionRows": 77,
-      "originalFinalRows": 43,
-      "verified": true
-    },
-    "reviewPath": "artifacts/campaign-final-art-20261012/verification/resume-v9/newcohort-harness/final-review.md",
-    "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world4-promotion-report.md"
-  },
-  "productionDeployment": {
+  "previousProductionDeployment": {
     "status": "verified",
     "workerName": "aetherhold-defense",
     "versionId": "d1107304-ef7a-4e9b-9682-b98efe2bb744",
@@ -11440,6 +13505,7 @@
     "limitations": [
       "Compact 31-enemy crowding is documented.",
       "Physical touch gestures and a full uninterrupted campaign match remain unverified."
-    ]
+    ],
+    "scope": "World4 only; World5 and World6 local promotions are not included in this deployment record."
   }
 }

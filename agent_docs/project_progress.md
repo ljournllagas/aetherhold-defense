@@ -2,12 +2,15 @@
 
 ## Final campaign artwork - active
 
-Heavy campaign-final-art-20261012 follows approved finalartprompt. World4 goldenpilot complete:11finals promoted/deployed,54activefinals,66provisional remaining. World5/6 productionactive;7-10pending. Original43/77rollback bytesunchanged.
-Live https://aetherhold-defense.ljournllagas.workers.dev/
-Version d1107304-ef7a-4e9b-9682-b98efe2bb744.
-Deploy1510pass11skip/typecheck/build PASS;liveHTML/JS matchbuild SHA2565cca51c4a3c8c0b1230759500f540b5c281bf83f5464d53d6a22ce4046160796;health200 scoreVersion3;elevenassets200/HIT exacthashes.
-O3 synchronized application commit f08099478e2b36a62a949a573e46dd47e5e9be1a; local and actual remote HEAD match. V9 actualpublic100contexts/120baselines/runtime PASS;V11original/Classic PASS;R9sourceclear. Latest_session_work.md holdscontinuation/evidence.
-Remaininglimits:767/768px compositionjump,compactcrowding,physicaltouch/fullmatch unverified. Continueall77;no closure yet.
+Heavy deployment campaign-final-art-20261012 implements the approved final-art prompt. Goal: finish, independently accept, integrate and publish all 77 World 4-10 assets while preserving 43 originals and gameplay/save behavior.
+
+Worlds 4-6 are complete and live: 33 new finals deployed, 76 total active final assets, 44 provisional assets remaining. Original 43 finals and all 77 v1 rollback files retain their baseline bytes. World 7 raw review passes; runtime clearance review remains pending. World 8/9 production is active; World 10 pending.
+
+Live: https://aetherhold-defense.ljournllagas.workers.dev/
+Worker version 1ddd2a66-c5b9-48a3-9653-f40a6a563e98.
+Deployment passed 1,518 tests with 11 configured skips, typecheck and build. Live HTML/current JS match build SHA256 0b750bf85c5a1088fe42b5f51f7c4725d50aaa8298ae73683c2e22d5f9272280; health 200 with scoreVersion 3; all 33 promoted PNGs match accepted hashes. O5 commit/push and remote equality pending its report.
+Public render/panels checked; authenticated live gameplay unverified behind sign-in. Independent local GameScene and all 100 loader contexts pass. Compact fine-detail loss, crowding, 767/768 layout jump, physical touch and full-match limits remain explicit.
+S3 support animation now follows typed resolution events without combat changes; cold review and natural runtime callers pass. Prior failed candidates/fixtures remain evidence. Latest_session_work.md holds exact continuation and report links. Continue remaining 44 assets; this is not closure.
 
 ## Campaign v5 — complete
 

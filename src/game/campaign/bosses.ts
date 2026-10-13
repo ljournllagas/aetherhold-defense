@@ -93,6 +93,7 @@ interface TemporaryMitigation {
 export interface CampaignBossEvent {
   boss: Enemy;
   text: string;
+  presentationAction?: 'buff';
   summon?: {
     enemyId: string;
     count: number;
@@ -167,7 +168,7 @@ export class CampaignBossSystem {
               }
             }
           }
-          events.push({ boss: enemy, text: enemy.campaignId === 'ashcaller' ? 'Ashcaller · Speed aura' : enemy.campaignId === 'frost_shaman' ? 'Frost Shaman · Slow ward' : 'Rootwretch · Healing roots' });
+          events.push({ boss: enemy, text: enemy.campaignId === 'ashcaller' ? 'Ashcaller · Speed aura' : enemy.campaignId === 'frost_shaman' ? 'Frost Shaman · Slow ward' : 'Rootwretch · Healing roots', presentationAction: 'buff' });
         }
         continue;
       }
@@ -446,16 +447,16 @@ export class CampaignBossSystem {
       for (const target of this.nearbyAllies(enemy, enemies)) this.applyMitigation(target.id, enemy.id, nowMs + CAMPAIGN_BOSS_TUNING.aetherboundShieldDurationMs, CAMPAIGN_BOSS_TUNING.aetherboundShieldMultiplier);
       state.phaseLabel = 'aether_shield';
       state.phaseUntil = nowMs + CAMPAIGN_BOSS_TUNING.aetherboundShieldDurationMs;
-      events.push({ boss: enemy, text: 'Aetherbound · Aether shields raised' });
+      events.push({ boss: enemy, text: 'Aetherbound · Aether shields raised', presentationAction: 'buff' });
     } else if (enemy.campaignId === 'foundry_core') {
       if (nowMs < state.nextAt) return;
       state.nextAt = nowMs + CAMPAIGN_BOSS_TUNING.foundryCoreIntervalMs;
       for (const target of this.nearbyAllies(enemy, enemies)) this.applyMitigation(target.id, enemy.id, nowMs + CAMPAIGN_BOSS_TUNING.foundryCoreArmorDurationMs, CAMPAIGN_BOSS_TUNING.foundryCoreArmorMultiplier, ['physical']);
       state.phaseLabel = 'foundry_armor';
       state.phaseUntil = nowMs + CAMPAIGN_BOSS_TUNING.foundryCoreArmorDurationMs;
-      events.push({ boss: enemy, text: 'Foundry Core · Nearby armor reinforced' });
+      events.push({ boss: enemy, text: 'Foundry Core · Nearby armor reinforced', presentationAction: 'buff' });
     } else if (enemy.campaignId === 'tempest_herald') {
-      this.tickHasteSupport(enemy, enemies, state, nowMs, events, 'Tempest Herald', CAMPAIGN_BOSS_TUNING.tempestHeraldIntervalMs, CAMPAIGN_BOSS_TUNING.tempestHeraldTelegraphMs, CAMPAIGN_BOSS_TUNING.tempestHeraldDurationMs, 'tempest_haste');
+      this.tickHasteSupport(enemy, enemies, state, nowMs, events, 'Tempest Herald', CAMPAIGN_BOSS_TUNING.tempestHeraldIntervalMs, CAMPAIGN_BOSS_TUNING.tempestHeraldTelegraphMs, CAMPAIGN_BOSS_TUNING.tempestHeraldDurationMs, 'tempest_haste', 'buff');
     } else if (enemy.campaignId === 'echo_shade') {
       this.tickEchoShade(enemy, state, nowMs, events);
     } else if (enemy.campaignId === 'rift_weaver') {
@@ -463,7 +464,7 @@ export class CampaignBossSystem {
         state.telegraphUntil = 0; state.casts++;
         state.nextAt = nowMs + CAMPAIGN_BOSS_TUNING.riftWeaverIntervalMs;
         state.phaseLabel = 'rift_jump';
-        events.push({ boss: enemy, text: 'Rift Weaver · Phase jump', routeAdvanceFraction: CAMPAIGN_BOSS_TUNING.riftWeaverRouteFraction });
+        events.push({ boss: enemy, text: 'Rift Weaver · Phase jump', presentationAction: 'buff', routeAdvanceFraction: CAMPAIGN_BOSS_TUNING.riftWeaverRouteFraction });
       } else if (!state.telegraphUntil && !state.casts && nowMs >= state.nextAt) {
         state.phaseLabel = 'rift_jump';
         state.telegraphUntil = nowMs + CAMPAIGN_BOSS_TUNING.riftWeaverTelegraphMs;
@@ -475,18 +476,18 @@ export class CampaignBossSystem {
       for (const target of this.nearbyAllies(enemy, enemies)) this.applyMitigation(target.id, enemy.id, nowMs + CAMPAIGN_BOSS_TUNING.crownArchonWardDurationMs, CAMPAIGN_BOSS_TUNING.crownArchonWardMultiplier, ['arcane', 'elemental']);
       state.phaseLabel = 'crown_ward';
       state.phaseUntil = nowMs + CAMPAIGN_BOSS_TUNING.crownArchonWardDurationMs;
-      events.push({ boss: enemy, text: 'Crown Archon · Aether ward raised' });
+      events.push({ boss: enemy, text: 'Crown Archon · Aether ward raised', presentationAction: 'buff' });
     }
   }
 
-  private tickHasteSupport(enemy: Enemy, enemies: readonly Enemy[], state: WorldSupportState, nowMs: number, events: CampaignBossEvent[], name: string, intervalMs: number, telegraphMs: number, durationMs: number, label: CampaignBossPhaseLabel): void {
+  private tickHasteSupport(enemy: Enemy, enemies: readonly Enemy[], state: WorldSupportState, nowMs: number, events: CampaignBossEvent[], name: string, intervalMs: number, telegraphMs: number, durationMs: number, label: CampaignBossPhaseLabel, presentationAction?: CampaignBossEvent['presentationAction']): void {
     if (state.telegraphUntil > 0 && nowMs >= state.telegraphUntil) {
       for (const targetId of state.targetIds) {
         const target = enemies.find(candidate => candidate.id === targetId && candidate.alive);
         if (target) target.speedBuffUntil = Math.max(target.speedBuffUntil, nowMs + durationMs);
       }
       state.targetIds = []; state.telegraphUntil = 0; state.nextAt = nowMs + intervalMs;
-      events.push({ boss: enemy, text: `${name} · Nearby enemies hastened` });
+      events.push({ boss: enemy, text: `${name} · Nearby enemies hastened`, ...(presentationAction ? { presentationAction } : {}) });
       return;
     }
     if (state.telegraphUntil > 0 || nowMs < state.nextAt) return;
@@ -500,7 +501,7 @@ export class CampaignBossSystem {
     if (state.telegraphUntil > 0 && nowMs >= state.telegraphUntil) {
       state.telegraphUntil = 0; state.casts++;
       events.push({
-        boss: enemy, text: 'Echo Shade · Decoys emerge',
+        boss: enemy, text: 'Echo Shade · Decoys emerge', presentationAction: 'buff',
         summon: { enemyId: 'echo_shade', count: CAMPAIGN_BOSS_TUNING.echoShadeMaximumDecoys, kind: 'echo-decoy', ownerId: enemy.id, hpBonus: CAMPAIGN_BOSS_TUNING.echoShadeHpBonus }
       });
       return;

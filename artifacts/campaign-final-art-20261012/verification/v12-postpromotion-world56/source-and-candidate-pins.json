@@ -1,0 +1,149 @@
+{
+  "taskId": "V12",
+  "createdAtUtc": "2026-10-13T12:08:34.221Z",
+  "frozenSourceSha256": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+  "sources": {
+    "src/game/art/assetManifest.ts": "abf2d4eca5c79f790bc0909f6642e75e1fa2701985096c45a7e5b5543cc59fbd",
+    "src/game/art/enemyArt.ts": "1cebc2b6dc9f5bbca348ca206619c88e13ae939c84f18c80ecc2f85dfaae5045",
+    "src/game/art/enemyAtlasFrames.json": "f541b4f1d6e73d088aba0b0e71d6404410b9277604acb7c8a95e66dc536e841a",
+    "src/game/campaign/artManifest.ts": "68acbb0606954c18193441c7f022dd7b285653f49cc27f095a9734d4d5f80800",
+    "src/game/campaign/battle.ts": "1e66d2056f62bb182b9df66bf9965bc0e1ff08194e62c2ae391a970d97d2dcf8",
+    "src/game/campaign/bosses.ts": "3502b60287ad07ed13d858387589e8b0742ea93064ef1e2cd4d1ba0e14963ac1",
+    "src/game/campaign/config.ts": "10b54137996d465deab7ffeb235e791b4d3ade1875316efd6c702f6b9c625899",
+    "src/game/campaign/expansionContent.ts": "922a660085de169998489d2dbafaa37522331545ef86cdbfa8094ee29b0d96d4",
+    "src/game/campaign/expansionRoutes.ts": "c9c4b2a8057e3f6c10186af7d6647b4507643d6e83beb5596c7e79015068d8f6",
+    "src/game/campaign/mapLayout.ts": "cea4d2fda176622654e3d6455e90db1d5eb58d974e638e2b1540e00e113ab4e8",
+    "src/game/campaign/progress.ts": "e4595ece6d6a5c861ab662cb119fe2c999a81b0dfc16b89662a8e688abd02ed9",
+    "src/game/scenes/CampaignScene.ts": "b970c031169a42fafea6a87fed91f6578e984427b1516b3b165d18bc82a15ee6",
+    "src/game/scenes/GameScene.ts": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+    "src/game/scenes/PreloadScene.ts": "6f922c36053b616e314c7db5d4e40280054db1bec9ec6a467a53acabfec7294b",
+    "src/game/ui/layout.ts": "3dc634f192e79863359e7866781c0e33182cd339521b49f7d0bfd00069877e0a",
+    "src/game/ui/viewport.ts": "d1df0b9f753c429fa3e57cd8d2af87ea087533f315038fd5cb796c7b52642c31"
+  },
+  "worlds": [
+    {
+      "world": "world5",
+      "inputs": 11,
+      "sources": 16,
+      "paths": [
+        {
+          "id": "world-panel:sunken_aether",
+          "path": "/assets/campaign/world-map/sunken_aether-v2.png",
+          "sha256": "a8d0b31fa2d7323ee47a0a8f5de2b71d47992db0863358adbba22ea115fad0af"
+        },
+        {
+          "id": "map:sunken_aether:a",
+          "path": "/assets/campaign/maps/sunken_aether_a-v2.png",
+          "sha256": "884c699225f32f88b51a970cf0593fecfb9e7cd73481a3900329a12ebbe332d7"
+        },
+        {
+          "id": "map:sunken_aether:b",
+          "path": "/assets/campaign/maps/sunken_aether_b-v2.png",
+          "sha256": "dfd66ef9fa4c88b678a482af4ef2e6f3a522d03ac4f9ea5026dcb54a2dc1903d"
+        },
+        {
+          "id": "map:sunken_aether:c",
+          "path": "/assets/campaign/maps/sunken_aether_c-v2.png",
+          "sha256": "580c0b22d986c28e74134dbe37932bd3aa477d808dfc6787dd9deef51c053e3e"
+        },
+        {
+          "id": "map:sunken_aether:d",
+          "path": "/assets/campaign/maps/sunken_aether_d-v2.png",
+          "sha256": "47a83efd27dfbc07d7efcf333e2e8c0aa3ba2240d7130fb076148cf457ed6225"
+        },
+        {
+          "id": "enemy:tideborn",
+          "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
+          "sha256": "c003c2ecd9fc4ec12f1fafad1ac3e52eabf654fdaa5e233bca3541e165a34122"
+        },
+        {
+          "id": "enemy:crystal_wisp",
+          "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
+          "sha256": "fe8be230637cefbef9ad887c6d628671a422fbd20e1094ccd9b50a3cbb28084d"
+        },
+        {
+          "id": "enemy:deepcrawler",
+          "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
+          "sha256": "b4b9ec1910437a7fd270b009bb126c3442b9fa187e2ab9debeb7f2292f84504e"
+        },
+        {
+          "id": "enemy:relic_guardian",
+          "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
+          "sha256": "2089222291f53968107c7c3d467cd5c298c7b7ca92a1fa5a26dfe17593ca121f"
+        },
+        {
+          "id": "enemy:aetherbound",
+          "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
+          "sha256": "c54ead85262b714e2c3507a9f61689b26d94f04c1bc5ad2db218fa8c0b21dd6b"
+        },
+        {
+          "id": "boss:drowned_oracle",
+          "path": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
+          "sha256": "1710521cc2377ff1c5ca7c0a879c59aa83a523783106481c49f3210a3e205cf7"
+        }
+      ]
+    },
+    {
+      "world": "world6",
+      "inputs": 11,
+      "sources": 16,
+      "paths": [
+        {
+          "id": "world-panel:ironroot",
+          "path": "/assets/campaign/world-map/ironroot-v2.png",
+          "sha256": "bb46fa28e5e9e5acf8d77a9bd2e059c0dfc71fead420fbc93ce5205bf98a499e"
+        },
+        {
+          "id": "map:ironroot:a",
+          "path": "/assets/campaign/maps/ironroot_a-v2.png",
+          "sha256": "f094f9dcf725d28be8409430baa1ae0adb6bf82faded6d13f567349db5ef2e2c"
+        },
+        {
+          "id": "map:ironroot:b",
+          "path": "/assets/campaign/maps/ironroot_b-v2.png",
+          "sha256": "5dcdb71ba2d33df1f4cd734b346f6cd216058737285ed597a4cfcaba74787404"
+        },
+        {
+          "id": "map:ironroot:c",
+          "path": "/assets/campaign/maps/ironroot_c-v2.png",
+          "sha256": "53aeece9783bfa5ed5f87ee766a9701939665f06b4bf9f93e350cd3a0aaf2b23"
+        },
+        {
+          "id": "map:ironroot:d",
+          "path": "/assets/campaign/maps/ironroot_d-v2.png",
+          "sha256": "72b13d5e41d2c0fd088fb2fcade469a79fb9f61cebf3bc24921b64baeab5821d"
+        },
+        {
+          "id": "enemy:scrapling",
+          "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
+          "sha256": "e56efb79c8859dc17ddd79ad5abfd410d310a7c5b4e5836e91022ce8858689ae"
+        },
+        {
+          "id": "enemy:furnace_hound",
+          "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
+          "sha256": "b1ffb21ef0244005289abae0bcfc897a3d8a479a278d327c9f6c2755e4f0e017"
+        },
+        {
+          "id": "enemy:ironbound",
+          "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
+          "sha256": "127fbe7f27c2aa4996cb9a09c95a029520ba9c664d113368ae10788d2694696d"
+        },
+        {
+          "id": "enemy:foundry_core",
+          "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
+          "sha256": "4d9ceee2092c1bc1e514f0e76125b3deaefd26246753df27c968259f889012f1"
+        },
+        {
+          "id": "enemy:siege_golem",
+          "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
+          "sha256": "2a74f89fd8d4610009ba55fb3b281489dd1aa2eafcd99479bf8ee0cb9862cde2"
+        },
+        {
+          "id": "boss:iron_tyrant",
+          "path": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
+          "sha256": "7efca9d25dbe0f27b370f798c8c5e6035120a1f77e7fb5c473c2da856aa504d9"
+        }
+      ]
+    }
+  ]
+}

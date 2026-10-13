@@ -3558,7 +3558,1629 @@
             }
           ]
         }
+      },
+      {
+        "id": "world-panel:sunken_aether",
+        "baselineV1Path": "/assets/campaign/world-map/sunken_aether-v1.png",
+        "baselineSha256": "dde1152f4a68ee9057c6de55bd2679a8d053486a155aaab4b1527cf8ed676875",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/panels/sunken-aether-panel-candidate-v1.png",
+        "candidateSha256": "a8d0b31fa2d7323ee47a0a8f5de2b71d47992db0863358adbba22ea115fad0af",
+        "promotedPath": "/assets/campaign/world-map/sunken_aether-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "world-panel:sunken_aether",
+          "key": "campaign_worldmap_sunken_aether",
+          "path": "/assets/campaign/world-map/sunken_aether-v2.png",
+          "kind": "image",
+          "width": 768,
+          "height": 432,
+          "states": {},
+          "state": "final",
+          "stage": "campaign",
+          "temporary": null,
+          "qualityFlags": [
+            "biome_illustration"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:sunken_aether:a",
+        "baselineV1Path": "/assets/campaign/maps/sunken_aether_a-v1.png",
+        "baselineSha256": "629aaaa0cf2b6c609ca960e93bc9c2bab5262694ed01d4b556e91aa1e243731a",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_a-v1-candidate.png",
+        "candidateSha256": "884c699225f32f88b51a970cf0593fecfb9e7cd73481a3900329a12ebbe332d7",
+        "promotedPath": "/assets/campaign/maps/sunken_aether_a-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:sunken_aether:a",
+          "key": "campaign_sunken_aether_a",
+          "path": "/assets/campaign/maps/sunken_aether_a-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:sunken_aether:b",
+        "baselineV1Path": "/assets/campaign/maps/sunken_aether_b-v1.png",
+        "baselineSha256": "76526d9f729baff252244baf1b8a6f357a2abddf834624c98a5ac2cdeac15bad",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_b-v1-candidate.png",
+        "candidateSha256": "dfd66ef9fa4c88b678a482af4ef2e6f3a522d03ac4f9ea5026dcb54a2dc1903d",
+        "promotedPath": "/assets/campaign/maps/sunken_aether_b-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:sunken_aether:b",
+          "key": "campaign_sunken_aether_b",
+          "path": "/assets/campaign/maps/sunken_aether_b-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:sunken_aether:c",
+        "baselineV1Path": "/assets/campaign/maps/sunken_aether_c-v1.png",
+        "baselineSha256": "88924d36064fe9288ba22948c1c46f8bab6dcc5407ce7abed68ce193d7f271f1",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_c-v1-candidate.png",
+        "candidateSha256": "580c0b22d986c28e74134dbe37932bd3aa477d808dfc6787dd9deef51c053e3e",
+        "promotedPath": "/assets/campaign/maps/sunken_aether_c-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:sunken_aether:c",
+          "key": "campaign_sunken_aether_c",
+          "path": "/assets/campaign/maps/sunken_aether_c-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:sunken_aether:d",
+        "baselineV1Path": "/assets/campaign/maps/sunken_aether_d-v1.png",
+        "baselineSha256": "9a87a45ac93fb823aa5d772e2bf486e9e52ccdd06d54ee87681587c7146fea67",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_d-v1-candidate.png",
+        "candidateSha256": "47a83efd27dfbc07d7efcf333e2e8c0aa3ba2240d7130fb076148cf457ed6225",
+        "promotedPath": "/assets/campaign/maps/sunken_aether_d-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:sunken_aether:d",
+          "key": "campaign_sunken_aether_d",
+          "path": "/assets/campaign/maps/sunken_aether_d-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "enemy:tideborn",
+        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v1.png",
+        "baselineSha256": "c29acd629a2f9c37da33808cb7fe766bbe0e5f011117ebfc1ca8e546757f96ec",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/tideborn/tideborn-atlas-candidate-v3.png",
+        "candidateSha256": "c003c2ecd9fc4ec12f1fafad1ac3e52eabf654fdaa5e233bca3541e165a34122",
+        "promotedPath": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:tideborn",
+          "key": "campaign_enemy_tideborn",
+          "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_tideborn_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_tideborn_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_tideborn_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_tideborn_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:crystal_wisp",
+        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v1.png",
+        "baselineSha256": "3de60fe80292b311e83af4d895077d3a879ac56a07cb232c3f7127681c7efbef",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/crystal-wisp/crystal-wisp-atlas-candidate-v4.png",
+        "candidateSha256": "fe8be230637cefbef9ad887c6d628671a422fbd20e1094ccd9b50a3cbb28084d",
+        "promotedPath": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:crystal_wisp",
+          "key": "campaign_enemy_crystal_wisp",
+          "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_crystal_wisp_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_crystal_wisp_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_crystal_wisp_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_crystal_wisp_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:deepcrawler",
+        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v1.png",
+        "baselineSha256": "102593add2dc545b65661124de50b31b5291b51ef8568ec97109f96fc6de65db",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/deepcrawler/deepcrawler-atlas-candidate-v3.png",
+        "candidateSha256": "b4b9ec1910437a7fd270b009bb126c3442b9fa187e2ab9debeb7f2292f84504e",
+        "promotedPath": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:deepcrawler",
+          "key": "campaign_enemy_deepcrawler",
+          "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_deepcrawler_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_deepcrawler_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_deepcrawler_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_deepcrawler_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:relic_guardian",
+        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v1.png",
+        "baselineSha256": "e027c9274c445039b6afde8a1ac1bf3bc67bcd80efb908582448f532e9cefde1",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/relic-guardian/relic-guardian-atlas-candidate-v1.png",
+        "candidateSha256": "2089222291f53968107c7c3d467cd5c298c7b7ca92a1fa5a26dfe17593ca121f",
+        "promotedPath": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:relic_guardian",
+          "key": "campaign_enemy_relic_guardian",
+          "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_relic_guardian_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_relic_guardian_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_relic_guardian_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_relic_guardian_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:aetherbound",
+        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v1.png",
+        "baselineSha256": "955ee76bf98bfebf13f4b0211d997d2e1ce7d812149fb0f4b6fd789a5b3e1ce9",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/repair-v1/candidates/aetherbound-atlas-candidate-repair-r3.png",
+        "candidateSha256": "c54ead85262b714e2c3507a9f61689b26d94f04c1bc5ad2db218fa8c0b21dd6b",
+        "promotedPath": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:aetherbound",
+          "key": "campaign_enemy_aetherbound",
+          "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 640,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            },
+            "buff": {
+              "row": 4,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow",
+            "support_buff_playback_verified"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_aetherbound_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_aetherbound_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_aetherbound_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_aetherbound_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_aetherbound_buff",
+              "state": "buff",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "buff_0",
+                "buff_1",
+                "buff_2",
+                "buff_3",
+                "buff_4",
+                "buff_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "boss:drowned_oracle",
+        "baselineV1Path": "/assets/campaign/bosses/drowned_oracle-atlas-v1.png",
+        "baselineSha256": "a503b6c99cbe3f2055a48be332e69b625e834f70502a22b7fb27da289f8887cf",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world5/repair-v1/candidates/drowned-oracle-atlas-candidate-repair-r2.png",
+        "candidateSha256": "1710521cc2377ff1c5ca7c0a879c59aa83a523783106481c49f3210a3e205cf7",
+        "promotedPath": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "boss:drowned_oracle",
+          "key": "campaign_enemy_drowned_oracle",
+          "path": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
+          "kind": "sheet",
+          "width": 2048,
+          "height": 1536,
+          "frameWidth": 256,
+          "frameHeight": 256,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 6
+            },
+            "walk": {
+              "row": 1,
+              "frames": 8
+            },
+            "attack": {
+              "row": 2,
+              "frames": 8
+            },
+            "special": {
+              "row": 3,
+              "frames": 8
+            },
+            "phase_two": {
+              "row": 4,
+              "frames": 8
+            },
+            "death": {
+              "row": 5,
+              "frames": 8
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "phase_state_readability_verified"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_drowned_oracle_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3",
+                "idle_4",
+                "idle_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_drowned_oracle_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5",
+                "walk_6",
+                "walk_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_drowned_oracle_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5",
+                "attack_6",
+                "attack_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_drowned_oracle_special",
+              "state": "special",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "special_0",
+                "special_1",
+                "special_2",
+                "special_3",
+                "special_4",
+                "special_5",
+                "special_6",
+                "special_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_drowned_oracle_phase_two",
+              "state": "phase_two",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "phase_two_0",
+                "phase_two_1",
+                "phase_two_2",
+                "phase_two_3",
+                "phase_two_4",
+                "phase_two_5",
+                "phase_two_6",
+                "phase_two_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_drowned_oracle_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5",
+                "death_6",
+                "death_7"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "world-panel:ironroot",
+        "baselineV1Path": "/assets/campaign/world-map/ironroot-v1.png",
+        "baselineSha256": "b0f2cd62d5a4fe5e563b49aee44ed67f5821aa4b4ecc5eff34f59e42f4daa2a5",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-panel-v2-candidate.png",
+        "candidateSha256": "bb46fa28e5e9e5acf8d77a9bd2e059c0dfc71fead420fbc93ce5205bf98a499e",
+        "promotedPath": "/assets/campaign/world-map/ironroot-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "world-panel:ironroot",
+          "key": "campaign_worldmap_ironroot",
+          "path": "/assets/campaign/world-map/ironroot-v2.png",
+          "kind": "image",
+          "width": 768,
+          "height": 432,
+          "states": {},
+          "state": "final",
+          "stage": "campaign",
+          "temporary": null,
+          "qualityFlags": [
+            "biome_illustration"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:ironroot:a",
+        "baselineV1Path": "/assets/campaign/maps/ironroot_a-v1.png",
+        "baselineSha256": "8b2c8022b55a4b333c7fb4047e4f0fc3bc258564f21a3600de0b1359d41bb59d",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-a-v2-candidate.png",
+        "candidateSha256": "f094f9dcf725d28be8409430baa1ae0adb6bf82faded6d13f567349db5ef2e2c",
+        "promotedPath": "/assets/campaign/maps/ironroot_a-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:ironroot:a",
+          "key": "campaign_ironroot_a",
+          "path": "/assets/campaign/maps/ironroot_a-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:ironroot:b",
+        "baselineV1Path": "/assets/campaign/maps/ironroot_b-v1.png",
+        "baselineSha256": "f694aa8336c71d0a6ca711527e89056fde864ab96c10a920a98579fc0c270caa",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-b-v2-candidate.png",
+        "candidateSha256": "5dcdb71ba2d33df1f4cd734b346f6cd216058737285ed597a4cfcaba74787404",
+        "promotedPath": "/assets/campaign/maps/ironroot_b-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:ironroot:b",
+          "key": "campaign_ironroot_b",
+          "path": "/assets/campaign/maps/ironroot_b-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:ironroot:c",
+        "baselineV1Path": "/assets/campaign/maps/ironroot_c-v1.png",
+        "baselineSha256": "2823f945ab3a1d369ea678a31a83b8493a30cca735d89e7d5c7127048bec4066",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-c-v2-candidate.png",
+        "candidateSha256": "53aeece9783bfa5ed5f87ee766a9701939665f06b4bf9f93e350cd3a0aaf2b23",
+        "promotedPath": "/assets/campaign/maps/ironroot_c-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:ironroot:c",
+          "key": "campaign_ironroot_c",
+          "path": "/assets/campaign/maps/ironroot_c-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "map:ironroot:d",
+        "baselineV1Path": "/assets/campaign/maps/ironroot_d-v1.png",
+        "baselineSha256": "05db62f72281ee52b46cfa2422c5340f05bb04364221d0fa7192e5440b39db89",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-d-v2-candidate.png",
+        "candidateSha256": "72b13d5e41d2c0fd088fb2fcade469a79fb9f61cebf3bc24921b64baeab5821d",
+        "promotedPath": "/assets/campaign/maps/ironroot_d-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "map:ironroot:d",
+          "key": "campaign_ironroot_d",
+          "path": "/assets/campaign/maps/ironroot_d-v2.png",
+          "kind": "image",
+          "width": 1672,
+          "height": 940,
+          "states": {},
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "terrain_plate",
+            "runtime_geometry_overlay"
+          ],
+          "animations": []
+        }
+      },
+      {
+        "id": "enemy:scrapling",
+        "baselineV1Path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v1.png",
+        "baselineSha256": "e5409ef4f568a88f56eefc46a7c21ed46bfdca20dd7ac7b59ca54f204057dfe7",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/scrapling-atlas-repair-v3-candidate.png",
+        "candidateSha256": "e56efb79c8859dc17ddd79ad5abfd410d310a7c5b4e5836e91022ce8858689ae",
+        "promotedPath": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:scrapling",
+          "key": "campaign_enemy_scrapling",
+          "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_scrapling_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_scrapling_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_scrapling_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_scrapling_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:furnace_hound",
+        "baselineV1Path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v1.png",
+        "baselineSha256": "6b341b5bcaf0268e127e67fcf6fb5a7c90220f291199280583760c4d4ea04f37",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/furnace-hound-atlas-repair-v3-candidate.png",
+        "candidateSha256": "b1ffb21ef0244005289abae0bcfc897a3d8a479a278d327c9f6c2755e4f0e017",
+        "promotedPath": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:furnace_hound",
+          "key": "campaign_enemy_furnace_hound",
+          "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_furnace_hound_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_furnace_hound_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_furnace_hound_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_furnace_hound_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:ironbound",
+        "baselineV1Path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v1.png",
+        "baselineSha256": "0838c0e98a047147915d5295520c8f9266dd8b793299575932bd87945a70281c",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/ironbound-atlas-repair-v3-candidate.png",
+        "candidateSha256": "127fbe7f27c2aa4996cb9a09c95a029520ba9c664d113368ae10788d2694696d",
+        "promotedPath": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:ironbound",
+          "key": "campaign_enemy_ironbound",
+          "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_ironbound_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_ironbound_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_ironbound_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_ironbound_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:foundry_core",
+        "baselineV1Path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v1.png",
+        "baselineSha256": "082eb51b768bf8a824235a99eb94e799cdc742203740f747cf4aeb5bbe5e2e3c",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/foundry-core-atlas-repair-v3-candidate.png",
+        "candidateSha256": "4d9ceee2092c1bc1e514f0e76125b3deaefd26246753df27c968259f889012f1",
+        "promotedPath": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:foundry_core",
+          "key": "campaign_enemy_foundry_core",
+          "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 640,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            },
+            "buff": {
+              "row": 4,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow",
+            "support_buff_playback_verified"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_foundry_core_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_foundry_core_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_foundry_core_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_foundry_core_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_foundry_core_buff",
+              "state": "buff",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "buff_0",
+                "buff_1",
+                "buff_2",
+                "buff_3",
+                "buff_4",
+                "buff_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "enemy:siege_golem",
+        "baselineV1Path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v1.png",
+        "baselineSha256": "bbce05d3b379c989d25f3b564e8764f9e13eedda8a7ceed1d382aad4d8a96929",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/siege-golem-atlas-repair-v3-candidate.png",
+        "candidateSha256": "2a74f89fd8d4610009ba55fb3b281489dd1aa2eafcd99479bf8ee0cb9862cde2",
+        "promotedPath": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "enemy:siege_golem",
+          "key": "campaign_enemy_siege_golem",
+          "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
+          "kind": "sheet",
+          "width": 768,
+          "height": 512,
+          "frameWidth": 128,
+          "frameHeight": 128,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 4
+            },
+            "walk": {
+              "row": 1,
+              "frames": 6
+            },
+            "attack": {
+              "row": 2,
+              "frames": 6
+            },
+            "death": {
+              "row": 3,
+              "frames": 6
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "no_baked_ui_or_large_shadow"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_siege_golem_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3"
+              ]
+            },
+            {
+              "key": "campaign_enemy_siege_golem_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_siege_golem_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_siege_golem_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "boss:iron_tyrant",
+        "baselineV1Path": "/assets/campaign/bosses/iron_tyrant-atlas-v1.png",
+        "baselineSha256": "56b84da13a79e2c9808bf03ce5c9a3a9d1e9760213e94dc71ee6f1622185cea6",
+        "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/iron-tyrant-atlas-repair-v3-candidate.png",
+        "candidateSha256": "7efca9d25dbe0f27b370f798c8c5e6035120a1f77e7fb5c473c2da856aa504d9",
+        "promotedPath": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
+        "approved": true,
+        "registration": {
+          "id": "boss:iron_tyrant",
+          "key": "campaign_enemy_iron_tyrant",
+          "path": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
+          "kind": "sheet",
+          "width": 2048,
+          "height": 1536,
+          "frameWidth": 256,
+          "frameHeight": 256,
+          "states": {
+            "idle": {
+              "row": 0,
+              "frames": 6
+            },
+            "walk": {
+              "row": 1,
+              "frames": 8
+            },
+            "attack": {
+              "row": 2,
+              "frames": 8
+            },
+            "special": {
+              "row": 3,
+              "frames": 8
+            },
+            "phase_two": {
+              "row": 4,
+              "frames": 8
+            },
+            "death": {
+              "row": 5,
+              "frames": 8
+            }
+          },
+          "state": "final",
+          "stage": "gameplay",
+          "temporary": null,
+          "qualityFlags": [
+            "transparent_png_required",
+            "consistent_feet_anchor",
+            "phase_state_readability_verified"
+          ],
+          "animations": [
+            {
+              "key": "campaign_enemy_iron_tyrant_idle",
+              "state": "idle",
+              "frameRate": 4,
+              "repeat": -1,
+              "frames": [
+                "idle_0",
+                "idle_1",
+                "idle_2",
+                "idle_3",
+                "idle_4",
+                "idle_5"
+              ]
+            },
+            {
+              "key": "campaign_enemy_iron_tyrant_walk",
+              "state": "walk",
+              "frameRate": 7,
+              "repeat": -1,
+              "frames": [
+                "walk_0",
+                "walk_1",
+                "walk_2",
+                "walk_3",
+                "walk_4",
+                "walk_5",
+                "walk_6",
+                "walk_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_iron_tyrant_attack",
+              "state": "attack",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "attack_0",
+                "attack_1",
+                "attack_2",
+                "attack_3",
+                "attack_4",
+                "attack_5",
+                "attack_6",
+                "attack_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_iron_tyrant_special",
+              "state": "special",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "special_0",
+                "special_1",
+                "special_2",
+                "special_3",
+                "special_4",
+                "special_5",
+                "special_6",
+                "special_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_iron_tyrant_phase_two",
+              "state": "phase_two",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "phase_two_0",
+                "phase_two_1",
+                "phase_two_2",
+                "phase_two_3",
+                "phase_two_4",
+                "phase_two_5",
+                "phase_two_6",
+                "phase_two_7"
+              ]
+            },
+            {
+              "key": "campaign_enemy_iron_tyrant_death",
+              "state": "death",
+              "frameRate": 8,
+              "repeat": 0,
+              "frames": [
+                "death_0",
+                "death_1",
+                "death_2",
+                "death_3",
+                "death_4",
+                "death_5",
+                "death_6",
+                "death_7"
+              ]
+            }
+          ]
+        }
       }
-    ]
+    ],
+    "reviewPaths": {
+      "sunken_aether": {
+        "runtime": "artifacts/campaign-final-art-20261012/verification/world5-runtime/w5-verification-report.md",
+        "raw": "artifacts/campaign-final-art-20261012/verification/world5-raw/review-report.md",
+        "candidateInputs": "artifacts/campaign-final-art-20261012/verification/world5-runtime/candidate-inputs.json"
+      },
+      "ironroot": {
+        "runtime": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/w6-verification-report.md",
+        "raw": "artifacts/campaign-final-art-20261012/verification/world6-raw/verification-report.md",
+        "candidateInputs": "artifacts/campaign-final-art-20261012/verification/world6-runtime/repair-v3/candidate-inputs.json"
+      }
+    },
+    "acceptedWorldIds": [
+      "whisperfen",
+      "sunken_aether",
+      "ironroot"
+    ],
+    "integrationReport": "artifacts/campaign-final-art-20261012/integration/world5-6-promotion-report.md"
   }
 }

@@ -3089,7 +3089,7 @@ export class GameScene extends Phaser.Scene {
 
   private tickCampaignBosses(): void {
     for (const event of this.campaignBosses.tick(this.enemies, this.towers, this.gameTimeMs)) {
-      if (event.boss.campaignId === 'ashcaller' || event.boss.campaignId === 'frost_shaman' || event.boss.campaignId === 'rootwretch') {
+      if (event.presentationAction === 'buff') {
         (event.boss.view?.getData('enemyVisual') as EnemyView | undefined)?.playAction('buff');
       }
       this.showCampaignCallout(event.text);

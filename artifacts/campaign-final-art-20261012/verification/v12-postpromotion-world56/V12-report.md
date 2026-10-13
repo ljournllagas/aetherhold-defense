@@ -1,0 +1,32 @@
+# Task ID V12 — World5/World6 local post-promotion verification
+
+**Decision: PASS for the independent local post-promotion gate.** The fresh local Vite application loaded the exact 22 promoted World5/World6 files from the normal `public/` directory. The 100-level loader contract, baseline rollback files, previous World4 release, representative Phaser stages, boss flows, support presentations, and viewport interactions all passed. This is a pre-deployment result; the authorized release operator still owns the post-deployment live check.
+
+## Frozen inputs and method
+
+The runtime source matched the frozen S3 source throughout both runs. `src/game/scenes/GameScene.ts` SHA-256 was `640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4`; hashes for all 16 pinned source modules are recorded in [source-and-candidate-pins.json](source-and-candidate-pins.json). The exact 22 candidate hashes, accepted candidate paths, dimensions, and promoted public paths are pinned there as well.
+
+I prepared each input set from the A7 promotion report and the previously accepted World5/World6 candidate pins. Before launching Vite, the harness independently checked the candidate file and the local promoted `public/` file against the pinned SHA-256 and confirmed their bytes were identical. The Playwright harness did not route, fulfill, or substitute any `/assets/campaign/` request; it hashed the ordinary local HTTP responses from the public directory. It used actual Phaser `GameScene` fixtures in fresh headless Chromium contexts. Only local GET responses for account configuration and authentication were stubbed to run unsaved QA. Other API requests were blocked, and local campaign profile storage was checked after every case.
+
+## Results
+
+- **World5: PASS.** The campaign panel rendered at 1440×900, 1280×720, 1024×768, and 844×390. Map families A–D were exercised at all four sizes, followed by boss map D at 320×390 and 360×360: 4 panel cases and 18 stage cases. Levels 41, 44, 47, and 50 selected the expected map families.
+- **World6: PASS.** The same viewport matrix covered the Ironroot panel and maps A–D; compact boss cases used 320×390 and 360×360. Levels 51, 54, 57, and 60 selected the expected families.
+- Each world produced 134 real local public-file responses; every one of its 11 promoted panel, map, enemy, and boss paths returned PNG bytes with the accepted SHA-256. No browser errors, failed requests, unexpected HTTP errors, or blocked API calls occurred. All 23 profile checks per world remained unchanged.
+- Each world recorded 20 registered action captures for idle, walk, attack, buff, and death, plus seven boss lifecycle/state captures. The interaction check preserved pan and zoom through deliberate zoom/pan, pause/resume and speed changes, resized from 844×390 to 320×390, and restored the prior viewport and camera state.
+- The authored scheduled support pulse reached its registered animation consumer once in each QA fixture: Aetherbound at World5 level 47 and Foundry Core at World6 level 57. These checks advanced the real unpaused campaign clock and observed the buff action/callout; seeded support and allied units are QA setup, not claims of naturally completed matches.
+- The fresh module audit checked all **100** campaign loader contexts: the gameplay selector and request selector agreed on key/path pairs, selected entries resolved in the campaign manifest, and runtime keys were unique in each request. The manifest contained 120 entries, with 76 final and 44 provisional paths. All 33 integrated v2 rows (11 previously deployed World4 plus 22 World5/World6 promotions) matched their manifest IDs, keys, paths, kinds, dimensions, final state, and non-provisional flags. All 20 World5/World6 level contexts were enumerated and checked; every promoted gameplay ID was selected in a target context, and both panels resolved through the campaign panel loader.
+- The 120 baseline files retained their recorded hashes and dimensions: 43 approved originals and 77 v1 expansion rollback assets. The 11 previously deployed World4 v2 files remain integrated and were not altered.
+
+I inspected fresh native captures for both worlds at 844×390 and 320×390. The full route, build plots, towers, active enemies, boss status, and gameplay controls remain on-screen at compact sizes; fine terrain and sprite detail is reduced at 320×390, consistent with the previously accepted compact-detail limit. Example captures: [World5 844×390](world5/screenshots/game-sunken_aether_d_boss-844x390-mixed-walk.png), [World5 320×390](world5/screenshots/game-sunken_aether_d_boss-320x390-mixed-walk.png), [World6 844×390](world6/screenshots/game-ironroot_d_boss-844x390-mixed-walk.png), and [World6 320×390](world6/screenshots/game-ironroot_d_boss-320x390-mixed-walk.png). The scheduled support captures are [Aetherbound](world5/screenshots/aetherbound-natural-support-pulse-844x390.png) and [Foundry Core](world6/screenshots/foundry-core-natural-support-pulse-844x390.png).
+
+## Evidence and limits
+
+- [Local contract and rollback audit](local-contract-audit.json)
+- [11 previously deployed World4 v2 public-file hashes and dimensions](world4-public-preservation.json)
+- [World5 runtime report](world5/v12-world5-report.json) and [World6 runtime report](world6/v12-world6-report.json)
+- [Pinned source and all 22 accepted candidate hashes](source-and-candidate-pins.json)
+- [Pre-deployment live baseline observation](public-asset-audit.json): the then-current Worker returned a 612-byte HTML SPA fallback at the 22 new URLs. The A7 deployment ledger says that release still contains World4 only, so this is expected before deployment and was explicitly excluded from acceptance; it is not a live post-deployment result.
+- The first two local manifest-audit attempts exposed harness-only issues (an interception glob matched `/src/api/` modules, then a summary variable scope error). Both are documented in [attempt 01](local-contract-audit-attempt-01.md) and [attempt 02](local-contract-audit-attempt-02.md); the corrected final audit passed.
+
+This verification does not claim a production deployment or live post-deployment response check, a full uninterrupted campaign match, mobile-device calibration, or independent re-approval of each atlas’s raw art. The earlier accepted raw-art and staged-runtime reviews remain the art-quality basis. The A7 full suite/build/typecheck results were not rerun because no application source changed during this verification.
