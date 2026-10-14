@@ -305,7 +305,7 @@ describe('campaign leaderboard scene modes', () => {
     const scene = new LeaderboardScene();
     scene.init({});
     scene.create();
-    internalsOf(scene).modeTabs.find((tab) => tab.mode === 'campaign')!.box.fire('pointerdown');
+    internalsOf(scene).modeTabs.find((tab) => tab.mode === 'campaign')!.box.fire('pointerup');
     classic.resolve({ ok: true, scores: [classicRow()] });
     await flushPromises();
     expect(internalsOf(scene).records).toEqual([]);
@@ -324,7 +324,7 @@ describe('campaign leaderboard scene modes', () => {
     const scene = new LeaderboardScene();
     scene.init({ mode: 'campaign' });
     scene.create();
-    internalsOf(scene).modeTabs.find((tab) => tab.mode === 'classic')!.box.fire('pointerdown');
+    internalsOf(scene).modeTabs.find((tab) => tab.mode === 'classic')!.box.fire('pointerup');
     campaign.resolve({ ok: true, scores: [campaignRow()] });
     await flushPromises();
     expect(internalsOf(scene).campaignRecords).toEqual([]);
@@ -345,7 +345,7 @@ describe('campaign leaderboard scene modes', () => {
     expect(internalsOf(scene).records).toHaveLength(1);
     const renderedBefore = (scene as unknown as { rowViews: unknown[] }).rowViews.length;
     expect(renderedBefore).toBeGreaterThan(0);
-    internalsOf(scene).modeTabs.find((tab) => tab.mode === 'campaign')!.box.fire('pointerdown');
+    internalsOf(scene).modeTabs.find((tab) => tab.mode === 'campaign')!.box.fire('pointerup');
     expect((scene as unknown as { rowViews: unknown[] }).rowViews).toEqual([]);
     campaign.resolve({ ok: true, scores: [campaignRow()] });
     await flushPromises();
@@ -362,7 +362,7 @@ describe('campaign leaderboard scene modes', () => {
     await flushPromises();
     expect(internalsOf(scene).campaignRecords).toHaveLength(1);
     const retry = boardMocks.displays.find((display) => display.kind === 'rectangle' && display.args[2] === 144)!;
-    retry.fire('pointerdown');
+    retry.fire('pointerup');
     await flushPromises();
     expect(boardMocks.fetchCampaignLeaderboard).toHaveBeenCalledTimes(2);
     expect(boardMocks.fetchLeaderboard).not.toHaveBeenCalled();
@@ -382,7 +382,7 @@ describe('campaign leaderboard scene modes', () => {
     const stale = internalsOf(scene).records;
     expect(stale).toHaveLength(1);
     const retry = boardMocks.displays.find((display) => display.kind === 'rectangle' && display.args[2] === 144)!;
-    retry.fire('pointerdown');
+    retry.fire('pointerup');
     expect((scene as unknown as { rowViews: unknown[] }).rowViews).toHaveLength(1);
     await flushPromises();
     expect(internalsOf(scene).records).toEqual([]);

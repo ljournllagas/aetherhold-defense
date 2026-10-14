@@ -56,11 +56,21 @@ function addButton(
     button.setFillStyle(fill, 0.96).setStrokeStyle(primary ? 2 : 1, edge, 1);
     etchedFrame(scene, x, y, width, height, primary, trim);
   });
-  button.on('pointerdown', () => {
+  let menuPress: { id: number; x: number; y: number } | null = null;
+  button.on('pointerdown', (p?: Phaser.Input.Pointer) => {
     SoundManager.get().unlock();
-    SoundManager.get().click();
-    action();
+    if (p) menuPress = { id: p.id, x: p.x, y: p.y };
+    else menuPress = null;
   });
+  button.on('pointerup', (p?: Phaser.Input.Pointer) => {
+    const start = menuPress; menuPress = null;
+    const ok = !p ? true : (start !== null && start.id === p.id && Math.hypot(p.x - start.x, p.y - start.y) <= 8);
+    if (ok) {
+      SoundManager.get().click();
+      action();
+    }
+  });
+  button.on('pointerout', () => { menuPress = null; });
 }
 
 export class MainMenuScene extends Phaser.Scene {

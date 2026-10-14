@@ -271,7 +271,7 @@ describe('screen lifecycle and leaderboard states', () => {
   const press = (label: string) => {
     const captions = screenMocks.displays.filter((d) => d.kind === 'text' && d.initialText === label);
     const caption = captions[captions.length - 1]; if (!caption) throw new Error(`No ${label} action`);
-    screenMocks.displays[screenMocks.displays.indexOf(caption) - 1].fire('pointerdown');
+    screenMocks.displays[screenMocks.displays.indexOf(caption) - 1].fire('pointerup');
   };
   const resultData = (overrides: Record<string, unknown> = {}) => ({ ...gameOverData('run-result-0001'), ...overrides }) as unknown as ReturnType<typeof gameOverData>;
 
@@ -279,7 +279,7 @@ describe('screen lifecycle and leaderboard states', () => {
     const scene = new MainMenuScene(); (scene.scale as any).width = width; (scene.scale as any).height = height; scene.create();
     const campaignButton = (scene as any).children.list.find((display: any) => display.kind === 'rectangle' && display.handlers.has('pointerdown'));
     expect(campaignButton).toBeDefined();
-    campaignButton.fire('pointerdown');
+    campaignButton.fire('pointerup');
     expect(scene.scene.start).toHaveBeenCalledWith('Preload', { stage: 'campaign', destination: 'Campaign' });
     scene.events.emit('shutdown');
   });
@@ -315,10 +315,10 @@ describe('screen lifecycle and leaderboard states', () => {
         expect(button.x + button.width <= other.x || other.x + other.width <= button.x || button.y + button.height <= other.y || other.y + other.height <= button.y).toBe(true);
       }
     }
-    buttons[1].fire('pointerdown');
+    buttons[1].fire('pointerup');
     expect(scene.scene.start).toHaveBeenLastCalledWith('Difficulty');
     for (const [index, route, data] of [[2, 'Leaderboard', {}], [3, 'Settings', undefined], [4, 'Progression', undefined]] as const) {
-      buttons[index].fire('pointerdown');
+      buttons[index].fire('pointerup');
       if (data) expect(scene.scene.start).toHaveBeenLastCalledWith(route, data);
       else expect(scene.scene.start).toHaveBeenLastCalledWith(route);
     }
@@ -476,7 +476,7 @@ describe('screen lifecycle and leaderboard states', () => {
 
     const leaderboardCaption = screenMocks.displays.find((display) => display.kind === 'text' && display.initialText === 'Leaderboard')!;
     const leaderboardButton = screenMocks.displays[screenMocks.displays.indexOf(leaderboardCaption) - 1];
-    leaderboardButton.fire('pointerdown');
+    leaderboardButton.fire('pointerup');
 
     expect(scene.scene.start).toHaveBeenCalledWith('Leaderboard', {
       filter: 'medium',
@@ -497,7 +497,7 @@ describe('screen lifecycle and leaderboard states', () => {
     const status = screenMocks.displays.find((display) => display.initialText === 'Consulting the archives...')!;
     expect(status.currentText).toContain('Leaderboard unavailable.');
     const retry = screenMocks.displays.find((display) => display.kind === 'rectangle' && display.args[2] === 144)!;
-    retry.fire('pointerdown');
+    retry.fire('pointerup');
     await flushPromises();
 
     expect(screenMocks.fetchLeaderboard).toHaveBeenCalledTimes(2);
@@ -518,7 +518,7 @@ describe('screen lifecycle and leaderboard states', () => {
       tabs: Array<{ filter: string; box: { fire: (event: string) => void } }>;
       records: Array<{ difficulty: string; runId: string }>;
     };
-    internals.tabs.find((tab) => tab.filter === 'hard')!.box.fire('pointerdown');
+    internals.tabs.find((tab) => tab.filter === 'hard')!.box.fire('pointerup');
     const hardScore = {
       id: 11, playerName: 'Hard Warden', difficulty: 'hard', highestWave: 4,
       wavesCompleted: 3, outcome: 'defeat', siegeBossesDefeated: 0, finalScore: 900,

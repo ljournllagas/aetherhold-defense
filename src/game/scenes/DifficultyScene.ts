@@ -31,7 +31,14 @@ function addButton(scene: Phaser.Scene, x: number, y: number, width: number, hei
     box.setFillStyle(fill, 0.97).setStrokeStyle(primary ? 2 : 1, primary ? COLORS.selected : COLORS.line);
     etchedFrame(scene, x, y, width, height, primary, frame);
   });
-  box.on('pointerdown', action);
+  let press: { id: number; x: number; y: number } | null = null;
+  box.on('pointerdown', (p?: Phaser.Input.Pointer) => { if (p) press = { id: p.id, x: p.x, y: p.y }; else press = null; });
+  box.on('pointerup', (p?: Phaser.Input.Pointer) => {
+    const start = press; press = null;
+    const ok = !p ? true : (start !== null && start.id === p.id && Math.hypot(p.x - start.x, p.y - start.y) <= 8);
+    if (ok) action();
+  });
+  box.on('pointerout', () => { press = null; });
   return box;
 }
 
@@ -203,7 +210,14 @@ export class DifficultyScene extends Phaser.Scene {
         this.add.text(x + cardWidth - 14, rowY, value, style(compact ? 12 : 14, C.goldBright, true)).setOrigin(1, 0.5);
       });
       box.setInteractive({ useHandCursor: true });
-      box.on('pointerdown', () => this.selectDifficulty(difficulty.id));
+      let cardPress: { x: number; y: number } | null = null;
+      box.on('pointerdown', (p?: Phaser.Input.Pointer) => { if (p) cardPress = { x: p.x, y: p.y }; else cardPress = null; });
+      box.on('pointerup', (p?: Phaser.Input.Pointer) => {
+        const start = cardPress; cardPress = null;
+        const ok = !p ? (start === null) : (start !== null && Math.hypot(p.x - start.x, p.y - start.y) <= 8);
+        if (ok) this.selectDifficulty(difficulty.id);
+      });
+      box.on('pointerout', () => { cardPress = null; });
       band.setDepth(1);
       this.diffCards.push({ id: difficulty.id, box, marker, frame, band });
     });
