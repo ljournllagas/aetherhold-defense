@@ -196,7 +196,7 @@ const press = (label: string) => {
   // interactive rectangle is the nearest preceding rectangle with a handler.
   for (let i = mocks.displays.indexOf(caption) - 1; i >= 0; i--) {
     const candidate = mocks.displays[i];
-    if (candidate.kind === 'rectangle' && candidate.handlers.has('pointerdown')) { candidate.fire('pointerdown'); return; }
+    if (candidate.kind === 'rectangle' && candidate.handlers.has('pointerdown')) { candidate.fire('pointerup'); return; }
   }
   throw new Error(`No interactive box for ${label}`);
 };

@@ -99,8 +99,13 @@ export class CampaignScene extends Phaser.Scene {
   private sheetRoot: Phaser.GameObjects.Container | null = null;
   private accountButton: HTMLButtonElement | undefined;
   private lastResult: CampaignClearResult | undefined;
+  private preparationScrollOffset = 0;
+  private preservePreparationScroll = false;
   private readonly handleResize = (): void => { this.scene.restart({ selectedLevel: this.selectedLevel, result: this.lastResult, mapScroll: this.mapScroll ?? 0 }); };
-  private readonly handleEscape = (): void => { this.scene.start('MainMenu'); };
+  private readonly handleEscape = (): void => {
+    if (this.sheet) { this.closeSheet(); return; }
+    this.scene.start('MainMenu');
+  };
 
   constructor() { super('Campaign'); }
 
@@ -471,6 +476,8 @@ export class CampaignScene extends Phaser.Scene {
   }
 
   private openPreparation(): void {
+    const savedScroll = this.preservePreparationScroll ? this.preparationScrollOffset : 0;
+    this.preservePreparationScroll = false;
     this.campaignView = campaignRepository.view();
     const sheet = this.makeSheet('Battle Preparation');
     const starsNow = this.campaignView.totalMasteryStars;
@@ -487,7 +494,7 @@ export class CampaignScene extends Phaser.Scene {
         const next = TARGETING_MODES[(TARGETING_MODES.indexOf(current) + 1) % TARGETING_MODES.length];
         const label = TOWERS[id].name;
         sheet.action(y, `${label} · ${current.toUpperCase()}  →  ${next.toUpperCase()}`, () => {
-          campaignRepository.setPreparationTargeting(id, next); this.campaignView = campaignRepository.view(); this.openPreparation();
+          campaignRepository.setPreparationTargeting(id, next); const _scroll = this.sheet?.scrollOffset ?? 0; this.preparationScrollOffset = _scroll; this.preservePreparationScroll = true; this.campaignView = campaignRepository.view(); this.openPreparation();
         });
         y += 52;
       }
@@ -498,12 +505,12 @@ export class CampaignScene extends Phaser.Scene {
         const id = `campaign-slot-${index + 1}`;
         const preset = this.campaignView.profile.preparationPresets.find(item => item.id === id);
         y += sheet.text(y, `${name}${preset ? ` · saved as “${preset.name}”` : ' · empty'}`).height + 8;
-        sheet.action(y, 'Save this setup', () => { campaignRepository.savePreparationPreset(id, name); this.campaignView = campaignRepository.view(); this.openPreparation(); }, 'secondary'); y += 52;
+        sheet.action(y, 'Save this setup', () => { campaignRepository.savePreparationPreset(id, name); const _scroll = this.sheet?.scrollOffset ?? 0; this.preparationScrollOffset = _scroll; this.preservePreparationScroll = true; this.campaignView = campaignRepository.view(); this.openPreparation(); }, 'secondary'); y += 52;
         sheet.action(y, preset ? 'Load saved setup' : 'No saved setup', () => {
-          if (preset) { campaignRepository.loadPreparationPreset(id); this.campaignView = campaignRepository.view(); this.openPreparation(); }
+          if (preset) { campaignRepository.loadPreparationPreset(id); const _scroll = this.sheet?.scrollOffset ?? 0; this.preparationScrollOffset = _scroll; this.preservePreparationScroll = true; this.campaignView = campaignRepository.view(); this.openPreparation(); }
         }, 'secondary', Boolean(preset));
         y += 52;
-        if (preset) { sheet.action(y, 'Delete preset', () => { campaignRepository.deletePreparationPreset(id); this.campaignView = campaignRepository.view(); this.openPreparation(); }, 'secondary'); y += 52; }
+        if (preset) { sheet.action(y, 'Delete preset', () => { campaignRepository.deletePreparationPreset(id); const _scroll = this.sheet?.scrollOffset ?? 0; this.preparationScrollOffset = _scroll; this.preservePreparationScroll = true; this.campaignView = campaignRepository.view(); this.openPreparation(); }, 'secondary'); y += 52; }
       });
     }
 
@@ -519,14 +526,15 @@ export class CampaignScene extends Phaser.Scene {
           const description=sheet.text(y, `${option.name}: ${option.description}`, C.textSecondary, 16); y += description.height+12;
           const isChosen = chosen === option.id;
           sheet.action(y, isChosen ? `Selected · ${option.name}` : `Choose · ${option.name}`, () => {
-            campaignRepository.setSpecialization(id, option.id); this.campaignView = campaignRepository.view(); this.openPreparation();
+            campaignRepository.setSpecialization(id, option.id); const _scroll = this.sheet?.scrollOffset ?? 0; this.preparationScrollOffset = _scroll; this.preservePreparationScroll = true; this.campaignView = campaignRepository.view(); this.openPreparation();
           }, isChosen ? 'secondary' : 'primary', !isChosen);
           y += 52;
         }
-        if (chosen) { sheet.action(y, 'Remove specialization', () => { campaignRepository.setSpecialization(id, null); this.campaignView = campaignRepository.view(); this.openPreparation(); }); y += 52; }
+        if (chosen) { sheet.action(y, 'Remove specialization', () => { campaignRepository.setSpecialization(id, null); const _scroll = this.sheet?.scrollOffset ?? 0; this.preparationScrollOffset = _scroll; this.preservePreparationScroll = true; this.campaignView = campaignRepository.view(); this.openPreparation(); }); y += 52; }
         y += 8;
       }
     }
     if (this.campaignView.warning) sheet.text(y + 20, this.campaignView.warning, C.dangerBright);
+    if (savedScroll > 0 && typeof sheet.scrollTo === 'function') sheet.scrollTo(savedScroll);
   }
 }

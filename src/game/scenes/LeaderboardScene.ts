@@ -161,7 +161,14 @@ export class LeaderboardScene extends Phaser.Scene {
       box.setInteractive({ useHandCursor: true });
       box.on('pointerover', () => box.setStrokeStyle(2, 0xf0cd72));
       box.on('pointerout', () => box.setStrokeStyle(this.mode === tab.mode ? 2 : 1, this.mode === tab.mode ? 0xd7aa4e : 0x59636b));
-      box.on('pointerdown', () => this.changeMode(tab.mode));
+      let modePress: { x: number; y: number } | null = null;
+      box.on('pointerdown', (p?: Phaser.Input.Pointer) => { if (p) modePress = { x: p.x, y: p.y }; else modePress = null; });
+      box.on('pointerup', (p?: Phaser.Input.Pointer) => {
+        const start = modePress; modePress = null;
+        const ok = !p ? (start === null) : (start !== null && Math.hypot(p.x - start.x, p.y - start.y) <= 8);
+        if (ok) this.changeMode(tab.mode);
+      });
+      box.on('pointerout', () => { modePress = null; });
       this.modeTabs.push({ mode: tab.mode, box, label, frame });
     });
 
@@ -193,7 +200,14 @@ export class LeaderboardScene extends Phaser.Scene {
       box.setInteractive({ useHandCursor: true });
       box.on('pointerover', () => box.setStrokeStyle(2, 0xf0cd72));
       box.on('pointerout', () => box.setStrokeStyle(this.filter === tab.filter ? 2 : 1, this.filter === tab.filter ? 0xd7aa4e : 0x59636b));
-      box.on('pointerdown', () => this.changeFilter(tab.filter));
+      let filterPress: { x: number; y: number } | null = null;
+      box.on('pointerdown', (p?: Phaser.Input.Pointer) => { if (p) filterPress = { x: p.x, y: p.y }; else filterPress = null; });
+      box.on('pointerup', (p?: Phaser.Input.Pointer) => {
+        const start = filterPress; filterPress = null;
+        const ok = !p ? (start === null) : (start !== null && Math.hypot(p.x - start.x, p.y - start.y) <= 8);
+        if (ok) this.changeFilter(tab.filter);
+      });
+      box.on('pointerout', () => { filterPress = null; });
       this.tabs.push({ filter: tab.filter, box, label, icon, frame });
     });
 
@@ -230,7 +244,14 @@ export class LeaderboardScene extends Phaser.Scene {
     this.retryBox.setDepth(10);
     this.retryLabel.setDepth(10);
     this.retryBox.setInteractive({ useHandCursor: true });
-    this.retryBox.on('pointerdown', () => { SoundManager.get().click(); void this.loadBoard(generation); });
+    let retryPress: { x: number; y: number } | null = null;
+    this.retryBox.on('pointerdown', (p?: Phaser.Input.Pointer) => { SoundManager.get().unlock(); if (p) retryPress = { x: p.x, y: p.y }; else retryPress = null; });
+    this.retryBox.on('pointerup', (p?: Phaser.Input.Pointer) => {
+      const start = retryPress; retryPress = null;
+      const ok = !p ? (start === null) : (start !== null && Math.hypot(p.x - start.x, p.y - start.y) <= 8);
+      if (ok) { SoundManager.get().click(); void this.loadBoard(generation); }
+    });
+    this.retryBox.on('pointerout', () => { retryPress = null; });
     this.scrollZone = this.add.rectangle(panelX + 4, this.bodyTop, panelWidth - 8, bodyHeight, 0xffffff, 0)
       .setOrigin(0).setInteractive();
     this.scrollZone.on('pointerdown', (pointer: Phaser.Input.Pointer, _x: number, _y: number, event: Phaser.Types.Input.EventData) => {
@@ -251,7 +272,14 @@ export class LeaderboardScene extends Phaser.Scene {
     back.setInteractive({ useHandCursor: true });
     back.on('pointerover', () => { back.setStrokeStyle(2, 0xf0cd72); etchedFrame(this, panelX, backY, backWidth, 44, true, backFrame); });
     back.on('pointerout', () => { back.setStrokeStyle(1, 0x59636b); etchedFrame(this, panelX, backY, backWidth, 44, false, backFrame); });
-    back.on('pointerdown', () => { SoundManager.get().click(); this.scene.start('MainMenu'); });
+    let backPress: { x: number; y: number } | null = null;
+  back.on('pointerdown', (p?: Phaser.Input.Pointer) => { SoundManager.get().unlock(); if (p) backPress = { x: p.x, y: p.y }; else backPress = null; });
+  back.on('pointerup', (p?: Phaser.Input.Pointer) => {
+    const start = backPress; backPress = null;
+    const ok = !p ? (start === null) : (start !== null && Math.hypot(p.x - start.x, p.y - start.y) <= 8);
+    if (ok) { SoundManager.get().click(); this.scene.start('MainMenu'); }
+  });
+  back.on('pointerout', () => { backPress = null; });
 
     this.updateModeChrome();
     void this.loadBoard(generation);

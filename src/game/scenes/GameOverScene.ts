@@ -66,7 +66,14 @@ function button(scene: Phaser.Scene, parent: Phaser.GameObjects.Container, x: nu
   box.setInteractive({ useHandCursor: true });
   box.on('pointerover', () => box.setFillStyle(primary ? 0x1e4b3b : 0x22303c, 1).setStrokeStyle(2, 0xf0cd72));
   box.on('pointerout', () => box.setFillStyle(fill, 0.98).setStrokeStyle(primary ? 2 : 1, primary ? 0xd7aa4e : 0x59636b));
-  box.on('pointerdown', () => { SoundManager.get().click(); action(); });
+  let goPress: { x: number; y: number } | null = null;
+  box.on('pointerdown', (p?: Phaser.Input.Pointer) => { SoundManager.get().unlock(); if (p) goPress = { x: p.x, y: p.y }; else goPress = null; });
+  box.on('pointerup', (p?: Phaser.Input.Pointer) => {
+    const start = goPress; goPress = null;
+    const ok = !p ? (start === null) : (start !== null && Math.hypot(p.x - start.x, p.y - start.y) <= 8);
+    if (ok) { SoundManager.get().click(); action(); }
+  });
+  box.on('pointerout', () => { goPress = null; });
 }
 
 export class GameOverScene extends Phaser.Scene {
