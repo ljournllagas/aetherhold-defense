@@ -2,11 +2,28 @@ import {formatCount} from '../../shared/displayNumbers.ts';
 import type {CombatTower} from '../../shared/progression.ts';
 import type {PurchaseContext,PurchaseIntent} from '../systems/EvolutionSystem.ts';
 import {nextPurchaseCost} from '../systems/EvolutionSystem.ts';
-import {STARTER_BRANCH,EVOLUTIONS} from '../config/evolutions.ts';
+import {STARTER_BRANCH,ALTERNATIVE_BRANCH,EVOLUTIONS} from '../config/evolutions.ts';
+import {TOWERS} from '../config/towers.ts';
+import type {TowerId} from '../../shared/progression.ts';
 import {CAMPAIGN_LEVELS,getCampaignLevel} from '../campaign/config.ts';
 import type {CampaignView} from '../campaign/types.ts';
 import {campaignScoreMetadata} from '../../shared/campaignScoring.ts';
 export interface Requirement {id:string;label:string;met:boolean;progress:string;nextStep:string}
+/** Post-wave-20 diagnostic: keeps the spec'd "Try in a new Classic run." prefix intact,
+ *  appends what was actually on the field so a missed Stormcaller/Winterguard (or any
+ *  starter) rank-2 is actionable instead of a bare retry loop. Pure + testable. */
+export function missedAchievementDetail(id:TowerId,towers:readonly CombatTower[]):string{
+ const starter=STARTER_BRANCH[id],starterName=EVOLUTIONS[starter].name,towerName=TOWERS[id].name;
+ const ranked=towers.filter(t=>t.towerId===id&&t.progression.branchId===starter);
+ if(ranked.length===0){
+  if(towers.some(t=>t.towerId===id&&t.progression.branchId===ALTERNATIVE_BRANCH[id]))
+   return `Alternative on field but not earned — a ${starterName} at rank 2+ must be present when wave 20 clears.`;
+  return `No ${starterName} on field — build ${towerName}, evolve ${starterName}, reach rank 2 before wave 20 clears.`;
+ }
+ const best=Math.max(...ranked.map(t=>t.progression.rank??0));
+ if(best>=2) return `Rank ${best} reached after wave 20 — keep a ${starterName} at rank 2+ when wave 20 clears.`;
+ return `Best was ${starterName} rank ${best} — need rank 2 before wave 20 clears; rush one ${towerName} (level 4 → ${starterName} → rank 1 → rank 2) instead of spreading gold.`;
+}
 export function classicRequirements(tower:CombatTower,intent:PurchaseIntent,context:PurchaseContext,wavesCompleted:number,towers:readonly CombatTower[]):Requirement[]{
  const p=tower.progression,id=tower.towerId,r:Requirement[]=[];
  const add=(id:string,label:string,met:boolean,progress:string,nextStep:string)=>r.push({id,label,met,progress,nextStep});
@@ -16,7 +33,7 @@ export function classicRequirements(tower:CombatTower,intent:PurchaseIntent,cont
    const earned=context.unlocked.has(intent.branchId);
    const qualifying=towers.some(t=>t.towerId===id&&t.progression.branchId===STARTER_BRANCH[id]&&(t.progression.rank??0)>=2);
    add('branch','Permanent branch achievement',earned,earned?'Earned':qualifying&&wavesCompleted<20?`On track · Wave ${wavesCompleted}/20`:'Not earned',
-    earned?'Available in future Classic runs.':wavesCompleted>=20?'Try in a new Classic run.':`Keep a ${EVOLUTIONS[STARTER_BRANCH[id]].name} at rank 2 or higher when wave 20 completes.`);
+    earned?'Available in future Classic runs.':wavesCompleted>=20?`Try in a new Classic run. ${missedAchievementDetail(id,towers)}`:`Keep a ${EVOLUTIONS[STARTER_BRANCH[id]].name} at rank 2 or higher when wave 20 completes.`);
   }
   add('boss','This run: wave-10 boss',context.evolutionOpen,context.evolutionOpen?'Defeated':'Not defeated','Defeat the wave-10 boss in this run.');
  }

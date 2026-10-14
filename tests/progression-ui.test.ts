@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { achievementRequirement, achievementViews, towerProgressionView, wavePresentation } from '../src/game/ui/progressionView.ts';
+import { classicRequirements, missedAchievementDetail } from '../src/game/ui/prerequisites.ts';
 import { UnlockRepository } from '../src/game/systems/UnlockSystem.ts';
 import type { PurchaseContext } from '../src/game/systems/EvolutionSystem.ts';
 import type { BranchId } from '../src/shared/progression.ts';
@@ -118,5 +119,29 @@ describe('achievement and wave views', () => {
     for (const wave of [10, 20]) expect(wavePresentation(wave, false).warning).not.toContain('Siege finale');
     expect(wavePresentation(40, true).label).toBe('Wave 40 · Endless');
     expect(wavePresentation(12, false).label).toBe('Wave 12 of 30');
+  });
+});
+
+describe('missed wave-20 achievement detail', () => {
+  it('explains a rank-1 Stormcaller miss for thunderlord', () => {
+    const detail = missedAchievementDetail('tempest', [tower('stormcaller', 1)]);
+    expect(detail).toContain('Best was Stormcaller rank 1');
+    expect(detail).toContain('rush one Tempest');
+  });
+  it('explains a missing Winterguard for brittle-ice', () => {
+    expect(missedAchievementDetail('glacier', [])).toContain('No Winterguard on field');
+  });
+  it('notes a late rank-2 reached after wave 20', () => {
+    expect(missedAchievementDetail('tempest', [tower('stormcaller', 2)])).toContain('reached after wave 20');
+  });
+  it('keeps the spec string and appends the miss reason after wave 20', () => {
+    const tempestTower = tower('stormcaller', 1);
+    const reqs = classicRequirements(tempestTower, { kind: 'evolve', branchId: 'thunderlord' }, ctx(), 20, [tower('stormcaller', 1)]);
+    const branch = reqs.find((r) => r.id === 'branch')!;
+    expect(branch.nextStep).toContain('Try in a new Classic run.');
+    expect(branch.nextStep).toContain('Best was Stormcaller rank 1');
+    const glacierTower = tower('winterguard', 0);
+    const frost = classicRequirements(glacierTower, { kind: 'evolve', branchId: 'brittle-ice' }, ctx(), 21, []);
+    expect(frost.find((r) => r.id === 'branch')!.nextStep).toContain('No Winterguard on field');
   });
 });

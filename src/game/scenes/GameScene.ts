@@ -29,7 +29,7 @@ import type {TowerId} from '../../shared/progression.ts';
 import {localGuide,type GuideStep} from '../systems/ContextualGuide.ts';
 import {HELP_TOPICS} from '../ui/helpContent.ts';
 import {campaignProgressionLines,progressionPanelLines} from './ProgressionScene.ts';
-import {campaignRequirements} from '../ui/prerequisites.ts';
+import {campaignRequirements, missedAchievementDetail} from '../ui/prerequisites.ts';
 import {achievementViews} from '../ui/progressionView.ts';
 import {loadLegacyBests} from '../systems/Settings.ts';
 import { button, panel, statRow } from '../ui/components.ts';
@@ -634,7 +634,7 @@ export class GameScene extends Phaser.Scene {
       const lines=this.progressionTab==='campaign'?campaignProgressionLines(campaignRepository.view()):progressionPanelLines(this.unlockRepository.view(),loadBest(),loadLegacyBests());
       let y=60;for(const value of lines){const t=sheet.text(y,value,C.textSecondary,16);y+=t.height+12;}
       if(this.campaign&&this.progressionTab==='campaign')for(const r of campaignRequirements(campaignRepository.view(),this.campaign.definition.level)){const t=sheet.text(y,`${r.met?'✓':'○'} ${r.label}: ${r.progress} · ${r.nextStep}`);y+=t.height+12;}
-      if(!this.campaign&&this.progressionTab==='classic')for(const a of achievementViews(this.unlockRepository.view(),this.towers,this.wavesCompleted)){if(a.earned)continue;const t=sheet.text(y,`${TOWERS[a.towerId].name}: ${this.wavesCompleted>=20?'Try in a new Classic run.':a.qualifiesNow?`On track · Wave ${this.wavesCompleted}/20`:'Build the starter branch and reach rank 2 before completing wave 20.'}`);y+=t.height+12;}
+      if(!this.campaign&&this.progressionTab==='classic')for(const a of achievementViews(this.unlockRepository.view(),this.towers,this.wavesCompleted)){if(a.earned)continue;const t=sheet.text(y,`${TOWERS[a.towerId].name}: ${this.wavesCompleted>=20?`Try in a new Classic run. ${missedAchievementDetail(a.towerId,this.towers)}`:a.qualifiesNow?`On track · Wave ${this.wavesCompleted}/20`:'Build the starter branch and reach rank 2 before completing wave 20.'}`);y+=t.height+12;}
       sheet.action(y,'Back to battle',()=>this.closeDetails());
     }else if (kind === 'build') {
       let rowY = 0;
