@@ -1,4 +1,5 @@
 import {campaignResultActions} from '../ui/campaignResultActions.ts';
+import {enemyPresentation} from '../ui/enemyPresentation.ts';
 import {guestRunProgress} from '../systems/GuestProgress.ts';
 import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
@@ -886,26 +887,18 @@ export class GameScene extends Phaser.Scene {
 
   private projectEntity(view: Phaser.GameObjects.Container): void {
     const sx = Math.min(this.layout.field.width / 1040, this.layout.field.height / 584); const sy = sx;
-    // Painted creatures keep authored 28–50px / 96px boss screen silhouettes.
     const visual = view.getData('enemyVisual') as EnemyView | undefined;
-    const smallestPose = visual ? Math.min(...[...visual.frameRectangles.right, ...visual.frameRectangles.left].map(frame => Math.max(frame.width, frame.height) * visual.sprite.scaleX)) : 0;
-    const size = visual ? Math.max(1, 24 / smallestPose) : Math.min(sx, sy) * (this.layout.compact ? 1.25 : 1);
-    const baseScale = size / (visual ? this.cameraView.fitScale : sx);
     const deathScreenScale = view.getData('deathScreenScale') as number | undefined;
     if(visual && typeof deathScreenScale==='number'){
       const scale=deathScreenScale/this.cameraView.fitScale;
       view.setScale(scale,scale).setData({baseScaleX:scale,baseScaleY:scale});return;
     }
-    let displayedScale = baseScale;
-    view.setScale(baseScale, baseScale);
-    if (visual && view.getData('isBoss') === true) {
-      const support = enemyVisualSupport(visual);
-      const maxHeight = this.layout.compact ? Math.min(96, this.layout.field.height * .36) : this.layout.field.height * .5;
-      const cap = Math.min(1, maxHeight / (support.height * size));
-      displayedScale = baseScale * cap;
-      if (cap < 1) view.setScale(displayedScale, displayedScale);
-      view.setData('bossResponsiveCap', cap);
-    }
+    const canvas=this.game?.canvas?.getBoundingClientRect?.(),cssScale=canvas?canvas.width/Math.max(1,this.layout.width):1;
+    const authoredDimension=visual?(view.getData('authoredEnemyDimension') as number|undefined)??Math.max(1,...[...visual.frameRectangles.right,...visual.frameRectangles.left].map(frame=>Math.max(frame.width,frame.height)*visual.sprite.scaleX)):1;
+    const presentation=enemyPresentation({viewportWidth:canvas?.width??this.layout.width,viewportHeight:canvas?.height??this.layout.height,fieldHeight:this.layout.field.height*cssScale,authoredDimension:authoredDimension*cssScale,isBoss:view.getData('isBoss')===true,isElite:view.getData('isElite')===true,fitScale:this.cameraView.fitScale});
+    const displayedScale=visual?presentation.localScale:Math.min(sx,sy)*(this.layout.compact?1.25:1)/sx;
+    view.setScale(displayedScale,displayedScale);
+    if(visual)view.setData({authoredEnemyDimension:authoredDimension,bossResponsiveCap:presentation.overviewDimension/(authoredDimension*cssScale)});
     view.setData({ baseScaleX: displayedScale, baseScaleY: displayedScale });
   }
 
@@ -1973,7 +1966,7 @@ export class GameScene extends Phaser.Scene {
     const shadow = this.add.ellipse(e.x, e.y + e.radius * 0.7, e.radius * 2.1, e.radius * 0.9, 0x000000, 0.3).setDepth(3);
     const visual = buildEnemyVisual(this, e.archetype, e.campaignId ?? undefined);
     const { view, body, bobAmp, bobFreq, rockAmp } = visual;
-    view.setData({ enemyVisual: visual, isBoss: e.isBoss });
+    view.setData({ enemyVisual: visual, isBoss: e.isBoss, isElite:e.isElite });
     const edge = this.add.image(0, 1, visual.sprite.texture.key, visual.sprite.frame.name).setOrigin(0.5, 1)
       .setScale(visual.sprite.scaleX * 1.045).setTint(0x080c10).setAlpha(0.55);
     body.addAt(edge, 0); view.setData('silhouetteEdge', edge);
