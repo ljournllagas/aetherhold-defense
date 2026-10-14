@@ -1,4 +1,4 @@
-import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
+import {formatCount} from '../../shared/displayNumbers.ts';
 import type Phaser from 'phaser';
 import type {Point,Rect} from './viewport.ts';
 import {TOWER_IDS,TOWERS} from '../config/towers.ts';

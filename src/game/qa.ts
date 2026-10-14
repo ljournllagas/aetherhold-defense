@@ -80,6 +80,7 @@ export type QAAction =
   | { type: 'restart' };
 
 export interface QAStatus {
+  enemyVisuals?:Array<{archetype:string;boss:boolean;elite:boolean;overviewDimension:number;screenDimension:number;zoom:number}>;
   wave: number;
   gold: number;
   lives: number;

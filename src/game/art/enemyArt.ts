@@ -51,6 +51,29 @@ export interface EnemyView {
 }
 
 const SUPPORT_CACHE = new WeakMap<EnemyView, Rect>();
+const VISIBLE_DIMENSIONS=new WeakMap<object,number>();
+/** Normalize living silhouettes across idle/walk poses; action effects retain separate full support. */
+export function enemyVisibleDimension(visual:EnemyView):number {
+ const sprite=visual.sprite,texture=sprite.texture;
+ const fallback=()=>Math.max(1,...[...visual.frameRectangles.right,...visual.frameRectangles.left].map(frame=>Math.max(frame.width,frame.height)*Math.abs(sprite.scaleX)));
+ if(!visual.atlas?.startsWith('campaign_enemy_')||!texture?.getSourceImage||typeof document==='undefined')return fallback();
+ let dimension=VISIBLE_DIMENSIONS.get(texture);
+ if(dimension===undefined){
+  try{
+   const source=texture.getSourceImage() as HTMLImageElement,canvas=document.createElement('canvas');canvas.width=source.width;canvas.height=source.height;
+   const context=canvas.getContext('2d',{willReadFrequently:true});if(!context)return fallback();context.drawImage(source,0,0);
+   const data=context.getImageData(0,0,canvas.width,canvas.height).data;dimension=0;
+   const names=texture.getFrameNames(),living=names.filter(name=>/^(idle|walk)_/.test(name));
+   for(const name of living.length?living:names){
+    const f=texture.get(name);let left=f.cutWidth,top=f.cutHeight,right=-1,bottom=-1;
+    for(let y=0;y<f.cutHeight;y++)for(let x=0;x<f.cutWidth;x++)if(data[((f.cutY+y)*canvas.width+f.cutX+x)*4+3]>32){left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x);bottom=Math.max(bottom,y);}
+    if(right>=left)dimension=Math.max(dimension,right-left+1,bottom-top+1);
+   }
+   if(dimension<=0)return fallback();VISIBLE_DIMENSIONS.set(texture,dimension);
+  }catch{return fallback();}
+ }
+ return dimension*Math.abs(sprite.scaleX);
+}
 
 /** Stable all-action support, including both facings, edge, bob and damage pop. */
 export function enemyVisualSupport(visual: EnemyView): Rect {

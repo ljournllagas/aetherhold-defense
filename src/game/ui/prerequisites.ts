@@ -1,4 +1,4 @@
-import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
+import {formatCount} from '../../shared/displayNumbers.ts';
 import type {CombatTower} from '../../shared/progression.ts';
 import type {PurchaseContext,PurchaseIntent} from '../systems/EvolutionSystem.ts';
 import {nextPurchaseCost} from '../systems/EvolutionSystem.ts';
@@ -36,7 +36,7 @@ export function campaignRequirements(view:CampaignView,level:number):Requirement
   {id:'previous',label:'Level access',met:previous,progress:previous?'Unlocked':`Level ${level-1} required`,nextStep:previous?'Ready to play.':`Complete Level ${level-1} to unlock this level.`},
   {id:'completion',label:'Completion star',met:!!p?.completionStar,progress:p?.completed?'Earned':'Not earned',nextStep:'Win this level.'},
   {id:'lives',label:'Lives star',met:!!p?.livesStar,progress:`${p?.bestRemainingLives??0}/${def.mastery.minimumLivesForStar} lives`,nextStep:`Win with at least ${def.mastery.minimumLivesForStar} lives.`},
-  {id:'score',label:'Score star',met:!!p?.scoreStar,progress:`${formatCount(p?.bestScore??0)}/${formatCount(def.mastery.scoreTarget)} points`,nextStep:`Win with at least ${def.mastery.scoreTarget} points.`}
+  {id:'score',label:'Score star',met:!!p?.scoreStar,progress:`${formatCount(p?.bestScore??0)}/${formatCount(def.mastery.scoreTarget)} points`,nextStep:`Win with at least ${formatCount(def.mastery.scoreTarget)} points.`}
  ];
 }
 export function campaignNextStep(view:CampaignView):{level:number|null;text:string}{

@@ -1,4 +1,4 @@
-import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
+import {formatCount} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { TOWERS } from '../config/towers.ts';
 import { loadBest, loadLegacyBests } from '../systems/Settings.ts';

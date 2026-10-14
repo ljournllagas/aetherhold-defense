@@ -1,4 +1,4 @@
-import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
+import {formatCount} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { fetchLeaderboard } from '../../api/leaderboardClient.ts';
 import { scoreRetryRepository } from '../systems/ScoreRetry.ts';
@@ -362,5 +362,5 @@ export class LeaderboardScene extends Phaser.Scene {
 }
 
 function numberForRow(value: number): string {
-  return Math.max(0, Math.floor(Number.isFinite(value) ? value : 0)).toLocaleString('en-US');
+  return formatCount(value);
 }

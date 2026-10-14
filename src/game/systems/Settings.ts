@@ -67,16 +67,16 @@ export function loadSettings(): Settings {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) {settingsMemory={...DEFAULTS};return {...settingsMemory};}
-    settingsMemory=normalizeSettings(JSON.parse(raw));return {...settingsMemory};
+    const loaded=normalizeSettings(JSON.parse(raw));settingsMemory={...DEFAULTS,playerName:loaded.playerName,guestSelected:loaded.guestSelected,googleSignInPending:loaded.googleSignInPending};return loaded;
   } catch {
     settingsPersisted=false;return {...settingsMemory};
   }
 }
 
 export function saveSettings(s: Settings): void {
-  settingsMemory=normalizeSettings(s);
+  const normalized=normalizeSettings(s);settingsMemory={...DEFAULTS,playerName:normalized.playerName,guestSelected:normalized.guestSelected,googleSignInPending:normalized.googleSignInPending};
   try {
-    localStorage.setItem(KEY, JSON.stringify(settingsMemory));settingsPersisted=true;
+    localStorage.setItem(KEY, JSON.stringify(normalized));settingsPersisted=true;
   } catch {settingsPersisted=false;}
 }
 
@@ -131,7 +131,7 @@ export function loadLegacyBest(): LocalBest | null {
 }
 
 export function saveBest(b: Omit<LocalBest, 'scoreVersion'>): void {
-  {
+  if(bestPrefix) {
     const previous = loadBest();
     if (!previous || b.score > previous.score) accountBestMemory.set(bestPrefix + BEST_KEY, { ...b, scoreVersion: SCORE_VERSION });
   }
@@ -144,6 +144,7 @@ export function saveBest(b: Omit<LocalBest, 'scoreVersion'>): void {
       localStorage.setItem(bestPrefix + BEST_KEY, JSON.stringify(desired));
     }
   } catch {
+    if(!bestPrefix){const old=accountBestMemory.get(BEST_KEY);if(!old||b.score>old.score)accountBestMemory.set(BEST_KEY,{...b,scoreVersion:SCORE_VERSION});}
     accountBestWarnings.set(bestPrefix, 'Personal best is retained in this session; browser storage could not save it.');
   }
 }

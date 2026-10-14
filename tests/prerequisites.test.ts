@@ -18,7 +18,7 @@ it('earned account branch does not require another qualifying tower',()=>{
 const empty=():CampaignView=>({profile:createEmptyCampaignProfile(),totalMasteryStars:0,highestUnlockedLevel:1,unlockedFeatures:[],unsaved:false,unsavedLevels:new Set(),warning:null});
 it('empty Campaign points to first level with exact configured star thresholds',()=>{
  const v=empty();expect(campaignNextStep(v)).toEqual({level:1,text:'Complete Level 1 to continue.'});
- const r=campaignRequirements(v,1);expect(r.find(x=>x.id==='lives')?.nextStep).toContain('12');expect(r.find(x=>x.id==='score')?.nextStep).toContain('1950');
+ const r=campaignRequirements(v,1);expect(r.find(x=>x.id==='lives')?.nextStep).toContain('12');expect(r.find(x=>x.id==='score')?.nextStep).toContain('1,950');
  expect(campaignRequirements(v,2).find(x=>x.id==='previous')?.met).toBe(false);
 });
 it('30 completed levels offer Level 31 without inventing its clear',()=>{

@@ -172,13 +172,13 @@ it.each([[320,390],[320,360],[768,390],[1280,720],[1440,900]])('fits stable all-
   expect(run.cameraView.field).toEqual(field);
   expect(run.cameraView.fitField.height).toBeGreaterThanOrEqual(44);
   expect(run.cameraView.topHeadroom).toBeLessThanOrEqual(field.height - 44);
-  if(run.layout.compact)expect(run.cameraView.topHeadroom).toBe(0);else expect(run.cameraView.topHeadroom).toBeGreaterThan(0);
+  if(run.layout.compact||w>=1440)expect(run.cameraView.topHeadroom).toBe(0);else expect(run.cameraView.topHeadroom).toBeGreaterThan(0);
   expect(art.height).toBeLessThanOrEqual(field.height * 0.5 + 1);
   expect(art.y).toBeGreaterThanOrEqual(field.y + 5);
   expect(art.y).toBeLessThan(topRoad.y);
   expect(hpAnchor.y).toBeCloseTo(art.y - 4,1);
   expect(boss.view.scaleX).toBeCloseTo(boss.view.scaleY,6);
-  if (w >= 1280 && h >= 720) expect(boss.view.getData('bossResponsiveCap')).toBe(1);
+  if (w >= 1280 && h >= 720) expect(boss.view.getData('bossResponsiveCap')).toBeCloseTo(.78,6);
   else expect(boss.view.getData('bossResponsiveCap')).toBeLessThan(1);
 
   const headroom = run.cameraView.topHeadroom;

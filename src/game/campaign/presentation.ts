@@ -1,4 +1,4 @@
-import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
+import {formatCount} from '../../shared/displayNumbers.ts';
 import { getCampaignEnemy } from './enemies.ts';
 import { CAMPAIGN_LEVELS, CAMPAIGN_MILESTONES, CAMPAIGN_SIGILS, getCampaignLevel, getCampaignWorld } from './config.ts';
 import { isLevelUnlocked } from './progress.ts';

@@ -45,7 +45,7 @@ import { C, FONT_DISPLAY, RARITY_COLOR, RANGE_FILL_ALPHA, RANGE_STROKE, RANGE_ST
 import { V2, emblemKey } from '../art/artkit.ts';
 import { relicHeroTexture } from '../art/iconArt.ts';
 import { buildTowerVisual, decorateEvolution, towerPortraitKey, towerArtGeometry } from '../art/towerArt.ts';
-import { buildEnemyVisual, enemyVisualSupport, type EnemyView } from '../art/enemyArt.ts';
+import { buildEnemyVisual, enemyVisualSupport, enemyVisibleDimension, type EnemyView } from '../art/enemyArt.ts';
 import { paintBattlefield, refreshStronghold } from '../art/terrain.ts';
 import type { BattlefieldArt } from '../art/terrain.ts';
 import { Enemy } from '../entities/Enemy.ts';
@@ -567,7 +567,7 @@ export class GameScene extends Phaser.Scene {
   private applyView(): void {
     const origin = this.cameraView.origin;
     this.worldRoot?.setPosition(origin.x, origin.y).setScale(this.cameraView.scale);
-    for (const enemy of this.enemies) if (enemy.alive && enemy.isBoss && enemy.view) this.projectEntity(enemy.view);
+    for (const enemy of this.enemies) if (enemy.alive && enemy.view) this.projectEntity(enemy.view);
     for (const death of this.dying) {
       this.projectEntity(death.view);
       const progress = Math.min(1, Math.max(0, (this.gameTimeMs - death.t0) / death.duration));
@@ -894,9 +894,9 @@ export class GameScene extends Phaser.Scene {
       view.setScale(scale,scale).setData({baseScaleX:scale,baseScaleY:scale});return;
     }
     const canvas=this.game?.canvas?.getBoundingClientRect?.(),cssScale=canvas?canvas.width/Math.max(1,this.layout.width):1;
-    const authoredDimension=visual?(view.getData('authoredEnemyDimension') as number|undefined)??Math.max(1,...[...visual.frameRectangles.right,...visual.frameRectangles.left].map(frame=>Math.max(frame.width,frame.height)*visual.sprite.scaleX)):1;
-    const presentation=enemyPresentation({viewportWidth:canvas?.width??this.layout.width,viewportHeight:canvas?.height??this.layout.height,fieldHeight:this.layout.field.height*cssScale,authoredDimension:authoredDimension*cssScale,isBoss:view.getData('isBoss')===true,isElite:view.getData('isElite')===true,fitScale:this.cameraView.fitScale});
-    const displayedScale=visual?presentation.localScale:Math.min(sx,sy)*(this.layout.compact?1.25:1)/sx;
+    const authoredDimension=visual?(view.getData('authoredEnemyDimension') as number|undefined)??enemyVisibleDimension(visual):1;
+    const presentation=enemyPresentation({viewportWidth:canvas?.width??this.layout.width,viewportHeight:canvas?.height??this.layout.height,fieldHeight:this.layout.field.height*cssScale,authoredDimension:(visual?.maxVisualDimension??authoredDimension)*cssScale,isBoss:view.getData('isBoss')===true,isElite:view.getData('isElite')===true,fitScale:this.cameraView.fitScale});
+    const displayedScale=visual?presentation.overviewDimension/(authoredDimension*cssScale*this.cameraView.fitScale):Math.min(sx,sy)*(this.layout.compact?1.25:1)/sx;
     view.setScale(displayedScale,displayedScale);
     if(visual)view.setData({authoredEnemyDimension:authoredDimension,bossResponsiveCap:presentation.overviewDimension/(authoredDimension*cssScale)});
     view.setData({ baseScaleX: displayedScale, baseScaleY: displayedScale });
@@ -1117,6 +1117,7 @@ export class GameScene extends Phaser.Scene {
     if (!import.meta.env.DEV) return;
     const labelGeometry = (view: Phaser.GameObjects.Text) => { const { x, y, width, height } = view.getBounds(); return { text: view.text, bounds: { x, y, width, height } }; };
     const status: QAStatus = {
+      enemyVisuals:this.enemies.filter(e=>e.alive&&e.view?.getData('enemyVisual')).map(e=>{const dimension=(e.view!.getData('authoredEnemyDimension') as number??1)*(e.view!.getData('baseScaleX') as number??1)*this.cameraView.fitScale*((this.game?.canvas?.getBoundingClientRect?.().width??this.layout.width)/this.layout.width);return {archetype:e.campaignId??e.archetype,boss:e.isBoss,elite:e.isElite,overviewDimension:dimension,screenDimension:dimension*this.cameraView.zoom,zoom:this.cameraView.zoom};}),
       wave: this.wave,
       gold: this.gold,
       lives: this.lives,
@@ -3404,6 +3405,7 @@ export class GameScene extends Phaser.Scene {
     for (const id of earned) if (!known[id] && !this.unlocksEarnedThisRun.includes(id)) this.unlocksEarnedThisRun.push(id);
     if (!this.campaign) this.unlockRepository.earn(earned);
     if (earned.length && this.runAccount) void accountSystem.progressChanged(this.runAccount);
+    if(earned.length&&this.runOwner?.mode==='guest'&&!this.debugAssisted){const fresh=Object.fromEntries(this.unlocksEarnedThisRun.map(id=>[id,this.unlockRepository.view().profile.earned[id]??new Date().toISOString()]));void accountSystem.guestProgressChanged(fresh);}
     this.notifyAchievements();
     const bonus = waveClearBonus(this.wave); this.gold += bonus;
     this.floatText(this.map.width / 2, 140, `Wave ${this.wave} cleared! +${formatCount(bonus)} gold`, C.health, 18);

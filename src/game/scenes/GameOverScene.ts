@@ -50,7 +50,7 @@ export interface GameOverData {
 const IDLE_MESSAGE = 'Submit your score to the Hall of Legends.';
 type Data = GameOverData;
 
-const number = (value: number): string => Math.max(0, Math.floor(Number.isFinite(value) ? value : 0)).toLocaleString('en-US');
+const number = formatCount;
 
 function text(scene: Phaser.Scene, parent: Phaser.GameObjects.Container, x: number, y: number, value: string, size: number, color: string, bold = false, font = '"Inter", system-ui, sans-serif', originX = 0.5): Phaser.GameObjects.Text {
   const item = scene.add.text(x, y, value, style(size, color, bold, font)).setOrigin(originX, 0.5);
@@ -357,7 +357,7 @@ export class GameOverScene extends Phaser.Scene {
   private scoreSummary(data: Data): string {
     const b = data.breakdown;
     const goldBonus = Math.max(0, b.baseScore - b.killScore - b.waveBonus - b.bossBonus - b.livesBonus);
-    return `SCORE BREAKDOWN  ·  ${number(b.killScore)} defeats  +  ${number(b.waveBonus)} waves  +  ${number(b.bossBonus)} bosses  +  ${number(b.livesBonus)} lives  +  ${number(goldBonus)} unused-gold bonus  =  ${number(b.baseScore)} base  ×  ${b.difficultyMultiplier.toFixed(2)}  =  ${number(data.finalScore)}`;
+    return `SCORE BREAKDOWN  ·  ${number(b.killScore)} defeats  +  ${number(b.waveBonus)} waves  +  ${number(b.bossBonus)} bosses  +  ${number(b.livesBonus)} lives  +  ${number(goldBonus)} unused-gold bonus  =  ${number(b.baseScore)} base  ×  ${formatQuantity(b.difficultyMultiplier,2)}  =  ${number(data.finalScore)}`;
   }
 
   private outcomeText(data: Data): { title: string; line: string | null } {

@@ -1,4 +1,4 @@
-import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
+import {formatCount} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { accountSystem } from '../systems/AccountSystem.ts';
 import { accountEntryAllowed, mountAccountButton } from '../ui/accountControls.ts';
