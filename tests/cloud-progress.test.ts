@@ -1,7 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import legacyCloudCompleted30 from './fixtures/campaign-v5/legacy_cloud_completed_30.json';
 import { emptyCloudProgress, mergeCloudProgress, validateCloudProgress } from '../src/shared/cloudProgress.ts';
+import type { CloudProgress } from '../src/shared/account.ts';
+import { createEmptyCampaignProfile, isLevelUnlocked } from '../src/game/campaign/progress.ts';
+import { getCampaignLevel } from '../src/game/campaign/config.ts';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 import { validateCampaignResult } from '../src/shared/campaignResult.ts';
+
+function unlockedLevels(progress: CloudProgress): number[] {
+  const profile = { ...createEmptyCampaignProfile(), levels: progress.levels };
+  return [1, 2, 3, 4].filter(level => isLevelUnlocked(level, profile));
+}
+
 describe('cloud progress', () => {
   it('merges earned stars and retains maxima', () => {
     const a = emptyCloudProgress(), b = emptyCloudProgress();
@@ -27,6 +37,57 @@ describe('cloud progress', () => {
     expect(merged.levels[31]).toEqual(completion);
     expect(merged.levels[100]).toEqual(completion);
     expect(merged.levels[30]).toMatchObject({completed:true,completionStar:true});
+  });
+  it('parses and merges two devices with independent Campaign bests and derived unlocks', () => {
+    const metadata = campaignScoreMetadata(1);
+    const mastery = getCampaignLevel(1)!.mastery;
+    const a = emptyCloudProgress(), b = emptyCloudProgress();
+    a.levels[1] = {
+      completed:true, completionStar:true, livesStar:true, scoreStar:false,
+      bestScore:mastery.scoreTarget - 1, bestRemainingLives:mastery.minimumLivesForStar,
+      campaignScore:{version:1,bestScore:metadata.scoreTarget - 1}
+    };
+    b.levels[1] = {
+      completed:true, completionStar:true, livesStar:false, scoreStar:true,
+      bestScore:mastery.scoreTarget - 2, bestRemainingLives:Math.max(0,mastery.minimumLivesForStar - 1),
+      campaignScore:{version:1,bestScore:metadata.scoreTarget}
+    };
+    b.levels[2] = {completed:true,completionStar:true,livesStar:false,scoreStar:false,bestScore:0,bestRemainingLives:0};
+    a.bests=[
+      {score:100,wave:10,difficulty:'easy',date:'2026-01-01T00:00:00Z',scoreVersion:1},
+      {score:300,wave:10,difficulty:'hard',date:'2026-01-02T00:00:00Z',scoreVersion:3}
+    ];
+    b.bests=[
+      {score:125,wave:12,difficulty:'easy',date:'2026-01-03T00:00:00Z',scoreVersion:1},
+      {score:250,wave:9,difficulty:'hard',date:'2026-01-04T00:00:00Z',scoreVersion:3}
+    ];
+
+    const parsedA = validateCloudProgress(a)!;
+    expect(parsedA.levels[1]).toEqual(a.levels[1]);
+    parsedA.levels[1]!.campaignScore!.bestScore = 1;
+    expect(a.levels[1]!.campaignScore!.bestScore).toBe(metadata.scoreTarget - 1);
+    expect(validateCloudProgress({
+      ...a,
+      levels:{...a.levels,1:{...a.levels[1]!,campaignScore:{version:2,bestScore:metadata.scoreTarget}}}
+    })).toBeNull();
+
+    const mergedAB = mergeCloudProgress(a,b);
+    const mergedBA = mergeCloudProgress(b,a);
+    expect(mergedAB.levels[1]).toEqual(mergedBA.levels[1]);
+    expect(mergedAB.levels[1]).toMatchObject({
+      completed:true, completionStar:true, livesStar:true, scoreStar:true,
+      bestScore:mastery.scoreTarget - 1,
+      campaignScore:{version:1,bestScore:metadata.scoreTarget}
+    });
+    expect(mergedAB.bests.map(({score,scoreVersion})=>[score,scoreVersion])).toEqual([[125,1],[300,3]]);
+    expect(mergedAB.bests).toEqual(mergedBA.bests);
+    expect(unlockedLevels(mergedAB)).toEqual([1,2,3]);
+    expect(unlockedLevels(mergedBA)).toEqual([1,2,3]);
+
+    mergedAB.levels[1]!.campaignScore!.bestScore = 1;
+    expect(a.levels[1]!.campaignScore!.bestScore).toBe(metadata.scoreTarget - 1);
+    expect(b.levels[1]!.campaignScore!.bestScore).toBe(metadata.scoreTarget);
+    expect(mergedBA.levels[1]!.campaignScore!.bestScore).toBe(metadata.scoreTarget);
   });
   it('preserves separate score eras and existing ties', () => {
     const a=emptyCloudProgress(), b=emptyCloudProgress();
