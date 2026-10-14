@@ -1,8 +1,9 @@
+import {guestRunProgress} from '../systems/GuestProgress.ts';
 import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { accountSystem } from '../systems/AccountSystem.ts';
 import { accountEntryAllowed, accountStatus } from '../ui/accountControls.ts';
-import type { AccountRef } from '../../shared/account.ts';
+import type { AccountRef,RunOwner,RunResult } from '../../shared/account.ts';
 import type { GameOverData } from './GameOverScene.ts';
 import type { GameStartData, LoadingRequest } from './PreloadScene.ts';
 import { MAP1, HUD_HEIGHT, CLASSIC_ROAD_ENVELOPE, type MapDef } from '../maps/map1.ts';
@@ -100,6 +101,7 @@ export class GameScene extends Phaser.Scene {
   private difficultyId: DifficultyId = 'medium';
   private playerName = 'Warden';
   private runAccount: AccountRef | null = null;
+  private runOwner:RunOwner|null=null;
   private runId = '';
   private gold = 600;
   private lives = 20;
@@ -504,12 +506,14 @@ export class GameScene extends Phaser.Scene {
   create(): void {
     if (!accountEntryAllowed()) { this.scene.start('Login'); return; }
     if (this.campaignStartRejected) { this.scene.start('Campaign', { error: 'That campaign level is locked or unavailable.' }); return; }
-    this.runAccount = accountSystem.captureAccount();
+    this.runOwner=accountSystem.captureRun();
+    this.runAccount=this.runOwner?.mode==='account'?this.runOwner.account:null;
+    if(this.runOwner)this.playerName=this.runOwner.name;
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       if (!this.ended) void accountSystem.discardBattle();
     });
     const unsubscribeAccount = accountSystem.subscribe(() => {
-      if (this.campaignResult && this.ended && this.runAccount) this.renderCampaignResult();
+      if (this.campaignResult && this.ended && this.runOwner) this.renderCampaignResult();
     });
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubscribeAccount);
     const snd = SoundManager.get();
@@ -3469,8 +3473,8 @@ export class GameScene extends Phaser.Scene {
     const fixtureRepository = import.meta.env.DEV ? this.qaCampaignRepository : null;
     const clear = outcome === 'victory' && (!this.debugAssisted || fixtureRepository) ? (fixtureRepository ?? campaignRepository).recordClear(campaign.definition.level, score, this.lives) : null;
     this.campaignResult = { outcome, score, lives: this.lives, clear };
-    if (this.runAccount && !this.debugAssisted && !this.qaCampaignFixture) {
-      void accountSystem.settle(this.runAccount, { mode: 'campaign', payload: {
+    if ((this.runAccount||this.runOwner) && !this.debugAssisted && !this.qaCampaignFixture) {
+      this.settleCapturedRun({ mode: 'campaign', payload: {
         runId: this.runId, campaignVersion: 1, progressionVersion: 1, level: campaign.definition.level,
         outcome, finalScore: score, remainingLives: this.lives, gameDurationSeconds: Math.floor(this.runningDurationMs / 1000), gameVersion: GAME_VERSION
       }});
@@ -3503,7 +3507,7 @@ export class GameScene extends Phaser.Scene {
     for(const r of campaignRequirements((this.qaCampaignRepository??campaignRepository).view(),level).filter(r=>r.id!=='previous')){
       line(`${r.met?'★':'☆'} ${r.label} · ${r.progress}${r.met?'':` · ${r.nextStep}`}`);
     }
-    if (this.runAccount) line(accountStatus(accountSystem.view()));
+    if (this.runAccount||this.runOwner) line(accountStatus(accountSystem.view()));
     if (result.clear) {
       const progress = result.clear.progress;
       line(`Mastery: Completion ${progress.completionStar ? 'earned' : 'missing'} · Stronghold ${progress.livesStar ? 'earned' : 'missing'} · Score ${progress.scoreStar ? 'earned' : 'missing'}`);
@@ -3540,6 +3544,7 @@ export class GameScene extends Phaser.Scene {
     const isPersonalBest = breakdown.finalScore > (loadBest()?.score ?? -1);
     saveBest({ score: breakdown.finalScore, wave: progress.highestWave, difficulty: this.difficultyId, date: new Date().toISOString() });
     const result: GameOverData = {
+      runOwner:this.runOwner??undefined,
       difficulty: this.difficultyId,
       playerName: this.playerName,
       highestWave: progress.highestWave,
@@ -3564,8 +3569,8 @@ export class GameScene extends Phaser.Scene {
         enemies: this.enemies.filter(e => e.alive).map(e => ({ archetype: e.archetype, x: e.x, y: e.y, hpFraction: Math.max(0, e.hp / e.maxHp) }))
       }
     };
-    if (this.runAccount && !this.debugAssisted) {
-      void accountSystem.settle(this.runAccount, { mode: 'classic', payload: {
+    if ((this.runAccount||this.runOwner) && !this.debugAssisted) {
+      this.settleCapturedRun({ mode: 'classic', payload: {
         playerName: result.playerName, difficulty: result.difficulty, highestWave: result.highestWave,
         finalScore: result.finalScore, enemiesKilled: result.enemiesKilled, bossesKilled: result.bossesKilled,
         remainingLives: result.remainingLives, gameDurationSeconds: result.gameDurationSeconds, runId: result.runId,
@@ -3577,6 +3582,13 @@ export class GameScene extends Phaser.Scene {
       this.scene.start('Preload', { stage: 'defeat', destination: 'GameOver', data: result } satisfies LoadingRequest);
     } else this.scene.start('GameOver', result);
     this.cleanupProgression();
+  }
+
+  private settleCapturedRun(result:RunResult):void {
+    if(this.runOwner?.mode==='guest'){
+      const earned=Object.fromEntries(this.unlocksEarnedThisRun.map(id=>[id,this.unlockRepository.view().profile.earned[id]??new Date().toISOString()]));
+      void accountSystem.completeGuestRun(this.runOwner,guestRunProgress(result,earned));
+    }else if(this.runAccount)void accountSystem.settle(this.runAccount,result);
   }
 
   /** Idempotent; restart/quit discard the run without creating a result. */

@@ -1,3 +1,4 @@
+import type {RunOwner} from '../../shared/account.ts';
 import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { accountSystem } from '../systems/AccountSystem.ts';
@@ -25,6 +26,7 @@ interface WorldSnapshot {
 }
 
 export interface GameOverData {
+  runOwner?:RunOwner;
   difficulty: DifficultyId;
   playerName: string;
   highestWave: number;
@@ -82,6 +84,7 @@ export class GameOverScene extends Phaser.Scene {
   private panelRoot: Phaser.GameObjects.Container | null = null;
   private submitMessage = IDLE_MESSAGE;
   private accountResult = false;
+  private guestResult=false;
   private readonly handleResize = (): void => {
     if (!this.runData) return;
     this.drawBackground(this.runData);
@@ -95,7 +98,8 @@ export class GameOverScene extends Phaser.Scene {
   create(data: Data): void {
     mountAccountButton(this);
     const accountView = accountSystem.view();
-    this.accountResult = accountView.playMode === 'account' || accountView.session !== null || accountView.config?.loginRequired === true;
+    this.guestResult=data.runOwner?.mode==='guest'||!data.runOwner&&accountView.playMode==='guest';
+    this.accountResult=data.runOwner?data.runOwner.mode==='account':!this.guestResult&&(accountView.playMode==='account'||accountView.session!==null||accountView.config?.loginRequired===true);
     this.submitState = 'idle';
     this.runGeneration++;
     const generation = this.runGeneration;
@@ -119,7 +123,7 @@ export class GameOverScene extends Phaser.Scene {
       gameVersion: data.gameVersion,
       scoreVersion: data.scoreVersion
     });
-    this.submitMessage = this.accountResult ? accountStatus(accountSystem.view()) : IDLE_MESSAGE;
+    this.submitMessage = this.accountResult||this.guestResult ? accountStatus(accountSystem.view()) : IDLE_MESSAGE;
     this.scoreAttempt = null;
     this.retryNotice = null;
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -136,7 +140,7 @@ export class GameOverScene extends Phaser.Scene {
     this.drawBackground(data);
     this.drawPanel(data);
     const unsubscribe = accountSystem.subscribe(view => {
-      if (!this.accountResult) return;
+      if (!this.accountResult&&!this.guestResult) return;
       const message = accountStatus(view);
       if (message !== this.submitMessage) { this.submitMessage = message; if (this.runData) this.drawPanel(this.runData); }
     });
@@ -149,7 +153,7 @@ export class GameOverScene extends Phaser.Scene {
    * stages anything; the notice only explains what an explicit Submit will do.
    */
   private async refreshRetryNotice(generation: number): Promise<void> {
-    if (this.accountResult) return;
+    if (this.accountResult||this.guestResult) return;
     const view = await scoreRetryRepository.view();
     const current = this.payload;
     if (!current || !this.runData || this.runGeneration !== generation || this.activeRunId !== current.runId) return;
@@ -370,11 +374,13 @@ export class GameOverScene extends Phaser.Scene {
   }
 
   private canSubmit(): boolean {
+    if(this.guestResult)return true;
     if (this.accountResult) return false;
     return this.submitState === 'idle' || this.submitState === 'failed';
   }
 
   private submitLabel(): string {
+    if(this.guestResult)return 'Sign in to submit';
     if (this.accountResult) return 'Automatic upload';
     if (this.submitState === 'submitting') return 'Submitting…';
     if (this.submitState === 'submitted') return 'Score Submitted';
@@ -382,6 +388,7 @@ export class GameOverScene extends Phaser.Scene {
   }
 
   private requestSubmit(data: Data): void {
+    if(this.guestResult){this.scene.start('Login',{manage:true});return;}
     if (this.canSubmit()) void this.submit(data);
   }
 
@@ -408,7 +415,7 @@ export class GameOverScene extends Phaser.Scene {
   private async submit(data: Data): Promise<void> {
     if (this.submitState === 'submitting' || this.submitState === 'submitted') return;
     const payload = this.payload;
-    if (!payload || !this.canSubmit()) return;
+    if (this.guestResult||!payload || !this.canSubmit()) return;
     const generation = this.runGeneration;
     this.submitState = 'submitting';
     this.submitMessage = 'Submitting score...';

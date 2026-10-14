@@ -201,7 +201,7 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   private async loadSavedScore(generation: number, savedY: number, W: number): Promise<void> {
-    if (accountSystem.view().playMode === 'account') return;
+    if (['account','guest'].includes(accountSystem.view().playMode)) return;
     const view = await scoreRetryRepository.view();
     if (this.sceneGeneration !== generation) return;
     this.savedView = view;

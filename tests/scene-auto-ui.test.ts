@@ -11,7 +11,7 @@ it('keeps exact compact HUD values available in the live More detail after statu
   loose.scoreSoFar=()=>123456789;
   const detail=new Display();loose.autoDetailText=detail;run.sheetKind='more';run.sheet={scrollOffset:40} as unknown as ScrollSheet;
   run.refreshAutoDisplay();
-  expect(detail.text).toContain('Gold 987654321');expect(detail.text).toContain('Score 123456789');
+  expect(detail.text).toContain('Gold 987,654,321');expect(detail.text).toContain('Score 123,456,789');
   expect(detail.text).toContain(`Lives ${run.lives}/${run.maxLives}`);expect(run.sheet.scrollOffset).toBe(40);
 });
 

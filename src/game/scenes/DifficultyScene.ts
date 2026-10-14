@@ -60,7 +60,7 @@ export class DifficultyScene extends Phaser.Scene {
     const compact = H < 560 || W < 900;
     const settings = loadSettings();
     this.selectedDiff = settings.difficulty;
-    this.playerName = accountSystem.view().session?.nickname ?? settings.playerName ?? '';
+    this.playerName = accountSystem.currentPlayerName() || settings.playerName || '';
     this.diffCards = [];
     if (W < 1180 || H < 540) { this.createPhone(); return; }
 
@@ -292,9 +292,10 @@ export class DifficultyScene extends Phaser.Scene {
     SoundManager.get().click();
     const name = runPlayerName(this.nameInput?.value ?? this.playerName);
     const settings = loadSettings();
-    settings.playerName = name;
+    if(accountSystem.view().playMode!=='account')settings.playerName = name;
     settings.difficulty = this.selectedDiff;
     saveSettings(settings);
-    this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: this.selectedDiff, playerName: name } } satisfies LoadingRequest);
+    const start=()=>this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: this.selectedDiff, playerName: name } } satisfies LoadingRequest);
+    if(accountSystem.view().playMode==='guest')void accountSystem.renameGuest(name).then(r=>{if(r.ok)start();});else start();
   }
 }

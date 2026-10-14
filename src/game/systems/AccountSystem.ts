@@ -192,7 +192,7 @@ export class AccountSystem {
       if(!sameAccount(this.data.session?.account??null,ref)||!sameAccount(r.value.account,ref))return {ok:false,code:'ACCOUNT_CHANGED',message:'Account changed during guest import.',status:401};
       if(claim.snapshot.result)await this.storage.enqueue({account:ref,result:claim.snapshot.result,status:'pending'});
       await this.guests.acknowledge(claim.importId,ref);seedGuestPreferences(ref);this.data.profile=r.value;
-      if(!this.activeBattle)applyCloudProgress(r.value.progress);await this.cache();return {ok:true,value:null};
+      if(!this.activeBattle)applyCloudProgress(r.value.progress);await this.cache();return this.doImportGuests(ref);
     }catch(error){const message=error instanceof Error?error.message:'Guest import unavailable';this.data.warning=message;this.data.progressSync='pending';this.emit();return {ok:false,code:'GUEST_IMPORT_PENDING',message,status:503};}
   }
 }

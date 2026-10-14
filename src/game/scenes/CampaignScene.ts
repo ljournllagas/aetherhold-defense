@@ -1,5 +1,6 @@
 import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
+import {accountSystem} from '../systems/AccountSystem.ts';
 import { accountEntryAllowed, mountAccountButton } from '../ui/accountControls.ts';
 import { CAMPAIGN_LEVELS, CAMPAIGN_SIGILS, CAMPAIGN_WORLDS, getCampaignLevel, getCampaignWorld } from '../campaign/config.ts';
 import { campaignRepository, isWorldUnlocked, PREPARATION_PRESET_UNLOCK_STARS } from '../campaign/progress.ts';
@@ -370,7 +371,7 @@ export class CampaignScene extends Phaser.Scene {
     if (!detail?.canStart) return;
     this.scene.start('Preload', {
       stage: 'gameplay', destination: 'Game',
-      data: { difficulty: 'medium', playerName: loadSettings().playerName, mode: 'campaign', campaignLevel: level }
+      data: { difficulty: 'medium', playerName: accountSystem.currentPlayerName(), mode: 'campaign', campaignLevel: level }
     });
   }
 

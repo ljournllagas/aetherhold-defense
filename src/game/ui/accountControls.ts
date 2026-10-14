@@ -2,6 +2,7 @@ import type Phaser from 'phaser';
 import type { AccountView } from '../../shared/account.ts';
 import { accountSystem } from '../systems/AccountSystem.ts';
 export function accountStatus(v:Pick<AccountView,'playMode'|'progressSync'|'resultSync'|'pending'|'progressDirty'|'warning'|'state'>):string {
+  if(v.playMode==='guest')return v.warning??'Guest · Saved in this browser · Sign in to save across devices';
   if(v.playMode==='legacy')return 'Sign in to save across devices';
   if(v.state==='expired')return 'Session expired · Sign in to sync';
   if(v.state==='deleting')return 'Account deletion pending';
@@ -15,6 +16,6 @@ export function mountAccountButton(scene:Phaser.Scene,insetRight=12,shortLabel=f
   const button=document.createElement('button');button.className='account-access';button.type='button';button.setAttribute('aria-label','Open player account and cloud save status');
   button.style.right=`${insetRight}px`;
   button.onclick=()=>scene.scene.start('Login',{manage:true});document.getElementById('game-root')?.appendChild(button);
-  const unsubscribe=accountSystem.subscribe(v=>{button.textContent=shortLabel?(v.session?'Account':'Sign in'):v.session?`${v.session.nickname} · ${v.pending?'Pending sync':'Account'}`:'Sign in';button.title=accountStatus(v);});
+  const unsubscribe=accountSystem.subscribe(v=>{button.textContent=v.playMode==='guest'?(shortLabel?'Guest':`${v.guestName} · Guest`):shortLabel?(v.session?'Account':'Sign in'):v.session?`${v.session.nickname} · ${v.pending?'Pending sync':'Account'}`:'Sign in';button.title=accountStatus(v);});
   scene.events.once('shutdown',()=>{unsubscribe();button.remove();});
 }
