@@ -57,7 +57,7 @@ vi.mock('phaser', () => {
       return this;
     }
     enableFilters() { return this; }
-    setText(value: string) { this.currentText = value; this.textHistory.push(value); return this; }
+    setText(value: string) { this.currentText = value; this.height = value.split('\n').length * 16; this.textHistory.push(value); return this; }
     lineStyle() { return this; }
     beginPath() { return this; }
     moveTo() { return this; }
@@ -236,6 +236,25 @@ type Internals = {
 
 const internalsOf = (scene: LeaderboardScene): Internals => scene as unknown as Internals;
 const texts = () => boardMocks.displays.filter((d) => d.kind === 'text').map((d) => d.currentText as string);
+
+it.each([[844, 320], [320, 568], [390, 844], [1280, 720]])('keeps Retry and Back separate and onscreen at %ix%i', async (width, height) => {
+  boardMocks.fetchLeaderboard.mockResolvedValue({ ok: false, message: 'A long error message.\n'.repeat(80) });
+  const scene = new LeaderboardScene();
+  Object.assign(scene.scale, { width, height });
+  scene.init({});
+  scene.create();
+  await flushPromises();
+  const retry = (scene as any).retryBox;
+  expect(retry.visible).toBe(true);
+  expect(retry.y + retry.height).toBeLessThanOrEqual(height - 10);
+  expect(retry.width).toBeGreaterThanOrEqual(44);
+  expect(retry.x).toBeGreaterThanOrEqual((scene as any).panelX + 176 + 8);
+  const status = (scene as any).statusText;
+  expect(status.visible).toBe(false);
+  const sheet = boardMocks.sheets[boardMocks.sheets.length - 1];
+  expect(sheet.lines[0]).toContain('Local progress is unaffected.');
+  expect(sheet.lines[0]).toContain('A long error message.');
+});
 
 beforeEach(() => {
   boardMocks.displays.length = 0;

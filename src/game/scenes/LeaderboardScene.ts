@@ -12,6 +12,7 @@ import { accountStatus } from '../ui/accountControls.ts';
 import { etchedFrame } from '../ui/components.ts';
 import { paintVista } from '../art/menubg.ts';
 import { ViewportMaskController } from '../ui/ViewportMask.ts';
+import { ScrollSheet } from '../ui/ScrollSheet.ts';
 
 type Filter = DifficultyId | 'overall';
 type BoardMode = 'classic' | 'campaign';
@@ -39,6 +40,8 @@ export class LeaderboardScene extends Phaser.Scene {
   private filter: Filter = 'overall';
   private highlightRunId: string | null = null;
   private statusText: Phaser.GameObjects.Text | null = null;
+  private statusSheet: ScrollSheet | null = null;
+  private statusRoot: Phaser.GameObjects.Container | null = null;
   private rowLayer: Phaser.GameObjects.Container | null = null;
   private rowViews: Phaser.GameObjects.Container[] = [];
   private retryBox: Phaser.GameObjects.Rectangle | null = null;
@@ -113,6 +116,7 @@ export class LeaderboardScene extends Phaser.Scene {
       this.rowMask?.destroy();
       this.rowMask = null;
       this.rowLayer = null;
+      this.closeStatusSheet();
     });
     this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);
 
@@ -195,7 +199,7 @@ export class LeaderboardScene extends Phaser.Scene {
 
     const panelTop = tabY + tabHeight + 12;
     const panelBottom = H - (compact ? 64 : 78);
-    const panelHeight = Math.max(120, panelBottom - panelTop);
+    const panelHeight = Math.max(64, panelBottom - panelTop);
     this.add.rectangle(panelX, panelTop, panelWidth, panelHeight, 0x0b1117, 0.97).setOrigin(0).setStrokeStyle(2, 0x59636b, 0.95);
     etchedFrame(this, panelX, panelTop, panelWidth, panelHeight, false);
     this.add.rectangle(panelX + 6, panelTop + 6, panelWidth - 12, panelHeight - 12, 0x101820, 0.56).setOrigin(0);
@@ -218,9 +222,11 @@ export class LeaderboardScene extends Phaser.Scene {
     this.rowMask = new ViewportMaskController(this, this.rowLayer, { x: panelX + 4, y: this.bodyTop, width: panelWidth - 8, height: bodyHeight });
 
     this.statusText = this.add.text(W / 2, this.bodyTop + bodyHeight / 2, 'Consulting the archives...', style(14, C.textSecondary)).setOrigin(0.5).setAlign('center').setWordWrapWidth(panelWidth - 40);
-    this.retryBox = this.add.rectangle(W / 2 - 72, this.bodyTop + bodyHeight / 2 + 34, 144, 44, 0x19232d, 0.98)
+    const retryWidth = Math.min(144, panelWidth - Math.min(176, panelWidth) - 8);
+    const retryX = panelX + panelWidth - retryWidth;
+    this.retryBox = this.add.rectangle(retryX, H - 54, retryWidth, 44, 0x19232d, 0.98)
       .setOrigin(0).setStrokeStyle(1, 0xd7aa4e).setVisible(false);
-    this.retryLabel = this.add.text(W / 2, this.bodyTop + bodyHeight / 2 + 56, 'Try Again', style(12, C.goldBright, true)).setOrigin(0.5).setVisible(false);
+    this.retryLabel = this.add.text(retryX + retryWidth / 2, H - 32, 'Try Again', style(12, C.goldBright, true)).setOrigin(0.5).setVisible(false);
     this.retryBox.setDepth(10);
     this.retryLabel.setDepth(10);
     this.retryBox.setInteractive({ useHandCursor: true });
@@ -360,6 +366,7 @@ export class LeaderboardScene extends Phaser.Scene {
   }
 
   private async loadBoard(generation: number): Promise<void> {
+    this.closeStatusSheet();
     const modeAtRequest = this.mode;
     const request = ++this.requestGeneration;
     const retained = (modeAtRequest === 'campaign' ? this.campaignRecords : this.records).slice();
@@ -373,7 +380,7 @@ export class LeaderboardScene extends Phaser.Scene {
       this.statusText?.setVisible(false);
       this.renderRows();
     } else {
-      this.statusText?.setText('Consulting the archives...').setVisible(true);
+      this.showStatus('Consulting the archives...');
     }
     this.retryBox?.setVisible(false);
     this.retryLabel?.setVisible(false);
@@ -388,7 +395,7 @@ export class LeaderboardScene extends Phaser.Scene {
         if (!suffix) return;
         const stale = retained.length > 0 ? 'Showing last successful board.\n' : '';
         const title = modeAtRequest === 'campaign' ? 'Campaign board unavailable.' : 'Leaderboard unavailable.';
-        this.statusText?.setText(`${title}\n${result.message}\n${stale}${suffix}`).setVisible(true);
+        this.showStatus(`${title}\n${result.message}\n${stale}${suffix}`);
         this.retryBox?.setVisible(true);
         this.retryLabel?.setVisible(true);
         return;
@@ -398,9 +405,9 @@ export class LeaderboardScene extends Phaser.Scene {
         else this.records = [];
         this.rowLayer?.removeAll(true);
         this.rowViews = [];
-        this.statusText?.setText(modeAtRequest === 'campaign'
+        this.showStatus(modeAtRequest === 'campaign'
           ? 'No campaign legends yet.\nWin a mission while signed in to claim the board.'
-          : 'No champions yet.\nBe the first to claim the board.').setVisible(true);
+          : 'No champions yet.\nBe the first to claim the board.');
         return;
       }
       if (modeAtRequest === 'campaign') {
@@ -418,10 +425,28 @@ export class LeaderboardScene extends Phaser.Scene {
       const stale = retained.length > 0 ? 'Showing last successful board.\n' : '';
       const title = modeAtRequest === 'campaign' ? 'Campaign board unavailable.' : 'Leaderboard unavailable.';
       const message = error instanceof Error ? error.message : 'The archives could not be reached.';
-      this.statusText?.setText(`${title}\n${message}\n${stale}${suffix}`).setVisible(true);
+      this.showStatus(`${title}\n${message}\n${stale}${suffix}`);
       this.retryBox?.setVisible(true);
       this.retryLabel?.setVisible(true);
     }
+  }
+
+  private closeStatusSheet(): void {
+    this.statusSheet?.destroy(); this.statusSheet = null;
+    this.statusRoot?.destroy(true); this.statusRoot = null;
+  }
+
+  private showStatus(message: string): void {
+    this.closeStatusSheet();
+    this.statusText?.setText(message).setVisible(true);
+    if (!this.statusText || this.statusText.height <= this.bodyBottom - this.bodyTop - 8) return;
+    this.statusText.setVisible(false);
+    const root = this.add.container(0, 0).setDepth(8); this.statusRoot = root;
+    const top = this.tabY + 58;
+    this.statusSheet = new ScrollSheet(this, root, {
+      x: this.panelX, y: top, width: this.panelWidth, height: this.scale.height - 64 - top
+    }, 'Board status', () => this.closeStatusSheet());
+    this.statusSheet.text(0, message);
   }
 
   /**

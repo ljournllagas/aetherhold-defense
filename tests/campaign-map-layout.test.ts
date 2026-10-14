@@ -122,12 +122,13 @@ describe('campaign route layout', () => {
     expect(layout.tabsY + 44).toBeLessThanOrEqual(layout.mapY);
   });
 
-  it.each([[390, 844], [360, 640]])('reserves a two-line header and untruncated detail rows at %ix%i', (width, height) => {
+  it.each([[390, 844], [360, 640], [320, 568]])('reserves header actions, badges and untruncated detail rows at %ix%i', (width, height) => {
     const layout = campaignScreenLayout(width, height);
 
     expect(layout.narrowHeader).toBe(true);
-    expect(layout.tabsY).toBe(108);
-    expect(layout.mapY).toBe(160);
+    expect(layout.tabsY).toBe(132);
+    expect(layout.mapY).toBe(184);
+    expect(84 + 44).toBeLessThanOrEqual(layout.tabsY);
     expect(layout.tabsY + 44).toBeLessThanOrEqual(layout.mapY);
     expect(layout.detailY + layout.detailHeight).toBeLessThanOrEqual(height - 8);
     expect(layout.detailY + layout.detailHeight - 60 + 44).toBeLessThanOrEqual(height - 8);

@@ -12,12 +12,25 @@ import { GameScene } from '../src/game/scenes/GameScene.ts';
 import { Tower } from '../src/game/entities/Tower.ts';
 import { SoundManager } from '../src/game/systems/SoundManager.ts';
 import { gameLayout, sheetBounds } from '../src/game/ui/layout.ts';
-import type { ScrollSheet } from '../src/game/ui/ScrollSheet.ts';
+import { ScrollSheet } from '../src/game/ui/ScrollSheet.ts';
 import type { QAAction } from '../src/game/qa.ts';
 
 const VIEWPORTS = [[1440, 900], [1280, 720], [1024, 768], [844, 390], [390, 844], [360, 640]] as const;
 const KINDS = ['build', 'tower', 'more', 'relics', 'next', 'evolve'] as const;
 afterEach(() => vi.restoreAllMocks());
+
+it('scrolls a short text-only status sheet with the wheel without snapping back', () => {
+  const scene = { add: { container: () => ({ add() {}, list: [], getWorldTransformMatrix: () => ({ tx: 12, ty: 174 }) }),
+    text: () => ({ height: 20, setWordWrapWidth() { return this; } }) },
+    input: { on: vi.fn() }, game: { canvas: { addEventListener() {} } } };
+  const actual = new ScrollSheet(scene as never, { add() {} } as never,
+    { x: 12, y: 174, width: 820, height: 82 }, 'Board status', () => {}) as any;
+  actual.contentHeight = 200;
+  actual.wheel({ x: 100, y: 235 }, null, 0, 32);
+  expect(actual.scrollOffset).toBe(32);
+  actual.up();
+  expect(actual.scrollOffset).toBe(32);
+});
 
 describe('sheet bounds', () => {
   it('gives the 844x390 Tower Progression sheet room for its first action', () => {

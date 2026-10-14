@@ -12,7 +12,7 @@ export function accountStatus(v:Pick<AccountView,'playMode'|'progressSync'|'resu
   return `Pending sync${v.pending?` · ${v.pending} score${v.pending===1?'':'s'}`:''}`;
 }
 export function accountEntryAllowed():boolean {return accountSystem.canStartBattle()||(import.meta.env.DEV&&accountSystem.view().config===null);}
-export function mountAccountButton(scene:Phaser.Scene,insetRight=12,shortLabel=false,bounds?:Rect):void {
+export function mountAccountButton(scene:Phaser.Scene,insetRight=12,shortLabel=false,bounds?:Rect):HTMLButtonElement|undefined {
   if(typeof document==='undefined')return;
   const button=document.createElement('button');button.className='account-access';button.type='button';button.setAttribute('aria-label','Open player account and cloud save status');
   button.style.right=`${insetRight}px`;
@@ -21,4 +21,5 @@ export function mountAccountButton(scene:Phaser.Scene,insetRight=12,shortLabel=f
   const unsubscribe=accountSystem.subscribe(v=>{button.textContent=v.playMode==='guest'?(shortLabel?'Guest':`${v.guestName} · Guest`):shortLabel?(v.session?'Account':'Sign in'):v.session?`${v.session.nickname} · ${v.pending?'Pending sync':'Account'}`:'Sign in';button.title=accountStatus(v);});
   position();if(bounds)scene.scale.on('resize',position);
   scene.events.once('shutdown',()=>{unsubscribe();if(bounds)scene.scale.off('resize',position);button.remove();});
+  return button;
 }

@@ -58,7 +58,7 @@ Acceptance: at 320px and 390px widths, the longest labels and unlocked tactical/
 
 ### 4. [P2] Account controls cover headings and sheet titles
 
-Evidence: src/game/ui/accountControls.ts:14; src/game/scenes/DifficultyScene.ts:280; src/game/scenes/LeaderboardScene.ts:122; src/game/scenes/CampaignScene.ts:382; src/style.css `.account-access`. At 390×844, the account button covers the right part of Choose Your Defense and Hall of Legends. In Campaign Mastery at 390px and 320px it remains above the canvas sheet title. At 320px, the map's mastery/sigil badge is also truncated beneath the account action.
+Evidence: src/game/ui/accountControls.ts:14; src/game/scenes/DifficultyScene.ts:280; src/game/scenes/CampaignScene.ts:382; src/style.css `.account-access`. At 390×844, the account button covers the right part of Choose Your Defense. In Campaign Mastery at 390px and 320px it remains above the canvas sheet title. At 320px, the map's mastery/sigil badge is also truncated beneath the account action. Implementation review corrected the original Hall of Legends observation: Leaderboard mounts no account button; that overlap came from a MainMenu left active by QA navigation, and is not a production defect.
 
 Impact: headings and status information are obscured; opening a sheet leaves unrelated account navigation visually mixed with its close action.
 

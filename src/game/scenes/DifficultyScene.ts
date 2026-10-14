@@ -39,6 +39,7 @@ export class DifficultyScene extends Phaser.Scene {
   private selectedDiff: DifficultyId = 'medium';
   private playerName = '';
   private nameInput: HTMLInputElement | null = null;
+  private accountButton: HTMLButtonElement | undefined;
   private phoneSheet: ScrollSheet | null = null;
   private phoneRoot: Phaser.GameObjects.Container | null = null;
   private diffCards: Array<{ id: DifficultyId; box: Phaser.GameObjects.Rectangle; marker: Phaser.GameObjects.Text; frame: Phaser.GameObjects.Graphics; band: Phaser.GameObjects.Rectangle }> = [];
@@ -54,15 +55,16 @@ export class DifficultyScene extends Phaser.Scene {
 
   create(): void {
     if (!accountEntryAllowed()) { this.scene.start('Login'); return; }
-    mountAccountButton(this);
     const W = this.scale.width;
     const H = this.scale.height;
+    const phone = W < 1180 || H < 540;
+    this.accountButton = mountAccountButton(this, 12, phone, phone ? { x: W - 84, y: 4, width: 72, height: 44 } : undefined);
     const compact = H < 560 || W < 900;
     const settings = loadSettings();
     this.selectedDiff = settings.difficulty;
     this.playerName = accountSystem.currentPlayerName() || settings.playerName || '';
     this.diffCards = [];
-    if (W < 1180 || H < 540) { this.createPhone(); return; }
+    if (phone) { this.createPhone(); return; }
 
     paintVista(this, 'menu');
     if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) this.tweens.getTweens().forEach((tween) => tween.stop());
@@ -272,9 +274,13 @@ export class DifficultyScene extends Phaser.Scene {
     const W = this.scale.width, H = this.scale.height;
     this.phoneSheet?.destroy(); this.phoneSheet = null; this.phoneRoot.removeAll(true);
     const before = new Set(this.children.list);
-    this.add.text(W / 2, 20, 'Choose Your Defense', style(20, C.goldBright, true, FONT_DISPLAY)).setOrigin(.5);
+    this.add.text(16, 24, 'Choose Your Defense', style(W < 400 ? 16 : 20, C.goldBright, true, FONT_DISPLAY)).setOrigin(0, .5).setWordWrapWidth(W - 112);
     this.add.text(16, 48, 'DEFENDER NAME · 20 CHARACTERS MAX', style(12, C.textSecondary));
     const bounds = this.game.canvas.getBoundingClientRect();
+    if (this.accountButton) {
+      const host = document.getElementById('game-root')!.getBoundingClientRect();
+      this.accountButton.style.left = `${bounds.left - host.left + (W - 84) * bounds.width / W}px`;
+    }
     Object.assign(this.nameInput.style, { left: `${bounds.left + 16}px`, top: `${bounds.top + 70}px`, width: `${W - 32}px` });
     const height = Math.max(96, H - 198);
     const sheet = new ScrollSheet(this, this.phoneRoot, { x: 8, y: 126, width: W - 16, height }, 'Difficulty', () => this.scene.start('MainMenu')); this.phoneSheet = sheet;

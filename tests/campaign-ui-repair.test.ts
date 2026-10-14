@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import Phaser from 'phaser';
 import { CampaignScene } from '../src/game/scenes/CampaignScene.ts';
+import { SettingsScene } from '../src/game/scenes/SettingsScene.ts';
 import { handleViewportPointerUp, ViewportMaskController } from '../src/game/ui/ViewportMask.ts';
 
 vi.mock('phaser', () => ({
@@ -79,6 +80,38 @@ describe('viewport mask controller', () => {
     expect(handleViewportPointerUp(bounds, { x: 20, y: 90 }, { stopPropagation }, action)).toBe(true);
     expect(action).toHaveBeenCalledTimes(1);
   });
+});
+
+it.each(['openMastery', 'openCodex'])('keeps all wrapped rows separate in %s', (method) => {
+  const rows: Array<{ y: number; height: number }> = [];
+  const sheet = {
+    text: (y: number, value: string) => {
+      const height = Math.ceil(value.length / 22) * 20;
+      rows.push({ y, height });
+      return { height };
+    },
+    action: (y: number) => { rows.push({ y, height: 44 }); }
+  };
+  const scene = Object.create(CampaignScene.prototype) as any;
+  scene.campaignView = {
+    totalMasteryStars: 300,
+    warning: 'Storage is unavailable. Progress earned now is kept for this session only.',
+    profile: { worldSigils: [], unlockedFeatures: ['aether_codex_tactics', 'advanced_codex_stats', 'hollow_warden_codex_entry'] }
+  };
+  scene.makeSheet = () => sheet;
+  scene[method]();
+  expect(rows.length).toBeGreaterThan(15);
+  for (let i = 1; i < rows.length; i++) {
+    expect(rows[i].y, `row ${i}`).toBeGreaterThanOrEqual(rows[i - 1].y + rows[i - 1].height + 8);
+  }
+});
+
+it.each([[844, 320], [1280, 350], [390, 844]])('uses scrollable Settings at %ix%i', (width, height) => {
+  const scene = Object.create(SettingsScene.prototype) as any;
+  scene.scale = { width, height };
+  scene.createPhone = vi.fn();
+  scene.create();
+  expect(scene.createPhone).toHaveBeenCalledOnce();
 });
 
 describe('fully unlocked Codex spacing', () => {

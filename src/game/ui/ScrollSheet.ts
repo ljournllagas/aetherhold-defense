@@ -12,15 +12,18 @@ export class ScrollSheet {
   private controls: Array<{ y: number; box: Phaser.GameObjects.Rectangle; text: Phaser.GameObjects.Text }> = [];
   private texts: Phaser.GameObjects.Text[] = [];
   private drag: { id: number; y: number } | null = null;
+  private headerHeight: number;
   constructor(private scene: Phaser.Scene, parent: Phaser.GameObjects.Container, readonly bounds: Rect, title: string, close: () => void) {
     const { x, y, width, height } = bounds;
     this.root = scene.add.container(x, y); parent.add(this.root);
     const transform = this.root.getWorldTransformMatrix();
     this.bounds = { ...bounds, x: transform.tx, y: transform.ty };
     panel(scene, this.root, 0, 0, width, height).setInteractive().on('pointerdown', (p: Phaser.Input.Pointer, _x: number, _y: number, e: Phaser.Types.Input.EventData) => { this.down(p); e.stopPropagation(); });
-    this.root.add(scene.add.text(12, 14, title, style(16, C.goldBright, true, FONT_DISPLAY)).setWordWrapWidth(width - 76));
+    const heading = scene.add.text(12, 14, title, style(16, C.goldBright, true, FONT_DISPLAY)).setWordWrapWidth(width - 76);
+    this.root.add(heading);
+    this.headerHeight = Math.max(48, heading.height + 24);
     button(scene, this.root, width - 56, 4, 44, '×', close);
-    this.content = scene.add.container(0, 48); this.root.add(this.content);
+    this.content = scene.add.container(0, this.headerHeight); this.root.add(this.content);
     scene.input.on('pointerdown', this.down); scene.input.on('pointermove', this.move); scene.input.on('pointerup', this.up); scene.input.on('wheel', this.wheel);
     scene.game.canvas.addEventListener('touchcancel', this.up);
   }
@@ -55,11 +58,11 @@ export class ScrollSheet {
     this.contentHeight = Math.max(this.contentHeight, y + 56);
     this.clipControls();
   }
-  private down = (p: Phaser.Input.Pointer): void => { if (this.contains(p) && p.y >= this.bounds.y + 48) this.drag = { id: p.id, y: p.y }; };
+  private down = (p: Phaser.Input.Pointer): void => { if (this.contains(p) && p.y >= this.bounds.y + this.headerHeight) this.drag = { id: p.id, y: p.y }; };
   private move = (p: Phaser.Input.Pointer): void => { if (this.drag?.id === p.id && p.isDown) { this.scroll(this.drag.y - p.y); this.drag.y = p.y; } };
   private up = (): void => {
     this.drag = null;
-    if (this.bounds.height - 52 <= 64 && this.controls.length) {
+    if (this.bounds.height - this.headerHeight - 4 <= 64 && this.controls.length) {
       const positions = [0, ...this.controls.map(control => control.y)];
       const nearest = positions.reduce((best, y) => Math.abs(y - this.offset) < Math.abs(best - this.offset) ? y : best, 0);
       this.scrollTo(nearest);
@@ -67,15 +70,15 @@ export class ScrollSheet {
   };
   private wheel = (p: Phaser.Input.Pointer, _over: unknown, _dx: number, dy: number): void => {
     if (!this.contains(p)) return;
-    if (this.bounds.height - 52 <= 64) {
+    if (this.bounds.height - this.headerHeight - 4 <= 64 && this.controls.length) {
       const positions = [0, ...this.controls.map(control => control.y)].sort((a, b) => a - b);
       const next = dy > 0 ? positions.find(y => y > this.offset + .5) : positions.reverse().find(y => y < this.offset - .5);
       if (next !== undefined) this.scrollTo(next);
     } else this.scroll(dy);
   };
-  private scroll(delta: number): void { this.offset = Math.max(0, Math.min(Math.max(0, this.contentHeight - (this.bounds.height - 52)), this.offset + delta)); this.content.y = 48 - this.offset; this.clipControls(); }
+  private scroll(delta: number): void { this.offset = Math.max(0, Math.min(Math.max(0, this.contentHeight - (this.bounds.height - this.headerHeight - 4)), this.offset + delta)); this.content.y = this.headerHeight - this.offset; this.clipControls(); }
   private clipControls(): void {
-    const viewportHeight = this.bounds.height - 52;
+    const viewportHeight = this.bounds.height - this.headerHeight - 4;
     for (const text of this.texts) {
       const top = Math.max(0, this.offset - text.y);
       const bottom = Math.min(text.height, viewportHeight + this.offset - text.y);
@@ -89,7 +92,7 @@ export class ScrollSheet {
       }
     }
     for (const { y, box, text } of this.controls) {
-      const visible = y - this.offset >= 0 && y - this.offset + 44 <= this.bounds.height - 52;
+      const visible = y - this.offset >= 0 && y - this.offset + 44 <= viewportHeight;
       box.setVisible(visible); text.setVisible(visible); if (box.input) box.input.enabled = visible;
     }
   }

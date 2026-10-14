@@ -163,8 +163,8 @@ export function campaignWorldCaptionLayout(
 export function campaignScreenLayout(width: number, height: number): CampaignScreenLayout {
   const compact = height < 520;
   const narrowHeader = !compact && width < 520;
-  const mapY = compact ? 104 : narrowHeader ? 160 : 152;
-  const tabsY = compact ? 52 : narrowHeader ? 108 : 100;
+  const mapY = compact ? 104 : narrowHeader ? 184 : 152;
+  const tabsY = compact ? 52 : narrowHeader ? 132 : 100;
   const detailReserve = compact
     ? Math.min(196, Math.max(height < 380 ? 156 : 180, Math.floor(height * 0.48)))
     : height < 700 ? 192 : 170;

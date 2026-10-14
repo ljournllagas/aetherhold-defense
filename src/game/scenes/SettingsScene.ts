@@ -31,7 +31,7 @@ export class SettingsScene extends Phaser.Scene {
     mountAccountButton(this,70,true);
     const W = this.scale.width;
     const H = this.scale.height;
-    if (W < 768) { this.createPhone(); return; }
+    if (W < 768 || H < 360) { this.createPhone(); return; }
     const compact = H < 560 || W < 850;
     paintVista(this, 'board');
     if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) this.tweens.getTweens().forEach((tween) => tween.stop());

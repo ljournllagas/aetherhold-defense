@@ -97,6 +97,7 @@ export class CampaignScene extends Phaser.Scene {
   private mapMask: ViewportMaskController | null = null;
   private sheet: ScrollSheet | null = null;
   private sheetRoot: Phaser.GameObjects.Container | null = null;
+  private accountButton: HTMLButtonElement | undefined;
   private lastResult: CampaignClearResult | undefined;
   private readonly handleResize = (): void => { this.scene.restart({ selectedLevel: this.selectedLevel, result: this.lastResult, mapScroll: this.mapScroll ?? 0 }); };
   private readonly handleEscape = (): void => { this.scene.start('MainMenu'); };
@@ -112,7 +113,7 @@ export class CampaignScene extends Phaser.Scene {
 
   create(): void {
     if (!accountEntryAllowed()) { this.scene.start('Login'); return; }
-    mountAccountButton(this,90,true,campaignHeaderActions(this.scale.width).account);
+    this.accountButton = mountAccountButton(this,90,true,campaignHeaderActions(this.scale.width).account);
     this.campaignView = campaignRepository.view();
     if (!this.lastResult && this.selectedLevel === 1) this.selectedLevel = this.campaignView.highestUnlockedLevel;
     this.draw();
@@ -155,10 +156,10 @@ export class CampaignScene extends Phaser.Scene {
         : this.campaignView.profile.unlockedFeatures.includes('tower_visual_tier_ii') ? 'II · REINFORCED' : 'I · STANDARD';
       const [masteryLine, tierLine] = campaignHeaderBadgeLines(this.campaignView.totalMasteryStars, this.campaignView.profile.worldSigils.length, tier);
       root.add(this.add.text(16, 9, 'CAMPAIGN', style(16, C.goldBright, true, FONT_DISPLAY)));
-      root.add(this.add.text(16, 29, masteryLine, style(12, C.textSecondary, true)));
-      root.add(this.add.text(16, 43, tierLine, style(12, C.textSecondary, true)));
+      root.add(this.add.text(16, 52, masteryLine, style(12, C.textSecondary, true)).setWordWrapWidth(width - 32));
+      root.add(this.add.text(16, 66, tierLine, style(12, C.textSecondary, true)).setWordWrapWidth(width - 32));
       addAction(this, root, width - 80, 4, 64, 'Back', () => this.scene.start('MainMenu'));
-      const actionY = 60, margin = 16, gap = 6, buttonW = (width - margin * 2 - gap * 2) / 3;
+      const actionY = 84, margin = 16, gap = 6, buttonW = (width - margin * 2 - gap * 2) / 3;
       addAction(this, root, margin, actionY, buttonW, 'Aether Codex', () => this.openCodex());
       addAction(this, root, margin + buttonW + gap, actionY, buttonW, 'Mastery', () => this.openMastery(), 'secondary');
       addAction(this, root, margin + (buttonW + gap) * 2, actionY, buttonW, 'Preparation', () => this.openPreparation(), 'secondary');
@@ -383,7 +384,9 @@ export class CampaignScene extends Phaser.Scene {
     this.closeSheet();
     const root = this.add.container(0, 0).setDepth(100); this.sheetRoot = root;
     const sheet = new ScrollSheet(this, root, { x: 12, y: 12, width: this.scale.width - 24, height: this.scale.height - 24 }, title, () => this.closeSheet());
-    this.sheet = sheet; return sheet;
+    this.sheet = sheet;
+    if (this.accountButton) this.accountButton.hidden = true;
+    return sheet;
   }
 
   private openMissionScoring(): void {
@@ -409,28 +412,28 @@ export class CampaignScene extends Phaser.Scene {
   private closeSheet(): void {
     this.sheet?.destroy(); this.sheet = null;
     this.sheetRoot?.destroy(true); this.sheetRoot = null;
+    if (this.accountButton) this.accountButton.hidden = false;
   }
 
   private openMastery(): void {
     const sheet = this.makeSheet('Mastery · Stars and Sigils');
     let y = 0;
-    sheet.text(y, `Mastery Stars  ${this.campaignView.totalMasteryStars}/${CAMPAIGN_LEVELS.length * 3}`, C.goldBright, 16); y += 36;
+    y += sheet.text(y, `Mastery Stars  ${this.campaignView.totalMasteryStars}/${CAMPAIGN_LEVELS.length * 3}`, C.goldBright, 16).height + 18;
     for (const milestone of campaignMilestones(this.campaignView)) {
-      sheet.text(y, `${milestone.earned ? 'UNLOCKED' : 'LOCKED'}  ·  ${milestone.stars} stars  ·  ${milestone.label}`, milestone.earned ? C.textPrimary : C.textMuted);
-      y += 42;
+      y += sheet.text(y, `${milestone.earned ? 'UNLOCKED' : 'LOCKED'}  ·  ${milestone.stars} stars  ·  ${milestone.label}`, milestone.earned ? C.textPrimary : C.textMuted).height + 18;
     }
     y += 8;
     for (const sigil of CAMPAIGN_SIGILS) {
       const earned = this.campaignView.profile.worldSigils.includes(sigil.id);
       const world = CAMPAIGN_WORLDS.find(candidate => candidate.sigilId === sigil.id);
       const name = `${world ? worldLabel(world.id) : sigil.id.replace('_sigil', '').replace(/_/g, ' ')} Sigil`;
-      sheet.text(y, `${earned ? 'EARNED' : `LEVEL ${sigil.level}`}  ·  ${name}`, earned ? C.goldBright : C.textMuted);
-      y += 32;
+      y += sheet.text(y, `${earned ? 'EARNED' : `LEVEL ${sigil.level}`}  ·  ${name}`, earned ? C.goldBright : C.textMuted).height + 12;
     }
     const tier = this.campaignView.profile.unlockedFeatures.includes('tower_visual_tier_iii') ? 'Runic Masterwork · Tier III'
       : this.campaignView.profile.unlockedFeatures.includes('tower_visual_tier_ii') ? 'Reinforced · Tier II' : 'Borderkeep Standard · Tier I';
-    sheet.text(y + 8, `Tower visuals: ${tier}`); y += 48;
-    if (this.campaignView.warning) sheet.text(y, this.campaignView.warning, C.dangerBright);
+    y += 8;
+    y += sheet.text(y, `Tower visuals: ${tier}`).height + 16;
+    if (this.campaignView.warning) y += sheet.text(y, this.campaignView.warning, C.dangerBright).height + 12;
     sheet.action(y + 48, 'Campaign rankings', () => this.scene.start('Leaderboard', { mode: 'campaign' }), 'secondary');
     sheet.action(y + 100, 'Return to the map', () => this.closeSheet(), 'primary');
   }
@@ -445,11 +448,10 @@ export class CampaignScene extends Phaser.Scene {
     const ids = CAMPAIGN_LEVELS.flatMap(level => level.enemyIds).filter((id, index, all) => all.indexOf(id) === index);
     for (const id of ids) {
       const enemy = getCampaignEnemy(id);
-      sheet.text(y, `${enemy.name} · ${worldLabel(CAMPAIGN_LEVELS.find(level => level.enemyIds.includes(id))!.worldId)}`, C.goldBright);
-      y += 22; sheet.text(y, TACTICS[id] ?? 'Observe its movement and defenses.'); y += 36;
+      y += sheet.text(y, `${enemy.name} · ${worldLabel(CAMPAIGN_LEVELS.find(level => level.enemyIds.includes(id))!.worldId)}`, C.goldBright).height + 8;
+      y += sheet.text(y, TACTICS[id] ?? 'Observe its movement and defenses.').height + 18;
       if (this.campaignView.profile.unlockedFeatures.includes('advanced_codex_stats')) {
-        sheet.text(y, `HP ${enemy.baseHp} · Speed ${enemy.baseSpeed} · Physical armor ${Math.round(enemy.physicalArmor * 100)}% · Ward ${Math.round(enemy.wardArmor * 100)}% · Slow resistance ${Math.round(enemy.slowResistance * 100)}%`, C.textMuted, 12);
-        y += 40;
+        y += sheet.text(y, `HP ${enemy.baseHp} · Speed ${enemy.baseSpeed} · Physical armor ${Math.round(enemy.physicalArmor * 100)}% · Ward ${Math.round(enemy.wardArmor * 100)}% · Slow resistance ${Math.round(enemy.slowResistance * 100)}%`, C.textMuted, 12).height + 18;
       }
     }
     for (const world of CAMPAIGN_WORLDS) {
@@ -457,13 +459,12 @@ export class CampaignScene extends Phaser.Scene {
       const unlocked = feature !== undefined
         ? this.campaignView.profile.unlockedFeatures.includes(feature)
         : this.campaignView.profile.worldSigils.includes(world.sigilId);
-      sheet.text(y, `${unlocked ? 'CODEX ENTRY' : `REQUIRES ${world.sigilId.replace('_', ' ').toUpperCase()}`}  ·  ${enemy.name}`, unlocked ? C.goldBright : C.textMuted);
-      y += 22;
+      y += sheet.text(y, `${unlocked ? 'CODEX ENTRY' : `REQUIRES ${world.sigilId.replace('_', ' ').toUpperCase()}`}  ·  ${enemy.name}`, unlocked ? C.goldBright : C.textMuted).height + 8;
       if (unlocked) {
         const description = sheet.text(y, BOSS_CODEX_GUIDANCE[world.bossEnemyId] ?? 'Observe its phases and protect the stronghold.');
         y += description.height + 22;
         if (this.campaignView.profile.unlockedFeatures.includes('advanced_codex_stats')) {
-          sheet.text(y, `HP ${enemy.baseHp} · Speed ${enemy.baseSpeed} · Physical armor ${Math.round(enemy.physicalArmor * 100)}% · Ward ${Math.round(enemy.wardArmor * 100)}%`, C.textMuted, 12); y += 36;
+          y += sheet.text(y, `HP ${enemy.baseHp} · Speed ${enemy.baseSpeed} · Physical armor ${Math.round(enemy.physicalArmor * 100)}% · Ward ${Math.round(enemy.wardArmor * 100)}%`, C.textMuted, 12).height + 18;
         }
       } else y += 32;
     }
@@ -476,11 +477,11 @@ export class CampaignScene extends Phaser.Scene {
     const unlocked20 = this.campaignView.profile.unlockedFeatures.includes('battle_preparation_presets');
     const unlocked30 = this.campaignView.profile.unlockedFeatures.includes('tower_specialization_i');
     let y = 0;
-    sheet.text(y, `Campaign setup · ${starsNow} Mastery Stars`, C.goldBright, 16); y += 34;
+    y += sheet.text(y, `Campaign setup · ${starsNow} Mastery Stars`, C.goldBright, 16).height + 16;
     if (!unlocked20) {
       const text=sheet.text(y, `Targeting preferences and saved presets unlock at ${PREPARATION_PRESET_UNLOCK_STARS} stars. You have ${starsNow}/${PREPARATION_PRESET_UNLOCK_STARS}.`); y += text.height+16;
     } else {
-      sheet.text(y, 'Tower targeting'); y += 26;
+      y += sheet.text(y, 'Tower targeting').height + 8;
       for (const id of TOWER_IDS) {
         const current = this.campaignView.profile.targeting[id];
         const next = TARGETING_MODES[(TARGETING_MODES.indexOf(current) + 1) % TARGETING_MODES.length];
@@ -490,12 +491,13 @@ export class CampaignScene extends Phaser.Scene {
         });
         y += 52;
       }
-      y += 8; sheet.text(y, `Saved presets · ${this.campaignView.profile.preparationPresets.length}/3`, C.goldBright); y += 28;
+      y += 8;
+      y += sheet.text(y, `Saved presets · ${this.campaignView.profile.preparationPresets.length}/3`, C.goldBright).height + 10;
       const presetNames = ['Watch', 'Assault', 'Finale'];
       presetNames.forEach((name, index) => {
         const id = `campaign-slot-${index + 1}`;
         const preset = this.campaignView.profile.preparationPresets.find(item => item.id === id);
-        sheet.text(y, `${name}${preset ? ` · saved as “${preset.name}”` : ' · empty'}`); y += 22;
+        y += sheet.text(y, `${name}${preset ? ` · saved as “${preset.name}”` : ' · empty'}`).height + 8;
         sheet.action(y, 'Save this setup', () => { campaignRepository.savePreparationPreset(id, name); this.campaignView = campaignRepository.view(); this.openPreparation(); }, 'secondary'); y += 52;
         sheet.action(y, preset ? 'Load saved setup' : 'No saved setup', () => {
           if (preset) { campaignRepository.loadPreparationPreset(id); this.campaignView = campaignRepository.view(); this.openPreparation(); }
@@ -505,13 +507,14 @@ export class CampaignScene extends Phaser.Scene {
       });
     }
 
-    y += 8; sheet.text(y, 'Tower specialization sidegrades', C.goldBright, 16); y += 32;
+    y += 8;
+    y += sheet.text(y, 'Tower specialization sidegrades', C.goldBright, 16).height + 14;
     if (!unlocked30) {
-      sheet.text(y, `Unlocks at ${CAMPAIGN_SPECIALIZATION_UNLOCK_STARS} Mastery Stars. You have ${starsNow}/${CAMPAIGN_SPECIALIZATION_UNLOCK_STARS}. Choices remain reversible between levels.`);
+      y += sheet.text(y, `Unlocks at ${CAMPAIGN_SPECIALIZATION_UNLOCK_STARS} Mastery Stars. You have ${starsNow}/${CAMPAIGN_SPECIALIZATION_UNLOCK_STARS}. Choices remain reversible between levels.`).height;
     } else {
       for (const id of TOWER_IDS) {
         const options = getTowerSpecializations(id), chosen = this.campaignView.profile.choices[id];
-        sheet.text(y, `${TOWERS[id].name} · ${chosen ? options.find(option => option.id === chosen)?.name : 'No specialization'}`, C.textPrimary, 14); y += 22;
+        y += sheet.text(y, `${TOWERS[id].name} · ${chosen ? options.find(option => option.id === chosen)?.name : 'No specialization'}`, C.textPrimary, 14).height + 8;
         for (const option of options) {
           const description=sheet.text(y, `${option.name}: ${option.description}`, C.textSecondary, 16); y += description.height+12;
           const isChosen = chosen === option.id;
