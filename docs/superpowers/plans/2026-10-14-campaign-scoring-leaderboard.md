@@ -222,7 +222,7 @@ Implement `applyCampaignClear` with score/lives validation, unchanged completion
 
 ## Task 3: Validate new terminal results and award scheduled combat correctly
 
-**Files:** Modify `src/shared/account.ts`, `src/shared/campaignResult.ts`, `src/game/scenes/GameScene.ts`, `src/game/systems/GuestProgress.ts`, `worker/accountScores.ts`; create `tests/campaign-score-results.test.ts`; update `tests/guest-run-settlement.test.ts`, `tests/account-scores.test.ts`, `tests/guest-progress.test.ts`, `tests/campaign-independent-lifecycle.test.ts`, and relevant scene fixture callers discovered with `rg`.
+**Files:** Modify `src/shared/account.ts`, `src/shared/campaignResult.ts`, `src/game/scenes/GameScene.ts`, `src/game/systems/GuestProgress.ts`; verify/reuse existing `worker/accountScores.ts` validation and generic canonicalization without a behaviorless source edit; create `tests/campaign-score-results.test.ts`; update `tests/guest-run-settlement.test.ts`, `tests/account-scores.test.ts`, `tests/guest-progress.test.ts`, `tests/campaign-independent-lifecycle.test.ts`, and relevant scene fixture callers discovered with `rg`.
 
 **Interfaces:**
 - Consumes: Tasks 1–2 score calculation, metadata, `applyCampaignClear`.
