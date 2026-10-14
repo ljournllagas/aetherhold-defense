@@ -1,0 +1,582 @@
+[
+  {
+    "kind": "hero",
+    "duration": 5,
+    "title": "Aegis of the Borderkeep",
+    "subtitle": "The Gloomtide is coming.",
+    "start": 0
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "clip": "placement",
+    "title": "BUILD.",
+    "subtitle": "Pick a tower. Place your defence.",
+    "kicker": "ONE SIMPLE MOVE",
+    "start": 5
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "clip": "normal",
+    "title": "BATTLE.",
+    "subtitle": "Let your towers do the talking.",
+    "kicker": "WATCH THE CHAIN REACTION",
+    "start": 8
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "clip": "upgrade-action",
+    "title": "UPGRADE.",
+    "subtitle": "A little stronger. One more wave.",
+    "kicker": "THE LOOP THAT PULLS YOU BACK",
+    "start": 11
+  },
+  {
+    "kind": "classic",
+    "duration": 5,
+    "clip": "heavy",
+    "title": "Classic Siege",
+    "subtitle": "30 waves. Three difficulties. One stronghold.",
+    "kicker": "HOLD THE LINE",
+    "start": 14
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "clip": "classic-boss",
+    "title": "BREAK THE SIEGE.",
+    "subtitle": "Face the Gloomtide, elites and Siege bosses.",
+    "kicker": "THE STRONGHOLD IS COUNTING ON YOU",
+    "start": 19
+  },
+  {
+    "kind": "classic-roster",
+    "duration": 3,
+    "title": "Meet the Gloomtide.",
+    "subtitle": "Fast. Armored. Warded. Elite. Build to counter the threat.",
+    "start": 22
+  },
+  {
+    "kind": "towers",
+    "duration": 7,
+    "title": "Five towers. Your strategy.",
+    "subtitle": "Physical \u00b7 Splash \u00b7 Slow \u00b7 Arcane \u00b7 Chain lightning",
+    "start": 25
+  },
+  {
+    "kind": "evolution",
+    "duration": 5,
+    "clip": "evolution",
+    "title": "Choose your evolution.",
+    "subtitle": "Ten branches. Permanent unlocks. Your own build.",
+    "kicker": "CLASSIC PROGRESSION",
+    "start": 32
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "still": "evolutions-art",
+    "title": "TEN PATHS TO POWER.",
+    "subtitle": "Branch crests and rank upgrades make every evolved tower your own.",
+    "kicker": "THE EVOLUTION COLLECTION",
+    "start": 37
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "clip": "mastery",
+    "title": "KEEP GOING.",
+    "subtitle": "Survive the Siege. Push into Endless. Build Mastery.",
+    "kicker": "THE NEXT WAVE IS WAITING",
+    "start": 40
+  },
+  {
+    "kind": "relics",
+    "duration": 7,
+    "title": "Turn the tide.",
+    "subtitle": "Ten Relics. Four rarities. One perfectly timed play.",
+    "start": 43
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "clip": "reward",
+    "title": "KEEP IT. CAST IT.",
+    "subtitle": "Store three Relics. Aim a Meteor. Freeze time. Change the fight.",
+    "kicker": "YOUR NEXT GREAT MOMENT",
+    "start": 50
+  },
+  {
+    "kind": "campaign",
+    "duration": 4,
+    "clip": "campaign-map",
+    "title": "100 LEVELS.",
+    "subtitle": "Ten worlds. Three stars per mission. A journey worth mastering.",
+    "start": 53
+  },
+  {
+    "kind": "world",
+    "duration": 4,
+    "clip": "world-borderkeep",
+    "world": {
+      "id": "borderkeep",
+      "worldNumber": 1,
+      "name": "The Borderkeep",
+      "levelStart": 1,
+      "levelEnd": 10,
+      "bossLevel": 10,
+      "bossEnemyId": "hollow_warden",
+      "sigilId": "border_sigil",
+      "visualThemeId": "borderkeep_forest"
+    },
+    "title": "The Borderkeep",
+    "start": 57
+  },
+  {
+    "kind": "world",
+    "duration": 4,
+    "clip": "world-emberfall",
+    "world": {
+      "id": "emberfall",
+      "worldNumber": 2,
+      "name": "Emberfall Highlands",
+      "levelStart": 11,
+      "levelEnd": 20,
+      "bossLevel": 20,
+      "bossEnemyId": "cinder_colossus",
+      "sigilId": "ember_sigil",
+      "visualThemeId": "emberfall_volcanic"
+    },
+    "title": "Emberfall Highlands",
+    "start": 61
+  },
+  {
+    "kind": "world",
+    "duration": 4,
+    "clip": "world-frostveil",
+    "world": {
+      "id": "frostveil",
+      "worldNumber": 3,
+      "name": "Frostveil Pass",
+      "levelStart": 21,
+      "levelEnd": 30,
+      "bossLevel": 30,
+      "bossEnemyId": "frostbound_matriarch",
+      "sigilId": "frost_sigil",
+      "visualThemeId": "frostveil_mountain"
+    },
+    "title": "Frostveil Pass",
+    "start": 65
+  },
+  {
+    "kind": "world",
+    "duration": 4,
+    "clip": "world-whisperfen",
+    "world": {
+      "id": "whisperfen",
+      "worldNumber": 4,
+      "name": "Whisperfen",
+      "levelStart": 31,
+      "levelEnd": 40,
+      "bossLevel": 40,
+      "bossEnemyId": "mireheart_hydra",
+      "sigilId": "mire_sigil",
+      "visualThemeId": "whisperfen"
+    },
+    "title": "Whisperfen",
+    "start": 69
+  },
+  {
+    "kind": "world",
+    "duration": 4,
+    "clip": "world-sunken_aether",
+    "world": {
+      "id": "sunken_aether",
+      "worldNumber": 5,
+      "name": "Sunken Aether Ruins",
+      "levelStart": 41,
+      "levelEnd": 50,
+      "bossLevel": 50,
+      "bossEnemyId": "drowned_oracle",
+      "sigilId": "tide_sigil",
+      "visualThemeId": "sunken_aether"
+    },
+    "title": "Sunken Aether Ruins",
+    "start": 73
+  },
+  {
+    "kind": "world",
+    "duration": 4,
+    "clip": "world-ironroot",
+    "world": {
+      "id": "ironroot",
+      "worldNumber": 6,
+      "name": "Ironroot Foundry",
+      "levelStart": 51,
+      "levelEnd": 60,
+      "bossLevel": 60,
+      "bossEnemyId": "iron_tyrant",
+      "sigilId": "iron_sigil",
+      "visualThemeId": "ironroot"
+    },
+    "title": "Ironroot Foundry",
+    "start": 77
+  },
+  {
+    "kind": "world",
+    "duration": 4,
+    "clip": "world-sky_isles",
+    "world": {
+      "id": "sky_isles",
+      "worldNumber": 7,
+      "name": "Shattered Sky Isles",
+      "levelStart": 61,
+      "levelEnd": 70,
+      "bossLevel": 70,
+      "bossEnemyId": "stormmaw_prime",
+      "sigilId": "sky_sigil",
+      "visualThemeId": "sky_isles"
+    },
+    "title": "Shattered Sky Isles",
+    "start": 81
+  },
+  {
+    "kind": "world",
+    "duration": 4,
+    "clip": "world-dreadmoon",
+    "world": {
+      "id": "dreadmoon",
+      "worldNumber": 8,
+      "name": "Dreadmoon Wastes",
+      "levelStart": 71,
+      "levelEnd": 80,
+      "bossLevel": 80,
+      "bossEnemyId": "umbral_regent",
+      "sigilId": "moon_sigil",
+      "visualThemeId": "dreadmoon"
+    },
+    "title": "Dreadmoon Wastes",
+    "start": 85
+  },
+  {
+    "kind": "world",
+    "duration": 4,
+    "clip": "world-astral_rift",
+    "world": {
+      "id": "astral_rift",
+      "worldNumber": 9,
+      "name": "The Astral Rift",
+      "levelStart": 81,
+      "levelEnd": 90,
+      "bossLevel": 90,
+      "bossEnemyId": "rift_sovereign",
+      "sigilId": "rift_sigil",
+      "visualThemeId": "astral_rift"
+    },
+    "title": "The Astral Rift",
+    "start": 89
+  },
+  {
+    "kind": "world",
+    "duration": 4,
+    "clip": "world-aether_crown",
+    "world": {
+      "id": "aether_crown",
+      "worldNumber": 10,
+      "name": "Crown of Aetherhold",
+      "levelStart": 91,
+      "levelEnd": 100,
+      "bossLevel": 100,
+      "bossEnemyId": "aether_devourer",
+      "sigilId": "crown_sigil",
+      "visualThemeId": "aether_crown"
+    },
+    "title": "Crown of Aetherhold",
+    "start": 93
+  },
+  {
+    "kind": "boss",
+    "duration": 2,
+    "clip": "boss-borderkeep",
+    "world": {
+      "id": "borderkeep",
+      "worldNumber": 1,
+      "name": "The Borderkeep",
+      "levelStart": 1,
+      "levelEnd": 10,
+      "bossLevel": 10,
+      "bossEnemyId": "hollow_warden",
+      "sigilId": "border_sigil",
+      "visualThemeId": "borderkeep_forest"
+    },
+    "title": "The Hollow Warden",
+    "start": 97
+  },
+  {
+    "kind": "boss",
+    "duration": 2,
+    "clip": "boss-emberfall",
+    "world": {
+      "id": "emberfall",
+      "worldNumber": 2,
+      "name": "Emberfall Highlands",
+      "levelStart": 11,
+      "levelEnd": 20,
+      "bossLevel": 20,
+      "bossEnemyId": "cinder_colossus",
+      "sigilId": "ember_sigil",
+      "visualThemeId": "emberfall_volcanic"
+    },
+    "title": "Cinder Colossus",
+    "start": 99
+  },
+  {
+    "kind": "boss",
+    "duration": 2,
+    "clip": "boss-frostveil",
+    "world": {
+      "id": "frostveil",
+      "worldNumber": 3,
+      "name": "Frostveil Pass",
+      "levelStart": 21,
+      "levelEnd": 30,
+      "bossLevel": 30,
+      "bossEnemyId": "frostbound_matriarch",
+      "sigilId": "frost_sigil",
+      "visualThemeId": "frostveil_mountain"
+    },
+    "title": "Frostbound Matriarch",
+    "start": 101
+  },
+  {
+    "kind": "boss",
+    "duration": 2,
+    "clip": "boss-whisperfen",
+    "world": {
+      "id": "whisperfen",
+      "worldNumber": 4,
+      "name": "Whisperfen",
+      "levelStart": 31,
+      "levelEnd": 40,
+      "bossLevel": 40,
+      "bossEnemyId": "mireheart_hydra",
+      "sigilId": "mire_sigil",
+      "visualThemeId": "whisperfen"
+    },
+    "title": "Mireheart Hydra",
+    "start": 103
+  },
+  {
+    "kind": "boss",
+    "duration": 2,
+    "clip": "boss-sunken_aether",
+    "world": {
+      "id": "sunken_aether",
+      "worldNumber": 5,
+      "name": "Sunken Aether Ruins",
+      "levelStart": 41,
+      "levelEnd": 50,
+      "bossLevel": 50,
+      "bossEnemyId": "drowned_oracle",
+      "sigilId": "tide_sigil",
+      "visualThemeId": "sunken_aether"
+    },
+    "title": "Drowned Oracle",
+    "start": 105
+  },
+  {
+    "kind": "boss",
+    "duration": 2,
+    "clip": "boss-ironroot",
+    "world": {
+      "id": "ironroot",
+      "worldNumber": 6,
+      "name": "Ironroot Foundry",
+      "levelStart": 51,
+      "levelEnd": 60,
+      "bossLevel": 60,
+      "bossEnemyId": "iron_tyrant",
+      "sigilId": "iron_sigil",
+      "visualThemeId": "ironroot"
+    },
+    "title": "Iron Tyrant",
+    "start": 107
+  },
+  {
+    "kind": "boss",
+    "duration": 2,
+    "clip": "boss-sky_isles",
+    "world": {
+      "id": "sky_isles",
+      "worldNumber": 7,
+      "name": "Shattered Sky Isles",
+      "levelStart": 61,
+      "levelEnd": 70,
+      "bossLevel": 70,
+      "bossEnemyId": "stormmaw_prime",
+      "sigilId": "sky_sigil",
+      "visualThemeId": "sky_isles"
+    },
+    "title": "Stormmaw Prime",
+    "start": 109
+  },
+  {
+    "kind": "boss",
+    "duration": 2,
+    "clip": "boss-dreadmoon",
+    "world": {
+      "id": "dreadmoon",
+      "worldNumber": 8,
+      "name": "Dreadmoon Wastes",
+      "levelStart": 71,
+      "levelEnd": 80,
+      "bossLevel": 80,
+      "bossEnemyId": "umbral_regent",
+      "sigilId": "moon_sigil",
+      "visualThemeId": "dreadmoon"
+    },
+    "title": "Umbral Regent",
+    "start": 111
+  },
+  {
+    "kind": "boss",
+    "duration": 2,
+    "clip": "boss-astral_rift",
+    "world": {
+      "id": "astral_rift",
+      "worldNumber": 9,
+      "name": "The Astral Rift",
+      "levelStart": 81,
+      "levelEnd": 90,
+      "bossLevel": 90,
+      "bossEnemyId": "rift_sovereign",
+      "sigilId": "rift_sigil",
+      "visualThemeId": "astral_rift"
+    },
+    "title": "Rift Sovereign",
+    "start": 113
+  },
+  {
+    "kind": "boss",
+    "duration": 2,
+    "clip": "boss-aether_crown",
+    "world": {
+      "id": "aether_crown",
+      "worldNumber": 10,
+      "name": "Crown of Aetherhold",
+      "levelStart": 91,
+      "levelEnd": 100,
+      "bossLevel": 100,
+      "bossEnemyId": "aether_devourer",
+      "sigilId": "crown_sigil",
+      "visualThemeId": "aether_crown"
+    },
+    "title": "Aether Devourer",
+    "start": 115
+  },
+  {
+    "kind": "feature",
+    "duration": 4,
+    "clip": "boss-aether_crown",
+    "title": "THE FINAL STAND.",
+    "subtitle": "Read the phases. Break the resistance. Expose the core.",
+    "kicker": "LEVEL 100 \u00b7 AETHER DEVOURER",
+    "start": 117
+  },
+  {
+    "kind": "feature",
+    "duration": 4,
+    "still": "preparation",
+    "title": "MAKE IT YOURS.",
+    "subtitle": "Targeting choices. Saved presets. Pre-battle preparation.",
+    "kicker": "PLAN YOUR NEXT VICTORY",
+    "start": 121
+  },
+  {
+    "kind": "specializations",
+    "duration": 5,
+    "title": "Ten specializations.",
+    "subtitle": "Choose the tradeoff that fits your defence.",
+    "start": 125
+  },
+  {
+    "kind": "feature",
+    "duration": 4,
+    "clip": "campaign-result",
+    "title": "EARN EVERY STAR.",
+    "subtitle": "Clear the mission. Protect your lives. Beat the mastery target.",
+    "kicker": "SCORE \u00b7 MASTERY \u00b7 WORLD SIGILS",
+    "start": 130
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "still": "codex",
+    "title": "KNOW YOUR ENEMY.",
+    "subtitle": "Aether Codex tactics, enemy stats and boss guidance.",
+    "kicker": "READ THE THREAT",
+    "start": 134
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "clip": "progression",
+    "title": "A LITTLE MORE.",
+    "subtitle": "Unlock art tiers, rerolls, achievements, banners and crests.",
+    "kicker": "EVERY CLEAR MOVES YOU FORWARD",
+    "start": 137
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "clip": "leaderboard",
+    "title": "LEAVE YOUR MARK.",
+    "subtitle": "Separate Classic and Campaign public rankings.",
+    "kicker": "HALL OF LEGENDS",
+    "start": 140
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "clip": "auto",
+    "title": "YOUR PACE.",
+    "subtitle": "Auto waves and situational Relics. Speed up. Pause. Take control.",
+    "kicker": "SIMPLE TO PICK UP",
+    "start": 143
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "still": "settings",
+    "title": "SETTLE IN.",
+    "subtitle": "Tune music and effects. Set your preferred pace.",
+    "kicker": "WARDEN SETTINGS",
+    "start": 146
+  },
+  {
+    "kind": "feature",
+    "duration": 3,
+    "still": "help",
+    "title": "PICK IT UP. PLAY.",
+    "subtitle": "Helpful hints. Clear controls. Build, upgrade and sell with confidence.",
+    "kicker": "HOW TO PLAY",
+    "start": 149
+  },
+  {
+    "kind": "phone",
+    "duration": 4,
+    "title": "Tap. Drag. Defend.",
+    "subtitle": "Play in your browser. Guest saves, or Google sync across devices.",
+    "start": 152
+  },
+  {
+    "kind": "hero",
+    "duration": 6,
+    "title": "Just one more wave.",
+    "subtitle": "Play Aegis of the Borderkeep today.",
+    "end": true,
+    "start": 156
+  }
+]

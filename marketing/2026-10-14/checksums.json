@@ -1,0 +1,18 @@
+{
+  "aegis-of-the-borderkeep-promo.mp4": {
+    "bytes": 51234062,
+    "sha256": "4e2aaa73b37df1c3f4e3afe6dabd8f46e46ebdaeb8c9056d13a4e4ebe1245a46"
+  },
+  "trailer.srt": {
+    "bytes": 3911,
+    "sha256": "d98fa764f2485d95ff7487776ce6efbaa6c29a839a28e804aeb649d84d55dfa3"
+  },
+  "trailer.vtt": {
+    "bytes": 3919,
+    "sha256": "e1bbc0d3d66b6036cb000766cf3767603b0980836679d82e9fcc925c68ebf3b6"
+  },
+  "poster.jpg": {
+    "bytes": 527146,
+    "sha256": "008768217eb7f0310bf778a4df172af37160d86a8f5e5d17e4ddec23b9673358"
+  }
+}

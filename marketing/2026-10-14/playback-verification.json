@@ -1,0 +1,43 @@
+{
+  "duration": 162,
+  "width": 1920,
+  "height": 1080,
+  "playedTo": 0.549264,
+  "captionCues": 46,
+  "errors": [],
+  "seeks": [
+    {
+      "time": 60,
+      "mean": 44.983587962962964
+    },
+    {
+      "time": 101,
+      "mean": 65.11918981481482
+    },
+    {
+      "time": 141,
+      "mean": 23.136458333333334
+    },
+    {
+      "time": 157,
+      "mean": 42.06210648148148
+    }
+  ],
+  "byteRanges": "passed",
+  "fileBoundary": "passed",
+  "live": {
+    "url": "https://aetherhold-defense.ljournllagas.workers.dev",
+    "homepageStatus": 200,
+    "bundlePath": "/assets/index-Ce40le28.js",
+    "bundleStatus": 200,
+    "bundleSha256": "52dc7b455c8be1eda211d9a8fc2194a31dd8b30ee1f780f35d09671f13a9dd25",
+    "hundredLevelReleasePresent": true,
+    "healthStatus": 200,
+    "health": {
+      "ok": true,
+      "time": "2026-10-14T13:01:50.054Z",
+      "scoreVersion": 3
+    }
+  },
+  "checkedAt": "2026-10-14T13:01:48.794Z"
+}

@@ -1,0 +1,37 @@
+{
+  "seconds": 162,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "fps": 24,
+  "scenes": 46,
+  "campaignLevels": 100,
+  "worldsFeatured": 10,
+  "campaignBossesFeatured": 10,
+  "registeredCampaignArtFeatured": 120,
+  "soundtrack": "Original synthesized stereo score; no third-party recordings",
+  "sourceCommit": "9aed4cb",
+  "sourceBranch": "codex/campaign-v5-20261012",
+  "decodedFrames": 3888,
+  "fullDecode": "passed",
+  "sourceCoverage": "120/120 registered Campaign art assets",
+  "captureMotion": {
+    "normal": 1.489,
+    "heavy": 1.997,
+    "classic-boss": 1.307,
+    "world-borderkeep": 1.02,
+    "world-emberfall": 1.157,
+    "world-frostveil": 1.23,
+    "world-whisperfen": 1.096,
+    "world-sunken_aether": 1.24,
+    "world-ironroot": 1.061,
+    "world-sky_isles": 1.095,
+    "world-dreadmoon": 0.946,
+    "world-astral_rift": 0.951,
+    "world-aether_crown": 1.089
+  },
+  "soundtrackPeak": 0.87,
+  "soundtrackRms": 0.1586,
+  "fileBytes": 51234062
+}
