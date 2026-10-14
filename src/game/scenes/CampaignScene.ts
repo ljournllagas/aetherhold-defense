@@ -431,7 +431,8 @@ export class CampaignScene extends Phaser.Scene {
       : this.campaignView.profile.unlockedFeatures.includes('tower_visual_tier_ii') ? 'Reinforced · Tier II' : 'Borderkeep Standard · Tier I';
     sheet.text(y + 8, `Tower visuals: ${tier}`); y += 48;
     if (this.campaignView.warning) sheet.text(y, this.campaignView.warning, C.dangerBright);
-    sheet.action(y + 48, 'Return to the map', () => this.closeSheet(), 'primary');
+    sheet.action(y + 48, 'Campaign rankings', () => this.scene.start('Leaderboard', { mode: 'campaign' }), 'secondary');
+    sheet.action(y + 100, 'Return to the map', () => this.closeSheet(), 'primary');
   }
 
   private openCodex(): void {
