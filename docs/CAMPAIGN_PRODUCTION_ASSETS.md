@@ -20,10 +20,10 @@ crowds at compact sizes and the 767/768 boss-layout transition; physical-touch
 behavior and authenticated live gameplay were not verified. One exploratory
 same-frame Hydra QA request sequence remains unexplained, without evidence of a
 natural gameplay failure. See
-the [final integration report](../artifacts/campaign-final-art-20261012/integration/final-expansion-art-integration-report.md),
-[V17 report](../artifacts/campaign-final-art-20261012/verification/v17-final-source/v17-final-source-report.md),
-[natural boss-action report](../artifacts/s4-boss-natural-actions/report.md),
-[live check](../artifacts/campaign-final-art-20261012/integration/o9-live-check.json),
+the [final integration report](https://github.com/ljournllagas/aetherhold-defense/blob/1bcf7933b1626d9315eb4c67decdc834803f8cba/artifacts/campaign-final-art-20261012/integration/final-expansion-art-integration-report.md),
+[V17 report](https://github.com/ljournllagas/aetherhold-defense/blob/1bcf7933b1626d9315eb4c67decdc834803f8cba/artifacts/campaign-final-art-20261012/verification/v17-final-source/v17-final-source-report.md),
+[natural boss-action report](https://github.com/ljournllagas/aetherhold-defense/blob/1bcf7933b1626d9315eb4c67decdc834803f8cba/artifacts/s4-boss-natural-actions/report.md),
+[live check](https://github.com/ljournllagas/aetherhold-defense/blob/1bcf7933b1626d9315eb4c67decdc834803f8cba/artifacts/campaign-final-art-20261012/integration/o9-live-check.json),
 and [deployment handoff](../agent_docs/project_progress.md).
 
 ## Historical candidate review — 2026-10-12

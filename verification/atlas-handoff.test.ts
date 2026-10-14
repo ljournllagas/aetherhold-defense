@@ -1,8 +1,8 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { expect, it } from 'vitest';
-import { CAMPAIGN_ART_MANIFEST } from '../../../../src/game/campaign/artManifest.ts';
-import registryArtContract from '../../../../tests/fixtures/campaign-v5/registry-art-contract.json';
+import { CAMPAIGN_ART_MANIFEST } from '../src/game/campaign/artManifest.ts';
+import registryArtContract from '../tests/fixtures/campaign-v5/registry-art-contract.json';
 
 const root = process.cwd();
 const atlasFolder = resolve(root, 'artifacts/campaign-production-completion-20261010/atlases');
