@@ -1,3 +1,4 @@
+import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { accountEntryAllowed, mountAccountButton } from '../ui/accountControls.ts';
 import { CAMPAIGN_LEVELS, CAMPAIGN_SIGILS, CAMPAIGN_WORLDS, getCampaignLevel, getCampaignWorld } from '../campaign/config.ts';
@@ -299,7 +300,7 @@ export class CampaignScene extends Phaser.Scene {
     const veryCompact = boxH < 180;
     const meta = width < 520
       ? campaignCompactDetailMeta(detail)
-      : `${detail.worldName}  ·  Layout ${layoutLabel}  ·  Difficulty ${detail.difficulty}/5  ·  ${starsText}  ·  ${detail.bestScore === null ? 'Best score: —' : `Best ${detail.bestScore.toLocaleString('en-US')} pts · ${detail.bestLives} lives`}`;
+      : `${detail.worldName}  ·  Layout ${layoutLabel}  ·  Difficulty ${detail.difficulty}/5  ·  ${starsText}  ·  ${detail.bestScore === null ? 'Best score: —' : `Best ${formatCount(detail.bestScore)} pts · ${detail.bestLives} lives`}`;
     const metaText = this.add.text(x + 16, top + (compact ? 32 : 36), meta, style(12, C.textSecondary)).setWordWrapWidth(panelW - 32);
     root.add(metaText);
 
@@ -314,8 +315,8 @@ export class CampaignScene extends Phaser.Scene {
 
     const mastery = getCampaignLevel(detail.level)!.mastery;
     const goals = compact
-      ? `${detail.objectives[0].earned ? '★' : '☆'} Clear · ${detail.objectives[1].earned ? '★' : '☆'} ${mastery.minimumLivesForStar}+ lives · ${detail.objectives[2].earned ? '★' : '☆'} ${mastery.scoreTarget.toLocaleString('en-US')} score`
-      : detail.objectives.map((objective, index) => `${objective.earned ? '★' : '☆'} ${index === 0 ? 'Complete level' : index === 1 ? `Keep ${mastery.minimumLivesForStar}+ lives` : `Reach ${mastery.scoreTarget.toLocaleString('en-US')} score`}`).join('   ·   ');
+      ? `${detail.objectives[0].earned ? '★' : '☆'} Clear · ${detail.objectives[1].earned ? '★' : '☆'} ${mastery.minimumLivesForStar}+ lives · ${detail.objectives[2].earned ? '★' : '☆'} ${formatCount(mastery.scoreTarget)} score`
+      : detail.objectives.map((objective, index) => `${objective.earned ? '★' : '☆'} ${index === 0 ? 'Complete level' : index === 1 ? `Keep ${mastery.minimumLivesForStar}+ lives` : `Reach ${formatCount(mastery.scoreTarget)} score`}`).join('   ·   ');
     const goalsText = this.add.text(x + 16, top + contentLayout.goalsY, goals, style(12, C.textSecondary)).setWordWrapWidth(panelW - 32);
     root.add(goalsText);
     contentLayout = campaignDetailContentLayout(boxH, hasCompactNotice, Boolean(detail.boss), metaText.height, goalsText.height);

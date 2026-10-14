@@ -1,3 +1,4 @@
+import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import { getCampaignEnemy } from './enemies.ts';
 import { CAMPAIGN_LEVELS, CAMPAIGN_MILESTONES, CAMPAIGN_SIGILS, getCampaignLevel, getCampaignWorld } from './config.ts';
 import { isLevelUnlocked } from './progress.ts';
@@ -12,7 +13,7 @@ export const CAMPAIGN_MILESTONE_LABELS: Readonly<Record<number, string>> = {
 /** Two short, complete lines for the narrow campaign header. */
 export function campaignHeaderBadgeLines(totalMasteryStars: number, sigilCount: number, tier: string): readonly [string, string] {
   return [
-    `MASTERY ${totalMasteryStars}/${CAMPAIGN_LEVELS.length * 3} · SIGILS ${sigilCount}/${CAMPAIGN_SIGILS.length}`,
+    `MASTERY ${formatCount(totalMasteryStars)}/${CAMPAIGN_LEVELS.length * 3} · SIGILS ${sigilCount}/${CAMPAIGN_SIGILS.length}`,
     `TOWER TIER ${tier}`
   ];
 }
@@ -83,7 +84,7 @@ export function campaignCompactDetailMeta(detail: CampaignLevelDetail): string {
   const layoutLabel = detail.layoutId.split('_').pop()?.toUpperCase() ?? detail.layoutId;
   const best = detail.bestScore === null
     ? 'Best —'
-    : `Best ${detail.bestScore.toLocaleString('en-US')} · ${detail.bestLives ?? 0} lives`;
+    : `Best ${formatCount(detail.bestScore)} · ${detail.bestLives ?? 0} lives`;
   return `${worldName} · ${layoutLabel} · D${detail.difficulty}/5 · ${detail.stars}/3 stars · ${best}`;
 }
 
@@ -117,7 +118,7 @@ export function campaignLevelDetail(level: number, view: CampaignView): Campaign
     objectives: [
       { label: 'Complete the level', earned: progress.completionStar },
       { label: `Finish with ${definition.mastery.minimumLivesForStar} or more lives`, earned: progress.livesStar },
-      { label: `Reach ${definition.mastery.scoreTarget.toLocaleString('en-US')} points`, earned: progress.scoreStar }
+      { label: `Reach ${formatCount(definition.mastery.scoreTarget)} points`, earned: progress.scoreStar }
     ]
   };
 }

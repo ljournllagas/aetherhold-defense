@@ -1,3 +1,4 @@
+import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import type Phaser from 'phaser';
 import type {Point,Rect} from './viewport.ts';
 import {TOWER_IDS,TOWERS} from '../config/towers.ts';
@@ -35,7 +36,7 @@ export class TowerTray {
    });
    this.root.add([box,this.scene.add.image(x+22,24,towerPortraitKey(id)).setDisplaySize(32,32),
     this.scene.add.text(x+4,43,cfg.name,style(12,C.textPrimary,true)),
-    this.scene.add.text(x+43,12,String(cost),style(14,this.gold>=cost?C.gold:C.textSecondary)),
+    this.scene.add.text(x+43,12,formatCount(cost),style(14,this.gold>=cost?C.gold:C.textSecondary)),
     this.scene.add.text(x+43,29,this.gold>=cost?'gold':'Need gold',style(12,C.textSecondary))]);
   });
   if(this.maxOffset)button(this.scene,this.root,this.bounds.width-44,4,44,this.offset>=this.maxOffset?'↺':'›',()=>{this.offset=this.offset>=this.maxOffset?0:Math.min(this.maxOffset,this.offset+94);this.draw();},'secondary',68);

@@ -1,3 +1,4 @@
+import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 // Shared UI tokens for Phaser canvas UI. Mirrors DESIGN_SYSTEM.md §6 + :root in style.css.
 // Phaser cannot read CSS variables, so this module is the single source of truth
 // for canvas code; keep the two in sync when the design system changes.

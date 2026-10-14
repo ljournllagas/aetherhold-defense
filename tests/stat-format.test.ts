@@ -42,11 +42,11 @@ const cases = (Object.keys(EVOLUTIONS) as BranchId[]).flatMap((b) => ([0, 1, 2, 
 afterEach(() => vi.restoreAllMocks());
 
 describe('formatStat', () => {
-  it('prints whole damage, range and splash and a two-decimal attack interval', () => {
-    expect(formatStat('range', 214.50000000000003)).toBe('215');
+  it('prints bounded decimals without trailing zeroes', () => {
+    expect(formatStat('range', 214.50000000000003)).toBe('214.5');
     expect(formatStat('range', 195)).toBe('195');
     expect(formatStat('attackInterval', 0.36000000000000004)).toBe('0.36');
-    expect(formatStat('attackInterval', 1)).toBe('1.00');
+    expect(formatStat('attackInterval', 1)).toBe('1');
     expect(formatStat('damage', 151.99999999999997)).toBe('152');
     expect(formatStat('splashRadius', 90)).toBe('90');
   });

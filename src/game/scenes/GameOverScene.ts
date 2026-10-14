@@ -1,3 +1,4 @@
+import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { accountSystem } from '../systems/AccountSystem.ts';
 import { accountStatus, mountAccountButton } from '../ui/accountControls.ts';
@@ -251,7 +252,7 @@ export class GameOverScene extends Phaser.Scene {
     if (W < 768) {
       const sheet = new ScrollSheet(this, panel, { x: 12, y: 8, width: W - 24, height: H - 16 }, title, () => this.scene.start('MainMenu')); this.phoneSheet = sheet;
       let y = 0;
-      const lines = [`${outcomeLine ?? 'The Borderkeep has fallen'} · ${data.playerName}`, `FINAL SCORE · ${number(data.finalScore)}`, `Highest wave · ${data.highestWave}`, livesLine, `${data.difficulty.toUpperCase()} · ${this.duration(data.gameDurationSeconds)}`, `${data.enemiesKilled} enemies · ${data.bossesKilled} bosses`, data.isPersonalBest ? 'NEW PERSONAL BEST' : `Personal best · ${number(loadBest()?.score ?? 0)}`];
+      const lines = [`${outcomeLine ?? 'The Borderkeep has fallen'} · ${data.playerName}`, `FINAL SCORE · ${number(data.finalScore)}`, `Highest wave · ${data.highestWave}`, livesLine, `${data.difficulty.toUpperCase()} · ${this.duration(data.gameDurationSeconds)}`, `${formatCount(data.enemiesKilled)} enemies · ${formatCount(data.bossesKilled)} bosses`, data.isPersonalBest ? 'NEW PERSONAL BEST' : `Personal best · ${number(loadBest()?.score ?? 0)}`];
       if (unlocksLine) lines.push(unlocksLine);
       if (legacyLine) lines.push(legacyLine);
       lines.push(this.scoreSummary(data), this.submitMessage);

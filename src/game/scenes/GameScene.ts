@@ -1,3 +1,4 @@
+import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { accountSystem } from '../systems/AccountSystem.ts';
 import { accountEntryAllowed, accountStatus } from '../ui/accountControls.ts';
@@ -625,7 +626,7 @@ export class GameScene extends Phaser.Scene {
     }else if (kind === 'build') {
       let rowY = 0;
       TOWER_LIST.forEach(cfg => {
-        const title = sheet.text(rowY, `${cfg.name} · ${cfg.role} · ${cfg.levels[0].cost} gold`, C.gold); rowY += title.height + 8;
+        const title = sheet.text(rowY, `${cfg.name} · ${cfg.role} · ${formatCount(cfg.levels[0].cost)} gold`, C.gold); rowY += title.height + 8;
         const choice = isTowerId(cfg.id) ? this.campaign?.choices[cfg.id] : null;
         const specialization = choice ? getCampaignSpecialization(choice) : null;
         const description = sheet.text(rowY, specialization ? `${specialization.name} · ${specialization.description}` : cfg.description, C.textSecondary, 12); rowY += description.height + 8;
@@ -640,7 +641,7 @@ export class GameScene extends Phaser.Scene {
     } else if (kind === 'tower' && this.selectedTower) {
       const t = this.selectedTower;
       let y = this.drawProgressionModel(sheet, t, 0);
-      sheet.action(y, `Sell · ${investedRefund(t.progression)} gold`, () => this.performDetailedAction(()=>this.sellSelected()), 'danger',!this.detailsPurchaseContext().blocked); y += 60;
+      sheet.action(y, `Sell · ${formatCount(investedRefund(t.progression))} gold`, () => this.performDetailedAction(()=>this.sellSelected()), 'danger',!this.detailsPurchaseContext().blocked); y += 60;
       sheet.text(y, 'Targeting'); y += 28;
       TARGET_MODES.forEach((mode, i) => sheet.action(y + i * 52, `${t.targeting === mode ? '✓ ' : ''}${mode[0].toUpperCase() + mode.slice(1)}`, () => this.performDetailedAction(()=>{if(this.selectedTower!==t||!this.towers.includes(t))return false;t.targeting=mode;return true;}),'secondary',!this.detailsPurchaseContext().blocked));
     } else if (kind === 'more') {
@@ -686,8 +687,8 @@ export class GameScene extends Phaser.Scene {
       const explanation=sheet.text(actionY,'Lower seconds means faster firing.',C.textSecondary,16);actionY+=explanation.height+12;
       const nextBase=previewPurchaseStats(t.towerId,t.progression,{kind:'foundation-upgrade'});
       if(!t.maxLevel&&nextBase){const next=campaignTowerStats(nextBase,t.specialization);const comparison=sheet.text(actionY,`Next: Damage ${formatStat('damage',stats.damage)} → ${formatStat('damage',next.damage)} · Range ${formatStat('range',stats.range)} → ${formatStat('range',next.range)} · Attack ${formatStat('attackInterval',stats.attackInterval)}s → ${formatStat('attackInterval',next.attackInterval)}s`);actionY+=comparison.height+12;}
-      if(!t.maxLevel&&this.gold<t.upgradeCost()!){const shortage=sheet.text(actionY,`Need ${t.upgradeCost()!-this.gold} more gold`,C.gold,16);actionY+=shortage.height+12;}
-      if (!t.maxLevel) sheet.action(actionY, `Upgrade · ${t.upgradeCost()} gold`, () => this.performDetailedAction(()=>this.upgradeSelected()), 'primary', !this.detailsPurchaseContext().blocked && this.gold >= t.upgradeCost()!);
+      if(!t.maxLevel&&this.gold<t.upgradeCost()!){const shortage=sheet.text(actionY,`Need ${formatCount(t.upgradeCost()!-this.gold)} more gold`,C.gold,16);actionY+=shortage.height+12;}
+      if (!t.maxLevel) sheet.action(actionY, `Upgrade · ${formatCount(t.upgradeCost())} gold`, () => this.performDetailedAction(()=>this.upgradeSelected()), 'primary', !this.detailsPurchaseContext().blocked && this.gold >= t.upgradeCost()!);
       else sheet.text(actionY, 'Maximum foundation · Specializations change before battle', C.textMuted);
       return actionY + 60;
     }
@@ -745,7 +746,7 @@ export class GameScene extends Phaser.Scene {
 
   private inspectorPrimaryLabel(t: Tower): string {
     const p = t.progression;
-    if (p.foundationLevel < 4) return `Upgrade · ${t.upgradeCost()} gold`;
+    if (p.foundationLevel < 4) return `Upgrade · ${formatCount(t.upgradeCost())} gold`;
     if (this.campaign) return 'Maximum foundation';
     if (p.branchId === null || p.rank === null) return 'Evolve…';
     if (p.rank < 3) return `${EVOLUTIONS[p.branchId].name} rank ${p.rank + 1}…`;
@@ -1256,7 +1257,7 @@ export class GameScene extends Phaser.Scene {
     this.ghostBase.setPosition(gx, gy).setFillStyle(check.ok ? 0x63c77c : 0xd85f59, 0.18).setStrokeStyle(2, check.ok ? 0x63c77c : 0xd85f59).setVisible(true);
     const labelPoint = this.cameraView.project({ x: gx, y: gy < 150 ? gy + 40 : gy - 116 });
     this.ghostReason.setPosition(Math.max(100, Math.min(this.layout.field.width - 100, labelPoint.x)), Math.max(120, labelPoint.y)).setVisible(true)
-      .setText(`${check.ok ? 'Valid' : check.reason} · ${cfg.levels[0].cost} gold`).setColor(check.ok ? C.health : C.dangerBright);
+      .setText(`${check.ok ? 'Valid' : check.reason} · ${formatCount(cfg.levels[0].cost)} gold`).setColor(check.ok ? C.health : C.dangerBright);
     this.rangeCircle?.setPosition(gx, gy).setRadius(stats.range).setVisible(true)
       .setStrokeStyle(2, check.ok ? 0x63c77c : 0xd85f59, 0.8);
     this.rangeBackdrop?.setPosition(gx, gy).setRadius(stats.range).setVisible(true);
@@ -1398,12 +1399,12 @@ export class GameScene extends Phaser.Scene {
       this.hudWaveLabel?.setText('WAVE').setColor(C.textMuted);
       this.hudWaveValue?.setText(`${Math.max(1, this.wave)}/${total}`).setColor(C.textPrimary);
     }
-    this.hudGoldValue?.setText(`${this.gold}`);
+    this.hudGoldValue?.setText(`${formatCount(this.gold)}`);
     this.hudGoldValue?.setColor(this.gold < 100 ? C.danger : C.gold);
     this.hudLivesValue?.setText(`${this.lives}/${this.maxLives}`);
     // Urgent at low lives, but no continuous flashing (§21).
     this.hudLivesValue?.setColor(this.lives <= 5 ? C.danger : C.textPrimary);
-    this.hudScoreValue?.setText(`${this.scoreSoFar()}`);
+    this.hudScoreValue?.setText(`${formatCount(this.scoreSoFar())}`);
     this.fitHudMetrics();
     this.hudDiff?.setText(this.campaign ? `Level ${this.campaign.definition.level}` : d.label);
     const bits: string[] = [];
@@ -1505,7 +1506,7 @@ export class GameScene extends Phaser.Scene {
       panel(this,c,0,0,w,h).setInteractive().on('pointerdown',(_p:unknown,_x:number,_y:number,e:Phaser.Types.Input.EventData)=>e.stopPropagation());
       c.add(this.add.text(8,6,`${t.cfg.name} · Level ${t.level}`,style(14,C.textPrimary,true)));
       const next=towerProgressionView(t,this.purchaseContext(),this.wavesCompleted,this.towers).actions[0];
-      c.add(this.add.text(8,26,next?.nextStats?`Damage ${t.stats.damage} → ${next.nextStats.damage} · Range ${t.stats.range} → ${next.nextStats.range}`:'View progression and requirements',style(14,C.textSecondary)).setWordWrapWidth(w-16));
+      c.add(this.add.text(8,26,next?.nextStats?`Damage ${formatQuantity(t.stats.damage,1)} → ${formatQuantity(next.nextStats.damage,1)} · Range ${formatQuantity(t.stats.range,1)} → ${formatQuantity(next.nextStats.range,1)}`:'View progression and requirements',style(14,C.textSecondary)).setWordWrapWidth(w-16));
       button(this,c,8,58,w-128,this.inspectorPrimaryLabel(t),()=>this.inspectorPrimaryAction(),'primary');
       button(this,c,w-112,58,60,'Details',()=>this.openSheet('tower'));
       button(this,c,w-48,58,44,'×',()=>{this.selectedTower=null;this.refreshInfoPanel();});
@@ -1583,7 +1584,7 @@ export class GameScene extends Phaser.Scene {
 
   private autoDetail(): string {
     const base = this.auto.enabled ? `Auto ON · ${this.autoShortStatus()}` : 'Auto OFF';
-    const stats=this.layout.compact?`\nWave ${this.wave}/${this.campaign?.waveCount ?? 30}\nGold ${this.gold}\nLives ${this.lives}/${this.maxLives}\nScore ${this.scoreSoFar()}`:'';
+    const stats=this.layout.compact?`\nWave ${this.wave}/${this.campaign?.waveCount ?? 30}\nGold ${formatCount(this.gold)}\nLives ${this.lives}/${this.maxLives}\nScore ${formatCount(this.scoreSoFar())}`:'';
     return `${base} · ${this.vault.pending.length} queued · A toggles Auto${stats}`;
   }
 
@@ -1698,7 +1699,7 @@ export class GameScene extends Phaser.Scene {
     const width = Math.min(440, this.layout.field.width - 24);
     const c = this.add.container(12, this.layout.height - this.layout.tray - 56); this.uiRoot!.add(c);
     panel(this, c, 0, 0, width, 48);
-    c.add(this.add.text(12, 8, `Place ${cfg.name} · ${cfg.levels[0].cost} gold`, style(14, C.textPrimary, true)));
+    c.add(this.add.text(12, 8, `Place ${cfg.name} · ${formatCount(cfg.levels[0].cost)} gold`, style(14, C.textPrimary, true)));
     c.add(this.add.text(12, 28, 'Choose a clearing. Escape cancels.', style(12, C.textSecondary)));
     button(this, c, width - 56, 2, 44, '×', () => { this.placingTowerId = null; this.hideGhost(); this.refreshPlots(); this.refreshPlacePanel(); this.drawCatalog(); });
     this.placePanel = c;
@@ -1747,7 +1748,7 @@ export class GameScene extends Phaser.Scene {
       const commandWidth = this.layout.width - 440;
       const bw = (commandWidth - 8) / 2;
       button(this, commands, 0, 0, bw, this.inspectorPrimaryLabel(t), () => this.inspectorPrimaryAction(), 'primary', 44);
-      button(this, commands, bw + 8, 0, bw, `Sell · ${investedRefund(t.progression)} gold`, () => this.sellSelected(), 'danger', 44);
+      button(this, commands, bw + 8, 0, bw, `Sell · ${formatCount(investedRefund(t.progression))} gold`, () => this.sellSelected(), 'danger', 44);
       return;
     }
     c.add(this.add.image(40, 40, towerPortraitKey(t.towerId)).setDisplaySize(56, 56));
@@ -1807,7 +1808,7 @@ export class GameScene extends Phaser.Scene {
     this.towers.push(tw);
     this.occupied.add(plotIndex);
     SoundManager.get().build();
-    this.floatText(p.x, p.y - 28, `-${cost} gold`, C.gold);
+    this.floatText(p.x, p.y - 28, `-${formatCount(cost)} gold`, C.gold);
     this.placingTowerId = null;
     this.selectedTower = tw; // deliberate build-then-inspect
     this.refreshInfoPanel();
@@ -1836,7 +1837,7 @@ export class GameScene extends Phaser.Scene {
     this.gold = result.gold; tower.progression = result.state;
     if (evolved) tower.counter = { successes: 0 };
     SoundManager.get().upgrade();
-    this.floatText(tower.x, tower.y - 30, `-${result.cost} gold`, C.gold);
+    this.floatText(tower.x, tower.y - 30, `-${formatCount(result.cost)} gold`, C.gold);
     this.refreshTowerVisual(tower);
     this.refreshInfoPanel();
     this.updateHUD();
@@ -1868,7 +1869,7 @@ export class GameScene extends Phaser.Scene {
     const sv = investedRefund(t.progression);
     this.gold += sv;
     SoundManager.get().sell();
-    this.floatText(t.x, t.y - 30, `+${sv} gold`, C.gold);
+    this.floatText(t.x, t.y - 30, `+${formatCount(sv)} gold`, C.gold);
     this.evolutionCombat.removeOwner(t.id);
     t.view?.destroy(true);
     t.shadow?.destroy();
@@ -2665,7 +2666,7 @@ export class GameScene extends Phaser.Scene {
       case 'gold_rush': {
         const g = POWERUP_EFFECTS.gold.base + this.wave * POWERUP_EFFECTS.gold.perWave;
         this.gold += g;
-        this.floatText(this.map.width / 2, 160, `Gold Rush! +${g} gold`, C.gold, 20);
+        this.floatText(this.map.width / 2, 160, `Gold Rush! +${formatCount(g)} gold`, C.gold, 20);
         break;
       }
       case 'time_freeze':
@@ -2703,7 +2704,7 @@ export class GameScene extends Phaser.Scene {
       }
       case 'ancient_blessing': {
         const roll = Math.random();
-        if (roll < POWERUP_EFFECTS.blessing.coinChance) { const g = POWERUP_EFFECTS.blessing.goldBase + this.wave * POWERUP_EFFECTS.blessing.goldPerWave; this.gold += g; this.floatText(this.map.width / 2, 160, `Blessing of Coin: +${g} gold`, C.gold, 20); }
+        if (roll < POWERUP_EFFECTS.blessing.coinChance) { const g = POWERUP_EFFECTS.blessing.goldBase + this.wave * POWERUP_EFFECTS.blessing.goldPerWave; this.gold += g; this.floatText(this.map.width / 2, 160, `Blessing of Coin: +${formatCount(g)} gold`, C.gold, 20); }
         else if (roll < POWERUP_EFFECTS.blessing.repairThreshold) { this.lives = Math.min(d.maxLives, this.lives + POWERUP_EFFECTS.blessing.repairLives); this.floatText(this.map.width / 2, 160, 'Blessing of Stone: +2 lives', C.health, 20); }
         else { this.surgeUntil = this.gameTimeMs + POWERUP_EFFECTS.surge.durationMs; this.floatText(this.map.width / 2, 160, 'Blessing of Stars: Surge', C.arcane, 20); }
         break;
@@ -2984,7 +2985,7 @@ export class GameScene extends Phaser.Scene {
     }
     SoundManager.get().die();
     const point = this.enemyImpactPoint(e);
-    this.floatTextForEnemy(e, `+${reward} gold`, C.gold, 14);
+    this.floatTextForEnemy(e, `+${formatCount(reward)} gold`, C.gold, 14);
     this.impactBurst(point.x, point.y, e.isBoss ? 0xd85f59 : 0xcfc4ae, e.isBoss ? 10 : 5);
     this.startDeathAnim(e);
     this.updateHUD();
@@ -3407,7 +3408,7 @@ export class GameScene extends Phaser.Scene {
     if (earned.length && this.runAccount) void accountSystem.progressChanged(this.runAccount);
     this.notifyAchievements();
     const bonus = waveClearBonus(this.wave); this.gold += bonus;
-    this.floatText(this.map.width / 2, 140, `Wave ${this.wave} cleared! +${bonus} gold`, C.health, 18);
+    this.floatText(this.map.width / 2, 140, `Wave ${this.wave} cleared! +${formatCount(bonus)} gold`, C.health, 18);
     if (this.campaign?.readyToClear(this.wave, this.lives, this.spawnQueue.length + this.enemies.filter(e => e.alive).length + this.flights.length + this.evolutionCombat.activeFieldCount)) { this.finishCampaign('victory'); return; }
     if (this.wave % 5 === 0 && !this.currentWaveIsBoss) this.grantPowerup(this.rollReward(), `Wave ${this.wave} Relic`, true);
     if (event === 'victory') this.enterVictory();
@@ -3431,7 +3432,7 @@ export class GameScene extends Phaser.Scene {
     this.uiRoot.add(c); this.victoryPanel = c;
     panel(this, c, 0, 0, width, height, 0xd7aa4e);
     c.add(this.add.text(width / 2, 14, 'Siege complete', style(22, C.goldBright, true, FONT_DISPLAY)).setOrigin(0.5, 0));
-    c.add(this.add.text(width / 2, 50, `Score ${this.scoreSoFar()} · Lives ${this.lives}/${this.maxLives}`, style(14, C.textPrimary, true)).setOrigin(0.5, 0));
+    c.add(this.add.text(width / 2, 50, `Score ${formatCount(this.scoreSoFar())} · Lives ${this.lives}/${this.maxLives}`, style(14, C.textPrimary, true)).setOrigin(0.5, 0));
     const unlocked = this.unlocksEarnedThisRun.length ? `Unlocked: ${this.unlocksEarnedThisRun.map((id) => EVOLUTIONS[id].name).join(', ')}` : '';
     c.add(this.add.text(width / 2, 74, unlocked, style(12, C.textSecondary)).setOrigin(0.5, 0).setWordWrapWidth(width - 32));
     const resolved = victoryRewardsResolved(this.vault, this.modal !== null, this.auto.enabled);
@@ -3498,7 +3499,7 @@ export class GameScene extends Phaser.Scene {
     let y = 0;
     const line = (message: string, color: string = C.textSecondary) => { const text = sheet.text(y, message, color); y += text.height + 12; };
     if (import.meta.env.DEV && this.qaCampaignFixture) line('DEV CAMPAIGN FIXTURE · Reward preview · Not saved', C.gold);
-    line(`Score ${result.score} · Lives ${result.lives}/${this.maxLives}`, C.gold);
+    line(`Score ${formatCount(result.score)} · Lives ${formatCount(result.lives)}/${this.maxLives}`, C.gold);
     for(const r of campaignRequirements((this.qaCampaignRepository??campaignRepository).view(),level).filter(r=>r.id!=='previous')){
       line(`${r.met?'★':'☆'} ${r.label} · ${r.progress}${r.met?'':` · ${r.nextStep}`}`);
     }
@@ -3506,7 +3507,7 @@ export class GameScene extends Phaser.Scene {
     if (result.clear) {
       const progress = result.clear.progress;
       line(`Mastery: Completion ${progress.completionStar ? 'earned' : 'missing'} · Stronghold ${progress.livesStar ? 'earned' : 'missing'} · Score ${progress.scoreStar ? 'earned' : 'missing'}`);
-      line(result.clear.newlyEarnedStars.length ? `New stars: ${result.clear.newlyEarnedStars.join(', ')} · Total ${result.clear.totalMasteryStars}/${totalMasteryStars}` : `Total ${result.clear.totalMasteryStars}/${totalMasteryStars} · Stars retained from earlier clears`);
+      line(result.clear.newlyEarnedStars.length ? `New stars: ${result.clear.newlyEarnedStars.join(', ')} · Total ${formatCount(result.clear.totalMasteryStars)}/${formatCount(totalMasteryStars)}` : `Total ${formatCount(result.clear.totalMasteryStars)}/${formatCount(totalMasteryStars)} · Stars retained from earlier clears`);
       if (result.clear.newlyEarnedSigils.length) line(`World Sigil earned: ${result.clear.newlyEarnedSigils.map(id => id.replace(/_/g, ' ')).join(', ')}`, C.gold);
       if (result.clear.newlyUnlockedFeatures.length) line(`Unlocked: ${result.clear.newlyUnlockedFeatures.map(id => id.replace(/_/g, ' ')).join(', ')}`, C.gold);
       const view = (import.meta.env.DEV && this.qaCampaignRepository ? this.qaCampaignRepository : campaignRepository).view();

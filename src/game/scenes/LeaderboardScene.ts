@@ -1,3 +1,4 @@
+import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { fetchLeaderboard } from '../../api/leaderboardClient.ts';
 import { scoreRetryRepository } from '../systems/ScoreRetry.ts';

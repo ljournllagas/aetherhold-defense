@@ -1,3 +1,4 @@
+import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { accountSystem } from '../systems/AccountSystem.ts';
 import { accountEntryAllowed, mountAccountButton } from '../ui/accountControls.ts';
@@ -183,9 +184,9 @@ export class DifficultyScene extends Phaser.Scene {
       const statTop = cardY + cardHeight - (compact ? 53 : 114);
       const rowGap = compact ? 16 : 35;
       const statRows = [
-        [`STARTING GOLD`, `${difficulty.startingGold.toLocaleString('en-US')}`, 'hud_gold'],
+        [`STARTING GOLD`, `${formatCount(difficulty.startingGold)}`, 'hud_gold'],
         [`STARTING LIVES`, `${difficulty.startingLives}`, 'hud_lives'],
-        [`SCORE MULTIPLIER`, `${difficulty.scoreMultiplier.toFixed(2)}×`, 'hud_score']
+        [`SCORE MULTIPLIER`, `${formatQuantity(difficulty.scoreMultiplier,2)}×`, 'hud_score']
       ];
       statRows.forEach(([label, value, iconKey], statIndex) => {
         const rowY = statTop + statIndex * rowGap;
