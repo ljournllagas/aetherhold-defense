@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CAMPAIGN_LEVELS } from '../src/game/campaign/config.ts';
 import { CampaignBattle, campaignTowerStats, specializeShot } from '../src/game/campaign/battle.ts';
+import { getCampaignWave, getCampaignWaveCount } from '../src/game/campaign/waveProfile.ts';
 import { CampaignRepository } from '../src/game/campaign/progress.ts';
 import { CAMPAIGN_ROUTES, distanceToRoute } from '../src/game/campaign/maps.ts';
 import { CAMPAIGN_ENEMIES, getCampaignEnemy } from '../src/game/campaign/enemies.ts';
@@ -71,6 +72,37 @@ describe('campaign combat profiles', () => {
     expect(waveCounts.slice(40).every((count, index, values) => count >= 32 && count <= 52 && (!index || count >= values[index - 1]))).toBe(true);
     expect(new CampaignBattle(31, view).wave(1).spawns).toHaveLength(7);
     expect(new CampaignBattle(21, view).wave(1).spawns).toHaveLength(10);
+  });
+  it('matches the captured scheduled spawn IDs and counts across every mission and count multiplier', async () => {
+    const view = repository(100).view();
+    const enemyIds = [...new Set(CAMPAIGN_LEVELS.flatMap(({ enemyIds: roster, bossEnemyId }) => [...roster, ...(bossEnemyId ? [bossEnemyId] : [])]))].sort();
+    const enemyCodes = new Map(enemyIds.map((id, index) => [id, index.toString(36)]));
+    const legacyDigests: string[] = [];
+    for (const def of CAMPAIGN_LEVELS) {
+      const battle = new CampaignBattle(def.level, view);
+      const waveCount = getCampaignWaveCount(def.level);
+      const waveSignatures = [`${def.level}/${waveCount}`];
+      expect(battle.waveCount).toBe(waveCount);
+      for (let wave = 1; wave <= waveCount; wave++) {
+        for (const multiplier of [0.9, 1, 1.1]) {
+          const expected = getCampaignWave(def.level, wave, multiplier);
+          expect(battle.wave(wave, multiplier)).toEqual(expected);
+          const counts = new Map<string, number>();
+          for (const spawn of expected.spawns) counts.set(spawn.enemyId, (counts.get(spawn.enemyId) ?? 0) + 1);
+          waveSignatures.push(`${wave}/${multiplier.toFixed(1)}/${Number(expected.isBossWave)}/${[...counts].map(([id, count]) => `${enemyCodes.get(id)}=${count}`).join(',')}`);
+        }
+      }
+      const digest = await globalThis.crypto.subtle.digest('SHA-256', new TextEncoder().encode(waveSignatures.join(';')));
+      legacyDigests.push(`${def.level}/${[...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, '0')).join('')}`);
+    }
+    expect({ enemyIds, legacyDigests }).toMatchSnapshot();
+  }, 20_000);
+  it('rejects invalid shared wave-profile levels and waves with Campaign errors', () => {
+    expect(() => getCampaignWaveCount(0)).toThrow('Campaign level is locked or invalid');
+    expect(() => getCampaignWaveCount(101)).toThrow('Campaign level is locked or invalid');
+    expect(() => getCampaignWave(0, 1)).toThrow('Campaign level is locked or invalid');
+    expect(() => getCampaignWave(1, 0)).toThrow('Campaign wave is out of range');
+    expect(() => getCampaignWave(1, getCampaignWaveCount(1) + 1)).toThrow('Campaign wave is out of range');
   });
   it('registers all 42 expansion enemy and boss profiles with bounded stat domains', () => {
     const expansionIds = [
