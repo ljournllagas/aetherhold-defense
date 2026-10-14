@@ -130,7 +130,9 @@ describe('campaign scene contracts', () => {
     const run = fixture(30); const boss = run.spawnEnemy('frostbound_matriarch',1);
     const tower = new Tower('longbow',100,100,0); run.towers = [tower]; run.campaignBosses.tick([boss],[tower],7500);
     run.vault.stored = ['meteor_strike']; run.vault.beginUse(0,true); run.flights = [{ view: anyStub() }];
+    const settlement = vi.spyOn(run,'settleCapturedRun');
     run.restartRun(); expect(run.scene.restart).toHaveBeenCalledWith(expect.objectContaining({ mode: 'campaign', campaignLevel: 30 }));
+    expect(settlement).not.toHaveBeenCalled(); expect(run.campaignResult).toBeNull();
     run.init({ mode: 'campaign', campaignLevel: 30 });
     expect([run.towers.length,run.enemies.length,run.flights.length,run.vault.stored.length,run.vault.target,run.campaignBosses.telegraphTargets().length,run.gameTimeMs,run.wave,run.ended]).toEqual([0,0,0,0,null,0,0,0,false]);
     run.init({ difficulty: 'hard' }); expect(run.campaign).toBeNull(); expect(run.map).toBe(MAP1); expect(run.difficultyId).toBe('hard');
@@ -153,6 +155,8 @@ describe('accepted campaign battles in the shared fixed-step simulation', () => 
   // World 4 is the mechanics gate; later-world profiles are catalog-only until their own gates.
   it.each(CAMPAIGN_LEVELS.slice(0, 40).flatMap(level => ['completion-only', 'unlocked-replay'].map(profile => ({ ...level, profile }))))('$profile level $level can clear with ordinary foundation towers', definition => {
     const run = fixture(definition.level, definition.profile === 'completion-only' ? definition.level - 1 : CAMPAIGN_LEVELS.length, definition.profile === 'completion-only');
+    const escapes: string[] = [], handleLeak = run.handleLeak.bind(run);
+    run.handleLeak = (enemy: Enemy) => { escapes.push(enemy.campaignId ?? enemy.archetype); return handleLeak(enemy); };
     expect(run.debugAssisted).toBe(false);
     expect([run.gold, run.lives]).toEqual([600, 20]);
     const purchases: unknown[] = [];
@@ -188,7 +192,8 @@ describe('accepted campaign battles in the shared fixed-step simulation', () => 
       { id: 'starfire' },{ id: 'starfire',upgrade: true },{ id: 'starfire' },{ id: 'starfire',upgrade: true,ordinal: 1 },{ id: 'glacier' },
       { id: 'starfire',upgrade: true },{ id: 'starfire',upgrade: true,ordinal: 1 },{ id: 'starfire',upgrade: true },{ id: 'starfire',upgrade: true,ordinal: 1 },
       { id: 'glacier',upgrade: true },{ id: 'glacier',upgrade: true },{ id: 'glacier',upgrade: true },{ id: 'ember' },{ id: 'tempest' },{ id: 'longbow' }
-    ] : [{ id: first },{ id: first,upgrade: true },{ id: first,upgrade: true },{ id: 'glacier' },{ id: second },{ id: second,upgrade: true },{ id: second,upgrade: true },{ id: 'ember' },{ id: 'tempest' }];
+    ] : definition.warnings.includes('physical_resistance') ? [{ id:first },{ id:second },{ id:second,upgrade:true },{ id:second,upgrade:true },{ id:'glacier' },{ id:first,upgrade:true },{ id:first,upgrade:true },{ id:'ember' },{ id:'tempest' }]
+      : [{ id: first },{ id: first,upgrade: true },{ id: first,upgrade: true },{ id: 'glacier' },{ id: second },{ id: second,upgrade: true },{ id: second,upgrade: true },{ id: 'ember' },{ id: 'tempest' }];
     const prepare = () => {
       for (let guard = 0; guard < 100; guard++) {
         if (opener < opening.length) {
@@ -212,7 +217,7 @@ describe('accepted campaign battles in the shared fixed-step simulation', () => 
       run.vault.pending = []; run.vault.stored = [];
       prepare();
       const heavyRoster = definition.enemyIds.some(id => getCampaignEnemy(id).baseHp > 140);
-      for (const tower of run.towers) tower.targeting = run.campaign.wave(run.wave + 1).isBossWave || heavyRoster && (tower.towerId === 'starfire' || tower.towerId === 'glacier') ? 'strongest' : heavyRoster && tower.towerId === 'longbow' ? 'weakest' : 'first';
+      for (const tower of run.towers) tower.targeting = run.campaign.wave(run.wave + 1).isBossWave || definition.warnings.includes('physical_resistance') && ['starfire','glacier','ember','tempest'].includes(tower.towerId) ? 'strongest' : definition.warnings.includes('mixed_resistance') ? 'weakest' : heavyRoster && (tower.towerId === 'starfire' || tower.towerId === 'glacier') ? 'strongest' : heavyRoster && (tower.towerId === 'longbow' || tower.towerId === 'tempest') ? 'weakest' : 'first';
       run.startNextWave(); expect(run.waveActive).toBe(true);
       let ticks = 0;
       while (run.waveActive && !run.ended && ticks++ < 60 * 240) { run.simulateTick(SIMULATION_STEP_MS); if (ticks % 60 === 0) prepare(); }
@@ -220,7 +225,7 @@ describe('accepted campaign battles in the shared fixed-step simulation', () => 
     }
     expect(run.campaignResult?.outcome,`level ${definition.level}, wave ${run.wave}, lives ${run.lives}`).toBe('victory');
     expect(run.campaignResult?.lives).toBeGreaterThanOrEqual(definition.mastery.minimumLivesForStar);
-    expect(run.campaignResult?.score,`level ${definition.level} target ${campaignScoreMetadata(definition.level).scoreTarget}`).toBeGreaterThanOrEqual(campaignScoreMetadata(definition.level).scoreTarget);
+    expect(run.campaignResult?.score,`level ${definition.level} target ${campaignScoreMetadata(definition.level).scoreTarget} ${JSON.stringify({breakdown:run.campaignResult?.breakdown,scheduledKills:run.campaignScheduledKills,combatKills:run.enemiesKilled,wavesCompleted:run.wavesCompleted,missionBossKills:run.campaignMissionBossKills,escapes})}`).toBeGreaterThanOrEqual(campaignScoreMetadata(definition.level).scoreTarget);
     expect(run.campaignResult?.clear?.progress).toMatchObject({ completionStar: true, livesStar: true, scoreStar: true });
     balanceTraces.push({ profile: definition.profile, progressionStarsBefore: definition.profile === 'completion-only' ? definition.level - 1 : CAMPAIGN_LEVELS.length * 3, debugAssisted: run.debugAssisted, randomValue: 0.99, startingGold: 600, startingLives: 20, relicUses: [], remainingGold: run.gold, mastery: run.campaignResult?.clear?.progress, level: definition.level, waves: run.wave, outcome: run.campaignResult?.outcome, score: run.campaignResult?.score, scoreTarget: campaignScoreMetadata(definition.level).scoreTarget, lives: run.lives, livesTarget: definition.mastery.minimumLivesForStar, bossesKilled: run.bossesKilled, kills: run.enemiesKilled, durationSeconds: Math.round(run.gameTimeMs/1000), purchases });
   },30000);

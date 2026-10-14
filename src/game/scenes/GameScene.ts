@@ -18,6 +18,7 @@ import { EVOLUTIONS } from '../config/evolutions.ts';
 import type { DamageType, DifficultyId, EnemyArchetype, PowerUpId, TargetingMode } from '../../shared/types.ts';
 import { createQACampaignRepository, isQACampaignFixture, type QACampaignFixture, type QAAction, type QAStatus } from '../qa.ts';
 import { GAME_VERSION, SCORE_VERSION } from '../../shared/version.ts';
+import { CAMPAIGN_SCORE_VERSION, calculateCampaignLiveScore, calculateCampaignScore, campaignScoreMetadata, type CampaignScoreBreakdown } from '../../shared/campaignScoring.ts';
 import { buildWave, scheduleWave, enemyHpForWave, enemySpeedForWave } from '../systems/WaveSystem.ts';
 import { RelicVault, advanceFlights } from '../systems/RunSimulation.ts';
 import { AutoSystem, chooseAutoRelic, type AutoContext, type AutoRelicIntent } from '../systems/AutoSystem.ts';
@@ -98,7 +99,7 @@ export class GameScene extends Phaser.Scene {
   private get towerVisualTier(): 1 | 2 | 3 {
     return (import.meta.env.DEV ? this.qaCampaignFixture?.visualTier : undefined) ?? this.campaign?.visualTier ?? 1;
   }
-  private campaignResult: { outcome: RunOutcome; score: number; lives: number; clear: CampaignClearResult | null } | null = null;
+  private campaignResult: { outcome: RunOutcome; score: number; lives: number; clear: CampaignClearResult | null; breakdown: CampaignScoreBreakdown } | null = null;
   private towerFreezeViews = new Map<number, Phaser.GameObjects.Arc>();
   private difficultyId: DifficultyId = 'medium';
   private playerName = 'Warden';
@@ -110,6 +111,9 @@ export class GameScene extends Phaser.Scene {
   private maxLives = 20;
   private wave = 0;
   private wavesCompleted = 0;
+  private campaignScheduledIds = new Set<number>();
+  private campaignScheduledKills = 0;
+  private campaignMissionBossKills = 0;
   private waveActive = false;
   private currentWaveIsBoss = false;
   private enemies: Enemy[] = [];
@@ -424,6 +428,9 @@ export class GameScene extends Phaser.Scene {
     this.runId = newRunId();
     this.wave = 0;
     this.wavesCompleted = 0;
+    this.campaignScheduledIds.clear();
+    this.campaignScheduledKills = 0;
+    this.campaignMissionBossKills = 0;
     this.waveActive = false;
     this.currentWaveIsBoss = false;
     this.enemies = [];
@@ -1042,8 +1049,12 @@ export class GameScene extends Phaser.Scene {
       this.siege.seedForQA(finalWave - 1, 0); this.siege.startWave(finalWave);
       this.waveActive = true; this.currentWaveIsBoss = !!this.campaign.definition.bossEnemyId;
       if (fixture.state === 'campaign-results') {
-        this.enemiesKilled = Math.ceil(this.campaign.definition.mastery.scoreTarget / 10);
-        this.bossesKilled = this.campaign.definition.bossEnemyId ? 1 : 0;
+        const metadata = campaignScoreMetadata(this.campaign.definition.level);
+        this.enemiesKilled = metadata.scheduledEnemyCount;
+        this.campaignScheduledKills = metadata.scheduledEnemyCount;
+        this.wavesCompleted = metadata.waveCount - 1;
+        this.bossesKilled = Number(metadata.hasBoss);
+        this.campaignMissionBossKills = Number(metadata.hasBoss);
         this.campaign.bossKilled = this.currentWaveIsBoss;
         this.checkWaveClear();
       } else {
@@ -1376,7 +1387,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   private scoreSoFar(): number {
-    if (this.campaignResult) return this.campaignResult.score;
+    if (this.campaign) return calculateCampaignLiveScore({
+      scheduledEnemiesKilled: this.campaignScheduledKills, wavesCompleted: this.wavesCompleted,
+      missionBossesKilled: this.campaignMissionBossKills, remainingLives: 0
+    });
     const d = getDifficulty(this.difficultyId);
     return calculateLiveScore(
       { enemiesKilled: this.enemiesKilled, elitesKilled: this.elitesKilled, wavesCompleted: this.wavesCompleted, bossesKilled: this.bossesKilled, remainingLives: this.lives, unusedGold: this.gold },
@@ -1989,6 +2003,7 @@ export class GameScene extends Phaser.Scene {
 
   /** Immediate teardown (leaks, scene transitions). Deaths use startDeathAnim. */
   private destroyView(e: Enemy): void {
+    this.campaignScheduledIds.delete(e.id);
     e.view?.destroy(true);
     e.shadow?.destroy();
     e.slowRing?.destroy();
@@ -2963,7 +2978,14 @@ export class GameScene extends Phaser.Scene {
   private killEnemy(e: Enemy): void {
     if (this.ended || !e.alive) return;
     e.alive = false;
-    if (this.campaign && e.campaignId === this.campaign.definition.bossEnemyId) this.campaign.bossKilled = true;
+    const scheduled = this.campaignScheduledIds.delete(e.id);
+    if (this.campaign && scheduled) {
+      this.campaignScheduledKills++;
+      if (e.campaignId === this.campaign.definition.bossEnemyId) {
+        this.campaignMissionBossKills = 1;
+        this.campaign.bossKilled = true;
+      }
+    }
     this.clearCampaignOwnedSummons(this.campaignBosses.remove(e.id));
     this.evolutionCombat.removeEnemy(e.id);
     const siegeWave = this.scheduledBossIds.get(e.id);
@@ -3220,6 +3242,7 @@ export class GameScene extends Phaser.Scene {
       while (this.spawnQueue.length && this.spawnQueue[0].atMs <= this.gameTimeMs) {
         const spawn = this.spawnQueue.shift()!;
         const enemy = this.spawnEnemy(spawn.enemyId, spawn.hpBonus);
+        if (this.campaign) this.campaignScheduledIds.add(enemy.id);
         if (!this.campaign && enemy.isBoss && [10, 20, 30].includes(this.wave)) this.scheduledBossIds.set(enemy.id, this.wave);
       }
       if (this.campaign) this.tickCampaignBosses();
@@ -3463,19 +3486,23 @@ export class GameScene extends Phaser.Scene {
     const unresolved = this.spawnQueue.length + this.enemies.filter(e => e.alive).length + this.flights.length + this.evolutionCombat.activeFieldCount;
     if (outcome === 'victory' && !campaign.readyToClear(this.wave, this.lives, unresolved)) return;
     campaign.settled = true; this.ended = true; this.waveActive = false;
-    const score = calculateScore({ enemiesKilled: this.enemiesKilled, elitesKilled: this.elitesKilled,
-      wavesCompleted: this.wavesCompleted, bossesKilled: this.bossesKilled,
-      remainingLives: this.lives, unusedGold: this.gold }, getDifficulty(this.difficultyId)).finalScore;
+    const breakdown = calculateCampaignScore({ scheduledEnemiesKilled: this.campaignScheduledKills,
+      wavesCompleted: this.wavesCompleted, missionBossesKilled: this.campaignMissionBossKills,
+      remainingLives: this.lives });
+    const score = breakdown.finalScore;
     const fixtureRepository = import.meta.env.DEV ? this.qaCampaignRepository : null;
     const clear = outcome === 'victory' && (!this.debugAssisted || fixtureRepository) ? (fixtureRepository ?? campaignRepository).recordClear(campaign.definition.level, score, this.lives) : null;
-    this.campaignResult = { outcome, score, lives: this.lives, clear };
+    this.campaignResult = { outcome, score, lives: this.lives, clear, breakdown };
     if ((this.runAccount||this.runOwner) && !this.debugAssisted && !this.qaCampaignFixture) {
       this.settleCapturedRun({ mode: 'campaign', payload: {
         runId: this.runId, campaignVersion: 1, progressionVersion: 1, level: campaign.definition.level,
-        outcome, finalScore: score, remainingLives: this.lives, gameDurationSeconds: Math.floor(this.runningDurationMs / 1000), gameVersion: GAME_VERSION
+        outcome, finalScore: score, remainingLives: this.lives, gameDurationSeconds: Math.floor(this.runningDurationMs / 1000), gameVersion: GAME_VERSION,
+        campaignScoreVersion: CAMPAIGN_SCORE_VERSION, scheduledEnemiesKilled: this.campaignScheduledKills,
+        wavesCompleted: this.wavesCompleted, missionBossesKilled: this.campaignMissionBossKills
       }});
     }
     this.spawnQueue = [];
+    this.campaignScheduledIds.clear();
     for (const flight of this.flights) flight.view.destroy(true);
     for (const effect of this.effects) effect.view.destroy();
     this.flights = []; this.effects = [];
@@ -3602,7 +3629,7 @@ export class GameScene extends Phaser.Scene {
     for (const view of this.towerFreezeViews.values()) view.destroy();
     this.towerFreezeViews.clear();
     this.syncFieldViews();
-    this.scheduledBossIds.clear();
+    this.scheduledBossIds.clear(); this.campaignScheduledIds.clear();
     this.victoryPanel?.destroy(true); this.victoryPanel = null;
     if (this.progressionListenerAttached && typeof window !== 'undefined') window.removeEventListener('storage', this.handleStorage);
     this.progressionListenerAttached = false;

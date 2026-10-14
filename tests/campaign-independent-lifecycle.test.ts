@@ -77,14 +77,16 @@ function routeBestPlot(run: any, towerId: TowerId): number {
 }
 
 describe('campaign settlement gates in the scene', () => {
-  it('adds resource bonuses once at Campaign settlement and keeps the HUD on that total', () => {
+  it('keeps the Campaign HUD on combat score and adds the lives bonus only at settlement', () => {
     const run = fixture(1); openFinalWave(run);
-    run.wavesCompleted = 5; run.enemiesKilled = 20; run.gold = 600; run.lives = 20;
-    expect(run.scoreSoFar()).toBe(1237); // (200 + 625) * 1.5, floored
+    expect(run.scoreSoFar()).toBe(0);
+    run.wavesCompleted = run.campaign.waveCount; run.campaignScheduledKills = 20; run.enemiesKilled = 20; run.gold = 600; run.lives = 20;
+    expect(run.scoreSoFar()).toBe(700);
     run.finishRun('victory');
-    expect(run.campaignResult.score).toBe(2182);
-    expect(run.scoreSoFar()).toBe(2182);
-    expect(campaignRepository.recordClear).toHaveBeenCalledWith(1, 2182, 20);
+    expect(run.campaignResult.score).toBe(1700);
+    expect(run.campaignResult.breakdown).toMatchObject({ killScore: 200, waveBonus: run.campaign.waveCount * 100, bossBonus: 0, livesBonus: 1000, finalScore: 1700 });
+    expect(run.scoreSoFar()).toBe(700);
+    expect(campaignRepository.recordClear).toHaveBeenCalledWith(1, 1700, 20);
     run.finishRun('victory');
     expect(campaignRepository.recordClear).toHaveBeenCalledTimes(1);
   });
@@ -115,6 +117,8 @@ describe('campaign settlement gates in the scene', () => {
     run.spawnQueue = []; run.enemies = []; run.flights = []; run.evolutionCombat.clear();
     run.checkWaveClear(); run.checkWaveClear();
     expect(run.campaignResult.outcome).toBe('victory');
+    expect(run.campaignResult.breakdown.waveBonus).toBe(run.campaign.waveCount * 100);
+    expect(run.wavesCompleted).toBe(run.campaign.waveCount);
     expect(campaignRepository.recordClear).toHaveBeenCalledTimes(1);
     expect(run.unlocksEarnedThisRun).toEqual([]);
     expect(run.achievementNotices).toEqual([]);
@@ -137,8 +141,13 @@ describe('campaign settlement gates in the scene', () => {
   });
 
   it('awards a boss-level clear only after the required boss dies', () => {
-    const run = fixture(10); openFinalWave(run);
-    const boss = run.spawnEnemy('hollow_warden', 1);
+    const run = fixture(10), finalWave = run.campaign.waveCount;
+    run.wave = finalWave - 1; run.wavesCompleted = finalWave - 1; run.startNextWave();
+    const bossIndex = run.spawnQueue.findIndex((spawn: { enemyId: string }) => spawn.enemyId === 'hollow_warden');
+    const bossSpawn = run.spawnQueue[bossIndex];
+    run.spawnQueue = [{ ...bossSpawn, atMs: run.gameTimeMs }];
+    run.simulateTick(SIMULATION_STEP_MS);
+    const boss = run.enemies.find((enemy: Enemy) => enemy.campaignId === 'hollow_warden') as Enemy;
     run.checkWaveClear();
     expect(run.campaignResult).toBeNull();
     expect(campaignRepository.recordClear).not.toHaveBeenCalled();
@@ -146,7 +155,69 @@ describe('campaign settlement gates in the scene', () => {
     run.checkWaveClear();
     expect(run.campaignResult.outcome).toBe('victory');
     expect(run.campaignResult.clear).toBeNull();
+    expect(run.campaignResult.breakdown).toMatchObject({killScore:10,bossBonus:500,waveBonus:finalWave*100,livesBonus:1000});
     expect(campaignRepository.recordClear).toHaveBeenCalledTimes(1);
+  });
+
+  it('awards scheduled wave kills once and ignores a same-identity summon', () => {
+    const run = fixture(1);
+    run.startNextWave();
+    const [authored, ...later] = run.spawnQueue;
+    run.spawnQueue = [{ ...authored, atMs: run.gameTimeMs }, ...later];
+    run.simulateTick(SIMULATION_STEP_MS);
+    const scheduled = run.enemies[0] as Enemy;
+    expect(run.campaignScheduledIds.has(scheduled.id)).toBe(true);
+
+    const summon = run.spawnEnemy(scheduled.campaignId, 1, scheduled.campaignId) as Enemy;
+    run.killEnemy(summon);
+    expect([run.campaignScheduledKills, run.campaignMissionBossKills]).toEqual([0, 0]);
+    expect(run.scoreSoFar()).toBe(0);
+
+    run.killEnemy(scheduled); run.killEnemy(scheduled);
+    expect([run.campaignScheduledKills, run.campaignMissionBossKills, run.enemiesKilled]).toEqual([1, 0, 2]);
+    expect(run.scoreSoFar()).toBe(10);
+    expect(run.campaignScheduledIds.has(scheduled.id)).toBe(false);
+  });
+
+  it('awards the mission-boss bonus only to the scheduled authored boss', () => {
+    const run = fixture(10), finalWave = run.campaign.waveCount;
+    run.wave = finalWave - 1;
+    run.startNextWave();
+    const bossIndex = run.spawnQueue.findIndex((spawn: { enemyId: string }) => spawn.enemyId === run.campaign.definition.bossEnemyId);
+    expect(bossIndex).toBeGreaterThanOrEqual(0);
+    const bossSpawn = run.spawnQueue[bossIndex];
+    run.spawnQueue = [{ ...bossSpawn, atMs: run.gameTimeMs }, ...run.spawnQueue.filter((_spawn: unknown, index: number) => index !== bossIndex)];
+    run.simulateTick(SIMULATION_STEP_MS);
+    const boss = run.enemies.find((enemy: Enemy) => enemy.campaignId === run.campaign.definition.bossEnemyId) as Enemy;
+    const clone = run.spawnEnemy(boss.campaignId, 1, boss.campaignId) as Enemy;
+    run.killEnemy(clone);
+    expect([run.campaign.bossKilled, run.campaignScheduledKills, run.campaignMissionBossKills]).toEqual([false, 0, 0]);
+    expect(run.scoreSoFar()).toBe(0);
+    run.killEnemy(boss);
+    expect([run.campaign.bossKilled, run.campaignScheduledKills, run.campaignMissionBossKills]).toEqual([true, 1, 1]);
+    expect(run.scoreSoFar()).toBe(510);
+  });
+
+  it('discards scheduled eligibility on escape and cleanup without awarding points', () => {
+    const run = fixture(1);
+    run.startNextWave();
+    const [authored, ...later] = run.spawnQueue;
+    run.spawnQueue = [{ ...authored, atMs: run.gameTimeMs }, ...later];
+    run.simulateTick(SIMULATION_STEP_MS);
+    const escaped = run.enemies[0] as Enemy;
+    expect(run.campaignScheduledIds.has(escaped.id)).toBe(true);
+    expect(run.handleLeak(escaped)).toBe(false);
+    expect([run.campaignScheduledIds.has(escaped.id), run.campaignScheduledKills]).toEqual([false, 0]);
+
+    run.spawnQueue = [];
+    run.waveActive = false;
+    run.startNextWave();
+    const [next, ...remaining] = run.spawnQueue;
+    run.spawnQueue = [{ ...next, atMs: run.gameTimeMs }, ...remaining];
+    run.simulateTick(SIMULATION_STEP_MS);
+    const cleaned = run.enemies.find((enemy: Enemy) => run.campaignScheduledIds.has(enemy.id)) as Enemy;
+    run.destroyView(cleaned);
+    expect([run.campaignScheduledIds.has(cleaned.id), run.campaignScheduledKills]).toEqual([false, 0]);
   });
 });
 
@@ -259,6 +330,7 @@ describe('campaign shutdown and scene reuse', () => {
   it('cancels game timers and discards transient boss, freeze, reward, and projectile state on quit', () => {
     vi.stubGlobal('document', { removeEventListener: vi.fn() });
     const run = fixture(30), boss = run.spawnEnemy('frostbound_matriarch', 1), tower = new Tower('longbow', 100, 100, 0);
+    const settle = vi.spyOn(run,'settleCapturedRun'), recordClear = vi.spyOn(campaignRepository,'recordClear');
     run.towers = [tower];
     run.campaignBosses.tick([boss], [tower], CAMPAIGN_BOSS_TUNING.freezeIntervalMs);
     run.vault.stored = ['meteor_strike'];
@@ -279,6 +351,7 @@ describe('campaign shutdown and scene reuse', () => {
     const oldBossSystem = run.campaignBosses;
 
     run.shutdownRun();
+    expect([run.campaignResult,settle.mock.calls.length,recordClear.mock.calls.length]).toEqual([null,0,0]);
     expect([run.ended, run.spawnQueue.length, run.flights.length, run.effects.length, run.evolutionCombat.activeFieldCount, run.campaignBosses.telegraphTargets().length, run.vault.stored.length, run.simulationClock.pendingMs]).toEqual([true, 0, 0, 0, 0, 0, 0, 0]);
     expect(timerRemoved).toHaveBeenCalledWith(false);
     expect(timersCleared).toHaveBeenCalledOnce();

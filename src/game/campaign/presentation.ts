@@ -2,6 +2,7 @@ import {formatCount} from '../../shared/displayNumbers.ts';
 import { getCampaignEnemy } from './enemies.ts';
 import { CAMPAIGN_LEVELS, CAMPAIGN_MILESTONES, CAMPAIGN_SIGILS, getCampaignLevel, getCampaignWorld } from './config.ts';
 import { isLevelUnlocked } from './progress.ts';
+import { campaignScoreMetadata } from '../../shared/campaignScoring.ts';
 import type { CampaignClearResult, CampaignLevelProgress, CampaignView, CampaignWorldId } from './types.ts';
 import type { CampaignBossPhaseLabel } from './bosses.ts';
 
@@ -71,7 +72,9 @@ export interface CampaignLevelDetail {
   stars: number;
   progress: CampaignLevelProgress;
   bestScore: number | null;
+  legacyBestScore: number | null;
   bestLives: number | null;
+  scoreTarget: number;
   enemyIds: readonly string[];
   enemies: readonly { id: string; name: string; role: string }[];
   boss: { id: string; name: string; guidance: string } | null;
@@ -107,8 +110,10 @@ export function campaignLevelDetail(level: number, view: CampaignView): Campaign
     completed: progress.completed,
     stars: Number(progress.completionStar) + Number(progress.livesStar) + Number(progress.scoreStar),
     progress,
-    bestScore: progress.bestScore > 0 ? progress.bestScore : null,
+    bestScore: progress.campaignScore?.bestScore ?? null,
+    legacyBestScore: progress.bestScore > 0 ? progress.bestScore : null,
     bestLives: progress.bestRemainingLives > 0 ? progress.bestRemainingLives : null,
+    scoreTarget: campaignScoreMetadata(level).scoreTarget,
     enemyIds: [...definition.enemyIds, ...(definition.bossEnemyId ? [definition.bossEnemyId] : [])],
     enemies: definition.enemyIds.map(id => {
       const enemy = getCampaignEnemy(id);

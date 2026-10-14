@@ -9,7 +9,9 @@ export interface AccountSession { account:AccountRef; nickname:string; expiresAt
 export interface AccountConfig { loginRequired:boolean }
 export type SyncStatus='loading'|'pending'|'retrying'|'synced'|'permanent'|'incompatible'|'unavailable';
 export interface AccountProfile { account:AccountRef; nickname:string; revision:number; progress:CloudProgress }
-export interface CampaignResultPayload { runId:string; campaignVersion:number; progressionVersion:number; level:number; outcome:'victory'|'defeat'|'siege-failed'; finalScore:number; remainingLives:number; gameDurationSeconds:number; gameVersion:string }
+export interface LegacyCampaignResultPayload { runId:string; campaignVersion:number; progressionVersion:number; level:number; outcome:'victory'|'defeat'|'siege-failed'; finalScore:number; remainingLives:number; gameDurationSeconds:number; gameVersion:string }
+export interface CurrentCampaignResultPayload extends LegacyCampaignResultPayload { campaignScoreVersion:1; scheduledEnemiesKilled:number; wavesCompleted:number; missionBossesKilled:number }
+export type CampaignResultPayload = LegacyCampaignResultPayload | CurrentCampaignResultPayload;
 export type RunResult={mode:'classic';payload:GameResultPayload}|{mode:'campaign';payload:CampaignResultPayload};
 export interface PendingResult { account:AccountRef;result:RunResult;status:'pending'|'permanent';error?:string }
 export interface GuestSnapshot { progress:CloudProgress;nickname:string;result:RunResult|null;warnings:string[] }

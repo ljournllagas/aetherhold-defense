@@ -21,6 +21,7 @@ import { Tower } from '../src/game/entities/Tower.ts';
 import { buildTowerVisual } from '../src/game/art/towerArt.ts';
 import type { EvolutionCombat } from '../src/game/systems/EvolutionCombat.ts';
 import type { ShotSnapshot } from '../src/shared/progression.ts';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 
 vi.mock('phaser', () => ({
   default: {
@@ -305,7 +306,9 @@ describe('development campaign fixtures', () => {
     const write = vi.fn(); vi.stubGlobal('localStorage',{ getItem: () => null, setItem: write });
     const sharedClear = vi.spyOn(campaignRepository,'recordClear'), best = vi.spyOn(settingsModule,'saveBest'), submit = vi.spyOn(scoreApi,'submitScore');
     const run: any = qaScene(fixture(10,'initial','campaign-results')); run.seedQACampaignFixture();
+    const metadata=campaignScoreMetadata(10);
     expect(run.campaignResult).toMatchObject({ outcome: 'victory', clear: { newlyEarnedStars: ['completion','lives','score'], newlyEarnedSigils: ['border_sigil'], saved: false } });
+    expect([run.campaignScheduledKills,run.wavesCompleted,run.campaignMissionBossKills,run.campaignResult.score]).toEqual([metadata.scheduledEnemyCount,metadata.waveCount,1,metadata.perfectScore]);
     expect(run.qaCampaignRepository.view().profile.levels[10].completionStar).toBe(true);
     expect(run.debugAssisted).toBe(true); expect(run.ended).toBe(true);
     expect(sharedClear).not.toHaveBeenCalled(); expect(write).not.toHaveBeenCalled(); expect(best).not.toHaveBeenCalled(); expect(submit).not.toHaveBeenCalled();

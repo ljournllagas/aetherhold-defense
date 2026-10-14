@@ -4,6 +4,7 @@ import {accountDb} from './helpers/accountDb.ts';
 import legacyCloudCompleted30 from './fixtures/campaign-v5/legacy_cloud_completed_30.json';
 import {emptyCloudProgress,validateCloudProgress} from '../src/shared/cloudProgress.ts';
 import {resultFixture} from './helpers/progressionResult.ts';
+import {campaignScoreMetadata} from '../src/shared/campaignScoring.ts';
 it('merges two devices concurrently and accepts repeated immutable scores exactly once',async()=>{
  const f=await accountDb();try{
   const p=emptyCloudProgress(),q=emptyCloudProgress();p.levels[1]={completed:true,completionStar:true,livesStar:false,scoreStar:false,bestScore:100,bestRemainingLives:10};q.levels[2]={...p.levels[1]!};
@@ -81,5 +82,17 @@ it('keeps Campaign results outside Classic leaderboard',async()=>{
   const result={mode:'campaign',payload:{runId:'campaign-run-123',campaignVersion:1,progressionVersion:1,level:1,outcome:'victory',finalScore:100,remainingLives:20,gameDurationSeconds:10,gameVersion:'0.3.0'}};
   expect((await worker.fetch(f.request('/api/account/scores','a',result),f.env)).status).toBe(200);
   expect((await f.db.prepare('SELECT COUNT(*) n FROM scores').first())?.n).toBe(0);expect((await f.db.prepare('SELECT COUNT(*) n FROM campaign_scores').first())?.n).toBe(1);
+ }finally{await f.dispose();}
+},15000);
+
+it('validates and retries current Campaign scores with every component in run identity',async()=>{
+ const f=await accountDb();try{
+  const metadata=campaignScoreMetadata(10),payload={runId:'campaign-current-123',campaignVersion:1,progressionVersion:1,level:10,outcome:'victory',finalScore:metadata.perfectScore,remainingLives:20,gameDurationSeconds:10,gameVersion:'0.3.0',campaignScoreVersion:1,scheduledEnemiesKilled:metadata.scheduledEnemyCount,wavesCompleted:metadata.waveCount,missionBossesKilled:1},result={mode:'campaign',payload};
+  const first=await worker.fetch(f.request('/api/account/scores','a',result),f.env);expect(first.status).toBe(200);const acknowledged=await first.json();
+  const retry=await worker.fetch(f.request('/api/account/scores','a',result),f.env);expect(await retry.json()).toEqual(acknowledged);
+  const invalid=await worker.fetch(f.request('/api/account/scores','a',{...result,payload:{...payload,scheduledEnemiesKilled:payload.scheduledEnemiesKilled-1}}),f.env);expect(invalid.status).toBe(400);
+  const validConflict={...result,payload:{...payload,scheduledEnemiesKilled:payload.scheduledEnemiesKilled-1,finalScore:payload.finalScore-10}};
+  expect((await worker.fetch(f.request('/api/account/scores','a',validConflict),f.env)).status).toBe(409);
+  expect((await f.db.prepare('SELECT COUNT(*) n FROM campaign_scores').first())?.n).toBe(1);
  }finally{await f.dispose();}
 },15000);

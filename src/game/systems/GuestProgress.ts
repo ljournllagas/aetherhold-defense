@@ -2,6 +2,7 @@ import type {CloudProgress,GuestSnapshot,RunResult} from '../../shared/account.t
 import {emptyCloudProgress,validateCloudProgress} from '../../shared/cloudProgress.ts';
 import {validateScorePayload} from '../../shared/validation.ts';
 import {getCampaignLevel} from '../campaign/config.ts';
+import {applyCampaignClear} from '../../shared/campaignProgress.ts';
 export interface GuestRunProgress {progress:CloudProgress;result:RunResult|null;runId?:string}
 export function emptyGuestSnapshot(nickname=''):GuestSnapshot {return {progress:emptyCloudProgress(),nickname,result:null,warnings:[]};}
 export function hasGuestProgress(snapshot:GuestSnapshot):boolean {const p=snapshot.progress;return !!snapshot.result||Object.keys(p.levels).length>0||Object.keys(p.earned).length>0||p.bests.length>0;}
@@ -14,7 +15,9 @@ export function guestRunProgress(result:RunResult,earned:CloudProgress['earned']
  const progress=emptyCloudProgress();progress.earned={...earned};
  if(result.mode==='campaign'){
   const p=result.payload,level=getCampaignLevel(p.level);
-  if(level&&p.outcome==='victory')progress.levels[p.level]={completed:true,completionStar:true,livesStar:p.remainingLives>=level.mastery.minimumLivesForStar,scoreStar:p.finalScore>=level.mastery.scoreTarget,bestScore:p.finalScore,bestRemainingLives:p.remainingLives};
+  if(level&&p.outcome==='victory')progress.levels[p.level]='campaignScoreVersion' in p
+   ?applyCampaignClear(undefined,p.level,p.finalScore,p.remainingLives)!
+   :{completed:true,completionStar:true,livesStar:p.remainingLives>=level.mastery.minimumLivesForStar,scoreStar:p.finalScore>=level.mastery.scoreTarget,bestScore:p.finalScore,bestRemainingLives:p.remainingLives};
   return {progress,result:null,runId:p.runId};
  }
  const p=result.payload;

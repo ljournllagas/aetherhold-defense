@@ -103,8 +103,11 @@ describe('campaign wave budgets remain independent of Classic siege finality', (
     }
     campaign.startNextWave();
     expect([campaign.wave, campaign.waveActive, campaign.currentWaveIsBoss]).toEqual([35, true, true]);
-    campaign.spawnQueue = [];
-    const boss = campaign.spawnEnemy(campaign.campaign.definition.bossEnemyId, 1);
+    const bossIndex = campaign.spawnQueue.findIndex((spawn: { enemyId: string }) => spawn.enemyId === campaign.campaign.definition.bossEnemyId);
+    const bossSpawn = campaign.spawnQueue[bossIndex];
+    campaign.spawnQueue = [{ ...bossSpawn, atMs: campaign.gameTimeMs }];
+    campaign.simulateTick(SIMULATION_STEP_MS);
+    const boss = campaign.enemies.find((enemy: Enemy) => enemy.campaignId === campaign.campaign.definition.bossEnemyId) as Enemy;
     boss.hp = 1; campaign.enemies = [boss];
     campaign.damageEnemy(boss, 2, 'arcane');
     campaign.checkWaveClear();

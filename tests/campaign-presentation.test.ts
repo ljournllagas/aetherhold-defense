@@ -65,7 +65,8 @@ describe('campaign presentation detail', () => {
     expect(detail).not.toBeNull();
     expect(detail).toMatchObject({
       level: 1, locked: false, canStart: true, completed: true, stars: 3,
-      bestScore: campaignScoreMetadata(1).perfectScore, bestLives: 20, boss: null
+      bestScore: campaignScoreMetadata(1).perfectScore, legacyBestScore: null,
+      scoreTarget: campaignScoreMetadata(1).scoreTarget, bestLives: 20, boss: null
     });
     expect(detail!.enemies.length).toBeGreaterThan(0);
     expect(detail!.objectives.every(objective => objective.earned)).toBe(true);
@@ -74,8 +75,14 @@ describe('campaign presentation detail', () => {
   it('marks a future level as locked and withholds its best-result values', () => {
     const detail = campaignLevelDetail(2, new CampaignRepository(null).view());
 
-    expect(detail).toMatchObject({ locked: true, canStart: false, completed: false, stars: 0, bestScore: null, bestLives: null });
+    expect(detail).toMatchObject({ locked: true, canStart: false, completed: false, stars: 0, bestScore: null, legacyBestScore: null, bestLives: null, scoreTarget: campaignScoreMetadata(2).scoreTarget });
     expect(detail!.objectives.every(objective => !objective.earned)).toBe(true);
+  });
+
+  it('exposes legacy and current mission bests separately', () => {
+    const repository = new CampaignRepository(null), definition = campaignScoreMetadata(1);
+    repository.applyCloud({1:{completed:true,completionStar:true,livesStar:false,scoreStar:true,bestScore:3_000,bestRemainingLives:12,campaignScore:{version:1,bestScore:definition.scoreTarget}}});
+    expect(campaignLevelDetail(1, repository.view())).toMatchObject({bestScore:definition.scoreTarget,legacyBestScore:3_000,scoreTarget:definition.scoreTarget});
   });
 
   it('includes a named boss and phase guidance on its campaign node', () => {
