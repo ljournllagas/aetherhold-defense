@@ -179,6 +179,21 @@ export class AccountSystem {
     const p=await this.googleSignInPreflight();if(!p.allowed||p.requiresLossAcknowledgment&&!acknowledgeLoss)return {ok:false,requiresLossAcknowledgment:p.requiresLossAcknowledgment,message:p.message};
     const settings=loadSettings();settings.googleSignInPending=true;saveSettings(settings);this.logoutRef=null;await this.storage.writeMeta('logout',null).catch(()=>{});return {ok:true,requiresLossAcknowledgment:false,message:null};
   }
+  async prepareGoogleSignIn(acknowledgeLoss=false):Promise<ApiResult<{url:string}>>{
+    const clearPending=()=>{const settings=loadSettings();if(settings.googleSignInPending){settings.googleSignInPending=false;saveSettings(settings);}};
+    const invalidUrl=():ApiResult<{url:string}>=>{clearPending();return {ok:false,code:'INVALID_AUTH_URL',status:502,message:'Google sign-in returned an invalid destination. Please retry.'};};
+    const p=await this.googleSignInPreflight();
+    if(!p.allowed)return {ok:false,code:'SIGNIN_BLOCKED',message:p.message??'Sign-in unavailable.',status:409};
+    if(p.requiresLossAcknowledgment&&!acknowledgeLoss)return {ok:false,code:'LOSS_ACK_REQUIRED',message:p.message??'Unsaved guest progress would be lost.',status:409};
+    const r=await this.client.prepareGoogleSignIn();
+    if(!r.ok){clearPending();return r;}
+    try{
+      const authUrl=new URL(r.value.url);
+      if(authUrl.origin!=='https://accounts.google.com'||authUrl.protocol!=='https:'||authUrl.username||authUrl.password)
+        return invalidUrl();
+    }catch{return invalidUrl();}
+    const settings=loadSettings();settings.googleSignInPending=true;saveSettings(settings);this.logoutRef=null;await this.storage.writeMeta('logout',null).catch(()=>{});return r;
+  }
   async completeGuestRun(owner:Extract<RunOwner,{mode:'guest'}>,run:GuestRunProgress):Promise<void>{
     const generation=this.runGeneration;
     try{await this.bootstrapGuests();const view=await this.guests.record(run,owner.name);this.data.guestPersisted=view.persisted&&guestSettingsStatus().persisted;this.data.warning=view.warning??guestSettingsStatus().warning;}

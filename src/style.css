@@ -81,4 +81,6 @@ canvas {
 .account-panel button { cursor:pointer; }.account-panel button:disabled { opacity:.5;cursor:default; }
 .account-panel label { display:block;margin-top:20px; }.account-panel input { margin-top:4px; }
 .account-panel button.account-danger { border-color:#b16d61;color:#efaaa0; }
+.account-panel button.account-primary { border-color:var(--color-gold);color:var(--color-gold-bright);background:#1e2a22; }
+.account-separator { margin:10px 0 0;text-align:center;color:#8a7045;font-size:14px; }
 .account-warning { color:#efc186; }.account-panel :focus-visible,.account-access:focus-visible { outline:3px solid #e7bb62;outline-offset:3px; }

@@ -47,3 +47,74 @@ it('does not equate a freshly issued token to recent authentication',()=>{
   expect(freshGoogleAuthentication({auth_time:499},500000)).toBe(true);
   expect(authCookie('token','https://game.example',1000)).toContain('Secure; HttpOnly; SameSite=Lax');
 });
+
+function stubDiscovery() {
+  return vi.stubGlobal('fetch', vi.fn(async (url: URL | string | Request) => {
+    const path = String(url);
+    if (path.includes('.well-known')) return Response.json({ issuer: 'https://accounts.google.com', authorization_endpoint: 'https://accounts.google.com/o/oauth2/v2/auth', token_endpoint: 'https://oauth2.googleapis.com/token', jwks_uri: 'https://www.googleapis.com/oauth2/v3/certs', response_types_supported: ['code'], subject_types_supported: ['public'], id_token_signing_alg_values_supported: ['RS256'], code_challenge_methods_supported: ['S256'] });
+    throw new Error('Unexpected OIDC URL');
+  }));
+}
+
+it('returns a prepared Google URL as JSON without navigating', async () => {
+  const f = await accountDb();
+  const env = { ...f.env, GOOGLE_CLIENT_ID: 'test-client', GOOGLE_CLIENT_SECRET: 'test-secret' };
+  stubDiscovery();
+  try {
+    const prepared = await handleAuth(new Request('https://game.example/api/auth/start?prepare=1'), env);
+    expect(prepared?.status).toBe(200);
+    expect(prepared?.headers.get('Location')).toBeNull();
+    expect(prepared?.headers.get('Cache-Control')).toBe('no-store');
+    const cookie = prepared?.headers.get('Set-Cookie') ?? '';
+    expect(cookie).toContain('__Host-aether-oauth=');
+    expect(cookie).toContain('HttpOnly');
+    const body = await prepared?.json() as { ok: boolean; value: { url: string } };
+    expect(body.ok).toBe(true);
+    expect(Object.keys(body.value)).toEqual(['url']);
+    const url = new URL(body.value.url);
+    expect(url.origin).toBe('https://accounts.google.com');
+    expect(url.searchParams.get('state')).toBeTruthy();
+    expect(url.searchParams.get('nonce')).toBeTruthy();
+    expect(url.searchParams.get('code_challenge')).toBeTruthy();
+    expect(JSON.stringify(body)).not.toMatch(/verifier|access_token|id_token|client_secret/);
+  } finally { vi.unstubAllGlobals(); await f.dispose(); }
+});
+
+it('keeps the normal and deletion-purpose redirects unchanged', async () => {
+  const f = await accountDb();
+  const env = { ...f.env, GOOGLE_CLIENT_ID: 'test-client', GOOGLE_CLIENT_SECRET: 'test-secret' };
+  stubDiscovery();
+  try {
+    const normal = await handleAuth(new Request('https://game.example/api/auth/start'), env);
+    expect(normal?.status).toBe(302);
+    expect(new URL(normal!.headers.get('Location')!).origin).toBe('https://accounts.google.com');
+
+    const remove = await handleAuth(f.request('/api/auth/start?purpose=delete'), env);
+    expect(remove?.status).toBe(302);
+
+    const preparedDelete = await handleAuth(f.request('/api/auth/start?purpose=delete&prepare=1'), env);
+    expect(preparedDelete?.status).toBe(200);
+    const body = await preparedDelete?.json() as { ok: boolean; value: { url: string } };
+    expect(body.ok).toBe(true);
+    expect(new URL(body.value.url).searchParams.get('claims')).toContain('auth_time');
+
+    const anonymous = await handleAuth(new Request('https://game.example/api/auth/start?purpose=delete&prepare=1'), env);
+    expect(anonymous?.status).toBe(401);
+  } finally { vi.unstubAllGlobals(); await f.dispose(); }
+});
+
+it('reports unavailable preparation as a retryable envelope', async () => {
+  const f = await accountDb();
+  try {
+    const unconfigured = await handleAuth(new Request('https://game.example/api/auth/start?prepare=1'), f.env);
+    expect(unconfigured?.status).toBe(503);
+    expect(await unconfigured?.json()).toMatchObject({ ok: false });
+
+    stubDiscovery();
+    const offlineEnv = { ...f.env, GOOGLE_CLIENT_ID: 'test-client', GOOGLE_CLIENT_SECRET: 'test-secret' };
+    vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('offline'); }));
+    const offline = await handleAuth(new Request('https://game.example/api/auth/start?prepare=1'), offlineEnv);
+    expect(offline?.status).toBe(503);
+    expect(await offline?.json()).toMatchObject({ ok: false, code: 'API_UNAVAILABLE' });
+  } finally { vi.unstubAllGlobals(); await f.dispose(); }
+});

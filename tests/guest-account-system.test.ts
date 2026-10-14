@@ -80,6 +80,15 @@ it('warns before OAuth when an unacknowledged claimed batch is session-only',asy
  const view=await f.guests.view();vi.spyOn(f.guests,'view').mockResolvedValue({...view,persisted:false});
  expect(view.journal.open.progress.earned).toEqual({});expect((await f.system.googleSignInPreflight()).requiresLossAcknowledgment).toBe(true);expect((await f.system.beginGoogleSignIn()).ok).toBe(false);
 });
+it('prepares Google sign-in even when initialization checks previously failed',async()=>{
+ const f=make();f.client.getConfig=async()=>({ok:false,code:'NETWORK',message:'offline',status:0});await f.system.initialize();
+ expect((await f.system.enterGuest('Aria')).ok).toBe(true);
+ const attempt=vi.spyOn(f.client,'prepareGoogleSignIn');
+ const prepared=await f.system.prepareGoogleSignIn(false);
+ expect(prepared.ok).toBe(true);
+ expect(attempt).toHaveBeenCalledTimes(1);
+ expect(loadSettings().googleSignInPending).toBe(true);
+});
 it('restores abandoned progress for local guest play without reopening import',async()=>{
  const f=make(),progress=emptyCloudProgress();progress.levels[1]={completed:true,completionStar:true,livesStar:false,scoreStar:false,bestScore:100,bestRemainingLives:10};
  await f.guests.bootstrap({progress,nickname:'Aria',warnings:[],result:null},null);await f.guests.claim(f.ref);await f.guests.abandon(f.ref);
