@@ -15,6 +15,7 @@ import {
   parseCampaignProfile
 } from '../src/game/campaign/progress.ts';
 import { mergeCloudProgress, validateCloudProgress } from '../src/shared/cloudProgress.ts';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 
 function memoryStorage(value: string | null) {
   let saved = value;
@@ -122,7 +123,7 @@ describe('Campaign v5 save compatibility', () => {
   it('preserves the exact future-version fixture bytes when attempting a local clear', () => {
     const storage = memoryStorage(futureVersionRaw);
     const repository = new CampaignRepository(storage);
-    expect(repository.recordClear(1, 1950, 12)?.saved).toBe(false);
+    expect(repository.recordClear(1, campaignScoreMetadata(1).perfectScore, 12)?.saved).toBe(false);
     expect(storage.read()).toBe(futureVersionRaw);
   });
 });

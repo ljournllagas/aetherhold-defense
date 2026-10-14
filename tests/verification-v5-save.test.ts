@@ -4,6 +4,7 @@ import legacyLocalPartial7 from './fixtures/campaign-v5/legacy_local_partial_7.j
 import futureVersionRaw from './fixtures/campaign-v5/future_version_must_not_overwrite.json?raw';
 import worker from '../worker/index.ts';
 import { emptyCloudProgress } from '../src/shared/cloudProgress.ts';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 import { getCampaignLevel } from '../src/game/campaign/config.ts';
 import {
   CAMPAIGN_NEWER_WARNING,
@@ -52,7 +53,7 @@ it('opens the legacy Level 30 save at Level 31 without inventing a clear or rewr
 it('keeps the exact future-version fixture bytes when a clear is earned in-session', () => {
   const store = new VerificationStore(futureVersionRaw);
   const repository = new CampaignRepository(store);
-  const clear = repository.recordClear(1, 1950, 12)!;
+  const clear = repository.recordClear(1, campaignScoreMetadata(1).perfectScore, 12)!;
 
   expect(clear.saved).toBe(false);
   expect(clear.progress.completed).toBe(true);
@@ -66,12 +67,12 @@ it('opens Level 41 only after a valid Level 40 progression clear and awards the 
   const repository = new CampaignRepository(new VerificationStore(null));
   for (let level = 1; level < 40; level++) {
     const definition = getCampaignLevel(level)!;
-    expect(repository.recordClear(level, definition.mastery.scoreTarget, definition.mastery.minimumLivesForStar)).not.toBeNull();
+    expect(repository.recordClear(level, campaignScoreMetadata(level).perfectScore, definition.mastery.minimumLivesForStar)).not.toBeNull();
   }
   expect(isLevelUnlocked(40, repository.view())).toBe(true);
   expect(isLevelUnlocked(41, repository.view())).toBe(false);
 
-  const finalClear = repository.recordClear(40, getCampaignLevel(40)!.mastery.scoreTarget, getCampaignLevel(40)!.mastery.minimumLivesForStar);
+  const finalClear = repository.recordClear(40, campaignScoreMetadata(40).perfectScore, getCampaignLevel(40)!.mastery.minimumLivesForStar);
   expect(finalClear).not.toBeNull();
   expect(isLevelUnlocked(41, repository.view())).toBe(true);
   expect(repository.view().profile.levels[41]).toBeUndefined();

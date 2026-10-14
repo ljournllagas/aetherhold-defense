@@ -4,6 +4,7 @@ import type { LoadingRequest } from './scenes/PreloadScene.ts';
 import type { DifficultyId, PowerUpId } from '../shared/types.ts';
 import { CAMPAIGN_LEVELS, getCampaignLevel } from './campaign/config.ts';
 import { CampaignRepository } from './campaign/progress.ts';
+import { campaignScoreMetadata } from '../shared/campaignScoring.ts';
 import { CAMPAIGN_BOSS_PHASE_LABELS, type CampaignBossPhaseLabel } from './campaign/bosses.ts';
 
 export const QA_STATES = [
@@ -66,7 +67,7 @@ export function isQACampaignFixture(value: unknown): value is QACampaignFixture 
 
 export function createQACampaignRepository(fixture: QACampaignFixture): CampaignRepository {
   const repository = new CampaignRepository(null);
-  for (let level = 1; level < fixture.level; level++) repository.recordClear(level, getCampaignLevel(level)!.mastery.scoreTarget, 20);
+  for (let level = 1; level < fixture.level; level++) repository.recordClear(level, campaignScoreMetadata(level).perfectScore, 20);
   return repository;
 }
 

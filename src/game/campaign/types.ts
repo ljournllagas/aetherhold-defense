@@ -96,6 +96,7 @@ export interface CampaignLevelProgress {
   scoreStar: boolean;
   bestScore: number;
   bestRemainingLives: number;
+  campaignScore?: { version: 1; bestScore: number };
 }
 
 export interface CampaignPreparationPreset {

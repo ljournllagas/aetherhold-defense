@@ -13,6 +13,7 @@ import { SoundManager } from '../src/game/systems/SoundManager.ts';
 import * as settings from '../src/game/systems/Settings.ts';
 import * as scores from '../src/api/leaderboardClient.ts';
 import type { TowerId } from '../src/shared/progression.ts';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 
 vi.mock('phaser', () => ({ default: { Scene: class { constructor(_key?: string) {} }, Math: { Vector2: class { constructor(public x: number, public y: number) {} } }, Scenes: { Events: { SHUTDOWN: 'shutdown' } }, Scale: { Events: { RESIZE: 'resize' } } } }));
 vi.mock('../src/game/art/towerArt.ts', () => ({ buildTowerVisual: () => ({ view: anyStub(), crown: anyStub(), muzzleX: 0, muzzleY: -32 }), decorateEvolution: () => {}, towerPortraitKey: () => 'tower' }));
@@ -29,7 +30,7 @@ function anyStub(): any {
 
 function fixture(level = 1): any {
   const repository = new CampaignRepository(null);
-  for (let unlocked = 1; unlocked <= 30; unlocked++) repository.recordClear(unlocked, 100000, 20);
+  for (let unlocked = 1; unlocked <= 30; unlocked++) repository.recordClear(unlocked, campaignScoreMetadata(unlocked).perfectScore, 20);
   vi.spyOn(campaignRepository, 'view').mockImplementation(() => repository.view());
   vi.spyOn(campaignRepository, 'recordClear').mockImplementation(() => null as never);
   vi.spyOn(SoundManager, 'get').mockReturnValue(anyStub());
@@ -214,7 +215,7 @@ describe('independent natural-economy challenge', () => {
     }
 
     expect(run.campaignResult?.outcome, JSON.stringify({ wave: run.wave, lives: run.lives, score: run.campaignResult?.score, bossesKilled: run.bossesKilled, bossHealth: bosses.map(boss => [boss.hp, boss.maxHp]), gold: run.gold, towers: run.towers.map((tower: Tower) => [tower.towerId, tower.level, tower.x, tower.y]) })).toBe('victory');
-    expect(run.campaignResult?.score).toBeGreaterThanOrEqual(definition.mastery.scoreTarget);
+    expect(run.campaignResult?.score).toBeGreaterThanOrEqual(campaignScoreMetadata(definition.level).scoreTarget);
     expect(run.lives).toBeGreaterThanOrEqual(definition.mastery.minimumLivesForStar);
     expect(run.bossesKilled).toBe(definition.bossEnemyId ? 1 : 0);
     expect(purchases.length).toBeGreaterThan(0);

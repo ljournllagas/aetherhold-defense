@@ -12,6 +12,7 @@ import { requiredAssets, requiredAssetsForRequest } from '../src/game/art/assetM
 import { TOWER_LIST } from '../src/game/config/towers.ts';
 import { BUILD_PLOT_POLICY, longestRoadCoverage, plotRoadClearance } from '../src/game/maps/buildPlotPolicy.ts';
 import registryArtContract from './fixtures/campaign-v5/registry-art-contract.json';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 
 const LEGACY_WORLD_IDS = ['borderkeep', 'emberfall', 'frostveil'] as const;
 const LEGACY_ROUTE_KEYS = LEGACY_WORLD_IDS.flatMap(id => ['a', 'b', 'c', 'd'].map(family => `${id}_${family}`));
@@ -93,7 +94,7 @@ async function sha256(value: string | Uint8Array): Promise<string> {
 
 function unlockedCampaignView() {
   const repository = new CampaignRepository(null);
-  for (let level = 1; level <= 100; level++) repository.recordClear(level, 100_000, 20);
+  for (let level = 1; level <= 100; level++) repository.recordClear(level, campaignScoreMetadata(level).perfectScore, 20);
   return repository.view();
 }
 

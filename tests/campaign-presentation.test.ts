@@ -8,6 +8,8 @@ import { CAMPAIGN_UNAVAILABLE_WARNING, CampaignRepository } from '../src/game/ca
 import { getCampaignEnemy } from '../src/game/campaign/enemies.ts';
 import { campaignDetailContentLayout, campaignScreenLayout } from '../src/game/campaign/mapLayout.ts';
 import type { CampaignClearResult } from '../src/game/campaign/types.ts';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
+import { formatCount } from '../src/shared/displayNumbers.ts';
 
 describe('campaign presentation detail', () => {
   it('keeps the narrow mastery header complete in two short semantic lines', () => {
@@ -19,7 +21,7 @@ describe('campaign presentation detail', () => {
 
   it('separates every roster name, including the boss, for wrapped previews', () => {
     const repository = new CampaignRepository(null);
-    for (let level = 1; level < 10; level++) repository.recordClear(level, 100_000, 20);
+    for (let level = 1; level < 10; level++) repository.recordClear(level, campaignScoreMetadata(level).perfectScore, 20);
     const detail = campaignLevelDetail(10, repository.view())!;
     const names = detail.enemyIds.map(id => getCampaignEnemy(id).name);
     const preview = campaignEnemyPreviewText(names);
@@ -31,25 +33,25 @@ describe('campaign presentation detail', () => {
 
   it('uses compact mobile metadata while retaining best score and lives', () => {
     const repository = new CampaignRepository(null);
-    repository.recordClear(1, 49_150, 12);
+    repository.recordClear(1, campaignScoreMetadata(1).perfectScore, 12);
     const detail = campaignLevelDetail(1, repository.view())!;
     const meta = campaignCompactDetailMeta(detail);
 
     expect(meta).toContain('Borderkeep · A · D1/5 · 3/3 stars');
-    expect(meta).toContain('Best 49,150 · 12 lives');
+    expect(meta).toContain(`Best ${formatCount(campaignScoreMetadata(1).perfectScore)} · 12 lives`);
   });
 
   it('keeps completed-level best lives above the mastery row at 360x640', () => {
     const repository = new CampaignRepository(null);
-    for (let level = 1; level < 6; level++) repository.recordClear(level, 100_000, 20);
-    repository.recordClear(6, 48_000, 20);
+    for (let level = 1; level < 6; level++) repository.recordClear(level, campaignScoreMetadata(level).perfectScore, 20);
+    repository.recordClear(6, campaignScoreMetadata(6).perfectScore, 20);
     const detail = campaignLevelDetail(6, repository.view())!;
     const meta = campaignCompactDetailMeta(detail);
     const screen = campaignScreenLayout(360, 640);
     const metadataHeight = 28; // The 12px metadata wraps to two lines in the reported viewport.
     const rows = campaignDetailContentLayout(screen.detailHeight, false, false, metadataHeight, 14);
 
-    expect(meta).toBe('Borderkeep · B3 · D3/5 · 3/3 stars · Best 48,000 · 20 lives');
+    expect(meta).toBe(`Borderkeep · B3 · D3/5 · 3/3 stars · Best ${formatCount(campaignScoreMetadata(6).perfectScore)} · 20 lives`);
     expect(32 + metadataHeight + 4).toBeLessThanOrEqual(rows.goalsY);
     expect(rows.goalsY + 14).toBeLessThanOrEqual(rows.enemyCenterY - 12);
     expect(rows.enemyNamesY + 14).toBeLessThanOrEqual(rows.buttonY);
@@ -57,13 +59,13 @@ describe('campaign presentation detail', () => {
 
   it('shows an unlocked normal level with its best result and mastery objectives', () => {
     const repository = new CampaignRepository(null);
-    repository.recordClear(1, 100_000, 20);
+    repository.recordClear(1, campaignScoreMetadata(1).perfectScore, 20);
     const detail = campaignLevelDetail(1, repository.view());
 
     expect(detail).not.toBeNull();
     expect(detail).toMatchObject({
       level: 1, locked: false, canStart: true, completed: true, stars: 3,
-      bestScore: 100_000, bestLives: 20, boss: null
+      bestScore: campaignScoreMetadata(1).perfectScore, bestLives: 20, boss: null
     });
     expect(detail!.enemies.length).toBeGreaterThan(0);
     expect(detail!.objectives.every(objective => objective.earned)).toBe(true);
@@ -78,7 +80,7 @@ describe('campaign presentation detail', () => {
 
   it('includes a named boss and phase guidance on its campaign node', () => {
     const repository = new CampaignRepository(null);
-    for (let level = 1; level < 10; level++) repository.recordClear(level, 100_000, 20);
+    for (let level = 1; level < 10; level++) repository.recordClear(level, campaignScoreMetadata(level).perfectScore, 20);
 
     const detail = campaignLevelDetail(10, repository.view());
     expect(detail).toMatchObject({ level: 10, canStart: true, boss: { id: 'hollow_warden', name: expect.any(String), guidance: expect.stringContaining('ward') } });

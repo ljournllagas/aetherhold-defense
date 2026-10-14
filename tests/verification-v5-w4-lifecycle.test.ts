@@ -2,6 +2,7 @@ import { afterEach, expect, it, vi } from 'vitest';
 import { GameScene } from '../src/game/scenes/GameScene.ts';
 import { CampaignRepository, campaignRepository } from '../src/game/campaign/progress.ts';
 import { SoundManager } from '../src/game/systems/SoundManager.ts';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 
 vi.mock('phaser', () => ({ default: { Scene: class { constructor(_key?: string) {} }, Math: { Vector2: class { constructor(public x: number, public y: number) {} } }, Scenes: { Events: { SHUTDOWN: 'shutdown' } }, Scale: { Events: { RESIZE: 'resize' } } } }));
 vi.mock('../src/game/art/towerArt.ts', () => ({ buildTowerVisual: () => anyStub(), decorateEvolution: () => {}, towerPortraitKey: () => 'tower' }));
@@ -20,7 +21,7 @@ const PRESENTATION = [
 
 function w4Run(): { run: any; repository: CampaignRepository } {
   const repository = new CampaignRepository(null);
-  for (let level = 1; level < 40; level++) repository.recordClear(level, 0, 1);
+  for (let level = 1; level < 40; level++) repository.recordClear(level, campaignScoreMetadata(level).perfectScore, 1);
   vi.spyOn(campaignRepository, 'view').mockImplementation(() => repository.view());
   vi.spyOn(SoundManager, 'get').mockReturnValue(anyStub());
   vi.spyOn(Math, 'random').mockReturnValue(0.99);

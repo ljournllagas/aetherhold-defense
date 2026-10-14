@@ -10,6 +10,7 @@ import { TOWERS } from '../src/game/config/towers.ts';
 import { SIMULATION_STEP_MS } from '../src/game/systems/SimulationClock.ts';
 import type { TowerId } from '../src/shared/progression.ts';
 import type { MapDef } from '../src/game/maps/map1.ts';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 
 vi.mock('phaser', () => ({
   default: {
@@ -44,7 +45,7 @@ const PRESENTATION = [
 
 function repository(through: number, completionOnly: boolean): CampaignRepository {
   const result = new CampaignRepository(null);
-  for (let level = 1; level <= through; level++) result.recordClear(level, completionOnly ? 0 : 100000, completionOnly ? 1 : 20);
+  for (let level = 1; level <= through; level++) result.recordClear(level, completionOnly ? 1 : campaignScoreMetadata(level).perfectScore, completionOnly ? 1 : 20);
   return result;
 }
 
@@ -193,7 +194,7 @@ describe('Worlds 5–10 paid-resource viability in fixed-step campaign battles',
         debugAssisted: run.debugAssisted, randomValue: 0.99, startingGold: 600, startingLives: 20,
         relicUses: [], remainingGold: run.gold, mastery: run.campaignResult?.clear?.progress, level: definition.level,
         waves: run.wave, outcome: run.campaignResult?.outcome, score: run.campaignResult?.score,
-        scoreTarget: definition.mastery.scoreTarget, lives: run.lives, livesTarget: definition.mastery.minimumLivesForStar,
+        scoreTarget: campaignScoreMetadata(definition.level).scoreTarget, lives: run.lives, livesTarget: definition.mastery.minimumLivesForStar,
         registeredWaveCount: run.campaign.waveCount, ended: run.ended, waveActive: run.waveActive, siegePhase: run.siege.phase,
         bossesKilled: run.bossesKilled, bossLeak, kills: run.enemiesKilled, elitesKilled: run.elitesKilled,
         durationSeconds: Math.round(run.gameTimeMs / 1000), purchases
@@ -220,7 +221,7 @@ describe('Worlds 5–10 paid-resource viability in fixed-step campaign battles',
     recordResult();
     expect(run.campaignResult?.outcome, `level ${definition.level}, wave ${run.wave}, lives ${run.lives}`).toBe('victory');
     expect(run.campaignResult?.lives).toBeGreaterThanOrEqual(definition.mastery.minimumLivesForStar);
-    expect(run.campaignResult?.score, `level ${definition.level} target ${definition.mastery.scoreTarget}`).toBeGreaterThanOrEqual(definition.mastery.scoreTarget);
+    expect(run.campaignResult?.score, `level ${definition.level} target ${campaignScoreMetadata(definition.level).scoreTarget}`).toBeGreaterThanOrEqual(campaignScoreMetadata(definition.level).scoreTarget);
     expect(run.campaignResult?.clear?.progress).toMatchObject({ completionStar: true, livesStar: true, scoreStar: true });
   }, 30000);
 });

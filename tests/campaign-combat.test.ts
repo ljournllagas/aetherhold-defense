@@ -11,12 +11,13 @@ import { Enemy } from '../src/game/entities/Enemy.ts';
 import { EvolutionCombat } from '../src/game/systems/EvolutionCombat.ts';
 import { ENEMIES } from '../src/game/config/enemies.ts';
 import { CAMPAIGN_SPECIALIZATIONS } from '../src/game/campaign/specializations.ts';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 
 afterEach(() => vi.restoreAllMocks());
 
 function repository(through = 30): CampaignRepository {
   const repo = new CampaignRepository(null);
-  for (let level = 1; level <= through; level++) repo.recordClear(level, 100000, 20);
+  for (let level = 1; level <= through; level++) repo.recordClear(level, campaignScoreMetadata(level).perfectScore, 20);
   return repo;
 }
 function campaignEnemy(id: string): Enemy {

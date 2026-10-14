@@ -19,6 +19,7 @@ import {
   totalMasteryStars,
   type CampaignStorage
 } from '../src/game/campaign/progress.ts';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 
 class IndependentStore implements CampaignStorage {
   value: string | null;
@@ -82,10 +83,11 @@ const BASE_POWER_UPS = [
 
 function earnStar(repository: CampaignRepository, level: number, star: 'completion' | 'lives' | 'score') {
   const definition = getCampaignLevel(level)!;
+  const scoreTarget = campaignScoreMetadata(level).scoreTarget;
   const attempt = {
-    completion: [definition.mastery.scoreTarget - 1, definition.mastery.minimumLivesForStar - 1],
-    lives: [definition.mastery.scoreTarget - 1, definition.mastery.minimumLivesForStar],
-    score: [definition.mastery.scoreTarget, definition.mastery.minimumLivesForStar - 1]
+    completion: [scoreTarget - 1, definition.mastery.minimumLivesForStar - 1],
+    lives: [scoreTarget - 1, definition.mastery.minimumLivesForStar],
+    score: [scoreTarget, definition.mastery.minimumLivesForStar - 1]
   } as const;
   const [score, lives] = attempt[star];
   const result = repository.recordClear(level, score, lives);
@@ -132,9 +134,9 @@ describe('independent campaign acceptance', () => {
 
     expect(isLevelUnlocked(1, repository.view())).toBe(true);
     expect(isLevelUnlocked(2, repository.view())).toBe(false);
-    expect(repository.recordClear(2, first.mastery.scoreTarget, first.mastery.minimumLivesForStar)).toBeNull();
-    expect(repository.recordClear(0, 5000, 20)).toBeNull();
-    expect(repository.recordClear(31, 5000, 20)).toBeNull();
+    expect(repository.recordClear(2, campaignScoreMetadata(2).perfectScore, first.mastery.minimumLivesForStar)).toBeNull();
+    expect(repository.recordClear(0, 1, 20)).toBeNull();
+    expect(repository.recordClear(31, campaignScoreMetadata(31).perfectScore, 20)).toBeNull();
     expect(repository.recordClear(1, -1, 20)).toBeNull();
     expect(repository.recordClear(1, first.mastery.scoreTarget, 0)).toBeNull();
     expect(repository.recordClear(1, 1.5, 20)).toBeNull();
@@ -147,13 +149,13 @@ describe('independent campaign acceptance', () => {
     expect(lives.progress).toMatchObject({ completionStar: true, livesStar: true, scoreStar: false, bestRemainingLives: first.mastery.minimumLivesForStar });
     expect(lives.totalMasteryStars).toBe(2);
     const score = earnStar(repository, 1, 'score');
-    expect(score.progress).toMatchObject({ completionStar: true, livesStar: true, scoreStar: true, bestScore: first.mastery.scoreTarget });
+    expect(score.progress).toMatchObject({ completionStar: true, livesStar: true, scoreStar: true, bestScore: 0, campaignScore: { version: 1, bestScore: campaignScoreMetadata(1).scoreTarget } });
     expect(score.totalMasteryStars).toBe(3);
 
     const weakerReplay = repository.recordClear(1, 1, 1)!;
     expect(weakerReplay.newlyEarnedStars).toEqual([]);
-    expect(weakerReplay.progress).toMatchObject({ completionStar: true, livesStar: true, scoreStar: true, bestScore: first.mastery.scoreTarget, bestRemainingLives: first.mastery.minimumLivesForStar });
-    expect(repository.recordClear(1, first.mastery.scoreTarget, first.mastery.minimumLivesForStar)!.totalMasteryStars).toBe(3);
+    expect(weakerReplay.progress).toMatchObject({ completionStar: true, livesStar: true, scoreStar: true, bestScore: 0, campaignScore: { version: 1, bestScore: campaignScoreMetadata(1).scoreTarget }, bestRemainingLives: first.mastery.minimumLivesForStar });
+    expect(repository.recordClear(1, campaignScoreMetadata(1).scoreTarget, first.mastery.minimumLivesForStar)!.totalMasteryStars).toBe(3);
     expect(totalMasteryStars(repository.view().profile)).toBe(3);
   });
 
@@ -290,7 +292,7 @@ describe('independent campaign acceptance', () => {
     expect(isLevelUnlocked(31, repository.view())).toBe(true);
     expect(isWorldUnlocked(CAMPAIGN_WORLDS[3]!.id, repository.view())).toBe(true);
     expect(repository.view().profile.levels[31]).toBeUndefined();
-    expect(repository.recordClear(30, 30000, 30)!.totalMasteryStars).toBe(90);
+    expect(repository.recordClear(30, campaignScoreMetadata(30).perfectScore, 20)!.totalMasteryStars).toBe(90);
     expect(repository.view().profile.levels[31]).toBeUndefined();
     expect(totalMasteryStars(repository.view().profile)).toBe(90);
 
@@ -327,20 +329,22 @@ describe('independent campaign acceptance', () => {
     const store = new IndependentStore();
     const firstTab = new CampaignRepository(store);
     store.failWrite = true;
-    const target = getCampaignLevel(1)!.mastery;
-    const local = firstTab.recordClear(1, target.scoreTarget, 1)!;
+    const metadata = campaignScoreMetadata(1);
+    const livesTarget = getCampaignLevel(1)!.mastery.minimumLivesForStar;
+    const local = firstTab.recordClear(1, metadata.scoreTarget, 1)!;
     expect(local.saved).toBe(false);
     expect(local.progress.scoreStar).toBe(true);
     store.failWrite = false;
 
     const secondTab = new CampaignRepository(store);
-    const remote = secondTab.recordClear(1, target.scoreTarget - 1, target.minimumLivesForStar + 5)!;
+    const remote = secondTab.recordClear(1, metadata.scoreTarget - 1, livesTarget + 5)!;
     expect(remote.progress.livesStar).toBe(true);
     firstTab.reconcile();
     const merged = new CampaignRepository(store).view().profile.levels[1]!;
     expect(merged).toMatchObject({
       completed: true, completionStar: true, livesStar: true, scoreStar: true,
-      bestScore: target.scoreTarget, bestRemainingLives: target.minimumLivesForStar + 5
+      bestScore: 0, bestRemainingLives: livesTarget + 5,
+      campaignScore: { version: 1, bestScore: metadata.scoreTarget }
     });
     expect(firstTab.prepareSave().saved).toBe(true);
   });
@@ -354,7 +358,7 @@ describe('independent campaign acceptance', () => {
   ])('preserves %s bytes and keeps new earnings only for the session', (_label, raw, warning) => {
     const store = new IndependentStore(raw);
     const repository = new CampaignRepository(store);
-    const result = repository.recordClear(1, getCampaignLevel(1)!.mastery.scoreTarget, getCampaignLevel(1)!.mastery.minimumLivesForStar)!;
+    const result = repository.recordClear(1, campaignScoreMetadata(1).perfectScore, getCampaignLevel(1)!.mastery.minimumLivesForStar)!;
 
     expect(result.saved).toBe(false);
     expect(result.warning).toBe(warning);
@@ -368,7 +372,7 @@ describe('independent campaign acceptance', () => {
     const deniedStore = new IndependentStore();
     deniedStore.failRead = true;
     const denied = new CampaignRepository(deniedStore);
-    const deniedClear = denied.recordClear(1, 1950, 12)!;
+    const deniedClear = denied.recordClear(1, campaignScoreMetadata(1).perfectScore, 12)!;
     expect(deniedClear.saved).toBe(false);
     expect(deniedClear.warning).toBe(CAMPAIGN_UNAVAILABLE_WARNING);
     expect(denied.view().profile.levels[1]?.completed).toBe(true);
@@ -377,7 +381,7 @@ describe('independent campaign acceptance', () => {
     const retryStore = new IndependentStore();
     retryStore.failWrite = true;
     const retry = new CampaignRepository(retryStore);
-    expect(retry.recordClear(1, 1950, 12)!.warning).not.toBeNull();
+    expect(retry.recordClear(1, campaignScoreMetadata(1).perfectScore, 12)!.warning).not.toBeNull();
     expect(retry.prepareSave().saved).toBe(false);
     retryStore.failWrite = false;
     retry.reconcile();
@@ -385,7 +389,7 @@ describe('independent campaign acceptance', () => {
     expect(new CampaignRepository(retryStore).view().profile.levels[1]).toMatchObject({ completed: true, livesStar: true, scoreStar: true });
 
     const noStorage = new CampaignRepository(null);
-    expect(noStorage.recordClear(1, 1950, 12)!.warning).toBe(CAMPAIGN_UNAVAILABLE_WARNING);
+    expect(noStorage.recordClear(1, campaignScoreMetadata(1).perfectScore, 12)!.warning).toBe(CAMPAIGN_UNAVAILABLE_WARNING);
     expect(noStorage.prepareSave().saved).toBe(false);
     expect(noStorage.prepareSave().profile.levels[1]?.completed).toBe(true);
   });
