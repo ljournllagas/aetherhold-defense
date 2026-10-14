@@ -7,7 +7,9 @@
 
 - **Player account:** The game's identity linked to one Google identity, owning cloud achievements and scores.
 - **Cloud progress:** Completed Campaign achievements, Classic branch achievements, and personal bests retained for a player account across devices.
-- **Guest import:** A once-only claim of a browser's existing anonymous save by its first signed-in player account.
+- **Guest import:** A once-only claim and merge of a guest save batch into one signed-in player account.
+- **Guest player:** A player using a browser-local in-game name and progress without a Google session.
+- **Guest save batch:** Browser-local guest progress not yet acknowledged by a player account; each batch is claimed and imported at most once.
 - **Pending sync:** Account-owned progress or terminal results retained locally but not yet acknowledged by the server.
 - **Account generation:** The lifetime of a player account; deletion ends it and a later registration begins a separate lifetime.
 
@@ -43,3 +45,7 @@
 - **Situational relic use:** Automatic activation when a relic can provide its intended benefit in the current run state.
 - **Saved submission:** The latest terminal-result payload the player explicitly attempted to submit, retained for manual retry without resuming the run.
 - **Legacy best:** A personal-best record from an earlier score era, retained separately from the current era's best.
+- **Campaign score era:** Campaign mission scores sharing an independent campaign score version; Classic score versions do not govern them.
+- **Campaign mission score:** Points for scheduled enemies defeated, completed waves, the mission boss defeated, and lives remaining at settlement; summoned enemies do not award points.
+- **Campaign mission best:** A mission's highest winning score in the current Campaign score era.
+- **Campaign leaderboard:** One public entry per player account, ordered by distinct missions completed, retained mastery stars, and the sum of current Campaign mission bests.

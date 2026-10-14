@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { getCampaignLevel } from '../src/game/campaign/config.ts';
+import legacyLocalCompleted30 from './fixtures/campaign-v5/legacy_local_completed_30.json';
+import legacyLocalPartial7 from './fixtures/campaign-v5/legacy_local_partial_7.json';
+import { CAMPAIGN_SIGILS, CAMPAIGN_WORLDS, getCampaignLevel } from '../src/game/campaign/config.ts';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 import {
   CAMPAIGN_STORAGE_KEY,
   CAMPAIGN_UNAVAILABLE_WARNING,
@@ -10,9 +13,11 @@ import {
   createEmptyCampaignProfile,
   isLevelUnlocked,
   isWorldUnlocked,
+  parseCampaignProfile,
   totalMasteryStars,
   type CampaignStorage
 } from '../src/game/campaign/progress.ts';
+import type { CampaignProfile } from '../src/game/campaign/types.ts';
 
 class MemoryStore implements CampaignStorage {
   value: string | null;
@@ -40,7 +45,7 @@ class MemoryStore implements CampaignStorage {
 function completeThrough(repository: CampaignRepository, through: number): void {
   for (let level = 1; level <= through; level++) {
     const definition = getCampaignLevel(level)!;
-    expect(repository.recordClear(level, definition.mastery.scoreTarget, definition.mastery.minimumLivesForStar)).not.toBeNull();
+    expect(repository.recordClear(level, campaignScoreMetadata(level).perfectScore, definition.mastery.minimumLivesForStar)).not.toBeNull();
   }
 }
 
@@ -60,25 +65,64 @@ describe('campaign progress', () => {
     expect(store.writes).toBe(0);
   });
 
+  it('keeps v1 level 30 saves and round-trips new registered levels without changing old Sigils or preferences', () => {
+    const legacy = parseCampaignProfile(legacyLocalCompleted30)!;
+    legacy.choices.longbow = 'longbow_bastion';
+    legacy.targeting.ember = 'last';
+    legacy.preparationPresets.push({ id: 'opening', name: 'Opening', choices: { ...legacy.choices }, targeting: { ...legacy.targeting } });
+    const store = new MemoryStore(JSON.stringify(legacy));
+    const repository = new CampaignRepository(store);
+    const completion = { completed: true, completionStar: true, livesStar: false, scoreStar: false, bestScore: 0, bestRemainingLives: 0 };
+    const additional: CampaignProfile['levels'] = { 31: completion, 40: completion, 100: completion };
+    repository.applyCloud(additional);
+
+    const saved = JSON.parse(store.value!) as CampaignProfile;
+    const reloaded = new CampaignRepository(store).view();
+    expect([saved.campaignVersion, saved.progressionVersion]).toEqual([1, 1]);
+    expect(reloaded.profile.levels[31]).toEqual(completion);
+    expect(reloaded.profile.levels[40]).toEqual(completion);
+    expect(reloaded.profile.levels[100]).toEqual(completion);
+    expect(reloaded.profile.choices.longbow).toBe('longbow_bastion');
+    expect(reloaded.profile.targeting.ember).toBe('last');
+    expect(reloaded.profile.preparationPresets[0]?.id).toBe('opening');
+    expect(reloaded.profile.worldSigils).toContain('frost_sigil');
+    expect(CAMPAIGN_SIGILS.find(({ id }) => id === 'frost_sigil')?.level).toBe(30);
+    expect(isLevelUnlocked(31, reloaded)).toBe(true);
+    expect(isLevelUnlocked(101, reloaded)).toBe(false);
+    expect(isWorldUnlocked(CAMPAIGN_WORLDS[3]!.id, reloaded)).toBe(true);
+    expect(reloaded.unlockedFeatures).toContain('campaign_100_clear');
+  });
+
+  it('rejects noncanonical and unregistered local level keys while preserving partial legacy unlocks', () => {
+    const partial = parseCampaignProfile(legacyLocalPartial7)!;
+    expect(partial.highestUnlockedLevel).toBe(8);
+    expect(isWorldUnlocked(CAMPAIGN_WORLDS[1]!.id, partial)).toBe(false);
+    for (const key of ['01', '101', '1e0']) {
+      const profile = { ...createEmptyCampaignProfile(), levels: { [key]: { completed: true, completionStar: true, livesStar: false, scoreStar: false, bestScore: 0, bestRemainingLives: 0 } } };
+      expect(parseCampaignProfile(profile)).toBeNull();
+    }
+  });
+
   it('accumulates each star independently and keeps best score and lives on replay', () => {
     const repository = new CampaignRepository(new MemoryStore());
     expect(repository.recordClear(2, 2500, 20)).toBeNull();
     expect(repository.recordClear(1, 2500, 0)).toBeNull();
 
-    const first = repository.recordClear(1, 1000, 4)!;
+    const metadata = campaignScoreMetadata(1);
+    const first = repository.recordClear(1, metadata.scoreTarget - 1, 4)!;
     expect(first.newlyEarnedStars).toEqual(['completion']);
-    expect(first.progress).toMatchObject({ completed: true, completionStar: true, livesStar: false, scoreStar: false, bestScore: 1000, bestRemainingLives: 4 });
+    expect(first.progress).toMatchObject({ completed: true, completionStar: true, livesStar: false, scoreStar: false, bestScore: 0, bestRemainingLives: 4, campaignScore: { version: 1, bestScore: metadata.scoreTarget - 1 } });
     expect(first.totalMasteryStars).toBe(1);
 
-    const replay = repository.recordClear(1, 1950, 12)!;
+    const replay = repository.recordClear(1, metadata.scoreTarget, 12)!;
     expect(replay.newlyEarnedStars).toEqual(['lives', 'score']);
-    expect(replay.progress).toMatchObject({ livesStar: true, scoreStar: true, bestScore: 1950, bestRemainingLives: 12 });
+    expect(replay.progress).toMatchObject({ livesStar: true, scoreStar: true, bestScore: 0, bestRemainingLives: 12, campaignScore: { version: 1, bestScore: metadata.scoreTarget } });
     expect(replay.totalMasteryStars).toBe(3);
     expect(isLevelUnlocked(2, repository.view())).toBe(true);
 
     const weakerReplay = repository.recordClear(1, 400, 1)!;
     expect(weakerReplay.newlyEarnedStars).toEqual([]);
-    expect(weakerReplay.progress).toMatchObject({ completionStar: true, livesStar: true, scoreStar: true, bestScore: 1950, bestRemainingLives: 12 });
+    expect(weakerReplay.progress).toMatchObject({ completionStar: true, livesStar: true, scoreStar: true, bestScore: 0, bestRemainingLives: 12, campaignScore: { version: 1, bestScore: metadata.scoreTarget } });
     expect(totalMasteryStars(repository.view().profile)).toBe(3);
   });
 
@@ -98,7 +142,7 @@ describe('campaign progress', () => {
     expect(isWorldUnlocked('emberfall', border)).toBe(true);
     expect(isLevelUnlocked(11, border)).toBe(true);
     expect(campaignPowerUpPool(border)).toContain('meteor_strike');
-    expect(repository.recordClear(12, 10000, 20)).toBeNull();
+    expect(repository.recordClear(12, campaignScoreMetadata(12).perfectScore, 20)).toBeNull();
 
     completeThrough(repository, 20);
     const ember = repository.view();
@@ -116,9 +160,10 @@ describe('campaign progress', () => {
       'frostveil_conqueror_crest', 'frostbound_matriarch_codex_entry', 'time_lock_powerup'
     ]));
     expect(isLevelUnlocked(30, frost)).toBe(true);
-    expect(isLevelUnlocked(31, frost)).toBe(false);
+    expect(isLevelUnlocked(31, frost)).toBe(true);
+    expect(isWorldUnlocked(CAMPAIGN_WORLDS[3]!.id, frost)).toBe(true);
     expect(campaignPowerUpPool(frost)).toEqual(expect.arrayContaining(['meteor_strike', 'battle_cry', 'time_freeze']));
-    expect(repository.view().profile.highestUnlockedLevel).toBe(30);
+    expect(repository.view().profile.highestUnlockedLevel).toBe(31);
   });
 
   it('gates specialization and preparation controls, persists at most three presets, and reloads them', () => {
@@ -155,18 +200,20 @@ describe('campaign progress', () => {
     const store = new MemoryStore();
     const firstTab = new CampaignRepository(store);
     store.failWrite = true;
-    const local = firstTab.recordClear(1, 1950, 4)!;
+    const target = campaignScoreMetadata(1).scoreTarget;
+    const local = firstTab.recordClear(1, target, 4)!;
     expect(local.saved).toBe(false);
     expect(local.warning).toBe(CAMPAIGN_SAVE_FAILED_WARNING);
     store.failWrite = false;
 
     const secondTab = new CampaignRepository(store);
-    secondTab.recordClear(1, 1000, 15);
+    secondTab.recordClear(1, target - 1, 15);
     firstTab.reconcile();
     const merged = new CampaignRepository(store).view();
     expect(merged.profile.levels[1]).toMatchObject({
       completed: true, completionStar: true, scoreStar: true, livesStar: true,
-      bestScore: 1950, bestRemainingLives: 15
+      bestScore: 0, bestRemainingLives: 15,
+      campaignScore: { version: 1, bestScore: target }
     });
     expect(firstTab.view().unsaved).toBe(false);
     expect(store.keys.every((key) => key === CAMPAIGN_STORAGE_KEY)).toBe(true);
@@ -200,7 +247,7 @@ describe('campaign progress', () => {
   ])('preserves malformed or future stored bytes while keeping session progress: %s', (raw) => {
     const store = new MemoryStore(raw);
     const repository = new CampaignRepository(store);
-    const result = repository.recordClear(1, 1950, 12)!;
+    const result = repository.recordClear(1, campaignScoreMetadata(1).perfectScore, 12)!;
     expect(result.saved).toBe(false);
     expect(result.warning).not.toBeNull();
     if (raw.includes('"progressionVersion":2')) expect(repository.view().warning).toBe(CAMPAIGN_NEWER_WARNING);
@@ -236,7 +283,7 @@ describe('campaign progress', () => {
     const guardedStore = new MemoryStore(sigilRaw);
     const guardedRepository = new CampaignRepository(guardedStore);
     expect(guardedRepository.view().warning).not.toBeNull();
-    guardedRepository.recordClear(1, 1950, 12);
+    guardedRepository.recordClear(1, campaignScoreMetadata(1).perfectScore, 12);
     expect(guardedStore.value).toBe(sigilRaw);
     expect(guardedStore.writes).toBe(0);
   });
@@ -245,13 +292,13 @@ describe('campaign progress', () => {
     const denied = new MemoryStore();
     denied.failRead = true;
     const deniedRepository = new CampaignRepository(denied);
-    const deniedResult = deniedRepository.recordClear(1, 1950, 12)!;
+    const deniedResult = deniedRepository.recordClear(1, campaignScoreMetadata(1).perfectScore, 12)!;
     expect(deniedResult.saved).toBe(false);
     expect(deniedResult.warning).toBe(CAMPAIGN_UNAVAILABLE_WARNING);
     expect(deniedRepository.view().profile.levels[1]?.completed).toBe(true);
 
     const unavailable = new CampaignRepository(null);
-    unavailable.recordClear(1, 1950, 12);
+    unavailable.recordClear(1, campaignScoreMetadata(1).perfectScore, 12);
     expect(unavailable.prepareSave().saved).toBe(false);
     expect(unavailable.prepareSave().warning).toBe(CAMPAIGN_UNAVAILABLE_WARNING);
     expect(createEmptyCampaignProfile().highestUnlockedLevel).toBe(1);
@@ -259,7 +306,7 @@ describe('campaign progress', () => {
     const quota = new MemoryStore();
     quota.failWrite = true;
     const quotaRepository = new CampaignRepository(quota);
-    quotaRepository.recordClear(1, 1950, 12);
+    quotaRepository.recordClear(1, campaignScoreMetadata(1).perfectScore, 12);
     expect(quotaRepository.view().warning).toBe(CAMPAIGN_SAVE_FAILED_WARNING);
     quota.failWrite = false;
     quotaRepository.reconcile();

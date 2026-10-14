@@ -4,6 +4,7 @@ import atlasMetadata from './enemyAtlasFrames.json';
 import { ensureCampaignEnemyTexture, type CampaignBossArtState } from './campaignArt.ts';
 import { CAMPAIGN_ATLAS_CONTENT_FRACTION, CAMPAIGN_ATLAS_GROUND_ORIGIN, campaignAnimationDefinitions } from '../campaign/artManifest.ts';
 import { P2 } from './artkit.ts';
+import type { Rect } from '../ui/viewport.ts';
 
 type Facing = 'left' | 'right';
 export type EnemyAnimationAction = 'attack' | 'buff' | 'death' | 'armor_break' | 'exposed_core' | 'freeze_cast' | 'phase_two' | 'special';
@@ -47,6 +48,49 @@ export interface EnemyView {
   /** Play an authored one-shot without coupling presentation to combat resolution. */
   playAction(action: EnemyAnimationAction): number | null;
   setCampaignState?(state: CampaignBossArtState): void;
+}
+
+const SUPPORT_CACHE = new WeakMap<EnemyView, Rect>();
+const VISIBLE_DIMENSIONS=new WeakMap<object,number>();
+/** Normalize living silhouettes across idle/walk poses; action effects retain separate full support. */
+export function enemyVisibleDimension(visual:EnemyView):number {
+ const sprite=visual.sprite,texture=sprite.texture;
+ const fallback=()=>Math.max(1,...[...visual.frameRectangles.right,...visual.frameRectangles.left].map(frame=>Math.max(frame.width,frame.height)*Math.abs(sprite.scaleX)));
+ if(!visual.atlas?.startsWith('campaign_enemy_')||!texture?.getSourceImage||typeof document==='undefined')return fallback();
+ let dimension=VISIBLE_DIMENSIONS.get(texture);
+ if(dimension===undefined){
+  try{
+   const source=texture.getSourceImage() as HTMLImageElement,canvas=document.createElement('canvas');canvas.width=source.width;canvas.height=source.height;
+   const context=canvas.getContext('2d',{willReadFrequently:true});if(!context)return fallback();context.drawImage(source,0,0);
+   const data=context.getImageData(0,0,canvas.width,canvas.height).data;dimension=0;
+   const names=texture.getFrameNames(),living=names.filter(name=>/^(idle|walk)_/.test(name));
+   for(const name of living.length?living:names){
+    const f=texture.get(name);let left=f.cutWidth,top=f.cutHeight,right=-1,bottom=-1;
+    for(let y=0;y<f.cutHeight;y++)for(let x=0;x<f.cutWidth;x++)if(data[((f.cutY+y)*canvas.width+f.cutX+x)*4+3]>32){left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x);bottom=Math.max(bottom,y);}
+    if(right>=left)dimension=Math.max(dimension,right-left+1,bottom-top+1);
+   }
+   if(dimension<=0)return fallback();VISIBLE_DIMENSIONS.set(texture,dimension);
+  }catch{return fallback();}
+ }
+ return dimension*Math.abs(sprite.scaleX);
+}
+
+/** Stable all-action support, including both facings, edge, bob and damage pop. */
+export function enemyVisualSupport(visual: EnemyView): Rect {
+  const cached = SUPPORT_CACHE.get(visual);
+  if (cached) return cached;
+  const sprite = visual.sprite, texture = sprite.texture;
+  const names = visual.atlas?.startsWith('campaign_enemy_') && texture?.getFrameNames ? texture.getFrameNames() : [];
+  const frames = names.length ? names.map(name => texture.get(name)) : [...visual.frameRectangles.right, ...visual.frameRectangles.left];
+  const width = Math.max(...frames.map(frame => frame.width)), height = Math.max(...frames.map(frame => frame.height));
+  const sourceScale = Math.abs(sprite.scaleX), originY = sprite.originY ?? 1;
+  const halfWidth = width * sourceScale * 1.045 / 2;
+  const top = Math.min(-height * sourceScale * originY, 1 - height * sourceScale * 1.045);
+  const bottom = Math.max(height * sourceScale * (1 - originY), 1);
+  const rect = { x: -halfWidth * 1.16, y: top * 1.16 - (visual.bobAmp ?? 0), width: halfWidth * 2 * 1.16,
+    height: (bottom - top) * 1.16 + (visual.bobAmp ?? 0) };
+  SUPPORT_CACHE.set(visual, rect);
+  return rect;
 }
 
 const ACTION_PRIORITY: Record<EnemyAnimationAction, number> = {
@@ -124,6 +168,9 @@ function buildCampaignEnemyVisual(scene: Phaser.Scene, archetype: EnemyArchetype
   let leftArmor: Phaser.GameObjects.Graphics | null = null, rightArmor: Phaser.GameObjects.Graphics | null = null;
   let core: Phaser.GameObjects.Graphics | null = null, telegraph: Phaser.GameObjects.Graphics | null = null;
   let ward: Phaser.GameObjects.Graphics | null = null, phaseAura: Phaser.GameObjects.Graphics | null = null;
+  let tyrantSpeed: Phaser.GameObjects.Graphics | null = null, stormWarning: Phaser.GameObjects.Graphics | null = null;
+  let regentEcho: Phaser.GameObjects.Graphics | null = null, portalCue: Phaser.GameObjects.Graphics | null = null;
+  let oraclePhases: Phaser.GameObjects.Graphics[] = [], devourerPhases: Phaser.GameObjects.Graphics[] = [];
   if (campaignId === 'cinder_colossus') {
     const plate = (left: boolean) => overlay(g => {
       const c = size / 2, sign = left ? -1 : 1, x = c + sign * 43;
@@ -164,6 +211,150 @@ function buildCampaignEnemyVisual(scene: Phaser.Scene, archetype: EnemyArchetype
       const c = size / 2; g.lineStyle(3, 0x9e7ae6, 0.75);
       for (let i = 0; i < 3; i++) g.strokeCircle(c, c, 32 + i * 9);
       g.lineStyle(2, 0xc2a2ff, 0.8); g.lineBetween(c - 36, c, c + 36, c); g.lineBetween(c, c - 36, c, c + 36);
+    }).setVisible(false);
+  } else if (campaignId === 'drowned_oracle') {
+    const cues = [0xb99a61, 0x63d3d2, 0xe59a61];
+    oraclePhases = cues.map((color, index) => overlay(g => {
+      const c = size / 2;
+      g.lineStyle(5, color, 0.9); g.strokeCircle(c, c + 3, 48 + index * 5);
+      g.lineStyle(3, color, 0.85);
+      if (index === 0) {
+        g.lineBetween(c - 28, c - 20, c - 28, c + 20); g.lineBetween(c + 28, c - 20, c + 28, c + 20);
+        g.lineBetween(c - 28, c - 20, c, c - 36); g.lineBetween(c + 28, c - 20, c, c - 36);
+      } else if (index === 1) {
+        g.fillPoints(P2([{ x: c, y: c - 42 }, { x: c + 34, y: c }, { x: c, y: c + 42 }, { x: c - 34, y: c }]), false);
+        g.fillCircle(c, c, 7);
+      } else {
+        for (let i = 0; i < 6; i++) {
+          const a = Math.PI * i / 3, x = c + Math.cos(a) * 46, y = c + Math.sin(a) * 46;
+          g.fillTriangle(x - 8, y + 11, x, y - 13, x + 8, y + 11);
+        }
+      }
+    }).setVisible(false));
+  } else if (campaignId === 'iron_tyrant') {
+    const plate = (side: -1 | 1) => overlay(g => {
+      const c = size / 2, x = c + side * 45;
+      g.fillStyle(side < 0 ? 0x514b44 : 0x65584a, 1);
+      g.fillPoints(P2([{ x: x - 30, y: c - 26 }, { x: x - 18, y: c - 52 }, { x: x + 12, y: c - 48 },
+        { x: x + 26, y: c - 24 }, { x: x + 22, y: c + 8 }, { x: x - 8, y: c + 12 }]), true);
+      g.lineStyle(3, profile.accent, 0.92);
+      g.lineBetween(x - 13, c - 36, x - 2, c - 18); g.lineBetween(x - 2, c - 18, x - 14, c + 1);
+    });
+    leftArmor = plate(-1); rightArmor = plate(1);
+    core = overlay(g => {
+      const c = size / 2;
+      g.fillStyle(0xf0a354, 0.44); g.fillCircle(c, c + 6, 28);
+      g.fillStyle(0xffd489, 1); g.fillPoints(P2([{ x: c, y: c - 17 }, { x: c + 14, y: c + 5 }, { x: c, y: c + 25 }, { x: c - 14, y: c + 5 }]), true);
+      g.fillStyle(0xfff1c5, 1); g.fillCircle(c, c + 5, 5);
+    }).setVisible(false);
+    phaseAura = overlay(g => { const c = size / 2; g.lineStyle(4, 0xeaa15b, 0.9); g.strokeCircle(c, c, 56); }).setVisible(false);
+    tyrantSpeed = overlay(g => {
+      const c = size / 2; g.lineStyle(3, 0xffd18a, 0.85);
+      g.lineBetween(c - 68, c + 38, c - 34, c + 31); g.lineBetween(c - 70, c + 52, c - 34, c + 44);
+      g.lineBetween(c + 68, c + 38, c + 34, c + 31); g.lineBetween(c + 70, c + 52, c + 34, c + 44);
+    }).setVisible(false);
+  } else if (campaignId === 'stormmaw_prime') {
+    phaseAura = overlay(g => {
+      const c = size / 2; g.lineStyle(4, 0x83d8fb, 0.72); g.strokeCircle(c, c + 8, 54);
+      g.lineStyle(2, 0xc7edff, 0.72); g.strokeCircle(c, c + 8, 66);
+    }).setVisible(false);
+    stormWarning = overlay(g => {
+      const c = size / 2;
+      g.lineStyle(4, 0xbbeaff, 0.95); g.strokeCircle(c, c - 48, 25);
+      g.lineStyle(3, 0x75c9f4, 0.95);
+      g.lineBetween(c + 1, c - 68, c - 9, c - 48); g.lineBetween(c - 9, c - 48, c + 3, c - 48);
+      g.lineBetween(c + 3, c - 48, c - 7, c - 28);
+      for (const side of [-1, 1]) g.lineBetween(c + side * 36, c - 24, c + side * 58, c - 5);
+    }).setVisible(false);
+  } else if (campaignId === 'umbral_regent') {
+    phaseAura = overlay(g => { const c = size / 2; g.lineStyle(3, 0xb391df, 0.68); g.strokeCircle(c, c + 8, 49); }).setVisible(false);
+    regentEcho = overlay(g => {
+      const c = size / 2;
+      g.lineStyle(4, 0xc9b5ec, 0.62); g.strokeCircle(c - 73, c + 2, 20); g.strokeCircle(c + 73, c + 2, 20);
+      g.lineStyle(2, 0xe1d4f6, 0.58);
+      g.lineBetween(c - 88, c + 2, c - 58, c + 2); g.lineBetween(c + 58, c + 2, c + 88, c + 2);
+      g.fillTriangle(c - 73, c - 7, c - 66, c + 2, c - 73, c + 11);
+      g.fillTriangle(c + 73, c - 7, c + 66, c + 2, c + 73, c + 11);
+    }).setVisible(false);
+  } else if (campaignId === 'rift_sovereign') {
+    phaseAura = overlay(g => { const c = size / 2; g.lineStyle(3, 0xc879ea, 0.7); g.strokeCircle(c, c + 14, 48); }).setVisible(false);
+    portalCue = overlay(g => {
+      const c = size / 2, y = c + 43;
+      g.lineStyle(5, 0xe6a5fb, 0.92); g.strokeCircle(c, y, 53); g.strokeCircle(c, y, 37);
+      g.lineStyle(3, 0xb968df, 0.9);
+      for (let i = 0; i < 8; i++) { const a = Math.PI * i / 4; g.lineBetween(c + Math.cos(a) * 38, y + Math.sin(a) * 38, c + Math.cos(a) * 51, y + Math.sin(a) * 51); }
+      g.fillPoints(P2([{ x: c, y: y - 18 }, { x: c + 9, y }, { x: c, y: y + 18 }, { x: c - 9, y }]), true);
+    }).setVisible(false);
+  } else if (campaignId === 'aether_devourer') {
+    const colors = [0xf0d28a, 0x77d5c9, 0xc07bea, 0xff9b72];
+    devourerPhases = colors.map((color, index) => overlay(g => {
+      const c = size / 2, radius = 40 + index * 5;
+      g.lineStyle(4, color, 0.88); g.strokeCircle(c, c + 4, radius);
+      if (index === 0) {
+        g.lineStyle(3, color, 0.92); g.lineBetween(c - 27, c + 4, c + 27, c + 4);
+      } else if (index === 1) {
+        g.strokeCircle(c, c + 4, radius - 11); g.fillCircle(c, c + 4, 5);
+      } else if (index === 2) {
+        g.fillPoints(P2([{ x: c, y: c - 48 }, { x: c + 10, y: c - 6 }, { x: c + 34, y: c + 5 }, { x: c + 7, y: c + 13 }, { x: c, y: c + 48 }, { x: c - 8, y: c + 13 }, { x: c - 34, y: c + 5 }, { x: c - 10, y: c - 6 }]), false);
+      } else {
+        for (let i = 0; i < 4; i++) { const a = Math.PI * i / 2; g.lineBetween(c + Math.cos(a) * 10, c + 4 + Math.sin(a) * 10, c + Math.cos(a) * 48, c + 4 + Math.sin(a) * 48); }
+      }
+    }).setVisible(false));
+    core = overlay(g => {
+      const c = size / 2;
+      g.fillStyle(0xffa178, 0.46); g.fillCircle(c, c + 4, 30);
+      g.fillStyle(0xffe2b4, 1); g.fillPoints(P2([{ x: c, y: c - 21 }, { x: c + 17, y: c + 3 }, { x: c, y: c + 28 }, { x: c - 17, y: c + 3 }]), true);
+      g.fillStyle(0xffffff, 1); g.fillCircle(c, c + 3, 6);
+    }).setVisible(false);
+  } else if (campaignId === 'aetherbound') {
+    ward = overlay(g => {
+      const c = size / 2;
+      g.lineStyle(4, 0x76ded9, 0.88); g.strokeCircle(c, c, 42);
+      g.lineStyle(2, 0xc4fff0, 0.9);
+      g.lineBetween(c, c - 53, c + 13, c - 39); g.lineBetween(c + 13, c - 39, c + 13, c + 39);
+      g.lineBetween(c + 13, c + 39, c, c + 53); g.lineBetween(c, c + 53, c - 13, c + 39);
+      g.lineBetween(c - 13, c + 39, c - 13, c - 39); g.lineBetween(c - 13, c - 39, c, c - 53);
+    }).setVisible(false);
+  } else if (campaignId === 'foundry_core') {
+    const plate = (side: -1 | 1) => overlay(g => {
+      const c = size / 2, x = c + side * 40;
+      g.fillStyle(side < 0 ? 0x55493e : 0x665741, 1);
+      g.fillPoints(P2([{ x: x - 22, y: c - 23 }, { x: x - 13, y: c - 43 }, { x: x + 15, y: c - 38 },
+        { x: x + 23, y: c - 14 }, { x: x + 17, y: c + 16 }, { x: x - 12, y: c + 21 }]), true);
+      g.lineStyle(3, 0xf3bf78, 0.9); g.lineBetween(x - 11, c - 26, x + 8, c - 8);
+    }).setVisible(false);
+    leftArmor = plate(-1); rightArmor = plate(1);
+  } else if (campaignId === 'tempest_herald') {
+    phaseAura = overlay(g => { const c = size / 2; g.lineStyle(3, 0x86d9fa, 0.68); g.strokeCircle(c, c + 5, 42); }).setVisible(false);
+    telegraph = overlay(g => {
+      const c = size / 2;
+      g.lineStyle(3, 0xbbeaff, 0.95); g.strokeCircle(c, c - 39, 20);
+      g.lineBetween(c + 1, c - 57, c - 8, c - 39); g.lineBetween(c - 8, c - 39, c + 4, c - 39);
+      g.lineBetween(c + 4, c - 39, c - 5, c - 20);
+    }).setVisible(false);
+  } else if (campaignId === 'echo_shade') {
+    regentEcho = overlay(g => {
+      const c = size / 2;
+      g.lineStyle(3, 0xd2b5f0, 0.72); g.strokeCircle(c - 42, c, 16); g.strokeCircle(c + 42, c, 16);
+      g.lineStyle(2, 0xf0e1ff, 0.8); g.lineBetween(c - 52, c, c - 32, c); g.lineBetween(c + 32, c, c + 52, c);
+      g.fillTriangle(c - 42, c - 6, c - 36, c, c - 42, c + 6);
+      g.fillTriangle(c + 42, c - 6, c + 36, c, c + 42, c + 6);
+    }).setVisible(false);
+  } else if (campaignId === 'rift_weaver') {
+    portalCue = overlay(g => {
+      const c = size / 2, y = c + 28;
+      g.lineStyle(4, 0xc879ea, 0.9); g.strokeCircle(c, y, 36); g.strokeCircle(c, y, 24);
+      g.lineStyle(2, 0xe6a5fb, 0.9);
+      for (let i = 0; i < 6; i++) { const a = Math.PI * i / 3; g.lineBetween(c + Math.cos(a) * 27, y + Math.sin(a) * 27, c + Math.cos(a) * 36, y + Math.sin(a) * 36); }
+    }).setVisible(false);
+  } else if (campaignId === 'crown_archon') {
+    ward = overlay(g => {
+      const c = size / 2;
+      g.lineStyle(4, 0xf1d27a, 0.9); g.strokeCircle(c, c, 42); g.strokeCircle(c, c, 51);
+      g.lineStyle(2, 0xffefb0, 0.9);
+      g.lineBetween(c - 20, c - 16, c - 12, c + 14); g.lineBetween(c - 12, c + 14, c, c - 3);
+      g.lineBetween(c, c - 3, c + 12, c + 14); g.lineBetween(c + 12, c + 14, c + 20, c - 16);
+      g.fillCircle(c, c - 3, 4);
     }).setVisible(false);
   }
   let facing: Facing = 'right', walking = false, currentPoseKey = '';
@@ -229,9 +420,9 @@ function buildCampaignEnemyVisual(scene: Phaser.Scene, archetype: EnemyArchetype
     setFacing(dx: number) { if (Math.abs(dx) >= 0.01) { facing = dx < 0 ? 'left' : 'right'; sprite.setFlipX(facing === 'left'); overlays.setScale(facing === 'left' ? -1 : 1, 1); } },
     setWalking(value: boolean) { if (walking !== value) { walking = value; showPose(); } },
     getFacing: () => facing, isWalking: () => walking, playAction,
-    ...(campaignId === 'cinder_colossus' || campaignId === 'frostbound_matriarch' || campaignId === 'hollow_warden' ? {
+    ...(profile.role === 'boss' || ['aetherbound', 'foundry_core', 'tempest_herald', 'echo_shade', 'rift_weaver', 'crown_archon'].includes(campaignId) ? {
       setCampaignState(state: CampaignBossArtState) {
-        const phase = Math.max(1, Math.min(3, Math.floor(state.phase)));
+        const phase = Math.max(1, Math.min(4, Math.floor(state.phase)));
         let transitionAction: EnemyAnimationAction | null = null;
         let nextPhasePose: EnemyAnimationAction | null = null;
         const preferAction = (action: EnemyAnimationAction): void => {
@@ -250,11 +441,60 @@ function buildCampaignEnemyVisual(scene: Phaser.Scene, archetype: EnemyArchetype
           nextPhasePose = phase >= 2 ? 'phase_two' : null;
           if (phase > previousPhase) preferAction('phase_two');
           if (state.telegraph && !previousTelegraph) preferAction('freeze_cast');
-        } else {
+        } else if (campaignId === 'mireheart_hydra') {
+          phaseAura?.setVisible(phase >= 2 || state.telegraph);
+          nextPhasePose = state.telegraph ? 'special' : phase >= 2 ? 'phase_two' : null;
+        } else if (campaignId === 'hollow_warden') {
           ward?.setVisible(state.guarded);
           phaseAura?.setVisible(phase >= 2);
           nextPhasePose = state.guarded || phase >= 2 ? 'special' : null;
           if ((state.guarded && !previousGuarded) || phase > previousPhase) preferAction('special');
+        } else if (campaignId === 'drowned_oracle') {
+          const phaseIndex = state.phaseLabel === 'oracle_physical' ? 0
+            : state.phaseLabel === 'oracle_arcane' ? 1
+              : state.phaseLabel === 'oracle_elemental' ? 2
+                : state.resistanceType === 'physical' ? 0 : state.resistanceType === 'arcane' ? 1
+                  : state.resistanceType === 'elemental' ? 2 : phase - 1;
+          oraclePhases.forEach((cue, index) => cue.setVisible(index === phaseIndex));
+        } else if (campaignId === 'iron_tyrant') {
+          const tyrantPhase = state.phaseLabel === 'tyrant_plates' ? 1
+            : state.phaseLabel === 'tyrant_break' ? 2
+              : state.phaseLabel === 'tyrant_core' ? 3 : phase;
+          if (leftArmor) leftArmor.setVisible(tyrantPhase <= 2);
+          if (rightArmor) rightArmor.setVisible(tyrantPhase === 1);
+          if (core) core.setVisible(tyrantPhase >= 3).setAlpha(tyrantPhase >= 3 ? 1 : 0.55);
+          phaseAura?.setVisible(tyrantPhase >= 2);
+          tyrantSpeed?.setVisible(tyrantPhase >= 3);
+        } else if (campaignId === 'stormmaw_prime') {
+          stormWarning?.setVisible(state.telegraph);
+          phaseAura?.setVisible(state.phase >= 2 || state.telegraph);
+        } else if (campaignId === 'umbral_regent') {
+          regentEcho?.setVisible((state.cloneCount ?? 0) > 0 || state.telegraph);
+          phaseAura?.setVisible((state.cloneCount ?? 0) > 0 || state.phase >= 2);
+        } else if (campaignId === 'rift_sovereign') {
+          portalCue?.setVisible(state.telegraph);
+          phaseAura?.setVisible(state.phase >= 2 || state.telegraph);
+        } else if (campaignId === 'aether_devourer') {
+          const phaseIndex = state.phaseLabel === 'devourer_normal' ? 0
+            : state.phaseLabel === 'devourer_resistance' ? 1
+              : state.phaseLabel === 'devourer_rift' ? 2
+                : state.phaseLabel === 'devourer_core' ? 3 : phase - 1;
+          devourerPhases.forEach((cue, index) => cue.setVisible(index === phaseIndex));
+          if (core) core.setVisible(phaseIndex === 3).setAlpha(phaseIndex === 3 ? 1 : 0.55);
+        } else if (campaignId === 'aetherbound') {
+          ward?.setVisible(state.phaseLabel === 'aether_shield');
+        } else if (campaignId === 'foundry_core') {
+          const reinforced = state.phaseLabel === 'foundry_armor';
+          leftArmor?.setVisible(reinforced); rightArmor?.setVisible(reinforced);
+        } else if (campaignId === 'tempest_herald') {
+          telegraph?.setVisible(state.telegraph && state.phaseLabel === 'tempest_haste');
+          phaseAura?.setVisible(state.telegraph);
+        } else if (campaignId === 'echo_shade') {
+          regentEcho?.setVisible(state.phaseLabel === 'echo_decoys' || state.telegraph);
+        } else if (campaignId === 'rift_weaver') {
+          portalCue?.setVisible(state.telegraph && state.phaseLabel === 'rift_jump');
+        } else if (campaignId === 'crown_archon') {
+          ward?.setVisible(state.phaseLabel === 'crown_ward');
         }
         const frames = nextPhasePose ? definitions.get(nextPhasePose)?.frames : undefined;
         phasePose = nextPhasePose && frames?.length ? { state: nextPhasePose, frame: frames[frames.length - 1] } : null;

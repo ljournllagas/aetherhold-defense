@@ -5,7 +5,7 @@ import { AccountStorage } from '../src/game/systems/AccountStorage.ts';
 import { emptyCloudProgress } from '../src/shared/cloudProgress.ts';
 import type { AccountClient } from '../src/api/accountClient.ts';
 const ref={playerId:'a',generation:'g'};
-function fixture(){let now=100;const session={account:ref,nickname:'Warden',csrf:'csrf',expiresAt:1000,canDelete:false},profile={account:ref,nickname:'Warden',revision:0,progress:emptyCloudProgress()};const client:AccountClient={getConfig:async()=>({ok:true,value:{loginRequired:true}}),getSession:async()=>({ok:true,value:session}),getProfile:async()=>({ok:true,value:profile}),syncProfile:async progress=>({ok:true,value:{...profile,progress,revision:1}}),importGuest:async()=>({ok:true,value:profile}),uploadResult:async()=>({ok:false,code:'NETWORK',message:'offline',status:0}),updateNickname:async()=>({ok:true,value:profile}),logoutSession:async()=>({ok:true,value:{loggedOut:true}}),deleteAccount:async()=>({ok:true,value:{deleted:true}})};const storage=new AccountStorage(crypto.randomUUID());const system=new AccountSystem({storage,client,now:()=>now,listen:false});return {system,client,storage,advance:()=>{now=1001;}};}
+function fixture(){let now=100;const session={account:ref,nickname:'Warden',csrf:'csrf',expiresAt:1000,canDelete:false},profile={account:ref,nickname:'Warden',revision:0,progress:emptyCloudProgress()};const client:AccountClient={getConfig:async()=>({ok:true,value:{loginRequired:true}}),getSession:async()=>({ok:true,value:session}),getProfile:async()=>({ok:true,value:profile}),syncProfile:async progress=>({ok:true,value:{...profile,progress,revision:1}}),importGuest:async()=>({ok:true,value:profile}),uploadResult:async()=>({ok:false,code:'NETWORK',message:'offline',status:0}),updateNickname:async()=>({ok:true,value:profile}),logoutSession:async()=>({ok:true,value:{loggedOut:true}}),deleteAccount:async()=>({ok:true,value:{deleted:true}}),prepareGoogleSignIn:async()=>({ok:true,value:{url:'https://accounts.google.com/o/oauth2/v2/auth?client_id=test'}})};const storage=new AccountStorage(crypto.randomUUID());const system=new AccountSystem({storage,client,now:()=>now,listen:false});return {system,client,storage,advance:()=>{now=1001;}};}
 it('blocks new battles after expiry but retains terminal results',async()=>{
   const f=fixture();await f.system.initialize();expect(f.system.canStartBattle()).toBe(true);f.advance();expect(f.system.canStartBattle()).toBe(false);
   await f.system.settle(ref,{mode:'campaign',payload:{runId:'run-expiry-1',campaignVersion:1,progressionVersion:1,level:1,outcome:'victory',finalScore:100,remainingLives:10,gameDurationSeconds:10,gameVersion:'0.3.0'}});
@@ -19,6 +19,16 @@ it('does not report dirty progress as synced with an empty outbox',async()=>{
 });
 it('rejects a profile belonging to a different session account',async()=>{
   const f=fixture();f.client.getProfile=async()=>({ok:true,value:{account:{playerId:'b',generation:'g-b'},nickname:'B',revision:0,progress:emptyCloudProgress()}});await f.system.initialize();expect(f.system.canStartBattle()).toBe(false);expect(f.system.view().profile).toBeNull();f.system.stop();await f.storage.close();
+});
+it('gives an update hint for incompatible cloud saves without purging cached account data',async()=>{
+  const f=fixture(),profile={account:ref,nickname:'Warden',revision:1,progress:emptyCloudProgress()},session={account:ref,nickname:'Warden',csrf:'csrf',expiresAt:1000,canDelete:false};
+  await f.storage.writeCache(profile,session);await f.storage.writeMeta('last-account',ref);
+  f.client.getProfile=async()=>({ok:false,code:'INCOMPATIBLE_SAVE',message:'Cloud save is incompatible.',status:409});
+  await f.system.initialize();
+  expect(f.system.view()).toMatchObject({state:'error',playMode:'blocked'});
+  expect(f.system.view().warning).toMatch(/reload or update the game/i);
+  expect(await f.storage.readCache(ref)).not.toBeNull();
+  f.system.stop();await f.storage.close();
 });
 it('does not re-adopt a late refresh after logout',async()=>{
   const f=fixture();await f.system.initialize();let resolve!:(x:Awaited<ReturnType<AccountClient['getProfile']>>)=>void;f.client.getProfile=()=>new Promise(r=>{resolve=r;});const refreshing=f.system.refresh();for(let i=0;i<30&&!resolve;i++)await new Promise(r=>setTimeout(r,1));await f.system.logout();resolve({ok:true,value:{account:ref,nickname:'Warden',revision:0,progress:emptyCloudProgress()}});await refreshing;expect(f.system.view().session).toBeNull();expect(f.system.canStartBattle()).toBe(false);f.system.stop();await f.storage.close();

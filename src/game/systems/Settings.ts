@@ -12,6 +12,8 @@ export interface Settings {
   gameSpeed: number;
   difficulty: 'easy' | 'medium' | 'hard';
   playerName: string;
+  guestSelected:boolean;
+  googleSignInPending:boolean;
 }
 
 const KEY = 'aetherhold-settings-v1';
@@ -35,8 +37,11 @@ const DEFAULTS: Settings = {
   sfxOn: true,
   gameSpeed: 1,
   difficulty: 'medium',
-  playerName: ''
+  playerName: '',guestSelected:false,googleSignInPending:false
 };
+let settingsMemory:Settings={...DEFAULTS};
+let settingsPersisted=true;
+export function guestSettingsStatus():{persisted:boolean;warning:string|null}{return {persisted:settingsPersisted,warning:settingsPersisted?null:'Guest name and progress are available in this session only.'};}
 
 function clampVolume(value: unknown, fallback: number): number {
   return typeof value === 'number' && Number.isFinite(value)
@@ -54,24 +59,25 @@ export function normalizeSettings(value: unknown): Settings {
     sfxOn: typeof saved.sfxOn === 'boolean' ? saved.sfxOn : DEFAULTS.sfxOn,
     gameSpeed: saved.gameSpeed === 1 || saved.gameSpeed === 2 || saved.gameSpeed === 3 ? saved.gameSpeed : DEFAULTS.gameSpeed,
     difficulty: saved.difficulty === 'easy' || saved.difficulty === 'medium' || saved.difficulty === 'hard' ? saved.difficulty : DEFAULTS.difficulty,
-    playerName: editPlayerName(saved.playerName)
+    playerName: editPlayerName(saved.playerName),guestSelected:saved.guestSelected===true,googleSignInPending:saved.googleSignInPending===true
   };
 }
 
 export function loadSettings(): Settings {
   try {
     const raw = localStorage.getItem(KEY);
-    if (!raw) return { ...DEFAULTS };
-    return normalizeSettings(JSON.parse(raw));
+    if (!raw) {settingsMemory={...DEFAULTS};return {...settingsMemory};}
+    const loaded=normalizeSettings(JSON.parse(raw));settingsMemory={...DEFAULTS,playerName:loaded.playerName,guestSelected:loaded.guestSelected,googleSignInPending:loaded.googleSignInPending};return loaded;
   } catch {
-    return { ...DEFAULTS };
+    settingsPersisted=false;return {...settingsMemory};
   }
 }
 
 export function saveSettings(s: Settings): void {
+  const normalized=normalizeSettings(s);settingsMemory={...DEFAULTS,playerName:normalized.playerName,guestSelected:normalized.guestSelected,googleSignInPending:normalized.googleSignInPending};
   try {
-    localStorage.setItem(KEY, JSON.stringify(normalizeSettings(s)));
-  } catch { /* ignore */ }
+    localStorage.setItem(KEY, JSON.stringify(normalized));settingsPersisted=true;
+  } catch {settingsPersisted=false;}
 }
 
 export interface LocalBest {
@@ -125,7 +131,7 @@ export function loadLegacyBest(): LocalBest | null {
 }
 
 export function saveBest(b: Omit<LocalBest, 'scoreVersion'>): void {
-  if (bestPrefix) {
+  if(bestPrefix) {
     const previous = loadBest();
     if (!previous || b.score > previous.score) accountBestMemory.set(bestPrefix + BEST_KEY, { ...b, scoreVersion: SCORE_VERSION });
   }
@@ -138,7 +144,8 @@ export function saveBest(b: Omit<LocalBest, 'scoreVersion'>): void {
       localStorage.setItem(bestPrefix + BEST_KEY, JSON.stringify(desired));
     }
   } catch {
-    if (bestPrefix) accountBestWarnings.set(bestPrefix, 'Personal best is retained in this session; browser storage could not save it.');
+    if(!bestPrefix){const old=accountBestMemory.get(BEST_KEY);if(!old||b.score>old.score)accountBestMemory.set(BEST_KEY,{...b,scoreVersion:SCORE_VERSION});}
+    accountBestWarnings.set(bestPrefix, 'Personal best is retained in this session; browser storage could not save it.');
   }
 }
 

@@ -1,0 +1,169 @@
+{
+  "task_id": "W9-P1",
+  "scope": "Six failed World 9 candidates only; original attempts and five raw-PASS candidates preserved.",
+  "candidates": [
+    {
+      "asset": "map-a",
+      "path": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/astral-rift-map-a-repair-v1.png",
+      "sha256": "c85f27e1f97ec0fa5b6f52bd4d9b1993a63549f78158ca1e0360479591edde8d",
+      "dimensions": [1672, 940],
+      "mode": "RGB",
+      "raw_source": "artifacts/campaign-final-art-20261012/world9/repair-v1/raw/map-a-repair-v8-output-exec-1a18f084.png",
+      "raw_source_sha256": "b1738715bd3ee5f0a74b6b314fadda2c460dee16c0c15a9cacce6fb934a14ef6",
+      "output_id": null,
+      "output_filename_token": "exec-1a18f084",
+      "output_id_note": "The full UUID is not present in retained local files; preserve the raw filename and hash without inventing it.",
+      "pre_call_prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/repair-v1/prompts/map-a-repair-v8.md",
+      "pre_call_references": [
+        {"path": "artifacts/campaign-final-art-20261012/world9/repair-v1/references/map-a-safe-ground-geometry-guide.png", "sha256": "6004bceed75b68fb6f86cf775e7c7426b39f2a76b656295e79d6561fdcdc1846"},
+        {"path": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen_a-v2-candidate.png", "sha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797"}
+      ],
+      "packaging": "Crop bottom row only from 1672x941 raw image; candidate pixels otherwise match source."
+    },
+    {
+      "asset": "map-b",
+      "path": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/astral-rift-map-b-repair-v1.png",
+      "sha256": "bea3d1b26b869eb8474a4ff55fb3188b9311bc3dba8e09282e0a72d3782c6cb3",
+      "dimensions": [1672, 940],
+      "mode": "RGB",
+      "raw_source": "artifacts/campaign-final-art-20261012/world9/repair-v1/raw/map-b-repair-v4-output-exec-dbfb1939.png",
+      "raw_source_sha256": "427c2af03c276a232eb9714d3276f62cdc6b12bcddd8bc15e602975ab3a3d9e5",
+      "output_id": "exec-dbfb1939-e041-4c8a-ab19-bcf18e0c1806",
+      "pre_call_prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/repair-v1/prompts/map-b-repair-v4.md",
+      "pre_call_references": [
+        {"path": "artifacts/campaign-final-art-20261012/world9/repair-v1/references/map-b-safe-ground-geometry-guide.png", "sha256": "bbbf5a706a9d4c6a7e40d226dd51deb1079d55758b8b695fa99a6b25b7d41081"},
+        {"path": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen_a-v2-candidate.png", "sha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797"}
+      ],
+      "packaging": "Direct copy; candidate pixels match source."
+    },
+    {
+      "asset": "map-c",
+      "path": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/astral-rift-map-c-repair-v1.png",
+      "sha256": "8e020ee49394d530a9fe0f51ce604565db47fbb3f53b3f20621410ed6fea03fd",
+      "dimensions": [1672, 940],
+      "mode": "RGB",
+      "raw_source": "artifacts/campaign-final-art-20261012/world9/repair-v1/raw/map-c-repair-v4-output-exec-325f1e3a.png",
+      "raw_source_sha256": "4bed270e9aa0ddf715ab8071bdcf039c4bd9f09bad2e261426462d03417fe506",
+      "output_id": "exec-325f1e3a-dacc-47f6-909d-6a5c4d92a8cd",
+      "pre_call_prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/repair-v1/prompts/map-c-repair-v4.md",
+      "pre_call_references": [
+        {"path": "artifacts/campaign-final-art-20261012/world9/repair-v1/references/map-c-safe-ground-geometry-guide.png", "sha256": "f73d430aba8849e499aa4cb9af078a64f86729251687125ca467e03e148696fa"},
+        {"path": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen_a-v2-candidate.png", "sha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797"}
+      ],
+      "packaging": "Crop bottom row only from 1672x941 raw image; candidate pixels otherwise match source."
+    },
+    {
+      "asset": "map-d",
+      "path": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/astral-rift-map-d-repair-v1.png",
+      "sha256": "a061cfec02d51d561a2cb57826c112f3fd6b3ea044f5ccb1c21cb810e6c107ba",
+      "dimensions": [1672, 940],
+      "mode": "RGB",
+      "raw_source": "artifacts/campaign-final-art-20261012/world9/repair-v1/raw/map-d-repair-v4-output-exec-2e488e66.png",
+      "raw_source_sha256": "ada01ca1636ddf9fd859a52394e60b6ea5efb523cef0dc9acdb7927b0366d6d4",
+      "output_id": "exec-2e488e66-9684-4e63-8756-33e862f29fbb",
+      "pre_call_prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/repair-v1/prompts/map-d-repair-v4.md",
+      "pre_call_references": [
+        {"path": "artifacts/campaign-final-art-20261012/world9/repair-v1/references/map-d-safe-ground-geometry-guide.png", "sha256": "997d1e4fe88fe6461c9a8276cc4553813e9d44c430b4de91b7bfe38f1a599861"},
+        {"path": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen_a-v2-candidate.png", "sha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797"}
+      ],
+      "packaging": "Direct copy; candidate pixels match source."
+    },
+    {
+      "asset": "rift-weaver-atlas",
+      "path": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/rift-weaver-atlas-repair-v1.png",
+      "sha256": "025a247ebbc0115c4ebd18f2aca659ae1a158c32a84d002e79f63e5cdbc39b18",
+      "baseline_sha256": "652a4a5b57356e82f87ffec43d0cafdd200334c66e7a152a71e50e02512e3b74",
+      "dimensions": [768, 640],
+      "replaced_cells": [14, 15, 21, 22, 23, 24, 29],
+      "sources": [
+        {"cells": [14], "output_id": "exec-b08415bd-d5d7-4598-9ca9-ecda27747845", "raw": "weaver-attack-frame2-v2-output-exec-b08415bd.png", "sha256": "178bb76b22ed08b83f3cbafb9000cd0bbe2db66806ef03015a166edfd408cbce", "prompt": "weaver-attack-frame2-v2.md"},
+        {"cells": [15], "output_id": "exec-976ec99b-03a1-452e-92ba-9d37e36c87d5", "raw": "weaver-attack-frame3-v2-output-exec-976ec99b.png", "sha256": "267d9158a8e7053125eed139432aef74d3709b61b1382a6151969128421fd0f1", "prompt": "weaver-attack-frame3-v2.md"},
+        {"cells": [21], "output_id": "exec-381352f6-c705-4158-977b-aa585a873bac", "raw": "weaver-death-frame3-v1-output-exec-381352f6.png", "sha256": "7b1f3e486152f089b18bd313797f4267f8919b26af4e7c3ac127080fe05068a6", "prompt": "weaver-death-frame3-v1.md"},
+        {"cells": [22], "output_id": "exec-33f0d84e-a216-4299-9b63-946966c459ce", "raw": "weaver-death-frame4-v1-output-exec-33f0d84e.png", "sha256": "5602568a281f93bbc94440e501dc7149f93eb866bef4166490de846dd598a265", "prompt": "weaver-death-frame4-v1.md"},
+        {"cells": [23], "output_id": "exec-71b1dbcf-6e2b-4466-9151-8b893e0c52fa", "raw": "weaver-death-frame5-v2-output-exec-71b1dbcf.png", "sha256": "4aac41a0dece81255354586dcb9bc14dc9f40310d6b8bb3f53c8abd8db1c1349", "prompt": "weaver-death-frame5-v2.md"},
+        {"cells": [24], "output_id": "exec-96121ac4-360f-48cf-bf88-3c4931b793e0", "raw": "weaver-buff-frame0-v1-output-exec-96121ac4.png", "sha256": "8f5b7f1da5229bbc1f13c49db32f3e84a3d6b35719c9be52c1e6c041063e8eef", "prompt": "weaver-buff-frame0-v1.md"},
+        {"cells": [29], "source_cell": 5, "output_id": "exec-87aa7284-569b-47d5-90ab-41a234f53f3c", "raw": "weaver-buff-repair-v2-output-exec-87aa7284.png", "sha256": "db2665971a7006ad6f3f284de9ae065882a3210034f9e92b6f65aef2ba02bcda", "prompt": "weaver-buff-repair-v2.md"}
+      ],
+      "extraction_rule": "Exclude only complete disconnected components touching the raw canvas edge; for buff source cell 5, use the whole grid cell and exclude detached edge components only. Preserve the complete owned pose and its soft effects.",
+      "identity_reference": {"path": "artifacts/campaign-final-art-20261012/world9/repair-v1/references/weaver-idle-identity-ref-v1.png", "sha256": "807fca3a64aa5a7134baf241c8eb82e16595ff2e0b7ba338fa1d6d04eec89d88"}
+    },
+    {
+      "asset": "rift-sovereign-atlas",
+      "path": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/rift-sovereign-atlas-repair-v1.png",
+      "sha256": "afeb43fde71948dcd9b45bf2e6ee528dd0ef4d4f1b4b01f42b55e00422408620",
+      "baseline_sha256": "2d14afa69980d7054dc32f10981bb95df736a04760494d6e19ef43f01d30899e",
+      "dimensions": [2048, 1536],
+      "replaced_cells": [36, 37, 38, 39, 40, 41, 42, 43],
+      "shared_source_to_atlas_scale": 0.17145135566188197,
+      "source_canvas_after_uniform_downsample": [215, 215],
+      "sources": [
+        {"cells": [36], "output_id": "exec-76fdacd7-50bf-421b-9b92-5a28371f48ce", "raw": "sovereign-phase-two-frame4-repair-v2-output-exec-76fdacd7.png", "sha256": "9a197b0d46a4d5d569eae440ba609ed23c967e45ff6d9032bc249904b7365451", "prompt": "sovereign-phase-two-frame4-repair-v2.md"},
+        {"cells": [37], "output_id": "exec-ae8ad423-299c-495d-be57-383c36b51ea7", "raw": "sovereign-phase-two-frame5-repair-v2-output-exec-ae8ad423.png", "sha256": "44bda2a8f00a5f7baad3e096abc9f46fc70f41baf43ed6752d5ea97d6adf7bae", "prompt": "sovereign-phase-two-frame5-repair-v2.md"},
+        {"cells": [38], "output_id": "exec-580846d2-3478-48d8-8a06-b93bbe3dc57d", "raw": "sovereign-phase-two-frame6-repair-v2-output-exec-580846d2.png", "sha256": "cdb34a9b84cf4fbaf760bfe617541a89590b1e2c041306d372f74877dfc25b54", "prompt": "sovereign-phase-two-frame6-repair-v2.md"},
+        {"cells": [39], "output_id": "exec-4caafb44-9ff4-4295-b412-313fa86f462c", "raw": "sovereign-phase-two-frame7-repair-v2-output-exec-4caafb44.png", "sha256": "1dbde56a1d44691ef4cef322f974540b623fcd8b8ea2833a4cf88f231939f0af", "prompt": "sovereign-phase-two-frame7-repair-v2.md"},
+        {"cells": [40], "output_id": "exec-1059f785-8f9d-4b82-a7cb-c14f005bfddf", "raw": "sovereign-death-frame4-repair-v2-output-exec-1059f785.png", "sha256": "7835ef55be4111b6b00f698ce00d18b151d5a742637e19fcf9be2bde82737787", "prompt": "sovereign-death-frame4-repair-v2.md"},
+        {"cells": [41], "output_id": "exec-73562580-80d1-4e51-b094-b67b01dcd918", "raw": "sovereign-death-frame5-repair-v2-output-exec-73562580.png", "sha256": "398386a185c4cfcb10f47cae60d50b1f38c7df78fcbbafd59e9e7418f7f4931a", "prompt": "sovereign-death-frame5-repair-v2.md"},
+        {"cells": [42], "output_id": "exec-4d7cab98-ec1e-4821-82cd-ecbc6cfde81b", "raw": "sovereign-death-frame6-repair-v3-output-exec-4d7cab98.png", "sha256": "3c32bf071e4608dfb2c25367161b96baef2e9c82dfa834d068c8eb4467c994ed", "prompt": "sovereign-death-frame6-repair-v3.md"},
+        {"cells": [43], "output_id": "exec-6f11f934-453d-4986-837f-d3abd6447e2c", "raw": "sovereign-death-frame7-repair-v3-output-exec-6f11f934.png", "sha256": "00cf93da3b0a0c076fbae47c22f6b0ef22b75b6c0ec40a12f144ab9e43a03527", "prompt": "sovereign-death-frame7-repair-v3.md"}
+      ]
+    }
+  ],
+  "review_artifacts": [
+    "artifacts/campaign-final-art-20261012/world9/repair-v1/reviews/map-a-repair-v1-route-plot-review.png",
+    "artifacts/campaign-final-art-20261012/world9/repair-v1/reviews/map-b-repair-v1-route-plot-review.png",
+    "artifacts/campaign-final-art-20261012/world9/repair-v1/reviews/map-c-repair-v1-route-plot-review.png",
+    "artifacts/campaign-final-art-20261012/world9/repair-v1/reviews/map-d-repair-v1-route-plot-review.png",
+    "artifacts/campaign-final-art-20261012/world9/repair-v1/reviews/weaver-repair-attack-death-buff-light.png",
+    "artifacts/campaign-final-art-20261012/world9/repair-v1/reviews/weaver-repair-attack-death-buff-dark.png",
+    "artifacts/campaign-final-art-20261012/world9/repair-v1/reviews/sovereign-repair-phase-death-light.png",
+    "artifacts/campaign-final-art-20261012/world9/repair-v1/reviews/sovereign-repair-phase-death-dark.png"
+  ],
+  "rejected_map_generation_attempts": [
+    {
+      "asset": "map-a",
+      "output_id": "exec-61c116f7-eec5-4872-9930-ec184e4e3fa1",
+      "raw": "artifacts/campaign-final-art-20261012/world9/repair-v1/raw/map-a-repair-v9-output-exec-61c116f7.png",
+      "sha256": "1486a7a58a75a1586473d7be8dd650357ef8eb8d5742efca9647ab02beebc235",
+      "prompt": "artifacts/campaign-final-art-20261012/world9/repair-v1/prompts/map-a-repair-v9.md",
+      "review": "artifacts/campaign-final-art-20261012/world9/repair-v1/reviews/map-a-repair-v9-route-plot-review.png",
+      "finding": "Exact overlay shows a protected route band over a chasm; rejected."
+    },
+    {
+      "asset": "map-a",
+      "output_id": "exec-4962174e-8ec7-43a8-b891-ae1e4a2f1f5c",
+      "raw": "artifacts/campaign-final-art-20261012/world9/repair-v1/raw/map-a-repair-v10-output-exec-4962174e.png",
+      "sha256": "8908cd80bcef7f84742f8103bb688889f68fb33f5080ee71ea23e7640cf51c71",
+      "prompt": "artifacts/campaign-final-art-20261012/world9/repair-v1/prompts/map-a-repair-v10.md",
+      "review": "artifacts/campaign-final-art-20261012/world9/repair-v1/reviews/map-a-repair-v10-lower-right-inspection.png",
+      "finding": "Lower-right plot clearance sits against/over a cliff edge; rejected."
+    },
+    {
+      "asset": "map-a",
+      "output_id": "exec-8ec161dd-84e6-4899-bc15-5362abe7059e",
+      "raw": "artifacts/campaign-final-art-20261012/world9/repair-v1/raw/map-a-repair-v11-output-exec-8ec161dd.png",
+      "sha256": "46c76b92bb00f8db979e17db7f7aca3c276a93599cfebe4a90e9b401c78fc52f",
+      "dimensions": [1673, 940],
+      "prompt": "artifacts/campaign-final-art-20261012/world9/repair-v1/prompts/map-a-repair-v11.md",
+      "review": "artifacts/campaign-final-art-20261012/world9/repair-v1/reviews/map-a-repair-v11-route-plot-review.png",
+      "finding": "The geometry mask became scalloped platform silhouettes; not selected for style/size."
+    },
+    {
+      "asset": "map-b",
+      "output_id": "exec-7d06fa4c-5ac6-47c8-98f6-bdfac66f8442",
+      "raw": "artifacts/campaign-final-art-20261012/world9/repair-v1/raw/map-b-repair-v6-output-exec-7d06fa4c.png",
+      "sha256": "06d2c208bf82b41120f829256c565960ae1da76e68320858e1d02ea6906b399a",
+      "prompt": "artifacts/campaign-final-art-20261012/world9/repair-v1/prompts/map-b-repair-v6.md",
+      "review": "artifacts/campaign-final-art-20261012/world9/repair-v1/reviews/map-b-repair-v6-route-plot-review.png",
+      "finding": "Visible void intrudes under the upper-middle red corridor; rejected."
+    }
+  ],
+  "selfchecks": [
+    "artifacts/campaign-final-art-20261012/world9/repair-v1/selfchecks/focused-repair-v1-integrity.json",
+    "artifacts/campaign-final-art-20261012/world9/repair-v1/selfchecks/repaired-atlases-v1.json"
+  ],
+  "limitations": [
+    "Map A output UUID is not available in retained local files; filename token, raw image, and raw hash are preserved.",
+    "The safe-ground fallback map candidates lose some of the authored outside-clearance island/chasm identity. ImageGen edits that restore more rift scenery did not keep all inspected clearances intact.",
+    "These are self-checks and visual contacts; independent raw review and runtime-scale acceptance remain required."
+  ]
+}

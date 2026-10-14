@@ -4,21 +4,24 @@ import { validatePlayerName, runPlayerName } from '../src/shared/playerName.ts';
 import { body, checkMutation, fail, hash, missingSession, reply, requireSession, sessionToken, authCookie, type AuthEnv } from './auth.ts';
 import { canonicalResult, validateRunResult } from './accountScores.ts';
 interface ProfileRow { id:string;generation:string;nickname:string;revision:number;progress_json:string }
+type ProfileReadResult = {kind:'missing'}|{kind:'incompatible'}|{kind:'readable';profile:AccountProfile};
 export function parseProfileRow(row:ProfileRow):AccountProfile|null {
   try {const progress=validateCloudProgress(JSON.parse(row.progress_json));return progress?{account:{playerId:row.id,generation:row.generation},nickname:row.nickname,revision:row.revision,progress}:null;}catch{return null;}
 }
-async function read(db:D1Database,ref:AccountRef):Promise<AccountProfile|null> {const row=await db.prepare('SELECT id,generation,nickname,revision,progress_json FROM players WHERE id=? AND generation=?').bind(ref.playerId,ref.generation).first<ProfileRow>();return row?parseProfileRow(row):null;}
+async function read(db:D1Database,ref:AccountRef):Promise<ProfileReadResult> {const row=await db.prepare('SELECT id,generation,nickname,revision,progress_json FROM players WHERE id=? AND generation=?').bind(ref.playerId,ref.generation).first<ProfileRow>();if(!row)return {kind:'missing'};const profile=parseProfileRow(row);return profile?{kind:'readable',profile}:{kind:'incompatible'};}
+function profileReadError(result:Exclude<ProfileReadResult,{kind:'readable'}>):Response {return result.kind==='missing'?fail('ACCOUNT_DELETED','Account no longer exists.',401):fail('INCOMPATIBLE_SAVE','Cloud save could not be read and was not changed.',409);}
 export async function handleAccount(request:Request,env:AuthEnv):Promise<Response|null> {
   const path=new URL(request.url).pathname;
   if(!['/api/account','/api/account/sync','/api/account/import','/api/account/nickname','/api/account/delete'].includes(path))return null;
   const session=await requireSession(request,env);if(!session)return missingSession(request,env);
-  if(path==='/api/account'&&request.method==='GET'){const profile=await read(env.DB,session.account);return profile?reply({ok:true,value:profile}):fail('INCOMPATIBLE_SAVE','Cloud save could not be read.',409);}
+  if(path==='/api/account'&&request.method==='GET'){const result=await read(env.DB,session.account);return result.kind==='readable'?reply({ok:true,value:result.profile}):profileReadError(result);}
   if(!checkMutation(request,session,env))return fail('CSRF','Request could not be verified.',403);
   if(path==='/api/account/delete'&&request.method==='POST')return deleteAccount(request,env,session);
   const input=await body(request,path==='/api/account/nickname'?1024:65536);if(!input)return fail('INVALID_BODY','Request body is invalid or too large.',400);
   if(path==='/api/account/nickname'&&request.method==='PATCH'){
     const v=validatePlayerName(input.nickname);if(!v.ok||!only(input,['nickname']))return fail('INVALID_NAME',v.error??'Invalid name.',400);
-    await env.DB.prepare('UPDATE players SET nickname=?,nickname_initialized=1 WHERE id=? AND generation=?').bind(v.name,session.account.playerId,session.account.generation).run();const profile=await read(env.DB,session.account);return profile?reply({ok:true,value:profile}):fail('ACCOUNT_DELETED','Account no longer exists.',401);
+    const current=await read(env.DB,session.account);if(current.kind!=='readable')return profileReadError(current);
+    await env.DB.prepare('UPDATE players SET nickname=?,nickname_initialized=1 WHERE id=? AND generation=?').bind(v.name,session.account.playerId,session.account.generation).run();const result=await read(env.DB,session.account);return result.kind==='readable'?reply({ok:true,value:result.profile}):profileReadError(result);
   }
   if(request.method!=='POST'||!['/api/account/sync','/api/account/import'].includes(path))return fail('NOT_FOUND','Unknown account operation.',404);
   const importing=path.endsWith('/import');
@@ -32,7 +35,7 @@ export async function handleAccount(request:Request,env:AuthEnv):Promise<Respons
     if(snapshot.result!==null){const result=validateRunResult(snapshot.result);if(!result)return fail('INVALID_IMPORT','Guest result could not be imported.',400);digest=await hash(canonicalResult(result));}
   }
   for(let attempt=0;attempt<5;attempt++){
-    const current=await read(env.DB,session.account);if(!current)return fail('ACCOUNT_DELETED','Account no longer exists.',401);
+    const currentResult=await read(env.DB,session.account);if(currentResult.kind!=='readable')return profileReadError(currentResult);const current=currentResult.profile;
     if(importId){const claim=await env.DB.prepare('SELECT player_id,generation,consumed,result_digest FROM guest_imports WHERE import_id=?').bind(importId).first<{player_id:string|null;generation:string|null;consumed:number;result_digest:string|null}>();if(claim&&(claim.player_id!==session.account.playerId||claim.generation!==session.account.generation))return fail('IMPORT_CLAIMED','This browser save was already claimed.',409);if(claim?.consumed)return reply({ok:true,value:current});}
     const next=mergeCloudProgress(current.progress,incoming);
     if(importId){
@@ -43,9 +46,9 @@ export async function handleAccount(request:Request,env:AuthEnv):Promise<Respons
       ]);
       const claim=await env.DB.prepare('SELECT consumed,player_id,generation FROM guest_imports WHERE import_id=?').bind(importId).first<{consumed:number;player_id:string;generation:string}>();
       if(claim?.player_id!==session.account.playerId||claim?.generation!==session.account.generation)return fail('IMPORT_CLAIMED','This browser save was already claimed.',409);
-      if(claim?.consumed){const profile=await read(env.DB,session.account);return profile?reply({ok:true,value:profile}):fail('ACCOUNT_DELETED','Account no longer exists.',401);}
+      if(claim?.consumed){const result=await read(env.DB,session.account);return result.kind==='readable'?reply({ok:true,value:result.profile}):profileReadError(result);}
     }else{
-      const row=await env.DB.prepare('UPDATE players SET progress_json=?,revision=revision+1 WHERE id=? AND generation=? AND revision=? RETURNING id,generation,nickname,revision,progress_json').bind(JSON.stringify(next),session.account.playerId,session.account.generation,current.revision).first<ProfileRow>();if(row)return reply({ok:true,value:parseProfileRow(row)});
+      const row=await env.DB.prepare('UPDATE players SET progress_json=?,revision=revision+1 WHERE id=? AND generation=? AND revision=? RETURNING id,generation,nickname,revision,progress_json').bind(JSON.stringify(next),session.account.playerId,session.account.generation,current.revision).first<ProfileRow>();if(row){const profile=parseProfileRow(row);return profile?reply({ok:true,value:profile}):fail('INCOMPATIBLE_SAVE','Cloud save could not be read and was not changed.',409);}
     }
   }
   return fail('SYNC_BUSY','Progress is being updated. Retrying shortly.',503);

@@ -240,6 +240,84 @@ describe('campaign enemy animation playback', () => {
     expect(sprite.frame.name).toBe('special_7');
   });
 
+  it('holds Hydra phase poses while event actions avoid duplicate telegraph and phase requests', () => {
+    const { scene, sprite } = fixture();
+    const visual = buildEnemyVisual(scene, 'warlord', 'mireheart_hydra');
+    visual.setWalking(true);
+    visual.setCampaignState?.({ phase: 1, telegraph: false, guarded: false });
+    expect(visual.playAction('special')).toBe(1000);
+    visual.setCampaignState?.({ phase: 1, telegraph: true, guarded: false });
+    expect(sprite.play).toHaveBeenLastCalledWith('campaign_enemy_mireheart_hydra_special');
+    expect(sprite.play).toHaveBeenCalledTimes(3); // idle, walk, event-owned special
+    sprite.complete('campaign_enemy_mireheart_hydra_special');
+    expect(sprite.frame.name).toBe('special_7');
+
+    visual.setCampaignState?.({ phase: 1, telegraph: false, guarded: false });
+    expect(sprite.play).toHaveBeenLastCalledWith('campaign_enemy_mireheart_hydra_walk');
+    expect(visual.playAction('phase_two')).toBe(1000);
+    visual.setCampaignState?.({ phase: 2, telegraph: false, guarded: false });
+    expect(sprite.play).toHaveBeenLastCalledWith('campaign_enemy_mireheart_hydra_phase_two');
+    expect(sprite.play).toHaveBeenCalledTimes(5); // walk resumed, then event-owned phase_two
+    sprite.complete('campaign_enemy_mireheart_hydra_phase_two');
+    expect(sprite.frame.name).toBe('phase_two_7');
+
+    expect(visual.playAction('special')).toBe(1000);
+    visual.setCampaignState?.({ phase: 2, telegraph: true, guarded: false });
+    expect(sprite.play).toHaveBeenLastCalledWith('campaign_enemy_mireheart_hydra_special');
+    expect(sprite.play).toHaveBeenCalledTimes(6); // the state update does not restart the event action
+  });
+
+  it('keeps Hydra natural-action requests behind the authored death lock', () => {
+    const { scene, sprite } = fixture();
+    const visual = buildEnemyVisual(scene, 'warlord', 'mireheart_hydra');
+
+    expect(visual.playAction('death')).toBe(1000);
+    expect(visual.playAction('special')).toBeNull();
+    expect(visual.playAction('phase_two')).toBeNull();
+    sprite.complete('campaign_enemy_mireheart_hydra_death');
+    expect(visual.playAction('special')).toBeNull();
+    expect(sprite.play).toHaveBeenLastCalledWith('campaign_enemy_mireheart_hydra_death');
+  });
+
+  it('maps the six expanded boss phase labels to distinct procedural combat cues', () => {
+    const cases = [
+      { id: 'drowned_oracle', state: { phase: 2, telegraph: false, guarded: false, phaseLabel: 'oracle_arcane' }, expectedVisible: 1 },
+      { id: 'iron_tyrant', state: { phase: 3, telegraph: false, guarded: false, phaseLabel: 'tyrant_core' }, expectedVisible: 3 },
+      { id: 'stormmaw_prime', state: { phase: 1, telegraph: true, guarded: false, phaseLabel: 'storm_surge' }, expectedVisible: 2 },
+      { id: 'umbral_regent', state: { phase: 2, telegraph: false, guarded: false, phaseLabel: 'regent_decoys', cloneCount: 2 }, expectedVisible: 2 },
+      { id: 'rift_sovereign', state: { phase: 1, telegraph: true, guarded: false, phaseLabel: 'sovereign_portal' }, expectedVisible: 2 },
+      { id: 'aether_devourer', state: { phase: 4, telegraph: false, guarded: false, phaseLabel: 'devourer_core' }, expectedVisible: 2 }
+    ] as const;
+
+    for (const entry of cases) {
+      const f = fixture(false);
+      const visual = buildEnemyVisual(f.scene, 'warlord', entry.id);
+      visual.setCampaignState?.(entry.state);
+      expect(f.graphics.filter(graphic => graphic.visible)).toHaveLength(entry.expectedVisible);
+      expect(f.sprite.play).not.toHaveBeenCalled(); // provisional starter art stays static
+    }
+  });
+
+  it('shows the six registered world-support phase cues without creating duplicate entities', () => {
+    const cases = [
+      { id: 'aetherbound', state: { phase: 1, telegraph: false, guarded: false, phaseLabel: 'aether_shield' } },
+      { id: 'foundry_core', state: { phase: 1, telegraph: false, guarded: false, phaseLabel: 'foundry_armor' } },
+      { id: 'tempest_herald', state: { phase: 1, telegraph: true, guarded: false, phaseLabel: 'tempest_haste' } },
+      { id: 'echo_shade', state: { phase: 1, telegraph: false, guarded: false, phaseLabel: 'echo_decoys' } },
+      { id: 'rift_weaver', state: { phase: 1, telegraph: true, guarded: false, phaseLabel: 'rift_jump' } },
+      { id: 'crown_archon', state: { phase: 1, telegraph: false, guarded: false, phaseLabel: 'crown_ward' } }
+    ] as const;
+
+    for (const entry of cases) {
+      const f = fixture(false);
+      const visual = buildEnemyVisual(f.scene, 'warlord', entry.id);
+      visual.setCampaignState?.(entry.state);
+      expect(f.graphics.some(graphic => graphic.visible)).toBe(true);
+      expect(f.containers.flatMap(container => container.children).filter((child: unknown) => child === f.sprite)).toHaveLength(1);
+      expect(f.sprite.play).not.toHaveBeenCalled();
+    }
+  });
+
   it('leaves the procedural fallback static and returns no authored action duration', () => {
     const { scene, sprite } = fixture(false);
     const visual = buildEnemyVisual(scene, 'gloomite', 'ashcaller');

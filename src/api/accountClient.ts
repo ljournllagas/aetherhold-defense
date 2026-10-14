@@ -14,6 +14,7 @@ export interface AccountClient {
   syncProfile(progress:CloudProgress,csrf:string):Promise<ApiResult<AccountProfile>>;importGuest(claim:GuestClaim,csrf:string):Promise<ApiResult<AccountProfile>>;
   uploadResult(result:RunResult,csrf:string):Promise<ApiResult<ScoreAck>>;updateNickname(nickname:string,csrf:string):Promise<ApiResult<AccountProfile>>;
   logoutSession(csrf:string):Promise<ApiResult<{loggedOut:true}>>;deleteAccount(csrf:string):Promise<ApiResult<{deleted:true}>>;
+  prepareGoogleSignIn():Promise<ApiResult<{url:string}>>;
 }
 function validProfile(result:ApiResult<AccountProfile>):ApiResult<AccountProfile>{if(!result.ok)return result;const p=result.value;if(!plain(p)||!plain(p.account)||typeof p.account.playerId!=='string'||typeof p.account.generation!=='string'||typeof p.nickname!=='string'||p.nickname.length>20||!Number.isSafeInteger(p.revision)||!validateCloudProgress(p.progress))return {ok:false,code:'INCOMPATIBLE_SAVE',message:'Cloud save is incompatible.',status:409};return result;}
 export const accountClient:AccountClient={
@@ -24,5 +25,6 @@ export const accountClient:AccountClient={
   async importGuest(claim,csrf){return validProfile(await call<AccountProfile>('/api/account/import','POST',{importId:claim.importId,generation:claim.account.generation,snapshot:claim.snapshot},csrf));},
   async uploadResult(result,csrf){const r=await call<ScoreAck>('/api/account/scores','POST',result,csrf);if(r.ok&&(!r.value||r.value.runId!==result.payload.runId||r.value.mode!==result.mode||!Number.isSafeInteger(r.value.id)||r.value.id<1||typeof r.value.nickname!=='string'))return {ok:false,code:'INVALID_ACK',message:'Score acknowledgement did not match this run. Retrying safely.',status:502};return r;},
   async updateNickname(nickname,csrf){return validProfile(await call<AccountProfile>('/api/account/nickname','PATCH',{nickname},csrf));},
-  logoutSession:csrf=>call<{loggedOut:true}>('/api/auth/logout','POST',{},csrf),deleteAccount:csrf=>call<{deleted:true}>('/api/account/delete','POST',{confirm:true},csrf)
+  logoutSession:csrf=>call<{loggedOut:true}>('/api/auth/logout','POST',{},csrf),deleteAccount:csrf=>call<{deleted:true}>('/api/account/delete','POST',{confirm:true},csrf),
+  async prepareGoogleSignIn(){return call<{url:string}>('/api/auth/start?prepare=1');}
 };

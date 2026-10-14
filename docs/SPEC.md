@@ -2048,9 +2048,11 @@ image).
 - **Cold menu.** The first load requests exactly the six menu sources; no gameplay or defeat
   source is requested before it is needed. Menu-required procedural HUD symbols are the only
   art generated at menu readiness.
-- **Campaign entry.** Selecting Campaign requests the three approved world-map panels through
-  its own stage, while retaining the six-source cold menu. A warm menu cache queues only the
-  panels.
+- **Campaign entry.** Selecting Campaign requests the realm panels allowed by the current
+  campaign-art manifest through its own stage, while retaining the six-source cold menu.
+  Expansion entries marked `final_required` are not treated as approved final art; a
+  provisional path must be explicitly registered before it can be used. A warm menu cache
+  queues only the campaign-stage assets.
 - **Progressive entry.** Play, Retry and every results entry route through the gameplay
   stage; the defeat stage is used only for a same-map terminal defeat. A warm cache queues
   nothing and re-enters the same destination.
@@ -2085,32 +2087,48 @@ frames.
   creation or resolution.
 - **Reset.** A new run, Restart and cleanup reset the clock and its debt.
 
-# 51. Campaign Mode — Worlds 1–3
+# 51. Campaign Mode — Worlds 1–10
 
-Campaign is a separate local mode alongside Classic Siege. It uses the existing
-fixed-step `GameScene` and combat systems with campaign-scoped maps, waves, enemies,
-bosses and pre-battle choices. Campaign results never update Classic bests,
-branch achievements, score submissions or the siege leaderboard. Campaign levels
-are foundation levels: pre-battle Specialization I choices are reversible sidegrades
-and do not trigger Classic tower evolution.
+Campaign is a separate mode alongside Classic Siege. It reuses the existing
+fixed-step `GameScene` and combat systems with campaign-scoped maps, waves,
+enemies, bosses and pre-battle choices. Campaign results never update Classic
+bests, branch achievements, score submissions or the siege leaderboard.
+Pre-battle Specialization I choices remain reversible campaign sidegrades and
+do not trigger Classic tower evolution.
 
-The campaign contains exactly 30 replayable levels: The Borderkeep (1–10),
-Emberfall Highlands (11–20) and Frostveil Pass (21–30). The connected illustrated
-world map uses one accepted 768×432 realm panel per world, centered cover-cropped
-without stretching; captions wrap within the visible realm slice and use measured
-backings. It exposes contiguous level unlocks, selected-level objectives, best
-score and lives, enemy preview, completion stars and boss nodes. Four route
-families per world (A introduction, B pressure, C advanced, D boss arena) are
-reused with authored variants; there are no Worlds 4–10 in this foundation.
+The campaign has 100 replayable levels across ten worlds. Worlds 1–3 retain the
+original levels 1–30; Worlds 4–10 add levels 31–100. Each world uses four route
+families (A introduction, B pressure, C advanced, D boss arena) with authored
+variants. The paginated world map exposes contiguous level unlocks,
+selected-level objectives, best score and lives, enemy previews, completion
+stars and boss nodes. Its totals derive from the catalog: 300 possible mastery
+stars and 10 World Sigils. The historical foundation contract is in
+[`CAMPAIGN_WORLDS_1_3.md`](CAMPAIGN_WORLDS_1_3.md); the expansion requirements and
+current verification state are in
+[`CAMPAIGN_WORLDS_4_10.md`](CAMPAIGN_WORLDS_4_10.md).
+
+**Verified expansion runtime profile (2026-10-12).** Levels 41–100 use 32–52
+waves; the first 40 levels retain their original wave counts. All 120 paid-
+resource cases across Levels 41–100 earned three mastery stars without relics
+or debug assistance, including 12 boss runs. The smallest observed score margin
+above target was 6,851 and the fewest remaining lives was one. These longer
+runs averaged 1,261 simulated seconds (range 643–2,455); player wall-clock time
+varies with speed controls and pauses. The additional combat volume supports
+the authored score targets while preserving the original first-40 balance.
+The v5 build is published at [aetherhold-defense.ljournllagas.workers.dev](https://aetherhold-defense.ljournllagas.workers.dev/)
+as Worker version `cb1eb993-64e5-4f3c-9d17-5d7aee12b1e2`. Its bundle identity,
+live health check, and remaining art-approval limits are recorded in
+[`CAMPAIGN_WORLDS_4_10.md`](CAMPAIGN_WORLDS_4_10.md).
 
 Each completed level keeps three monotone flags: completion, configured minimum
 remaining lives and configured score target. Replays can add missing stars and
-improve saved best score/lives; they never remove earned stars. Completing levels
-10, 20 and 30 grants the Border, Ember and Frost Sigils. The first two unlock
-Worlds 2 and 3 respectively; Level 30 completes the Worlds 1–3 milestone.
+improve saved best score/lives; they never remove earned stars. The original
+Border, Ember and Frost Sigil awards at levels 10, 20 and 30 are unchanged:
+Border and Ember open Worlds 2 and 3, and Frost marks completion of the original
+foundation. The seven expansion worlds add their own boss-clear Sigils.
 
 Mastery unlocks information, choice, cosmetics or convenience, never permanent
-combat-stat bonuses:
+combat-stat bonuses. The existing foundation milestones remain:
 
 | Total stars | Unlock |
 | ---: | --- |
@@ -2124,11 +2142,12 @@ combat-stat bonuses:
 
 Specialization I is selected before battle and can be changed between levels.
 World Sigils also add their documented Codex entries, cosmetics, tower visual
-tiers and campaign Power-Ups. All campaign tuning and stable level IDs live in
-`src/game/campaign/`; the gameplay and persistence summary is
-[`CAMPAIGN_WORLDS_1_3.md`](CAMPAIGN_WORLDS_1_3.md).
+tiers and campaign Power-Ups. Stable level IDs and tuning live in
+`src/game/campaign/`.
 
-Progress is stored locally under `aetherhold-campaign-v1`, with campaign and
-progression versions. A malformed or newer save is protected from overwrite;
-when storage cannot be trusted or written, progress earned in that session is
-labelled session-only. Campaign progress is not cloud-synced.
+Local campaign progress retains the `aetherhold-campaign-v1` key and version-1
+shape. Account progress sync uses the matching version-1 cloud record; local and
+Worker validators accept canonical level keys 1–100. Cloud merging is
+monotone, and an incompatible stored record is preserved rather than deleted.
+The expansion required no D1 schema migration. Rollback and older-client limits
+are documented in [`CAMPAIGN_WORLDS_4_10.md`](CAMPAIGN_WORLDS_4_10.md).

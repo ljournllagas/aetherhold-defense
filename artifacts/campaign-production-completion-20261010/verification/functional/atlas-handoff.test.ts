@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { expect, it } from 'vitest';
 import { CAMPAIGN_ART_MANIFEST } from '../../../../src/game/campaign/artManifest.ts';
+import registryArtContract from '../../../../tests/fixtures/campaign-v5/registry-art-contract.json';
 
 const root = process.cwd();
 const atlasFolder = resolve(root, 'artifacts/campaign-production-completion-20261010/atlases');
@@ -15,9 +16,9 @@ it('retains the historical missing-atlas inventory and verifies its completed pr
       expect(match, line).not.toBeNull();
       return { path: match![1], status: match![2] };
     });
+  const legacyFinalPaths = new Set(registryArtContract.legacyFinalAssets.map(asset => asset.path));
   const expected = CAMPAIGN_ART_MANIFEST
-    .filter(asset => asset.kind === 'sheet'
-      && (asset.id.startsWith('enemy:') || asset.id.startsWith('boss:')))
+    .filter(asset => asset.kind === 'sheet' && asset.state === 'final' && legacyFinalPaths.has(asset.path))
     .map(asset => asset.path);
   const attempted = listed.filter(item => item.status === 'attempted');
   const missingTargets = listed.filter(item => !existsSync(resolve(root, 'public', ...item.path.slice(1).split('/'))));
@@ -30,7 +31,8 @@ it('retains the historical missing-atlas inventory and verifies its completed pr
 
   const marchling = CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'enemy:marchling')!;
   expect(marchling).toMatchObject({ state: 'final', temporary: null, width: 768, height: 512, frameWidth: 128, frameHeight: 128 });
-  expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.kind === 'sheet').every(asset => asset.state === 'final' && asset.temporary === null)).toBe(true);
+  expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.kind === 'sheet' && asset.state === 'final').every(asset => asset.temporary === null && !asset.qualityFlags.includes('final_art_unverified'))).toBe(true);
+  expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.kind === 'sheet' && asset.state === 'final_required')).toHaveLength(0);
   expect(readdirSync(resolve(atlasFolder, 'marchling')).filter(file => file.endsWith('-generated.png')).sort()).toEqual([
     'marchling-atlas-v1-fit-correction-generated.png',
     'marchling-atlas-v1-initial-generated.png',

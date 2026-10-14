@@ -40,6 +40,8 @@ export class Enemy {
   hpBar: Phaser.GameObjects.Graphics | null = null;
   name: string;
   campaignId: string | null = null;
+  campaignBossOwnerId: number | null = null;
+  campaignCloneKind: 'regent_echo' | 'echo_decoy' | null = null;
   slowResistance = 0;
   speedBuffUntil = 0;
   slowResistanceUntil = 0;

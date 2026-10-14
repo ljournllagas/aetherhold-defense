@@ -38,7 +38,7 @@ describe('tower progression view', () => {
     expect(action).toEqual({ label: 'Evolve: Marksman · 510 gold', reason: null, intent: { kind: 'evolve', branchId: 'marksman' }, revision: 0, nextStats: EVOLUTIONS.marksman.stats[0],requirements:[
       {id:'foundation',label:'Tower foundation',met:true,progress:'Level 4/4',nextStep:'Upgrade this tower to level 4.'},
       {id:'boss',label:'This run: wave-10 boss',met:true,progress:'Defeated',nextStep:'Defeat the wave-10 boss in this run.'},
-      {id:'gold',label:'Gold',met:true,progress:'1000/510 gold',nextStep:'Cost covered.'}
+      {id:'gold',label:'Gold',met:true,progress:'1,000/510 gold',nextStep:'Cost covered.'}
     ] });
   });
   it('offers the foundation upgrade and asks for level 4 below it', () => {
@@ -54,7 +54,7 @@ describe('tower progression view', () => {
     expect(towerProgressionView(tower('marksman', 1), ctx({ blocked: true, evolutionOpen: true })).actions[0].reason).toBe('Unavailable while paused or ended');
   });
   it('offers mastery only in endless and shows the numeric limit', () => {
-    expect(towerProgressionView(tower('marksman', 3), ctx({ evolutionOpen: true })).actions[0]).toMatchObject({ label: `Mastery 1 · ${Math.ceil(EVOLUTIONS.marksman.stats[3].cost * 1.25)} gold`, reason: 'Continue into endless for mastery' });
+    expect(towerProgressionView(tower('marksman', 3), ctx({ evolutionOpen: true })).actions[0]).toMatchObject({ label: `Mastery 1 · ${Math.ceil(EVOLUTIONS.marksman.stats[3].cost * 1.25).toLocaleString('en-US')} gold`, reason: 'Continue into endless for mastery' });
     expect(towerProgressionView(tower('marksman', 3), ctx({ evolutionOpen: true, endless: true, gold: 5000 })).actions[0].reason).toBe(null);
     const huge = tower('marksman', 3); huge.progression = { ...huge.progression, masteryRank: 100000 };
     expect(towerProgressionView(huge, ctx({ evolutionOpen: true, endless: true })).actions[0]).toMatchObject({ label: 'Mastery 100001 · limit', reason: 'Numeric limit reached' });

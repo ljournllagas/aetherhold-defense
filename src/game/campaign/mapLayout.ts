@@ -1,8 +1,8 @@
-import { CAMPAIGN_WORLDS } from './config.ts';
+import { CAMPAIGN_LEVELS, CAMPAIGN_WORLDS } from './config.ts';
 import type { CampaignWorldId } from './types.ts';
 
 export const CAMPAIGN_MAP_WORLD_WIDTH = 600;
-export const CAMPAIGN_MAP_WIDTH = CAMPAIGN_MAP_WORLD_WIDTH * 3;
+export const CAMPAIGN_MAP_WIDTH = CAMPAIGN_MAP_WORLD_WIDTH * CAMPAIGN_WORLDS.length;
 export const CAMPAIGN_NODE_HIT_SIZE = 44;
 export const CAMPAIGN_NODE_GAP = 8;
 export const CAMPAIGN_NODE_SPACING = CAMPAIGN_NODE_HIT_SIZE + CAMPAIGN_NODE_GAP;
@@ -34,6 +34,45 @@ export interface CampaignWorldCaptionLayout {
   textWidth: number;
 }
 const CAMPAIGN_WORLD_CAPTION_MIN_WIDTH = 104;
+
+/** Keep world controls readable by paging the realm list instead of shrinking ten tabs. */
+export function campaignWorldTabsPerPage(viewportWidth: number): number {
+  if (viewportWidth < 520) return 3;
+  if (viewportWidth < 820) return 4;
+  return 5;
+}
+
+/** Preserve the current map window when possible while keeping the selected node reachable. */
+export function campaignMapScrollForSelection(
+  currentScroll: number | null, selectedX: number, mapWidth: number, viewportWidth: number,
+  nodeInset = CAMPAIGN_NODE_HIT_SIZE / 2 + 8
+): number {
+  const scrollMax = Math.max(0, mapWidth - viewportWidth);
+  let scroll = Math.max(0, Math.min(scrollMax, currentScroll ?? selectedX - viewportWidth / 2));
+  if (selectedX < scroll + nodeInset) scroll = Math.max(0, selectedX - viewportWidth * 0.25);
+  else if (selectedX > scroll + viewportWidth - nodeInset) scroll = Math.min(scrollMax, selectedX - viewportWidth * 0.75);
+  return scroll;
+}
+
+/** Frame all nodes in the active world when possible; otherwise keep selection visible within map bounds. */
+export function campaignMapScrollForWorld(
+  currentScroll: number | null, selectedX: number, worldStartX: number, worldEndX: number,
+  mapWidth: number, viewportWidth: number, nodeInset = CAMPAIGN_NODE_HIT_SIZE / 2 + 8
+): number {
+  const scrollMax = Math.max(0, mapWidth - viewportWidth);
+  const clamp = (scroll: number): number => Math.max(0, Math.min(scrollMax, scroll));
+  const worldLeft = Math.max(0, Math.min(worldStartX, worldEndX) - nodeInset);
+  const worldRight = Math.min(mapWidth, Math.max(worldStartX, worldEndX) + nodeInset);
+  if (worldRight - worldLeft <= viewportWidth) {
+    return clamp((worldLeft + worldRight - viewportWidth) / 2);
+  }
+
+  const retainedScroll = currentScroll === null ? null : clamp(currentScroll);
+  if (retainedScroll !== null && selectedX >= retainedScroll + nodeInset && selectedX <= retainedScroll + viewportWidth - nodeInset) {
+    return retainedScroll;
+  }
+  return clamp(selectedX - viewportWidth / 2);
+}
 
 export interface CampaignScreenLayout {
   compact: boolean;
@@ -87,18 +126,21 @@ export function campaignDetailContentLayout(
 /** Build all nodes before links so each world crossing has two real endpoints. */
 export function campaignMapRoute(height: number): CampaignMapRoute {
   const contentHeight = Math.max(80, height);
-  const nodes = CAMPAIGN_WORLDS.flatMap((world, worldIndex) => Array.from({ length: 10 }, (_, index) => {
+  const nodes = CAMPAIGN_LEVELS.map(level => {
+    const world = CAMPAIGN_WORLDS.find(candidate => candidate.id === level.worldId)!;
+    const worldIndex = CAMPAIGN_WORLDS.indexOf(world);
+    const index = level.level - world.levelStart;
     const safeRadius = 28;
     const low = Math.min(safeRadius + 8, contentHeight / 2);
     const high = Math.max(low, contentHeight - safeRadius - 8);
     const rawY = contentHeight * 0.61 + Math.sin(index * 0.84 + worldIndex * 1.5) * contentHeight * 0.2 + (worldIndex === 1 ? 8 : 0);
     return {
-      level: world.levelStart + index,
+      level: level.level,
       x: 60 + worldIndex * CAMPAIGN_MAP_WORLD_WIDTH + index * CAMPAIGN_NODE_SPACING,
       y: Math.max(low, Math.min(high, rawY)),
-      worldId: world.id
+      worldId: level.worldId
     };
-  }));
+  });
   const links = nodes.slice(1).map((to, index) => ({
     from: nodes[index], to,
     crossesWorld: nodes[index].worldId !== to.worldId

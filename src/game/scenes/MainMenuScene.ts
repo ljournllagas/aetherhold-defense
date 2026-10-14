@@ -1,3 +1,4 @@
+import {formatCount} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { accountSystem } from '../systems/AccountSystem.ts';
 import { accountEntryAllowed, mountAccountButton } from '../ui/accountControls.ts';
@@ -111,10 +112,10 @@ export class MainMenuScene extends Phaser.Scene {
     const rows = [firstLine, secondLine,
       this.add.text(W / 2, 0, 'ANCIENT BORDER KEEP  ·  DEFEND THE PASS', style(14, C.textPrimary, true)).setOrigin(0.5, 0).setWordWrapWidth(wrap).setAlign('center')];
     if (best) {
-      rows.push(this.add.text(W / 2, 0, `Personal best  ·  ${best.score.toLocaleString('en-US')} pts  ·  Wave ${best.wave}`, style(14, C.textPrimary, true)).setOrigin(0.5, 0).setWordWrapWidth(wrap).setAlign('center'));
+      rows.push(this.add.text(W / 2, 0, `Personal best  ·  ${formatCount(best.score)} pts  ·  Wave ${best.wave}`, style(14, C.textPrimary, true)).setOrigin(0.5, 0).setWordWrapWidth(wrap).setAlign('center'));
     }
     if (legacy) {
-      rows.push(this.add.text(W / 2, 0, `Legacy era ${legacy.scoreVersion} best  ·  ${legacy.score.toLocaleString('en-US')} pts  ·  Wave ${legacy.wave}`, style(14, C.textPrimary, true)).setOrigin(0.5, 0).setWordWrapWidth(wrap).setAlign('center'));
+      rows.push(this.add.text(W / 2, 0, `Legacy era ${legacy.scoreVersion} best  ·  ${formatCount(legacy.score)} pts  ·  Wave ${legacy.wave}`, style(14, C.textPrimary, true)).setOrigin(0.5, 0).setWordWrapWidth(wrap).setAlign('center'));
     }
     const textHeight = rows.reduce((sum, row) => sum + row.height, 0) + (rows.length - 1) * 8;
     const desiredEmblem = compact ? 62 : Math.min(205, W * 0.14, H * 0.205);
@@ -200,7 +201,7 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   private async loadSavedScore(generation: number, savedY: number, W: number): Promise<void> {
-    if (accountSystem.view().playMode === 'account') return;
+    if (['account','guest'].includes(accountSystem.view().playMode)) return;
     const view = await scoreRetryRepository.view();
     if (this.sceneGeneration !== generation) return;
     this.savedView = view;
@@ -235,7 +236,7 @@ export class MainMenuScene extends Phaser.Scene {
     const lines = message ? [message] : [];
     if (record) {
       const p = record.payload;
-      lines.push(p.playerName, `${p.difficulty.toUpperCase()} · ${p.outcome}`, `Wave ${p.highestWave} · Score ${p.finalScore.toLocaleString('en-US')}`);
+      lines.push(p.playerName, `${p.difficulty.toUpperCase()} · ${p.outcome}`, `Wave ${p.highestWave} · Score ${formatCount(p.finalScore)}`);
       if (view.status === 'incompatible') lines.push('This saved score belongs to an earlier leaderboard era and cannot be submitted to the current board.');
       else lines.push(view.warning ?? (view.persisted ? 'Saved in this browser.' : 'Available in this session only.'));
     } else if (!message) {

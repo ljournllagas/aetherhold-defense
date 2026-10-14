@@ -1,5 +1,6 @@
 import type { DifficultyId, GameResultPayload, LeaderboardResult, ScoreRecord } from '../shared/types.ts';
 import { SCORE_VERSION } from '../shared/version.ts';
+import { validateCampaignLeaderboard, type CampaignLeaderboardRow } from '../shared/campaignLeaderboard.ts';
 
 const API_BASE = '';
 
@@ -85,6 +86,23 @@ export async function fetchLeaderboard(difficulty?: DifficultyId, limit = 20): P
       return { ok: false, message: 'Leaderboard returned malformed score data.' };
     }
     return { ok: true, scores: r.json.scores };
+  } catch (err) {
+    return { ok: false, message: errorMessage(err, 'Leaderboard unavailable.') };
+  }
+}
+
+export async function fetchCampaignLeaderboard(limit = 20): Promise<LeaderboardResult<CampaignLeaderboardRow>> {
+  try {
+    const r = await fetchJson<unknown>(`${API_BASE}/api/campaign-leaderboard?limit=${limit}`);
+    if (!r.ok) {
+      const body = r.json as { error?: { message?: unknown } } | null;
+      return { ok: false, message: errorMessage(body?.error, `Leaderboard unavailable (HTTP ${r.status}).`) };
+    }
+    const parsed = validateCampaignLeaderboard(r.json, limit);
+    if (!parsed) {
+      return { ok: false, message: 'Leaderboard returned an invalid response.' };
+    }
+    return { ok: true, scores: parsed.scores };
   } catch (err) {
     return { ok: false, message: errorMessage(err, 'Leaderboard unavailable.') };
   }

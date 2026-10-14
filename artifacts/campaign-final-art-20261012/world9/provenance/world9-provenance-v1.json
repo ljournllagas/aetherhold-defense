@@ -1,0 +1,4528 @@
+{
+  "task_id": "W9-P1",
+  "status": "candidate package; independent technical, animation, and runtime acceptance pending",
+  "tool": "built-in image_gen",
+  "prompt_chronology": "Exact prompt sidecars are retained; sidecars were prepared before their calls. No timestamps were backdated.",
+  "references_inspected": true,
+  "references": {
+    "frostveil_panel": {
+      "file": "artifacts/campaign-final-art-20261012/world7/references/approved/frostveil-panel.png",
+      "sha256": "ac56d70e228f1fc6302640f599482d8e9fa66b44351e3210f4012964a796f4fa",
+      "dimensions": [
+        768,
+        432
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true
+    },
+    "frostveil_map_b": {
+      "file": "artifacts/campaign-final-art-20261012/world7/references/approved/frostveil-map-b.png",
+      "sha256": "114fea39b99e11822463c6c697238849747e1de93d6174bd8c16655de6dc2d3f",
+      "dimensions": [
+        1672,
+        940
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true
+    },
+    "world9_whole_world_concept": {
+      "file": "artifacts/review-and-production-v3/concept-references/low_res_world_crops/09_astral_rift/whole_world_concept.png",
+      "sha256": "a4b4a00f77efb2c85b3d029fe9064e98abd55f1c647b915fd114c9deb21c4fd0",
+      "dimensions": [
+        1536,
+        129
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true
+    },
+    "world9_battlefield_concept": {
+      "file": "artifacts/review-and-production-v3/concept-references/low_res_world_crops/09_astral_rift/battlefield_visual_concept.png",
+      "sha256": "20220694d2975a12dd564e9f5a8a3f5508561bcd89de78bdfa6b9f514d4e3997",
+      "dimensions": [
+        444,
+        129
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true
+    },
+    "world9_enemy_silhouette_lineup": {
+      "file": "artifacts/review-and-production-v3/concept-references/low_res_world_crops/09_astral_rift/enemy_silhouette_lineup.png",
+      "sha256": "0f39e8827abafe5c573396793f97269e30603863524a95e2d0be17675a8770e1",
+      "dimensions": [
+        763,
+        129
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true
+    },
+    "frostbound_matriarch_style": {
+      "file": "public/assets/campaign/bosses/frostbound_matriarch-atlas-v1.png",
+      "sha256": "c37811937425845b620e40e0e82c9313046b917c85f32bd4f3e1b7b757cc3eeb",
+      "dimensions": [
+        2048,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque": false
+    }
+  },
+  "assets": [
+    {
+      "asset_id": "world-panel-astral-rift",
+      "type": "opaque_environment",
+      "candidate": "artifacts/campaign-final-art-20261012/world9/candidates/world-panel-astral-rift-candidate.png",
+      "sha256": "dab7467998334b9e5bb630506cca0ab684d9c55fed8098a04f5cf0a2bff4908a",
+      "dimensions": [
+        768,
+        432
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true,
+      "expected_dimensions": [
+        768,
+        432
+      ],
+      "dimensions_match": true,
+      "opaque_pass": true,
+      "raw_source": "artifacts/campaign-final-art-20261012/world9/raw/world-panel-astral-rift-v1-raw.png",
+      "raw_sha256": "4336a3019d51661a594d471eb1feaf89c4aef20fd726652c9c8e527c2b2a0ed8",
+      "raw_dimensions": [
+        1672,
+        941
+      ],
+      "imagegen_output_id": "exec-5a4a8d27-0b75-4ea6-9052-b60ae1dceb6b",
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/world-panel-astral-rift-v1.md",
+      "prompt_sha256": "c6071b2c306241648aa018907b331ef9cbb9181b648718aa1bce8b109f413a37",
+      "mechanical_operation": "trim the raw output's extra bottom row, then resize to 768x432"
+    },
+    {
+      "asset_id": "astral-rift-map-a",
+      "type": "opaque_environment",
+      "candidate": "artifacts/campaign-final-art-20261012/world9/candidates/astral-rift-map-a-candidate.png",
+      "sha256": "886e4bc2f343341f2be37049953983e7c75f20cea2547eb9d46878c3abbf9abd",
+      "dimensions": [
+        1672,
+        940
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true,
+      "expected_dimensions": [
+        1672,
+        940
+      ],
+      "dimensions_match": true,
+      "opaque_pass": true,
+      "raw_source": "artifacts/campaign-final-art-20261012/world9/raw/map-a-astral-rift-v1-raw.png",
+      "raw_sha256": "70cc9b9e8a2b2ae77acb27194a2a8c4f747d5a3a748c8c39f1fbdd88c787cadf",
+      "raw_dimensions": [
+        1672,
+        940
+      ],
+      "imagegen_output_id": "exec-086a629c-5ec6-4c6c-af12-1eee85b15c3a",
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/map-a-astral-rift-v1.md",
+      "prompt_sha256": "60f85996043909931e680aa4a83cbeb2666021a59a61aab71784914c37c3b436",
+      "mechanical_operation": "pixel-preserving re-encode at 1672x940"
+    },
+    {
+      "asset_id": "astral-rift-map-b",
+      "type": "opaque_environment",
+      "candidate": "artifacts/campaign-final-art-20261012/world9/candidates/astral-rift-map-b-candidate.png",
+      "sha256": "32f19c981971652d52111de6171b6ceb2d57d7dacc4819e2376931be441e3141",
+      "dimensions": [
+        1672,
+        940
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true,
+      "expected_dimensions": [
+        1672,
+        940
+      ],
+      "dimensions_match": true,
+      "opaque_pass": true,
+      "raw_source": "artifacts/campaign-final-art-20261012/world9/raw/map-b-astral-rift-v1-raw.png",
+      "raw_sha256": "99929637094d02ac76af48182b7587866ad970bbc0ca4b3f5dd6fa035a5a9c2c",
+      "raw_dimensions": [
+        1672,
+        940
+      ],
+      "imagegen_output_id": "exec-ad93535f-3697-48a0-a19b-618fae3115ac",
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/map-b-astral-rift-v1.md",
+      "prompt_sha256": "98a5bbaeccf056b45f17a748f881eda50efa5d3e273c5d0a5a892b3c1e74490b",
+      "mechanical_operation": "pixel-preserving re-encode at 1672x940"
+    },
+    {
+      "asset_id": "astral-rift-map-c",
+      "type": "opaque_environment",
+      "candidate": "artifacts/campaign-final-art-20261012/world9/candidates/astral-rift-map-c-candidate.png",
+      "sha256": "84899a7d36d00a925c0f4eda9f2245cb4f20297e3e748cfa9c38e41605d2a3be",
+      "dimensions": [
+        1672,
+        940
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true,
+      "expected_dimensions": [
+        1672,
+        940
+      ],
+      "dimensions_match": true,
+      "opaque_pass": true,
+      "raw_source": "artifacts/campaign-final-art-20261012/world9/raw/map-c-astral-rift-v1-raw.png",
+      "raw_sha256": "5499026d1bcb5320f55a544ff596a89c7abed8246b2ee378db9356e0dbdd7239",
+      "raw_dimensions": [
+        1672,
+        941
+      ],
+      "imagegen_output_id": "exec-e2ff2e48-08a4-451b-ac56-02558df51048",
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/map-c-astral-rift-v1.md",
+      "prompt_sha256": "5685c49083f4a3fcd80f1ba26d9dbdb16e2342a13bb6ab5ce0dd4d8739405cbf",
+      "mechanical_operation": "trim one bottom row from 1672x941 to 1672x940"
+    },
+    {
+      "asset_id": "astral-rift-map-d",
+      "type": "opaque_environment",
+      "candidate": "artifacts/campaign-final-art-20261012/world9/candidates/astral-rift-map-d-candidate.png",
+      "sha256": "db194c151ae3c1322d977dcc3494f82ad51e1941338143d3b07d994c30b69e6c",
+      "dimensions": [
+        1672,
+        940
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true,
+      "expected_dimensions": [
+        1672,
+        940
+      ],
+      "dimensions_match": true,
+      "opaque_pass": true,
+      "raw_source": "artifacts/campaign-final-art-20261012/world9/raw/map-d-astral-rift-v1-raw.png",
+      "raw_sha256": "700f8136e3d4aa25d82f924c89cead12772605fc62280c39607659527ffb6bef",
+      "raw_dimensions": [
+        1672,
+        941
+      ],
+      "imagegen_output_id": "exec-021cdbbc-677b-4ea1-b133-5cfbaeeec7e0",
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/map-d-astral-rift-v1.md",
+      "prompt_sha256": "fed99816e14dda59fa367f85bf95cfa2e12b4882c0994490e539770c25538082",
+      "mechanical_operation": "trim one bottom row from 1672x941 to 1672x940"
+    },
+    {
+      "asset_id": "riftling-atlas",
+      "type": "transparent_atlas",
+      "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+      "sha256": "767eea2dec08a2825a323fb5cb62656c2857a247ce48aae40d93985f988695f6",
+      "dimensions": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        4
+      ],
+      "cell_size": 128,
+      "content_fraction_target": 0.78,
+      "origin_fraction": [
+        0.5,
+        0.9
+      ],
+      "uniform_per_actor_fit_scale": 0.8461016949152542,
+      "source_cells": [
+        {
+          "final_row": 0,
+          "final_col": 0,
+          "source": "riftling-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 0,
+          "final_col": 1,
+          "source": "riftling-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 0,
+          "final_col": 2,
+          "source": "riftling-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 0,
+          "final_col": 3,
+          "source": "riftling-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 0,
+          "final_col": 4,
+          "blank": true
+        },
+        {
+          "final_row": 0,
+          "final_col": 5,
+          "blank": true
+        },
+        {
+          "final_row": 1,
+          "final_col": 0,
+          "source": "riftling-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 1,
+          "final_col": 1,
+          "source": "riftling-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 1,
+          "final_col": 2,
+          "source": "riftling-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 1,
+          "final_col": 3,
+          "source": "riftling-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 1,
+          "final_col": 4,
+          "source": "riftling-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 1,
+          "final_col": 5,
+          "source": "riftling-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 2,
+          "final_col": 0,
+          "source": "riftling-attack-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 2,
+          "final_col": 1,
+          "source": "riftling-attack-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 2,
+          "final_col": 2,
+          "source": "riftling-attack-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 2,
+          "final_col": 3,
+          "source": "riftling-attack-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 2,
+          "final_col": 4,
+          "source": "riftling-attack-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 2,
+          "final_col": 5,
+          "source": "riftling-attack-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 3,
+          "final_col": 0,
+          "source": "riftling-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 18
+        },
+        {
+          "final_row": 3,
+          "final_col": 1,
+          "source": "riftling-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 19
+        },
+        {
+          "final_row": 3,
+          "final_col": 2,
+          "source": "riftling-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 20
+        },
+        {
+          "final_row": 3,
+          "final_col": 3,
+          "source": "riftling-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 21
+        },
+        {
+          "final_row": 3,
+          "final_col": 4,
+          "source": "riftling-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 22
+        },
+        {
+          "final_row": 3,
+          "final_col": 5,
+          "source": "riftling-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 23
+        }
+      ],
+      "selfcheck": {
+        "file": "artifacts/campaign-final-art-20261012/world9/selfchecks/atlas-selfcheck-v1.json",
+        "no_cell_edge_alpha": true,
+        "no_cell_edge_alpha_any": true,
+        "all_expected_blanks_empty": true,
+        "all_expected_blanks_empty_exact": true,
+        "cross_cell_alpha_component_count_any_alpha": 0,
+        "cross_cell_alpha_component_count": 0
+      }
+    },
+    {
+      "asset_id": "phase-hound-atlas",
+      "type": "transparent_atlas",
+      "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+      "sha256": "6b26a78225e14baf8d7c39f8729b6f613ce4d637b3abae66666752f995750c13",
+      "dimensions": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        4
+      ],
+      "cell_size": 128,
+      "content_fraction_target": 0.78,
+      "origin_fraction": [
+        0.5,
+        0.9
+      ],
+      "uniform_per_actor_fit_scale": 0.78,
+      "source_cells": [
+        {
+          "final_row": 0,
+          "final_col": 0,
+          "source": "phase-hound-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 0,
+          "final_col": 1,
+          "source": "phase-hound-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 0,
+          "final_col": 2,
+          "source": "phase-hound-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 0,
+          "final_col": 3,
+          "source": "phase-hound-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 0,
+          "final_col": 4,
+          "blank": true
+        },
+        {
+          "final_row": 0,
+          "final_col": 5,
+          "blank": true
+        },
+        {
+          "final_row": 1,
+          "final_col": 0,
+          "source": "phase-hound-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 1,
+          "final_col": 1,
+          "source": "phase-hound-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 1,
+          "final_col": 2,
+          "source": "phase-hound-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 1,
+          "final_col": 3,
+          "source": "phase-hound-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 1,
+          "final_col": 4,
+          "source": "phase-hound-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 1,
+          "final_col": 5,
+          "source": "phase-hound-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 2,
+          "final_col": 0,
+          "source": "phase-hound-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 12
+        },
+        {
+          "final_row": 2,
+          "final_col": 1,
+          "source": "phase-hound-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 15
+        },
+        {
+          "final_row": 2,
+          "final_col": 2,
+          "source": "phase-hound-attack-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 2,
+          "final_col": 3,
+          "source": "phase-hound-attack-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 2,
+          "final_col": 4,
+          "source": "phase-hound-attack-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 2,
+          "final_col": 5,
+          "source": "phase-hound-attack-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 3,
+          "final_col": 0,
+          "source": "phase-hound-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 3,
+          "final_col": 1,
+          "source": "phase-hound-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 3,
+          "final_col": 2,
+          "source": "phase-hound-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 3,
+          "final_col": 3,
+          "source": "phase-hound-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 3,
+          "final_col": 4,
+          "source": "phase-hound-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 3,
+          "final_col": 5,
+          "source": "phase-hound-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 5
+        }
+      ],
+      "selfcheck": {
+        "file": "artifacts/campaign-final-art-20261012/world9/selfchecks/atlas-selfcheck-v1.json",
+        "no_cell_edge_alpha": true,
+        "no_cell_edge_alpha_any": true,
+        "all_expected_blanks_empty": true,
+        "all_expected_blanks_empty_exact": true,
+        "cross_cell_alpha_component_count_any_alpha": 0,
+        "cross_cell_alpha_component_count": 0
+      }
+    },
+    {
+      "asset_id": "astral-horror-atlas",
+      "type": "transparent_atlas",
+      "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+      "sha256": "15917d79ae4d4e05bc51c36470d94ea3ff87db27a12eba79cc798d319aae1140",
+      "dimensions": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        4
+      ],
+      "cell_size": 128,
+      "content_fraction_target": 0.78,
+      "origin_fraction": [
+        0.5,
+        0.9
+      ],
+      "uniform_per_actor_fit_scale": 0.78,
+      "source_cells": [
+        {
+          "final_row": 0,
+          "final_col": 0,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 0,
+          "final_col": 1,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 0,
+          "final_col": 2,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 0,
+          "final_col": 3,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 0,
+          "final_col": 4,
+          "blank": true
+        },
+        {
+          "final_row": 0,
+          "final_col": 5,
+          "blank": true
+        },
+        {
+          "final_row": 1,
+          "final_col": 0,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 6
+        },
+        {
+          "final_row": 1,
+          "final_col": 1,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 7
+        },
+        {
+          "final_row": 1,
+          "final_col": 2,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 8
+        },
+        {
+          "final_row": 1,
+          "final_col": 3,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 9
+        },
+        {
+          "final_row": 1,
+          "final_col": 4,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 10
+        },
+        {
+          "final_row": 1,
+          "final_col": 5,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 11
+        },
+        {
+          "final_row": 2,
+          "final_col": 0,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 12
+        },
+        {
+          "final_row": 2,
+          "final_col": 1,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 13
+        },
+        {
+          "final_row": 2,
+          "final_col": 2,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 14
+        },
+        {
+          "final_row": 2,
+          "final_col": 3,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 15
+        },
+        {
+          "final_row": 2,
+          "final_col": 4,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 16
+        },
+        {
+          "final_row": 2,
+          "final_col": 5,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 17
+        },
+        {
+          "final_row": 3,
+          "final_col": 0,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 18
+        },
+        {
+          "final_row": 3,
+          "final_col": 1,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 19
+        },
+        {
+          "final_row": 3,
+          "final_col": 2,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 20
+        },
+        {
+          "final_row": 3,
+          "final_col": 3,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 21
+        },
+        {
+          "final_row": 3,
+          "final_col": 4,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 22
+        },
+        {
+          "final_row": 3,
+          "final_col": 5,
+          "source": "astral-horror-atlas-source-v1.png",
+          "source_grid": [
+            6,
+            4
+          ],
+          "source_cell_index": 23
+        }
+      ],
+      "selfcheck": {
+        "file": "artifacts/campaign-final-art-20261012/world9/selfchecks/atlas-selfcheck-v1.json",
+        "no_cell_edge_alpha": true,
+        "no_cell_edge_alpha_any": true,
+        "all_expected_blanks_empty": true,
+        "all_expected_blanks_empty_exact": true,
+        "cross_cell_alpha_component_count_any_alpha": 0,
+        "cross_cell_alpha_component_count": 0
+      }
+    },
+    {
+      "asset_id": "voidplate-atlas",
+      "type": "transparent_atlas",
+      "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+      "sha256": "61b31d9a92649908e8c51dc77a83aea9c677f7789170532db9f607dbf52240b4",
+      "dimensions": [
+        768,
+        512
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        4
+      ],
+      "cell_size": 128,
+      "content_fraction_target": 0.78,
+      "origin_fraction": [
+        0.5,
+        0.9
+      ],
+      "uniform_per_actor_fit_scale": 0.8051612903225807,
+      "source_cells": [
+        {
+          "final_row": 0,
+          "final_col": 0,
+          "source": "voidplate-idle-source-v2.png",
+          "source_grid": [
+            2,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 0,
+          "final_col": 1,
+          "source": "voidplate-idle-source-v2.png",
+          "source_grid": [
+            2,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 0,
+          "final_col": 2,
+          "source": "voidplate-idle-source-v2.png",
+          "source_grid": [
+            2,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 0,
+          "final_col": 3,
+          "source": "voidplate-idle-source-v2.png",
+          "source_grid": [
+            2,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 0,
+          "final_col": 4,
+          "blank": true
+        },
+        {
+          "final_row": 0,
+          "final_col": 5,
+          "blank": true
+        },
+        {
+          "final_row": 1,
+          "final_col": 0,
+          "source": "voidplate-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 1,
+          "final_col": 1,
+          "source": "voidplate-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 1,
+          "final_col": 2,
+          "source": "voidplate-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 1,
+          "final_col": 3,
+          "source": "voidplate-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 1,
+          "final_col": 4,
+          "source": "voidplate-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 1,
+          "final_col": 5,
+          "source": "voidplate-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 2,
+          "final_col": 0,
+          "source": "voidplate-attack-source-v3.png",
+          "source_grid": [
+            2,
+            3
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 2,
+          "final_col": 1,
+          "source": "voidplate-attack-source-v3.png",
+          "source_grid": [
+            2,
+            3
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 2,
+          "final_col": 2,
+          "source": "voidplate-attack-source-v3.png",
+          "source_grid": [
+            2,
+            3
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 2,
+          "final_col": 3,
+          "source": "voidplate-attack-source-v3.png",
+          "source_grid": [
+            2,
+            3
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 2,
+          "final_col": 4,
+          "source": "voidplate-attack-source-v3.png",
+          "source_grid": [
+            2,
+            3
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 2,
+          "final_col": 5,
+          "source": "voidplate-attack-source-v3.png",
+          "source_grid": [
+            2,
+            3
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 3,
+          "final_col": 0,
+          "source": "voidplate-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 3,
+          "final_col": 1,
+          "source": "voidplate-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 3,
+          "final_col": 2,
+          "source": "voidplate-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 3,
+          "final_col": 3,
+          "source": "voidplate-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 3,
+          "final_col": 4,
+          "source": "voidplate-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 3,
+          "final_col": 5,
+          "source": "voidplate-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 5
+        }
+      ],
+      "selfcheck": {
+        "file": "artifacts/campaign-final-art-20261012/world9/selfchecks/atlas-selfcheck-v1.json",
+        "no_cell_edge_alpha": true,
+        "no_cell_edge_alpha_any": true,
+        "all_expected_blanks_empty": true,
+        "all_expected_blanks_empty_exact": true,
+        "cross_cell_alpha_component_count_any_alpha": 0,
+        "cross_cell_alpha_component_count": 0
+      }
+    },
+    {
+      "asset_id": "rift-weaver-atlas",
+      "type": "transparent_atlas",
+      "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+      "sha256": "652a4a5b57356e82f87ffec43d0cafdd200334c66e7a152a71e50e02512e3b74",
+      "dimensions": [
+        768,
+        640
+      ],
+      "mode": "RGBA",
+      "grid": [
+        6,
+        5
+      ],
+      "cell_size": 128,
+      "content_fraction_target": 0.78,
+      "origin_fraction": [
+        0.5,
+        0.9
+      ],
+      "uniform_per_actor_fit_scale": 0.78,
+      "source_cells": [
+        {
+          "final_row": 0,
+          "final_col": 0,
+          "source": "rift-weaver-idle-source-v2.png",
+          "source_grid": [
+            2,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 0,
+          "final_col": 1,
+          "source": "rift-weaver-idle-source-v2.png",
+          "source_grid": [
+            2,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 0,
+          "final_col": 2,
+          "source": "rift-weaver-idle-source-v2.png",
+          "source_grid": [
+            2,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 0,
+          "final_col": 3,
+          "source": "rift-weaver-idle-source-v2.png",
+          "source_grid": [
+            2,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 0,
+          "final_col": 4,
+          "blank": true
+        },
+        {
+          "final_row": 0,
+          "final_col": 5,
+          "blank": true
+        },
+        {
+          "final_row": 1,
+          "final_col": 0,
+          "source": "rift-weaver-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 1,
+          "final_col": 1,
+          "source": "rift-weaver-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 1,
+          "final_col": 2,
+          "source": "rift-weaver-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 1,
+          "final_col": 3,
+          "source": "rift-weaver-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 1,
+          "final_col": 4,
+          "source": "rift-weaver-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 1,
+          "final_col": 5,
+          "source": "rift-weaver-walk-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 2,
+          "final_col": 0,
+          "source": "rift-weaver-attack-source-v3.png",
+          "source_grid": [
+            2,
+            3
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 2,
+          "final_col": 1,
+          "source": "rift-weaver-attack-source-v3.png",
+          "source_grid": [
+            2,
+            3
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 2,
+          "final_col": 2,
+          "source": "rift-weaver-attack-source-v3.png",
+          "source_grid": [
+            2,
+            3
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 2,
+          "final_col": 3,
+          "source": "rift-weaver-attack-source-v3.png",
+          "source_grid": [
+            2,
+            3
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 2,
+          "final_col": 4,
+          "source": "rift-weaver-attack-source-v3.png",
+          "source_grid": [
+            2,
+            3
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 2,
+          "final_col": 5,
+          "source": "rift-weaver-attack-source-v3.png",
+          "source_grid": [
+            2,
+            3
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 3,
+          "final_col": 0,
+          "source": "rift-weaver-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 3,
+          "final_col": 1,
+          "source": "rift-weaver-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 3,
+          "final_col": 2,
+          "source": "rift-weaver-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 3,
+          "final_col": 3,
+          "source": "rift-weaver-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 3,
+          "final_col": 4,
+          "source": "rift-weaver-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 3,
+          "final_col": 5,
+          "source": "rift-weaver-death-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 4,
+          "final_col": 0,
+          "source": "rift-weaver-buff-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 4,
+          "final_col": 1,
+          "source": "rift-weaver-buff-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 4,
+          "final_col": 2,
+          "source": "rift-weaver-buff-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 4,
+          "final_col": 3,
+          "source": "rift-weaver-buff-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 4,
+          "final_col": 4,
+          "source": "rift-weaver-buff-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 4,
+          "final_col": 5,
+          "source": "rift-weaver-buff-source-v2.png",
+          "source_grid": [
+            3,
+            2
+          ],
+          "source_cell_index": 5
+        }
+      ],
+      "selfcheck": {
+        "file": "artifacts/campaign-final-art-20261012/world9/selfchecks/atlas-selfcheck-v1.json",
+        "no_cell_edge_alpha": true,
+        "no_cell_edge_alpha_any": true,
+        "all_expected_blanks_empty": true,
+        "all_expected_blanks_empty_exact": true,
+        "cross_cell_alpha_component_count_any_alpha": 0,
+        "cross_cell_alpha_component_count": 0
+      }
+    },
+    {
+      "asset_id": "rift-sovereign-atlas",
+      "type": "transparent_atlas",
+      "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+      "sha256": "2d14afa69980d7054dc32f10981bb95df736a04760494d6e19ef43f01d30899e",
+      "dimensions": [
+        2048,
+        1536
+      ],
+      "mode": "RGBA",
+      "grid": [
+        8,
+        6
+      ],
+      "cell_size": 256,
+      "content_fraction_target": 0.78,
+      "origin_fraction": [
+        0.5,
+        0.9
+      ],
+      "uniform_per_actor_fit_scale": 0.78,
+      "source_cells": [
+        {
+          "final_row": 0,
+          "final_col": 0,
+          "source": "rift-sovereign-idle-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 0,
+          "final_col": 1,
+          "source": "rift-sovereign-idle-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 0,
+          "final_col": 2,
+          "source": "rift-sovereign-idle-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 0,
+          "final_col": 3,
+          "source": "rift-sovereign-idle-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 0,
+          "final_col": 4,
+          "source": "rift-sovereign-idle-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 0,
+          "final_col": 5,
+          "source": "rift-sovereign-idle-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 0,
+          "final_col": 6,
+          "blank": true
+        },
+        {
+          "final_row": 0,
+          "final_col": 7,
+          "blank": true
+        },
+        {
+          "final_row": 1,
+          "final_col": 0,
+          "source": "rift-sovereign-walk-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 1,
+          "final_col": 1,
+          "source": "rift-sovereign-walk-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 1,
+          "final_col": 2,
+          "source": "rift-sovereign-walk-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 1,
+          "final_col": 3,
+          "source": "rift-sovereign-walk-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 1,
+          "final_col": 4,
+          "source": "rift-sovereign-walk-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 1,
+          "final_col": 5,
+          "source": "rift-sovereign-walk-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 1,
+          "final_col": 6,
+          "source": "rift-sovereign-walk-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 6
+        },
+        {
+          "final_row": 1,
+          "final_col": 7,
+          "source": "rift-sovereign-walk-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 7
+        },
+        {
+          "final_row": 2,
+          "final_col": 0,
+          "source": "rift-sovereign-attack-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 2,
+          "final_col": 1,
+          "source": "rift-sovereign-attack-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 2,
+          "final_col": 2,
+          "source": "rift-sovereign-attack-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 2,
+          "final_col": 3,
+          "source": "rift-sovereign-attack-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 2,
+          "final_col": 4,
+          "source": "rift-sovereign-attack-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 2,
+          "final_col": 5,
+          "source": "rift-sovereign-attack-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 2,
+          "final_col": 6,
+          "source": "rift-sovereign-attack-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 6
+        },
+        {
+          "final_row": 2,
+          "final_col": 7,
+          "source": "rift-sovereign-attack-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 7
+        },
+        {
+          "final_row": 3,
+          "final_col": 0,
+          "source": "rift-sovereign-special-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 3,
+          "final_col": 1,
+          "source": "rift-sovereign-special-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 3,
+          "final_col": 2,
+          "source": "rift-sovereign-special-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 3,
+          "final_col": 3,
+          "source": "rift-sovereign-special-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 3,
+          "final_col": 4,
+          "source": "rift-sovereign-special-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 3,
+          "final_col": 5,
+          "source": "rift-sovereign-special-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 3,
+          "final_col": 6,
+          "source": "rift-sovereign-special-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 6
+        },
+        {
+          "final_row": 3,
+          "final_col": 7,
+          "source": "rift-sovereign-special-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 7
+        },
+        {
+          "final_row": 4,
+          "final_col": 0,
+          "source": "rift-sovereign-phase-two-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 4,
+          "final_col": 1,
+          "source": "rift-sovereign-phase-two-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 4,
+          "final_col": 2,
+          "source": "rift-sovereign-phase-two-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 4,
+          "final_col": 3,
+          "source": "rift-sovereign-phase-two-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 4,
+          "final_col": 4,
+          "source": "rift-sovereign-phase-two-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 4,
+          "final_col": 5,
+          "source": "rift-sovereign-phase-two-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 4,
+          "final_col": 6,
+          "source": "rift-sovereign-phase-two-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 6
+        },
+        {
+          "final_row": 4,
+          "final_col": 7,
+          "source": "rift-sovereign-phase-two-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 7
+        },
+        {
+          "final_row": 5,
+          "final_col": 0,
+          "source": "rift-sovereign-death-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 0
+        },
+        {
+          "final_row": 5,
+          "final_col": 1,
+          "source": "rift-sovereign-death-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 1
+        },
+        {
+          "final_row": 5,
+          "final_col": 2,
+          "source": "rift-sovereign-death-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 2
+        },
+        {
+          "final_row": 5,
+          "final_col": 3,
+          "source": "rift-sovereign-death-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 3
+        },
+        {
+          "final_row": 5,
+          "final_col": 4,
+          "source": "rift-sovereign-death-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 4
+        },
+        {
+          "final_row": 5,
+          "final_col": 5,
+          "source": "rift-sovereign-death-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 5
+        },
+        {
+          "final_row": 5,
+          "final_col": 6,
+          "source": "rift-sovereign-death-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 6
+        },
+        {
+          "final_row": 5,
+          "final_col": 7,
+          "source": "rift-sovereign-death-source-v1.png",
+          "source_grid": [
+            4,
+            2
+          ],
+          "source_cell_index": 7
+        }
+      ],
+      "selfcheck": {
+        "file": "artifacts/campaign-final-art-20261012/world9/selfchecks/atlas-selfcheck-v1.json",
+        "no_cell_edge_alpha": true,
+        "no_cell_edge_alpha_any": true,
+        "all_expected_blanks_empty": true,
+        "all_expected_blanks_empty_exact": true,
+        "cross_cell_alpha_component_count_any_alpha": 0,
+        "cross_cell_alpha_component_count": 0
+      }
+    }
+  ],
+  "generated_raw_sources": [
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/world-panel-astral-rift-v1-raw.png",
+      "sha256": "4336a3019d51661a594d471eb1feaf89c4aef20fd726652c9c8e527c2b2a0ed8",
+      "imagegen_output_id": "exec-5a4a8d27-0b75-4ea6-9052-b60ae1dceb6b",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/world-panel-astral-rift-v1.md",
+      "prompt_sha256": "c6071b2c306241648aa018907b331ef9cbb9181b648718aa1bce8b109f413a37",
+      "prompt_mtime_utc": 1791892791.537619,
+      "selected_for_candidate": [],
+      "status": "retained_reference_or_variant"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/map-a-astral-rift-v1-raw.png",
+      "sha256": "70cc9b9e8a2b2ae77acb27194a2a8c4f747d5a3a748c8c39f1fbdd88c787cadf",
+      "imagegen_output_id": "exec-086a629c-5ec6-4c6c-af12-1eee85b15c3a",
+      "dimensions": [
+        1672,
+        940
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/map-a-astral-rift-v1.md",
+      "prompt_sha256": "60f85996043909931e680aa4a83cbeb2666021a59a61aab71784914c37c3b436",
+      "prompt_mtime_utc": 1791893110.1694298,
+      "selected_for_candidate": [],
+      "status": "retained_reference_or_variant"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/map-b-astral-rift-v1-raw.png",
+      "sha256": "99929637094d02ac76af48182b7587866ad970bbc0ca4b3f5dd6fa035a5a9c2c",
+      "imagegen_output_id": "exec-ad93535f-3697-48a0-a19b-618fae3115ac",
+      "dimensions": [
+        1672,
+        940
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/map-b-astral-rift-v1.md",
+      "prompt_sha256": "98a5bbaeccf056b45f17a748f881eda50efa5d3e273c5d0a5a892b3c1e74490b",
+      "prompt_mtime_utc": 1791893110.1709437,
+      "selected_for_candidate": [],
+      "status": "retained_reference_or_variant"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/map-c-astral-rift-v1-raw.png",
+      "sha256": "5499026d1bcb5320f55a544ff596a89c7abed8246b2ee378db9356e0dbdd7239",
+      "imagegen_output_id": "exec-e2ff2e48-08a4-451b-ac56-02558df51048",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/map-c-astral-rift-v1.md",
+      "prompt_sha256": "5685c49083f4a3fcd80f1ba26d9dbdb16e2342a13bb6ab5ce0dd4d8739405cbf",
+      "prompt_mtime_utc": 1791893110.1709437,
+      "selected_for_candidate": [],
+      "status": "retained_reference_or_variant"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/map-d-astral-rift-v1-raw.png",
+      "sha256": "700f8136e3d4aa25d82f924c89cead12772605fc62280c39607659527ffb6bef",
+      "imagegen_output_id": "exec-021cdbbc-677b-4ea1-b133-5cfbaeeec7e0",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "opaque": true,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/map-d-astral-rift-v1.md",
+      "prompt_sha256": "fed99816e14dda59fa367f85bf95cfa2e12b4882c0994490e539770c25538082",
+      "prompt_mtime_utc": 1791893110.1724737,
+      "selected_for_candidate": [],
+      "status": "retained_reference_or_variant"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/riftling-atlas-source-v1.png",
+      "sha256": "6293d45402ea64243a59435f1b0429ba85b6c567ba63b0c38947125927535ce0",
+      "imagegen_output_id": "exec-52552037-777c-447f-851f-28d23923023a",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/riftling-atlas-v1.md",
+      "prompt_sha256": "654997afc1553eafb717e35d10ed2e5c26cff3e829e669e0d629ac78f04cce80",
+      "prompt_mtime_utc": 1791893622.2454467,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 0,
+          "source_cell_index": 18,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 1,
+          "source_cell_index": 19,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 2,
+          "source_cell_index": 20,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 3,
+          "source_cell_index": 21,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 4,
+          "source_cell_index": 22,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 5,
+          "source_cell_index": 23,
+          "source_grid": [
+            6,
+            4
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/riftling-walk-source-v2.png",
+      "sha256": "77486ab06a0de4f537b26086d18997a47a0e2cd3d90e9cd4a27e96122f59cd2b",
+      "imagegen_output_id": "exec-8381894d-c071-40c6-882a-d404a4d44497",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/riftling-walk-source-v2.md",
+      "prompt_sha256": "b426a7eb304e2a513219a693d262ad34261ece4385a5635d0e6f5c67500449ce",
+      "prompt_mtime_utc": 1791894350.8992517,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            3,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/riftling-attack-source-v2.png",
+      "sha256": "cc551a648ee010987afeceb8a82fa218fbd1afed40de5741f23fb4f78b21a3e6",
+      "imagegen_output_id": "exec-c386b189-89d2-4640-9d50-5010d84c4c61",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/riftling-attack-source-v2.md",
+      "prompt_sha256": "bc4995fcf3c7bef16b3451867221baff02fb0e5b614c09866885186c36dc1322",
+      "prompt_mtime_utc": 1791894642.8461113,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\riftling-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            3,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/phase-hound-atlas-source-v1.png",
+      "sha256": "b20493d4e53bbae2a3ac81cb4c68d084e0f5aea0e1e04176fdc781b0de6077ae",
+      "imagegen_output_id": "exec-3c53334e-c8ba-434e-bcb0-569d6a1df7b0",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/phase-hound-atlas-v1.md",
+      "prompt_sha256": "bea18322bc39d12176590c8618cfae6871de1c1255c7f80bf0eec341f49b6ccd",
+      "prompt_mtime_utc": 1791893622.2469673,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 0,
+          "source_cell_index": 12,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 1,
+          "source_cell_index": 15,
+          "source_grid": [
+            6,
+            4
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/phase-hound-walk-source-v2.png",
+      "sha256": "5b42b1c1ab74f1215ea4e0ebcbc6f3ecdf4e941f175c0590d3e69c9cd7d65625",
+      "imagegen_output_id": "exec-90b9d93e-dd02-4c5b-8d20-e29c7007c2ac",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/phase-hound-walk-source-v2.md",
+      "prompt_sha256": "6c13779eb94cccb26b30d90ce20b17a5a988321a5dc99fae64fe6bd255fcef0e",
+      "prompt_mtime_utc": 1791894350.900772,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            3,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/phase-hound-attack-source-v2.png",
+      "sha256": "ee94182a66c373106dd9a048514c78beaa8d687d098307a358447055f0e1616f",
+      "imagegen_output_id": "exec-525fa3a4-c0cc-4a50-b469-727eda409fb6",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/phase-hound-attack-source-v2.md",
+      "prompt_sha256": "361a0b1d9b15a0dba53e8362c93551c951e09c4295025b8d33982a0996c13a56",
+      "prompt_mtime_utc": 1791894350.902294,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 2,
+          "source_cell_index": 0,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 3,
+          "source_cell_index": 1,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 4,
+          "source_cell_index": 2,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            3,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/phase-hound-attack-source-v3.png",
+      "sha256": "3482002776b0051e660cdf84a4eb30057fe997557b2f840e5ee672adc115a6c9",
+      "imagegen_output_id": "exec-ce48b2d4-5d06-46e7-b320-fca0a3845706",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/phase-hound-attack-source-v3.md",
+      "prompt_sha256": "d2209b30f6082089a1f80c03894047e63ae5f2ade30224b4a6425661cb7c2fdc",
+      "prompt_mtime_utc": 1791896197.6395342,
+      "selected_for_candidate": [],
+      "status": "rejected_variant",
+      "review_note": "Raw attack sheet has a bottom-row cross-cell bridge; not selected."
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/phase-hound-death-source-v2.png",
+      "sha256": "98d81a3d876a6e198524cb46f8430b9eec8f5711a0e78b0fa828b1655d2ad5e0",
+      "imagegen_output_id": "exec-bfe254f3-e06d-4769-aaea-51deba8cc0a6",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/phase-hound-death-source-v2.md",
+      "prompt_sha256": "c033db1e1ced73d0d8dbe73b7a28ff143cadc0b3df50454ba09a72fb58b7b56c",
+      "prompt_mtime_utc": 1791894350.902294,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\phase-hound-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            3,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/astral-horror-atlas-source-v1.png",
+      "sha256": "159ef9ceba208db2866ea706c10c265fcb9cf2b9a87fccd1f99986191a011212",
+      "imagegen_output_id": "exec-b1803504-b86b-4de2-bfd1-ff1b9079f8f9",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/astral-horror-atlas-v1.md",
+      "prompt_sha256": "3ecf9f2eac332c258d5256ead4f7510436000a5cc771b8c6dbade1082289eb23",
+      "prompt_mtime_utc": 1791895038.2519584,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 0,
+          "source_cell_index": 6,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 1,
+          "source_cell_index": 7,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 2,
+          "source_cell_index": 8,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 3,
+          "source_cell_index": 9,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 4,
+          "source_cell_index": 10,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 5,
+          "source_cell_index": 11,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 0,
+          "source_cell_index": 12,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 1,
+          "source_cell_index": 13,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 2,
+          "source_cell_index": 14,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 3,
+          "source_cell_index": 15,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 4,
+          "source_cell_index": 16,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 5,
+          "source_cell_index": 17,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 0,
+          "source_cell_index": 18,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 1,
+          "source_cell_index": 19,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 2,
+          "source_cell_index": 20,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 3,
+          "source_cell_index": 21,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 4,
+          "source_cell_index": 22,
+          "source_grid": [
+            6,
+            4
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\astral-horror-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 5,
+          "source_cell_index": 23,
+          "source_grid": [
+            6,
+            4
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/voidplate-atlas-source-v1.png",
+      "sha256": "efd2a12b726149e96cadf02b1705dc46b8df5ad202233148a8200ed2832436cf",
+      "imagegen_output_id": "exec-8abcd8aa-a511-4be2-95c5-033239517610",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/voidplate-atlas-v1.md",
+      "prompt_sha256": "58707a5bedd00b20cdbbbd913dfbc801f821f56809c11c072aa20319d9873ec6",
+      "prompt_mtime_utc": 1791895038.2519584,
+      "selected_for_candidate": [],
+      "status": "rejected_variant",
+      "review_note": "Full sheet had row and neighbor bridges; focused sources used for final assembly."
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/voidplate-idle-source-v2.png",
+      "sha256": "414d7070dfbcdc4ff5d5fba83b9cf18b90d3f92c68b48989643a82de8f4ab47b",
+      "imagegen_output_id": "exec-115a32db-d627-45e3-b714-469da6b0e6ea",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/voidplate-idle-source-v2.md",
+      "prompt_sha256": "e151ea7cd7d96badf9cbe101366b18dd11a076ffb78d653ecea3c6d1ef916b75",
+      "prompt_mtime_utc": 1791896419.2527456,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            2,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            2,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            2,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            2,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/voidplate-walk-source-v2.png",
+      "sha256": "8ba4222221ff7b7e7de6c9461b907605f4669bc860c791fb49584b01ad632ed2",
+      "imagegen_output_id": "exec-e8ec845d-ed5d-4a99-9fd0-db658d88f6e1",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/voidplate-walk-source-v2.md",
+      "prompt_sha256": "07530396d179309884df36a35e17c5bfb447b32df31ccb22ca68cd28904c87ea",
+      "prompt_mtime_utc": 1791896419.2542615,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            3,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/voidplate-attack-source-v2.png",
+      "sha256": "2f086144552a580df769f7aa1fc6e4e0fe4152538951e09c03368c5441d48e33",
+      "imagegen_output_id": "exec-8c128054-6a75-4420-91eb-fcc5b851ea69",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/voidplate-attack-source-v2.md",
+      "prompt_sha256": "cb488666d6817afa3606ea17f1edc5eedc7ab4e2648a8ba12aa2507168a61281",
+      "prompt_mtime_utc": 1791896419.2542615,
+      "selected_for_candidate": [],
+      "status": "rejected_variant",
+      "review_note": "Raw attack sheet bridges bottom-row poses; portrait v3 selected."
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/voidplate-attack-source-v3.png",
+      "sha256": "ca9287b8cfd7aa27edf34d88083aed4d051741cb37d95040211e0b1949cd3b01",
+      "imagegen_output_id": "exec-de3bfc9f-4d57-417e-b7ee-a09d9e916e4e",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/voidplate-attack-source-v3.md",
+      "prompt_sha256": "b8d4711984eb78f55a5a242ddbec45688dc38767742f67dd6f9fdeb4a1a55a37",
+      "prompt_mtime_utc": 1791896901.5692163,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            2,
+            3
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            2,
+            3
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            2,
+            3
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            2,
+            3
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            2,
+            3
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            2,
+            3
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/voidplate-death-source-v2.png",
+      "sha256": "6ea792d0bbf5454338d9dd2d7299aa3aa401428c48f99cd58c8afa1d70cb73eb",
+      "imagegen_output_id": "exec-d078ece0-b50a-4406-aff8-4837c6ab3829",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/voidplate-death-source-v2.md",
+      "prompt_sha256": "c123ad33db83da9cc39d526b4fdb953acae24a085ff384c43ab20d48671388b1",
+      "prompt_mtime_utc": 1791896419.255785,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\voidplate-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            3,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-weaver-atlas-source-v1.png",
+      "sha256": "9fc3f386af40f6f08d38a5e7e80e3b7cdeaad09942d952a7ced6a0fe02f119f9",
+      "imagegen_output_id": "exec-8abc65d1-10c3-4dc6-b622-aeceb92c4b5f",
+      "dimensions": [
+        1374,
+        1145
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-weaver-atlas-v1.md",
+      "prompt_sha256": "cd4afeb9bfc6762da0e2f928f0e51df7bea14758c4dedaff7b0715c7481f9b81",
+      "prompt_mtime_utc": 1791895038.2534783,
+      "selected_for_candidate": [],
+      "status": "rejected_variant",
+      "review_note": "Full sheet had multiple pose bridges; retained as identity reference, not assembled."
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-weaver-idle-source-v2.png",
+      "sha256": "0ed150c0f410dd52b4c3ef220dfa1d2faaf362585e55e1f9ba78c5746c068b9b",
+      "imagegen_output_id": "exec-ace4d20f-67eb-4c38-9804-e7fbf3bb4839",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-weaver-idle-source-v2.md",
+      "prompt_sha256": "211f3616258cdb7e2c0125cec3c6a8a5dfdb90e7fad1fbea2eea0c0fce905f0e",
+      "prompt_mtime_utc": 1791897238.5787601,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            2,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            2,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            2,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            2,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-weaver-walk-source-v2.png",
+      "sha256": "166bdb2dba54197eac280a28e611da23fd935d1d258311027c4c3104a6b6c346",
+      "imagegen_output_id": "exec-7a70a54f-f22f-47f0-a411-cccc872d511b",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-weaver-walk-source-v2.md",
+      "prompt_sha256": "0f9054c1b6f129bfd377921480292ee4b74dc4d09bdca786c68f3796ef10ba79",
+      "prompt_mtime_utc": 1791897238.580276,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            3,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-weaver-attack-source-v2.png",
+      "sha256": "36886a7cca6a67f33af1e0d3ba8b722e02cd43046b8c1cf6b987428733a49ae9",
+      "imagegen_output_id": "exec-6aee9da2-6f1e-4ebc-8544-7349599a1878",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-weaver-attack-source-v2.md",
+      "prompt_sha256": "a2e8e3518854b459d23e395824cf5a804f8a7c5ec71e73899eda06d6e0b28193",
+      "prompt_mtime_utc": 1791897238.580276,
+      "selected_for_candidate": [],
+      "status": "rejected_variant",
+      "review_note": "Raw sheet had multiple high-alpha bridges; replaced by focused variants."
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-weaver-attack-source-v3.png",
+      "sha256": "6c93ec580cb01a8042299e4d551fcd372a6293144dda796d97f775f43c8494e2",
+      "imagegen_output_id": "exec-97311cf0-59d0-4fb0-9011-4d1661dd7dd7",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-weaver-attack-source-v3.md",
+      "prompt_sha256": "0162dbf3359ff164ce6177ad7740b7b8f35e2680453ce2697194bb7b63f88fc7",
+      "prompt_mtime_utc": 1791897882.0154464,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            2,
+            3
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            2,
+            3
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            2,
+            3
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            2,
+            3
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            2,
+            3
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            2,
+            3
+          ]
+        }
+      ],
+      "status": "selected_candidate_source",
+      "review_note": "Raw sheet had high-alpha bridges and cell-edge alpha; replaced by later focused variants."
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-weaver-buff-source-v2.png",
+      "sha256": "5603be16f55aa1737a1cf01dffb20abbe35a3d2e16374888d420fe3602748661",
+      "imagegen_output_id": "exec-1779994d-6acf-422e-8f8e-5fb63b596e0d",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-weaver-buff-source-v2.md",
+      "prompt_sha256": "222470d143667e1325b91a55e258885aa193574cdabf4eac197f7d8965f475b2",
+      "prompt_mtime_utc": 1791897238.5817995,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            3,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-weaver-death-source-v2.png",
+      "sha256": "88acc37dc45f9184e97ff98c603dedbf9d4fd80eff73ad8abc85282a3399947b",
+      "imagegen_output_id": "exec-9356d02c-b874-46ef-a4d1-0adc800bb036",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-weaver-death-source-v2.md",
+      "prompt_sha256": "db7675c099cd04b0cb0103b4f1383173a0ec4841fc9b3c9b8fe299448c70602a",
+      "prompt_mtime_utc": 1791897238.5817995,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            3,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-weaver-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            3,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-weaver-attack-source-v4.png",
+      "sha256": "9322079a8ce5d3b16c8376e7f029095f02bcad895dc98157f6bb18c9d814a630",
+      "imagegen_output_id": "exec-5fd35c07-dbcd-4953-8183-07c97091d2d1",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-weaver-attack-source-v4.md",
+      "prompt_sha256": "7ac936c6356b0e8cc8acbb6d2a871732ab8a9625179b4080a760d4612fa5f16b",
+      "prompt_mtime_utc": 1791899938.7038896,
+      "selected_for_candidate": [],
+      "status": "rejected_variant",
+      "review_note": "Focused output contains a long beam crossing into the neighboring pose cell."
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-weaver-death-source-v3.png",
+      "sha256": "3786d820f961df9c744016e0a3c7282d4ad8bb5bcfaae184b94fabfab396746c",
+      "imagegen_output_id": "exec-dfe07c29-25ed-45c9-938e-efea064a6e50",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-weaver-death-source-v3.md",
+      "prompt_sha256": "3a66600d4d2a2043d9fe8279aa06436548b275c9b895de26100f0ad8b110f51c",
+      "prompt_mtime_utc": 1791899938.7054048,
+      "selected_for_candidate": [],
+      "status": "rejected_variant",
+      "review_note": "Candidate contact still showed detached strips after the death row was assembled."
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-weaver-attack-source-v5.png",
+      "sha256": "868bf871be0571b89305c4f2e6e57c6f58036276a1d9a89b78f5fbf6372c47b4",
+      "imagegen_output_id": "exec-964f4a31-bcac-4938-9627-34c0b9db1cfc",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-weaver-attack-source-v5.md",
+      "prompt_sha256": "726164dd802a0afe5033f0f50482268b622edd68c1d5a3de64183b09bdffaa6f",
+      "prompt_mtime_utc": 1791900371.029947,
+      "selected_for_candidate": [],
+      "status": "rejected_variant",
+      "review_note": "Portal tip reached the source-cell edge; replaced by v6."
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-weaver-attack-source-v6.png",
+      "sha256": "90d103fb4c1df46d695fdcacc585a9cf526d739b99a4791bf3759b3fdbfed70d",
+      "imagegen_output_id": "exec-d8a8091d-dc85-4428-8d17-15d927bbc1b4",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-weaver-attack-source-v6.md",
+      "prompt_sha256": "7c5abac7d6fa39c2388cee2ee080ee5f12a7dc50d68dc7ca66447128beed55b3",
+      "prompt_mtime_utc": 1791900556.5210445,
+      "selected_for_candidate": [],
+      "status": "rejected_variant",
+      "review_note": "Candidate contact showed clipped attack poses and foreign fragments; the earlier assembled candidate was restored."
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-sovereign-idle-source-v1.png",
+      "sha256": "2c0b934717591459ff5b979345acd4f02acd2f0175c546243aa746506f30f192",
+      "imagegen_output_id": "exec-a9aa4176-2e37-4e09-ad86-fc10ea7e1f19",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-sovereign-idle-source-v1.md",
+      "prompt_sha256": "40560328f9896a65f7b55db4c94fba5fad9b853e05b27306fbc9ca5dc7569f83",
+      "prompt_mtime_utc": 1791895393.8042126,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 0,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            4,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-sovereign-walk-source-v1.png",
+      "sha256": "17cafc42ca0695057ef68a6024bea20575051f0ef3a77b7e702a345c7e6fdba3",
+      "imagegen_output_id": "exec-3b028433-0ff1-4353-8e91-989cca8fa561",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-sovereign-walk-source-v1.md",
+      "prompt_sha256": "5abc6a53a2f560894cc1ef9ebbb0aeb51a05433d11348133fce4f05814697c74",
+      "prompt_mtime_utc": 1791895393.8042126,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 6,
+          "source_cell_index": 6,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 1,
+          "final_col": 7,
+          "source_cell_index": 7,
+          "source_grid": [
+            4,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-sovereign-attack-source-v1.png",
+      "sha256": "0c781691cdb6c9461758aaf1957f99b047a505f1d68f17cfaf09f3f5d661980c",
+      "imagegen_output_id": "exec-4655117a-06b5-4fee-99fb-ba8da693886f",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-sovereign-attack-source-v1.md",
+      "prompt_sha256": "98271a7968a88f8e38bd3462480a0c600512677c3e26186844be8d302462427c",
+      "prompt_mtime_utc": 1791895393.8042126,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 6,
+          "source_cell_index": 6,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 2,
+          "final_col": 7,
+          "source_cell_index": 7,
+          "source_grid": [
+            4,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-sovereign-special-source-v1.png",
+      "sha256": "f4e426389fdbb68bb56efeeca5b46d44f4cb051169fbd19a8d63674bf21ffc45",
+      "imagegen_output_id": "exec-1bbaf836-4229-4e4a-953c-9c43ee1f7a65",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-sovereign-special-source-v1.md",
+      "prompt_sha256": "3fe791b090f47c25a5b7c0ad35adb97c33928d3fd88e07d2a74051b2dd3c0cf6",
+      "prompt_mtime_utc": 1791895393.8057332,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 6,
+          "source_cell_index": 6,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 3,
+          "final_col": 7,
+          "source_cell_index": 7,
+          "source_grid": [
+            4,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-sovereign-phase-two-source-v1.png",
+      "sha256": "3e6730e005844dfcb1e9f4ec38151cc045231905372c744163a7349612625f1d",
+      "imagegen_output_id": "exec-c86e8d8d-914b-4962-8bd3-cac1577c6ff8",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-sovereign-phase-two-source-v1.md",
+      "prompt_sha256": "4e340de25a55cd81d20202e0d44fb4271893cf90efc7acea37983e411a65cf5a",
+      "prompt_mtime_utc": 1791895393.8057332,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 6,
+          "source_cell_index": 6,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 4,
+          "final_col": 7,
+          "source_cell_index": 7,
+          "source_grid": [
+            4,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    },
+    {
+      "file": "artifacts/campaign-final-art-20261012/world9/raw/rift-sovereign-death-source-v1.png",
+      "sha256": "a69ba12fd1dce7c2735403c6e29e4df54dadb5fb5dd200d0dc22c8a3fda3ee5b",
+      "imagegen_output_id": "exec-9b5713e9-8ddd-47b5-8c20-51cc822459f7",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque": false,
+      "prompt_sidecar": "artifacts/campaign-final-art-20261012/world9/prompts/rift-sovereign-death-source-v1.md",
+      "prompt_sha256": "be2e4b68afce0d0718e5f9abd66bf53cd1e930cf31d9725b8a956abbc75f5ca2",
+      "prompt_mtime_utc": 1791895393.807256,
+      "selected_for_candidate": [
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 5,
+          "final_col": 0,
+          "source_cell_index": 0,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 5,
+          "final_col": 1,
+          "source_cell_index": 1,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 5,
+          "final_col": 2,
+          "source_cell_index": 2,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 5,
+          "final_col": 3,
+          "source_cell_index": 3,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 5,
+          "final_col": 4,
+          "source_cell_index": 4,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 5,
+          "final_col": 5,
+          "source_cell_index": 5,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 5,
+          "final_col": 6,
+          "source_cell_index": 6,
+          "source_grid": [
+            4,
+            2
+          ]
+        },
+        {
+          "candidate": "artifacts\\campaign-final-art-20261012\\world9\\candidates\\rift-sovereign-atlas-candidate.png",
+          "final_row": 5,
+          "final_col": 7,
+          "source_cell_index": 7,
+          "source_grid": [
+            4,
+            2
+          ]
+        }
+      ],
+      "status": "selected_candidate_source"
+    }
+  ],
+  "candidate_operations": [
+    "whole source-cell crop and row-major placement for atlas assembly",
+    "uniform downsampling only; no upscaling",
+    "one uniform per-actor atlas fit factor derived from maximum alpha>=8 extent",
+    "transparent padding to keep 78% maximum content extent and place the source-cell bottom at the 0.90 origin",
+    "maps A/B were pixel-preserving at 1672x940; maps C/D had one extra bottom row trimmed; panel's extra bottom row was trimmed before resizing to 768x432"
+  ],
+  "selfchecks": {
+    "static": {
+      "file": "artifacts/campaign-final-art-20261012/world9/selfchecks/static-selfcheck-v1.json",
+      "sha256": "fe69720126606df94b3c811849ed4cbf6bf17525cc43c7d2a6c5769d34d9a44d",
+      "all_dimensions_match": true,
+      "all_opaque": true
+    },
+    "atlases": {
+      "file": "artifacts/campaign-final-art-20261012/world9/selfchecks/atlas-selfcheck-v1.json",
+      "sha256": "92ae5b4f32d80d40dc266b3de32c0035523c7abddce251e13751fd71540b03a6",
+      "all_expected_blanks_empty": true,
+      "all_expected_blanks_empty_exact": true,
+      "all_no_cell_edge_alpha_any": true,
+      "all_no_cell_edge_alpha": true,
+      "cross_cell_components_by_atlas_alpha_any": {
+        "riftling-atlas-candidate.png": 0,
+        "phase-hound-atlas-candidate.png": 0,
+        "astral-horror-atlas-candidate.png": 0,
+        "voidplate-atlas-candidate.png": 0,
+        "rift-weaver-atlas-candidate.png": 0,
+        "rift-sovereign-atlas-candidate.png": 0
+      },
+      "cross_cell_components_by_atlas_alpha_ge8": {
+        "riftling-atlas-candidate.png": 0,
+        "phase-hound-atlas-candidate.png": 0,
+        "astral-horror-atlas-candidate.png": 0,
+        "voidplate-atlas-candidate.png": 0,
+        "rift-weaver-atlas-candidate.png": 0,
+        "rift-sovereign-atlas-candidate.png": 0
+      }
+    },
+    "limitations": [
+      "Selfchecks do not establish independent visual or runtime acceptance.",
+      "The assembled Rift Weaver candidate still shows detached thin strips in the attack/death contact; two attempted replacement sheets were rejected after visual review.",
+      "Several raw boss action sheets and other generated sheets have source-level cross-cell alpha; final contact review is required to distinguish effects from foreign pose fragments.",
+      "No in-game GameScene animation/runtime review was performed by this package owner."
+    ]
+  }
+}

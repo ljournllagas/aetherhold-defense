@@ -2,20 +2,14 @@ import { SCORE_VERSION, validateScorePayload } from '../src/shared/validation.ts
 import { handleAuth, type AuthEnv, fail } from './auth.ts';
 import { handleAccount } from './accounts.ts';
 import { handleAccountScore } from './accountScores.ts';
+import { handleCampaignLeaderboard } from './campaignLeaderboard.ts';
+import { apiError, json } from './response.ts';
 
 export interface Env extends AuthEnv {
   DB: D1Database;
   /** Native per-location score limiter binding (`[[ratelimits]]` in wrangler.toml). */
   SCORE_RATE_LIMITER: RateLimit;
 }
-
-const SECURITY_HEADERS: Record<string, string> = {
-  'X-Content-Type-Options': 'nosniff',
-  'X-Frame-Options': 'DENY',
-  'Referrer-Policy': 'no-referrer',
-  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-  'Content-Security-Policy': "default-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'"
-};
 
 const MAX_BODY_BYTES = 4096;
 
@@ -49,19 +43,6 @@ async function readBoundedBody(request: Request): Promise<BoundedBody> {
 // platform-provided CF-Connecting-IP header (client-supplied X-Forwarded-For is
 // never trusted for the key).
 
-function json(data: unknown, status = 200): Response {
-  const res = new Response(JSON.stringify(data), {
-    status,
-    headers: { 'Content-Type': 'application/json; charset=utf-8' }
-  });
-  for (const [k, v] of Object.entries(SECURITY_HEADERS)) res.headers.set(k, v);
-  return res;
-}
-
-function apiError(code: string, message: string, status: number): Response {
-  return json({ ok: false, error: { code, message } }, status);
-}
-
 function isValidDifficulty(d: string | null): d is 'easy' | 'medium' | 'hard' {
   return d === 'easy' || d === 'medium' || d === 'hard';
 }
@@ -90,6 +71,9 @@ export default {
         }
       });
     }
+
+    const campaignLeaderboard = await handleCampaignLeaderboard(request, env);
+    if (campaignLeaderboard) return campaignLeaderboard;
 
     try {
       const accountResponse = await handleAuth(request, env) ?? await handleAccountScore(request, env) ?? await handleAccount(request, env);

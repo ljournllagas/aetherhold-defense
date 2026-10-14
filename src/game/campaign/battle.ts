@@ -1,5 +1,6 @@
 import { getCampaignLevel } from './config.ts';
-import { getCampaignEnemy, CAMPAIGN_STATUS_TUNING } from './enemies.ts';
+import { CAMPAIGN_STATUS_TUNING } from './enemies.ts';
+import { CAMPAIGN_WAVE_TUNING, getCampaignWave, getCampaignWaveCount, type CampaignWave } from './waveProfile.ts';
 import { resolveCampaignMap } from './maps.ts';
 import { campaignPowerUpPool, isLevelUnlocked } from './progress.ts';
 import { getCampaignSpecialization } from './specializations.ts';
@@ -9,19 +10,15 @@ import type { EffectiveTowerStats, ShotSnapshot, TowerId } from '../../shared/pr
 import type { PowerUpId } from '../../shared/types.ts';
 import type { CampaignLevelDefinition, CampaignSpecializationEffects, CampaignSpecializationId, CampaignView, CampaignVisualTier } from './types.ts';
 
-export interface CampaignSpawn { enemyId: string; atMs: number; hpBonus: number; }
+export type { CampaignSpawn, CampaignWave } from './waveProfile.ts';
 export interface CampaignShot extends ShotSnapshot { specialization?: Readonly<CampaignSpecializationEffects>; }
 
 export function campaignVisualTier(view: Pick<CampaignView, 'unlockedFeatures'>): CampaignVisualTier {
   return view.unlockedFeatures.includes('tower_visual_tier_iii') ? 3 : view.unlockedFeatures.includes('tower_visual_tier_ii') ? 2 : 1;
 }
 
-// Unspecified battle tuning is isolated here. Starter mastery targets are untouched.
-const WAVE_COUNTS = [5,6,6,7,8,8,9,10,10,10,10,11,12,13,13,14,14,15,15,15,16,16,19,20,18,22,20,20,21,21];
 export const CAMPAIGN_BATTLE_TUNING = {
-  hpGrowthPerWave: 0.055, levelHpGrowth: 0.018, speedGrowthPerWave: 0.012,
-  openingThreatHp: 60, lateThreatHp: 120, openingWaves: 4, threatGrowthPerWave: 4,
-  heavyOpeningIntervalMs: 2100, heavyIntervalDecayMs: 50, heavyMinimumIntervalMs: 1100,
+  ...CAMPAIGN_WAVE_TUNING,
   supportRadius: 145, supportIntervalMs: 5500, supportDurationMs: 2200,
   ...CAMPAIGN_STATUS_TUNING
 } as const;
@@ -44,7 +41,7 @@ export class CampaignBattle {
     if (!definition || !isLevelUnlocked(level, view)) throw new Error('Campaign level is locked or invalid');
     this.definition = definition;
     this.map = resolveCampaignMap(definition);
-    this.waveCount = WAVE_COUNTS[level - 1];
+    this.waveCount = getCampaignWaveCount(level);
     this.choices = { ...view.profile.choices };
     if (!view.unlockedFeatures.includes('tower_specialization_i')) for (const id of Object.keys(this.choices) as TowerId[]) this.choices[id] = null;
     this.targeting = { ...view.profile.targeting };
@@ -53,26 +50,8 @@ export class CampaignBattle {
     this.rerollAvailable = view.unlockedFeatures.includes('one_powerup_reroll_per_level');
   }
 
-  wave(wave: number, countMultiplier = 1): { isBossWave: boolean; spawns: CampaignSpawn[] } {
-    if (!Number.isInteger(wave) || wave < 1 || wave > this.waveCount) throw new Error('Campaign wave is out of range');
-    const def = this.definition;
-    const isBossWave = wave === this.waveCount && def.bossEnemyId !== null;
-    const roster = def.enemyIds;
-    // Introduce roster members in separate waves, then combine alternating pressure groups.
-    const members = wave < roster.length ? [roster[wave - 1]] : roster;
-    const spawns: CampaignSpawn[] = [];
-    members.forEach((id, group) => {
-      const cfg = getCampaignEnemy(id);
-      const heavy = cfg.isElite || cfg.physicalArmor > 0.4;
-      const threatHp = Math.min(CAMPAIGN_BATTLE_TUNING.lateThreatHp, CAMPAIGN_BATTLE_TUNING.openingThreatHp + Math.max(0, wave - CAMPAIGN_BATTLE_TUNING.openingWaves) * CAMPAIGN_BATTLE_TUNING.threatGrowthPerWave);
-      const threatWeight = Math.max(1, cfg.baseHp / threatHp);
-      const baseCount = isBossWave ? (group === 0 ? 6 : 2) : Math.max(2, Math.round((12 + wave * 2) / members.length / threatWeight));
-      const count = Math.max(1, Math.round(baseCount * countMultiplier));
-      const interval = heavy ? Math.max(CAMPAIGN_BATTLE_TUNING.heavyMinimumIntervalMs, CAMPAIGN_BATTLE_TUNING.heavyOpeningIntervalMs - wave * CAMPAIGN_BATTLE_TUNING.heavyIntervalDecayMs) : Math.max(280, 730 - wave * 12 - (def.level % 3) * 35);
-      for (let i = 0; i < count; i++) spawns.push({ enemyId: id, atMs: 800 + group * 2100 + i * interval, hpBonus: def.warnings.includes('elite_mix') && group > 0 ? 1.2 : 1 });
-    });
-    if (isBossWave) spawns.push({ enemyId: def.bossEnemyId!, atMs: 4500, hpBonus: 1 });
-    return { isBossWave, spawns: spawns.sort((a, b) => a.atMs - b.atMs) };
+  wave(wave: number, countMultiplier = 1): CampaignWave {
+    return getCampaignWave(this.definition.level, wave, countMultiplier);
   }
 
   readyToClear(wave: number, lives: number, unresolved: number): boolean {

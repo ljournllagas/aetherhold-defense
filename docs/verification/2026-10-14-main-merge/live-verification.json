@@ -1,0 +1,745 @@
+{
+  "checkedAt": "2026-10-14T13:40:02.486Z",
+  "origin": "https://aetherhold-defense.ljournllagas.workers.dev",
+  "homepageStatus": 200,
+  "bundlePath": "/assets/index-Ce40le28.js",
+  "bundleStatus": 200,
+  "sha256": "52dc7b455c8be1eda211d9a8fc2194a31dd8b30ee1f780f35d09671f13a9dd25",
+  "matchesMergedBuild": true,
+  "health": {
+    "ok": true,
+    "time": "2026-10-14T13:39:19.319Z",
+    "scoreVersion": 3
+  },
+  "campaignLevels": 100,
+  "campaignWorlds": 10,
+  "artChecks": [
+    {
+      "id": "map:borderkeep:a",
+      "path": "/assets/campaign/maps/borderkeep_a-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:borderkeep:b",
+      "path": "/assets/campaign/maps/borderkeep_b-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:borderkeep:c",
+      "path": "/assets/campaign/maps/borderkeep_c-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:borderkeep:d",
+      "path": "/assets/campaign/maps/borderkeep_d-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:emberfall:a",
+      "path": "/assets/campaign/maps/emberfall_a-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:emberfall:b",
+      "path": "/assets/campaign/maps/emberfall_b-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:emberfall:c",
+      "path": "/assets/campaign/maps/emberfall_c-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:emberfall:d",
+      "path": "/assets/campaign/maps/emberfall_d-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:frostveil:a",
+      "path": "/assets/campaign/maps/frostveil_a-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:frostveil:b",
+      "path": "/assets/campaign/maps/frostveil_b-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:frostveil:c",
+      "path": "/assets/campaign/maps/frostveil_c-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:frostveil:d",
+      "path": "/assets/campaign/maps/frostveil_d-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "world-panel:borderkeep",
+      "path": "/assets/campaign/world-map/borderkeep-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:marchling",
+      "path": "/assets/campaign/enemies/borderkeep/marchling-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:skitter",
+      "path": "/assets/campaign/enemies/borderkeep/skitter-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:stoneback",
+      "path": "/assets/campaign/enemies/borderkeep/stoneback-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:ironhide",
+      "path": "/assets/campaign/enemies/borderkeep/ironhide-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:veilborn",
+      "path": "/assets/campaign/enemies/borderkeep/veilborn-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "boss:hollow_warden",
+      "path": "/assets/campaign/bosses/hollow_warden-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "world-panel:emberfall",
+      "path": "/assets/campaign/world-map/emberfall-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:cinderling",
+      "path": "/assets/campaign/enemies/emberfall/cinderling-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:ashrunner",
+      "path": "/assets/campaign/enemies/emberfall/ashrunner-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:magmahide",
+      "path": "/assets/campaign/enemies/emberfall/magmahide-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:ember_brute",
+      "path": "/assets/campaign/enemies/emberfall/ember_brute-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:ashcaller",
+      "path": "/assets/campaign/enemies/emberfall/ashcaller-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "boss:cinder_colossus",
+      "path": "/assets/campaign/bosses/cinder_colossus-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "world-panel:frostveil",
+      "path": "/assets/campaign/world-map/frostveil-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:snowstalker",
+      "path": "/assets/campaign/enemies/frostveil/snowstalker-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:icebound",
+      "path": "/assets/campaign/enemies/frostveil/icebound-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:frostback",
+      "path": "/assets/campaign/enemies/frostveil/frostback-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:glacier_knight",
+      "path": "/assets/campaign/enemies/frostveil/glacier_knight-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:frost_shaman",
+      "path": "/assets/campaign/enemies/frostveil/frost_shaman-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "boss:frostbound_matriarch",
+      "path": "/assets/campaign/bosses/frostbound_matriarch-atlas-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "tower:longbow:tier2",
+      "path": "/assets/campaign/towers/longbow-tier2-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "tower:longbow:tier3",
+      "path": "/assets/campaign/towers/longbow-tier3-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "tower:ember:tier2",
+      "path": "/assets/campaign/towers/ember-tier2-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "tower:ember:tier3",
+      "path": "/assets/campaign/towers/ember-tier3-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "tower:glacier:tier2",
+      "path": "/assets/campaign/towers/glacier-tier2-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "tower:glacier:tier3",
+      "path": "/assets/campaign/towers/glacier-tier3-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "tower:starfire:tier2",
+      "path": "/assets/campaign/towers/starfire-tier2-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "tower:starfire:tier3",
+      "path": "/assets/campaign/towers/starfire-tier3-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "tower:tempest:tier2",
+      "path": "/assets/campaign/towers/tempest-tier2-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "tower:tempest:tier3",
+      "path": "/assets/campaign/towers/tempest-tier3-v1.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:whisperfen:a",
+      "path": "/assets/campaign/maps/whisperfen_a-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:whisperfen:b",
+      "path": "/assets/campaign/maps/whisperfen_b-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:whisperfen:c",
+      "path": "/assets/campaign/maps/whisperfen_c-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:whisperfen:d",
+      "path": "/assets/campaign/maps/whisperfen_d-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "world-panel:whisperfen",
+      "path": "/assets/campaign/world-map/whisperfen-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:bogling",
+      "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:fen_skitter",
+      "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:mossguard",
+      "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:rotback",
+      "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:rootwretch",
+      "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "boss:mireheart_hydra",
+      "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:sunken_aether:a",
+      "path": "/assets/campaign/maps/sunken_aether_a-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:sunken_aether:b",
+      "path": "/assets/campaign/maps/sunken_aether_b-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:sunken_aether:c",
+      "path": "/assets/campaign/maps/sunken_aether_c-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:sunken_aether:d",
+      "path": "/assets/campaign/maps/sunken_aether_d-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "world-panel:sunken_aether",
+      "path": "/assets/campaign/world-map/sunken_aether-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:tideborn",
+      "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:crystal_wisp",
+      "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:deepcrawler",
+      "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:relic_guardian",
+      "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:aetherbound",
+      "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "boss:drowned_oracle",
+      "path": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:ironroot:a",
+      "path": "/assets/campaign/maps/ironroot_a-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:ironroot:b",
+      "path": "/assets/campaign/maps/ironroot_b-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:ironroot:c",
+      "path": "/assets/campaign/maps/ironroot_c-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:ironroot:d",
+      "path": "/assets/campaign/maps/ironroot_d-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "world-panel:ironroot",
+      "path": "/assets/campaign/world-map/ironroot-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:scrapling",
+      "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:furnace_hound",
+      "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:siege_golem",
+      "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:ironbound",
+      "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:foundry_core",
+      "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "boss:iron_tyrant",
+      "path": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:sky_isles:a",
+      "path": "/assets/campaign/maps/sky_isles_a-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:sky_isles:b",
+      "path": "/assets/campaign/maps/sky_isles_b-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:sky_isles:c",
+      "path": "/assets/campaign/maps/sky_isles_c-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:sky_isles:d",
+      "path": "/assets/campaign/maps/sky_isles_d-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "world-panel:sky_isles",
+      "path": "/assets/campaign/world-map/sky_isles-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:cloud_skitter",
+      "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:galeclaw",
+      "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:aether_drake",
+      "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:stormguard",
+      "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:tempest_herald",
+      "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "boss:stormmaw_prime",
+      "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:dreadmoon:a",
+      "path": "/assets/campaign/maps/dreadmoon_a-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:dreadmoon:b",
+      "path": "/assets/campaign/maps/dreadmoon_b-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:dreadmoon:c",
+      "path": "/assets/campaign/maps/dreadmoon_c-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:dreadmoon:d",
+      "path": "/assets/campaign/maps/dreadmoon_d-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "world-panel:dreadmoon",
+      "path": "/assets/campaign/world-map/dreadmoon-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:shadeborn",
+      "path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:dusk_runner",
+      "path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:moonstalker",
+      "path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:grave_hulk",
+      "path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:echo_shade",
+      "path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "boss:umbral_regent",
+      "path": "/assets/campaign/bosses/umbral_regent-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:astral_rift:a",
+      "path": "/assets/campaign/maps/astral_rift_a-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:astral_rift:b",
+      "path": "/assets/campaign/maps/astral_rift_b-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:astral_rift:c",
+      "path": "/assets/campaign/maps/astral_rift_c-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:astral_rift:d",
+      "path": "/assets/campaign/maps/astral_rift_d-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "world-panel:astral_rift",
+      "path": "/assets/campaign/world-map/astral_rift-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:riftling",
+      "path": "/assets/campaign/enemies/astral_rift/riftling-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:phase_hound",
+      "path": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:astral_horror",
+      "path": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:voidplate",
+      "path": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:rift_weaver",
+      "path": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "boss:rift_sovereign",
+      "path": "/assets/campaign/bosses/rift_sovereign-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:aether_crown:a",
+      "path": "/assets/campaign/maps/aether_crown_a-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:aether_crown:b",
+      "path": "/assets/campaign/maps/aether_crown_b-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:aether_crown:c",
+      "path": "/assets/campaign/maps/aether_crown_c-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "map:aether_crown:d",
+      "path": "/assets/campaign/maps/aether_crown_d-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "world-panel:aether_crown",
+      "path": "/assets/campaign/world-map/aether_crown-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:aetherborn",
+      "path": "/assets/campaign/enemies/aether_crown/aetherborn-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:crown_runner",
+      "path": "/assets/campaign/enemies/aether_crown/crown_runner-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:aether_seer",
+      "path": "/assets/campaign/enemies/aether_crown/aether_seer-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:sentry_colossus",
+      "path": "/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "enemy:crown_archon",
+      "path": "/assets/campaign/enemies/aether_crown/crown_archon-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    },
+    {
+      "id": "boss:aether_devourer",
+      "path": "/assets/campaign/bosses/aether_devourer-atlas-v2.png",
+      "status": 200,
+      "type": "image/png"
+    }
+  ],
+  "browser": {
+    "guestEntry": true,
+    "campaignOpened": true,
+    "classicDifficultyOpened": true,
+    "errors": [],
+    "serverErrors": []
+  }
+}

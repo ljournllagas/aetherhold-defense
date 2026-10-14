@@ -1,0 +1,268 @@
+{
+  "campaignVersion": 1,
+  "progressionVersion": 1,
+  "highestUnlockedLevel": 30,
+  "levels": {
+    "1": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": true,
+      "scoreStar": true,
+      "bestScore": 3000,
+      "bestRemainingLives": 20
+    },
+    "2": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "3": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "4": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "5": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "6": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "7": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "8": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "9": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "10": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "11": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "12": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "13": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "14": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "15": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "16": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "17": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "18": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "19": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "20": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "21": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "22": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "23": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "24": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "25": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "26": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "27": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "28": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "29": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "30": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    }
+  },
+  "worldSigils": [
+    "border_sigil",
+    "ember_sigil",
+    "frost_sigil"
+  ],
+  "unlockedFeatures": [],
+  "choices": {
+    "longbow": null,
+    "ember": null,
+    "glacier": null,
+    "starfire": null,
+    "tempest": null
+  },
+  "targeting": {
+    "longbow": "first",
+    "ember": "first",
+    "glacier": "first",
+    "starfire": "first",
+    "tempest": "first"
+  },
+  "preparationPresets": []
+}

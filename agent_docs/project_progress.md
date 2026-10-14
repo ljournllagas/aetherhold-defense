@@ -1,6 +1,61 @@
 # Project progress
 
-## Current campaign completion
+## Final campaign artwork - COMPLETE, 2026-10-14
+
+Heavy deployment campaign-final-art-20261012 completed the approved77-asset scope.
+All28maps,7panels,35monster atlases and7boss atlases accepted/integrated/live.
+120active final assets,zero provisional/temporary entries. Original43finals and
+77v1 rollback files preserve hashes/dimensions. No artwork or implementation remains.
+
+Live https://aetherhold-defense.ljournllagas.workers.dev/
+Worker version e1ef97b3-1b51-4489-8e57-d87d7115423e.
+Application f3247574c2dc2b640d1acfbee391d9a640d2044b pushed;actualremote HEAD matched.
+1524tests passed/11configuredskips,typecheck/build PASS. Independentfreshsource
+100/100 ACTUALlevel renders and197texturechecks PASS;7naturalbossflows/lifecycle PASS.
+LiveHTML/currentJS exactSHA25643c8b496695ee80826d05e31c236d2df7d798825f877b8ee960afe011e6eac0f,
+health200scoreVersion3;all197active/rollback PNG paths exacthashes.
+Canonical report: artifacts/campaign-final-art-20261012/integration/final-expansion-art-integration-report.md.
+Detailedsource/live/evidence/limits andclosure handoff: latest_session_work.md.
+
+Combat/save/warning/route contracts retained. RegisteredStormmawphase_two uses
+explicitQA because gameplayhasno phase2. Authenticatedlivegameplay/physicaltouch/
+fullmatches unverified;compactfine-detail/crowding/breakpoint andoneexploratory
+HydraQA limit documented. Existingbundlewarning and11skips retained.
+ClosingHeavydocumentation/token handoff precedesfinalresponse;docs-only Git
+synchronization mayfollowapplicationcommit,thenrepositorysealed.
+
+## Campaign v5 — complete
+
+Heavy deployment `campaign-v5-20261012` implements
+`artifacts/CODEX_V5_IMPLEMENTATION_PROMPT.md`. The verified 100-level/ten-world
+campaign is published at https://aetherhold-defense.ljournllagas.workers.dev/ ,
+version `cb1eb993-64e5-4f3c-9d17-5d7aee12b1e2`.
+Application commit `52531f6d231ac849bd2ea37cdeab051404eea33b` was pushed to
+`origin/codex/campaign-v5-20261012`; local HEAD matched the fetched remote.
+All 143 assigned paths are synchronized, including specifications and 77 assets.
+Only unrelated `.scratch/` and `.superpowers/` remain outside the commit.
+Application work is complete. Final-art approval is the separate next milestone.
+
+Exact first-thirty definitions/rewards/waves, version-1 saves and Classic flow
+are preserved. All 120 paid expansion cases earn three stars; all 100 levels
+load/render; independent saved 40→41 and 99→100/terminal results pass. Save/cloud,
+guest/account isolation, all seven new bosses and support roles, lifecycle,
+four-size responsive UI and code-review repairs are accepted. Fixed mastery
+targets required 32–52 waves in Levels 41–100, averaging 21 simulated minutes
+(range approximately 11–41); first 1–40 counts and global scoring stay unchanged.
+
+Fresh isolated installation/typechecking/build and final deployment checks pass.
+Final deployment tests: 1,431 passed, 11 configured skips, using one test worker
+after parallel geometry timeouts. Live HTML/current bundle/health and browser
+welcome render pass. The existing large-bundle advisory remains. No real
+production account write or clean-account 1→100 human playthrough was performed.
+
+The original 43 final assets retain their hashes. All 77 expansion assets are
+stage-scoped provisional registrations and remain final_required. Candidate
+comparison is complete, including actual towers on all 28 map candidates; no
+candidate is promoted, and the Crown panel text artifact is rejected.
+All 77 final-art approvals remain UNVERIFIED and form a separate art follow-up.
+## Prior deployment history (Worlds 1–3)
 
 Heavy deployment: campaign-production-completion-20261010. Baseline: main at 22ee273447e6c252cad5ea7adf92446d3db88a79. Goal: complete the agreed Worlds 1-3 expansion, preserve the existing combat and Classic systems, and satisfy the explicit missing-production-art allowance.
 

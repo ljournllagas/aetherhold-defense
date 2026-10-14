@@ -40,10 +40,19 @@ export async function handleAuth(request:Request,env:AuthEnv):Promise<Response|n
   if(!env.GOOGLE_CLIENT_ID||!env.GOOGLE_CLIENT_SECRET||!env.APP_ORIGIN) return fail('AUTH_UNCONFIGURED','Google sign-in has not been configured yet.',503);
   const issuer=new URL('https://accounts.google.com');
   const options={signal:AbortSignal.timeout(8000)};
-  const as=await oauth.discoveryRequest(issuer,options).then(r=>oauth.processDiscoveryResponse(issuer,r));
+  let as:Awaited<ReturnType<typeof oauth.processDiscoveryResponse>>;
+  try {
+    as=await oauth.discoveryRequest(issuer,options).then(r=>oauth.processDiscoveryResponse(issuer,r));
+  } catch {
+    if(url.pathname==='/api/auth/start'&&request.method==='GET'&&url.searchParams.get('prepare')==='1')
+      return fail('API_UNAVAILABLE','Google sign-in is temporarily unavailable. Please retry.',503);
+    throw new Error('Google sign-in discovery failed.');
+  }
   const client:oauth.Client={client_id:env.GOOGLE_CLIENT_ID};
   const browserName=origin.startsWith('https:')?'__Host-aether-oauth':'aether-dev-oauth';
   if(url.pathname==='/api/auth/start'&&request.method==='GET') {
+    const prepare=url.searchParams.get('prepare')==='1';
+    try {
     const purpose=url.searchParams.get('purpose')==='delete'?'delete':'login';
     const session=purpose==='delete'?await requireSession(request,env):null;
     if(purpose==='delete'&&!session)return missingSession(request,env);
@@ -53,7 +62,18 @@ export async function handleAuth(request:Request,env:AuthEnv):Promise<Response|n
     const params={client_id:client.client_id,redirect_uri:`${origin}/api/auth/callback`,response_type:'code',scope:'openid profile',state,nonce,code_challenge:await oauth.calculatePKCECodeChallenge(verifier),code_challenge_method:'S256',prompt:purpose==='delete'?'select_account consent':'select_account'};
     Object.entries(params).forEach(([k,v])=>destination.searchParams.set(k,v));
     if(purpose==='delete')destination.searchParams.set('claims',JSON.stringify({id_token:{auth_time:{essential:true}}}));
-    return new Response(null,{status:302,headers:{Location:destination.href,'Cache-Control':'no-store','Set-Cookie':`${browserName}=${browser}; Path=/; Max-Age=600; ${origin.startsWith('https:')?'Secure; ':''}HttpOnly; SameSite=Lax`}});
+    const browserCookie=`${browserName}=${browser}; Path=/; Max-Age=600; ${origin.startsWith('https:')?'Secure; ':''}HttpOnly; SameSite=Lax`;
+    if(prepare) {
+      if(destination.protocol!=='https:'||destination.origin!=='https://accounts.google.com') return fail('AUTH_UNAVAILABLE','Google sign-in is temporarily unavailable. Please retry.',503);
+      const prepared=reply({ok:true,value:{url:destination.href}});
+      prepared.headers.set('Set-Cookie',browserCookie);
+      return prepared;
+    }
+    return new Response(null,{status:302,headers:{Location:destination.href,'Cache-Control':'no-store','Set-Cookie':browserCookie}});
+    } catch {
+      if(prepare) return fail('API_UNAVAILABLE','Google sign-in is temporarily unavailable. Please retry.',503);
+      throw new Error('Google sign-in preparation failed.');
+    }
   }
   if(url.pathname==='/api/auth/callback'&&request.method==='GET') {
     const state=url.searchParams.get('state'),browser=cookie(request,browserName);

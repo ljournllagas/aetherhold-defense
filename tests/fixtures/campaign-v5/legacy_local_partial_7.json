@@ -1,0 +1,80 @@
+{
+  "campaignVersion": 1,
+  "progressionVersion": 1,
+  "highestUnlockedLevel": 8,
+  "levels": {
+    "1": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": true,
+      "scoreStar": true,
+      "bestScore": 3000,
+      "bestRemainingLives": 20
+    },
+    "2": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "3": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "4": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "5": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "6": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    },
+    "7": {
+      "completed": true,
+      "completionStar": true,
+      "livesStar": false,
+      "scoreStar": false,
+      "bestScore": 0,
+      "bestRemainingLives": 2
+    }
+  },
+  "worldSigils": [],
+  "unlockedFeatures": [],
+  "choices": {
+    "longbow": null,
+    "ember": null,
+    "glacier": null,
+    "starfire": null,
+    "tempest": null
+  },
+  "targeting": {
+    "longbow": "first",
+    "ember": "first",
+    "glacier": "first",
+    "starfire": "first",
+    "tempest": "first"
+  },
+  "preparationPresets": []
+}

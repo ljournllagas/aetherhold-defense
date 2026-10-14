@@ -3,11 +3,12 @@ vi.mock('phaser', () => ({ default: { Math: { Vector2: class { constructor(publi
 import { ensureArtTextures, ensureMenuTextures } from '../src/game/art/artkit.ts';
 import { STAGE_ASSETS, missingAssets, requiredAssets, requiredAssetsForRequest } from '../src/game/art/assetManifest.ts';
 import { campaignArtAssetsForLoader } from '../src/game/campaign/artManifest.ts';
+import { CAMPAIGN_LEVELS } from '../src/game/campaign/config.ts';
 it('ships every file requested by menu, Classic and all Campaign visual tiers', async () => {
   const moduleName = 'node:fs';
   const { statSync } = await import(moduleName);
   const assets = [...Object.values(STAGE_ASSETS).flat()];
-  for (let level = 1; level <= 30; level++) for (const tier of [1, 2, 3] as const) {
+  for (let level = 1; level <= CAMPAIGN_LEVELS.length; level++) for (const tier of [1, 2, 3] as const) {
     assets.push(...requiredAssetsForRequest('gameplay', { mode: 'campaign', campaignLevel: level, campaignVisualTier: tier }));
   }
   for (const path of new Set(assets.map(asset => asset.path))) {
@@ -22,7 +23,7 @@ it('assigns all source assets once and keeps cold menu small', () => {
   expect(STAGE_ASSETS.gameplay.every(asset => !asset.path.startsWith('/assets/campaign/'))).toBe(true);
   expect(STAGE_ASSETS.defeat).toHaveLength(1);
   const all = Object.values(STAGE_ASSETS).flat();
-  expect(new Set(all.map(a => a.key)).size).toBe(25);
+  expect(new Set(all.map(a => a.key)).size).toBe(32);
   expect(STAGE_ASSETS.menu.some(a => a.path.includes('/enemies/'))).toBe(false);
   expect(requiredAssets('campaign')).toEqual([...STAGE_ASSETS.menu, ...STAGE_ASSETS.campaign]);
   expect(requiredAssets('menu')).toHaveLength(6);

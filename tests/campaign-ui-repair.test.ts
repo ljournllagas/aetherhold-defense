@@ -98,7 +98,7 @@ describe('fully unlocked Codex spacing', () => {
     const scene = Object.create(CampaignScene.prototype) as any;
     scene.campaignView = {
       totalMasteryStars: 90,
-      profile: { unlockedFeatures: [
+      profile: { worldSigils: [], unlockedFeatures: [
         'aether_codex_tactics', 'advanced_codex_stats', 'hollow_warden_codex_entry',
         'cinder_colossus_codex_entry', 'frostbound_matriarch_codex_entry'
       ] }

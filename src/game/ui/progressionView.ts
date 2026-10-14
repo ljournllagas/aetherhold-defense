@@ -1,3 +1,4 @@
+import {formatCount} from '../../shared/displayNumbers.ts';
 import { ENEMIES } from '../config/enemies.ts';
 import {classicRequirements,type Requirement} from './prerequisites.ts';
 import { ALTERNATIVE_BRANCH, EVOLUTIONS, STARTER_BRANCH } from '../config/evolutions.ts';
@@ -34,10 +35,10 @@ export function towerProgressionView(tower: CombatTower, context: PurchaseContex
     const cost = nextPurchaseCost(id, p, intent);
     let label: string;
     switch (intent.kind) {
-      case 'foundation-upgrade': label = `Upgrade to level ${p.foundationLevel + 1} · ${cost} gold`; break;
-      case 'evolve': label = `Evolve: ${EVOLUTIONS[intent.branchId].name} · ${cost} gold`; break;
-      case 'evolution-rank': label = `${EVOLUTIONS[p.branchId as BranchId].name} rank ${(p.rank ?? 0) + 1} · ${cost} gold`; break;
-      default: label = `Mastery ${p.masteryRank + 1} · ${cost === null ? 'limit' : `${cost} gold`}`;
+      case 'foundation-upgrade': label = `Upgrade to level ${p.foundationLevel + 1} · ${formatCount(cost)} gold`; break;
+      case 'evolve': label = `Evolve: ${EVOLUTIONS[intent.branchId].name} · ${formatCount(cost)} gold`; break;
+      case 'evolution-rank': label = `${EVOLUTIONS[p.branchId as BranchId].name} rank ${(p.rank ?? 0) + 1} · ${formatCount(cost)} gold`; break;
+      default: label = `Mastery ${p.masteryRank + 1} · ${cost === null ? 'limit' : `${formatCount(cost)} gold`}`;
     }
     const result = purchaseEvolution(id, p, intent, context, p.revision);
     return { label, reason: result.ok ? null : PURCHASE_REASON_TEXT[result.reason], intent, revision: p.revision, nextStats: previewPurchaseStats(id, p, intent),requirements:classicRequirements(tower,intent,context,waveCompleted,towers) };
@@ -85,8 +86,9 @@ export function wavePresentation(wave: number, endless: boolean): { label: strin
   return { label, warning: wave % 10 === 0 ? `${ENEMIES.warlord.name} approaches · ${label}` : label };
 }
 
+import {formatQuantity} from '../../shared/displayNumbers.ts';
 export type StatKind = 'damage' | 'range' | 'attackInterval' | 'splashRadius';
 
 export function formatStat(kind: StatKind, value: number): string {
-  return kind === 'attackInterval' ? value.toFixed(2) : String(Math.round(value));
+  return formatQuantity(value,kind==='attackInterval'?2:1);
 }

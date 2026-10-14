@@ -6,6 +6,7 @@ import type {
   CampaignWorldDefinition,
   CampaignWorldId
 } from './types.ts';
+import { EXPANSION_LEVELS, EXPANSION_SIGILS, EXPANSION_WORLDS } from './expansionContent.ts';
 
 export const CAMPAIGN_WORLDS: readonly CampaignWorldDefinition[] = [
   {
@@ -19,7 +20,8 @@ export const CAMPAIGN_WORLDS: readonly CampaignWorldDefinition[] = [
   {
     id: 'frostveil', worldNumber: 3, name: 'Frostveil Pass', levelStart: 21, levelEnd: 30,
     bossLevel: 30, bossEnemyId: 'frostbound_matriarch', sigilId: 'frost_sigil', visualThemeId: 'frostveil_mountain'
-  }
+  },
+  ...EXPANSION_WORLDS
 ];
 
 export const CAMPAIGN_MILESTONES: readonly CampaignMilestoneDefinition[] = [
@@ -44,7 +46,8 @@ export const CAMPAIGN_SIGILS: readonly CampaignSigilDefinition[] = [
   {
     id: 'frost_sigil', level: 30,
     unlocks: ['worlds_1_3_milestone_complete', 'frostveil_cosmetics', 'frostbound_matriarch_codex_entry', 'time_lock_powerup']
-  }
+  },
+  ...EXPANSION_SIGILS
 ];
 
 type LevelSeed = Omit<CampaignLevelDefinition, 'level' | 'difficultyRating' | 'waveProfileId'>;
@@ -90,7 +93,8 @@ function difficultyFor(level: number): 1 | 2 | 3 | 4 | 5 {
   return Math.ceil(positionInWorld / 2) as 1 | 2 | 3 | 4 | 5;
 }
 
-export const CAMPAIGN_LEVELS: readonly CampaignLevelDefinition[] = LEVEL_SEEDS.map((seed, index) => {
+export const CAMPAIGN_LEVELS: readonly CampaignLevelDefinition[] = [
+  ...LEVEL_SEEDS.map((seed, index) => {
   const level = index + 1;
   return {
     ...seed,
@@ -98,7 +102,9 @@ export const CAMPAIGN_LEVELS: readonly CampaignLevelDefinition[] = LEVEL_SEEDS.m
     difficultyRating: difficultyFor(level),
     waveProfileId: `campaign_level_${level}`
   };
-});
+  }),
+  ...EXPANSION_LEVELS
+];
 
 export function getCampaignLevel(level: number): CampaignLevelDefinition | null {
   if (!Number.isInteger(level) || level < 1 || level > CAMPAIGN_LEVELS.length) return null;

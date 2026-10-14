@@ -1,9 +1,11 @@
+import {formatCount} from '../../shared/displayNumbers.ts';
 import type {CombatTower} from '../../shared/progression.ts';
 import type {PurchaseContext,PurchaseIntent} from '../systems/EvolutionSystem.ts';
 import {nextPurchaseCost} from '../systems/EvolutionSystem.ts';
 import {STARTER_BRANCH,EVOLUTIONS} from '../config/evolutions.ts';
 import {CAMPAIGN_LEVELS,getCampaignLevel} from '../campaign/config.ts';
 import type {CampaignView} from '../campaign/types.ts';
+import {campaignScoreMetadata} from '../../shared/campaignScoring.ts';
 export interface Requirement {id:string;label:string;met:boolean;progress:string;nextStep:string}
 export function classicRequirements(tower:CombatTower,intent:PurchaseIntent,context:PurchaseContext,wavesCompleted:number,towers:readonly CombatTower[]):Requirement[]{
  const p=tower.progression,id=tower.towerId,r:Requirement[]=[];
@@ -24,18 +26,18 @@ export function classicRequirements(tower:CombatTower,intent:PurchaseIntent,cont
  }
  const cost=nextPurchaseCost(id,p,intent);
  if(cost!==null){const missing=Math.max(0,cost-context.gold);
-  add('gold','Gold',missing===0,`${context.gold}/${cost} gold`,missing?`Earn ${missing} more gold.`:'Cost covered.');
+  add('gold','Gold',missing===0,`${formatCount(context.gold)}/${formatCount(cost)} gold`,missing?`Earn ${formatCount(missing)} more gold.`:'Cost covered.');
  }else add('limit','Available upgrade',false,'Maximum stage or numeric limit','This action is unavailable at the current stage.');
  return r;
 }
 export function campaignRequirements(view:CampaignView,level:number):Requirement[]{
  const def=getCampaignLevel(level);if(!def)return [];
- const p=view.profile.levels[level];const previous=level===1||level<=view.highestUnlockedLevel;
+ const p=view.profile.levels[level],target=campaignScoreMetadata(level).scoreTarget;const previous=level===1||level<=view.highestUnlockedLevel;
  return [
   {id:'previous',label:'Level access',met:previous,progress:previous?'Unlocked':`Level ${level-1} required`,nextStep:previous?'Ready to play.':`Complete Level ${level-1} to unlock this level.`},
   {id:'completion',label:'Completion star',met:!!p?.completionStar,progress:p?.completed?'Earned':'Not earned',nextStep:'Win this level.'},
   {id:'lives',label:'Lives star',met:!!p?.livesStar,progress:`${p?.bestRemainingLives??0}/${def.mastery.minimumLivesForStar} lives`,nextStep:`Win with at least ${def.mastery.minimumLivesForStar} lives.`},
-  {id:'score',label:'Score star',met:!!p?.scoreStar,progress:`${p?.bestScore??0}/${def.mastery.scoreTarget} points`,nextStep:`Win with at least ${def.mastery.scoreTarget} points.`}
+  {id:'score',label:'Score star',met:!!p?.scoreStar,progress:`${formatCount(p?.campaignScore?.bestScore??0)}/${formatCount(target)} points`,nextStep:`Win with at least ${formatCount(target)} points.`}
  ];
 }
 export function campaignNextStep(view:CampaignView):{level:number|null;text:string}{

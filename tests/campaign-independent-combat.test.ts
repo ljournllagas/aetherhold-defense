@@ -8,6 +8,7 @@ import { GameScene } from '../src/game/scenes/GameScene.ts';
 import { CampaignRepository, campaignRepository } from '../src/game/campaign/progress.ts';
 import { SoundManager } from '../src/game/systems/SoundManager.ts';
 import type { CampaignSpecializationId } from '../src/game/campaign/types.ts';
+import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 
 vi.mock('phaser', () => ({ default: { Scene: class { constructor(_key?: string) {} }, Scenes: { Events: { SHUTDOWN: 'shutdown' } }, Scale: { Events: { RESIZE: 'resize' } } } }));
 
@@ -33,7 +34,7 @@ const slow = { slowFactor: 0.5, frozen: false, stunned: false, vulnerability: 1 
 
 function sceneFixture(): any {
   const repository = new CampaignRepository(null);
-  for (let level = 1; level <= 30; level++) repository.recordClear(level, 100000, 20);
+  for (let level = 1; level <= 30; level++) repository.recordClear(level, campaignScoreMetadata(level).perfectScore, 20);
   vi.spyOn(campaignRepository, 'view').mockImplementation(() => repository.view());
   vi.spyOn(campaignRepository, 'recordClear').mockImplementation(() => null as never);
   vi.spyOn(SoundManager, 'get').mockReturnValue(anyStub());

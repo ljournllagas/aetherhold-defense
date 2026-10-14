@@ -1,8 +1,56 @@
-# Campaign Production Assets — Worlds 1–3
+# Campaign Production Assets — Worlds 1–10
 
-## Current status — 2026-10-11
+## Current status — 2026-10-14
 
-All 43 raster targets are now manifest-final and allowlisted, including the eighteen completed enemy/boss atlases and their 472 required frames. The earlier missing-art allowance has been superseded by the completed production artwork. Current asset prompts, sources, hashes, placement rules and verification are documented in [Road clearance and monster artwork](ROAD_CLEARANCE_AND_MONSTER_ART.md).
+The final-art deployment `campaign-final-art-20261012` completed all 77 Worlds
+4–10 expansion assets: 28 terrain maps, seven world panels, 35 monster atlases,
+and seven boss atlases. All 77 were accepted, registered at their v2 paths, and
+deployed as final. The 43 original final assets remain unchanged, and all 77 v1
+expansion rollback files remain hash-pinned. The manifest contains 120 active
+final paths with no provisional, temporary, or `final_required` expansion
+entries.
+
+Independent V17 checks covered all 197 active and rollback texture URLs and
+rendered all 100 campaign levels in the actual GameScene loader path. O9
+confirmed the live bundle, health endpoint, and exact hashes for all 197 PNGs.
+Seven natural boss-action flows and the support resolution path were checked;
+Stormmaw's registered `phase_two` clip received explicit QA coverage because
+its gameplay has no Phase 2. Known limits include reduced fine detail and dense
+crowds at compact sizes and the 767/768 boss-layout transition; physical-touch
+behavior and authenticated live gameplay were not verified. One exploratory
+same-frame Hydra QA request sequence remains unexplained, without evidence of a
+natural gameplay failure. See
+the [final integration report](../artifacts/campaign-final-art-20261012/integration/final-expansion-art-integration-report.md),
+[V17 report](../artifacts/campaign-final-art-20261012/verification/v17-final-source/v17-final-source-report.md),
+[natural boss-action report](../artifacts/s4-boss-natural-actions/report.md),
+[live check](../artifacts/campaign-final-art-20261012/integration/o9-live-check.json),
+and [deployment handoff](../agent_docs/project_progress.md).
+
+## Historical candidate review — 2026-10-12
+
+The original 43 Worlds 1–3 raster targets remain final and approved. The v5
+expansion adds 77 staged starter assets, all provisionally active within their
+campaign stages while remaining registered as `final_required`. Final-art
+approval for all 77 expansion targets remains UNVERIFIED. Fresh validation
+confirmed all 43 approved legacy hashes are unchanged, all 77 staged asset
+hashes and PNG dimensions match their source files, and all 70 candidate hashes
+match their recorded references. These integrity checks do not approve
+expansion art; seven boss portraits have no candidate source/hash. V3 reviewed
+all 70 candidates and passed a corrected placed-context comparison of 28 map
+candidates against five actual registered tower views each and three approved
+Worlds 1–3 baselines. The Aether Crown world-panel candidate was rejected for
+embedded `LD` text; the seven portraits were excluded. No candidates were
+promoted and the 77 expansion approvals remain UNVERIFIED. The comparison used
+still captures and synthetic, unsaved QA fixtures; it does not approve
+animation, mobile layout, collision, tower balance, or gameplay fit. See
+the [V3 context review](../artifacts/campaign-v5-20261012/verification/v3-candidate-art/qa-tower-context/qa-tower-context-report.md),
+the [registry and asset report](../artifacts/campaign-v5-20261012/verification/v2/registry-geometry-final-report.md),
+[staged-file hash/dimension check](../artifacts/campaign-v5-20261012/verification/v2/source-asset-check.log),
+and [legacy final-asset hash check](../artifacts/campaign-v5-20261012/verification/v2/legacy-final-asset-check.log). See
+[`CAMPAIGN_WORLDS_4_10.md`](CAMPAIGN_WORLDS_4_10.md) and the pack's
+[`ART_STAGING_AND_PROMOTION.md`](../artifacts/integration-v5/docs/ART_STAGING_AND_PROMOTION.md),
+[asset install manifest](../artifacts/integration-v5/manifests/ASSET_INSTALL_MANIFEST.json),
+and [art registration review](../artifacts/integration-v5/manifests/EXPANSION_ART_REGISTRATION_REVIEW.json).
 
 ## Historical release record — 2026-10-10
 

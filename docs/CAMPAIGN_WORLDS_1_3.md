@@ -1,6 +1,10 @@
 # Campaign Worlds 1–3
 
-This document records the implemented campaign foundation and its boundaries.
+This is the historical contract for the original Worlds 1–3 foundation. Its
+30-level bound, Worlds 4–10 exclusion, and local-only save description predate
+v5; the current 100-level and account/cloud contract is in
+[CAMPAIGN_WORLDS_4_10.md](CAMPAIGN_WORLDS_4_10.md). Original level definitions,
+wave counts, rewards, and accepted Worlds 1–3 assets remain the preserved base.
 The product contract is in [SPEC.md](SPEC.md) §51; visual acceptance is in
 [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) §71. The runtime definitions in
 [`src/game/campaign/`](../src/game/campaign/) hold the stable level IDs, exact

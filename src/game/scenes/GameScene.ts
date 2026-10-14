@@ -1,10 +1,14 @@
+import {campaignResultActions} from '../ui/campaignResultActions.ts';
+import {enemyPresentation} from '../ui/enemyPresentation.ts';
+import {guestRunProgress} from '../systems/GuestProgress.ts';
+import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { accountSystem } from '../systems/AccountSystem.ts';
 import { accountEntryAllowed, accountStatus } from '../ui/accountControls.ts';
-import type { AccountRef } from '../../shared/account.ts';
+import type { AccountRef,RunOwner,RunResult } from '../../shared/account.ts';
 import type { GameOverData } from './GameOverScene.ts';
 import type { GameStartData, LoadingRequest } from './PreloadScene.ts';
-import { MAP1, HUD_HEIGHT, type MapDef } from '../maps/map1.ts';
+import { MAP1, HUD_HEIGHT, CLASSIC_ROAD_ENVELOPE, type MapDef } from '../maps/map1.ts';
 import { BUILD_PLOT_POLICY } from '../maps/buildPlotPolicy.ts';
 import { TOWER_LIST, TOWERS, towerTotalInvested, isTowerId } from '../config/towers.ts';
 import { ENEMIES, BOSS_BEHAVIOR, BONUS_TARGET_HP_PER_WAVE } from '../config/enemies.ts';
@@ -14,6 +18,7 @@ import { EVOLUTIONS } from '../config/evolutions.ts';
 import type { DamageType, DifficultyId, EnemyArchetype, PowerUpId, TargetingMode } from '../../shared/types.ts';
 import { createQACampaignRepository, isQACampaignFixture, type QACampaignFixture, type QAAction, type QAStatus } from '../qa.ts';
 import { GAME_VERSION, SCORE_VERSION } from '../../shared/version.ts';
+import { CAMPAIGN_SCORE_VERSION, calculateCampaignLiveScore, calculateCampaignScore, campaignScoreMetadata, type CampaignScoreBreakdown } from '../../shared/campaignScoring.ts';
 import { buildWave, scheduleWave, enemyHpForWave, enemySpeedForWave } from '../systems/WaveSystem.ts';
 import { RelicVault, advanceFlights } from '../systems/RunSimulation.ts';
 import { AutoSystem, chooseAutoRelic, type AutoContext, type AutoRelicIntent } from '../systems/AutoSystem.ts';
@@ -40,13 +45,13 @@ import { newRunId } from '../../api/leaderboardClient.ts';
 import { C, FONT_DISPLAY, RARITY_COLOR, RANGE_FILL_ALPHA, RANGE_STROKE, RANGE_STROKE_ALPHA, style } from '../ui/tokens.ts';
 import { V2, emblemKey } from '../art/artkit.ts';
 import { relicHeroTexture } from '../art/iconArt.ts';
-import { buildTowerVisual, decorateEvolution, towerPortraitKey } from '../art/towerArt.ts';
-import { buildEnemyVisual, type EnemyView } from '../art/enemyArt.ts';
+import { buildTowerVisual, decorateEvolution, towerPortraitKey, towerArtGeometry } from '../art/towerArt.ts';
+import { buildEnemyVisual, enemyVisualSupport, enemyVisibleDimension, type EnemyView } from '../art/enemyArt.ts';
 import { paintBattlefield, refreshStronghold } from '../art/terrain.ts';
 import type { BattlefieldArt } from '../art/terrain.ts';
 import { Enemy } from '../entities/Enemy.ts';
 import { Tower } from '../entities/Tower.ts';
-import { BattlefieldView, type Point } from '../ui/viewport.ts';
+import { BattlefieldView, type Point, type FitSupport, type Rect } from '../ui/viewport.ts';
 import { PointerGesture } from '../systems/PointerGesture.ts';
 import { ViewportMaskController } from '../ui/ViewportMask.ts';
 import { PauseState } from '../systems/PauseState.ts';
@@ -58,10 +63,10 @@ import { unlockRepository as sharedUnlockRepository, earnedBranches, SAVE_FAILED
 import { formatStat, towerProgressionView, wavePresentation } from '../ui/progressionView.ts';
 import type { BranchId, RunOutcome, ShotSnapshot } from '../../shared/progression.ts';
 import { CampaignBattle, CAMPAIGN_BATTLE_TUNING, campaignTowerStats, specializeShot, type CampaignShot, type CampaignSpawn } from '../campaign/battle.ts';
-import { CampaignBossSystem, CAMPAIGN_BOSS_TUNING } from '../campaign/bosses.ts';
+import { CAMPAIGN_BOSS_PHASE_LABELS, CampaignBossSystem, CAMPAIGN_BOSS_TUNING, type CampaignBossPhaseLabel } from '../campaign/bosses.ts';
 import { getCampaignEnemy, isClassicEnemy } from '../campaign/enemies.ts';
 import { CampaignRepository, campaignRepository, CAMPAIGN_STORAGE_KEY } from '../campaign/progress.ts';
-import { getCampaignLevel } from '../campaign/config.ts';
+import { CAMPAIGN_LEVELS, getCampaignLevel } from '../campaign/config.ts';
 import { getCampaignSpecialization } from '../campaign/specializations.ts';
 import type { CampaignClearResult } from '../campaign/types.ts';
 
@@ -94,17 +99,21 @@ export class GameScene extends Phaser.Scene {
   private get towerVisualTier(): 1 | 2 | 3 {
     return (import.meta.env.DEV ? this.qaCampaignFixture?.visualTier : undefined) ?? this.campaign?.visualTier ?? 1;
   }
-  private campaignResult: { outcome: RunOutcome; score: number; lives: number; clear: CampaignClearResult | null } | null = null;
+  private campaignResult: { outcome: RunOutcome; score: number; lives: number; scheduledEnemiesKilled: number; wavesCompleted: number; missionBossesKilled: number; clear: CampaignClearResult | null; breakdown: CampaignScoreBreakdown } | null = null;
   private towerFreezeViews = new Map<number, Phaser.GameObjects.Arc>();
   private difficultyId: DifficultyId = 'medium';
   private playerName = 'Warden';
   private runAccount: AccountRef | null = null;
+  private runOwner:RunOwner|null=null;
   private runId = '';
   private gold = 600;
   private lives = 20;
   private maxLives = 20;
   private wave = 0;
   private wavesCompleted = 0;
+  private campaignScheduledIds = new Set<number>();
+  private campaignScheduledKills = 0;
+  private campaignMissionBossKills = 0;
   private waveActive = false;
   private currentWaveIsBoss = false;
   private enemies: Enemy[] = [];
@@ -124,6 +133,7 @@ export class GameScene extends Phaser.Scene {
   private gesture = new PointerGesture();
   private touchPreview: { point: Point; plot: number | null } | null = null;
   private towerTray:TowerTray|null=null;
+  private bottomCommandObjects: Phaser.GameObjects.GameObject[] = [];
   private trayGesture=new TowerTrayGesture();
   private trayOwner:number|null=null;
   private trayPoint:Point|null=null;
@@ -245,6 +255,9 @@ export class GameScene extends Phaser.Scene {
   private hudScoreValue: Phaser.GameObjects.Text | null = null;
   private hudDiff: Phaser.GameObjects.Text | null = null;
   private hudStatus: Phaser.GameObjects.Text | null = null;
+  private hudObjects: Phaser.GameObjects.GameObject[] = [];
+  private hudMetricLabels: Phaser.GameObjects.Text[] = [];
+  private topControlObjects: Phaser.GameObjects.GameObject[] = [];
   private autoButton: ReturnType<typeof button> | null = null;
   private pauseAutoButton: ReturnType<typeof button> | null = null;
   private autoStatusText: Phaser.GameObjects.Text | null = null;
@@ -272,7 +285,11 @@ export class GameScene extends Phaser.Scene {
   private bossBarBackdrop: Phaser.GameObjects.Rectangle | null = null;
   private bossBarTrack: Phaser.GameObjects.Rectangle | null = null;
   private bossPanelHeight = 0;
+  private bossHudReservedHeight = 0;
+  private bossHudCameraBeforeReservation: { zoom: number; center: Point; headroom: number; reservedZoom: number; reservedCenter: Point; reservedHeadroom: number } | null = null;
   private compactBossActive = false;
+  private bossFitBoss: Enemy | null = null;
+  private bossFitMap: MapDef | null = null;
   private plotMarkers: Phaser.GameObjects.Arc[] = [];
   private occupied = new Set<number>();
 
@@ -381,7 +398,7 @@ export class GameScene extends Phaser.Scene {
 
   init(data: Partial<GameStartData>): void {
     this.unlockRepository = sharedUnlockRepository;
-    this.pauseState = new PauseState(); this.gesture.cancel();this.trayGesture.cancel();this.trayOwner=null;this.trayDrag=null;this.trayPoint=null; this.cameraView.reset();
+    this.pauseState = new PauseState(); this.gesture.cancel();this.trayGesture.cancel();this.trayOwner=null;this.trayDrag=null;this.trayPoint=null; this.cameraView.setContentFit(null); this.cameraView.setTopHeadroom(0); this.cameraView.reset();
     this.touchPreview = null; this.touchMode = false; this.sheetKind = null; this.sheet = null;
     this.modalRenderer = null; this.modalSheet = null; this.backgroundOverlay = null; this.gestureHintShown = false;
     this.modalError = '';
@@ -411,6 +428,9 @@ export class GameScene extends Phaser.Scene {
     this.runId = newRunId();
     this.wave = 0;
     this.wavesCompleted = 0;
+    this.campaignScheduledIds.clear();
+    this.campaignScheduledKills = 0;
+    this.campaignMissionBossKills = 0;
     this.waveActive = false;
     this.currentWaveIsBoss = false;
     this.enemies = [];
@@ -462,6 +482,9 @@ export class GameScene extends Phaser.Scene {
     this.bossBar = null;
     this.bossBarHp = null;
     this.bossBarBackdrop = null; this.bossBarTrack = null; this.bossPanelHeight = 0;
+    this.bossHudReservedHeight = 0; this.bossHudCameraBeforeReservation = null; this.compactBossActive = false;
+    this.bossFitBoss = null; this.bossFitMap = null;
+    this.hudObjects = []; this.topControlObjects = []; this.hudMetricLabels = [];
     this.infoPanel = null;
     this.towerCommands = null;
     this.placePanel = null;
@@ -492,12 +515,14 @@ export class GameScene extends Phaser.Scene {
   create(): void {
     if (!accountEntryAllowed()) { this.scene.start('Login'); return; }
     if (this.campaignStartRejected) { this.scene.start('Campaign', { error: 'That campaign level is locked or unavailable.' }); return; }
-    this.runAccount = accountSystem.captureAccount();
+    this.runOwner=accountSystem.captureRun();
+    this.runAccount=this.runOwner?.mode==='account'?this.runOwner.account:null;
+    if(this.runOwner)this.playerName=this.runOwner.name;
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       if (!this.ended) void accountSystem.discardBattle();
     });
     const unsubscribeAccount = accountSystem.subscribe(() => {
-      if (this.campaignResult && this.ended && this.runAccount) this.renderCampaignResult();
+      if (this.campaignResult && this.ended && this.runOwner) this.renderCampaignResult();
     });
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubscribeAccount);
     const snd = SoundManager.get();
@@ -549,6 +574,17 @@ export class GameScene extends Phaser.Scene {
   private applyView(): void {
     const origin = this.cameraView.origin;
     this.worldRoot?.setPosition(origin.x, origin.y).setScale(this.cameraView.scale);
+    for (const enemy of this.enemies) if (enemy.alive && enemy.view) this.projectEntity(enemy.view);
+    for (const death of this.dying) {
+      this.projectEntity(death.view);
+      const progress = Math.min(1, Math.max(0, (this.gameTimeMs - death.t0) / death.duration));
+      const deathScale = 1 - progress * 0.8;
+      death.view.setScale(
+        (death.view.getData('baseScaleX') as number ?? 1) * deathScale,
+        (death.view.getData('baseScaleY') as number ?? 1) * deathScale
+      );
+      death.view.setAlpha(1 - progress);
+    }
     if (this.touchPreview) {
       if (this.pendingMeteor) this.rangeCircle?.setPosition(this.touchPreview.point.x, this.touchPreview.point.y).setRadius(POWERUP_EFFECTS.meteor.radius).setVisible(true);
       else this.updateGhost(this.touchPreview.point.x, this.touchPreview.point.y);
@@ -603,7 +639,7 @@ export class GameScene extends Phaser.Scene {
     }else if (kind === 'build') {
       let rowY = 0;
       TOWER_LIST.forEach(cfg => {
-        const title = sheet.text(rowY, `${cfg.name} · ${cfg.role} · ${cfg.levels[0].cost} gold`, C.gold); rowY += title.height + 8;
+        const title = sheet.text(rowY, `${cfg.name} · ${cfg.role} · ${formatCount(cfg.levels[0].cost)} gold`, C.gold); rowY += title.height + 8;
         const choice = isTowerId(cfg.id) ? this.campaign?.choices[cfg.id] : null;
         const specialization = choice ? getCampaignSpecialization(choice) : null;
         const description = sheet.text(rowY, specialization ? `${specialization.name} · ${specialization.description}` : cfg.description, C.textSecondary, 12); rowY += description.height + 8;
@@ -618,7 +654,7 @@ export class GameScene extends Phaser.Scene {
     } else if (kind === 'tower' && this.selectedTower) {
       const t = this.selectedTower;
       let y = this.drawProgressionModel(sheet, t, 0);
-      sheet.action(y, `Sell · ${investedRefund(t.progression)} gold`, () => this.performDetailedAction(()=>this.sellSelected()), 'danger',!this.detailsPurchaseContext().blocked); y += 60;
+      sheet.action(y, `Sell · ${formatCount(investedRefund(t.progression))} gold`, () => this.performDetailedAction(()=>this.sellSelected()), 'danger',!this.detailsPurchaseContext().blocked); y += 60;
       sheet.text(y, 'Targeting'); y += 28;
       TARGET_MODES.forEach((mode, i) => sheet.action(y + i * 52, `${t.targeting === mode ? '✓ ' : ''}${mode[0].toUpperCase() + mode.slice(1)}`, () => this.performDetailedAction(()=>{if(this.selectedTower!==t||!this.towers.includes(t))return false;t.targeting=mode;return true;}),'secondary',!this.detailsPurchaseContext().blocked));
     } else if (kind === 'more') {
@@ -664,8 +700,8 @@ export class GameScene extends Phaser.Scene {
       const explanation=sheet.text(actionY,'Lower seconds means faster firing.',C.textSecondary,16);actionY+=explanation.height+12;
       const nextBase=previewPurchaseStats(t.towerId,t.progression,{kind:'foundation-upgrade'});
       if(!t.maxLevel&&nextBase){const next=campaignTowerStats(nextBase,t.specialization);const comparison=sheet.text(actionY,`Next: Damage ${formatStat('damage',stats.damage)} → ${formatStat('damage',next.damage)} · Range ${formatStat('range',stats.range)} → ${formatStat('range',next.range)} · Attack ${formatStat('attackInterval',stats.attackInterval)}s → ${formatStat('attackInterval',next.attackInterval)}s`);actionY+=comparison.height+12;}
-      if(!t.maxLevel&&this.gold<t.upgradeCost()!){const shortage=sheet.text(actionY,`Need ${t.upgradeCost()!-this.gold} more gold`,C.gold,16);actionY+=shortage.height+12;}
-      if (!t.maxLevel) sheet.action(actionY, `Upgrade · ${t.upgradeCost()} gold`, () => this.performDetailedAction(()=>this.upgradeSelected()), 'primary', !this.detailsPurchaseContext().blocked && this.gold >= t.upgradeCost()!);
+      if(!t.maxLevel&&this.gold<t.upgradeCost()!){const shortage=sheet.text(actionY,`Need ${formatCount(t.upgradeCost()!-this.gold)} more gold`,C.gold,16);actionY+=shortage.height+12;}
+      if (!t.maxLevel) sheet.action(actionY, `Upgrade · ${formatCount(t.upgradeCost())} gold`, () => this.performDetailedAction(()=>this.upgradeSelected()), 'primary', !this.detailsPurchaseContext().blocked && this.gold >= t.upgradeCost()!);
       else sheet.text(actionY, 'Maximum foundation · Specializations change before battle', C.textMuted);
       return actionY + 60;
     }
@@ -723,7 +759,7 @@ export class GameScene extends Phaser.Scene {
 
   private inspectorPrimaryLabel(t: Tower): string {
     const p = t.progression;
-    if (p.foundationLevel < 4) return `Upgrade · ${t.upgradeCost()} gold`;
+    if (p.foundationLevel < 4) return `Upgrade · ${formatCount(t.upgradeCost())} gold`;
     if (this.campaign) return 'Maximum foundation';
     if (p.branchId === null || p.rank === null) return 'Evolve…';
     if (p.rank < 3) return `${EVOLUTIONS[p.branchId].name} rank ${p.rank + 1}…`;
@@ -781,6 +817,11 @@ export class GameScene extends Phaser.Scene {
   private readonly handleResize = (): void => {
     this.cancelGesture();
     this.pauseAutoButton = null;
+    this.bossHudReservedHeight = 0;
+    this.bossHudCameraBeforeReservation = null;
+    this.bossFitBoss = null; this.bossFitMap = null;
+    this.cameraView.setContentFit(null);
+    this.cameraView.setTopHeadroom(0);
     this.layout = gameLayout(this.scale.width, this.scale.height);
     this.cameraView.resize(this.layout.field);
     const render = this.modalRenderer;
@@ -793,18 +834,21 @@ export class GameScene extends Phaser.Scene {
 
   private drawShell(): void {
     this.autoButton = null; this.autoStatusText = null; this.autoDetailText = null;
-    const scrollOffset = this.sheetKind === 'tower' || this.sheetKind === 'evolve' ? this.sheet?.scrollOffset ?? 0 : 0;
+    const scrollOffset = this.sheetKind ? this.sheet?.scrollOffset ?? 0 : 0;
     this.refreshProgressionActions = null;
     this.sheet?.destroy(); this.sheet = null;
     this.achievementNoticeView?.destroy(); this.achievementNoticeView = null;
     this.campaignCalloutView?.destroy(); this.campaignCalloutView = null;
     this.uiRoot?.destroy(true);
+    this.hudObjects = []; this.topControlObjects = []; this.hudMetricLabels = [];
     this.uiRoot = this.add.container(0, 0).setDepth(1000);
+    this.bottomCommandObjects = [];
     this.nextPreview = null; this.confirmStrip = null;
     this.floaters = [];
     this.infoPanel = null; this.towerCommands = null; this.placePanel = null; this.powerupRow = null; this.catalog = null;
     this.bossBar = null; this.bossBarHp = null; this.bossBarText = null; this.bossBarFill = null;
     this.bossBarBackdrop = null; this.bossBarTrack = null; this.bossPanelHeight = 0;
+    this.bossBarTextWrapWidth = 0;
     const f = this.layout.field;
     this.applyView();
     if (this.worldRoot) {
@@ -850,11 +894,19 @@ export class GameScene extends Phaser.Scene {
 
   private projectEntity(view: Phaser.GameObjects.Container): void {
     const sx = Math.min(this.layout.field.width / 1040, this.layout.field.height / 584); const sy = sx;
-    // Painted creatures keep authored 28–50px / 96px boss screen silhouettes.
     const visual = view.getData('enemyVisual') as EnemyView | undefined;
-    const smallestPose = visual ? Math.min(...[...visual.frameRectangles.right, ...visual.frameRectangles.left].map(frame => Math.max(frame.width, frame.height) * visual.sprite.scaleX)) : 0;
-    const size = visual ? Math.max(1, 24 / smallestPose) : Math.min(sx, sy) * (this.layout.compact ? 1.25 : 1);
-    view.setScale(size / sx, size / sy).setData({ baseScaleX: size / sx, baseScaleY: size / sy });
+    const deathScreenScale = view.getData('deathScreenScale') as number | undefined;
+    if(visual && typeof deathScreenScale==='number'){
+      const scale=deathScreenScale/this.cameraView.fitScale;
+      view.setScale(scale,scale).setData({baseScaleX:scale,baseScaleY:scale});return;
+    }
+    const canvas=this.game?.canvas?.getBoundingClientRect?.(),cssScale=canvas?canvas.width/Math.max(1,this.layout.width):1;
+    const authoredDimension=visual?(view.getData('authoredEnemyDimension') as number|undefined)??enemyVisibleDimension(visual):1;
+    const presentation=enemyPresentation({viewportWidth:canvas?.width??this.layout.width,viewportHeight:canvas?.height??this.layout.height,fieldHeight:this.layout.field.height*cssScale,authoredDimension:(visual?.maxVisualDimension??authoredDimension)*cssScale,isBoss:view.getData('isBoss')===true,isElite:view.getData('isElite')===true,fitScale:this.cameraView.fitScale});
+    const displayedScale=visual?presentation.overviewDimension/(authoredDimension*cssScale*this.cameraView.fitScale):Math.min(sx,sy)*(this.layout.compact?1.25:1)/sx;
+    view.setScale(displayedScale,displayedScale);
+    if(visual)view.setData({authoredEnemyDimension:authoredDimension,bossResponsiveCap:presentation.overviewDimension/(authoredDimension*cssScale)});
+    view.setData({ baseScaleX: displayedScale, baseScaleY: displayedScale });
   }
 
   private enemyRenderPoint(enemy: Enemy): { x: number; y: number } {
@@ -997,8 +1049,12 @@ export class GameScene extends Phaser.Scene {
       this.siege.seedForQA(finalWave - 1, 0); this.siege.startWave(finalWave);
       this.waveActive = true; this.currentWaveIsBoss = !!this.campaign.definition.bossEnemyId;
       if (fixture.state === 'campaign-results') {
-        this.enemiesKilled = Math.ceil(this.campaign.definition.mastery.scoreTarget / 10);
-        this.bossesKilled = this.campaign.definition.bossEnemyId ? 1 : 0;
+        const metadata = campaignScoreMetadata(this.campaign.definition.level);
+        this.enemiesKilled = metadata.scheduledEnemyCount;
+        this.campaignScheduledKills = metadata.scheduledEnemyCount;
+        this.wavesCompleted = metadata.waveCount - 1;
+        this.bossesKilled = Number(metadata.hasBoss);
+        this.campaignMissionBossKills = Number(metadata.hasBoss);
         this.campaign.bossKilled = this.currentWaveIsBoss;
         this.checkWaveClear();
       } else {
@@ -1006,12 +1062,16 @@ export class GameScene extends Phaser.Scene {
         const index = Math.min(3, this.map.waypoints.length - 2);
         boss.x = this.map.waypoints[index].x; boss.y = this.map.waypoints[index].y; boss.waypointIndex = index + 1;
         boss.distanceTraveled = this.map.waypoints.slice(1, index + 1).reduce((sum, point, i) => sum + Math.hypot(point.x - this.map.waypoints[i].x, point.y - this.map.waypoints[i].y), 0);
-        if (fixture.bossPhase === 'enraged' || fixture.bossPhase === 'core') boss.hp = boss.maxHp * 0.24;
-        if (fixture.bossPhase === 'broken') boss.hp = boss.maxHp * 0.6;
-        if (fixture.bossPhase === 'phase2') boss.hp = boss.maxHp * 0.4;
-        this.gameTimeMs = fixture.level === 10 && fixture.bossPhase !== 'guarded' ? CAMPAIGN_BOSS_TUNING.shieldDurationMs : ['telegraph','freeze','phase2'].includes(fixture.bossPhase) ? CAMPAIGN_BOSS_TUNING.freezeIntervalMs : 0;
-        this.tickCampaignBosses();
-        if (fixture.bossPhase === 'freeze') { this.gameTimeMs += CAMPAIGN_BOSS_TUNING.freezeTelegraphMs; this.tickCampaignBosses(); }
+        const fixtureLabel = (CAMPAIGN_BOSS_PHASE_LABELS as readonly string[]).includes(String(fixture.bossPhase)) ? String(fixture.bossPhase) as CampaignBossPhaseLabel : null;
+        if (fixtureLabel) this.seedNamedCampaignBossFixture(boss, fixtureLabel);
+        else {
+          if (fixture.bossPhase === 'enraged' || fixture.bossPhase === 'core') boss.hp = boss.maxHp * 0.24;
+          if (fixture.bossPhase === 'broken') boss.hp = boss.maxHp * 0.6;
+          if (fixture.bossPhase === 'phase2') boss.hp = boss.maxHp * 0.4;
+          this.gameTimeMs = fixture.level === 10 && fixture.bossPhase !== 'guarded' ? CAMPAIGN_BOSS_TUNING.shieldDurationMs : ['telegraph','freeze','phase2'].includes(fixture.bossPhase) ? CAMPAIGN_BOSS_TUNING.freezeIntervalMs : 0;
+          this.tickCampaignBosses();
+          if (fixture.bossPhase === 'freeze') { this.gameTimeMs += CAMPAIGN_BOSS_TUNING.freezeTelegraphMs; this.tickCampaignBosses(); }
+        }
       }
     }
     this.refreshInfoPanel(); this.refreshPlots(); this.updateNextPreview();
@@ -1019,10 +1079,56 @@ export class GameScene extends Phaser.Scene {
     this.updateHUD(); this.publishQAStatus();
   }
 
+  private seedNamedCampaignBossFixture(boss: Enemy, phaseLabel: CampaignBossPhaseLabel): void {
+    const tickAt = (timeMs: number): void => { this.gameTimeMs = timeMs; this.tickCampaignBosses(); };
+    switch (phaseLabel) {
+      case 'oracle_physical': tickAt(0); return;
+      case 'oracle_arcane': tickAt(0); tickAt(CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs); return;
+      case 'oracle_elemental':
+        tickAt(0);
+        tickAt(CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs);
+        tickAt(CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs);
+        tickAt(CAMPAIGN_BOSS_TUNING.oracleResistanceIntervalMs * 2 + CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs); return;
+      case 'tyrant_plates': boss.hp = boss.maxHp * 0.8; tickAt(0); return;
+      case 'tyrant_break': boss.hp = boss.maxHp * 0.6; tickAt(0); return;
+      case 'tyrant_core': boss.hp = boss.maxHp * 0.25; tickAt(0); tickAt(CAMPAIGN_BOSS_TUNING.bossTransitionTelegraphMs); return;
+      case 'storm_surge': {
+        const ally = this.spawnEnemy('cloud_skitter', 1);
+        ally.x = boss.x - 40; ally.y = boss.y;
+        tickAt(CAMPAIGN_BOSS_TUNING.stormmawIntervalMs); return;
+      }
+      case 'regent_decoys': boss.hp = boss.maxHp * 0.6; tickAt(0); return;
+      case 'sovereign_portal': tickAt(CAMPAIGN_BOSS_TUNING.sovereignIntervalMs); return;
+      case 'devourer_normal': boss.hp = boss.maxHp * 0.8; tickAt(0); return;
+      case 'devourer_resistance': boss.hp = boss.maxHp * 0.6; tickAt(0); return;
+      case 'devourer_rift':
+        boss.hp = boss.maxHp * 0.4; tickAt(0); tickAt(CAMPAIGN_BOSS_TUNING.devourerPortalIntervalMs); return;
+      case 'devourer_core': boss.hp = boss.maxHp * 0.19; tickAt(0); return;
+      case 'aether_shield': this.seedNamedSupportFixture('aetherbound', 'tideborn', CAMPAIGN_BOSS_TUNING.aetherboundIntervalMs, tickAt); return;
+      case 'foundry_armor': this.seedNamedSupportFixture('foundry_core', 'scrapling', CAMPAIGN_BOSS_TUNING.foundryCoreIntervalMs, tickAt); return;
+      case 'tempest_haste': this.seedNamedSupportFixture('tempest_herald', 'galeclaw', CAMPAIGN_BOSS_TUNING.tempestHeraldIntervalMs, tickAt); return;
+      case 'echo_decoys': this.seedNamedSupportFixture('echo_shade', null, CAMPAIGN_BOSS_TUNING.echoShadeIntervalMs, tickAt); return;
+      case 'rift_jump': this.seedNamedSupportFixture('rift_weaver', null, CAMPAIGN_BOSS_TUNING.riftWeaverIntervalMs, tickAt); return;
+      case 'crown_ward': this.seedNamedSupportFixture('crown_archon', 'aetherborn', CAMPAIGN_BOSS_TUNING.crownArchonIntervalMs, tickAt); return;
+    }
+  }
+
+  private seedNamedSupportFixture(supportId: string, allyId: string | null, intervalMs: number, tickAt: (timeMs: number) => void): void {
+    const position = this.map.waypoints[Math.min(3, this.map.waypoints.length - 1)];
+    const support = this.spawnEnemy(supportId, 1);
+    support.x = position.x; support.y = position.y;
+    if (allyId) {
+      const ally = this.spawnEnemy(allyId, 1);
+      ally.x = position.x + 36; ally.y = position.y;
+    }
+    tickAt(intervalMs);
+  }
+
   private publishQAStatus(): void {
     if (!import.meta.env.DEV) return;
     const labelGeometry = (view: Phaser.GameObjects.Text) => { const { x, y, width, height } = view.getBounds(); return { text: view.text, bounds: { x, y, width, height } }; };
     const status: QAStatus = {
+      enemyVisuals:this.enemies.filter(e=>e.alive&&e.view?.getData('enemyVisual')).map(e=>{const dimension=(e.view!.getData('authoredEnemyDimension') as number??1)*(e.view!.getData('baseScaleX') as number??1)*this.cameraView.fitScale*((this.game?.canvas?.getBoundingClientRect?.().width??this.layout.width)/this.layout.width);return {archetype:e.campaignId??e.archetype,boss:e.isBoss,elite:e.isElite,overviewDimension:dimension,screenDimension:dimension*this.cameraView.zoom,zoom:this.cameraView.zoom};}),
       wave: this.wave,
       gold: this.gold,
       lives: this.lives,
@@ -1058,7 +1164,18 @@ export class GameScene extends Phaser.Scene {
       progression: this.towers.map((t) => ({ towerId: t.towerId, branchId: t.progression.branchId, rank: t.progression.rank, masteryRank: t.progression.masteryRank, invested: t.progression.invested, visualTier: this.towerVisualTier })),
       campaignLevel: this.campaign?.definition.level ?? null,
       campaignFixture: this.qaCampaignFixture ? `${this.qaCampaignFixture.state}/${this.qaCampaignFixture.bossPhase} · DEV FIXTURE · unsaved` : null,
-      campaignBoss: (() => { const boss = this.enemies.find(e => e.alive && e.isBoss && e.campaignId); return boss ? { id: boss.campaignId!, ...this.campaignBosses.presentation(boss.id, this.gameTimeMs), targets: this.campaignBosses.telegraphTargets() } : null; })(),
+      campaignBoss: (() => {
+        const supportFixtures: Partial<Record<CampaignBossPhaseLabel, string>> = {
+          aether_shield: 'aetherbound', foundry_armor: 'foundry_core', tempest_haste: 'tempest_herald',
+          echo_decoys: 'echo_shade', rift_jump: 'rift_weaver', crown_ward: 'crown_archon'
+        };
+        const fixtureLabel = this.qaCampaignFixture?.bossPhase as CampaignBossPhaseLabel | undefined;
+        const fixtureSupportId = fixtureLabel ? supportFixtures[fixtureLabel] : undefined;
+        const subject = fixtureSupportId
+          ? this.enemies.find(e => e.alive && e.campaignId === fixtureSupportId)
+          : this.enemies.find(e => e.alive && e.isBoss && e.campaignId);
+        return subject ? { id: subject.campaignId!, ...this.campaignBosses.presentation(subject.id, this.gameTimeMs), targets: this.campaignBosses.telegraphTargets() } : null;
+      })(),
       campaignOutcome: this.campaignResult?.outcome ?? null,
       campaignBossLabels: this.campaign && this.bossBarText && this.bossBarHp ? { name: labelGeometry(this.bossBarText), status: labelGeometry(this.bossBarHp) } : null,
       campaignCallout: this.campaignCallout && this.campaignCalloutView ? { ...this.campaignCallout, bounds: (() => { const { x, y, width, height } = this.campaignCalloutView!.getBounds(); return { x, y, width, height }; })() } : null
@@ -1150,7 +1267,7 @@ export class GameScene extends Phaser.Scene {
     this.ghostBase.setPosition(gx, gy).setFillStyle(check.ok ? 0x63c77c : 0xd85f59, 0.18).setStrokeStyle(2, check.ok ? 0x63c77c : 0xd85f59).setVisible(true);
     const labelPoint = this.cameraView.project({ x: gx, y: gy < 150 ? gy + 40 : gy - 116 });
     this.ghostReason.setPosition(Math.max(100, Math.min(this.layout.field.width - 100, labelPoint.x)), Math.max(120, labelPoint.y)).setVisible(true)
-      .setText(`${check.ok ? 'Valid' : check.reason} · ${cfg.levels[0].cost} gold`).setColor(check.ok ? C.health : C.dangerBright);
+      .setText(`${check.ok ? 'Valid' : check.reason} · ${formatCount(cfg.levels[0].cost)} gold`).setColor(check.ok ? C.health : C.dangerBright);
     this.rangeCircle?.setPosition(gx, gy).setRadius(stats.range).setVisible(true)
       .setStrokeStyle(2, check.ok ? 0x63c77c : 0xd85f59, 0.8);
     this.rangeBackdrop?.setPosition(gx, gy).setRadius(stats.range).setVisible(true);
@@ -1186,35 +1303,40 @@ export class GameScene extends Phaser.Scene {
   }
 
   private drawHUD(): void {
+    this.hudObjects.forEach(object => object.destroy());
+    this.hudObjects = []; this.hudMetricLabels = [];
+    const firstObject = this.uiRoot!.list.length;
+    const remember = (): void => { this.hudObjects = this.uiRoot!.list.slice(firstObject); };
     const w = this.layout.width;
-    if(this.layout.compact&&this.layout.width>=this.layout.height){
+    const scoreCaption = this.campaign ? 'COMBAT SCORE' : 'SCORE';
+    if(this.layout.compact&&!this.layout.stackedHud){
       panel(this,this.uiRoot!,0,0,w,this.layout.hud);
-      const cell=(w-268)/4;
-      const metric=(i:number,label:string,color:string)=>{
-        this.uiRoot!.add(this.add.text(8+i*cell,4,label,style(12,C.textSecondary,true)));
-        const t=this.add.text(8+i*cell,24,'',style(16,color,true));this.uiRoot!.add(t);return t;
+      const cell=(w-this.layout.safe.left-this.layout.safe.right-268)/4;
+      const metric=(i:number,label:string,color:string,size=12)=>{
+        const caption=this.add.text(this.layout.safe.left+8+i*cell,this.layout.safe.top+4,label,style(size,C.textSecondary,true));
+        this.hudMetricLabels.push(caption);this.uiRoot!.add(caption);
+        const t=this.add.text(caption.x,this.layout.safe.top+24,'',style(16,color,true));this.uiRoot!.add(t);return t;
       };
       this.hudWaveValue=metric(0,'WAVE',C.textPrimary);this.hudGoldValue=metric(1,'GOLD',C.gold);
-      this.hudLivesValue=metric(2,'LIVES',C.textPrimary);this.hudScoreValue=metric(3,'SCORE',C.textPrimary);
+      this.hudLivesValue=metric(2,'LIVES',C.textPrimary);this.hudScoreValue=metric(3,scoreCaption,C.textPrimary,this.campaign?10:12);
       this.hudWaveLabel=null;this.hudDiff=this.add.text(0,0,'',style(14,C.textSecondary)).setVisible(false);
       this.autoStatusText=null;this.hudStatus=this.add.text(8,this.layout.hud+4,'',style(14,C.gold)).setWordWrapWidth(w-16);
-      this.uiRoot!.add([this.hudDiff,this.hudStatus]);return;
+      this.uiRoot!.add([this.hudDiff,this.hudStatus]);remember();return;
     }
-    if (this.layout.narrow) {
+    if (this.layout.stackedHud) {
       panel(this, this.uiRoot!, 0, 0, w, this.layout.hud);
-      const cell = (w - 16) / 4;
-      const metric = (i: number, label: string, color: string) => {
-        this.uiRoot!.add(this.add.text(8 + cell * i, 6, label, style(12, C.textSecondary, true)));
-        const value = this.add.text(8 + cell * i, 24, '', style(16, color, true)); this.uiRoot!.add(value); return value;
+      const cell = (w - this.layout.safe.left - this.layout.safe.right - 16) / 4;
+      const metric = (i: number, label: string, color: string, size = 12) => {
+        const caption=this.add.text(this.layout.safe.left+8+cell*i,this.layout.safe.top+6,label,style(size,C.textSecondary,true));
+        this.hudMetricLabels.push(caption); this.uiRoot!.add(caption);
+        const value = this.add.text(caption.x,this.layout.safe.top+24,'',style(16,color,true)); this.uiRoot!.add(value); return value;
       };
-      this.hudWaveLabel = this.add.text(8, 6, 'WAVE', style(12, C.textSecondary, true));
-      this.uiRoot!.add(this.hudWaveLabel);
-      this.hudWaveValue = this.add.text(8, 24, '', style(16, C.textPrimary, true)); this.uiRoot!.add(this.hudWaveValue);
-      this.hudGoldValue = metric(1, 'GOLD', C.gold); this.hudLivesValue = metric(2, 'LIVES', C.textPrimary); this.hudScoreValue = metric(3, 'SCORE', C.textPrimary);
+      this.hudWaveValue = metric(0,'WAVE',C.textPrimary); this.hudWaveLabel = this.hudMetricLabels[0];
+      this.hudGoldValue = metric(1, 'GOLD', C.gold); this.hudLivesValue = metric(2, 'LIVES', C.textPrimary); this.hudScoreValue = metric(3, scoreCaption, C.textPrimary, this.campaign ? 10 : 12);
       this.hudDiff = this.add.text(8, 62, '', style(14, C.textSecondary, true)).setVisible(false); this.uiRoot!.add(this.hudDiff);
       this.autoStatusText = null;
       this.hudStatus = this.add.text(8, this.layout.hud + 4, '', style(12, C.gold)).setWordWrapWidth(w - 16); this.uiRoot!.add(this.hudStatus);
-      return;
+      remember(); return;
     }
     panel(this, this.uiRoot!, 0, 0, w, 56);
     const brand = w >= 1180;
@@ -1228,17 +1350,48 @@ export class GameScene extends Phaser.Scene {
     this.hudWaveLabel = this.uiRoot!.list[this.uiRoot!.list.length - 2] as Phaser.GameObjects.Text;
     this.hudGoldValue = this.hudMetric(offset + step, 'hud_gold', 'GOLD', 18, C.gold);
     this.hudLivesValue = this.hudMetric(offset + step * 2, 'hud_lives', 'LIVES', 18, C.textPrimary);
-    this.hudScoreValue = this.hudMetric(offset + step * 3, 'hud_score', 'SCORE', 18, C.textPrimary);
+    this.hudScoreValue = this.hudMetric(offset + step * 3, 'hud_score', scoreCaption, 18, C.textPrimary);
     this.uiRoot!.add(this.add.text(offset + step * 4, 6, 'DIFFICULTY', style(12, C.textSecondary, true)));
     this.hudDiff = this.add.text(offset + step * 4, 22, '', style(14, C.textPrimary, true));
     this.uiRoot!.add(this.hudDiff);
     this.autoStatusText = this.add.text(offset + step * 4, 40, '', style(12, C.gold)).setWordWrapWidth(step - 8); this.uiRoot!.add(this.autoStatusText);
     this.hudStatus = this.add.text(this.layout.compact ? 512 : 544, this.layout.height - this.layout.tray + 12, '', style(12, C.gold)).setWordWrapWidth(Math.max(160, this.layout.field.width - 560));
     this.uiRoot!.add(this.hudStatus);
+    remember();
+  }
+
+  private fitHudMetrics(): void {
+    if (!this.layout.compact || this.hudMetricLabels.length !== 4) return;
+    const values=[this.hudWaveValue,this.hudGoldValue,this.hudLivesValue,this.hudScoreValue];
+    const inline=this.compactBossActive&&!this.layout.stackedHud;
+    const cell=(this.layout.width-this.layout.safe.left-this.layout.safe.right-(this.layout.stackedHud?16:268))/4;
+    this.hudMetricLabels[0].setText('WAVE');
+    values.forEach((value,i)=>{
+      if(!value)return;
+      const label=this.hudMetricLabels[i], full=value.text;
+      label.setFontSize(i===3&&this.campaign?10:12);
+      const x=inline?label.x+label.width+4:label.x;
+      const available=inline?cell-label.width-12:cell-8;
+      value.setPosition(x,this.layout.safe.top+(inline?4:24)).setFontSize(inline?12:16).setData('fullValue',full);
+      if(value.width>available){
+        value.setFontSize(12);
+        if(value.width>available){
+          const formatter=new Intl.NumberFormat('en',{notation:'compact',maximumSignificantDigits:2});
+          value.setText(full.replace(/\d+/g,number=>formatter.format(Number(number))));
+          if(value.width>available){
+            const scientific=new Intl.NumberFormat('en',{notation:'scientific',maximumSignificantDigits:1});
+            value.setText(full.replace(/\d+/g,number=>scientific.format(Number(number))));
+          }
+        }
+      }
+    });
   }
 
   private scoreSoFar(): number {
-    if (this.campaignResult) return this.campaignResult.score;
+    if (this.campaign) return calculateCampaignLiveScore({
+      scheduledEnemiesKilled: this.campaignScheduledKills, wavesCompleted: this.wavesCompleted,
+      missionBossesKilled: this.campaignMissionBossKills, remainingLives: 0
+    });
     const d = getDifficulty(this.difficultyId);
     return calculateLiveScore(
       { enemiesKilled: this.enemiesKilled, elitesKilled: this.elitesKilled, wavesCompleted: this.wavesCompleted, bossesKilled: this.bossesKilled, remainingLives: this.lives, unusedGold: this.gold },
@@ -1260,12 +1413,13 @@ export class GameScene extends Phaser.Scene {
       this.hudWaveLabel?.setText('WAVE').setColor(C.textMuted);
       this.hudWaveValue?.setText(`${Math.max(1, this.wave)}/${total}`).setColor(C.textPrimary);
     }
-    this.hudGoldValue?.setText(`${this.gold}`);
+    this.hudGoldValue?.setText(`${formatCount(this.gold)}`);
     this.hudGoldValue?.setColor(this.gold < 100 ? C.danger : C.gold);
     this.hudLivesValue?.setText(`${this.lives}/${this.maxLives}`);
     // Urgent at low lives, but no continuous flashing (§21).
     this.hudLivesValue?.setColor(this.lives <= 5 ? C.danger : C.textPrimary);
-    this.hudScoreValue?.setText(`${this.scoreSoFar()}`);
+    this.hudScoreValue?.setText(`${formatCount(this.scoreSoFar())}`);
+    this.fitHudMetrics();
     this.hudDiff?.setText(this.campaign ? `Level ${this.campaign.definition.level}` : d.label);
     const bits: string[] = [];
     if (import.meta.env.DEV && this.qaCampaignFixture) bits.push(`DEV CAMPAIGN FIXTURE · L${this.qaCampaignFixture.level} · unsaved`);
@@ -1278,7 +1432,7 @@ export class GameScene extends Phaser.Scene {
     if (this.pendingMeteor) bits.push(this.touchMode ? 'METEOR: TAP TO PREVIEW' : 'METEOR: CLICK BATTLEFIELD');
     const devFixtureLabel = import.meta.env.DEV && this.qaCampaignFixture !== null;
     if (devFixtureLabel && this.layout.compact) this.hudStatus?.setPosition(8, this.layout.hud + 4).setWordWrapWidth(this.layout.width - 16);
-    this.hudStatus?.setText(bits.join(' · ')).setVisible(bits.length > 0 && (!(this.layout.compact && this.compactBossActive) || devFixtureLabel));
+    this.hudStatus?.setText(bits.join(' · ')).setVisible(bits.length > 0 && !(this.layout.compact && this.compactBossActive && this.bossHudReservedHeight > 0) && (!(this.layout.compact && this.compactBossActive) || devFixtureLabel));
     if (!this.waveActive) {
       this.startBtnLabel?.setText(`Start Wave ${this.wave + 1}`);
       this.startBtn?.setFillStyle(0x19232d, 1).setStrokeStyle(2, 0xd7aa4e, 1);
@@ -1286,6 +1440,7 @@ export class GameScene extends Phaser.Scene {
       this.startBtnLabel?.setText(`Wave ${this.wave} · In battle`);
       this.startBtn?.setFillStyle(0x121920, 1).setStrokeStyle(1, 0x2c3945, 1);
     }
+    if (this.layout.portraitBossCommands) this.startBtnLabel?.setText('Wave');
     this.startBtnLabel?.setVisible(true);
     this.tweens.timeScale = this.paused || this.pausedByModal ? 0 : this.speed;
     this.time.paused = this.paused || this.pauseState.has('background');
@@ -1296,19 +1451,48 @@ export class GameScene extends Phaser.Scene {
 
   // ---------- bottom command tray (80px): build + relics + wave action ----------
   private drawTowerPanel(): void {
+      this.bottomCommandObjects.forEach(object => object.destroy());
+      this.bottomCommandObjects = [];
       this.towerTray?.destroy();
+      this.towerTray = null;
+      const {x,y,width}=this.layout.waveBounds;
+      const addBottomCommand = <T>(draw: () => T): T => {
+        const before = this.uiRoot!.list.length;
+        const result = draw();
+        this.bottomCommandObjects.push(...this.uiRoot!.list.slice(before));
+        return result;
+      };
+      if (this.layout.portraitBossCommands) {
+        addBottomCommand(() => panel(this,this.uiRoot!,x,y,width,52));
+        const inset = 8, gap = 4;
+        const buttonWidth = (width - inset * 2 - gap * 3) / 4;
+        const rowButton = (index: number, label: string, action: () => void, kind: 'primary' | 'secondary' = 'secondary') => {
+          const choice = addBottomCommand(() => button(this,this.uiRoot!,x + inset + index * (buttonWidth + gap),y + 4,buttonWidth,label,action,kind,44));
+          choice.text.setWordWrapWidth(buttonWidth - 8).setAlign('center');
+          return choice;
+        };
+        rowButton(0,'Build',()=>this.openSheet('build'));
+        rowButton(1,'Relics',()=>this.openSheet('relics'));
+        const wave = rowButton(2,'Wave',()=>{
+          if (this.waveActive || this.pauseState.blocked || this.pendingMeteor || (!this.auto.enabled && this.vault.pending.length)) { this.openSheet('next'); return; }
+          this.startNextWave();
+        },'primary');
+        this.startBtn = wave.box; this.startBtnLabel = wave.text;
+        rowButton(3,'More',()=>this.openSheet('more'));
+        return;
+      }
       this.towerTray=new TowerTray(this,this.uiRoot!,this.layout.trayBounds,(input,id)=>this.beginTowerDrag(input,id));
       this.towerTray.refresh(this.gold,this.placingTowerId as TowerId|null);
-      const {x,y,width,height}=this.layout.waveBounds;
-      panel(this,this.uiRoot!,x,y,width,height);
-      button(this,this.uiRoot!,x+4,y+8,54,'Relics',()=>this.openSheet('relics'));
-      const wave = button(this, this.uiRoot!, x+62, y + 8, width-124, '', () => {
+      const {x:waveX,y:waveY,width:waveWidth,height}=this.layout.waveBounds;
+      addBottomCommand(() => panel(this,this.uiRoot!,waveX,waveY,waveWidth,height));
+      addBottomCommand(() => button(this,this.uiRoot!,waveX+4,waveY+8,54,'Relics',()=>this.openSheet('relics')));
+      const wave = addBottomCommand(() => button(this, this.uiRoot!, waveX+62, waveY + 8, waveWidth-124, '', () => {
         if (this.waveActive || this.pauseState.blocked || this.pendingMeteor || (!this.auto.enabled && this.vault.pending.length)) { this.openSheet('next'); return; }
         this.startNextWave();
-      }, 'primary', 44);
+      }, 'primary', 44));
       this.startBtn = wave.box; this.startBtnLabel = wave.text;
-      wave.text.setWordWrapWidth(width-140).setAlign('center');
-      button(this, this.uiRoot!, x+width-58, y + 8, 54, 'More', () => this.openSheet('more'), 'secondary', 44);
+      wave.text.setWordWrapWidth(waveWidth-140).setAlign('center');
+      addBottomCommand(() => button(this, this.uiRoot!, waveX+waveWidth-58, waveY + 8, 54, 'More', () => this.openSheet('more'), 'secondary', 44));
   }
 
   private drawCatalog(): void {
@@ -1336,7 +1520,7 @@ export class GameScene extends Phaser.Scene {
       panel(this,c,0,0,w,h).setInteractive().on('pointerdown',(_p:unknown,_x:number,_y:number,e:Phaser.Types.Input.EventData)=>e.stopPropagation());
       c.add(this.add.text(8,6,`${t.cfg.name} · Level ${t.level}`,style(14,C.textPrimary,true)));
       const next=towerProgressionView(t,this.purchaseContext(),this.wavesCompleted,this.towers).actions[0];
-      c.add(this.add.text(8,26,next?.nextStats?`Damage ${t.stats.damage} → ${next.nextStats.damage} · Range ${t.stats.range} → ${next.nextStats.range}`:'View progression and requirements',style(14,C.textSecondary)).setWordWrapWidth(w-16));
+      c.add(this.add.text(8,26,next?.nextStats?`Damage ${formatQuantity(t.stats.damage,1)} → ${formatQuantity(next.nextStats.damage,1)} · Range ${formatQuantity(t.stats.range,1)} → ${formatQuantity(next.nextStats.range,1)}`:'View progression and requirements',style(14,C.textSecondary)).setWordWrapWidth(w-16));
       button(this,c,8,58,w-128,this.inspectorPrimaryLabel(t),()=>this.inspectorPrimaryAction(),'primary');
       button(this,c,w-112,58,60,'Details',()=>this.openSheet('tower'));
       button(this,c,w-48,58,44,'×',()=>{this.selectedTower=null;this.refreshInfoPanel();});
@@ -1367,19 +1551,37 @@ export class GameScene extends Phaser.Scene {
   }
 
   private drawControls(): void {
+    this.topControlObjects.forEach(object=>object.destroy()); this.topControlObjects=[];
+    const firstObject=this.uiRoot!.list.length;
+    const remember=():void=>{this.topControlObjects=this.uiRoot!.list.slice(firstObject);};
     const w = this.layout.width;
-    const portrait=this.layout.width<this.layout.height&&this.layout.narrow;
-    const y = portrait ? 54 : 6;
-    if(this.layout.compact&&!portrait){
-      this.autoButton=button(this,this.uiRoot!,w-252,y,84,this.auto.enabled?'Auto ON':'Auto OFF',()=>this.setAutoEnabled(!this.auto.enabled));
-      button(this,this.uiRoot!,w-164,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
-      button(this,this.uiRoot!,w-72,y,64,'Pause',()=>this.togglePauseMenu());return;
+    const portrait=this.layout.stackedHud;
+    const y = this.layout.safe.top + (portrait ? 54 + this.layout.bossStatusHeight : 6);
+    if (this.layout.compact && !portrait) {
+      this.autoButton = button(this, this.uiRoot!, w - 252, y, 84, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => this.setAutoEnabled(!this.auto.enabled));
+      this.speedBtnLabel = null;
+      button(this, this.uiRoot!, w - 164, y, 88, 'Overview', () => { this.cancelGesture(); this.cameraView.reset(); this.applyView(); });
+      button(this, this.uiRoot!, w - 72, y, 64, 'Pause', () => this.togglePauseMenu());
+      remember(); return;
+    }
+    if(portrait){
+      const left=this.layout.safe.left+8,available=w-this.layout.safe.left-this.layout.safe.right-16;
+      const width=(available-12)/4;
+      const control=(i:number,label:string,action:()=>void)=>{
+        const result=button(this,this.uiRoot!,left+i*(width+4),y,width,label,action);
+        result.text.setFontSize(12);return result;
+      };
+      control(0,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
+      this.autoButton=control(1,this.auto.enabled?'Auto ON':'Auto OFF',()=>this.setAutoEnabled(!this.auto.enabled));
+      this.speedBtnLabel=control(2,`${this.speed}×`,()=>this.cycleSpeed()).text;
+      control(3,'Pause',()=>this.togglePauseMenu());remember();return;
     }
     this.autoButton = button(this, this.uiRoot!, w - 248, y, 88, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => this.setAutoEnabled(!this.auto.enabled));
     this.speedBtnLabel = button(this, this.uiRoot!, w - 152, y, 64, `${this.speed}×`, () => this.cycleSpeed()).text;
     button(this, this.uiRoot!, w - 80, y, 68, 'Pause', () => this.togglePauseMenu());
     if(portrait)button(this,this.uiRoot!,8,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
     else button(this,this.uiRoot!,w-344,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
+    remember();
   }
 
   private speedBtnLabel: Phaser.GameObjects.Text | null = null;
@@ -1396,7 +1598,8 @@ export class GameScene extends Phaser.Scene {
 
   private autoDetail(): string {
     const base = this.auto.enabled ? `Auto ON · ${this.autoShortStatus()}` : 'Auto OFF';
-    return `${base} · ${this.vault.pending.length} queued · A toggles Auto`;
+    const stats=this.layout.compact?`\nWave ${this.wave}/${this.campaign?.waveCount ?? 30}\nGold ${formatCount(this.gold)}\nLives ${this.lives}/${this.maxLives}\n${this.campaign?'Combat score':'Score'} ${formatCount(this.scoreSoFar())}`:'';
+    return `${base} · ${this.vault.pending.length} queued · A toggles Auto${stats}`;
   }
 
   private refreshAutoDisplay(): void {
@@ -1510,7 +1713,7 @@ export class GameScene extends Phaser.Scene {
     const width = Math.min(440, this.layout.field.width - 24);
     const c = this.add.container(12, this.layout.height - this.layout.tray - 56); this.uiRoot!.add(c);
     panel(this, c, 0, 0, width, 48);
-    c.add(this.add.text(12, 8, `Place ${cfg.name} · ${cfg.levels[0].cost} gold`, style(14, C.textPrimary, true)));
+    c.add(this.add.text(12, 8, `Place ${cfg.name} · ${formatCount(cfg.levels[0].cost)} gold`, style(14, C.textPrimary, true)));
     c.add(this.add.text(12, 28, 'Choose a clearing. Escape cancels.', style(12, C.textSecondary)));
     button(this, c, width - 56, 2, 44, '×', () => { this.placingTowerId = null; this.hideGhost(); this.refreshPlots(); this.refreshPlacePanel(); this.drawCatalog(); });
     this.placePanel = c;
@@ -1559,7 +1762,7 @@ export class GameScene extends Phaser.Scene {
       const commandWidth = this.layout.width - 440;
       const bw = (commandWidth - 8) / 2;
       button(this, commands, 0, 0, bw, this.inspectorPrimaryLabel(t), () => this.inspectorPrimaryAction(), 'primary', 44);
-      button(this, commands, bw + 8, 0, bw, `Sell · ${investedRefund(t.progression)} gold`, () => this.sellSelected(), 'danger', 44);
+      button(this, commands, bw + 8, 0, bw, `Sell · ${formatCount(investedRefund(t.progression))} gold`, () => this.sellSelected(), 'danger', 44);
       return;
     }
     c.add(this.add.image(40, 40, towerPortraitKey(t.towerId)).setDisplaySize(56, 56));
@@ -1619,7 +1822,7 @@ export class GameScene extends Phaser.Scene {
     this.towers.push(tw);
     this.occupied.add(plotIndex);
     SoundManager.get().build();
-    this.floatText(p.x, p.y - 28, `-${cost} gold`, C.gold);
+    this.floatText(p.x, p.y - 28, `-${formatCount(cost)} gold`, C.gold);
     this.placingTowerId = null;
     this.selectedTower = tw; // deliberate build-then-inspect
     this.refreshInfoPanel();
@@ -1648,7 +1851,7 @@ export class GameScene extends Phaser.Scene {
     this.gold = result.gold; tower.progression = result.state;
     if (evolved) tower.counter = { successes: 0 };
     SoundManager.get().upgrade();
-    this.floatText(tower.x, tower.y - 30, `-${result.cost} gold`, C.gold);
+    this.floatText(tower.x, tower.y - 30, `-${formatCount(result.cost)} gold`, C.gold);
     this.refreshTowerVisual(tower);
     this.refreshInfoPanel();
     this.updateHUD();
@@ -1680,7 +1883,7 @@ export class GameScene extends Phaser.Scene {
     const sv = investedRefund(t.progression);
     this.gold += sv;
     SoundManager.get().sell();
-    this.floatText(t.x, t.y - 30, `+${sv} gold`, C.gold);
+    this.floatText(t.x, t.y - 30, `+${formatCount(sv)} gold`, C.gold);
     this.evolutionCombat.removeOwner(t.id);
     t.view?.destroy(true);
     t.shadow?.destroy();
@@ -1751,8 +1954,9 @@ export class GameScene extends Phaser.Scene {
     if (source === 'auto' && (!this.auto.enabled || expectedRunId !== this.runId || expectedAutoRevision !== this.auto.revision)) return;
     if (this.ended || this.waveActive || this.paused || this.pausedByModal || this.modal || this.pendingMeteor || (!this.auto.enabled && this.vault.pending.length)) return;
     if (this.isRunBlocked()) return;
-    // Last: startWave records siege state, so it only runs once the scene will start the wave.
-    if (!this.siege.startWave(this.wave + 1)) return;
+    // Classic uses the 30-wave siege state machine. Campaign battles have their own
+    // finite wave budget and must not inherit the Classic cap or its victory phase.
+    if (!this.campaign && !this.siege.startWave(this.wave + 1)) return;
     this.auto.cancelCountdown();
     this.wave++;
     const d = getDifficulty(this.difficultyId);
@@ -1778,13 +1982,12 @@ export class GameScene extends Phaser.Scene {
     const shadow = this.add.ellipse(e.x, e.y + e.radius * 0.7, e.radius * 2.1, e.radius * 0.9, 0x000000, 0.3).setDepth(3);
     const visual = buildEnemyVisual(this, e.archetype, e.campaignId ?? undefined);
     const { view, body, bobAmp, bobFreq, rockAmp } = visual;
-    view.setData('enemyVisual', visual);
+    view.setData({ enemyVisual: visual, isBoss: e.isBoss, isElite:e.isElite });
     const edge = this.add.image(0, 1, visual.sprite.texture.key, visual.sprite.frame.name).setOrigin(0.5, 1)
       .setScale(visual.sprite.scaleX * 1.045).setTint(0x080c10).setAlpha(0.55);
     body.addAt(edge, 0); view.setData('silhouetteEdge', edge);
     const point = this.enemyRenderPoint(e);
     view.setPosition(point.x, point.y).setDepth(3 + point.y / 1000);
-    this.projectEntity(view);
     const slowRing = this.add.ellipse(e.x, e.y, e.radius * 2.5, e.radius * 2.5, 0x000000, 0)
       .setStrokeStyle(2, 0x9fd4e8, 0.85).setDepth(3).setVisible(false);
     const hpbar = this.add.graphics().setDepth(5);
@@ -1796,10 +1999,12 @@ export class GameScene extends Phaser.Scene {
     view.setData({ bobAmp, bobFreq, rockAmp });
     this.worldRoot?.add([shadow, slowRing, view, hpbar]);
     this.worldRoot?.sort('depth');
+    this.projectEntity(view);
   }
 
   /** Immediate teardown (leaks, scene transitions). Deaths use startDeathAnim. */
   private destroyView(e: Enemy): void {
+    this.campaignScheduledIds.delete(e.id);
     e.view?.destroy(true);
     e.shadow?.destroy();
     e.slowRing?.destroy();
@@ -1815,6 +2020,7 @@ export class GameScene extends Phaser.Scene {
   private startDeathAnim(e: Enemy): void {
     if (!e.view) return;
     const visual = e.view.getData('enemyVisual') as EnemyView | undefined;
+    if(visual)e.view.setData('deathScreenScale',(e.view.getData('baseScaleX') as number ?? 1)*this.cameraView.fitScale);
     const duration = visual?.playAction('death') ?? (e.isBoss ? 900 : 320);
     this.dying.push({ view: e.view, shadow: e.shadow, ring: e.slowRing, bar: e.hpBar, t0: this.gameTimeMs, duration });
     e.hpBar?.clear();
@@ -1844,12 +2050,12 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private spawnEnemy(enemyId: string, hpBonus: number): Enemy {
+  private spawnEnemy(enemyId: string, hpBonus: number, campaignVisualId?: string): Enemy {
     if (this.campaign && enemyId !== 'pilferer') {
       const cfg = getCampaignEnemy(enemyId);
       const hp = Math.round(cfg.baseHp * (1 + CAMPAIGN_BATTLE_TUNING.hpGrowthPerWave * (this.wave - 1) + CAMPAIGN_BATTLE_TUNING.levelHpGrowth * (this.campaign.definition.level - 1)) * hpBonus);
       const enemy = new Enemy(cfg.visualArchetype, hp, cfg.baseSpeed * (1 + CAMPAIGN_BATTLE_TUNING.speedGrowthPerWave * (this.wave - 1)), cfg.baseReward, cfg);
-      enemy.campaignId = cfg.id; enemy.slowResistance = cfg.slowResistance;
+      enemy.campaignId = campaignVisualId ?? cfg.id; enemy.slowResistance = cfg.slowResistance;
       enemy.x = this.map.spawn.x; enemy.y = this.map.spawn.y;
       this.campaignBosses.register(enemy, this.gameTimeMs);
       this.makeEnemyVisual(enemy); this.enemies.push(enemy); return enemy;
@@ -1874,20 +2080,239 @@ export class GameScene extends Phaser.Scene {
 
   // ---------- boss bar (ref 08: skull banner bar with numeric HP) ----------
   private bossBarHp: Phaser.GameObjects.Text | null = null;
+  private bossBarTextWrapWidth = 0;
+  private bossCompactStatusWidth = 0;
 
   private drawBossBar(): void {
+    this.bossCompactStatusWidth = 0;
     const field = this.layout.field;
     const width = Math.min(440, field.width - 16);
-    const c = this.add.container(field.x + (field.width - width) / 2, field.y + 8).setVisible(false);
+    const c = this.add.container(field.x + (field.width - width) / 2, this.layout.compact ? field.y + 32 : field.y).setVisible(false);
     this.uiRoot!.add(c);
     this.bossBarBackdrop = this.add.rectangle(0, 0, width, 76, C.bgPanel, 1).setOrigin(0).setStrokeStyle(1, 0xd85f59);
     this.bossBarText = this.add.text(12, 8, '', style(16, C.textPrimary, true)).setWordWrapWidth(width - 24);
     this.bossBarHp = this.add.text(12, 34, '', style(14, C.textPrimary, true)).setWordWrapWidth(width - 24);
+    this.bossBarTextWrapWidth = width - 24;
     this.bossBarTrack = this.add.rectangle(12, 60, width - 24, 8, 0x493438).setOrigin(0);
     this.bossBarFill = this.add.rectangle(12, 60, width - 24, 8, 0xee7b71).setOrigin(0);
     c.add([this.bossBarBackdrop, this.bossBarText, this.bossBarHp, this.bossBarTrack, this.bossBarFill]);
     this.bossBar = c; this.bossPanelHeight = 0;
     this.updateBossBar();
+  }
+
+  private bossFitSupports(boss: Enemy): FitSupport[] {
+    const supports: FitSupport[] = [];
+    const radius = BUILD_PLOT_POLICY.radius + BUILD_PLOT_POLICY.strokeWidth / 2;
+    const towerScale = 1.25;
+    const towerGeometry = TOWER_LIST.flatMap(tower => [1,2,3,4].flatMap(level => [1,this.towerVisualTier].map(tier => towerArtGeometry(tower.id,level,tier as 1|2|3))));
+    const towerLeft = Math.min(-31,...towerGeometry.map(g=>g.left));
+    const towerRight = Math.max(31,...towerGeometry.map(g=>g.left+g.width));
+    // Existing evolution crests extend 34px above their authored tower top.
+    const towerTop = Math.min(...towerGeometry.map(g=>g.top)) - 34;
+    const towerBottom = Math.max(13,...towerGeometry.map(g=>g.top+g.height));
+    for(const point of this.map.buildable){
+      supports.push({bounds:{x:point.x-radius,y:point.y-radius,width:radius*2,height:radius*2}});
+      supports.push({bounds:{x:point.x+towerLeft*towerScale,y:point.y+towerTop*towerScale,
+        width:(towerRight-towerLeft)*towerScale,height:(towerBottom-towerTop)*towerScale}});
+    }
+    for(let i=1;i<this.map.waypoints.length;i++){
+      const a=this.map.waypoints[i-1],b=this.map.waypoints[i];
+      const r=this.map.id===MAP1.id?CLASSIC_ROAD_ENVELOPE.radii[i-1]:BUILD_PLOT_POLICY.campaignRoadRadius;
+      supports.push({bounds:{x:Math.min(a.x,b.x)-r,y:Math.min(a.y,b.y)-r,width:Math.abs(a.x-b.x)+r*2,height:Math.abs(a.y-b.y)+r*2}});
+    }
+    const visual=boss.view?.getData('enemyVisual') as EnemyView|undefined;
+    if(visual){
+      const art=enemyVisualSupport(visual),cap=boss.view!.getData('bossResponsiveCap') as number ?? 1;
+      const smallest=Math.min(...[...visual.frameRectangles.right,...visual.frameRectangles.left].map(frame=>Math.max(frame.width,frame.height)*visual.sprite.scaleX));
+      const multiplier=Math.max(1,24/smallest)*cap;
+      const field=this.map.field;
+      // Boss ingress/egress at the terrain edge is masked normally. Include all
+      // playable interior route anchors plus every stable visual-rank offset.
+      const points=this.map.waypoints.map(p=>({x:Math.max(field.x+64,Math.min(field.x+field.width-64,p.x)),
+        y:Math.max(field.y+64,Math.min(field.y+field.height-64,p.y))}));
+      const left=Math.min(...points.map(p=>p.x))-20,top=Math.min(...points.map(p=>p.y))-20;
+      const right=Math.max(...points.map(p=>p.x))+20,bottom=Math.max(...points.map(p=>p.y))+20;
+      supports.push({bounds:{x:left,y:top,width:right-left,height:bottom-top},pixels:{
+        x:art.x*multiplier,y:art.y*multiplier-6,width:art.width*multiplier,height:art.height*multiplier+6}});
+    }
+    return supports;
+  }
+
+  private refreshBossFit(boss: Enemy): void {
+    if(!this.layout.compact || this.bossFitBoss===boss&&this.bossFitMap===this.map)return;
+    if(boss.view)this.projectEntity(boss.view);
+    this.cameraView.setContentFit(this.bossFitSupports(boss));
+    this.bossFitBoss=boss;this.bossFitMap=this.map;
+    this.applyView();
+  }
+
+  private updateCompactBossBar(boss: Enemy, pct: number): void {
+    if(!this.bossBarText || !this.bossBarHp || !this.bossBarBackdrop)return;
+    const stacked=this.layout.stackedHud;
+    const width=this.layout.field.width-(stacked?16:268);
+    this.bossBarText.setFontSize(12);
+    this.bossBarHp.setFontSize(12).setWordWrapWidth(0);
+    if(!this.bossCompactStatusWidth){
+      const text=this.bossBarHp.text;
+      this.bossBarHp.setText(this.campaign?'HP 100% · Phase 99':'HP 100% · Enraged');
+      this.bossCompactStatusWidth=this.bossBarHp.width;
+      this.bossBarHp.setText(text);
+    }
+    const nameWidth=Math.max(44,width-32-this.bossCompactStatusWidth);
+    this.bossBarText.setWordWrapWidth(nameWidth).setPosition(12,0);
+    const lineHeight=Math.max(this.bossBarText.height,this.bossBarHp.height);
+    const statusHeight=Math.max(24,lineHeight+8);
+    const regular=gameLayout(this.layout.width,this.layout.height,this.layout.safe);
+    const needsCommands=stacked&&regular.field.height-statusHeight<200;
+    this.setBossLayout(needsCommands,statusHeight);
+    this.refreshBossFit(boss);
+    const y=this.layout.safe.top+(stacked?49:21);
+    this.bossBar?.setPosition(this.layout.field.x+8,y);
+    this.bossBarHp.setPosition(width-12-this.bossCompactStatusWidth,0);
+    const trackY=lineHeight+3;
+    this.bossBarTrack?.setPosition(12,trackY).setSize(width-24,4);
+    this.bossBarFill?.setPosition(12,trackY).setDisplaySize((width-24)*pct,4);
+    this.bossPanelHeight=trackY+7;
+    this.bossBarBackdrop.setSize(width,this.bossPanelHeight);
+    this.hudStatus?.setVisible(false);
+    this.repositionBossFloaters(boss);
+  }
+
+  private bossArtBounds(boss: Enemy): { x: number; y: number; width: number; height: number } | null {
+    const visual = boss.view?.getData('enemyVisual') as EnemyView | undefined;
+    const bounds = visual?.sprite.getBounds();
+    if (!bounds || !Number.isFinite(bounds.x) || !Number.isFinite(bounds.y) || bounds.width <= 0 || bounds.height <= 0) return null;
+    const edge = boss.view?.getData('silhouetteEdge') as Phaser.GameObjects.Image | undefined;
+    const edgeBounds = edge?.getBounds();
+    if (edgeBounds && Number.isFinite(edgeBounds.x) && Number.isFinite(edgeBounds.y) && edgeBounds.width > 0 && edgeBounds.height > 0) {
+      const right = Math.max(bounds.x + bounds.width, edgeBounds.x + edgeBounds.width);
+      const bottom = Math.max(bounds.y + bounds.height, edgeBounds.y + edgeBounds.height);
+      const x = Math.min(bounds.x, edgeBounds.x), y = Math.min(bounds.y, edgeBounds.y);
+      return { x, y, width: right - x, height: bottom - y };
+    }
+    return bounds;
+  }
+
+  private bossHealthBarAnchor(boss: Enemy): Point | null {
+    const bounds = this.bossArtBounds(boss);
+    if (!bounds) return null;
+    return this.cameraView.unproject({ x: bounds.x + bounds.width / 2, y: bounds.y - 4 });
+  }
+
+  private bossSpriteScreenBounds(boss: Enemy): { x: number; y: number; width: number; height: number } | null {
+    const bounds = this.bossArtBounds(boss);
+    if (!bounds) return null;
+    const field = this.layout.field;
+    const x = Math.max(bounds.x, field.x), y = Math.max(bounds.y, field.y);
+    const right = Math.min(bounds.x + bounds.width, field.x + field.width);
+    const bottom = Math.min(bounds.y + bounds.height, field.y + field.height);
+    if (right <= x || bottom <= y) return null;
+    return { x, y, width: right - x, height: bottom - y };
+  }
+
+  private bossHeadroomForFit(boss: Enemy | undefined): number {
+    if (!boss || !this.bossArtBounds(boss)) return 0;
+    const field = this.layout.field;
+    const maxHeadroom = Math.max(0, field.height - Math.min(field.height, 44));
+    const targetTop = field.y + 6;
+    const initial = {
+      zoom: this.cameraView.zoom,
+      center: { ...this.cameraView.center },
+      headroom: this.cameraView.topHeadroom
+    };
+    const restoreInitialCamera = (): void => {
+      this.cameraView.zoom = initial.zoom;
+      this.cameraView.center = { ...initial.center };
+      this.cameraView.setTopHeadroom(initial.headroom);
+      this.applyView();
+    };
+
+    const fitsAt = (headroom: number): boolean => {
+      this.cameraView.zoom = initial.zoom;
+      this.cameraView.center = { ...initial.center };
+      this.cameraView.setTopHeadroom(headroom);
+      this.applyView();
+      const bounds = this.bossArtBounds(boss);
+      return !!bounds && bounds.y >= targetTop;
+    };
+
+    // Measure the actual capped renderer bounds under the current pan/zoom. The
+    // headroom changes camera scale, so each candidate must reproject the boss.
+    if (fitsAt(0)) {
+      restoreInitialCamera();
+      return 0;
+    }
+    if (!fitsAt(maxHeadroom)) {
+      restoreInitialCamera();
+      return maxHeadroom;
+    }
+    let low = 0, high = maxHeadroom;
+    while (low < high) {
+      const middle = Math.floor((low + high) / 2);
+      if (fitsAt(middle)) high = middle;
+      else low = middle + 1;
+    }
+
+    restoreInitialCamera();
+    return low;
+  }
+
+  private rectsOverlap(a: { x: number; y: number; width: number; height: number }, b: { x: number; y: number; width: number; height: number }): boolean {
+    return a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y;
+  }
+
+  private clampFloaterToField(text: Phaser.GameObjects.Text): void {
+    const bounds = text.getBounds();
+    const field = this.layout.field;
+    const minX = field.x + 4, maxX = field.x + field.width - 4;
+    const minY = field.y + 4, maxY = field.y + field.height - 4;
+    let dx = 0, dy = 0;
+    if (bounds.x < minX) dx = minX - bounds.x;
+    else if (bounds.x + bounds.width > maxX) dx = maxX - bounds.x - bounds.width;
+    if (bounds.y < minY) dy = minY - bounds.y;
+    else if (bounds.y + bounds.height > maxY) dy = maxY - bounds.y - bounds.height;
+    if (dx || dy) text.setPosition(text.x + dx, text.y + dy);
+  }
+
+  private placeFloaterClearOfBoss(text: Phaser.GameObjects.Text, boss: Enemy): void {
+    this.clampFloaterToField(text);
+    if (!this.bossBar?.visible || !this.bossBarBackdrop) return;
+    const panel = { x: this.bossBar.x, y: this.bossBar.y, width: this.bossBarBackdrop.width, height: this.bossBarBackdrop.height };
+    const sprite = this.bossSpriteScreenBounds(boss);
+    const textBounds = text.getBounds();
+    const obstacles = [panel, ...(sprite ? [sprite] : []), ...(this.hudStatus?.visible ? [this.hudStatus.getBounds()] : [])];
+    if (!obstacles.some(obstacle => this.rectsOverlap(textBounds, obstacle))) return;
+
+    const halfWidth = textBounds.width / 2;
+    const halfHeight = textBounds.height / 2;
+    const field = this.layout.field;
+    const minX = field.x + halfWidth + 4;
+    const maxX = field.x + field.width - halfWidth - 4;
+    const minY = field.y + halfHeight + 4;
+    const maxY = field.y + field.height - halfHeight - 4;
+    if (minX > maxX || minY > maxY) return;
+    const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
+    const xs = [text.x, minX, maxX, (minX + maxX) / 2,
+      panel.x - halfWidth - 4, panel.x + panel.width + halfWidth + 4,
+      ...(sprite ? [sprite.x - halfWidth - 4, sprite.x + sprite.width + halfWidth + 4] : [])]
+      .map(value => clamp(value, minX, maxX));
+    const ys = [text.y, minY, (minY + maxY) / 2, maxY, panel.y - halfHeight - 4, panel.y + panel.height + halfHeight + 4]
+      .map(value => clamp(value, minY, maxY));
+    const candidates = xs.flatMap(x => ys.map(y => ({ x, y })))
+      .sort((a, b) => (a.x - text.x) ** 2 + (a.y - text.y) ** 2 - ((b.x - text.x) ** 2 + (b.y - text.y) ** 2));
+    for (const point of candidates) {
+      const candidate = { x: point.x - halfWidth, y: point.y - halfHeight, width: textBounds.width, height: textBounds.height };
+      if (obstacles.some(obstacle => this.rectsOverlap(candidate, obstacle))) continue;
+      text.setPosition(point.x, point.y);
+      return;
+    }
+  }
+
+  private repositionBossFloaters(boss?: Enemy): void {
+    for (const floater of this.floaters) {
+      if (boss) this.placeFloaterClearOfBoss(floater.text, boss);
+      else this.clampFloaterToField(floater.text);
+    }
   }
 
   private updateBossBar(): void {
@@ -1898,24 +2323,142 @@ export class GameScene extends Phaser.Scene {
     this.startBtnLabel?.setVisible(true);
     this.bossBar?.setVisible(!!boss);
     if (!boss) {
-      if (compactChanged) { this.updateHUD(); this.drawCatalog(); }
+      const hadTemporaryLayout = this.layout.portraitBossCommands || this.bossHudReservedHeight > 0;
+      if (hadTemporaryLayout) this.setBossLayout(false, 0);
+      else if (compactChanged) { this.updateHUD(); this.drawCatalog(); }
       return;
     }
     const pct = Math.max(0, Math.min(1, boss.maxHp > 0 ? boss.hp / boss.maxHp : 0));
     this.bossBarText?.setText(boss.name);
     this.bossBarHp?.setText(`HP ${Math.ceil(pct * 100)}%${this.campaign ? ` · Phase ${this.campaignBosses.phase(boss.id)}` : pct < 0.3 ? ' · Enraged' : ''}`);
     if (!this.bossBarBackdrop || !this.bossBarText || !this.bossBarHp) return;
-    const width = Math.min(440, this.layout.field.width - 16);
-    const statusY = 8 + this.bossBarText.height + 8;
-    const trackY = statusY + this.bossBarHp.height + 8;
-    const panelHeight = trackY + 16;
+    if(this.layout.compact){this.updateCompactBossBar(boss,pct);return;}
+    const field = this.layout.field;
+    const maxWidth = Math.min(440, field.width - 16);
+    let width = maxWidth;
+    let x = field.x + (field.width - width) / 2;
+    const y = this.layout.hud + 8;
+    const setTextWidth = (nextWidth: number): void => {
+      width = nextWidth;
+      const wrapWidth = width - 24;
+      if (wrapWidth !== this.bossBarTextWrapWidth) {
+        this.bossBarText!.setWordWrapWidth(wrapWidth);
+        this.bossBarHp!.setWordWrapWidth(wrapWidth);
+        this.bossBarTextWrapWidth = wrapWidth;
+      }
+    };
+    const panelHeightAtWidth = (candidateWidth: number): number => {
+      setTextWidth(candidateWidth);
+      const wrappedName = this.bossBarText!.height > 20;
+      const top = wrappedName ? 4 : 8;
+      const gap = wrappedName ? 4 : 8;
+      const trackHeight = wrappedName ? 6 : 8;
+      const bottom = wrappedName ? 4 : 8;
+      const statusY = top + this.bossBarText!.height + gap;
+      const trackY = statusY + this.bossBarHp!.height + gap;
+      return trackY + trackHeight + bottom;
+    };
+    const panelHeight = panelHeightAtWidth(width);
+    const reservedHeight = Math.ceil(panelHeight + 18);
+    const regularField = gameLayout(this.layout.width, this.layout.height, this.layout.safe).field;
+    const needsPortraitBossCommands = this.layout.narrow && this.layout.width < this.layout.height
+      && regularField.height < reservedHeight + 72;
+    if (needsPortraitBossCommands !== this.layout.portraitBossCommands || reservedHeight !== this.bossHudReservedHeight) {
+      this.setBossLayout(needsPortraitBossCommands, reservedHeight);
+    }
+    x = this.layout.field.x + (this.layout.field.width - width) / 2;
+    if (this.layout.compact) this.hudStatus?.setVisible(false);
+
+    const wrappedName = this.bossBarText.height > 20;
+    const top = wrappedName ? 4 : 8;
+    const gap = wrappedName ? 4 : 8;
+    const trackHeight = wrappedName ? 6 : 8;
+    const bottom = wrappedName ? 4 : 8;
+    const statusY = top + this.bossBarText.height + gap;
+    const trackY = statusY + this.bossBarHp.height + gap;
+    const finalPanelHeight = trackY + trackHeight + bottom;
+    this.bossBar?.setPosition(x, y);
     this.bossBarHp.setPosition(12, statusY);
-    this.bossBarTrack?.setPosition(12, trackY);
-    this.bossBarFill?.setPosition(12, trackY).setDisplaySize((width - 24) * pct, 8);
-    this.bossBarBackdrop.setSize(width, panelHeight);
-    const changed = panelHeight !== this.bossPanelHeight;
-    this.bossPanelHeight = panelHeight;
+    this.bossBarTrack?.setPosition(12, trackY).setSize(width - 24, trackHeight);
+    this.bossBarFill?.setPosition(12, trackY).setDisplaySize((width - 24) * pct, trackHeight);
+    this.bossBarBackdrop.setSize(width, finalPanelHeight);
+    this.repositionBossFloaters(boss);
+    const changed = finalPanelHeight !== this.bossPanelHeight;
+    this.bossPanelHeight = finalPanelHeight;
     if (compactChanged || changed) this.drawCatalog();
+  }
+
+  private setBossLayout(portraitBossCommands: boolean, reservedHeight: number): void {
+    const nextLayout = gameLayout(this.layout.width, this.layout.height, this.layout.safe, {
+      portraitBossCommands, bossStatusHeight: this.layout.compact ? reservedHeight : 0
+    });
+    const baseField = nextLayout.field;
+    const inset = this.layout.compact ? 0 : Math.max(0, Math.min(Math.round(reservedHeight), baseField.height - 72));
+    const reservation = this.layout.compact ? reservedHeight : inset;
+    if (portraitBossCommands === this.layout.portraitBossCommands && reservation === this.bossHudReservedHeight) return;
+    const activeSheetScrollOffset = this.sheetKind && this.sheet ? this.sheet.scrollOffset : null;
+    const commandRowChanged = portraitBossCommands !== this.layout.portraitBossCommands;
+    const wasReserved = this.layout.portraitBossCommands || this.bossHudReservedHeight > 0;
+    const willBeReserved = portraitBossCommands || reservation > 0;
+    const cameraSnapshot = this.bossHudCameraBeforeReservation;
+    const currentMatchesReservation = cameraSnapshot
+      && Math.abs(this.cameraView.zoom - cameraSnapshot.reservedZoom) < 0.0001
+      && Math.abs(this.cameraView.center.x - cameraSnapshot.reservedCenter.x) < 0.001
+      && Math.abs(this.cameraView.center.y - cameraSnapshot.reservedCenter.y) < 0.001
+      && this.cameraView.topHeadroom === cameraSnapshot.reservedHeadroom;
+    const restoreCamera = !willBeReserved && !!cameraSnapshot && !!currentMatchesReservation;
+    if (!wasReserved && willBeReserved) {
+      this.bossHudCameraBeforeReservation = {
+        zoom: this.cameraView.zoom,
+        center: { ...this.cameraView.center },
+        headroom: this.cameraView.topHeadroom,
+        reservedZoom: this.cameraView.zoom,
+        reservedCenter: { ...this.cameraView.center },
+        reservedHeadroom: this.cameraView.topHeadroom
+      };
+    } else if (wasReserved && willBeReserved && cameraSnapshot && !currentMatchesReservation) {
+      this.bossHudCameraBeforeReservation = null;
+    }
+    const currentCamera={zoom:this.cameraView.zoom,center:{...this.cameraView.center}};
+    this.bossHudReservedHeight = reservation;
+    this.layout = {
+      ...nextLayout,
+      field: inset > 0
+      ? { ...baseField, y: baseField.y + inset, height: baseField.height - inset }
+      : baseField
+    };
+    this.bossFitBoss=null;this.bossFitMap=null;
+    this.cameraView.setContentFit(null);
+    this.cameraView.setTopHeadroom(0);
+    this.cameraView.zoom=currentCamera.zoom;this.cameraView.center=currentCamera.center;
+    this.cameraView.resize(this.layout.field);
+    if (restoreCamera && cameraSnapshot) {
+      this.cameraView.zoom = cameraSnapshot.zoom;
+      this.cameraView.center = { ...cameraSnapshot.center };
+      this.cameraView.resize(this.layout.field);
+    }
+    this.applyView();
+    for (const view of [...this.towers.map(tower => tower.view), ...this.enemies.map(enemy => enemy.view), this.ghost]) if (view) this.projectEntity(view);
+    const activeBoss = this.enemies.find(enemy => enemy.alive && enemy.isBoss);
+    if (willBeReserved && activeBoss) {
+      if(this.layout.compact)this.refreshBossFit(activeBoss);
+      else this.cameraView.setTopHeadroom(this.bossHeadroomForFit(activeBoss));
+      this.applyView();
+      for (const view of [...this.towers.map(tower => tower.view), ...this.enemies.map(enemy => enemy.view), this.ghost]) if (view) this.projectEntity(view);
+    }
+    if (willBeReserved && this.bossHudCameraBeforeReservation) {
+      this.bossHudCameraBeforeReservation.reservedZoom = this.cameraView.zoom;
+      this.bossHudCameraBeforeReservation.reservedCenter = { ...this.cameraView.center };
+      this.bossHudCameraBeforeReservation.reservedHeadroom = this.cameraView.topHeadroom;
+    } else if (!willBeReserved) this.bossHudCameraBeforeReservation = null;
+    this.fieldMask?.refresh(this.layout.field);
+    if (commandRowChanged) this.drawTowerPanel();
+    if(this.layout.compact){this.drawHUD();this.drawControls();if(this.bossBar)this.uiRoot?.bringToTop(this.bossBar);}
+    this.updateHUD();
+    this.drawCatalog();
+    this.repositionBossFloaters(this.enemies.find(enemy => enemy.alive && enemy.isBoss));
+    this.drawCampaignCallout();
+    if (activeSheetScrollOffset !== null) this.drawSheet(activeSheetScrollOffset);
   }
 
   // ---------- power-ups ----------
@@ -2138,7 +2681,7 @@ export class GameScene extends Phaser.Scene {
       case 'gold_rush': {
         const g = POWERUP_EFFECTS.gold.base + this.wave * POWERUP_EFFECTS.gold.perWave;
         this.gold += g;
-        this.floatText(this.map.width / 2, 160, `Gold Rush! +${g} gold`, C.gold, 20);
+        this.floatText(this.map.width / 2, 160, `Gold Rush! +${formatCount(g)} gold`, C.gold, 20);
         break;
       }
       case 'time_freeze':
@@ -2176,7 +2719,7 @@ export class GameScene extends Phaser.Scene {
       }
       case 'ancient_blessing': {
         const roll = Math.random();
-        if (roll < POWERUP_EFFECTS.blessing.coinChance) { const g = POWERUP_EFFECTS.blessing.goldBase + this.wave * POWERUP_EFFECTS.blessing.goldPerWave; this.gold += g; this.floatText(this.map.width / 2, 160, `Blessing of Coin: +${g} gold`, C.gold, 20); }
+        if (roll < POWERUP_EFFECTS.blessing.coinChance) { const g = POWERUP_EFFECTS.blessing.goldBase + this.wave * POWERUP_EFFECTS.blessing.goldPerWave; this.gold += g; this.floatText(this.map.width / 2, 160, `Blessing of Coin: +${formatCount(g)} gold`, C.gold, 20); }
         else if (roll < POWERUP_EFFECTS.blessing.repairThreshold) { this.lives = Math.min(d.maxLives, this.lives + POWERUP_EFFECTS.blessing.repairLives); this.floatText(this.map.width / 2, 160, 'Blessing of Stone: +2 lives', C.health, 20); }
         else { this.surgeUntil = this.gameTimeMs + POWERUP_EFFECTS.surge.durationMs; this.floatText(this.map.width / 2, 160, 'Blessing of Stars: Surge', C.arcane, 20); }
         break;
@@ -2425,7 +2968,8 @@ export class GameScene extends Phaser.Scene {
   private damageEnemy(e: Enemy, raw: number, type: DamageType, shot?: CampaignShot): number {
     if (this.ended || !e.alive) return 0;
     const slowed = this.evolutionCombat.statuses(e.id, this.gameTimeMs).slowFactor > 0;
-    const dealt = this.evolutionCombat.damage(raw * e.damageTakenMultiplier * (slowed ? shot?.specialization?.slowedTargetDamageMultiplier ?? 1 : 1), type, e, this.gameTimeMs, shot);
+    const campaignResistance = this.campaign ? this.campaignBosses.incomingDamageMultiplier(e.id, type, this.gameTimeMs) : 1;
+    const dealt = this.evolutionCombat.damage(raw * e.damageTakenMultiplier * campaignResistance * (slowed ? shot?.specialization?.slowedTargetDamageMultiplier ?? 1 : 1), type, e, this.gameTimeMs, shot);
     e.hp -= dealt;
     e.flashUntil = this.gameTimeMs + 110; // 50–100ms-class hit reaction (§63)
     if (e.hp <= 0 && e.alive) this.killEnemy(e);
@@ -2435,8 +2979,15 @@ export class GameScene extends Phaser.Scene {
   private killEnemy(e: Enemy): void {
     if (this.ended || !e.alive) return;
     e.alive = false;
-    if (this.campaign && e.campaignId === this.campaign.definition.bossEnemyId) this.campaign.bossKilled = true;
-    this.campaignBosses.remove(e.id);
+    const scheduled = this.campaignScheduledIds.delete(e.id);
+    if (this.campaign && scheduled) {
+      this.campaignScheduledKills++;
+      if (e.campaignId === this.campaign.definition.bossEnemyId) {
+        this.campaignMissionBossKills = 1;
+        this.campaign.bossKilled = true;
+      }
+    }
+    this.clearCampaignOwnedSummons(this.campaignBosses.remove(e.id));
     this.evolutionCombat.removeEnemy(e.id);
     const siegeWave = this.scheduledBossIds.get(e.id);
     if (siegeWave !== undefined) { this.siege.bossKilled(siegeWave); this.scheduledBossIds.delete(e.id); this.refreshInfoPanel(); }
@@ -2456,7 +3007,7 @@ export class GameScene extends Phaser.Scene {
     }
     SoundManager.get().die();
     const point = this.enemyImpactPoint(e);
-    this.floatTextForEnemy(e, `+${reward} gold`, C.gold, 14);
+    this.floatTextForEnemy(e, `+${formatCount(reward)} gold`, C.gold, 14);
     this.impactBurst(point.x, point.y, e.isBoss ? 0xd85f59 : 0xcfc4ae, e.isBoss ? 10 : 5);
     this.startDeathAnim(e);
     this.updateHUD();
@@ -2474,7 +3025,11 @@ export class GameScene extends Phaser.Scene {
     const sy = this.layout.field.height / 584;
     const displayedHeight = (visual?.maxVisualDimension ?? enemy.radius * 2) * (enemy.view?.scaleY ?? 1) * sy;
     const point = this.cameraView.project(this.enemyRenderPoint(enemy));
-    this.floatTextAtViewport({ x: point.x, y: point.y - displayedHeight - Math.max(13, size * 0.9) }, msg, color, size);
+    const bossBounds = enemy.isBoss ? this.bossArtBounds(enemy) : null;
+    this.floatTextAtViewport({
+      x: bossBounds ? bossBounds.x + bossBounds.width / 2 : point.x,
+      y: bossBounds ? bossBounds.y - Math.max(13, size * 0.9) : point.y - displayedHeight - Math.max(13, size * 0.9)
+    }, msg, color, size);
   }
 
   private floatTextAtViewport(point: { x: number; y: number }, msg: string, color: string, size: number): void {
@@ -2490,6 +3045,9 @@ export class GameScene extends Phaser.Scene {
     const text = this.add.text(Math.max(100, Math.min(this.layout.field.width - 100, point.x)), Math.max(minY, Math.min(maxY, point.y)), msg,
       { ...style(pxSize, color, true), stroke: '#0A0E12', strokeThickness: 3 }).setOrigin(0.5).setDepth(40);
     this.uiRoot.add(text); this.floaters.push({ text, until: this.gameTimeMs + 1400 });
+    const boss = this.enemies.find(enemy => enemy.alive && enemy.isBoss);
+    if (boss) this.placeFloaterClearOfBoss(text, boss);
+    else this.clampFloaterToField(text);
   }
 
   private fireTowers(dt: number): void {
@@ -2554,17 +3112,69 @@ export class GameScene extends Phaser.Scene {
 
   private tickCampaignBosses(): void {
     for (const event of this.campaignBosses.tick(this.enemies, this.towers, this.gameTimeMs)) {
-      if (event.boss.campaignId === 'ashcaller' || event.boss.campaignId === 'frost_shaman') {
-        (event.boss.view?.getData('enemyVisual') as EnemyView | undefined)?.playAction('buff');
-      }
       this.showCampaignCallout(event.text);
-      if (!event.summon) continue;
-      for (let i = 0; i < event.summon.count; i++) {
-        const add = this.spawnEnemy(event.summon.enemyId, 1);
-        add.x = event.boss.x; add.y = event.boss.y;
-        add.waypointIndex = event.boss.waypointIndex; add.distanceTraveled = event.boss.distanceTraveled;
+      if (event.summon) {
+        const visualId = event.summon.kind === 'regent-clone' ? 'umbral_regent' : undefined;
+        for (let i = 0; i < event.summon.count; i++) {
+          const add = this.spawnEnemy(event.summon.enemyId, event.summon.hpBonus ?? 1, visualId);
+          add.x = event.boss.x; add.y = event.boss.y;
+          add.waypointIndex = event.boss.waypointIndex; add.distanceTraveled = event.boss.distanceTraveled;
+          if (event.summon.kind === 'regent-clone' || event.summon.kind === 'echo-decoy') {
+            const ownerId = event.summon.ownerId ?? event.boss.id;
+            add.campaignBossOwnerId = ownerId;
+            add.campaignCloneKind = event.summon.kind === 'regent-clone' ? 'regent_echo' : 'echo_decoy';
+            add.name = event.summon.kind === 'regent-clone' ? 'Regent Echo' : 'Echo Decoy';
+            add.reward = 0; add.isElite = false;
+            this.campaignBosses.trackOwnedSummon(ownerId, add.id, event.summon.kind);
+          }
+        }
+      }
+      if (event.routeAdvanceFraction) this.advanceEnemyAlongRoute(event.boss, event.routeAdvanceFraction);
+      if (event.presentationAction) {
+        (event.boss.view?.getData('enemyVisual') as EnemyView | undefined)?.playAction(event.presentationAction);
       }
     }
+  }
+
+  private advanceEnemyAlongRoute(enemy: Enemy, routeFraction: number): void {
+    const waypoints = this.map.waypoints;
+    if (!enemy.alive || waypoints.length < 2 || !Number.isFinite(routeFraction) || routeFraction <= 0) return;
+    let totalDistance = 0;
+    for (let index = 1; index < waypoints.length; index++) totalDistance += Math.hypot(waypoints[index].x - waypoints[index - 1].x, waypoints[index].y - waypoints[index - 1].y);
+    const guardDistance = totalDistance * CAMPAIGN_BOSS_TUNING.sovereignStrongholdGuardFraction;
+    const currentDistance = Math.max(0, enemy.distanceTraveled);
+    if (currentDistance >= guardDistance) return;
+    const destinationDistance = Math.min(guardDistance, currentDistance + totalDistance * Math.min(routeFraction, CAMPAIGN_BOSS_TUNING.sovereignRouteFraction));
+    if (destinationDistance <= currentDistance) return;
+
+    let traversed = 0;
+    for (let index = 1; index < waypoints.length; index++) {
+      const start = waypoints[index - 1], end = waypoints[index];
+      const segmentLength = Math.hypot(end.x - start.x, end.y - start.y);
+      if (destinationDistance < traversed + segmentLength) {
+        const progress = segmentLength > 0 ? (destinationDistance - traversed) / segmentLength : 0;
+        enemy.x = start.x + (end.x - start.x) * progress;
+        enemy.y = start.y + (end.y - start.y) * progress;
+        enemy.waypointIndex = index;
+        enemy.distanceTraveled = destinationDistance;
+        enemy.heading = Math.atan2(end.y - start.y, end.x - start.x);
+        return;
+      }
+      traversed += segmentLength;
+    }
+  }
+
+  private clearCampaignOwnedSummons(childIds: readonly number[]): void {
+    if (!childIds.length) return;
+    const children = new Set(childIds);
+    for (const child of this.enemies) {
+      if (!children.has(child.id)) continue;
+      child.alive = false;
+      this.campaignBosses.remove(child.id);
+      this.evolutionCombat.removeEnemy(child.id);
+      this.destroyView(child);
+    }
+    this.enemies = this.enemies.filter(enemy => !children.has(enemy.id));
   }
 
   private syncEnemyAnimationPlayback(): void {
@@ -2633,6 +3243,7 @@ export class GameScene extends Phaser.Scene {
       while (this.spawnQueue.length && this.spawnQueue[0].atMs <= this.gameTimeMs) {
         const spawn = this.spawnQueue.shift()!;
         const enemy = this.spawnEnemy(spawn.enemyId, spawn.hpBonus);
+        if (this.campaign) this.campaignScheduledIds.add(enemy.id);
         if (!this.campaign && enemy.isBoss && [10, 20, 30].includes(this.wave)) this.scheduledBossIds.set(enemy.id, this.wave);
       }
       if (this.campaign) this.tickCampaignBosses();
@@ -2728,6 +3339,7 @@ export class GameScene extends Phaser.Scene {
         const pop = this.gameTimeMs < e.flashUntil ? 1.16 : 1;
         e.body?.setPosition(0, bobY);
         e.body?.setScale(pop);
+        if (e.isBoss && e.view) this.projectEntity(e.view);
         const sx = this.layout.field.width / 1040; const sy = this.layout.field.height / 584;
         const dimension = (visual as { maxVisualDimension?: number } | undefined)?.maxVisualDimension ?? e.radius * 2;
         e.shadow?.setPosition(point.x, point.y + 2 / sy).setSize(dimension * 0.62 / sx, (e.isBoss ? 12 : 7) / sy).setAlpha(0.4);
@@ -2742,11 +3354,17 @@ export class GameScene extends Phaser.Scene {
           e.hpBar.clear();
           const w = (e.isBoss ? 44 : 26) * 1040 / this.layout.field.width;
           const barHeight = (e.isBoss ? 5 : 4) * 584 / this.layout.field.height;
-          e.hpBar.fillStyle(0x000000, 0.7);
           const visualHeight = ((visual as { maxVisualDimension?: number } | undefined)?.maxVisualDimension ?? e.radius * 2) * (e.view?.scaleY ?? 1);
-          e.hpBar.fillRect(point.x - w / 2, point.y - visualHeight - 4 / sy, w, barHeight);
+          let barX = point.x, barY = point.y - visualHeight - 4 / sy;
+          const healthAnchor = e.isBoss ? this.bossHealthBarAnchor(e) : null;
+          if (healthAnchor) {
+            barX = healthAnchor.x;
+            barY = healthAnchor.y;
+          }
+          e.hpBar.fillStyle(0x000000, 0.7);
+          e.hpBar.fillRect(barX - w / 2, barY, w, barHeight);
           e.hpBar.fillStyle(e.isBoss ? 0xd85f59 : 0xb65b50, 1);
-          e.hpBar.fillRect(point.x - w / 2, point.y - visualHeight - 4 / sy, w * Math.max(0, e.hp / e.maxHp), barHeight);
+          e.hpBar.fillRect(barX - w / 2, barY, w * Math.max(0, e.hp / e.maxHp), barHeight);
         } else e.hpBar?.clear();
     }
     for (const flight of this.flights) {
@@ -2757,8 +3375,11 @@ export class GameScene extends Phaser.Scene {
     for (const tower of this.towers) tower.crown?.setScale(this.gameTimeMs < tower.recoilUntil ? 0.88 : 1);
     this.syncFieldViews(); this.syncTowerFreezeViews(); this.updateBossBar(); this.updateDying(); this.updateEffects();
     this.worldRoot?.sort('depth');
+    const activeBoss = this.enemies.find(enemy => enemy.alive && enemy.isBoss);
     for (const f of this.floaters) {
       f.text.y -= processedGameMs * 0.02;
+      if (activeBoss) this.placeFloaterClearOfBoss(f.text, activeBoss);
+      else this.clampFloaterToField(f.text);
       f.text.alpha = Math.max(0, Math.min(1, (f.until - this.gameTimeMs) / 700));
     }
     while (this.floaters.length > 0 && this.floaters[0].until <= this.gameTimeMs) {
@@ -2771,7 +3392,7 @@ export class GameScene extends Phaser.Scene {
   private handleLeak(e: Enemy): boolean {
     e.alive = false;
     e.reachedEnd = true;
-    this.campaignBosses.remove(e.id);
+    this.clearCampaignOwnedSummons(this.campaignBosses.remove(e.id));
     this.evolutionCombat.removeEnemy(e.id);
     this.lives = Math.max(0, this.lives - e.livesLost);
     SoundManager.get().leak();
@@ -2797,17 +3418,21 @@ export class GameScene extends Phaser.Scene {
   // Wave clear → bonus + guaranteed milestone relic on non-boss 5th waves (SPEC §22).
   private checkWaveClear(): void {
     if (!this.waveActive) return;
-    const event = this.siege.completeWave({ wave: this.wave, lives: this.lives, spawns: this.spawnQueue.length, enemies: this.enemies.filter((e) => e.alive).length, flights: this.flights.length, fields: this.evolutionCombat.activeFieldCount });
+    const clearInput = { wave: this.wave, lives: this.lives, spawns: this.spawnQueue.length, enemies: this.enemies.filter((e) => e.alive).length, flights: this.flights.length, fields: this.evolutionCombat.activeFieldCount };
+    const event = this.campaign
+      ? clearInput.lives > 0 && clearInput.spawns + clearInput.enemies + clearInput.flights + clearInput.fields === 0 ? 'wave-cleared' : 'none'
+      : this.siege.completeWave(clearInput);
     if (event === 'none') return;
-    this.waveActive = false; this.wavesCompleted = this.siege.wavesCompleted;
+    this.waveActive = false; this.wavesCompleted = this.campaign ? this.wave : this.siege.wavesCompleted;
     const earned = this.campaign ? [] : earnedBranches(this.wave, this.lives, this.towers, this.debugAssisted);
     const known = this.unlockRepository.view().profile.earned;
     for (const id of earned) if (!known[id] && !this.unlocksEarnedThisRun.includes(id)) this.unlocksEarnedThisRun.push(id);
     if (!this.campaign) this.unlockRepository.earn(earned);
     if (earned.length && this.runAccount) void accountSystem.progressChanged(this.runAccount);
+    if(earned.length&&this.runOwner?.mode==='guest'&&!this.debugAssisted){const fresh=Object.fromEntries(this.unlocksEarnedThisRun.map(id=>[id,this.unlockRepository.view().profile.earned[id]??new Date().toISOString()]));void accountSystem.guestProgressChanged(fresh);}
     this.notifyAchievements();
     const bonus = waveClearBonus(this.wave); this.gold += bonus;
-    this.floatText(this.map.width / 2, 140, `Wave ${this.wave} cleared! +${bonus} gold`, C.health, 18);
+    this.floatText(this.map.width / 2, 140, `Wave ${this.wave} cleared! +${formatCount(bonus)} gold`, C.health, 18);
     if (this.campaign?.readyToClear(this.wave, this.lives, this.spawnQueue.length + this.enemies.filter(e => e.alive).length + this.flights.length + this.evolutionCombat.activeFieldCount)) { this.finishCampaign('victory'); return; }
     if (this.wave % 5 === 0 && !this.currentWaveIsBoss) this.grantPowerup(this.rollReward(), `Wave ${this.wave} Relic`, true);
     if (event === 'victory') this.enterVictory();
@@ -2831,7 +3456,7 @@ export class GameScene extends Phaser.Scene {
     this.uiRoot.add(c); this.victoryPanel = c;
     panel(this, c, 0, 0, width, height, 0xd7aa4e);
     c.add(this.add.text(width / 2, 14, 'Siege complete', style(22, C.goldBright, true, FONT_DISPLAY)).setOrigin(0.5, 0));
-    c.add(this.add.text(width / 2, 50, `Score ${this.scoreSoFar()} · Lives ${this.lives}/${this.maxLives}`, style(14, C.textPrimary, true)).setOrigin(0.5, 0));
+    c.add(this.add.text(width / 2, 50, `Score ${formatCount(this.scoreSoFar())} · Lives ${this.lives}/${this.maxLives}`, style(14, C.textPrimary, true)).setOrigin(0.5, 0));
     const unlocked = this.unlocksEarnedThisRun.length ? `Unlocked: ${this.unlocksEarnedThisRun.map((id) => EVOLUTIONS[id].name).join(', ')}` : '';
     c.add(this.add.text(width / 2, 74, unlocked, style(12, C.textSecondary)).setOrigin(0.5, 0).setWordWrapWidth(width - 32));
     const resolved = victoryRewardsResolved(this.vault, this.modal !== null, this.auto.enabled);
@@ -2862,19 +3487,23 @@ export class GameScene extends Phaser.Scene {
     const unresolved = this.spawnQueue.length + this.enemies.filter(e => e.alive).length + this.flights.length + this.evolutionCombat.activeFieldCount;
     if (outcome === 'victory' && !campaign.readyToClear(this.wave, this.lives, unresolved)) return;
     campaign.settled = true; this.ended = true; this.waveActive = false;
-    const score = calculateScore({ enemiesKilled: this.enemiesKilled, elitesKilled: this.elitesKilled,
-      wavesCompleted: this.wavesCompleted, bossesKilled: this.bossesKilled,
-      remainingLives: this.lives, unusedGold: this.gold }, getDifficulty(this.difficultyId)).finalScore;
+    const breakdown = calculateCampaignScore({ scheduledEnemiesKilled: this.campaignScheduledKills,
+      wavesCompleted: this.wavesCompleted, missionBossesKilled: this.campaignMissionBossKills,
+      remainingLives: this.lives });
+    const score = breakdown.finalScore;
     const fixtureRepository = import.meta.env.DEV ? this.qaCampaignRepository : null;
     const clear = outcome === 'victory' && (!this.debugAssisted || fixtureRepository) ? (fixtureRepository ?? campaignRepository).recordClear(campaign.definition.level, score, this.lives) : null;
-    this.campaignResult = { outcome, score, lives: this.lives, clear };
-    if (this.runAccount && !this.debugAssisted && !this.qaCampaignFixture) {
-      void accountSystem.settle(this.runAccount, { mode: 'campaign', payload: {
+    this.campaignResult = { outcome, score, lives: this.lives, scheduledEnemiesKilled: this.campaignScheduledKills, wavesCompleted: this.wavesCompleted, missionBossesKilled: this.campaignMissionBossKills, clear, breakdown };
+    if ((this.runAccount||this.runOwner) && !this.debugAssisted && !this.qaCampaignFixture) {
+      this.settleCapturedRun({ mode: 'campaign', payload: {
         runId: this.runId, campaignVersion: 1, progressionVersion: 1, level: campaign.definition.level,
-        outcome, finalScore: score, remainingLives: this.lives, gameDurationSeconds: Math.floor(this.runningDurationMs / 1000), gameVersion: GAME_VERSION
+        outcome, finalScore: score, remainingLives: this.lives, gameDurationSeconds: Math.floor(this.runningDurationMs / 1000), gameVersion: GAME_VERSION,
+        campaignScoreVersion: CAMPAIGN_SCORE_VERSION, scheduledEnemiesKilled: this.campaignScheduledKills,
+        wavesCompleted: this.wavesCompleted, missionBossesKilled: this.campaignMissionBossKills
       }});
     }
     this.spawnQueue = [];
+    this.campaignScheduledIds.clear();
     for (const flight of this.flights) flight.view.destroy(true);
     for (const effect of this.effects) effect.view.destroy();
     this.flights = []; this.effects = [];
@@ -2890,7 +3519,9 @@ export class GameScene extends Phaser.Scene {
     this.modalSheet?.destroy(); this.modalSheet = null;
     this.modal?.destroy(true); this.modal = null;
     this.modalRenderer = () => this.renderCampaignResult();
-    const result = this.campaignResult, level = this.campaign.definition.level;
+    const result = this.campaignResult, level = this.campaign.definition.level, totalMasteryStars = CAMPAIGN_LEVELS.length * 3;
+    const repository = this.qaCampaignRepository ?? campaignRepository;
+    const view = repository.view(), metadata = campaignScoreMetadata(level), finalScore = result.breakdown.finalScore;
     const width = Math.min(480, this.layout.width - 24), height = Math.min(450, this.layout.height - 24);
     const root = this.modalFrame(width, height);
     const sheet = new ScrollSheet(this, root, { x: 0, y: 0, width, height }, result.outcome === 'victory' ? `Level ${level} cleared` : result.outcome === 'siege-failed' ? 'Boss escaped · Battle failed' : 'Stronghold lost', () => this.scene.start('Campaign'));
@@ -2898,24 +3529,39 @@ export class GameScene extends Phaser.Scene {
     let y = 0;
     const line = (message: string, color: string = C.textSecondary) => { const text = sheet.text(y, message, color); y += text.height + 12; };
     if (import.meta.env.DEV && this.qaCampaignFixture) line('DEV CAMPAIGN FIXTURE · Reward preview · Not saved', C.gold);
-    line(`Score ${result.score} · Lives ${result.lives}/${this.maxLives}`, C.gold);
-    for(const r of campaignRequirements((this.qaCampaignRepository??campaignRepository).view(),level).filter(r=>r.id!=='previous')){
+    line(`Scheduled enemies: ${formatCount(result.scheduledEnemiesKilled)} × 10 = ${formatCount(result.breakdown.killScore)} points`);
+    line(`Waves cleared: ${formatCount(result.wavesCompleted)} × 100 = ${formatCount(result.breakdown.waveBonus)} points`);
+    line(metadata.hasBoss
+      ? `Mission boss: ${formatCount(result.missionBossesKilled)} × 500 = ${formatCount(result.breakdown.bossBonus)} points`
+      : `Mission boss: Not applicable · ${formatCount(result.breakdown.bossBonus)} points`);
+    line(`Remaining lives: ${formatCount(result.lives)} × 50 = ${formatCount(result.breakdown.livesBonus)} points`);
+    line(`Final score: ${formatCount(finalScore)}`, C.gold);
+    line(`Score target: ${formatCount(metadata.scoreTarget)} points — ${finalScore >= metadata.scoreTarget ? 'reached' : 'missed'}`);
+    const progress = view.profile.levels[level];
+    const currentBest = progress?.campaignScore?.bestScore ?? null;
+    line(`Current best: ${currentBest === null ? 'Not scored yet' : `${formatCount(currentBest)} points`}`);
+    if ((progress?.bestScore ?? 0) > 0) line(`Legacy score — excluded from current total: ${formatCount(progress!.bestScore)} points`, C.textMuted);
+    if (result.outcome !== 'victory') line('Winning clears contribute to your campaign ranking. This failure does not improve your best.', C.gold);
+    for(const r of campaignRequirements(view,level).filter(r=>r.id!=='previous')){
       line(`${r.met?'★':'☆'} ${r.label} · ${r.progress}${r.met?'':` · ${r.nextStep}`}`);
     }
-    if (this.runAccount) line(accountStatus(accountSystem.view()));
+    if (this.runAccount||this.runOwner) line(accountStatus(accountSystem.view()));
     if (result.clear) {
-      const progress = result.clear.progress;
-      line(`Mastery: Completion ${progress.completionStar ? 'earned' : 'missing'} · Stronghold ${progress.livesStar ? 'earned' : 'missing'} · Score ${progress.scoreStar ? 'earned' : 'missing'}`);
-      line(result.clear.newlyEarnedStars.length ? `New stars: ${result.clear.newlyEarnedStars.join(', ')} · Total ${result.clear.totalMasteryStars}/90` : `Total ${result.clear.totalMasteryStars}/90 · Stars retained from earlier clears`);
+      const cleared = result.clear.progress, newStars = new Set(result.clear.newlyEarnedStars);
+      const starState = (kind: 'completion' | 'lives' | 'score', earned: boolean) => newStars.has(kind) ? 'newly earned' : earned ? 'retained from earlier progress' : 'not earned';
+      line(`Completion star: ${starState('completion', cleared.completionStar)}`);
+      line(`Lives star: ${starState('lives', cleared.livesStar)}`);
+      line(`Score star: ${starState('score', cleared.scoreStar)}`);
+      line(result.clear.newlyEarnedStars.length ? `New stars: ${result.clear.newlyEarnedStars.join(', ')} · Total ${formatCount(result.clear.totalMasteryStars)}/${formatCount(totalMasteryStars)}` : `Total ${formatCount(result.clear.totalMasteryStars)}/${formatCount(totalMasteryStars)} · Stars retained from earlier clears`);
       if (result.clear.newlyEarnedSigils.length) line(`World Sigil earned: ${result.clear.newlyEarnedSigils.map(id => id.replace(/_/g, ' ')).join(', ')}`, C.gold);
       if (result.clear.newlyUnlockedFeatures.length) line(`Unlocked: ${result.clear.newlyUnlockedFeatures.map(id => id.replace(/_/g, ' ')).join(', ')}`, C.gold);
-      const view = (import.meta.env.DEV && this.qaCampaignRepository ? this.qaCampaignRepository : campaignRepository).view();
       line(view.unsavedLevels.has(level) ? 'Earned this session · Progress could not be saved' : 'Progress saved in this browser', view.unsavedLevels.has(level) ? C.dangerBright : C.health);
       if (view.warning) line(view.warning, C.dangerBright);
     } else line(result.outcome === 'victory' ? 'Assisted battle · Campaign progress was not awarded' : 'No stars awarded · Replay to clear this level');
-    sheet.action(y, 'Restart Level', () => this.restartRun(), 'primary'); y += 52;
+    const actions=campaignResultActions(result.outcome,level,(this.qaCampaignRepository??campaignRepository).view().highestUnlockedLevel,CAMPAIGN_LEVELS.length);
+    if(actions[0]==='next'){sheet.action(y, `Next · Level ${level + 1}`, () => this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: this.playerName, mode: 'campaign', campaignLevel: level + 1, ...(import.meta.env.DEV && this.qaCampaignFixture ? { qaCampaignFixture: { state: 'campaign', level: level + 1, bossPhase: 'initial' } satisfies QACampaignFixture } : {}) } } satisfies LoadingRequest), 'primary'); y+=52;}
+    sheet.action(y, 'Restart Level', () => this.restartRun(), actions[0]==='next'?'secondary':'primary'); y += 52;
     sheet.action(y, 'World Map', () => this.scene.start('Campaign')); y += 52;
-    if (result.outcome === 'victory' && level < 30 && (import.meta.env.DEV && this.qaCampaignRepository ? this.qaCampaignRepository : campaignRepository).view().highestUnlockedLevel > level) sheet.action(y, `Next · Level ${level + 1}`, () => this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: this.playerName, mode: 'campaign', campaignLevel: level + 1, ...(import.meta.env.DEV && this.qaCampaignFixture ? { qaCampaignFixture: { state: 'campaign', level: level + 1, bossPhase: 'initial' } satisfies QACampaignFixture } : {}) } } satisfies LoadingRequest), 'primary');
   }
 
   private finishRun(outcome: RunOutcome): void {
@@ -2939,6 +3585,7 @@ export class GameScene extends Phaser.Scene {
     const isPersonalBest = breakdown.finalScore > (loadBest()?.score ?? -1);
     saveBest({ score: breakdown.finalScore, wave: progress.highestWave, difficulty: this.difficultyId, date: new Date().toISOString() });
     const result: GameOverData = {
+      runOwner:this.runOwner??undefined,
       difficulty: this.difficultyId,
       playerName: this.playerName,
       highestWave: progress.highestWave,
@@ -2963,8 +3610,8 @@ export class GameScene extends Phaser.Scene {
         enemies: this.enemies.filter(e => e.alive).map(e => ({ archetype: e.archetype, x: e.x, y: e.y, hpFraction: Math.max(0, e.hp / e.maxHp) }))
       }
     };
-    if (this.runAccount && !this.debugAssisted) {
-      void accountSystem.settle(this.runAccount, { mode: 'classic', payload: {
+    if ((this.runAccount||this.runOwner) && !this.debugAssisted) {
+      this.settleCapturedRun({ mode: 'classic', payload: {
         playerName: result.playerName, difficulty: result.difficulty, highestWave: result.highestWave,
         finalScore: result.finalScore, enemiesKilled: result.enemiesKilled, bossesKilled: result.bossesKilled,
         remainingLives: result.remainingLives, gameDurationSeconds: result.gameDurationSeconds, runId: result.runId,
@@ -2976,6 +3623,13 @@ export class GameScene extends Phaser.Scene {
       this.scene.start('Preload', { stage: 'defeat', destination: 'GameOver', data: result } satisfies LoadingRequest);
     } else this.scene.start('GameOver', result);
     this.cleanupProgression();
+  }
+
+  private settleCapturedRun(result:RunResult):void {
+    if(this.runOwner?.mode==='guest'){
+      const earned=Object.fromEntries(this.unlocksEarnedThisRun.map(id=>[id,this.unlockRepository.view().profile.earned[id]??new Date().toISOString()]));
+      void accountSystem.completeGuestRun(this.runOwner,guestRunProgress(result,earned));
+    }else if(this.runAccount)void accountSystem.settle(this.runAccount,result);
   }
 
   /** Idempotent; restart/quit discard the run without creating a result. */
@@ -2992,7 +3646,7 @@ export class GameScene extends Phaser.Scene {
     for (const view of this.towerFreezeViews.values()) view.destroy();
     this.towerFreezeViews.clear();
     this.syncFieldViews();
-    this.scheduledBossIds.clear();
+    this.scheduledBossIds.clear(); this.campaignScheduledIds.clear();
     this.victoryPanel?.destroy(true); this.victoryPanel = null;
     if (this.progressionListenerAttached && typeof window !== 'undefined') window.removeEventListener('storage', this.handleStorage);
     this.progressionListenerAttached = false;

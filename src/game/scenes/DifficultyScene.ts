@@ -1,3 +1,4 @@
+import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { accountSystem } from '../systems/AccountSystem.ts';
 import { accountEntryAllowed, mountAccountButton } from '../ui/accountControls.ts';
@@ -59,7 +60,7 @@ export class DifficultyScene extends Phaser.Scene {
     const compact = H < 560 || W < 900;
     const settings = loadSettings();
     this.selectedDiff = settings.difficulty;
-    this.playerName = accountSystem.view().session?.nickname ?? settings.playerName ?? '';
+    this.playerName = accountSystem.currentPlayerName() || settings.playerName || '';
     this.diffCards = [];
     if (W < 1180 || H < 540) { this.createPhone(); return; }
 
@@ -183,9 +184,9 @@ export class DifficultyScene extends Phaser.Scene {
       const statTop = cardY + cardHeight - (compact ? 53 : 114);
       const rowGap = compact ? 16 : 35;
       const statRows = [
-        [`STARTING GOLD`, `${difficulty.startingGold.toLocaleString('en-US')}`, 'hud_gold'],
+        [`STARTING GOLD`, `${formatCount(difficulty.startingGold)}`, 'hud_gold'],
         [`STARTING LIVES`, `${difficulty.startingLives}`, 'hud_lives'],
-        [`SCORE MULTIPLIER`, `${difficulty.scoreMultiplier.toFixed(2)}×`, 'hud_score']
+        [`SCORE MULTIPLIER`, `${formatQuantity(difficulty.scoreMultiplier,2)}×`, 'hud_score']
       ];
       statRows.forEach(([label, value, iconKey], statIndex) => {
         const rowY = statTop + statIndex * rowGap;
@@ -291,9 +292,10 @@ export class DifficultyScene extends Phaser.Scene {
     SoundManager.get().click();
     const name = runPlayerName(this.nameInput?.value ?? this.playerName);
     const settings = loadSettings();
-    settings.playerName = name;
+    if(accountSystem.view().playMode!=='account')settings.playerName = name;
     settings.difficulty = this.selectedDiff;
     saveSettings(settings);
-    this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: this.selectedDiff, playerName: name } } satisfies LoadingRequest);
+    const start=()=>this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: this.selectedDiff, playerName: name } } satisfies LoadingRequest);
+    if(accountSystem.view().playMode==='guest')void accountSystem.renameGuest(name).then(r=>{if(r.ok)start();});else start();
   }
 }

@@ -1,3 +1,4 @@
+import {formatCount} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import { TOWERS } from '../config/towers.ts';
 import { loadBest, loadLegacyBests } from '../systems/Settings.ts';
@@ -33,8 +34,8 @@ export function progressionPanelLines(view: UnlockView, currentBest: LocalBest |
     lines.push(`${TOWERS[a.towerId].name}: ${a.starterName} (starter) / ${a.alternativeName}`);
     lines.push(`${state} · ${a.requirement}`);
   }
-  lines.push(currentBest ? `Personal best · ${currentBest.score.toLocaleString('en-US')} pts` : 'Personal best · none yet');
-  for (const record of legacyBests) lines.push(`Legacy era ${record.scoreVersion} best · ${record.score.toLocaleString('en-US')} pts`);
+  lines.push(currentBest ? `Personal best · ${formatCount(currentBest.score)} pts` : 'Personal best · none yet');
+  for (const record of legacyBests) lines.push(`Legacy era ${record.scoreVersion} best · ${formatCount(record.score)} pts`);
   return lines;
 }
 

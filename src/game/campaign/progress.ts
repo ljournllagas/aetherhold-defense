@@ -1,8 +1,9 @@
 import { isTowerId, TOWER_IDS } from '../config/towers.ts';
 import type { PowerUpId, TargetingMode } from '../../shared/types.ts';
 import type { TowerId } from '../../shared/progression.ts';
-import { CAMPAIGN_LEVELS, CAMPAIGN_MILESTONES, CAMPAIGN_SIGILS, featuresForSigils, getCampaignLevel } from './config.ts';
+import { CAMPAIGN_LEVELS, CAMPAIGN_MILESTONES, CAMPAIGN_SIGILS, CAMPAIGN_WORLDS, featuresForSigils } from './config.ts';
 import { CAMPAIGN_SPECIALIZATION_UNLOCK_STARS, CAMPAIGN_SPECIALIZATIONS, getCampaignSpecialization } from './specializations.ts';
+import { applyCampaignClear, cloneCampaignLevelProgress, mergeCampaignLevelProgress, validateCampaignLevelProgress } from '../../shared/campaignProgress.ts';
 import type {
   CampaignClearResult,
   CampaignFeatureId,
@@ -72,10 +73,6 @@ function isIntegerAtLeast(value: unknown, minimum = 0): value is number {
   return typeof value === 'number' && Number.isSafeInteger(value) && value >= minimum;
 }
 
-function cloneLevelProgress(progress: CampaignLevelProgress): CampaignLevelProgress {
-  return { ...progress };
-}
-
 function clonePreset(preset: CampaignPreparationPreset): CampaignPreparationPreset {
   return {
     id: preset.id,
@@ -87,7 +84,7 @@ function clonePreset(preset: CampaignPreparationPreset): CampaignPreparationPres
 
 function cloneProfile(profile: CampaignProfile): CampaignProfile {
   const levels: CampaignProfile['levels'] = {};
-  for (const [level, progress] of Object.entries(profile.levels)) if (progress) levels[Number(level)] = cloneLevelProgress(progress);
+  for (const [level, progress] of Object.entries(profile.levels)) if (progress) levels[Number(level)] = cloneCampaignLevelProgress(progress);
   const choices = Object.fromEntries(TOWER_IDS.map((towerId) => [towerId, profile.choices[towerId]])) as CampaignProfile['choices'];
   const targeting = Object.fromEntries(TOWER_IDS.map((towerId) => [towerId, profile.targeting[towerId]])) as CampaignProfile['targeting'];
   return {
@@ -153,17 +150,7 @@ function deriveProfile(profile: CampaignProfile): CampaignProfile {
 }
 
 function normalizeProgress(value: unknown, level: number): CampaignLevelProgress | null {
-  if (!isPlainObject(value)) return null;
-  if (!hasOnlyKeys(value, ['completed', 'completionStar', 'livesStar', 'scoreStar', 'bestScore', 'bestRemainingLives'])) return null;
-  const { completed, completionStar, livesStar, scoreStar, bestScore, bestRemainingLives } = value;
-  if (typeof completed !== 'boolean' || typeof completionStar !== 'boolean' || typeof livesStar !== 'boolean' || typeof scoreStar !== 'boolean') return null;
-  if (!isIntegerAtLeast(bestScore) || !isIntegerAtLeast(bestRemainingLives)) return null;
-  if (completed !== completionStar || ((livesStar || scoreStar) && !completed)) return null;
-  const definition = getCampaignLevel(level);
-  if (!definition) return null;
-  if (livesStar && bestRemainingLives < definition.mastery.minimumLivesForStar) return null;
-  if (scoreStar && bestScore < definition.mastery.scoreTarget) return null;
-  return { completed, completionStar, livesStar, scoreStar, bestScore, bestRemainingLives };
+  return validateCampaignLevelProgress(value, level);
 }
 
 function normalizeChoices(value: unknown): CampaignProfile['choices'] | null {
@@ -220,8 +207,8 @@ function normalizeStoredProfile(value: Record<string, unknown>): CampaignProfile
   if (!isPlainObject(value.levels) || !Array.isArray(value.worldSigils) || !Array.isArray(value.unlockedFeatures) || !Array.isArray(value.preparationPresets)) return null;
   const levels: CampaignProfile['levels'] = {};
   for (const [key, rawProgress] of Object.entries(value.levels)) {
-    if (!/^(?:[1-9]|[12]\d|30)$/.test(key)) return null;
     const level = Number(key);
+    if (String(level) !== key) return null;
     const progress = normalizeProgress(rawProgress, level);
     if (!progress) return null;
     levels[level] = progress;
@@ -297,23 +284,10 @@ function classify(storage: CampaignStorage | null): ReadResult {
   return profile ? { kind: 'readable', profile } : { kind: 'unreadable' };
 }
 
-function mergeLevelProgress(a: CampaignLevelProgress | undefined, b: CampaignLevelProgress | undefined): CampaignLevelProgress | undefined {
-  if (!a) return b ? cloneLevelProgress(b) : undefined;
-  if (!b) return cloneLevelProgress(a);
-  return {
-    completed: a.completed || b.completed,
-    completionStar: a.completionStar || b.completionStar,
-    livesStar: a.livesStar || b.livesStar,
-    scoreStar: a.scoreStar || b.scoreStar,
-    bestScore: Math.max(a.bestScore, b.bestScore),
-    bestRemainingLives: Math.max(a.bestRemainingLives, b.bestRemainingLives)
-  };
-}
-
 function mergeProgress(remote: CampaignProfile, local: CampaignProfile): CampaignProfile {
   const levels: CampaignProfile['levels'] = {};
   for (let level = 1; level <= CAMPAIGN_LEVELS.length; level++) {
-    const merged = mergeLevelProgress(remote.levels[level], local.levels[level]);
+    const merged = mergeCampaignLevelProgress(remote.levels[level], local.levels[level]);
     if (merged) levels[level] = merged;
   }
   const worldSigils = [...new Set([...remote.worldSigils, ...local.worldSigils])].sort();
@@ -343,7 +317,7 @@ function sortProfile(profile: CampaignProfile): CampaignProfile {
   const levels: CampaignProfile['levels'] = {};
   for (let level = 1; level <= CAMPAIGN_LEVELS.length; level++) {
     const progress = sorted.levels[level];
-    if (progress) levels[level] = cloneLevelProgress(progress);
+    if (progress) levels[level] = cloneCampaignLevelProgress(progress);
   }
   return {
     ...sorted,
@@ -374,9 +348,11 @@ export function isLevelUnlocked(level: number, source: CampaignProfile | Campaig
 }
 
 export function isWorldUnlocked(worldId: CampaignWorldId, source: CampaignProfile | CampaignView): boolean {
-  if (worldId === 'borderkeep') return true;
-  const features = new Set(featuresForProfile(sourceProfile(source)));
-  return worldId === 'emberfall' ? features.has('world_2') : features.has('world_3');
+  const world = CAMPAIGN_WORLDS.find(({ id }) => id === worldId);
+  if (!world) return false;
+  if (world.worldNumber === 1) return true;
+  if (world.worldNumber === 4) return isLevelUnlocked(world.levelStart, source);
+  return featuresForProfile(sourceProfile(source)).includes(`world_${world.worldNumber}` as CampaignFeatureId);
 }
 
 const BASE_CAMPAIGN_POWER_UPS: readonly CampaignPowerUpId[] = [
@@ -429,19 +405,12 @@ export class CampaignRepository {
 
   recordClear(level: number, score: number, lives: number): CampaignClearResult | null {
     this.sync();
-    const definition = getCampaignLevel(level);
-    if (!definition || !isLevelUnlocked(level, this.profile) || !isIntegerAtLeast(score) || !isIntegerAtLeast(lives, 1)) return null;
+    if (!isLevelUnlocked(level, this.profile)) return null;
 
     const before = this.profile;
     const oldProgress = before.levels[level] ?? emptyLevelProgress();
-    const progress: CampaignLevelProgress = {
-      completed: true,
-      completionStar: true,
-      livesStar: oldProgress.livesStar || lives >= definition.mastery.minimumLivesForStar,
-      scoreStar: oldProgress.scoreStar || score >= definition.mastery.scoreTarget,
-      bestScore: Math.max(oldProgress.bestScore, score),
-      bestRemainingLives: Math.max(oldProgress.bestRemainingLives, lives)
-    };
+    const progress = applyCampaignClear(oldProgress, level, score, lives);
+    if (!progress) return null;
     const changed = !sameProgress(oldProgress, progress);
     const next = cloneProfile(before);
     next.levels[level] = progress;
@@ -462,7 +431,7 @@ export class CampaignRepository {
     const unsavedLevels = this.unsavedLevels();
     return {
       level,
-      progress: cloneLevelProgress(currentProgress),
+      progress: cloneCampaignLevelProgress(currentProgress),
       newlyEarnedStars,
       newlyEarnedSigils,
       newlyUnlockedFeatures,

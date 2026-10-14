@@ -1,0 +1,1044 @@
+{
+  "taskId": "V13",
+  "world": "World7",
+  "capturedAtUtc": "2026-10-13T13:21:31.156Z",
+  "sourcePin": {
+    "src/game/art/assetManifest.ts": "abf2d4eca5c79f790bc0909f6642e75e1fa2701985096c45a7e5b5543cc59fbd",
+    "src/game/art/enemyArt.ts": "1cebc2b6dc9f5bbca348ca206619c88e13ae939c84f18c80ecc2f85dfaae5045",
+    "src/game/art/enemyAtlasFrames.json": "f541b4f1d6e73d088aba0b0e71d6404410b9277604acb7c8a95e66dc536e841a",
+    "src/game/campaign/artManifest.ts": "68acbb0606954c18193441c7f022dd7b285653f49cc27f095a9734d4d5f80800",
+    "src/game/campaign/battle.ts": "1e66d2056f62bb182b9df66bf9965bc0e1ff08194e62c2ae391a970d97d2dcf8",
+    "src/game/campaign/bosses.ts": "3502b60287ad07ed13d858387589e8b0742ea93064ef1e2cd4d1ba0e14963ac1",
+    "src/game/campaign/config.ts": "10b54137996d465deab7ffeb235e791b4d3ade1875316efd6c702f6b9c625899",
+    "src/game/campaign/expansionContent.ts": "922a660085de169998489d2dbafaa37522331545ef86cdbfa8094ee29b0d96d4",
+    "src/game/campaign/expansionRoutes.ts": "c9c4b2a8057e3f6c10186af7d6647b4507643d6e83beb5596c7e79015068d8f6",
+    "src/game/campaign/mapLayout.ts": "cea4d2fda176622654e3d6455e90db1d5eb58d974e638e2b1540e00e113ab4e8",
+    "src/game/campaign/progress.ts": "e4595ece6d6a5c861ab662cb119fe2c999a81b0dfc16b89662a8e688abd02ed9",
+    "src/game/scenes/CampaignScene.ts": "b970c031169a42fafea6a87fed91f6578e984427b1516b3b165d18bc82a15ee6",
+    "src/game/scenes/GameScene.ts": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+    "src/game/scenes/PreloadScene.ts": "6f922c36053b616e314c7db5d4e40280054db1bec9ec6a467a53acabfec7294b",
+    "src/game/ui/layout.ts": "3dc634f192e79863359e7866781c0e33182cd339521b49f7d0bfd00069877e0a",
+    "src/game/ui/viewport.ts": "d1df0b9f753c429fa3e57cd8d2af87ea087533f315038fd5cb796c7b52642c31"
+  },
+  "sourceCheckedNow": {
+    "src/game/art/assetManifest.ts": "abf2d4eca5c79f790bc0909f6642e75e1fa2701985096c45a7e5b5543cc59fbd",
+    "src/game/art/enemyArt.ts": "1cebc2b6dc9f5bbca348ca206619c88e13ae939c84f18c80ecc2f85dfaae5045",
+    "src/game/art/enemyAtlasFrames.json": "f541b4f1d6e73d088aba0b0e71d6404410b9277604acb7c8a95e66dc536e841a",
+    "src/game/campaign/artManifest.ts": "6356ea9f0b104c8440a25bf09f1bb9974f5c1c949db606ef0b7309c4b3c9c0e3",
+    "src/game/campaign/battle.ts": "1e66d2056f62bb182b9df66bf9965bc0e1ff08194e62c2ae391a970d97d2dcf8",
+    "src/game/campaign/bosses.ts": "3502b60287ad07ed13d858387589e8b0742ea93064ef1e2cd4d1ba0e14963ac1",
+    "src/game/campaign/config.ts": "10b54137996d465deab7ffeb235e791b4d3ade1875316efd6c702f6b9c625899",
+    "src/game/campaign/expansionContent.ts": "922a660085de169998489d2dbafaa37522331545ef86cdbfa8094ee29b0d96d4",
+    "src/game/campaign/expansionRoutes.ts": "c9c4b2a8057e3f6c10186af7d6647b4507643d6e83beb5596c7e79015068d8f6",
+    "src/game/campaign/mapLayout.ts": "cea4d2fda176622654e3d6455e90db1d5eb58d974e638e2b1540e00e113ab4e8",
+    "src/game/campaign/progress.ts": "e4595ece6d6a5c861ab662cb119fe2c999a81b0dfc16b89662a8e688abd02ed9",
+    "src/game/scenes/CampaignScene.ts": "b970c031169a42fafea6a87fed91f6578e984427b1516b3b165d18bc82a15ee6",
+    "src/game/scenes/GameScene.ts": "640c9ea6a52bc611465e56c0f16a03e2a04b58206ef6805c69a4551ce91cb5f4",
+    "src/game/scenes/PreloadScene.ts": "6f922c36053b616e314c7db5d4e40280054db1bec9ec6a467a53acabfec7294b",
+    "src/game/ui/layout.ts": "3dc634f192e79863359e7866781c0e33182cd339521b49f7d0bfd00069877e0a",
+    "src/game/ui/viewport.ts": "d1df0b9f753c429fa3e57cd8d2af87ea087533f315038fd5cb796c7b52642c31"
+  },
+  "expectedPromotionManifestDelta": {
+    "file": "src/game/campaign/artManifest.ts",
+    "before": "68acbb0606954c18193441c7f022dd7b285653f49cc27f095a9734d4d5f80800",
+    "after": "6356ea9f0b104c8440a25bf09f1bb9974f5c1c949db606ef0b7309c4b3c9c0e3"
+  },
+  "promotionReportSha256": "b9852572fdb7ac1be952a64067299d606e4cc237981a259eb27fc8182448eecf",
+  "assetStatusSha256": "f240775e903c3b45c7fe305b55e55b3ada818caf245ee3ba4f4458f9b4cf15c3",
+  "inputs": [
+    {
+      "id": "world7-panel",
+      "sourceId": "world-panel:sky_isles",
+      "key": "campaign_worldmap_sky_isles",
+      "runtimePath": "/assets/campaign/world-map/sky_isles-v2.png",
+      "candidatePath": "public/assets/campaign/world-map/sky_isles-v2.png",
+      "expectedSha256": "dc83257253d0f9906f916153aa236ee5b693cb988e2b760503df7de5d83b9494",
+      "kind": "image",
+      "width": 768,
+      "height": 432,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {},
+      "sourceCandidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-world-panel.png",
+      "localPublicPath": "public/assets/campaign/world-map/sky_isles-v2.png",
+      "statusId": "world-panel:sky_isles",
+      "runtimeContract": {
+        "id": "world-panel:sky_isles",
+        "key": "campaign_worldmap_sky_isles",
+        "path": "/assets/campaign/world-map/sky_isles-v2.png",
+        "kind": "image",
+        "width": 768,
+        "height": 432,
+        "states": {},
+        "state": "final",
+        "stage": "campaign",
+        "temporary": null,
+        "qualityFlags": [
+          "biome_illustration"
+        ],
+        "animations": []
+      }
+    },
+    {
+      "id": "world7-map-a",
+      "sourceId": "map:sky_isles:a",
+      "key": "campaign_sky_isles_a",
+      "runtimePath": "/assets/campaign/maps/sky_isles_a-v2.png",
+      "candidatePath": "public/assets/campaign/maps/sky_isles_a-v2.png",
+      "expectedSha256": "98f5adff17d7b9b8e469238b12ef09bc39ab95ec3c8eb9b7fcad1c665e023a26",
+      "kind": "image",
+      "width": 1672,
+      "height": 940,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {},
+      "sourceCandidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-a.png",
+      "localPublicPath": "public/assets/campaign/maps/sky_isles_a-v2.png",
+      "statusId": "map:sky_isles:a",
+      "runtimeContract": {
+        "id": "map:sky_isles:a",
+        "key": "campaign_sky_isles_a",
+        "path": "/assets/campaign/maps/sky_isles_a-v2.png",
+        "kind": "image",
+        "width": 1672,
+        "height": 940,
+        "states": {},
+        "state": "final",
+        "stage": "gameplay",
+        "temporary": null,
+        "qualityFlags": [
+          "terrain_plate",
+          "runtime_geometry_overlay"
+        ],
+        "animations": []
+      }
+    },
+    {
+      "id": "world7-map-b",
+      "sourceId": "map:sky_isles:b",
+      "key": "campaign_sky_isles_b",
+      "runtimePath": "/assets/campaign/maps/sky_isles_b-v2.png",
+      "candidatePath": "public/assets/campaign/maps/sky_isles_b-v2.png",
+      "expectedSha256": "79c4bb5d3831c648b35c192f0c35aeeec1fa14db73830c75f915cce3eef9a660",
+      "kind": "image",
+      "width": 1672,
+      "height": 940,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {},
+      "sourceCandidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-b.png",
+      "localPublicPath": "public/assets/campaign/maps/sky_isles_b-v2.png",
+      "statusId": "map:sky_isles:b",
+      "runtimeContract": {
+        "id": "map:sky_isles:b",
+        "key": "campaign_sky_isles_b",
+        "path": "/assets/campaign/maps/sky_isles_b-v2.png",
+        "kind": "image",
+        "width": 1672,
+        "height": 940,
+        "states": {},
+        "state": "final",
+        "stage": "gameplay",
+        "temporary": null,
+        "qualityFlags": [
+          "terrain_plate",
+          "runtime_geometry_overlay"
+        ],
+        "animations": []
+      }
+    },
+    {
+      "id": "world7-map-c",
+      "sourceId": "map:sky_isles:c",
+      "key": "campaign_sky_isles_c",
+      "runtimePath": "/assets/campaign/maps/sky_isles_c-v2.png",
+      "candidatePath": "public/assets/campaign/maps/sky_isles_c-v2.png",
+      "expectedSha256": "e8967fcf6b32700efcf0105183313fc3fd6015bb43eaed681147d06d3b556fb0",
+      "kind": "image",
+      "width": 1672,
+      "height": 940,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {},
+      "sourceCandidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-c.png",
+      "localPublicPath": "public/assets/campaign/maps/sky_isles_c-v2.png",
+      "statusId": "map:sky_isles:c",
+      "runtimeContract": {
+        "id": "map:sky_isles:c",
+        "key": "campaign_sky_isles_c",
+        "path": "/assets/campaign/maps/sky_isles_c-v2.png",
+        "kind": "image",
+        "width": 1672,
+        "height": 940,
+        "states": {},
+        "state": "final",
+        "stage": "gameplay",
+        "temporary": null,
+        "qualityFlags": [
+          "terrain_plate",
+          "runtime_geometry_overlay"
+        ],
+        "animations": []
+      }
+    },
+    {
+      "id": "world7-map-d",
+      "sourceId": "map:sky_isles:d",
+      "key": "campaign_sky_isles_d",
+      "runtimePath": "/assets/campaign/maps/sky_isles_d-v2.png",
+      "candidatePath": "public/assets/campaign/maps/sky_isles_d-v2.png",
+      "expectedSha256": "b1e1caddce8899a663f8bb6312584fc102e6bba3df111c91c24ed0643d02818c",
+      "kind": "image",
+      "width": 1672,
+      "height": 940,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {},
+      "sourceCandidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-d.png",
+      "localPublicPath": "public/assets/campaign/maps/sky_isles_d-v2.png",
+      "statusId": "map:sky_isles:d",
+      "runtimeContract": {
+        "id": "map:sky_isles:d",
+        "key": "campaign_sky_isles_d",
+        "path": "/assets/campaign/maps/sky_isles_d-v2.png",
+        "kind": "image",
+        "width": 1672,
+        "height": 940,
+        "states": {},
+        "state": "final",
+        "stage": "gameplay",
+        "temporary": null,
+        "qualityFlags": [
+          "terrain_plate",
+          "runtime_geometry_overlay"
+        ],
+        "animations": []
+      }
+    },
+    {
+      "id": "aether-drake",
+      "sourceId": "enemy:aether_drake",
+      "key": "campaign_enemy_aether_drake",
+      "runtimePath": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.png",
+      "candidatePath": "public/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.png",
+      "expectedSha256": "6127080ff7abdbe60dbf514836e59ac1fce1a398fe7c74b5e958701b89dc8d3a",
+      "kind": "sheet",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "frames": 4,
+          "row": 0
+        },
+        "walk": {
+          "frames": 6,
+          "row": 1
+        },
+        "attack": {
+          "frames": 6,
+          "row": 2
+        },
+        "death": {
+          "frames": 6,
+          "row": 3
+        }
+      },
+      "sourceCandidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-aether-drake-atlas.png",
+      "localPublicPath": "public/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.png",
+      "statusId": "enemy:aether_drake",
+      "runtimeContract": {
+        "id": "enemy:aether_drake",
+        "key": "campaign_enemy_aether_drake",
+        "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.png",
+        "kind": "sheet",
+        "width": 768,
+        "height": 512,
+        "frameWidth": 128,
+        "frameHeight": 128,
+        "states": {
+          "idle": {
+            "row": 0,
+            "frames": 4
+          },
+          "walk": {
+            "row": 1,
+            "frames": 6
+          },
+          "attack": {
+            "row": 2,
+            "frames": 6
+          },
+          "death": {
+            "row": 3,
+            "frames": 6
+          }
+        },
+        "state": "final",
+        "stage": "gameplay",
+        "temporary": null,
+        "qualityFlags": [
+          "transparent_png_required",
+          "consistent_feet_anchor",
+          "no_baked_ui_or_large_shadow"
+        ],
+        "animations": [
+          {
+            "key": "campaign_enemy_aether_drake_idle",
+            "state": "idle",
+            "frameRate": 4,
+            "repeat": -1,
+            "frames": [
+              "idle_0",
+              "idle_1",
+              "idle_2",
+              "idle_3"
+            ]
+          },
+          {
+            "key": "campaign_enemy_aether_drake_walk",
+            "state": "walk",
+            "frameRate": 7,
+            "repeat": -1,
+            "frames": [
+              "walk_0",
+              "walk_1",
+              "walk_2",
+              "walk_3",
+              "walk_4",
+              "walk_5"
+            ]
+          },
+          {
+            "key": "campaign_enemy_aether_drake_attack",
+            "state": "attack",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "attack_0",
+              "attack_1",
+              "attack_2",
+              "attack_3",
+              "attack_4",
+              "attack_5"
+            ]
+          },
+          {
+            "key": "campaign_enemy_aether_drake_death",
+            "state": "death",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "death_0",
+              "death_1",
+              "death_2",
+              "death_3",
+              "death_4",
+              "death_5"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "cloud-skitter",
+      "sourceId": "enemy:cloud_skitter",
+      "key": "campaign_enemy_cloud_skitter",
+      "runtimePath": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png",
+      "candidatePath": "public/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png",
+      "expectedSha256": "f2581cf68be8769764dc2b347be104a0f9b8fbb5b4ea88bbfb345920f879de96",
+      "kind": "sheet",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "frames": 4
+        },
+        "walk": {
+          "frames": 6
+        },
+        "attack": {
+          "frames": 6
+        },
+        "death": {
+          "frames": 6
+        }
+      },
+      "sourceCandidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-cloud-skitter-atlas.png",
+      "localPublicPath": "public/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png",
+      "statusId": "enemy:cloud_skitter",
+      "runtimeContract": {
+        "id": "enemy:cloud_skitter",
+        "key": "campaign_enemy_cloud_skitter",
+        "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png",
+        "kind": "sheet",
+        "width": 768,
+        "height": 512,
+        "frameWidth": 128,
+        "frameHeight": 128,
+        "states": {
+          "idle": {
+            "row": 0,
+            "frames": 4
+          },
+          "walk": {
+            "row": 1,
+            "frames": 6
+          },
+          "attack": {
+            "row": 2,
+            "frames": 6
+          },
+          "death": {
+            "row": 3,
+            "frames": 6
+          }
+        },
+        "state": "final",
+        "stage": "gameplay",
+        "temporary": null,
+        "qualityFlags": [
+          "transparent_png_required",
+          "consistent_feet_anchor",
+          "no_baked_ui_or_large_shadow"
+        ],
+        "animations": [
+          {
+            "key": "campaign_enemy_cloud_skitter_idle",
+            "state": "idle",
+            "frameRate": 4,
+            "repeat": -1,
+            "frames": [
+              "idle_0",
+              "idle_1",
+              "idle_2",
+              "idle_3"
+            ]
+          },
+          {
+            "key": "campaign_enemy_cloud_skitter_walk",
+            "state": "walk",
+            "frameRate": 7,
+            "repeat": -1,
+            "frames": [
+              "walk_0",
+              "walk_1",
+              "walk_2",
+              "walk_3",
+              "walk_4",
+              "walk_5"
+            ]
+          },
+          {
+            "key": "campaign_enemy_cloud_skitter_attack",
+            "state": "attack",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "attack_0",
+              "attack_1",
+              "attack_2",
+              "attack_3",
+              "attack_4",
+              "attack_5"
+            ]
+          },
+          {
+            "key": "campaign_enemy_cloud_skitter_death",
+            "state": "death",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "death_0",
+              "death_1",
+              "death_2",
+              "death_3",
+              "death_4",
+              "death_5"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "galeclaw",
+      "sourceId": "enemy:galeclaw",
+      "key": "campaign_enemy_galeclaw",
+      "runtimePath": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.png",
+      "candidatePath": "public/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.png",
+      "expectedSha256": "b2b8cde192c826776fabb8356490928c4c80611d0b203f6d70da8d27f0cfb2ec",
+      "kind": "sheet",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "frames": 4,
+          "row": 0
+        },
+        "walk": {
+          "frames": 6,
+          "row": 1
+        },
+        "attack": {
+          "frames": 6,
+          "row": 2
+        },
+        "death": {
+          "frames": 6,
+          "row": 3
+        }
+      },
+      "sourceCandidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-galeclaw-atlas.png",
+      "localPublicPath": "public/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.png",
+      "statusId": "enemy:galeclaw",
+      "runtimeContract": {
+        "id": "enemy:galeclaw",
+        "key": "campaign_enemy_galeclaw",
+        "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.png",
+        "kind": "sheet",
+        "width": 768,
+        "height": 512,
+        "frameWidth": 128,
+        "frameHeight": 128,
+        "states": {
+          "idle": {
+            "row": 0,
+            "frames": 4
+          },
+          "walk": {
+            "row": 1,
+            "frames": 6
+          },
+          "attack": {
+            "row": 2,
+            "frames": 6
+          },
+          "death": {
+            "row": 3,
+            "frames": 6
+          }
+        },
+        "state": "final",
+        "stage": "gameplay",
+        "temporary": null,
+        "qualityFlags": [
+          "transparent_png_required",
+          "consistent_feet_anchor",
+          "no_baked_ui_or_large_shadow"
+        ],
+        "animations": [
+          {
+            "key": "campaign_enemy_galeclaw_idle",
+            "state": "idle",
+            "frameRate": 4,
+            "repeat": -1,
+            "frames": [
+              "idle_0",
+              "idle_1",
+              "idle_2",
+              "idle_3"
+            ]
+          },
+          {
+            "key": "campaign_enemy_galeclaw_walk",
+            "state": "walk",
+            "frameRate": 7,
+            "repeat": -1,
+            "frames": [
+              "walk_0",
+              "walk_1",
+              "walk_2",
+              "walk_3",
+              "walk_4",
+              "walk_5"
+            ]
+          },
+          {
+            "key": "campaign_enemy_galeclaw_attack",
+            "state": "attack",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "attack_0",
+              "attack_1",
+              "attack_2",
+              "attack_3",
+              "attack_4",
+              "attack_5"
+            ]
+          },
+          {
+            "key": "campaign_enemy_galeclaw_death",
+            "state": "death",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "death_0",
+              "death_1",
+              "death_2",
+              "death_3",
+              "death_4",
+              "death_5"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "stormguard",
+      "sourceId": "enemy:stormguard",
+      "key": "campaign_enemy_stormguard",
+      "runtimePath": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.png",
+      "candidatePath": "public/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.png",
+      "expectedSha256": "ee13c36d209f3a750bce70b5fe16b408b225434ebe5007556944eca4fa37c5f3",
+      "kind": "sheet",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "frames": 4,
+          "row": 0
+        },
+        "walk": {
+          "frames": 6,
+          "row": 1
+        },
+        "attack": {
+          "frames": 6,
+          "row": 2
+        },
+        "death": {
+          "frames": 6,
+          "row": 3
+        }
+      },
+      "sourceCandidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-stormguard-atlas.png",
+      "localPublicPath": "public/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.png",
+      "statusId": "enemy:stormguard",
+      "runtimeContract": {
+        "id": "enemy:stormguard",
+        "key": "campaign_enemy_stormguard",
+        "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.png",
+        "kind": "sheet",
+        "width": 768,
+        "height": 512,
+        "frameWidth": 128,
+        "frameHeight": 128,
+        "states": {
+          "idle": {
+            "row": 0,
+            "frames": 4
+          },
+          "walk": {
+            "row": 1,
+            "frames": 6
+          },
+          "attack": {
+            "row": 2,
+            "frames": 6
+          },
+          "death": {
+            "row": 3,
+            "frames": 6
+          }
+        },
+        "state": "final",
+        "stage": "gameplay",
+        "temporary": null,
+        "qualityFlags": [
+          "transparent_png_required",
+          "consistent_feet_anchor",
+          "no_baked_ui_or_large_shadow"
+        ],
+        "animations": [
+          {
+            "key": "campaign_enemy_stormguard_idle",
+            "state": "idle",
+            "frameRate": 4,
+            "repeat": -1,
+            "frames": [
+              "idle_0",
+              "idle_1",
+              "idle_2",
+              "idle_3"
+            ]
+          },
+          {
+            "key": "campaign_enemy_stormguard_walk",
+            "state": "walk",
+            "frameRate": 7,
+            "repeat": -1,
+            "frames": [
+              "walk_0",
+              "walk_1",
+              "walk_2",
+              "walk_3",
+              "walk_4",
+              "walk_5"
+            ]
+          },
+          {
+            "key": "campaign_enemy_stormguard_attack",
+            "state": "attack",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "attack_0",
+              "attack_1",
+              "attack_2",
+              "attack_3",
+              "attack_4",
+              "attack_5"
+            ]
+          },
+          {
+            "key": "campaign_enemy_stormguard_death",
+            "state": "death",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "death_0",
+              "death_1",
+              "death_2",
+              "death_3",
+              "death_4",
+              "death_5"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "tempest-herald",
+      "sourceId": "enemy:tempest_herald",
+      "key": "campaign_enemy_tempest_herald",
+      "runtimePath": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.png",
+      "candidatePath": "public/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.png",
+      "expectedSha256": "8aac34b5a6783fc943b1333c8e035c19689840f26d03d2ada6a20bef86e20d49",
+      "kind": "sheet",
+      "width": 768,
+      "height": 640,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "frames": 4,
+          "row": 0
+        },
+        "walk": {
+          "frames": 6,
+          "row": 1
+        },
+        "attack": {
+          "frames": 6,
+          "row": 2
+        },
+        "death": {
+          "frames": 6,
+          "row": 3
+        },
+        "buff": {
+          "frames": 6,
+          "row": 4
+        }
+      },
+      "sourceCandidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-tempest-herald-atlas.png",
+      "localPublicPath": "public/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.png",
+      "statusId": "enemy:tempest_herald",
+      "runtimeContract": {
+        "id": "enemy:tempest_herald",
+        "key": "campaign_enemy_tempest_herald",
+        "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.png",
+        "kind": "sheet",
+        "width": 768,
+        "height": 640,
+        "frameWidth": 128,
+        "frameHeight": 128,
+        "states": {
+          "idle": {
+            "row": 0,
+            "frames": 4
+          },
+          "walk": {
+            "row": 1,
+            "frames": 6
+          },
+          "attack": {
+            "row": 2,
+            "frames": 6
+          },
+          "death": {
+            "row": 3,
+            "frames": 6
+          },
+          "buff": {
+            "row": 4,
+            "frames": 6
+          }
+        },
+        "state": "final",
+        "stage": "gameplay",
+        "temporary": null,
+        "qualityFlags": [
+          "transparent_png_required",
+          "consistent_feet_anchor",
+          "no_baked_ui_or_large_shadow",
+          "support_buff_playback_verified"
+        ],
+        "animations": [
+          {
+            "key": "campaign_enemy_tempest_herald_idle",
+            "state": "idle",
+            "frameRate": 4,
+            "repeat": -1,
+            "frames": [
+              "idle_0",
+              "idle_1",
+              "idle_2",
+              "idle_3"
+            ]
+          },
+          {
+            "key": "campaign_enemy_tempest_herald_walk",
+            "state": "walk",
+            "frameRate": 7,
+            "repeat": -1,
+            "frames": [
+              "walk_0",
+              "walk_1",
+              "walk_2",
+              "walk_3",
+              "walk_4",
+              "walk_5"
+            ]
+          },
+          {
+            "key": "campaign_enemy_tempest_herald_attack",
+            "state": "attack",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "attack_0",
+              "attack_1",
+              "attack_2",
+              "attack_3",
+              "attack_4",
+              "attack_5"
+            ]
+          },
+          {
+            "key": "campaign_enemy_tempest_herald_death",
+            "state": "death",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "death_0",
+              "death_1",
+              "death_2",
+              "death_3",
+              "death_4",
+              "death_5"
+            ]
+          },
+          {
+            "key": "campaign_enemy_tempest_herald_buff",
+            "state": "buff",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "buff_0",
+              "buff_1",
+              "buff_2",
+              "buff_3",
+              "buff_4",
+              "buff_5"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "stormmaw-prime",
+      "sourceId": "boss:stormmaw_prime",
+      "key": "campaign_enemy_stormmaw_prime",
+      "runtimePath": "/assets/campaign/bosses/stormmaw_prime-atlas-v2.png",
+      "candidatePath": "public/assets/campaign/bosses/stormmaw_prime-atlas-v2.png",
+      "expectedSha256": "43eb4be1cda70caa1aa89830ecce8964952370312ffeb08110845864e6cb165b",
+      "kind": "sheet",
+      "width": 2048,
+      "height": 1536,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "states": {
+        "idle": {
+          "frames": 6
+        },
+        "walk": {
+          "frames": 8
+        },
+        "attack": {
+          "frames": 8
+        },
+        "special": {
+          "frames": 8
+        },
+        "phase_two": {
+          "frames": 8
+        },
+        "death": {
+          "frames": 8
+        }
+      },
+      "sourceCandidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-stormmaw-prime-boss-atlas.png",
+      "localPublicPath": "public/assets/campaign/bosses/stormmaw_prime-atlas-v2.png",
+      "statusId": "boss:stormmaw_prime",
+      "runtimeContract": {
+        "id": "boss:stormmaw_prime",
+        "key": "campaign_enemy_stormmaw_prime",
+        "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v2.png",
+        "kind": "sheet",
+        "width": 2048,
+        "height": 1536,
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "states": {
+          "idle": {
+            "row": 0,
+            "frames": 6
+          },
+          "walk": {
+            "row": 1,
+            "frames": 8
+          },
+          "attack": {
+            "row": 2,
+            "frames": 8
+          },
+          "special": {
+            "row": 3,
+            "frames": 8
+          },
+          "phase_two": {
+            "row": 4,
+            "frames": 8
+          },
+          "death": {
+            "row": 5,
+            "frames": 8
+          }
+        },
+        "state": "final",
+        "stage": "gameplay",
+        "temporary": null,
+        "qualityFlags": [
+          "transparent_png_required",
+          "consistent_feet_anchor",
+          "phase_state_readability_verified"
+        ],
+        "animations": [
+          {
+            "key": "campaign_enemy_stormmaw_prime_idle",
+            "state": "idle",
+            "frameRate": 4,
+            "repeat": -1,
+            "frames": [
+              "idle_0",
+              "idle_1",
+              "idle_2",
+              "idle_3",
+              "idle_4",
+              "idle_5"
+            ]
+          },
+          {
+            "key": "campaign_enemy_stormmaw_prime_walk",
+            "state": "walk",
+            "frameRate": 7,
+            "repeat": -1,
+            "frames": [
+              "walk_0",
+              "walk_1",
+              "walk_2",
+              "walk_3",
+              "walk_4",
+              "walk_5",
+              "walk_6",
+              "walk_7"
+            ]
+          },
+          {
+            "key": "campaign_enemy_stormmaw_prime_attack",
+            "state": "attack",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "attack_0",
+              "attack_1",
+              "attack_2",
+              "attack_3",
+              "attack_4",
+              "attack_5",
+              "attack_6",
+              "attack_7"
+            ]
+          },
+          {
+            "key": "campaign_enemy_stormmaw_prime_special",
+            "state": "special",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "special_0",
+              "special_1",
+              "special_2",
+              "special_3",
+              "special_4",
+              "special_5",
+              "special_6",
+              "special_7"
+            ]
+          },
+          {
+            "key": "campaign_enemy_stormmaw_prime_phase_two",
+            "state": "phase_two",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "phase_two_0",
+              "phase_two_1",
+              "phase_two_2",
+              "phase_two_3",
+              "phase_two_4",
+              "phase_two_5",
+              "phase_two_6",
+              "phase_two_7"
+            ]
+          },
+          {
+            "key": "campaign_enemy_stormmaw_prime_death",
+            "state": "death",
+            "frameRate": 8,
+            "repeat": 0,
+            "frames": [
+              "death_0",
+              "death_1",
+              "death_2",
+              "death_3",
+              "death_4",
+              "death_5",
+              "death_6",
+              "death_7"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

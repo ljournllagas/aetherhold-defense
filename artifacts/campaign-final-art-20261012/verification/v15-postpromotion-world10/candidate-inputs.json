@@ -1,0 +1,763 @@
+{
+  "taskId": "V15",
+  "world": "World10",
+  "inputs": [
+    {
+      "id": "map:aether_crown:a",
+      "sourceId": "map:aether_crown:a",
+      "key": "campaign_aether_crown_a",
+      "runtimePath": "/assets/campaign/maps/aether_crown_a-v2.png",
+      "localPublicPath": "public/assets/campaign/maps/aether_crown_a-v2.png",
+      "expectedSha256": "2a5a18c73d4914f8451b0d8b74c9a936f8a611c2db1879c2269a468fa339daa9",
+      "acceptedCandidatePath": "artifacts/campaign-final-art-20261012/world10/repair-v2/candidates/aether-crown-map-a-repair-v2-attempt2.png",
+      "kind": "image",
+      "width": 1672,
+      "height": 940,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {},
+      "animations": [],
+      "qualityFlags": [
+        "terrain_plate",
+        "runtime_geometry_overlay"
+      ],
+      "stage": "gameplay",
+      "currentStatus": "promoted",
+      "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md"
+    },
+    {
+      "id": "map:aether_crown:b",
+      "sourceId": "map:aether_crown:b",
+      "key": "campaign_aether_crown_b",
+      "runtimePath": "/assets/campaign/maps/aether_crown_b-v2.png",
+      "localPublicPath": "public/assets/campaign/maps/aether_crown_b-v2.png",
+      "expectedSha256": "066eda646130c0847701b1f1694104f276fa24fccd81ec07c688ae445f11097b",
+      "acceptedCandidatePath": "artifacts/campaign-final-art-20261012/world10/repair-v2/candidates/aether-crown-map-b-repair-v2-attempt1.png",
+      "kind": "image",
+      "width": 1672,
+      "height": 940,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {},
+      "animations": [],
+      "qualityFlags": [
+        "terrain_plate",
+        "runtime_geometry_overlay"
+      ],
+      "stage": "gameplay",
+      "currentStatus": "promoted",
+      "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md"
+    },
+    {
+      "id": "map:aether_crown:c",
+      "sourceId": "map:aether_crown:c",
+      "key": "campaign_aether_crown_c",
+      "runtimePath": "/assets/campaign/maps/aether_crown_c-v2.png",
+      "localPublicPath": "public/assets/campaign/maps/aether_crown_c-v2.png",
+      "expectedSha256": "024234dcf969ccea0f76141471a2b200815bb15e0cb4b99be46bbc7b5db2d964",
+      "acceptedCandidatePath": "artifacts/campaign-final-art-20261012/world10/repair-v2/candidates/aether-crown-map-c-repair-v2-attempt1.png",
+      "kind": "image",
+      "width": 1672,
+      "height": 940,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {},
+      "animations": [],
+      "qualityFlags": [
+        "terrain_plate",
+        "runtime_geometry_overlay"
+      ],
+      "stage": "gameplay",
+      "currentStatus": "promoted",
+      "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md"
+    },
+    {
+      "id": "map:aether_crown:d",
+      "sourceId": "map:aether_crown:d",
+      "key": "campaign_aether_crown_d",
+      "runtimePath": "/assets/campaign/maps/aether_crown_d-v2.png",
+      "localPublicPath": "public/assets/campaign/maps/aether_crown_d-v2.png",
+      "expectedSha256": "49e427473869ca967add41f80d237e2b2978b467dc3218cc0f0493e0da6926cb",
+      "acceptedCandidatePath": "artifacts/campaign-final-art-20261012/world10/repair-v2/candidates/aether-crown-map-d-repair-v2-attempt1.png",
+      "kind": "image",
+      "width": 1672,
+      "height": 940,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {},
+      "animations": [],
+      "qualityFlags": [
+        "terrain_plate",
+        "runtime_geometry_overlay"
+      ],
+      "stage": "gameplay",
+      "currentStatus": "promoted",
+      "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md"
+    },
+    {
+      "id": "world-panel:aether_crown",
+      "sourceId": "world-panel:aether_crown",
+      "key": "campaign_worldmap_aether_crown",
+      "runtimePath": "/assets/campaign/world-map/aether_crown-v2.png",
+      "localPublicPath": "public/assets/campaign/world-map/aether_crown-v2.png",
+      "expectedSha256": "f8f435616240ba841b84bcd472bae3eeb961f0a6408c8d236363b94a0eeef083",
+      "acceptedCandidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/aether-crown-world-panel.png",
+      "kind": "image",
+      "width": 768,
+      "height": 432,
+      "frameWidth": null,
+      "frameHeight": null,
+      "states": {},
+      "animations": [],
+      "qualityFlags": [
+        "biome_illustration"
+      ],
+      "stage": "campaign",
+      "currentStatus": "promoted",
+      "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md"
+    },
+    {
+      "id": "enemy:aetherborn",
+      "sourceId": "enemy:aetherborn",
+      "key": "campaign_enemy_aetherborn",
+      "runtimePath": "/assets/campaign/enemies/aether_crown/aetherborn-atlas-v2.png",
+      "localPublicPath": "public/assets/campaign/enemies/aether_crown/aetherborn-atlas-v2.png",
+      "expectedSha256": "17323698c1f2bf34939390e56726bb2f5cd8b1f1f2307e1098fe81bdaa7beb30",
+      "acceptedCandidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/aetherborn-atlas.png",
+      "kind": "sheet",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "row": 0,
+          "frames": 4
+        },
+        "walk": {
+          "row": 1,
+          "frames": 6
+        },
+        "attack": {
+          "row": 2,
+          "frames": 6
+        },
+        "death": {
+          "row": 3,
+          "frames": 6
+        }
+      },
+      "animations": [
+        {
+          "key": "campaign_enemy_aetherborn_idle",
+          "state": "idle",
+          "frameRate": 4,
+          "repeat": -1,
+          "frames": [
+            "idle_0",
+            "idle_1",
+            "idle_2",
+            "idle_3"
+          ]
+        },
+        {
+          "key": "campaign_enemy_aetherborn_walk",
+          "state": "walk",
+          "frameRate": 7,
+          "repeat": -1,
+          "frames": [
+            "walk_0",
+            "walk_1",
+            "walk_2",
+            "walk_3",
+            "walk_4",
+            "walk_5"
+          ]
+        },
+        {
+          "key": "campaign_enemy_aetherborn_attack",
+          "state": "attack",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "attack_0",
+            "attack_1",
+            "attack_2",
+            "attack_3",
+            "attack_4",
+            "attack_5"
+          ]
+        },
+        {
+          "key": "campaign_enemy_aetherborn_death",
+          "state": "death",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "death_0",
+            "death_1",
+            "death_2",
+            "death_3",
+            "death_4",
+            "death_5"
+          ]
+        }
+      ],
+      "qualityFlags": [
+        "transparent_png_required",
+        "consistent_feet_anchor",
+        "no_baked_ui_or_large_shadow"
+      ],
+      "stage": "gameplay",
+      "currentStatus": "promoted",
+      "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md"
+    },
+    {
+      "id": "enemy:crown_runner",
+      "sourceId": "enemy:crown_runner",
+      "key": "campaign_enemy_crown_runner",
+      "runtimePath": "/assets/campaign/enemies/aether_crown/crown_runner-atlas-v2.png",
+      "localPublicPath": "public/assets/campaign/enemies/aether_crown/crown_runner-atlas-v2.png",
+      "expectedSha256": "e177eae916c36c576c0190e411e6f46239e2c6bbe9f8f9600705486c1e6cf417",
+      "acceptedCandidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/crown-runner-atlas.png",
+      "kind": "sheet",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "row": 0,
+          "frames": 4
+        },
+        "walk": {
+          "row": 1,
+          "frames": 6
+        },
+        "attack": {
+          "row": 2,
+          "frames": 6
+        },
+        "death": {
+          "row": 3,
+          "frames": 6
+        }
+      },
+      "animations": [
+        {
+          "key": "campaign_enemy_crown_runner_idle",
+          "state": "idle",
+          "frameRate": 4,
+          "repeat": -1,
+          "frames": [
+            "idle_0",
+            "idle_1",
+            "idle_2",
+            "idle_3"
+          ]
+        },
+        {
+          "key": "campaign_enemy_crown_runner_walk",
+          "state": "walk",
+          "frameRate": 7,
+          "repeat": -1,
+          "frames": [
+            "walk_0",
+            "walk_1",
+            "walk_2",
+            "walk_3",
+            "walk_4",
+            "walk_5"
+          ]
+        },
+        {
+          "key": "campaign_enemy_crown_runner_attack",
+          "state": "attack",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "attack_0",
+            "attack_1",
+            "attack_2",
+            "attack_3",
+            "attack_4",
+            "attack_5"
+          ]
+        },
+        {
+          "key": "campaign_enemy_crown_runner_death",
+          "state": "death",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "death_0",
+            "death_1",
+            "death_2",
+            "death_3",
+            "death_4",
+            "death_5"
+          ]
+        }
+      ],
+      "qualityFlags": [
+        "transparent_png_required",
+        "consistent_feet_anchor",
+        "no_baked_ui_or_large_shadow"
+      ],
+      "stage": "gameplay",
+      "currentStatus": "promoted",
+      "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md"
+    },
+    {
+      "id": "enemy:aether_seer",
+      "sourceId": "enemy:aether_seer",
+      "key": "campaign_enemy_aether_seer",
+      "runtimePath": "/assets/campaign/enemies/aether_crown/aether_seer-atlas-v2.png",
+      "localPublicPath": "public/assets/campaign/enemies/aether_crown/aether_seer-atlas-v2.png",
+      "expectedSha256": "026c459442aaa6e98ed9ce5be856b90005edafa1bfed6f54a26db401939c7c05",
+      "acceptedCandidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/aether-seer-atlas.png",
+      "kind": "sheet",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "row": 0,
+          "frames": 4
+        },
+        "walk": {
+          "row": 1,
+          "frames": 6
+        },
+        "attack": {
+          "row": 2,
+          "frames": 6
+        },
+        "death": {
+          "row": 3,
+          "frames": 6
+        }
+      },
+      "animations": [
+        {
+          "key": "campaign_enemy_aether_seer_idle",
+          "state": "idle",
+          "frameRate": 4,
+          "repeat": -1,
+          "frames": [
+            "idle_0",
+            "idle_1",
+            "idle_2",
+            "idle_3"
+          ]
+        },
+        {
+          "key": "campaign_enemy_aether_seer_walk",
+          "state": "walk",
+          "frameRate": 7,
+          "repeat": -1,
+          "frames": [
+            "walk_0",
+            "walk_1",
+            "walk_2",
+            "walk_3",
+            "walk_4",
+            "walk_5"
+          ]
+        },
+        {
+          "key": "campaign_enemy_aether_seer_attack",
+          "state": "attack",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "attack_0",
+            "attack_1",
+            "attack_2",
+            "attack_3",
+            "attack_4",
+            "attack_5"
+          ]
+        },
+        {
+          "key": "campaign_enemy_aether_seer_death",
+          "state": "death",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "death_0",
+            "death_1",
+            "death_2",
+            "death_3",
+            "death_4",
+            "death_5"
+          ]
+        }
+      ],
+      "qualityFlags": [
+        "transparent_png_required",
+        "consistent_feet_anchor",
+        "no_baked_ui_or_large_shadow"
+      ],
+      "stage": "gameplay",
+      "currentStatus": "promoted",
+      "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md"
+    },
+    {
+      "id": "enemy:sentry_colossus",
+      "sourceId": "enemy:sentry_colossus",
+      "key": "campaign_enemy_sentry_colossus",
+      "runtimePath": "/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v2.png",
+      "localPublicPath": "public/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v2.png",
+      "expectedSha256": "31c9a5eda829070c05e0b2571eafaece2af1382859a0a26ee3ffd953932f2edc",
+      "acceptedCandidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/sentry-colossus-atlas.png",
+      "kind": "sheet",
+      "width": 768,
+      "height": 512,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "row": 0,
+          "frames": 4
+        },
+        "walk": {
+          "row": 1,
+          "frames": 6
+        },
+        "attack": {
+          "row": 2,
+          "frames": 6
+        },
+        "death": {
+          "row": 3,
+          "frames": 6
+        }
+      },
+      "animations": [
+        {
+          "key": "campaign_enemy_sentry_colossus_idle",
+          "state": "idle",
+          "frameRate": 4,
+          "repeat": -1,
+          "frames": [
+            "idle_0",
+            "idle_1",
+            "idle_2",
+            "idle_3"
+          ]
+        },
+        {
+          "key": "campaign_enemy_sentry_colossus_walk",
+          "state": "walk",
+          "frameRate": 7,
+          "repeat": -1,
+          "frames": [
+            "walk_0",
+            "walk_1",
+            "walk_2",
+            "walk_3",
+            "walk_4",
+            "walk_5"
+          ]
+        },
+        {
+          "key": "campaign_enemy_sentry_colossus_attack",
+          "state": "attack",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "attack_0",
+            "attack_1",
+            "attack_2",
+            "attack_3",
+            "attack_4",
+            "attack_5"
+          ]
+        },
+        {
+          "key": "campaign_enemy_sentry_colossus_death",
+          "state": "death",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "death_0",
+            "death_1",
+            "death_2",
+            "death_3",
+            "death_4",
+            "death_5"
+          ]
+        }
+      ],
+      "qualityFlags": [
+        "transparent_png_required",
+        "consistent_feet_anchor",
+        "no_baked_ui_or_large_shadow"
+      ],
+      "stage": "gameplay",
+      "currentStatus": "promoted",
+      "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md"
+    },
+    {
+      "id": "enemy:crown_archon",
+      "sourceId": "enemy:crown_archon",
+      "key": "campaign_enemy_crown_archon",
+      "runtimePath": "/assets/campaign/enemies/aether_crown/crown_archon-atlas-v2.png",
+      "localPublicPath": "public/assets/campaign/enemies/aether_crown/crown_archon-atlas-v2.png",
+      "expectedSha256": "28098ac3e6433f91759c2327ab01614322e2e1e3152fd3ee78d7750fc91e9fb9",
+      "acceptedCandidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/crown-archon-atlas.png",
+      "kind": "sheet",
+      "width": 768,
+      "height": 640,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "states": {
+        "idle": {
+          "row": 0,
+          "frames": 4
+        },
+        "walk": {
+          "row": 1,
+          "frames": 6
+        },
+        "attack": {
+          "row": 2,
+          "frames": 6
+        },
+        "death": {
+          "row": 3,
+          "frames": 6
+        },
+        "buff": {
+          "row": 4,
+          "frames": 6
+        }
+      },
+      "animations": [
+        {
+          "key": "campaign_enemy_crown_archon_idle",
+          "state": "idle",
+          "frameRate": 4,
+          "repeat": -1,
+          "frames": [
+            "idle_0",
+            "idle_1",
+            "idle_2",
+            "idle_3"
+          ]
+        },
+        {
+          "key": "campaign_enemy_crown_archon_walk",
+          "state": "walk",
+          "frameRate": 7,
+          "repeat": -1,
+          "frames": [
+            "walk_0",
+            "walk_1",
+            "walk_2",
+            "walk_3",
+            "walk_4",
+            "walk_5"
+          ]
+        },
+        {
+          "key": "campaign_enemy_crown_archon_attack",
+          "state": "attack",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "attack_0",
+            "attack_1",
+            "attack_2",
+            "attack_3",
+            "attack_4",
+            "attack_5"
+          ]
+        },
+        {
+          "key": "campaign_enemy_crown_archon_death",
+          "state": "death",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "death_0",
+            "death_1",
+            "death_2",
+            "death_3",
+            "death_4",
+            "death_5"
+          ]
+        },
+        {
+          "key": "campaign_enemy_crown_archon_buff",
+          "state": "buff",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "buff_0",
+            "buff_1",
+            "buff_2",
+            "buff_3",
+            "buff_4",
+            "buff_5"
+          ]
+        }
+      ],
+      "qualityFlags": [
+        "transparent_png_required",
+        "consistent_feet_anchor",
+        "no_baked_ui_or_large_shadow",
+        "support_buff_playback_verified"
+      ],
+      "stage": "gameplay",
+      "currentStatus": "promoted",
+      "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md"
+    },
+    {
+      "id": "boss:aether_devourer",
+      "sourceId": "boss:aether_devourer",
+      "key": "campaign_enemy_aether_devourer",
+      "runtimePath": "/assets/campaign/bosses/aether_devourer-atlas-v2.png",
+      "localPublicPath": "public/assets/campaign/bosses/aether_devourer-atlas-v2.png",
+      "expectedSha256": "4ce4f9d0d079ae04968c6f4659f10822f8e603a84e68565602d5c9c7e03a103c",
+      "acceptedCandidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/aether-devourer-atlas.png",
+      "kind": "sheet",
+      "width": 2048,
+      "height": 1536,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "states": {
+        "idle": {
+          "row": 0,
+          "frames": 6
+        },
+        "walk": {
+          "row": 1,
+          "frames": 8
+        },
+        "attack": {
+          "row": 2,
+          "frames": 8
+        },
+        "special": {
+          "row": 3,
+          "frames": 8
+        },
+        "phase_two": {
+          "row": 4,
+          "frames": 8
+        },
+        "death": {
+          "row": 5,
+          "frames": 8
+        }
+      },
+      "animations": [
+        {
+          "key": "campaign_enemy_aether_devourer_idle",
+          "state": "idle",
+          "frameRate": 4,
+          "repeat": -1,
+          "frames": [
+            "idle_0",
+            "idle_1",
+            "idle_2",
+            "idle_3",
+            "idle_4",
+            "idle_5"
+          ]
+        },
+        {
+          "key": "campaign_enemy_aether_devourer_walk",
+          "state": "walk",
+          "frameRate": 7,
+          "repeat": -1,
+          "frames": [
+            "walk_0",
+            "walk_1",
+            "walk_2",
+            "walk_3",
+            "walk_4",
+            "walk_5",
+            "walk_6",
+            "walk_7"
+          ]
+        },
+        {
+          "key": "campaign_enemy_aether_devourer_attack",
+          "state": "attack",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "attack_0",
+            "attack_1",
+            "attack_2",
+            "attack_3",
+            "attack_4",
+            "attack_5",
+            "attack_6",
+            "attack_7"
+          ]
+        },
+        {
+          "key": "campaign_enemy_aether_devourer_special",
+          "state": "special",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "special_0",
+            "special_1",
+            "special_2",
+            "special_3",
+            "special_4",
+            "special_5",
+            "special_6",
+            "special_7"
+          ]
+        },
+        {
+          "key": "campaign_enemy_aether_devourer_phase_two",
+          "state": "phase_two",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "phase_two_0",
+            "phase_two_1",
+            "phase_two_2",
+            "phase_two_3",
+            "phase_two_4",
+            "phase_two_5",
+            "phase_two_6",
+            "phase_two_7"
+          ]
+        },
+        {
+          "key": "campaign_enemy_aether_devourer_death",
+          "state": "death",
+          "frameRate": 8,
+          "repeat": 0,
+          "frames": [
+            "death_0",
+            "death_1",
+            "death_2",
+            "death_3",
+            "death_4",
+            "death_5",
+            "death_6",
+            "death_7"
+          ]
+        }
+      ],
+      "qualityFlags": [
+        "transparent_png_required",
+        "consistent_feet_anchor",
+        "phase_state_readability_verified"
+      ],
+      "stage": "gameplay",
+      "currentStatus": "promoted",
+      "promotionReportPath": "artifacts/campaign-final-art-20261012/integration/world10-promotion-report.md"
+    }
+  ]
+}
