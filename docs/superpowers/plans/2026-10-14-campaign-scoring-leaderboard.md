@@ -88,7 +88,7 @@ export function calculateCampaignScore(input: CampaignScoreInput): CampaignScore
 export function calculateCampaignLiveScore(input: CampaignScoreInput): number;
 ```
 
-- [ ] **1. Add failing formula and metadata tests.** Include these assertions plus gold/time invariance by confirming no such inputs occur in the Campaign interface, and compare identical counters across Classic difficulty configs without passing those configs to Campaign functions.
+- [x] **1. Add failing formula and metadata tests.** Include these assertions plus gold/time invariance by confirming no such inputs occur in the Campaign interface, and compare identical counters across Classic difficulty configs without passing those configs to Campaign functions.
 
 ```ts
 it('settles the lives bonus once and keeps opening live score zero', () => {
@@ -117,8 +117,8 @@ it('has reachable targets for every registered mission', () => {
 });
 ```
 
-- [ ] **2. Run red:** `rtk npm test -- tests/campaign-scoring.test.ts`. Before Task 1 creates the module, expect the resolver to name missing `src/shared/campaignScoring.ts`; after adding exports, expect the formula/target assertion to fail until its implementation is complete. An unrelated missing dependency is a blocker.
-- [ ] **3. Extract the existing wave algorithm verbatim.** Move original/established/expansion wave counts, the wave-specific tuning values, and `CampaignBattle.wave` composition into `waveProfile.ts`. Keep reward, specialization, map, and unlock logic in `battle.ts`. Preserve `CAMPAIGN_BATTLE_TUNING`'s public shape by spreading exported wave tuning into its existing object; do not make the pure module import `battle.ts` or `progress.ts`. New helper validation rejects invalid levels/waves using the existing exceptions. Before replacing delegation, add an equivalence test over all 100 levels/all waves and count multipliers 0.9, 1, 1.1 using the old function captured in the test, then remove duplicate test algorithm after recording unchanged expectations as spawn count/ID fixtures or snapshots.
+- [x] **2. Run red:** `rtk npm test -- tests/campaign-scoring.test.ts`. Before Task 1 creates the module, expect the resolver to name missing `src/shared/campaignScoring.ts`; after adding exports, expect the formula/target assertion to fail until its implementation is complete. An unrelated missing dependency is a blocker.
+- [x] **3. Extract the existing wave algorithm verbatim.** Move original/established/expansion wave counts, the wave-specific tuning values, and `CampaignBattle.wave` composition into `waveProfile.ts`. Keep reward, specialization, map, and unlock logic in `battle.ts`. Preserve `CAMPAIGN_BATTLE_TUNING`'s public shape by spreading exported wave tuning into its existing object; do not make the pure module import `battle.ts` or `progress.ts`. New helper validation rejects invalid levels/waves using the existing exceptions. Before replacing delegation, add an equivalence test over all 100 levels/all waves and count multipliers 0.9, 1, 1.1 using the old function captured in the test, then remove duplicate test algorithm after recording unchanged expectations as spawn count/ID fixtures or snapshots.
 
 ```ts
 // CampaignBattle retains its public method.
@@ -141,9 +141,9 @@ export function calculateCampaignLiveScore(i: CampaignScoreInput): number {
 
 Build metadata by iterating `getCampaignWave(level,wave).spawns.length`, with prefix count `[0]`, adding each wave count, and computing perfect score from the exact formula. Memoize immutable metadata by registered level so render/validation does not repeatedly enumerate spawns. Freeze nested prefix arrays to prevent a caller changing server bounds.
 
-- [ ] **4. Add per-world imperfect examples.** For each world select its first mission; enumerate lives 1..19 and scheduled kills 0..N with all waves cleared, selecting a score below perfect that reaches target. Assert at least one exists per world; emit actual counts in assertion failures. Test target-minus-one rejection through the award helper in Task 2.
-- [ ] **5. Run green:** `rtk npm test -- tests/campaign-scoring.test.ts tests/campaign-combat.test.ts tests/campaign-v5-compatibility.test.ts`; `rtk npm run build`. Confirm Worker-bound imports contain no Phaser/browser modules.
-- [ ] **6. Commit only Task 1 paths:** run `rtk git add -- src/game/campaign/waveProfile.ts src/shared/campaignScoring.ts src/game/campaign/battle.ts tests/campaign-scoring.test.ts`; if the equivalence fixtures changed, stage their specifically named paths separately. Then run `rtk git commit -m "feat: add independent campaign score arithmetic"`.
+- [x] **4. Add per-world imperfect examples.** For each world select its first mission; enumerate lives 1..19 and scheduled kills 0..N with all waves cleared, selecting a score below perfect that reaches target. Assert at least one exists per world; emit actual counts in assertion failures. Test target-minus-one rejection through the award helper in Task 2.
+- [x] **5. Run green:** `rtk npm test -- tests/campaign-scoring.test.ts tests/campaign-combat.test.ts tests/campaign-v5-compatibility.test.ts`; `rtk npm run build`. Confirm Worker-bound imports contain no Phaser/browser modules.
+- [x] **6. Commit only Task 1 paths:** run `rtk git add -- src/game/campaign/waveProfile.ts src/shared/campaignScoring.ts src/game/campaign/battle.ts tests/campaign-scoring.test.ts`; if the equivalence fixtures changed, stage their specifically named paths separately. Then run `rtk git commit -m "feat: add independent campaign score arithmetic"`.
 
 ## Task 2: Preserve legacy progress and merge current mission bests
 
@@ -165,8 +165,8 @@ export function applyCampaignClear(old: CampaignLevelProgress | undefined,
 
 `CampaignRepository.recordClear(level: number, score: number, lives: number): CampaignClearResult | null` now records a current-era winning score. Its public signature is unchanged, but all new-clear test callers must supply meaningful current-era values. Parsing old stored JSON remains legacy-compatible.
 
-- [ ] **1. Search every legacy best/clear caller before editing:** `rtk rg -n 'recordClear\(|bestScore|scoreTarget|normalizeProgress|cloneLevelProgress|mergeLevelProgress|sameProgress' src tests`. Assign active UI callers to Task 5 and GameScene/guest callers to Task 3; update remaining fixtures/helpers here, preserving migration fixtures unchanged.
-- [ ] **2. Add failing preservation/merge tests.** Import the actual legacy local/cloud fixtures. Verify unchanged parsed legacy numeric bests and retained stars, no invented `campaignScore`, unlocked worlds/presets/targeting unchanged, reload preserves both eras, and unknown score versions leave raw storage unwritten. Iterate all 100 missions for target equality, target-minus-one, and perfect-clear score-star awards using an empty level; sticky legacy star checks use fixture evidence rather than bypassing validation.
+- [x] **1. Search every legacy best/clear caller before editing:** `rtk rg -n 'recordClear\(|bestScore|scoreTarget|normalizeProgress|cloneLevelProgress|mergeLevelProgress|sameProgress' src tests`. Assign active UI callers to Task 5 and GameScene/guest callers to Task 3; update remaining fixtures/helpers here, preserving migration fixtures unchanged.
+- [x] **2. Add failing preservation/merge tests.** Import the actual legacy local/cloud fixtures. Verify unchanged parsed legacy numeric bests and retained stars, no invented `campaignScore`, unlocked worlds/presets/targeting unchanged, reload preserves both eras, and unknown score versions leave raw storage unwritten. Iterate all 100 missions for target equality, target-minus-one, and perfect-clear score-star awards using an empty level; sticky legacy star checks use fixture evidence rather than bypassing validation.
 
 ```ts
 it('awards the exact score boundary and perfect clear on every mission', () => {
@@ -195,8 +195,8 @@ it('preserves a newer best across stale uploads and deep clones', () => {
 });
 ```
 
-- [ ] **3. Run red:** `rtk npm test -- tests/campaign-score-migration.test.ts`. The initial expected resolver error names the new `src/shared/campaignProgress.ts`; after implementing its exports, retain a behavioral red check for unsupported nested data or lost current bests before completing the parser/merge changes.
-- [ ] **4. Implement one shared per-level validator and use it in both local and cloud parsing.** Keep explicit allowed keys, canonical level IDs, booleans, completion/star invariants, old max/remaining-lives bounds, and untouched classic best validation. For `campaignScore`, require exactly `version,bestScore`, version 1, completed true, and safe integer score from 1 through mission perfect. A score star requires old best >= old target OR new best >= new target. Unknown fields/version fail; do not strip them.
+- [x] **3. Run red:** `rtk npm test -- tests/campaign-score-migration.test.ts`. The initial expected resolver error names the new `src/shared/campaignProgress.ts`; after implementing its exports, retain a behavioral red check for unsupported nested data or lost current bests before completing the parser/merge changes.
+- [x] **4. Implement one shared per-level validator and use it in both local and cloud parsing.** Keep explicit allowed keys, canonical level IDs, booleans, completion/star invariants, old max/remaining-lives bounds, and untouched classic best validation. For `campaignScore`, require exactly `version,bestScore`, version 1, completed true, and safe integer score from 1 through mission perfect. A score star requires old best >= old target OR new best >= new target. Unknown fields/version fail; do not strip them.
 
 ```ts
 // Clone primitive flags/legacy metrics and the optional nested score.
@@ -216,9 +216,9 @@ const merged = {
 
 Implement `applyCampaignClear` with score/lives validation, unchanged completion/lives rules, score-star threshold against new metadata, current best max, legacy best unchanged (zero for a new level). Use it inside `recordClear`; retain locked-level rejection, newly earned stars/sigils/features, pending persistence flags, and storage protections. Include nested score in equality checks. Replace duplicated clone/merge/validation operations with shared functions; no new wrapper layer around storage.
 
-- [ ] **5. Update new-clear fixture producers.** A helper that completes a mission uses `campaignScoreMetadata(level).perfectScore`; a score-star boundary test uses the new target. Assertions distinguish `bestScore` legacy from `campaignScore.bestScore`, preserving original test intent and all migrated legacy values. Do not weaken expected achievements or drop failing assertions.
-- [ ] **6. Verify failures/concurrency:** existing in-memory stores with denied reads/quota failures still keep session-only changes and warnings. Merge two different device clears in both orders, asserting max current best, max legacy best, OR stars, and identical derived unlocks; claimed/imported batches preserve IDs and owner. Run `rtk npm test -- tests/campaign-score-migration.test.ts tests/campaign-progress.test.ts tests/cloud-progress.test.ts tests/campaign-v5-compatibility.test.ts tests/verification-v5-save.test.ts tests/guest-storage.test.ts tests/account-storage.test.ts`.
-- [ ] **7. Commit only Task 2 paths:** message `feat: preserve legacy campaign achievements alongside new bests`.
+- [x] **5. Update new-clear fixture producers.** A helper that completes a mission uses `campaignScoreMetadata(level).perfectScore`; a score-star boundary test uses the new target. Assertions distinguish `bestScore` legacy from `campaignScore.bestScore`, preserving original test intent and all migrated legacy values. Do not weaken expected achievements or drop failing assertions.
+- [x] **6. Verify failures/concurrency:** existing in-memory stores with denied reads/quota failures still keep session-only changes and warnings. Merge two different device clears in both orders, asserting max current best, max legacy best, OR stars, and identical derived unlocks; claimed/imported batches preserve IDs and owner. Run `rtk npm test -- tests/campaign-score-migration.test.ts tests/campaign-progress.test.ts tests/cloud-progress.test.ts tests/campaign-v5-compatibility.test.ts tests/verification-v5-save.test.ts tests/guest-storage.test.ts tests/account-storage.test.ts`.
+- [x] **7. Commit only Task 2 paths:** message `feat: preserve legacy campaign achievements alongside new bests`.
 
 ## Task 3: Validate new terminal results and award scheduled combat correctly
 
@@ -230,7 +230,7 @@ Implement `applyCampaignClear` with score/lives validation, unchanged completion
 - `validateCampaignResult(v: unknown): CampaignResultPayload | null` keeps its signature. `RunResult` and acknowledgment shape stay unchanged. New guest campaign results still become per-level progress with `result:null` in the snapshot.
 - GameScene adds scheduled identity set and two counters; existing `enemiesKilled`/`bossesKilled` retain combat/bounty behavior. Results retain `breakdown: CampaignScoreBreakdown` for Task 5.
 
-- [ ] **1. Add failing result arithmetic tests and scene tests.** Use the existing Phaser mock pattern from `guest-run-settlement.test.ts`. An exact new payload is built from metadata; change one counter/score/version at a time and assert rejection. Old unversioned results retain their existing acceptance and canonical representation.
+- [x] **1. Add failing result arithmetic tests and scene tests.** Use the existing Phaser mock pattern from `guest-run-settlement.test.ts`. An exact new payload is built from metadata; change one counter/score/version at a time and assert rejection. Old unversioned results retain their existing acceptance and canonical representation.
 
 ```ts
 it('recalculates a current-era victory and rejects changed arithmetic', () => {
@@ -249,9 +249,9 @@ it('recalculates a current-era victory and rejects changed arithmetic', () => {
 
 Scene assertions must call actual kill/escape/settlement methods with render/audio effects stubbed, not just test a set in isolation: scheduled ordinary enemy awards once; scheduled real boss awards both bonuses; summon/clone with the same `campaignId` does neither; cleanup does neither; final duplicate settlement sends one captured-owner result. Test failure/restart/quit/assisted exclusion and zero live score.
 
-- [ ] **2. Run red:** `rtk npm test -- tests/campaign-score-results.test.ts tests/guest-run-settlement.test.ts`.
-- [ ] **3. Implement current result validation.** Recognize current format only by the complete versioned key set; missing version with any new counter is invalid. Retain old legacy validation verbatim. For new results require safe integers, W completed waves in 0..W, kills in 0..prefix[min(W,completed+1)], boss count 0..Number(hasBoss), and no boss kill before the final wave could be active. Boss count <= eligible kills. Enforce exact score calculation, existing outcome/lives/duration/version/run-ID validation, victory completed=W/boss=required, defeat lives=0, siege-failed authored boss exists/lives>0/bossKills=0. Do not infer era from score. Result canonicalization continues sorting every payload field.
-- [ ] **4. Wire scheduled identity and scoring into GameScene.** Reset identity set/counters in `init`. Only the authored wave-queue path registers identities. Summon paths never register. The kill path consumes the set before score changes; cleanup/escape delete without awarding. Determine the boss bonus from the consumed authored identity plus its definition, preventing clone-type false matches.
+- [x] **2. Run red:** `rtk npm test -- tests/campaign-score-results.test.ts tests/guest-run-settlement.test.ts`.
+- [x] **3. Implement current result validation.** Recognize current format only by the complete versioned key set; missing version with any new counter is invalid. Retain old legacy validation verbatim. For new results require safe integers, W completed waves in 0..W, kills in 0..prefix[min(W,completed+1)], boss count 0..Number(hasBoss), and no boss kill before the final wave could be active. Boss count <= eligible kills. Enforce exact score calculation, existing outcome/lives/duration/version/run-ID validation, victory completed=W/boss=required, defeat lives=0, siege-failed authored boss exists/lives>0/bossKills=0. Do not infer era from score. Result canonicalization continues sorting every payload field.
+- [x] **4. Wire scheduled identity and scoring into GameScene.** Reset identity set/counters in `init`. Only the authored wave-queue path registers identities. Summon paths never register. The kill path consumes the set before score changes; cleanup/escape delete without awarding. Determine the boss bonus from the consumed authored identity plus its definition, preventing clone-type false matches.
 
 ```ts
 // At the authored queue spawn, after spawnEnemy:
@@ -269,9 +269,9 @@ if (this.campaign && scheduled) {
 
 Move the existing unconditional campaign boss-killed assignment into that scheduled branch. Keep unrelated Classic/bounty counters/logic. In `scoreSoFar`, branch to Campaign live arithmetic before Classic; in `finishCampaign`, calculate breakdown once, award current clear only for existing allowed victories, populate all new payload fields, and preserve captured run-owner settlement. The final fully cleared wave must increment `wavesCompleted` before settlement; test the actual `checkWaveClear` path and adjust ordering if necessary, without altering Classic lifecycle. QA fixture scores use actual metadata/counters but retain no-save/no-upload exclusions.
 
-- [ ] **5. Update guestRunProgress.** For a current victory, use `applyCampaignClear` for the mission and retain `result:null,runId`. Legacy campaign victories keep the old legacy progress construction; failures award no levels in either format. `validGuestSnapshot` retains its existing classic-result compatibility and receives nested campaign progress through `validateCloudProgress`.
-- [ ] **6. Run green:** `rtk npm test -- tests/campaign-score-results.test.ts tests/guest-run-settlement.test.ts tests/guest-progress.test.ts tests/account-scores.test.ts tests/campaign-independent-lifecycle.test.ts tests/scene-siege.test.ts tests/earned-score.test.ts`; `rtk npm run build`. HTTP result tests must retain unauthorized, CSRF, rate-limit, conflicting run ID, identical retry, and account-generation assertions.
-- [ ] **7. Commit only Task 3 paths:** message `feat: settle validated campaign mission scores`.
+- [x] **5. Update guestRunProgress.** For a current victory, use `applyCampaignClear` for the mission and retain `result:null,runId`. Legacy campaign victories keep the old legacy progress construction; failures award no levels in either format. `validGuestSnapshot` retains its existing classic-result compatibility and receives nested campaign progress through `validateCloudProgress`.
+- [x] **6. Run green:** `rtk npm test -- tests/campaign-score-results.test.ts tests/guest-run-settlement.test.ts tests/guest-progress.test.ts tests/account-scores.test.ts tests/campaign-independent-lifecycle.test.ts tests/scene-siege.test.ts tests/earned-score.test.ts`; `rtk npm run build`. HTTP result tests must retain unauthorized, CSRF, rate-limit, conflicting run ID, identical retry, and account-generation assertions.
+- [x] **7. Commit only Task 3 paths:** message `feat: settle validated campaign mission scores`.
 
 ## Task 4: Aggregate valid acknowledged progress into a public ranking
 
@@ -295,7 +295,7 @@ export function validateCampaignLeaderboard(value: unknown, limit?: number): Cam
 export function handleCampaignLeaderboard(request: Request, env: Pick<AuthEnv, 'DB'>): Promise<Response | null>;
 ```
 
-- [ ] **1. Add real-D1 failing tests.** Each test obtains/disposes `accountDb()` with `try/finally`; write player profiles through `/api/account/sync` for normal cases, directly through D1 only to simulate corruption/future data. Cover all ordering priorities/ties, new-only and legacy-only progress, no missions, max score/max stars bounds, multiple mission bests after guest import, stale upload, rename/delete/re-create, privacy, query failure, invalid limit, and malformed/future profiles placed ahead of valid players.
+- [x] **1. Add real-D1 failing tests.** Each test obtains/disposes `accountDb()` with `try/finally`; write player profiles through `/api/account/sync` for normal cases, directly through D1 only to simulate corruption/future data. Cover all ordering priorities/ties, new-only and legacy-only progress, no missions, max score/max stars bounds, multiple mission bests after guest import, stale upload, rename/delete/re-create, privacy, query failure, invalid limit, and malformed/future profiles placed ahead of valid players.
 
 ```ts
 it('publishes one row and preserves its score after stale sync', async () => {
@@ -318,8 +318,8 @@ it('publishes one row and preserves its score after stale sync', async () => {
 });
 ```
 
-- [ ] **2. Run red:** `rtk npm test -- tests/campaign-leaderboard-worker.test.ts`. Initial feature-absence errors name only the new shared/Worker campaign leaderboard modules; once the handler exists, use the real-D1 ordering/privacy assertions as the behavioral red checkpoint.
-- [ ] **3. Define comparator, aggregate metadata, and response validation.** Use bytewise/string `<` ordering for playerId, matching SQLite BINARY collation, not locale-specific collation. Require only known fields, nonempty nickname <=20, opaque nonempty ID, integer nonnegative metrics, missions 1..100, stars<=3*missions, score<=sum(perfectScores), correct era/counts, unique IDs, correctly sorted rows, rows<=requested limit. Export no private profile fields.
+- [x] **2. Run red:** `rtk npm test -- tests/campaign-leaderboard-worker.test.ts`. Initial feature-absence errors name only the new shared/Worker campaign leaderboard modules; once the handler exists, use the real-D1 ordering/privacy assertions as the behavioral red checkpoint.
+- [x] **3. Define comparator, aggregate metadata, and response validation.** Use bytewise/string `<` ordering for playerId, matching SQLite BINARY collation, not locale-specific collation. Require only known fields, nonempty nickname <=20, opaque nonempty ID, integer nonnegative metrics, missions 1..100, stars<=3*missions, score<=sum(perfectScores), correct era/counts, unique IDs, correctly sorted rows, rows<=requested limit. Export no private profile fields.
 
 ```ts
 export function compareCampaignRows(a: CampaignLeaderboardRow, b: CampaignLeaderboardRow): number {
@@ -328,7 +328,7 @@ export function compareCampaignRows(a: CampaignLeaderboardRow, b: CampaignLeader
 }
 ```
 
-- [ ] **4. Implement D1 aggregation with guarded JSON and final shared validation.** No new table/migration. Pass one bound JSON metadata array for registered levels/targets/lives/perfect scores; never interpolate user input. SQL normalizes malformed profile JSON to `{}` before any JSON function, rejects unsupported top-level versions/nonobject levels, then joins `json_each(levels)` to registered canonical IDs. Per-level shape/invariant guards match Task 2, including unknown keys, supported nested era, integer counts, boolean flags, completion/lives/legacy-or-current-score-star evidence. An invalid level excludes the whole player, not just that mission. Aggregate all candidate profiles before ORDER BY and candidate LIMIT.
+- [x] **4. Implement D1 aggregation with guarded JSON and final shared validation.** No new table/migration. Pass one bound JSON metadata array for registered levels/targets/lives/perfect scores; never interpolate user input. SQL normalizes malformed profile JSON to `{}` before any JSON function, rejects unsupported top-level versions/nonobject levels, then joins `json_each(levels)` to registered canonical IDs. Per-level shape/invariant guards match Task 2, including unknown keys, supported nested era, integer counts, boolean flags, completion/lives/legacy-or-current-score-star evidence. An invalid level excludes the whole player, not just that mission. Aggregate all candidate profiles before ORDER BY and candidate LIMIT.
 
 Core query structure (expand the validity predicate with the exact checks listed below; these are SQL construction rules, not application-side aggregate computation):
 
@@ -408,9 +408,9 @@ The invalid-level predicate above uses `COALESCE(condition,0)=0` to reject missi
 
 The SQL computes totals and ordering across the database. Shared `validateCloudProgress(JSON.parse(privateProgress))` then excludes remaining incompatible profiles (including unrelated classic progress corruption) from the sorted candidate stream. Fetch candidate chunks of 100, continuing with OFFSET until `limit` valid rows or exhaustion; invalid candidates must not starve valid contenders. Validate each accepted row's totals against a pure reduction of its already fetched validated profile, rejecting a SQL mismatch as a server error. This is validation of the top candidate stream, not an application-side all-account aggregation: never load all profiles into memory, compute rankings in JavaScript, or limit players before SQL aggregation. No privateProgress crosses the response boundary. A Set suppresses duplicate IDs if concurrent changes shift candidate pages; compare/sort final rows before emitting. Refresh provides eventual visibility rather than a cross-request snapshot guarantee.
 
-- [ ] **5. Wire the public handler.** Match GET exact path before authenticated handlers; nonmatching requests return null. Parse default 20 or `/^[1-9][0-9]*$/` and range 1..100; repeated `limit` parameters are rejected. Invalid input uses 400 with `{ok:false,error:{code:'INVALID_LIMIT',message:'Limit must be an integer from 1 to 100.'}}`. Success uses the declared response and no-store plus the existing JSON/security/CORS headers. Database failure uses 503 `{ok:false,error:{code:'API_UNAVAILABLE',message:'Campaign leaderboard is temporarily unavailable.'}}`, never empty-success. Reuse/export the existing Worker JSON header helper rather than copying security header constants.
-- [ ] **6. Run green:** `rtk npm test -- tests/campaign-leaderboard-worker.test.ts tests/account-integration.test.ts tests/guest-http-integration.test.ts tests/account-deletion.test.ts tests/worker.test.ts`; `rtk npm run build`. Include 125 corrupt candidates ahead of a valid player to test continuation, a future nested version, array/string levels, malformed JSON, and classic-date corruption. Assert data remains byte-for-byte unchanged by reads.
-- [ ] **7. Commit only Task 4 paths:** message `feat: publish separate campaign progress leaderboard`.
+- [x] **5. Wire the public handler.** Match GET exact path before authenticated handlers; nonmatching requests return null. Parse default 20 or `/^[1-9][0-9]*$/` and range 1..100; repeated `limit` parameters are rejected. Invalid input uses 400 with `{ok:false,error:{code:'INVALID_LIMIT',message:'Limit must be an integer from 1 to 100.'}}`. Success uses the declared response and no-store plus the existing JSON/security/CORS headers. Database failure uses 503 `{ok:false,error:{code:'API_UNAVAILABLE',message:'Campaign leaderboard is temporarily unavailable.'}}`, never empty-success. Reuse/export the existing Worker JSON header helper rather than copying security header constants.
+- [x] **6. Run green:** `rtk npm test -- tests/campaign-leaderboard-worker.test.ts tests/account-integration.test.ts tests/guest-http-integration.test.ts tests/account-deletion.test.ts tests/worker.test.ts`; `rtk npm run build`. Include 125 corrupt candidates ahead of a valid player to test continuation, a future nested version, array/string levels, malformed JSON, and classic-date corruption. Assert data remains byte-for-byte unchanged by reads.
+- [x] **7. Commit only Task 4 paths:** message `feat: publish separate campaign progress leaderboard`.
 
 ## Task 5: Show mission score goals and results clearly
 
@@ -420,7 +420,7 @@ The SQL computes totals and ordering across the database. Shared `validateCloudP
 - Consumes: Task 1 metadata/breakdown, Task 2 progress, Task 3 result.breakdown.
 - Produces: `CampaignLevelDetail.bestScore` current-era best/null; add `legacyBestScore: number | null` and `scoreTarget: number`. Existing bestLives remains lifetime best. `campaignRequirements` score progress uses current best and target, retaining earned flag. Campaign result UI uses four count/point lines and final/target/best labels.
 
-- [ ] **1. Add failing pure presentation tests and behavioral scene assertions.** A legacy-only fixture returns current best null, nonzero legacyBestScore, retained score-star earned, and new target. A new winning clear returns current best but legacy best unchanged. Exact target and target-minus-one results display reached/missed independently from a retained star.
+- [x] **1. Add failing pure presentation tests and behavioral scene assertions.** A legacy-only fixture returns current best null, nonzero legacyBestScore, retained score-star earned, and new target. A new winning clear returns current best but legacy best unchanged. Exact target and target-minus-one results display reached/missed independently from a retained star.
 
 ```ts
 it('separates a retained legacy star from the new scoring goal', () => {
@@ -435,8 +435,8 @@ it('separates a retained legacy star from the new scoring goal', () => {
 });
 ```
 
-- [ ] **2. Run red:** `rtk npm test -- tests/campaign-score-ui.test.ts`.
-- [ ] **3. Replace every active Campaign target/best label.** Run `rtk rg -n 'mastery.scoreTarget|bestScore' src/game` and account for each match: old target only in legacy validation, active UI always metadata. In existing scrollable mission details append weights, rule, target, new best/Not scored yet, and separate nonzero legacy line. Preserve map viewport and compact header constraints. Results use the saved breakdown, current best, retained/new star distinction, target comparison, failure ranking guidance, and accountStatus pending/acknowledged wording.
+- [x] **2. Run red:** `rtk npm test -- tests/campaign-score-ui.test.ts`.
+- [x] **3. Replace every active Campaign target/best label.** Run `rtk rg -n 'mastery.scoreTarget|bestScore' src/game` and account for each match: old target only in legacy validation, active UI always metadata. In existing scrollable mission details append weights, rule, target, new best/Not scored yet, and separate nonzero legacy line. Preserve map viewport and compact header constraints. Results use the saved breakdown, current best, retained/new star distinction, target comparison, failure ranking guidance, and accountStatus pending/acknowledged wording.
 
 ```ts
 const m = campaignScoreMetadata(level);
@@ -459,8 +459,8 @@ const statsScoreCaption = this.campaign ? 'Combat score' : 'Score';
 ```
 
 Add a short Campaign entry to the existing help describing live combat score versus settled lives bonus. Do not change Classic help/formula. Render count/point component lines with `formatCount` in the existing `ScrollSheet`; resize re-renders from the saved result so no recalculation/double bonus occurs.
-- [ ] **4. Run green:** `rtk npm test -- tests/campaign-score-ui.test.ts tests/campaign-presentation.test.ts tests/prerequisites.test.ts tests/campaign-scene.test.ts tests/campaign-callout.test.ts tests/campaign-ui-repair.test.ts tests/content-fit.test.ts`. Browser layout is checked in Task 8, including legacy-only mission and ordinary/boss/failure results.
-- [ ] **5. Commit only Task 5 paths:** message `feat: explain campaign mission scoring and mastery goals`.
+- [x] **4. Run green:** `rtk npm test -- tests/campaign-score-ui.test.ts tests/campaign-presentation.test.ts tests/prerequisites.test.ts tests/campaign-scene.test.ts tests/campaign-callout.test.ts tests/campaign-ui-repair.test.ts tests/content-fit.test.ts`. Browser layout is checked in Task 8, including legacy-only mission and ordinary/boss/failure results.
+- [x] **5. Commit only Task 5 paths:** message `feat: explain campaign mission scoring and mastery goals`.
 
 ## Task 6: Add Campaign mode to the public leaderboard UI/client
 
@@ -471,7 +471,7 @@ Add a short Campaign entry to the existing help describing live combat score ver
 - Produces: `fetchCampaignLeaderboard(limit = 20): Promise<LeaderboardResult<CampaignLeaderboardRow>>`, reusing private fetchJson timeout/error handling; Classic fetch signature unchanged.
 - `LeaderboardScene.init(data: {mode?: 'classic'|'campaign'; filter?: Filter; highlightRunId?: string}): void` defaults classic. Resize restarts include mode. Campaign map action starts `{mode:'campaign'}`; main menu/default and Classic result links remain classic.
 
-- [ ] **1. Add failing client tests.** Mock fetch with valid era/counts/rows and malformed response examples: wrong era/counts, duplicate player IDs, negative/fractional metrics, too many stars/missions/score, wrong ordering, oversized nickname, limit overflow, HTML/HTTP failure, and aborted timeout. Verify the endpoint path and no mutation requests.
+- [x] **1. Add failing client tests.** Mock fetch with valid era/counts/rows and malformed response examples: wrong era/counts, duplicate player IDs, negative/fractional metrics, too many stars/missions/score, wrong ordering, oversized nickname, limit overflow, HTML/HTTP failure, and aborted timeout. Verify the endpoint path and no mutation requests.
 
 ```ts
 it('rejects a board whose primary ordering is wrong', async () => {
@@ -486,8 +486,8 @@ it('rejects a board whose primary ordering is wrong', async () => {
 });
 ```
 
-- [ ] **2. Run red:** `rtk npm test -- tests/campaign-leaderboard-client.test.ts tests/campaign-leaderboard-scene.test.ts`.
-- [ ] **3. Add the API call and two-mode rendering.** Validate the entire response with Task 4 helper before returning its rows. Add two mode tabs above the existing Classic filter row; Campaign hides Classic filters and uses that space for ranking explanation/guest/pending notes. Keep Classic rendering intact. Store Classic/Campaign row arrays separately and preserve selected-mode successful rows during refresh, marking stale on failure. A mode change clears visible other-mode rows immediately; it may re-render its own retained list while loading.
+- [x] **2. Run red:** `rtk npm test -- tests/campaign-leaderboard-client.test.ts tests/campaign-leaderboard-scene.test.ts`.
+- [x] **3. Add the API call and two-mode rendering.** Validate the entire response with Task 4 helper before returning its rows. Add two mode tabs above the existing Classic filter row; Campaign hides Classic filters and uses that space for ranking explanation/guest/pending notes. Keep Classic rendering intact. Store Classic/Campaign row arrays separately and preserve selected-mode successful rows during refresh, marking stale on failure. A mode change clears visible other-mode rows immediately; it may re-render its own retained list while loading.
 
 ```ts
 const modeAtRequest = this.mode;
@@ -500,10 +500,10 @@ if (this.loadGeneration !== generation || this.requestGeneration !== request ||
 ```
 
 Use existing generation guards on every awaited suffix lookup too. Campaign failure suffix uses accountStatus/guest-browser guidance, not the Classic saved-submission retry repository. Success replaces its own cache; empty-success replaces any stale list with distinct empty copy. Refresh/retry fetches the current mode. Hide pending/cloud identity details from public row values, but show current account status as local context. Highlight Campaign rows by current session account playerId only, Classic by existing runId. Campaign desktop columns are rank/name/missions/stars/score; compact rows wrap name and show `Missions x/100 · Stars y/300` beneath it. Use at least existing 44px mode/action hit targets and viewport masks; row count/scroll uses the selected array's length.
-- [ ] **4. Add scene tests with deferred mocked fetch promises.** Mock Phaser as existing scene tests do; stub add/render primitives only, then invoke actual loadBoard/mode/resize/shutdown handlers. Resolve Campaign after switching to Classic, resolve Classic after Campaign, and reject a refreshed board after prior success; assert correct selected arrays, stale error/retry visibility, empty-success replacement, highlight, and selected-mode retry. Do not substitute source-text assertions for these async behaviors.
-- [ ] **5. Add a Campaign leaderboard action using existing campaign header/footer actions.** Keep world-map navigation and playable viewport clear, including phone landscape; use existing ScrollSheet action space if fixed header would overflow. Confirm all existing `scene.start('Leaderboard',...)` links still default/preserve Classic. Browser acceptance in Task 8 covers both tabs and Campaign entry point.
-- [ ] **6. Run green:** `rtk npm test -- tests/campaign-leaderboard-client.test.ts tests/campaign-leaderboard-scene.test.ts tests/leaderboard-client.test.ts tests/saved-score-ui.test.ts tests/screens.test.ts`; `rtk npm run build`.
-- [ ] **7. Commit only Task 6 paths:** message `feat: browse classic and campaign public rankings`.
+- [x] **4. Add scene tests with deferred mocked fetch promises.** Mock Phaser as existing scene tests do; stub add/render primitives only, then invoke actual loadBoard/mode/resize/shutdown handlers. Resolve Campaign after switching to Classic, resolve Classic after Campaign, and reject a refreshed board after prior success; assert correct selected arrays, stale error/retry visibility, empty-success replacement, highlight, and selected-mode retry. Do not substitute source-text assertions for these async behaviors.
+- [x] **5. Add a Campaign leaderboard action using existing campaign header/footer actions.** Keep world-map navigation and playable viewport clear, including phone landscape; use existing ScrollSheet action space if fixed header would overflow. Confirm all existing `scene.start('Leaderboard',...)` links still default/preserve Classic. Browser acceptance in Task 8 covers both tabs and Campaign entry point.
+- [x] **6. Run green:** `rtk npm test -- tests/campaign-leaderboard-client.test.ts tests/campaign-leaderboard-scene.test.ts tests/leaderboard-client.test.ts tests/saved-score-ui.test.ts tests/screens.test.ts`; `rtk npm run build`.
+- [x] **7. Commit only Task 6 paths:** message `feat: browse classic and campaign public rankings`.
 
 ## Task 7: Put guest name/action together and make Google retries concrete
 
@@ -514,7 +514,7 @@ Use existing generation guards on every awaited suffix lookup too. Campaign fail
 - Produces: `AccountClient.prepareGoogleSignIn(): Promise<ApiResult<{url:string}>>`, fetching same-origin `/api/auth/start?prepare=1` without navigating; `AccountSystem.prepareGoogleSignIn(acknowledgeLoss?: boolean): Promise<ApiResult<{url:string}>>` runs existing preflight/begin guards and client preparation. Retain existing `beginGoogleSignIn` signature/semantics for tests/callers; LoginScene uses new prepared flow. Existing top-level GET `/api/auth/start` and deletion-purpose flow stay supported.
 - New preparation response uses existing `{ok:true,value:{url}}` envelope and the same HttpOnly OAuth browser cookie/state machinery. Return the ordinary public authorization URL, including its standard `state`, `nonce`, and PKCE `code_challenge` query parameters, exactly as the existing redirect would. Never return the private PKCE verifier, browser-cookie value, stored attempt row, access/ID tokens, or client secret. Named guest entry and account management keep current APIs.
 
-- [ ] **1. Add failing retry tests with injectable AccountClient.** Extend client fakes with the new method. First preparation returns 503; second returns a valid Google authorization URL. Assert two clicks perform two attempts, no navigation on failure, input value unchanged, guest entry remains callable, and begin guards prevent preparation during a battle/deletion. Loss acknowledgment cancellation performs no auth request. Use a small DOM test stub for actual LoginScene.render event handlers if no DOM dependency is installed; browser checks in Task 8 must verify the real DOM keyboard order.
+- [x] **1. Add failing retry tests with injectable AccountClient.** Extend client fakes with the new method. First preparation returns 503; second returns a valid Google authorization URL. Assert two clicks perform two attempts, no navigation on failure, input value unchanged, guest entry remains callable, and begin guards prevent preparation during a battle/deletion. Loss acknowledgment cancellation performs no auth request. Use a small DOM test stub for actual LoginScene.render event handlers if no DOM dependency is installed; browser checks in Task 8 must verify the real DOM keyboard order.
 
 ```ts
 it('keeps guest entry available after a failed auth attempt', async () => {
@@ -532,8 +532,8 @@ it('keeps guest entry available after a failed auth attempt', async () => {
 ```
 
 Import `createGuestAccountFixture` from the existing `tests/helpers/guestAccountFixture.ts`; add the new typed default client method there. Reuse the beforeEach browser-store setup and afterEach cleanup from `guest-account-system.test.ts`; no new production or test factory is needed.
-- [ ] **2. Run red:** `rtk npm test -- tests/guest-entry-recovery.test.ts`.
-- [ ] **3. Add preparation response to the existing auth-start handler.** Reuse its exact discovery, PKCE, OAuth attempt creation, destination construction, and cookie. If `prepare=1`, return JSON with url instead of redirect plus no-store and the same cookie; normal/deletion redirect unchanged. Catch unavailable configuration/discovery/database preparation errors for this flow into explicit retryable 503 envelopes; invalid deletion/session remains existing 401/403 behavior. No repeated automatic attempts and no changes to callback validation/CSRF protections. Auth tests confirm PKCE/cookie secrecy and unchanged normal/deletion redirects.
+- [x] **2. Run red:** `rtk npm test -- tests/guest-entry-recovery.test.ts`.
+- [x] **3. Add preparation response to the existing auth-start handler.** Reuse its exact discovery, PKCE, OAuth attempt creation, destination construction, and cookie. If `prepare=1`, return JSON with url instead of redirect plus no-store and the same cookie; normal/deletion redirect unchanged. Catch unavailable configuration/discovery/database preparation errors for this flow into explicit retryable 503 envelopes; invalid deletion/session remains existing 401/403 behavior. No repeated automatic attempts and no changes to callback validation/CSRF protections. Auth tests confirm PKCE/cookie secrecy and unchanged normal/deletion redirects.
 
 ```ts
 // After the existing verified OAuth destination and browser cookie exist:
@@ -557,7 +557,7 @@ if (authUrl.origin !== 'https://accounts.google.com' || authUrl.protocol !== 'ht
 ```
 
 Preparation itself retries connectivity even when initialization/config checks previously failed. Set `googleSignInPending` only when navigating after successful preparation, or clear it on preparation failure; failure must not make the next reload unexpectedly abandon guest play.
-- [ ] **4. Reorder the unsigned-in form only.** Guest action comes immediately after its label/input; insert a noninteractive `div.account-separator` with visible “or”; append Google sign-in/loss confirmation beneath it; remove Retry connection and duplicate warning. Give guest action an existing-compatible primary CSS class; add small separator margins/colors using current tokens. Keep all signed-in controls/order untouched. Existing users see Save name and continue. Busy disables actions, not successful local entry permanently; focus/selection remains restored by existing render.
+- [x] **4. Reorder the unsigned-in form only.** Guest action comes immediately after its label/input; insert a noninteractive `div.account-separator` with visible “or”; append Google sign-in/loss confirmation beneath it; remove Retry connection and duplicate warning. Give guest action an existing-compatible primary CSS class; add small separator margins/colors using current tokens. Keep all signed-in controls/order untouched. Existing users see Save name and continue. Busy disables actions, not successful local entry permanently; focus/selection remains restored by existing render.
 
 ```ts
 const separator = document.createElement('div');
@@ -568,8 +568,8 @@ panel.appendChild(separator);
 ```
 
 Before a successful auth navigation retain the typed draft in sessionStorage under `aetherhold-account-entry-name`; recover/remove it on returning to the entry screen, including existing authError callbacks. Store no account/session secrets there. A preparation failure never navigates or touches the draft. If draft storage is unavailable, retain the name in the current form and explain its possible loss in the existing loss-warning flow before navigation; guest progress storage warnings remain accurate. Do not change the saved guest identity merely because someone clicked Google. Handle browser Back/callback errors by returning to the same entry screen with name and retry action available.
-- [ ] **5. Run green:** `rtk npm test -- tests/guest-entry-recovery.test.ts tests/account-auth.test.ts tests/guest-entry-ui.test.ts tests/guest-account-system.test.ts tests/account-system.test.ts`; `rtk npm run build`. Test expired/busy/deleting sessions and insecure/unexpected auth URL failures without changing deletion behavior.
-- [ ] **6. Commit only Task 7 paths:** message `feat: simplify guest entry and retry google sign-in`.
+- [x] **5. Run green:** `rtk npm test -- tests/guest-entry-recovery.test.ts tests/account-auth.test.ts tests/guest-entry-ui.test.ts tests/guest-account-system.test.ts tests/account-system.test.ts`; `rtk npm run build`. Test expired/busy/deleting sessions and insecure/unexpected auth URL failures without changing deletion behavior.
+- [x] **6. Commit only Task 7 paths:** message `feat: simplify guest entry and retry google sign-in`.
 
 ## Task 8: Verify the complete release, deploy, and synchronize
 
@@ -577,12 +577,12 @@ Before a successful auth navigation retain the typed draft in sessionStorage und
 
 **Interfaces:** Consumes completed Tasks 1–7; produces release evidence, successful existing production deployment, and matching local/remote HEAD.
 
-- [ ] **1. Run the complete suite/build gate before deployment:** `rtk npm test`; `rtk npm run build`; `rtk git diff --check`. Record exact pass/fail counts and build result. Investigate failures; do not replace strong assertions with weak source matches or remove regression tests. A clean focused suite is insufficient for this release's multiple shared storage/result boundaries.
+- [x] **1. Run the complete suite/build gate before deployment:** `rtk npm test`; `rtk npm run build`; `rtk git diff --check`. Record exact pass/fail counts and build result. Investigate failures; do not replace strong assertions with weak source matches or remove regression tests. A clean focused suite is insufficient for this release's multiple shared storage/result boundaries.
 - [ ] **2. Verify locally with the existing dev server and available browser tools.** Start `rtk npm run dev -- --host 127.0.0.1` in an exec session; use computer-use skill/tools for browser interaction when available. Test 1440x900 desktop, 768x1024 tablet, 390x844 phone portrait, and 844x390 phone landscape. Inspect screenshot and interaction evidence for guest form/name adjacency, keyboard order, no Retry connection, offline named guest start, both boards, loading/empty/error/stale responses, long nicknames, 100-mission/300-star totals, scroll/retry visibility, Campaign map action, legacy mission details, current target/weights, ordinary/boss/failure results, and resize while a request is pending. Use local-only fixtures/intercepts for failures, never alter production profiles. A real unassisted mission-1 winning run must save/reload its new best; capture a loss and a replay to verify max-only behavior. Existing QA previews do not prove earned-score publication.
-- [ ] **3. Verify sync/import with the real-D1 HTTP integration tests.** Named guest clears at least two missions in test fixtures, signs in to a test account, imports once, and appears with expected missions/stars/sum. Repeat import and stale upload; totals stay unchanged. Concurrent devices preserve maxima. Confirm account result/sync may arrive in either order: public totals reflect acknowledged progress only, while pending sync remains visible. Classic tests and old pending terminal results remain green.
-- [ ] **4. Release only after the complete gate and browser checks pass.** This plan creates no D1 schema. Check `rtk git diff --name-only` and migrations before deploying; if implementation introduced a justified backward-compatible migration, run tests/build first and `rtk npm run db:migrate:remote` before dependent code, reporting a concrete blocker if it fails. Run `rtk npm run deploy`, whose existing script reruns tests and build before `wrangler deploy --keep-vars`. Record Worker version/live URL and command result. Do not manually publish to bypass this gate.
+- [x] **3. Verify sync/import with the real-D1 HTTP integration tests.** Named guest clears at least two missions in test fixtures, signs in to a test account, imports once, and appears with expected missions/stars/sum. Repeat import and stale upload; totals stay unchanged. Concurrent devices preserve maxima. Confirm account result/sync may arrive in either order: public totals reflect acknowledged progress only, while pending sync remains visible. Classic tests and old pending terminal results remain green.
+- [x] **4. Release only after the complete gate and browser checks pass.** This plan creates no D1 schema. Check `rtk git diff --name-only` and migrations before deploying; if implementation introduced a justified backward-compatible migration, run tests/build first and `rtk npm run db:migrate:remote` before dependent code, reporting a concrete blocker if it fails. Run `rtk npm run deploy`, whose existing script reruns tests and build before `wrangler deploy --keep-vars`. Record Worker version/live URL and command result. Do not manually publish to bypass this gate.
 - [ ] **5. Verify production through actual fetched resources.** Use `https://aetherhold-defense.ljournllagas.workers.dev/` (confirm the deploy output still names it), fetch HTML, resolve its script URL from the fetched page, and fetch that current JS bundle. Verify `/api/health`, `/api/leaderboard?limit=20`, `/api/campaign-leaderboard?limit=20`, new response era/counts/privacy/order/no-store, valid empty behavior if no eligible accounts, and invalid new limit 400. Use the visible live page to inspect guest entry and both leaderboard modes, including Campaign world-map entry. No real Google login, deletion, nickname modification, or public score submission solely to test production. If bundle/page/API mismatch or deployment fails, fix within authorized scope or report the exact failure; do not claim release success.
-- [ ] **6. Write verification evidence.** Record commands/counts, local/D1/browser checks, screenshots, live resource hashes or URLs and Worker version, retained legacy behavior, public trust-model limit, and any real-play balance not tested. No secrets/account raw data in documentation. Mark plan task checkboxes only for completed verified steps. Updated score weights/targets require spec agreement and era handling rather than an undocumented balancing change.
+- [x] **6. Write verification evidence.** Record commands/counts, local/D1/browser checks, screenshots, live resource hashes or URLs and Worker version, retained legacy behavior, public trust-model limit, and any real-play balance not tested. No secrets/account raw data in documentation. Mark plan task checkboxes only for completed verified steps. Updated score weights/targets require spec agreement and era handling rather than an undocumented balancing change.
 - [ ] **7. Commit release documentation and any verified fixes with explicit paths.** Run `rtk git diff --cached --check` before commit. Push current branch with `rtk git push origin HEAD`; verify `rtk git rev-parse HEAD` equals `rtk git ls-remote --heads origin codex/campaign-v5-20261012` (recheck actual current branch first). Preserve unrelated untracked files. Report live URL, verification result, commit, and any push failure.
 
 ## Coverage and handoff
