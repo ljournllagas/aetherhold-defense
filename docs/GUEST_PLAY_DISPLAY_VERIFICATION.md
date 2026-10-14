@@ -14,4 +14,6 @@ Ruling: the prerequisite file named by the plan is actually src/game/ui/prerequi
 Task 3: complete — five missing guest APIs RED, then 56 formatting/settings/guest-lifecycle/storage tests GREEN; account HTTP integration (25 tests) passed. Added failed logout suppression, capture ownership, preflight warning, uncertain deletion, failed imports, and confirmed deletion abandonment.
 Ruling: unavailable legacy claim storage permits session-only play but suspends import, preventing unknown ownership from being reseeded into another account. Nullable upgrade costs render the existing nonfinite placeholder rather than weakening their types.
 Task 4: complete — guest UI status/settlement assertions RED then 32 scene/status/result tests GREEN; TypeScript/Vite build passed. Guest result mode follows captured identity and has no anonymous Submit path. New guest names, edits, warning/confirmation, and both mode settlements are integrated.
-Tasks 5–8: pending.
+Task 5: in progress.
+Ruling: compact Campaign keeps its five header actions in one row with explicit Account/Back bounds. The proposed second row reduced required detail space below 156px at 640x360 and 844x390; preserve the existing tested detail/map minima instead of weakening those assertions.
+Tasks 6–8: pending.

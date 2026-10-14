@@ -1,3 +1,4 @@
+import {campaignHeaderActions} from '../ui/campaignHeader.ts';
 import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
 import {accountSystem} from '../systems/AccountSystem.ts';
@@ -110,7 +111,7 @@ export class CampaignScene extends Phaser.Scene {
 
   create(): void {
     if (!accountEntryAllowed()) { this.scene.start('Login'); return; }
-    mountAccountButton(this,90,true);
+    mountAccountButton(this,90,true,campaignHeaderActions(this.scale.width).account);
     this.campaignView = campaignRepository.view();
     if (!this.lastResult && this.selectedLevel === 1) this.selectedLevel = this.campaignView.highestUnlockedLevel;
     this.draw();
@@ -140,12 +141,12 @@ export class CampaignScene extends Phaser.Scene {
 
   private drawHeader(root: Phaser.GameObjects.Container, width: number, height: number): void {
     if (height < 520) {
-      const margin = 12, gap = 6, backW = 62;
-      const actionW = Math.max(72, (width - margin * 2 - backW - gap * 3) / 3);
+      const margin = 16, gap = 6, backW = 64;
+      const actionW = (width - margin - 158 - gap * 3) / 3;
       addAction(this, root, margin, 4, actionW, 'Aether\nCodex', () => this.openCodex(), 'secondary', true, 44);
       addAction(this, root, margin + actionW + gap, 4, actionW, 'Mastery', () => this.openMastery());
       addAction(this, root, margin + (actionW + gap) * 2, 4, actionW, 'Prepare', () => this.openPreparation());
-      addAction(this, root, width - backW - 8, 4, backW, 'Back', () => this.scene.start('MainMenu'));
+      addAction(this, root, width - 80, 4, backW, 'Back', () => this.scene.start('MainMenu'));
       return;
     }
     if (width < 520) {
@@ -166,10 +167,10 @@ export class CampaignScene extends Phaser.Scene {
     const conqueror = this.campaignView.profile.unlockedFeatures.includes('frostveil_conqueror_crest');
     const tier = this.campaignView.profile.unlockedFeatures.includes('tower_visual_tier_iii') ? 'III · RUNIC'
       : this.campaignView.profile.unlockedFeatures.includes('tower_visual_tier_ii') ? 'II · REINFORCED' : 'I · STANDARD';
-    root.add(this.add.text(16, 9, 'AEGIS OF THE BORDERKEEP', style(width < 520 ? 16 : 20, C.goldBright, true, FONT_DISPLAY)));
+    root.add(this.add.text(16, 9, 'AEGIS OF THE BORDERKEEP', style(width < 520 ? 16 : 20, C.goldBright, true, FONT_DISPLAY)).setWordWrapWidth(campaignHeaderActions(width).titleWidth));
     const sigils = this.campaignView.profile.worldSigils.length;
     const badge = `MASTERY ${this.campaignView.totalMasteryStars}/${CAMPAIGN_LEVELS.length * 3}  ·  SIGILS ${sigils}/${CAMPAIGN_SIGILS.length}  ·  TIER ${tier}${veteran ? '  ·  VETERAN' : ''}${conqueror ? '  ·  CONQUEROR' : ''}`;
-    root.add(this.add.text(16, 30, badge, style(12, C.textSecondary, true)).setWordWrapWidth(width - 108));
+    root.add(this.add.text(16, 30, badge, style(12, C.textSecondary, true)).setWordWrapWidth(campaignHeaderActions(width).titleWidth));
     addAction(this, root, width - 80, 4, 64, 'Back', () => this.scene.start('MainMenu'));
     const actionY = 52, gap = 8, buttonW = (width - 32 - gap * 2) / 3;
     addAction(this, root, 16, actionY, buttonW, 'Aether Codex', () => this.openCodex());

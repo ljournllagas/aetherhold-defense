@@ -7,6 +7,7 @@ import {C,style} from './tokens.ts';
 import type {TowerId} from '../../shared/progression.ts';
 import type {TrayInput} from '../systems/TowerTrayGesture.ts';
 import {button} from './components.ts';
+import {towerTrayCardLayout} from './towerTrayLayout.ts';
 export class TowerTray {
  private root:Phaser.GameObjects.Container;
  private offset=0;
@@ -34,10 +35,11 @@ export class TowerTray {
    box.on('pointerdown',(p:Phaser.Input.Pointer,_x:number,_y:number,e:Phaser.Types.Input.EventData)=>{
     e.stopPropagation();this.onDown({id:p.id,point:{x:p.x,y:p.y},kind:p.wasTouch?'touch':(p.event as PointerEvent)?.pointerType==='pen'?'pen':'mouse'},id);
    });
-   this.root.add([box,this.scene.add.image(x+22,24,towerPortraitKey(id)).setDisplaySize(32,32),
-    this.scene.add.text(x+4,43,cfg.name,style(12,C.textPrimary,true)),
-    this.scene.add.text(x+43,12,formatCount(cost),style(14,this.gold>=cost?C.gold:C.textSecondary)),
-    this.scene.add.text(x+43,29,this.gold>=cost?'gold':'Need gold',style(12,C.textSecondary))]);
+   const g=towerTrayCardLayout(),top=4;
+   this.root.add([box,this.scene.add.image(x+g.portrait.x+14,top+g.portrait.y+14,towerPortraitKey(id)).setDisplaySize(28,28),
+    this.scene.add.text(x+g.name.x,top+g.name.y,cfg.name,style(12,C.textPrimary,true)),
+    this.scene.add.text(x+g.cost.x,top+g.cost.y,formatCount(cost),style(14,this.gold>=cost?C.gold:C.textSecondary)),
+    this.scene.add.text(x+g.status.x,top+g.status.y,this.gold>=cost?'gold':'Need\ngold',style(12,C.textSecondary))]);
   });
   if(this.maxOffset)button(this.scene,this.root,this.bounds.width-44,4,44,this.offset>=this.maxOffset?'↺':'›',()=>{this.offset=this.offset>=this.maxOffset?0:Math.min(this.maxOffset,this.offset+94);this.draw();},'secondary',68);
  }

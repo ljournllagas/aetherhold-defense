@@ -1,3 +1,4 @@
+import {campaignResultActions} from '../ui/campaignResultActions.ts';
 import {guestRunProgress} from '../systems/GuestProgress.ts';
 import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
@@ -3518,9 +3519,10 @@ export class GameScene extends Phaser.Scene {
       line(view.unsavedLevels.has(level) ? 'Earned this session · Progress could not be saved' : 'Progress saved in this browser', view.unsavedLevels.has(level) ? C.dangerBright : C.health);
       if (view.warning) line(view.warning, C.dangerBright);
     } else line(result.outcome === 'victory' ? 'Assisted battle · Campaign progress was not awarded' : 'No stars awarded · Replay to clear this level');
-    sheet.action(y, 'Restart Level', () => this.restartRun(), 'primary'); y += 52;
+    const actions=campaignResultActions(result.outcome,level,(this.qaCampaignRepository??campaignRepository).view().highestUnlockedLevel,CAMPAIGN_LEVELS.length);
+    if(actions[0]==='next'){sheet.action(y, `Next · Level ${level + 1}`, () => this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: this.playerName, mode: 'campaign', campaignLevel: level + 1, ...(import.meta.env.DEV && this.qaCampaignFixture ? { qaCampaignFixture: { state: 'campaign', level: level + 1, bossPhase: 'initial' } satisfies QACampaignFixture } : {}) } } satisfies LoadingRequest), 'primary'); y+=52;}
+    sheet.action(y, 'Restart Level', () => this.restartRun(), actions[0]==='next'?'secondary':'primary'); y += 52;
     sheet.action(y, 'World Map', () => this.scene.start('Campaign')); y += 52;
-    if (result.outcome === 'victory' && level < CAMPAIGN_LEVELS.length && (import.meta.env.DEV && this.qaCampaignRepository ? this.qaCampaignRepository : campaignRepository).view().highestUnlockedLevel > level) sheet.action(y, `Next · Level ${level + 1}`, () => this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: 'medium', playerName: this.playerName, mode: 'campaign', campaignLevel: level + 1, ...(import.meta.env.DEV && this.qaCampaignFixture ? { qaCampaignFixture: { state: 'campaign', level: level + 1, bossPhase: 'initial' } satisfies QACampaignFixture } : {}) } } satisfies LoadingRequest), 'primary');
   }
 
   private finishRun(outcome: RunOutcome): void {
