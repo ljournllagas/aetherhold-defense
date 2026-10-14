@@ -5,6 +5,8 @@ import {ALTERNATIVE_BRANCH} from '../src/game/config/evolutions.ts';
 import {createEmptyCampaignProfile} from '../src/game/campaign/progress.ts';
 import type {CombatTower} from '../src/shared/progression.ts';
 import type {CampaignView} from '../src/game/campaign/types.ts';
+import {campaignScoreMetadata} from '../src/shared/campaignScoring.ts';
+import {formatCount} from '../src/shared/displayNumbers.ts';
 it('lists all unmet evolution gates, not just the first failure',()=>{
  const t={towerId:'longbow',progression:initialEvolution('longbow')} as CombatTower;
  const r=classicRequirements(t,{kind:'evolve',branchId:ALTERNATIVE_BRANCH.longbow},{gold:0,evolutionOpen:false,endless:false,blocked:false,unlocked:new Set()},0,[t]);
@@ -18,7 +20,7 @@ it('earned account branch does not require another qualifying tower',()=>{
 const empty=():CampaignView=>({profile:createEmptyCampaignProfile(),totalMasteryStars:0,highestUnlockedLevel:1,unlockedFeatures:[],unsaved:false,unsavedLevels:new Set(),warning:null});
 it('empty Campaign points to first level with exact configured star thresholds',()=>{
  const v=empty();expect(campaignNextStep(v)).toEqual({level:1,text:'Complete Level 1 to continue.'});
- const r=campaignRequirements(v,1);expect(r.find(x=>x.id==='lives')?.nextStep).toContain('12');expect(r.find(x=>x.id==='score')?.nextStep).toContain('1,950');
+ const r=campaignRequirements(v,1);expect(r.find(x=>x.id==='lives')?.nextStep).toContain('12');expect(r.find(x=>x.id==='score')?.nextStep).toContain(formatCount(campaignScoreMetadata(1).scoreTarget));
  expect(campaignRequirements(v,2).find(x=>x.id==='previous')?.met).toBe(false);
 });
 it('30 completed levels offer Level 31 without inventing its clear',()=>{

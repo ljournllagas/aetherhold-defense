@@ -124,6 +124,7 @@ describe('campaign scene contracts', () => {
     run.checkWaveClear(); expect(run.ended).toBe(false);
     run.flights = []; run.checkWaveClear(); run.checkWaveClear(); run.finishCampaign('victory');
     expect(run.campaignResult.outcome).toBe('victory'); expect(campaignRepository.recordClear).toHaveBeenCalledTimes(1);
+    expect(run.campaignResult).toMatchObject({ score: run.campaignResult.breakdown.finalScore, scheduledEnemiesKilled: run.campaignScheduledKills, wavesCompleted: run.wavesCompleted, missionBossesKilled: run.campaignMissionBossKills });
     expect(save).not.toHaveBeenCalled(); expect(submit).not.toHaveBeenCalled(); expect(run.siege.phase).not.toBe('endless');
   });
   it('restart preserves campaign request and clears run-local freeze/reward/boss state', () => {

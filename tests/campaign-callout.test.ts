@@ -59,6 +59,17 @@ const WORLD_SUPPORT_EVENT_TRACES = [
 ] as const;
 
 describe('campaign ability callout', () => {
+  it.each([[true, 'Combat score'], [false, 'Score']] as const)('labels compact %s auto summary with %s', (campaign, label) => {
+    const { run } = fixture(390, 844);
+    run.campaign = campaign ? { waveCount: 12 } : null;
+    run.auto = { enabled: false };
+    run.vault = { pending: [] };
+    run.wave = 3; run.gold = 120; run.lives = 18; run.maxLives = 20;
+    run.scoreSoFar = () => 840;
+
+    expect(run.autoDetail()).toContain(`${label} 840`);
+  });
+
   it('routes real boss events into a backed notice, leaving classic floating text separate', () => {
     const { run, views } = fixture();
     const boss = { x: 100, y: 100, waypointIndex: 2, distanceTraveled: 70 };

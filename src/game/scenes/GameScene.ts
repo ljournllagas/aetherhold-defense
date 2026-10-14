@@ -99,7 +99,7 @@ export class GameScene extends Phaser.Scene {
   private get towerVisualTier(): 1 | 2 | 3 {
     return (import.meta.env.DEV ? this.qaCampaignFixture?.visualTier : undefined) ?? this.campaign?.visualTier ?? 1;
   }
-  private campaignResult: { outcome: RunOutcome; score: number; lives: number; clear: CampaignClearResult | null; breakdown: CampaignScoreBreakdown } | null = null;
+  private campaignResult: { outcome: RunOutcome; score: number; lives: number; scheduledEnemiesKilled: number; wavesCompleted: number; missionBossesKilled: number; clear: CampaignClearResult | null; breakdown: CampaignScoreBreakdown } | null = null;
   private towerFreezeViews = new Map<number, Phaser.GameObjects.Arc>();
   private difficultyId: DifficultyId = 'medium';
   private playerName = 'Warden';
@@ -1308,16 +1308,17 @@ export class GameScene extends Phaser.Scene {
     const firstObject = this.uiRoot!.list.length;
     const remember = (): void => { this.hudObjects = this.uiRoot!.list.slice(firstObject); };
     const w = this.layout.width;
+    const scoreCaption = this.campaign ? 'COMBAT SCORE' : 'SCORE';
     if(this.layout.compact&&!this.layout.stackedHud){
       panel(this,this.uiRoot!,0,0,w,this.layout.hud);
       const cell=(w-this.layout.safe.left-this.layout.safe.right-268)/4;
-      const metric=(i:number,label:string,color:string)=>{
-        const caption=this.add.text(this.layout.safe.left+8+i*cell,this.layout.safe.top+4,label,style(12,C.textSecondary,true));
+      const metric=(i:number,label:string,color:string,size=12)=>{
+        const caption=this.add.text(this.layout.safe.left+8+i*cell,this.layout.safe.top+4,label,style(size,C.textSecondary,true));
         this.hudMetricLabels.push(caption);this.uiRoot!.add(caption);
         const t=this.add.text(caption.x,this.layout.safe.top+24,'',style(16,color,true));this.uiRoot!.add(t);return t;
       };
       this.hudWaveValue=metric(0,'WAVE',C.textPrimary);this.hudGoldValue=metric(1,'GOLD',C.gold);
-      this.hudLivesValue=metric(2,'LIVES',C.textPrimary);this.hudScoreValue=metric(3,'SCORE',C.textPrimary);
+      this.hudLivesValue=metric(2,'LIVES',C.textPrimary);this.hudScoreValue=metric(3,scoreCaption,C.textPrimary,this.campaign?10:12);
       this.hudWaveLabel=null;this.hudDiff=this.add.text(0,0,'',style(14,C.textSecondary)).setVisible(false);
       this.autoStatusText=null;this.hudStatus=this.add.text(8,this.layout.hud+4,'',style(14,C.gold)).setWordWrapWidth(w-16);
       this.uiRoot!.add([this.hudDiff,this.hudStatus]);remember();return;
@@ -1325,13 +1326,13 @@ export class GameScene extends Phaser.Scene {
     if (this.layout.stackedHud) {
       panel(this, this.uiRoot!, 0, 0, w, this.layout.hud);
       const cell = (w - this.layout.safe.left - this.layout.safe.right - 16) / 4;
-      const metric = (i: number, label: string, color: string) => {
-        const caption=this.add.text(this.layout.safe.left+8+cell*i,this.layout.safe.top+6,label,style(12,C.textSecondary,true));
+      const metric = (i: number, label: string, color: string, size = 12) => {
+        const caption=this.add.text(this.layout.safe.left+8+cell*i,this.layout.safe.top+6,label,style(size,C.textSecondary,true));
         this.hudMetricLabels.push(caption); this.uiRoot!.add(caption);
         const value = this.add.text(caption.x,this.layout.safe.top+24,'',style(16,color,true)); this.uiRoot!.add(value); return value;
       };
       this.hudWaveValue = metric(0,'WAVE',C.textPrimary); this.hudWaveLabel = this.hudMetricLabels[0];
-      this.hudGoldValue = metric(1, 'GOLD', C.gold); this.hudLivesValue = metric(2, 'LIVES', C.textPrimary); this.hudScoreValue = metric(3, 'SCORE', C.textPrimary);
+      this.hudGoldValue = metric(1, 'GOLD', C.gold); this.hudLivesValue = metric(2, 'LIVES', C.textPrimary); this.hudScoreValue = metric(3, scoreCaption, C.textPrimary, this.campaign ? 10 : 12);
       this.hudDiff = this.add.text(8, 62, '', style(14, C.textSecondary, true)).setVisible(false); this.uiRoot!.add(this.hudDiff);
       this.autoStatusText = null;
       this.hudStatus = this.add.text(8, this.layout.hud + 4, '', style(12, C.gold)).setWordWrapWidth(w - 16); this.uiRoot!.add(this.hudStatus);
@@ -1349,7 +1350,7 @@ export class GameScene extends Phaser.Scene {
     this.hudWaveLabel = this.uiRoot!.list[this.uiRoot!.list.length - 2] as Phaser.GameObjects.Text;
     this.hudGoldValue = this.hudMetric(offset + step, 'hud_gold', 'GOLD', 18, C.gold);
     this.hudLivesValue = this.hudMetric(offset + step * 2, 'hud_lives', 'LIVES', 18, C.textPrimary);
-    this.hudScoreValue = this.hudMetric(offset + step * 3, 'hud_score', 'SCORE', 18, C.textPrimary);
+    this.hudScoreValue = this.hudMetric(offset + step * 3, 'hud_score', scoreCaption, 18, C.textPrimary);
     this.uiRoot!.add(this.add.text(offset + step * 4, 6, 'DIFFICULTY', style(12, C.textSecondary, true)));
     this.hudDiff = this.add.text(offset + step * 4, 22, '', style(14, C.textPrimary, true));
     this.uiRoot!.add(this.hudDiff);
@@ -1368,7 +1369,7 @@ export class GameScene extends Phaser.Scene {
     values.forEach((value,i)=>{
       if(!value)return;
       const label=this.hudMetricLabels[i], full=value.text;
-      label.setFontSize(12);
+      label.setFontSize(i===3&&this.campaign?10:12);
       const x=inline?label.x+label.width+4:label.x;
       const available=inline?cell-label.width-12:cell-8;
       value.setPosition(x,this.layout.safe.top+(inline?4:24)).setFontSize(inline?12:16).setData('fullValue',full);
@@ -1597,7 +1598,7 @@ export class GameScene extends Phaser.Scene {
 
   private autoDetail(): string {
     const base = this.auto.enabled ? `Auto ON · ${this.autoShortStatus()}` : 'Auto OFF';
-    const stats=this.layout.compact?`\nWave ${this.wave}/${this.campaign?.waveCount ?? 30}\nGold ${formatCount(this.gold)}\nLives ${this.lives}/${this.maxLives}\nScore ${formatCount(this.scoreSoFar())}`:'';
+    const stats=this.layout.compact?`\nWave ${this.wave}/${this.campaign?.waveCount ?? 30}\nGold ${formatCount(this.gold)}\nLives ${this.lives}/${this.maxLives}\n${this.campaign?'Combat score':'Score'} ${formatCount(this.scoreSoFar())}`:'';
     return `${base} · ${this.vault.pending.length} queued · A toggles Auto${stats}`;
   }
 
@@ -3492,7 +3493,7 @@ export class GameScene extends Phaser.Scene {
     const score = breakdown.finalScore;
     const fixtureRepository = import.meta.env.DEV ? this.qaCampaignRepository : null;
     const clear = outcome === 'victory' && (!this.debugAssisted || fixtureRepository) ? (fixtureRepository ?? campaignRepository).recordClear(campaign.definition.level, score, this.lives) : null;
-    this.campaignResult = { outcome, score, lives: this.lives, clear, breakdown };
+    this.campaignResult = { outcome, score, lives: this.lives, scheduledEnemiesKilled: this.campaignScheduledKills, wavesCompleted: this.wavesCompleted, missionBossesKilled: this.campaignMissionBossKills, clear, breakdown };
     if ((this.runAccount||this.runOwner) && !this.debugAssisted && !this.qaCampaignFixture) {
       this.settleCapturedRun({ mode: 'campaign', payload: {
         runId: this.runId, campaignVersion: 1, progressionVersion: 1, level: campaign.definition.level,
@@ -3519,6 +3520,8 @@ export class GameScene extends Phaser.Scene {
     this.modal?.destroy(true); this.modal = null;
     this.modalRenderer = () => this.renderCampaignResult();
     const result = this.campaignResult, level = this.campaign.definition.level, totalMasteryStars = CAMPAIGN_LEVELS.length * 3;
+    const repository = this.qaCampaignRepository ?? campaignRepository;
+    const view = repository.view(), metadata = campaignScoreMetadata(level), finalScore = result.breakdown.finalScore;
     const width = Math.min(480, this.layout.width - 24), height = Math.min(450, this.layout.height - 24);
     const root = this.modalFrame(width, height);
     const sheet = new ScrollSheet(this, root, { x: 0, y: 0, width, height }, result.outcome === 'victory' ? `Level ${level} cleared` : result.outcome === 'siege-failed' ? 'Boss escaped · Battle failed' : 'Stronghold lost', () => this.scene.start('Campaign'));
@@ -3526,18 +3529,32 @@ export class GameScene extends Phaser.Scene {
     let y = 0;
     const line = (message: string, color: string = C.textSecondary) => { const text = sheet.text(y, message, color); y += text.height + 12; };
     if (import.meta.env.DEV && this.qaCampaignFixture) line('DEV CAMPAIGN FIXTURE · Reward preview · Not saved', C.gold);
-    line(`Score ${formatCount(result.score)} · Lives ${formatCount(result.lives)}/${this.maxLives}`, C.gold);
-    for(const r of campaignRequirements((this.qaCampaignRepository??campaignRepository).view(),level).filter(r=>r.id!=='previous')){
+    line(`Scheduled enemies: ${formatCount(result.scheduledEnemiesKilled)} × 10 = ${formatCount(result.breakdown.killScore)} points`);
+    line(`Waves cleared: ${formatCount(result.wavesCompleted)} × 100 = ${formatCount(result.breakdown.waveBonus)} points`);
+    line(metadata.hasBoss
+      ? `Mission boss: ${formatCount(result.missionBossesKilled)} × 500 = ${formatCount(result.breakdown.bossBonus)} points`
+      : `Mission boss: Not applicable · ${formatCount(result.breakdown.bossBonus)} points`);
+    line(`Remaining lives: ${formatCount(result.lives)} × 50 = ${formatCount(result.breakdown.livesBonus)} points`);
+    line(`Final score: ${formatCount(finalScore)}`, C.gold);
+    line(`Score target: ${formatCount(metadata.scoreTarget)} points — ${finalScore >= metadata.scoreTarget ? 'reached' : 'missed'}`);
+    const progress = view.profile.levels[level];
+    const currentBest = progress?.campaignScore?.bestScore ?? null;
+    line(`Current best: ${currentBest === null ? 'Not scored yet' : `${formatCount(currentBest)} points`}`);
+    if ((progress?.bestScore ?? 0) > 0) line(`Legacy score — excluded from current total: ${formatCount(progress!.bestScore)} points`, C.textMuted);
+    if (result.outcome !== 'victory') line('Winning clears contribute to your campaign ranking. This failure does not improve your best.', C.gold);
+    for(const r of campaignRequirements(view,level).filter(r=>r.id!=='previous')){
       line(`${r.met?'★':'☆'} ${r.label} · ${r.progress}${r.met?'':` · ${r.nextStep}`}`);
     }
     if (this.runAccount||this.runOwner) line(accountStatus(accountSystem.view()));
     if (result.clear) {
-      const progress = result.clear.progress;
-      line(`Mastery: Completion ${progress.completionStar ? 'earned' : 'missing'} · Stronghold ${progress.livesStar ? 'earned' : 'missing'} · Score ${progress.scoreStar ? 'earned' : 'missing'}`);
+      const cleared = result.clear.progress, newStars = new Set(result.clear.newlyEarnedStars);
+      const starState = (kind: 'completion' | 'lives' | 'score', earned: boolean) => newStars.has(kind) ? 'newly earned' : earned ? 'retained from earlier progress' : 'not earned';
+      line(`Completion star: ${starState('completion', cleared.completionStar)}`);
+      line(`Lives star: ${starState('lives', cleared.livesStar)}`);
+      line(`Score star: ${starState('score', cleared.scoreStar)}`);
       line(result.clear.newlyEarnedStars.length ? `New stars: ${result.clear.newlyEarnedStars.join(', ')} · Total ${formatCount(result.clear.totalMasteryStars)}/${formatCount(totalMasteryStars)}` : `Total ${formatCount(result.clear.totalMasteryStars)}/${formatCount(totalMasteryStars)} · Stars retained from earlier clears`);
       if (result.clear.newlyEarnedSigils.length) line(`World Sigil earned: ${result.clear.newlyEarnedSigils.map(id => id.replace(/_/g, ' ')).join(', ')}`, C.gold);
       if (result.clear.newlyUnlockedFeatures.length) line(`Unlocked: ${result.clear.newlyUnlockedFeatures.map(id => id.replace(/_/g, ' ')).join(', ')}`, C.gold);
-      const view = (import.meta.env.DEV && this.qaCampaignRepository ? this.qaCampaignRepository : campaignRepository).view();
       line(view.unsavedLevels.has(level) ? 'Earned this session · Progress could not be saved' : 'Progress saved in this browser', view.unsavedLevels.has(level) ? C.dangerBright : C.health);
       if (view.warning) line(view.warning, C.dangerBright);
     } else line(result.outcome === 'victory' ? 'Assisted battle · Campaign progress was not awarded' : 'No stars awarded · Replay to clear this level');

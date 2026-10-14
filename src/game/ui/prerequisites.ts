@@ -5,6 +5,7 @@ import {nextPurchaseCost} from '../systems/EvolutionSystem.ts';
 import {STARTER_BRANCH,EVOLUTIONS} from '../config/evolutions.ts';
 import {CAMPAIGN_LEVELS,getCampaignLevel} from '../campaign/config.ts';
 import type {CampaignView} from '../campaign/types.ts';
+import {campaignScoreMetadata} from '../../shared/campaignScoring.ts';
 export interface Requirement {id:string;label:string;met:boolean;progress:string;nextStep:string}
 export function classicRequirements(tower:CombatTower,intent:PurchaseIntent,context:PurchaseContext,wavesCompleted:number,towers:readonly CombatTower[]):Requirement[]{
  const p=tower.progression,id=tower.towerId,r:Requirement[]=[];
@@ -31,12 +32,12 @@ export function classicRequirements(tower:CombatTower,intent:PurchaseIntent,cont
 }
 export function campaignRequirements(view:CampaignView,level:number):Requirement[]{
  const def=getCampaignLevel(level);if(!def)return [];
- const p=view.profile.levels[level];const previous=level===1||level<=view.highestUnlockedLevel;
+ const p=view.profile.levels[level],target=campaignScoreMetadata(level).scoreTarget;const previous=level===1||level<=view.highestUnlockedLevel;
  return [
   {id:'previous',label:'Level access',met:previous,progress:previous?'Unlocked':`Level ${level-1} required`,nextStep:previous?'Ready to play.':`Complete Level ${level-1} to unlock this level.`},
   {id:'completion',label:'Completion star',met:!!p?.completionStar,progress:p?.completed?'Earned':'Not earned',nextStep:'Win this level.'},
   {id:'lives',label:'Lives star',met:!!p?.livesStar,progress:`${p?.bestRemainingLives??0}/${def.mastery.minimumLivesForStar} lives`,nextStep:`Win with at least ${def.mastery.minimumLivesForStar} lives.`},
-  {id:'score',label:'Score star',met:!!p?.scoreStar,progress:`${formatCount(p?.bestScore??0)}/${formatCount(def.mastery.scoreTarget)} points`,nextStep:`Win with at least ${formatCount(def.mastery.scoreTarget)} points.`}
+  {id:'score',label:'Score star',met:!!p?.scoreStar,progress:`${formatCount(p?.campaignScore?.bestScore??0)}/${formatCount(target)} points`,nextStep:`Win with at least ${formatCount(target)} points.`}
  ];
 }
 export function campaignNextStep(view:CampaignView):{level:number|null;text:string}{

@@ -15,6 +15,7 @@ import {
   campaignDetailContentLayout, campaignMapRoute, campaignScreenLayout, campaignWorldCaptionLayout
 } from '../campaign/mapLayout.ts';
 import { getCampaignEnemy } from '../campaign/enemies.ts';
+import { campaignScoreMetadata } from '../../shared/campaignScoring.ts';
 import type { CampaignClearResult, CampaignFeatureId, CampaignView, CampaignWorldId, TargetingMode, TowerId } from '../campaign/types.ts';
 import { TOWERS } from '../config/towers.ts';
 import { loadSettings } from '../systems/Settings.ts';
@@ -300,9 +301,10 @@ export class CampaignScene extends Phaser.Scene {
     const layoutLabel = detail.layoutId.split('_').pop()?.toUpperCase() ?? detail.layoutId;
     const compact = boxH < 220;
     const veryCompact = boxH < 180;
+    const best = detail.bestScore === null ? 'Best score: Not scored yet' : `Best score: ${formatCount(detail.bestScore)} pts · Best lives: ${detail.bestLives === null ? '—' : formatCount(detail.bestLives)}`;
     const meta = width < 520
       ? campaignCompactDetailMeta(detail)
-      : `${detail.worldName}  ·  Layout ${layoutLabel}  ·  Difficulty ${detail.difficulty}/5  ·  ${starsText}  ·  ${detail.bestScore === null ? 'Best score: —' : `Best ${formatCount(detail.bestScore)} pts · ${detail.bestLives} lives`}`;
+      : `${detail.worldName}  ·  Layout ${layoutLabel}  ·  Difficulty ${detail.difficulty}/5  ·  ${starsText}  ·  ${best}`;
     const metaText = this.add.text(x + 16, top + (compact ? 32 : 36), meta, style(12, C.textSecondary)).setWordWrapWidth(panelW - 32);
     root.add(metaText);
 
@@ -317,8 +319,8 @@ export class CampaignScene extends Phaser.Scene {
 
     const mastery = getCampaignLevel(detail.level)!.mastery;
     const goals = compact
-      ? `${detail.objectives[0].earned ? '★' : '☆'} Clear · ${detail.objectives[1].earned ? '★' : '☆'} ${mastery.minimumLivesForStar}+ lives · ${detail.objectives[2].earned ? '★' : '☆'} ${formatCount(mastery.scoreTarget)} score`
-      : detail.objectives.map((objective, index) => `${objective.earned ? '★' : '☆'} ${index === 0 ? 'Complete level' : index === 1 ? `Keep ${mastery.minimumLivesForStar}+ lives` : `Reach ${formatCount(mastery.scoreTarget)} score`}`).join('   ·   ');
+      ? `${detail.objectives[0].earned ? '★' : '☆'} Clear · ${detail.objectives[1].earned ? '★' : '☆'} ${mastery.minimumLivesForStar}+ lives · ${detail.objectives[2].earned ? '★' : '☆'} ${formatCount(detail.scoreTarget)} score`
+      : detail.objectives.map((objective, index) => `${objective.earned ? '★' : '☆'} ${index === 0 ? 'Complete level' : index === 1 ? `Keep ${mastery.minimumLivesForStar}+ lives` : `Reach ${formatCount(detail.scoreTarget)} score`}`).join('   ·   ');
     const goalsText = this.add.text(x + 16, top + contentLayout.goalsY, goals, style(12, C.textSecondary)).setWordWrapWidth(panelW - 32);
     root.add(goalsText);
     contentLayout = campaignDetailContentLayout(boxH, hasCompactNotice, Boolean(detail.boss), metaText.height, goalsText.height);
@@ -341,9 +343,10 @@ export class CampaignScene extends Phaser.Scene {
     const enemyNameText = this.add.text(x + 10, namesY, enemyNames, style(12, detail.boss ? C.goldBright : C.textSecondary, true)).setWordWrapWidth(panelW - 20);
     root.add(enemyNameText);
     const buttonY = top + contentLayout.buttonY, gap = 8, innerW = panelW - 32;
-    const classicW = Math.min(140, innerW * 0.34), startW = innerW - classicW - gap;
+    const classicW = Math.min(140, innerW * 0.34), scoringW = 58, startW = innerW - classicW - scoringW - gap * 2;
     addAction(this, root, x + 16, buttonY, startW, detail.canStart ? 'Start Battle' : 'Clear previous level first', () => this.startBattle(detail.level), 'primary', detail.canStart);
-    addAction(this, root, x + 16 + startW + gap, buttonY, classicW, 'Classic Siege', () => this.scene.start('Difficulty'));
+    addAction(this, root, x + 16 + startW + gap, buttonY, scoringW, 'Scoring', () => this.openMissionScoring());
+    addAction(this, root, x + 16 + startW + scoringW + gap * 2, buttonY, classicW, 'Classic Siege', () => this.scene.start('Difficulty'));
     if (compact) {
       const compactCopy = resultStatus
         ? resultStatus.compactMessage
@@ -381,6 +384,26 @@ export class CampaignScene extends Phaser.Scene {
     const root = this.add.container(0, 0).setDepth(100); this.sheetRoot = root;
     const sheet = new ScrollSheet(this, root, { x: 12, y: 12, width: this.scale.width - 24, height: this.scale.height - 24 }, title, () => this.closeSheet());
     this.sheet = sheet; return sheet;
+  }
+
+  private openMissionScoring(): void {
+    const detail = campaignLevelDetail(this.selectedLevel, this.campaignView);
+    if (!detail) return;
+    const metadata = campaignScoreMetadata(detail.level);
+    const sheet = this.makeSheet(`Level ${detail.level} scoring`);
+    let y = 0;
+    const line = (value: string, color: string = C.textSecondary) => { const text = sheet.text(y, value, color); y += text.height + 10; };
+    line(`Score-star target: ${formatCount(detail.scoreTarget)} points`, C.goldBright);
+    line(detail.bestScore === null ? 'Current best: Not scored yet' : `Current best: ${formatCount(detail.bestScore)} points`);
+    if (detail.bestScore === null) line('Replay this level to establish a new score.');
+    if (detail.legacyBestScore !== null) line(`Legacy score — excluded from current total: ${formatCount(detail.legacyBestScore)} points`, C.textMuted);
+    if (detail.progress.scoreStar) line('Score star: retained from earlier progress.', C.goldBright);
+    line('Wave enemies: 10 points each');
+    line('Cleared waves: 100 points each');
+    line(metadata.hasBoss ? 'Mission boss: 500 points' : 'Mission boss: not applicable');
+    line('Remaining lives: 50 points each at settlement');
+    line('Defeat wave enemies, clear waves, defeat the mission boss, and preserve lives. Summoned enemies give no score. Gold and time do not affect points.');
+    sheet.action(y + 4, 'Return to the map', () => this.closeSheet(), 'primary');
   }
 
   private closeSheet(): void {

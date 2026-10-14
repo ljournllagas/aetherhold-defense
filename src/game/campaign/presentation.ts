@@ -85,10 +85,9 @@ export interface CampaignLevelDetail {
 export function campaignCompactDetailMeta(detail: CampaignLevelDetail): string {
   const worldName = detail.worldName.replace(/^The\s+/i, '');
   const layoutLabel = detail.layoutId.split('_').pop()?.toUpperCase() ?? detail.layoutId;
-  const best = detail.bestScore === null
-    ? 'Best —'
-    : `Best ${formatCount(detail.bestScore)} · ${detail.bestLives ?? 0} lives`;
-  return `${worldName} · ${layoutLabel} · D${detail.difficulty}/5 · ${detail.stars}/3 stars · ${best}`;
+  const best = detail.bestScore === null ? 'Not scored yet' : `Best score ${formatCount(detail.bestScore)}`;
+  const lives = detail.bestLives === null ? '' : ` · Best lives ${formatCount(detail.bestLives)}`;
+  return `${worldName} · ${layoutLabel} · D${detail.difficulty}/5 · ${detail.stars}/3 stars · ${best}${lives}`;
 }
 
 /** Pure view model shared by the campaign node and its selected-level detail. */
@@ -123,7 +122,7 @@ export function campaignLevelDetail(level: number, view: CampaignView): Campaign
     objectives: [
       { label: 'Complete the level', earned: progress.completionStar },
       { label: `Finish with ${definition.mastery.minimumLivesForStar} or more lives`, earned: progress.livesStar },
-      { label: `Reach ${formatCount(definition.mastery.scoreTarget)} points`, earned: progress.scoreStar }
+      { label: `Reach ${formatCount(campaignScoreMetadata(level).scoreTarget)} points`, earned: progress.scoreStar }
     ]
   };
 }

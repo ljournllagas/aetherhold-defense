@@ -4,12 +4,13 @@ import {
   campaignHeaderBadgeLines, campaignLevelDetail, campaignWarningCompactMessage, CAMPAIGN_PHASE_CUE_GUIDANCE
 } from '../src/game/campaign/presentation.ts';
 import { CAMPAIGN_BOSS_PHASE_LABELS } from '../src/game/campaign/bosses.ts';
-import { CAMPAIGN_UNAVAILABLE_WARNING, CampaignRepository } from '../src/game/campaign/progress.ts';
+import { CAMPAIGN_UNAVAILABLE_WARNING, CampaignRepository, parseCampaignProfile } from '../src/game/campaign/progress.ts';
 import { getCampaignEnemy } from '../src/game/campaign/enemies.ts';
 import { campaignDetailContentLayout, campaignScreenLayout } from '../src/game/campaign/mapLayout.ts';
 import type { CampaignClearResult } from '../src/game/campaign/types.ts';
 import { campaignScoreMetadata } from '../src/shared/campaignScoring.ts';
 import { formatCount } from '../src/shared/displayNumbers.ts';
+import legacyLocalCompleted30 from './fixtures/campaign-v5/legacy_local_completed_30.json';
 
 describe('campaign presentation detail', () => {
   it('keeps the narrow mastery header complete in two short semantic lines', () => {
@@ -38,7 +39,7 @@ describe('campaign presentation detail', () => {
     const meta = campaignCompactDetailMeta(detail);
 
     expect(meta).toContain('Borderkeep · A · D1/5 · 3/3 stars');
-    expect(meta).toContain(`Best ${formatCount(campaignScoreMetadata(1).perfectScore)} · 12 lives`);
+    expect(meta).toContain(`Best score ${formatCount(campaignScoreMetadata(1).perfectScore)} · Best lives 12`);
   });
 
   it('keeps completed-level best lives above the mastery row at 360x640', () => {
@@ -51,7 +52,7 @@ describe('campaign presentation detail', () => {
     const metadataHeight = 28; // The 12px metadata wraps to two lines in the reported viewport.
     const rows = campaignDetailContentLayout(screen.detailHeight, false, false, metadataHeight, 14);
 
-    expect(meta).toBe(`Borderkeep · B3 · D3/5 · 3/3 stars · Best ${formatCount(campaignScoreMetadata(6).perfectScore)} · 20 lives`);
+    expect(meta).toBe(`Borderkeep · B3 · D3/5 · 3/3 stars · Best score ${formatCount(campaignScoreMetadata(6).perfectScore)} · Best lives 20`);
     expect(32 + metadataHeight + 4).toBeLessThanOrEqual(rows.goalsY);
     expect(rows.goalsY + 14).toBeLessThanOrEqual(rows.enemyCenterY - 12);
     expect(rows.enemyNamesY + 14).toBeLessThanOrEqual(rows.buttonY);
@@ -83,6 +84,19 @@ describe('campaign presentation detail', () => {
     const repository = new CampaignRepository(null), definition = campaignScoreMetadata(1);
     repository.applyCloud({1:{completed:true,completionStar:true,livesStar:false,scoreStar:true,bestScore:3_000,bestRemainingLives:12,campaignScore:{version:1,bestScore:definition.scoreTarget}}});
     expect(campaignLevelDetail(1, repository.view())).toMatchObject({bestScore:definition.scoreTarget,legacyBestScore:3_000,scoreTarget:definition.scoreTarget});
+  });
+
+  it('keeps a legacy-only score star while exposing the current target and no current best', () => {
+    const profile = parseCampaignProfile(legacyLocalCompleted30)!;
+    let raw = JSON.stringify(profile);
+    const repository = new CampaignRepository({ getItem: () => raw, setItem: (_key, value) => { raw = value; } });
+    const detail = campaignLevelDetail(1, repository.view())!;
+
+    expect(detail.bestScore).toBeNull();
+    expect(detail.legacyBestScore).toBe(profile.levels[1]!.bestScore);
+    expect(detail.scoreTarget).toBe(campaignScoreMetadata(1).scoreTarget);
+    expect(detail.progress.scoreStar).toBe(true);
+    expect(detail.objectives[2]).toEqual({ label: `Reach ${formatCount(campaignScoreMetadata(1).scoreTarget)} points`, earned: true });
   });
 
   it('includes a named boss and phase guidance on its campaign node', () => {
