@@ -7,6 +7,8 @@ import {campaignRepository,CAMPAIGN_STORAGE_KEY,parseCampaignProfile,setCampaign
 import {unlockRepository,UNLOCK_STORAGE_KEY,setUnlockAccountStorage} from './UnlockSystem.ts';
 import {applyAccountBests,loadBest,loadLegacyBests,setBestAccount} from './Settings.ts';
 export function browserStore():Storage|null {try{return typeof localStorage==='undefined'?null:localStorage;}catch{return null;}}
+const progressMemory=new Map<string,string>();
+let selectedPrefix:string|null=null;
 export function guestSnapshot(storage:Pick<Storage,'getItem'>|null=browserStore()):GuestSnapshot {
   const result:GuestSnapshot={progress:emptyCloudProgress(),nickname:'',result:null,warnings:[]};
   if(!storage)return result;
@@ -21,7 +23,8 @@ export function guestSnapshot(storage:Pick<Storage,'getItem'>|null=browserStore(
 }
 export function selectAccountProgress(ref:AccountRef|null):void {
   const storage=browserStore(),prefix=ref?`account:${accountKey(ref)}:`:'';
-  const adapter=storage?{getItem:(key:string)=>storage.getItem(prefix+key),setItem:(key:string,value:string)=>storage.setItem(prefix+key,value)}:null;
+  if(selectedPrefix===prefix)return;selectedPrefix=prefix;
+  const adapter={getItem:(key:string)=>{try{return storage?.getItem(prefix+key)??progressMemory.get(prefix+key)??null;}catch{return progressMemory.get(prefix+key)??null;}},setItem:(key:string,value:string)=>{progressMemory.set(prefix+key,value);if(!storage)throw new Error('Progress is session only');storage.setItem(prefix+key,value);}};
   setCampaignAccountStorage(adapter);setUnlockAccountStorage(adapter);setBestAccount(ref);
 }
 export function seedGuestPreferences(ref:AccountRef):void {

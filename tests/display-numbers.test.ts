@@ -11,6 +11,7 @@ it('groups counts and renders bounded decimals without changing calculations',()
  expect(formatQuantity(-.001,2)).toBe('0');
  expect(formatQuantity(Infinity,1)).toBe('—');
  expect(formatQuantity(NaN,1)).toBe('—');
+ expect(formatCount(null)).toBe('—');
  expect(formatPercent(12.500000000000002)).toBe('12.5%');
  expect(range).toBe(214.50000000000003);
 });

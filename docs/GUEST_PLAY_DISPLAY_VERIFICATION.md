@@ -11,4 +11,6 @@ Pre-flight: Task 2 GuestStorage -> Task 3 AccountSystem -> Task 4 screens agree 
 Task 1: complete — missing formatter RED, then 133 formatting/presentation tests GREEN; TypeScript/Vite build passed. Quantity surfaces include HUD, costs, Campaign targets/results, tower comparisons, leaderboard/personal bests. Existing clock/level/version identifiers retained.
 Task 2: complete — missing guest modules RED; 11 projection/real IndexedDB storage tests GREEN, including frozen claims, concurrent ownership, migration, duplicate runs, abandonment, unavailable storage, and protected incompatible bytes.
 Ruling: the prerequisite file named by the plan is actually src/game/ui/prerequisites.ts; updated the real consumer. GuestRunProgress includes an optional runId so Campaign settlements without a public result can also be deduplicated.
-Tasks 3–8: pending.
+Task 3: complete — five missing guest APIs RED, then 56 formatting/settings/guest-lifecycle/storage tests GREEN; account HTTP integration (25 tests) passed. Added failed logout suppression, capture ownership, preflight warning, uncertain deletion, failed imports, and confirmed deletion abandonment.
+Ruling: unavailable legacy claim storage permits session-only play but suspends import, preventing unknown ownership from being reseeded into another account. Nullable upgrade costs render the existing nonfinite placeholder rather than weakening their types.
+Tasks 4–8: pending.

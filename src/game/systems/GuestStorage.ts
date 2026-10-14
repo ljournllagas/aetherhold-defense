@@ -16,6 +16,7 @@ export class GuestStorage {
  private memory=empty();private persisted=true;private protected=false;private warning:string|null=null;
  private readonly databaseName:string;
  constructor(options:{databaseName?:string}={}){this.databaseName=options.databaseName??'aetherhold-guests';}
+ useSessionOnly():void{this.persisted=false;this.warning='Guest saves are available in this session only; legacy ownership could not be verified.';}
  private open():Promise<IDBDatabase>{
   if(this.db)return this.db;
   this.db=new Promise((resolve,reject)=>{
@@ -61,12 +62,12 @@ export class GuestStorage {
  }
  async claim(ref:AccountRef):Promise<GuestBatch|null>{
   await this.view();if(!this.persisted)throw new Error('Durable guest storage is unavailable; import is protected');
-  return this.mutate(j=>{const outstanding=j.batches.find(b=>b.status==='claimed');
+  const claimed=await this.mutate(j=>{const outstanding=j.batches.find(b=>b.status==='claimed');
    if(outstanding){if(!sameAccount(outstanding.account,ref))throw new Error('Guest progress was already claimed by another account');return structuredClone(outstanding);}
    if(!hasGuestProgress(j.open))return null;
    const batch:GuestBatch={importId:crypto.randomUUID(),account:{...ref},snapshot:structuredClone(j.open),consumed:false,status:'claimed'};
    j.batches.push(batch);j.open=emptyGuestSnapshot(j.open.nickname);return structuredClone(batch);
-  });
+  });if(!this.persisted)throw new Error('Durable guest storage failed; import is protected');return claimed;
  }
  async acknowledge(importId:string,ref:AccountRef):Promise<void>{await this.mutate(j=>{const b=j.batches.find(x=>x.importId===importId);if(!b||!sameAccount(b.account,ref))throw new Error('Guest import owner changed');if(b.status==='claimed'){b.status='consumed';b.consumed=true;}});}
  async abandon(ref:AccountRef):Promise<void>{await this.mutate(j=>{for(const b of j.batches)if(b.status==='claimed'&&sameAccount(b.account,ref)){b.status='abandoned';b.consumed=true;b.snapshot.result=null;}});}

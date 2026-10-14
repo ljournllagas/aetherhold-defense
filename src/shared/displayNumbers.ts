@@ -4,5 +4,5 @@ export function formatQuantity(value:number,digits:0|1|2=0):string {
  const rounded=Number(value.toFixed(digits));
  return formats[digits].format(Object.is(rounded,-0)?0:rounded);
 }
-export const formatCount=(value:number):string=>formatQuantity(value,0);
+export const formatCount=(value:number|null):string=>formatQuantity(value??NaN,0);
 export const formatPercent=(value:number):string=>`${formatQuantity(value,2)}%`;
