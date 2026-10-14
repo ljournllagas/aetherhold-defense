@@ -45,3 +45,7 @@
 - **Situational relic use:** Automatic activation when a relic can provide its intended benefit in the current run state.
 - **Saved submission:** The latest terminal-result payload the player explicitly attempted to submit, retained for manual retry without resuming the run.
 - **Legacy best:** A personal-best record from an earlier score era, retained separately from the current era's best.
+- **Campaign score era:** Campaign mission scores sharing an independent campaign score version; Classic score versions do not govern them.
+- **Campaign mission score:** Points for scheduled enemies defeated, completed waves, the mission boss defeated, and lives remaining at settlement; summoned enemies do not award points.
+- **Campaign mission best:** A mission's highest winning score in the current Campaign score era.
+- **Campaign leaderboard:** One public entry per player account, ordered by distinct missions completed, retained mastery stars, and the sum of current Campaign mission bests.
