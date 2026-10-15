@@ -62,7 +62,8 @@ describe('stormcaller static appearance', () => {
   it('leaves other branches, towers and campaign tiers on their existing art', () => {
     for (let level = 1; level <= 4; level++) {
       expect(towerArtGeometry('tempest', level, 1, 'stormcaller')).not.toEqual(towerArtGeometry('tempest', level, 1));
-      expect(towerArtGeometry('tempest', level, 1, 'thunderlord')).toEqual(towerArtGeometry('tempest', level, 1));
+      expect(towerArtGeometry('tempest', level, 1, 'thunderlord')).not.toEqual(towerArtGeometry('tempest', level, 1));
+      expect(towerArtGeometry('tempest', level, 1, 'thunderlord')).not.toEqual(towerArtGeometry('tempest', level, 1, 'stormcaller'));
       expect(towerArtGeometry('starfire', level, 1, 'stormcaller')).toEqual(towerArtGeometry('starfire', level, 1));
       for (const tier of [2, 3] as const) {
         expect(towerArtGeometry('tempest', level, tier, 'stormcaller'))
