@@ -1,0 +1,57 @@
+[
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/borderkeep-v1.webp",
+    "copy": "references/borderkeep-v1.webp",
+    "sha256": "e5761f8f89a72802efe4852207beb38769dccf43bd1048d0bc3ff6c2bd454bf5"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/emberfall-v1.webp",
+    "copy": "references/emberfall-v1.webp",
+    "sha256": "dd74b2a860f59afeb0ad27b304919f554f914a5b657eb50633ddfd4630a443bb"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/frostveil-v1.webp",
+    "copy": "references/frostveil-v1.webp",
+    "sha256": "937b98c87b61e1fc779182f4b7a7058f0cac946f8cfbd2e98b2f6b5690647577"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/whisperfen-v2.webp",
+    "copy": "references/whisperfen-v2.webp",
+    "sha256": "264803e2b75db191b04ecb2e43bc67f2cdd550bb35d761b53e887b7a0e2e4a55"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/sunken_aether-v2.webp",
+    "copy": "references/sunken_aether-v2.webp",
+    "sha256": "7d887a410f7c0185a7418173363a12c4f1947d37ce29e13abf576289bdc70768"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/ironroot-v2.webp",
+    "copy": "references/ironroot-v2.webp",
+    "sha256": "709683d009597c1fd9ec1899265b11b04cfbc85a6101485a1c32dddd33f40751"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/sky_isles-v2.webp",
+    "copy": "references/sky_isles-v2.webp",
+    "sha256": "75ed2a65114cb461031b1349c1325c0ecf3d49e3a0899b5d99b2bf56bd8c8586"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/dreadmoon-v2.webp",
+    "copy": "references/dreadmoon-v2.webp",
+    "sha256": "a7dff33b29cddf950733845a8622e54a62aa748580afb1ecf874c57895876032"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/astral_rift-v2.webp",
+    "copy": "references/astral_rift-v2.webp",
+    "sha256": "8117584d1a7e5b866f3a87f10fef0fda01a7ebdeb09cf47632d6d586a1417e9a"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/aether_crown-v2.webp",
+    "copy": "references/aether_crown-v2.webp",
+    "sha256": "96574a2383aae3ecbbe87ea81e7f5e35e5216b7ba537277224704fc417eed7fe"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp",
+    "copy": "references/relic-icons-atlas-v2.webp",
+    "sha256": "23036aab70745e37891122c2853f4483005c34fc88af43058147a8b71f584a77"
+  }
+]

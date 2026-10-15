@@ -1,0 +1,429 @@
+{
+  "schemaVersion": 1,
+  "status": "source-package-complete",
+  "scope": {
+    "victories": 10,
+    "relics": 10,
+    "livingArchive": 7
+  },
+  "assets": [
+    {
+      "id": "victory:borderkeep",
+      "kind": "victory",
+      "worldId": "borderkeep",
+      "master": "masters/victory-borderkeep.png",
+      "promptFile": "prompts/victory-borderkeep.txt",
+      "integrationPrompt": "integration-prompts/victory-borderkeep.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/borderkeep-v1.webp"
+      ],
+      "transparent": false,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-8dbf4a47-95b7-458d-8e7d-bb14ef7bf33a.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "victory:emberfall",
+      "kind": "victory",
+      "worldId": "emberfall",
+      "master": "masters/victory-emberfall.png",
+      "promptFile": "prompts/victory-emberfall.txt",
+      "integrationPrompt": "integration-prompts/victory-emberfall.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/emberfall-v1.webp"
+      ],
+      "transparent": false,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-d6b83856-139a-4652-9b88-5321e61f4ebb.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "victory:frostveil",
+      "kind": "victory",
+      "worldId": "frostveil",
+      "master": "masters/victory-frostveil.png",
+      "promptFile": "prompts/victory-frostveil.txt",
+      "integrationPrompt": "integration-prompts/victory-frostveil.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/frostveil-v1.webp"
+      ],
+      "transparent": false,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-e85e850a-9c8d-4366-a538-ff7627f0ec89.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "victory:whisperfen",
+      "kind": "victory",
+      "worldId": "whisperfen",
+      "master": "masters/victory-whisperfen.png",
+      "promptFile": "prompts/victory-whisperfen.txt",
+      "integrationPrompt": "integration-prompts/victory-whisperfen.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/whisperfen-v2.webp"
+      ],
+      "transparent": false,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-8a7eb480-cdbf-408a-b8a3-970c043c6519.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "victory:sunken_aether",
+      "kind": "victory",
+      "worldId": "sunken_aether",
+      "master": "masters/victory-sunken_aether.png",
+      "promptFile": "prompts/victory-sunken_aether.txt",
+      "integrationPrompt": "integration-prompts/victory-sunken_aether.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/sunken_aether-v2.webp"
+      ],
+      "transparent": false,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-6699be64-f897-4241-b242-550350d04c70.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "victory:ironroot",
+      "kind": "victory",
+      "worldId": "ironroot",
+      "master": "masters/victory-ironroot.png",
+      "promptFile": "prompts/victory-ironroot.txt",
+      "integrationPrompt": "integration-prompts/victory-ironroot.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/ironroot-v2.webp"
+      ],
+      "transparent": false,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-4c16bc10-973a-4589-b780-0f127491a64e.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "victory:sky_isles",
+      "kind": "victory",
+      "worldId": "sky_isles",
+      "master": "masters/victory-sky_isles.png",
+      "promptFile": "prompts/victory-sky_isles.txt",
+      "integrationPrompt": "integration-prompts/victory-sky_isles.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/sky_isles-v2.webp"
+      ],
+      "transparent": false,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-055e5efc-3683-4c5f-a84a-a4c7fd9c708c.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "victory:dreadmoon",
+      "kind": "victory",
+      "worldId": "dreadmoon",
+      "master": "masters/victory-dreadmoon.png",
+      "promptFile": "prompts/victory-dreadmoon.txt",
+      "integrationPrompt": "integration-prompts/victory-dreadmoon.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/dreadmoon-v2.webp"
+      ],
+      "transparent": false,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-e30b8662-3e75-4f54-800d-682cd8bc78f2.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "victory:astral_rift",
+      "kind": "victory",
+      "worldId": "astral_rift",
+      "master": "masters/victory-astral_rift.png",
+      "promptFile": "prompts/victory-astral_rift.txt",
+      "integrationPrompt": "integration-prompts/victory-astral_rift.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/astral_rift-v2.webp"
+      ],
+      "transparent": false,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-08e17a38-5c48-4604-9c15-b1c5b046e3e0.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "victory:aether_crown",
+      "kind": "victory",
+      "worldId": "aether_crown",
+      "master": "masters/victory-aether_crown.png",
+      "promptFile": "prompts/victory-aether_crown.txt",
+      "integrationPrompt": "integration-prompts/victory-aether_crown.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/aether_crown-v2.webp"
+      ],
+      "transparent": false,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-5a44c97a-ab1c-4823-93b3-e7e3dfd3b916.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "relic:gold_rush",
+      "kind": "relic",
+      "powerUpId": "gold_rush",
+      "master": "masters/relic-gold_rush.png",
+      "promptFile": "prompts/relic-gold_rush.txt",
+      "integrationPrompt": "integration-prompts/relic-gold_rush.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+      ],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-802ec6a6-54d5-46ce-8906-792a904abef2.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "relic:meteor_strike",
+      "kind": "relic",
+      "powerUpId": "meteor_strike",
+      "master": "masters/relic-meteor_strike.png",
+      "promptFile": "prompts/relic-meteor_strike.txt",
+      "integrationPrompt": "integration-prompts/relic-meteor_strike.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+      ],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-ddfb930a-1703-4f5d-9c4b-e2dfed0480bc.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "relic:time_freeze",
+      "kind": "relic",
+      "powerUpId": "time_freeze",
+      "master": "masters/relic-time_freeze.png",
+      "promptFile": "prompts/relic-time_freeze.txt",
+      "integrationPrompt": "integration-prompts/relic-time_freeze.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+      ],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-9ed45cd2-1dad-4b6e-bb05-1d386eee9a34.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "relic:battle_cry",
+      "kind": "relic",
+      "powerUpId": "battle_cry",
+      "master": "masters/relic-battle_cry.png",
+      "promptFile": "prompts/relic-battle_cry.txt",
+      "integrationPrompt": "integration-prompts/relic-battle_cry.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+      ],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-879241e7-51b7-4070-92a0-6acd593de35b.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "relic:arcane_surge",
+      "kind": "relic",
+      "powerUpId": "arcane_surge",
+      "master": "masters/relic-arcane_surge.png",
+      "promptFile": "prompts/relic-arcane_surge.txt",
+      "integrationPrompt": "integration-prompts/relic-arcane_surge.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+      ],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-f87e1392-a3e9-4d21-a0c7-801a5d2ccc01.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "relic:emergency_repair",
+      "kind": "relic",
+      "powerUpId": "emergency_repair",
+      "master": "masters/relic-emergency_repair.png",
+      "promptFile": "prompts/relic-emergency_repair.txt",
+      "integrationPrompt": "integration-prompts/relic-emergency_repair.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+      ],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-a74fed90-89d7-4fae-82c3-6f5af1445e1d.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "relic:treasure_goblin",
+      "kind": "relic",
+      "powerUpId": "treasure_goblin",
+      "master": "masters/relic-treasure_goblin.png",
+      "promptFile": "prompts/relic-treasure_goblin.txt",
+      "integrationPrompt": "integration-prompts/relic-treasure_goblin.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+      ],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-b8a52881-40a4-4966-978b-399b490a3d9d.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "relic:double_bounty",
+      "kind": "relic",
+      "powerUpId": "double_bounty",
+      "master": "masters/relic-double_bounty.png",
+      "promptFile": "prompts/relic-double_bounty.txt",
+      "integrationPrompt": "integration-prompts/relic-double_bounty.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+      ],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-262af33e-f685-4b4d-ae72-e0939ec07d22.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "relic:tower_overcharge",
+      "kind": "relic",
+      "powerUpId": "tower_overcharge",
+      "master": "masters/relic-tower_overcharge.png",
+      "promptFile": "prompts/relic-tower_overcharge.txt",
+      "integrationPrompt": "integration-prompts/relic-tower_overcharge.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+      ],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-687a7032-9953-44c7-90c8-55164587dbc7.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "relic:ancient_blessing",
+      "kind": "relic",
+      "powerUpId": "ancient_blessing",
+      "master": "masters/relic-ancient_blessing.png",
+      "promptFile": "prompts/relic-ancient_blessing.txt",
+      "integrationPrompt": "integration-prompts/relic-ancient_blessing.md",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+      ],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-6ea92248-10ec-40b4-b876-7779bb615ffb.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "archive:vista",
+      "kind": "archive",
+      "role": "vista",
+      "master": "masters/living-archive-vista.png",
+      "promptFile": "prompts/living-archive-vista.txt",
+      "integrationPrompt": "integration-prompts/archive-vista.md",
+      "references": [],
+      "transparent": false,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-8a33bcdd-e054-44ad-b591-ba3b8fcf33a3.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "archive:terrain",
+      "kind": "archive",
+      "role": "terrain",
+      "master": "masters/living-archive-terrain.png",
+      "promptFile": "prompts/living-archive-terrain.txt",
+      "integrationPrompt": "integration-prompts/archive-terrain.md",
+      "references": [],
+      "transparent": false,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-cada8ae5-e645-46b6-950b-bc995ef74de8.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "archive:runebinder",
+      "kind": "archive",
+      "role": "runebinder",
+      "master": "masters/living-archive-runebinder.png",
+      "promptFile": "prompts/living-archive-runebinder.txt",
+      "integrationPrompt": "integration-prompts/archive-runebinder.md",
+      "references": [],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-872ba2fe-7e98-4892-95a9-b4ee245f37ed.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "archive:inkling",
+      "kind": "archive",
+      "role": "inkling",
+      "master": "masters/living-archive-inkling.png",
+      "promptFile": "prompts/living-archive-inkling.txt",
+      "integrationPrompt": "integration-prompts/archive-inkling.md",
+      "references": [],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-36c5f151-eefb-4fc7-867d-5e4a06df7b7f.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "archive:folded-beast",
+      "kind": "archive",
+      "role": "folded-beast",
+      "master": "masters/living-archive-folded-beast.png",
+      "promptFile": "prompts/living-archive-folded-beast.txt",
+      "integrationPrompt": "integration-prompts/archive-folded-beast.md",
+      "references": [],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-9abd4f91-2283-4a52-8553-12c29ea883fb.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "archive:quillbound-curator",
+      "kind": "archive",
+      "role": "quillbound-curator",
+      "master": "masters/living-archive-quillbound-curator.png",
+      "promptFile": "prompts/living-archive-quillbound-curator.txt",
+      "integrationPrompt": "integration-prompts/archive-quillbound-curator.md",
+      "references": [],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-08023a09-cf8f-4846-b7fe-58e778ea8b18.png",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "archive:unwritten-leviathan",
+      "kind": "archive",
+      "role": "unwritten-leviathan",
+      "master": "masters/living-archive-unwritten-leviathan.png",
+      "promptFile": "prompts/living-archive-unwritten-leviathan.txt",
+      "integrationPrompt": "integration-prompts/archive-unwritten-leviathan.md",
+      "references": [],
+      "transparent": true,
+      "status": "reviewed-source-master",
+      "runtimeIntegration": "not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-f528a94b-c57c-47c7-9ed5-556604eed84f.png",
+      "visualReview": "visual-review.md"
+    }
+  ]
+}

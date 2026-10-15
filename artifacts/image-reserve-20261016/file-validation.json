@@ -1,0 +1,837 @@
+{
+  "expected": 27,
+  "present": 27,
+  "assets": [
+    {
+      "id": "victory:borderkeep",
+      "path": "masters/victory-borderkeep.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "0788272b6a9a96d8a74dd5885a51a6cf32e689e2eaa7aefa41a19801534c40b3",
+      "sourceCopyVerified": true,
+      "issues": [],
+      "fileCheck": "pass",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "victory:emberfall",
+      "path": "masters/victory-emberfall.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "e6daefe1ae47e22fc4ee62392e2080cf89806e7ada11ecc8b203ba7e121f9748",
+      "sourceCopyVerified": true,
+      "issues": [],
+      "fileCheck": "pass",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "victory:frostveil",
+      "path": "masters/victory-frostveil.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "ca52c2b46746692dd88c491d5fee29772c7a3cc5aba6d9a3d9cebca201608563",
+      "sourceCopyVerified": true,
+      "issues": [],
+      "fileCheck": "pass",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "victory:whisperfen",
+      "path": "masters/victory-whisperfen.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "4bfa6bbf37609167335d590a2e46e1af7b2840e28f0c575b23af8ca06b97f783",
+      "sourceCopyVerified": true,
+      "issues": [],
+      "fileCheck": "pass",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "victory:sunken_aether",
+      "path": "masters/victory-sunken_aether.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "c9f0def4d6cb10adcb10bc7d5b20b717329a4f7d2e250355e1eed61cf9825003",
+      "sourceCopyVerified": true,
+      "issues": [],
+      "fileCheck": "pass",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "victory:ironroot",
+      "path": "masters/victory-ironroot.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "5bc933fbc5f88e903f9c0e6967ced67fa1128b9e1f4e9205889d98389aed9915",
+      "sourceCopyVerified": true,
+      "issues": [],
+      "fileCheck": "pass",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "victory:sky_isles",
+      "path": "masters/victory-sky_isles.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "7e6c481674afad0f67f949844bd35580f4b140d3af7d2e01290a83be62da7092",
+      "sourceCopyVerified": true,
+      "issues": [],
+      "fileCheck": "pass",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "victory:dreadmoon",
+      "path": "masters/victory-dreadmoon.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "65bf9862c74b775de207b4edd3a8aae32efa26e1092cb7c750c0ca4dfc00903c",
+      "sourceCopyVerified": true,
+      "issues": [],
+      "fileCheck": "pass",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "victory:astral_rift",
+      "path": "masters/victory-astral_rift.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "a221ae88600cee9d0f636e0659c82f8c18d1f5d5b6c215bc4bbf2aff6b5b0e1b",
+      "sourceCopyVerified": true,
+      "issues": [],
+      "fileCheck": "pass",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "victory:aether_crown",
+      "path": "masters/victory-aether_crown.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "bb6eb1a81e27bdd05ef435eaf7d3c0f1666e7e3ebe1ce2e5999e2ebc7f0d1233",
+      "sourceCopyVerified": true,
+      "issues": [],
+      "fileCheck": "pass",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "relic:gold_rush",
+      "path": "masters/relic-gold_rush.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        17,
+        1234,
+        1238
+      ],
+      "alphaBoundsAt16": [
+        84,
+        97,
+        1222,
+        1128
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "e1a6c745bb78918540e60fe1ef3f5e2f930dfd417828c7a6b31c292974b4dc21",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "relic:meteor_strike",
+      "path": "masters/relic-meteor_strike.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        4,
+        1240,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        95,
+        71,
+        1220,
+        1170
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "f503b1ac6c49c9262997d661fd54187765b1f1267825eee6683cb37740de63c2",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "relic:time_freeze",
+      "path": "masters/relic-time_freeze.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        23,
+        1234,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        230,
+        87,
+        1012,
+        1157
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "5bf31ceae04d52c7609e44665a4cabf96b8fc350f7c3226ea5f46c15458a147e",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "relic:battle_cry",
+      "path": "masters/relic-battle_cry.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        9,
+        1238,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        48,
+        186,
+        1226,
+        1179
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "8cae29d22f9a0d8e821d3a9f8a49e1f2b8363ffca545555f5f4d02b9eee156e5",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "relic:arcane_surge",
+      "path": "masters/relic-arcane_surge.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        13,
+        1250,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        169,
+        43,
+        1139,
+        1180
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "37e43df5e12a718e88ae7a65d7c5e11af715c77e821975b6201304e80c6b1d3c",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "relic:emergency_repair",
+      "path": "masters/relic-emergency_repair.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        15,
+        1214,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        71,
+        67,
+        1183,
+        1169
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "17f153b692346114a56a6fcbae0baa21f224a01cc775652d9dc8ec010fbb65a8",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "relic:treasure_goblin",
+      "path": "masters/relic-treasure_goblin.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        46,
+        1240,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        37,
+        91,
+        1219,
+        1181
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "5ed23bad5b6d290d4209b33964d3e753379e81d0a389d5c75ba8b7899dd48dec",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "relic:double_bounty",
+      "path": "masters/relic-double_bounty.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        25,
+        1240,
+        1230
+      ],
+      "alphaBoundsAt16": [
+        153,
+        213,
+        1122,
+        1023
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "6a9abf02e211b12ec273f1f6f99fca44253fc930f7885a51182c1d3b6343244c",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "relic:tower_overcharge",
+      "path": "masters/relic-tower_overcharge.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        0,
+        1244,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        224,
+        54,
+        1029,
+        1218
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "07700b21056aa26d0906abf792d7c6ff7a095bb9796a2ac8f94a74a54fac3180",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "relic:ancient_blessing",
+      "path": "masters/relic-ancient_blessing.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        23,
+        1228,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        75,
+        149,
+        1180,
+        1108
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "fe2f6edfdf8831a04a7fabbd26b1e30f0ab090c20b7a566e607cd874b0929405",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "archive:vista",
+      "path": "masters/living-archive-vista.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "150d1466c5469cf0ef5072ce54daa94b510563362fac0cf82b0916f28a9a397e",
+      "sourceCopyVerified": true,
+      "issues": [],
+      "fileCheck": "pass",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "archive:terrain",
+      "path": "masters/living-archive-terrain.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "6ef76cc013af2d66830aa27419f6ea2215e5387aff7a4a7aefd6a3e95094c4e5",
+      "sourceCopyVerified": true,
+      "issues": [],
+      "fileCheck": "pass",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "archive:runebinder",
+      "path": "masters/living-archive-runebinder.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        25,
+        1240,
+        1230
+      ],
+      "alphaBoundsAt16": [
+        288,
+        94,
+        994,
+        1191
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "775f386a2dada6d70a357e0e6bf01e1f7a8973736d4b66664ffdd1983136f62b",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "archive:inkling",
+      "path": "masters/living-archive-inkling.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        51,
+        1210,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        345,
+        88,
+        933,
+        1146
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "a3ac36b81a58b86223c66b1c3ee6c87561f257c838cb709833367780c295c07e",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "archive:folded-beast",
+      "path": "masters/living-archive-folded-beast.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        25,
+        39,
+        1254,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        88,
+        226,
+        1245,
+        1028
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "6b2d257e6385e7f9e97815faffe5d5f29fd3ba3984655840b0e120b125012dcc",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "archive:quillbound-curator",
+      "path": "masters/living-archive-quillbound-curator.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        21,
+        1236,
+        1240
+      ],
+      "alphaBoundsAt16": [
+        208,
+        75,
+        1055,
+        1175
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "58af315715778b9bbde623eb713e08500e2872b4337544baf240046e0ca9c50e",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "archive:unwritten-leviathan",
+      "path": "masters/living-archive-unwritten-leviathan.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        12,
+        1244,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        104,
+        16,
+        1170,
+        1241
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "c6a7526fb7ce30db3daf94a869f7d244f6839ee6256577f56c1b1127be69c4e4",
+      "sourceCopyVerified": true,
+      "issues": [
+        "raw alpha touches canvas edge; inspect clipping or residue"
+      ],
+      "fileCheck": "review",
+      "visualReview": "reviewed-source-master",
+      "runtimeIntegration": "not performed"
+    }
+  ]
+}

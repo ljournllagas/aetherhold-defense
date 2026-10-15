@@ -1,0 +1,278 @@
+[
+  {
+    "id": "victory:borderkeep",
+    "file": "victory-borderkeep.png",
+    "kind": "victory",
+    "worldId": "borderkeep",
+    "transparent": false,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/borderkeep-v1.webp"
+    ],
+    "prompt": "Create ONE finished wide 16:9 world-completion painting for original fantasy tower defense Aegis of the Borderkeep. Reference image is BIOME AND LANDMARK IDENTITY only, not a gameplay map to copy. World: The Borderkeep. Scene after its boss is defeated: the forest keep restored, fallen violet corruption gone, clear waterfalls and fresh greenery, warm dawn watchfires. Preserve recognizable biome architecture, materials and palette while making recovery unmistakable. Premium painterly fantasy game illustration with coherent environmental storytelling, hopeful earned quiet victory rather than an active battle. One strong landmark in central 50 percent; scenery remains useful if fitted on portrait screens. Keep top 12 percent and bottom 18 percent calm and uncluttered for runtime labels and controls, no actual text. Landscape environmental illustration with no game UI, road nodes, tower plots, rewards, text, logos, watermark or border. No recognizable franchise characters. Detailed but readable at card size. This is result-screen art, NOT a terrain plate or a claim of changed gameplay."
+  },
+  {
+    "id": "victory:emberfall",
+    "file": "victory-emberfall.png",
+    "kind": "victory",
+    "worldId": "emberfall",
+    "transparent": false,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/emberfall-v1.webp"
+    ],
+    "prompt": "Create ONE finished wide 16:9 world-completion painting for original fantasy tower defense Aegis of the Borderkeep. Reference image is BIOME AND LANDMARK IDENTITY only, not a gameplay map to copy. World: Emberfall Highlands. Scene after its boss is defeated: black basalt highlands cooling after victory, old lava channels crusted dark with a few contained amber embers, first green shoots and small clear springs; retain volcanic identity. Preserve recognizable biome architecture, materials and palette while making recovery unmistakable. Premium painterly fantasy game illustration with coherent environmental storytelling, hopeful earned quiet victory rather than an active battle. One strong landmark in central 50 percent; scenery remains useful if fitted on portrait screens. Keep top 12 percent and bottom 18 percent calm and uncluttered for runtime labels and controls, no actual text. Landscape environmental illustration with no game UI, road nodes, tower plots, rewards, text, logos, watermark or border. No recognizable franchise characters. Detailed but readable at card size. This is result-screen art, NOT a terrain plate or a claim of changed gameplay."
+  },
+  {
+    "id": "victory:frostveil",
+    "file": "victory-frostveil.png",
+    "kind": "victory",
+    "worldId": "frostveil",
+    "transparent": false,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/frostveil-v1.webp"
+    ],
+    "prompt": "Create ONE finished wide 16:9 world-completion painting for original fantasy tower defense Aegis of the Borderkeep. Reference image is BIOME AND LANDMARK IDENTITY only, not a gameplay map to copy. World: Frostveil Pass. Scene after its boss is defeated: a frozen mountain pass beginning to thaw, sparkling meltwater and first alpine flowers near ancient ruined arches, snowy peaks still majestic. Preserve recognizable biome architecture, materials and palette while making recovery unmistakable. Premium painterly fantasy game illustration with coherent environmental storytelling, hopeful earned quiet victory rather than an active battle. One strong landmark in central 50 percent; scenery remains useful if fitted on portrait screens. Keep top 12 percent and bottom 18 percent calm and uncluttered for runtime labels and controls, no actual text. Landscape environmental illustration with no game UI, road nodes, tower plots, rewards, text, logos, watermark or border. No recognizable franchise characters. Detailed but readable at card size. This is result-screen art, NOT a terrain plate or a claim of changed gameplay."
+  },
+  {
+    "id": "victory:whisperfen",
+    "file": "victory-whisperfen.png",
+    "kind": "victory",
+    "worldId": "whisperfen",
+    "transparent": false,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/whisperfen-v2.webp"
+    ],
+    "prompt": "Create ONE finished wide 16:9 world-completion painting for original fantasy tower defense Aegis of the Borderkeep. Reference image is BIOME AND LANDMARK IDENTITY only, not a gameplay map to copy. World: Whisperfen. Scene after its boss is defeated: the hydra's swamp cleansed, transparent green water and water lilies returning around recognizable overgrown Gothic ruins, fireflies and gentle morning light. Preserve recognizable biome architecture, materials and palette while making recovery unmistakable. Premium painterly fantasy game illustration with coherent environmental storytelling, hopeful earned quiet victory rather than an active battle. One strong landmark in central 50 percent; scenery remains useful if fitted on portrait screens. Keep top 12 percent and bottom 18 percent calm and uncluttered for runtime labels and controls, no actual text. Landscape environmental illustration with no game UI, road nodes, tower plots, rewards, text, logos, watermark or border. No recognizable franchise characters. Detailed but readable at card size. This is result-screen art, NOT a terrain plate or a claim of changed gameplay."
+  },
+  {
+    "id": "victory:sunken_aether",
+    "file": "victory-sunken_aether.png",
+    "kind": "victory",
+    "worldId": "sunken_aether",
+    "transparent": false,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/sunken_aether-v2.webp"
+    ],
+    "prompt": "Create ONE finished wide 16:9 world-completion painting for original fantasy tower defense Aegis of the Borderkeep. Reference image is BIOME AND LANDMARK IDENTITY only, not a gameplay map to copy. World: Sunken Aether Ruins. Scene after its boss is defeated: turquoise water becomes clear around ancient pale stone sanctuaries, restored luminous aether crystals and calm tide pools, original marine ruins retained. Preserve recognizable biome architecture, materials and palette while making recovery unmistakable. Premium painterly fantasy game illustration with coherent environmental storytelling, hopeful earned quiet victory rather than an active battle. One strong landmark in central 50 percent; scenery remains useful if fitted on portrait screens. Keep top 12 percent and bottom 18 percent calm and uncluttered for runtime labels and controls, no actual text. Landscape environmental illustration with no game UI, road nodes, tower plots, rewards, text, logos, watermark or border. No recognizable franchise characters. Detailed but readable at card size. This is result-screen art, NOT a terrain plate or a claim of changed gameplay."
+  },
+  {
+    "id": "victory:ironroot",
+    "file": "victory-ironroot.png",
+    "kind": "victory",
+    "worldId": "ironroot",
+    "transparent": false,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/ironroot-v2.webp"
+    ],
+    "prompt": "Create ONE finished wide 16:9 world-completion painting for original fantasy tower defense Aegis of the Borderkeep. Reference image is BIOME AND LANDMARK IDENTITY only, not a gameplay map to copy. World: Ironroot Foundry. Scene after its boss is defeated: the iron tyrant's enormous dark foundry falls silent, furnace windows dark with faint residual ember glow, smoke clears into clean blue sky, moss and small saplings reclaim outer stonework. Preserve recognizable biome architecture, materials and palette while making recovery unmistakable. Premium painterly fantasy game illustration with coherent environmental storytelling, hopeful earned quiet victory rather than an active battle. One strong landmark in central 50 percent; scenery remains useful if fitted on portrait screens. Keep top 12 percent and bottom 18 percent calm and uncluttered for runtime labels and controls, no actual text. Landscape environmental illustration with no game UI, road nodes, tower plots, rewards, text, logos, watermark or border. No recognizable franchise characters. Detailed but readable at card size. This is result-screen art, NOT a terrain plate or a claim of changed gameplay."
+  },
+  {
+    "id": "victory:sky_isles",
+    "file": "victory-sky_isles.png",
+    "kind": "victory",
+    "worldId": "sky_isles",
+    "transparent": false,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/sky_isles-v2.webp"
+    ],
+    "prompt": "Create ONE finished wide 16:9 world-completion painting for original fantasy tower defense Aegis of the Borderkeep. Reference image is BIOME AND LANDMARK IDENTITY only, not a gameplay map to copy. World: Shattered Sky Isles. Scene after its boss is defeated: the storm clears around floating islands, shattered bridges gently reconnect through luminous aether spans, waterfalls and lush island gardens under peaceful sunlit clouds. Preserve recognizable biome architecture, materials and palette while making recovery unmistakable. Premium painterly fantasy game illustration with coherent environmental storytelling, hopeful earned quiet victory rather than an active battle. One strong landmark in central 50 percent; scenery remains useful if fitted on portrait screens. Keep top 12 percent and bottom 18 percent calm and uncluttered for runtime labels and controls, no actual text. Landscape environmental illustration with no game UI, road nodes, tower plots, rewards, text, logos, watermark or border. No recognizable franchise characters. Detailed but readable at card size. This is result-screen art, NOT a terrain plate or a claim of changed gameplay."
+  },
+  {
+    "id": "victory:dreadmoon",
+    "file": "victory-dreadmoon.png",
+    "kind": "victory",
+    "worldId": "dreadmoon",
+    "transparent": false,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/dreadmoon-v2.webp"
+    ],
+    "prompt": "Create ONE finished wide 16:9 world-completion painting for original fantasy tower defense Aegis of the Borderkeep. Reference image is BIOME AND LANDMARK IDENTITY only, not a gameplay map to copy. World: Dreadmoon Wastes. Scene after its boss is defeated: the eclipse lifts from a barren haunted land, soft sunrise touches a recognizable broken lunar ring and Gothic mausoleum, first silver grass grows while the distinctive dark violet stone remains. Preserve recognizable biome architecture, materials and palette while making recovery unmistakable. Premium painterly fantasy game illustration with coherent environmental storytelling, hopeful earned quiet victory rather than an active battle. One strong landmark in central 50 percent; scenery remains useful if fitted on portrait screens. Keep top 12 percent and bottom 18 percent calm and uncluttered for runtime labels and controls, no actual text. Landscape environmental illustration with no game UI, road nodes, tower plots, rewards, text, logos, watermark or border. No recognizable franchise characters. Detailed but readable at card size. This is result-screen art, NOT a terrain plate or a claim of changed gameplay."
+  },
+  {
+    "id": "victory:astral_rift",
+    "file": "victory-astral_rift.png",
+    "kind": "victory",
+    "worldId": "astral_rift",
+    "transparent": false,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/astral_rift-v2.webp"
+    ],
+    "prompt": "Create ONE finished wide 16:9 world-completion painting for original fantasy tower defense Aegis of the Borderkeep. Reference image is BIOME AND LANDMARK IDENTITY only, not a gameplay map to copy. World: The Astral Rift. Scene after its boss is defeated: the immense broken violet portal ring is sealed and its center now shows quiet stars, unstable floating stone settles into calm aligned islands, distant ruined spires glow gently rather than erupting. Preserve recognizable biome architecture, materials and palette while making recovery unmistakable. Premium painterly fantasy game illustration with coherent environmental storytelling, hopeful earned quiet victory rather than an active battle. One strong landmark in central 50 percent; scenery remains useful if fitted on portrait screens. Keep top 12 percent and bottom 18 percent calm and uncluttered for runtime labels and controls, no actual text. Landscape environmental illustration with no game UI, road nodes, tower plots, rewards, text, logos, watermark or border. No recognizable franchise characters. Detailed but readable at card size. This is result-screen art, NOT a terrain plate or a claim of changed gameplay."
+  },
+  {
+    "id": "victory:aether_crown",
+    "file": "victory-aether_crown.png",
+    "kind": "victory",
+    "worldId": "aether_crown",
+    "transparent": false,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/world-map/aether_crown-v2.webp"
+    ],
+    "prompt": "Create ONE finished wide 16:9 world-completion painting for original fantasy tower defense Aegis of the Borderkeep. Reference image is BIOME AND LANDMARK IDENTITY only, not a gameplay map to copy. World: Aether Crown. Scene after its boss is defeated: the ivory-and-gold floating citadel restored after the final devourer's fall, fractured crystalline crown sanctum repaired with subtle warm aether seams, blue sky, calm floating gardens and an unobstructed central throne landmark. Preserve recognizable biome architecture, materials and palette while making recovery unmistakable. Premium painterly fantasy game illustration with coherent environmental storytelling, hopeful earned quiet victory rather than an active battle. One strong landmark in central 50 percent; scenery remains useful if fitted on portrait screens. Keep top 12 percent and bottom 18 percent calm and uncluttered for runtime labels and controls, no actual text. Landscape environmental illustration with no game UI, road nodes, tower plots, rewards, text, logos, watermark or border. No recognizable franchise characters. Detailed but readable at card size. This is result-screen art, NOT a terrain plate or a claim of changed gameplay."
+  },
+  {
+    "id": "relic:gold_rush",
+    "file": "relic-gold_rush.png",
+    "kind": "relic",
+    "powerUpId": "gold_rush",
+    "transparent": true,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+    ],
+    "prompt": "Create ONE premium standalone relic showcase illustration for original fantasy tower defense Aegis of the Borderkeep. Reference image is an EXISTING ICON ATLAS for identity/material guidance only. Select ONLY Gold Rush, row 1 column 1 of the 2-row 5-column atlas. Remove its circular badge and frame: do NOT reproduce other icons or the grid. Main subject: an open weathered leather coin satchel spilling a small coherent pile of warm gold coins. Its existing use is instant gold; do not imply a new mechanic. Painterly realistic stylized fantasy game object, warm upper-left light, chunky readable materials, square canvas, all objects and effects fully contained in central 72 percent with generous transparent margin. Entire artifact visible, no clipped tips. Genuine transparent background; no ground plane, cast shadow, environment, pedestal unless part of the specified object, UI, badge, frame, numbers, letters, text, logos or watermark. Larger reward-card/Codex hero illustration, not a replacement for the combat icon atlas."
+  },
+  {
+    "id": "relic:meteor_strike",
+    "file": "relic-meteor_strike.png",
+    "kind": "relic",
+    "powerUpId": "meteor_strike",
+    "transparent": true,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+    ],
+    "prompt": "Create ONE premium standalone relic showcase illustration for original fantasy tower defense Aegis of the Borderkeep. Reference image is an EXISTING ICON ATLAS for identity/material guidance only. Select ONLY Meteor, row 1 column 2 of the 2-row 5-column atlas. Remove its circular badge and frame: do NOT reproduce other icons or the grid. Main subject: one jagged dark meteoric stone with a contained orange molten core and a short restrained ember tail, all sparks within the canvas. Its existing use is targeted explosive strike; do not imply a new mechanic. Painterly realistic stylized fantasy game object, warm upper-left light, chunky readable materials, square canvas, all objects and effects fully contained in central 72 percent with generous transparent margin. Entire artifact visible, no clipped tips. Genuine transparent background; no ground plane, cast shadow, environment, pedestal unless part of the specified object, UI, badge, frame, numbers, letters, text, logos or watermark. Larger reward-card/Codex hero illustration, not a replacement for the combat icon atlas."
+  },
+  {
+    "id": "relic:time_freeze",
+    "file": "relic-time_freeze.png",
+    "kind": "relic",
+    "powerUpId": "time_freeze",
+    "transparent": true,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+    ],
+    "prompt": "Create ONE premium standalone relic showcase illustration for original fantasy tower defense Aegis of the Borderkeep. Reference image is an EXISTING ICON ATLAS for identity/material guidance only. Select ONLY Time Lock, row 1 column 3 of the 2-row 5-column atlas. Remove its circular badge and frame: do NOT reproduce other icons or the grid. Main subject: one ornate brass-framed glass hourglass containing frozen pale-blue crystal sand and frost, a complete intact artifact. Its existing use is briefly freeze enemies; do not imply a new mechanic. Painterly realistic stylized fantasy game object, warm upper-left light, chunky readable materials, square canvas, all objects and effects fully contained in central 72 percent with generous transparent margin. Entire artifact visible, no clipped tips. Genuine transparent background; no ground plane, cast shadow, environment, pedestal unless part of the specified object, UI, badge, frame, numbers, letters, text, logos or watermark. Larger reward-card/Codex hero illustration, not a replacement for the combat icon atlas."
+  },
+  {
+    "id": "relic:battle_cry",
+    "file": "relic-battle_cry.png",
+    "kind": "relic",
+    "powerUpId": "battle_cry",
+    "transparent": true,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+    ],
+    "prompt": "Create ONE premium standalone relic showcase illustration for original fantasy tower defense Aegis of the Borderkeep. Reference image is an EXISTING ICON ATLAS for identity/material guidance only. Select ONLY Battle Tempo, row 1 column 4 of the 2-row 5-column atlas. Remove its circular badge and frame: do NOT reproduce other icons or the grid. Main subject: one broad bronze war horn with leather grip and a red cloth knot; a restrained three-part red magical resonance accent. Its existing use is temporarily increase tower attack speed; do not imply a new mechanic. Painterly realistic stylized fantasy game object, warm upper-left light, chunky readable materials, square canvas, all objects and effects fully contained in central 72 percent with generous transparent margin. Entire artifact visible, no clipped tips. Genuine transparent background; no ground plane, cast shadow, environment, pedestal unless part of the specified object, UI, badge, frame, numbers, letters, text, logos or watermark. Larger reward-card/Codex hero illustration, not a replacement for the combat icon atlas."
+  },
+  {
+    "id": "relic:arcane_surge",
+    "file": "relic-arcane_surge.png",
+    "kind": "relic",
+    "powerUpId": "arcane_surge",
+    "transparent": true,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+    ],
+    "prompt": "Create ONE premium standalone relic showcase illustration for original fantasy tower defense Aegis of the Borderkeep. Reference image is an EXISTING ICON ATLAS for identity/material guidance only. Select ONLY Arcane Surge, row 1 column 5 of the 2-row 5-column atlas. Remove its circular badge and frame: do NOT reproduce other icons or the grid. Main subject: one tall amethyst focus crystal with a few small floating companion shards held close, restrained violet radiance. Its existing use is temporarily increase tower damage; do not imply a new mechanic. Painterly realistic stylized fantasy game object, warm upper-left light, chunky readable materials, square canvas, all objects and effects fully contained in central 72 percent with generous transparent margin. Entire artifact visible, no clipped tips. Genuine transparent background; no ground plane, cast shadow, environment, pedestal unless part of the specified object, UI, badge, frame, numbers, letters, text, logos or watermark. Larger reward-card/Codex hero illustration, not a replacement for the combat icon atlas."
+  },
+  {
+    "id": "relic:emergency_repair",
+    "file": "relic-emergency_repair.png",
+    "kind": "relic",
+    "powerUpId": "emergency_repair",
+    "transparent": true,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+    ],
+    "prompt": "Create ONE premium standalone relic showcase illustration for original fantasy tower defense Aegis of the Borderkeep. Reference image is an EXISTING ICON ATLAS for identity/material guidance only. Select ONLY Stronghold Repair, row 2 column 1 of the 2-row 5-column atlas. Remove its circular badge and frame: do NOT reproduce other icons or the grid. Main subject: one weathered steel repair hammer resting diagonally against a small reinforced shield, fresh green sprig accent, one coherent toolkit grouping. Its existing use is restore stronghold lives; do not imply a new mechanic. Painterly realistic stylized fantasy game object, warm upper-left light, chunky readable materials, square canvas, all objects and effects fully contained in central 72 percent with generous transparent margin. Entire artifact visible, no clipped tips. Genuine transparent background; no ground plane, cast shadow, environment, pedestal unless part of the specified object, UI, badge, frame, numbers, letters, text, logos or watermark. Larger reward-card/Codex hero illustration, not a replacement for the combat icon atlas."
+  },
+  {
+    "id": "relic:treasure_goblin",
+    "file": "relic-treasure_goblin.png",
+    "kind": "relic",
+    "powerUpId": "treasure_goblin",
+    "transparent": true,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+    ],
+    "prompt": "Create ONE premium standalone relic showcase illustration for original fantasy tower defense Aegis of the Borderkeep. Reference image is an EXISTING ICON ATLAS for identity/material guidance only. Select ONLY Treasure Creature, row 2 column 2 of the 2-row 5-column atlas. Remove its circular badge and frame: do NOT reproduce other icons or the grid. Main subject: one small original pointy-eared Pilferer creature in a simple gold mask clutching a bulging leather treasure bag, entire head body feet and bag visible, playful furtive personality. Its existing use is summon a fleeing treasure creature; do not imply a new mechanic. Painterly realistic stylized fantasy game object, warm upper-left light, chunky readable materials, square canvas, all objects and effects fully contained in central 72 percent with generous transparent margin. Entire artifact visible, no clipped tips. Genuine transparent background; no ground plane, cast shadow, environment, pedestal unless part of the specified object, UI, badge, frame, numbers, letters, text, logos or watermark. Larger reward-card/Codex hero illustration, not a replacement for the combat icon atlas."
+  },
+  {
+    "id": "relic:double_bounty",
+    "file": "relic-double_bounty.png",
+    "kind": "relic",
+    "powerUpId": "double_bounty",
+    "transparent": true,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+    ],
+    "prompt": "Create ONE premium standalone relic showcase illustration for original fantasy tower defense Aegis of the Borderkeep. Reference image is an EXISTING ICON ATLAS for identity/material guidance only. Select ONLY Double Bounty, row 2 column 3 of the 2-row 5-column atlas. Remove its circular badge and frame: do NOT reproduce other icons or the grid. Main subject: two clearly distinct orderly stacks of gold coins beside a few loose coins, restrained warm magical glint, one compact composition. Its existing use is temporarily double gold from kills; do not imply a new mechanic. Painterly realistic stylized fantasy game object, warm upper-left light, chunky readable materials, square canvas, all objects and effects fully contained in central 72 percent with generous transparent margin. Entire artifact visible, no clipped tips. Genuine transparent background; no ground plane, cast shadow, environment, pedestal unless part of the specified object, UI, badge, frame, numbers, letters, text, logos or watermark. Larger reward-card/Codex hero illustration, not a replacement for the combat icon atlas."
+  },
+  {
+    "id": "relic:tower_overcharge",
+    "file": "relic-tower_overcharge.png",
+    "kind": "relic",
+    "powerUpId": "tower_overcharge",
+    "transparent": true,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+    ],
+    "prompt": "Create ONE premium standalone relic showcase illustration for original fantasy tower defense Aegis of the Borderkeep. Reference image is an EXISTING ICON ATLAS for identity/material guidance only. Select ONLY Tower Overcharge, row 2 column 4 of the 2-row 5-column atlas. Remove its circular badge and frame: do NOT reproduce other icons or the grid. Main subject: one miniature stone turret relic crowned by a blue crystal and contained blue electrical arcs, entire compact model visible. Its existing use is temporarily overcharge one tower; do not imply a new mechanic. Painterly realistic stylized fantasy game object, warm upper-left light, chunky readable materials, square canvas, all objects and effects fully contained in central 72 percent with generous transparent margin. Entire artifact visible, no clipped tips. Genuine transparent background; no ground plane, cast shadow, environment, pedestal unless part of the specified object, UI, badge, frame, numbers, letters, text, logos or watermark. Larger reward-card/Codex hero illustration, not a replacement for the combat icon atlas."
+  },
+  {
+    "id": "relic:ancient_blessing",
+    "file": "relic-ancient_blessing.png",
+    "kind": "relic",
+    "powerUpId": "ancient_blessing",
+    "transparent": true,
+    "refs": [
+      "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/powerups/relic-icons-atlas-v2.webp"
+    ],
+    "prompt": "Create ONE premium standalone relic showcase illustration for original fantasy tower defense Aegis of the Borderkeep. Reference image is an EXISTING ICON ATLAS for identity/material guidance only. Select ONLY Ancient Blessing, row 2 column 5 of the 2-row 5-column atlas. Remove its circular badge and frame: do NOT reproduce other icons or the grid. Main subject: one luminous pearlescent violet-white orb cradled in a pair of golden laurel branches, reverent restrained glow, whole laurel tips visible. Its existing use is a random beneficial gift; do not imply a new mechanic. Painterly realistic stylized fantasy game object, warm upper-left light, chunky readable materials, square canvas, all objects and effects fully contained in central 72 percent with generous transparent margin. Entire artifact visible, no clipped tips. Genuine transparent background; no ground plane, cast shadow, environment, pedestal unless part of the specified object, UI, badge, frame, numbers, letters, text, logos or watermark. Larger reward-card/Codex hero illustration, not a replacement for the combat icon atlas."
+  },
+  {
+    "id": "archive:vista",
+    "file": "living-archive-vista.png",
+    "kind": "archive",
+    "role": "vista",
+    "transparent": false,
+    "prompt": "Create ONE finished design master for original fantasy RTS tower defense Aegis of the Borderkeep: The Living Archive. Wide 16:9 environmental vista: an impossible ancient library grown into a vast mossy forest, enormous open-book stone arches, roots weave through pale limestone shelves, ink-dark rivers reflect emerald canopy and warm amber reading lights. A distant serpentine book-and-ink leviathan shape is only suggested in clouds, not a foreground character. Quiet mysterious wonder; a memorable central library sanctuary, rich readable layered landscape. Cohesive premium painterly realistic stylized game art; ivory parchment, deep emerald, ink black and aged brass palette, soft warm upper-left light. Clean environmental painting; no game UI or layout overlays. No readable writing, letters, numbers, symbols resembling text, logos, watermark or recognizable franchise characters. This is preproduction environment art, not a shipped playable map."
+  },
+  {
+    "id": "archive:terrain",
+    "file": "living-archive-terrain.png",
+    "kind": "archive",
+    "role": "terrain",
+    "transparent": false,
+    "prompt": "Create ONE finished design master for original fantasy RTS tower defense Aegis of the Borderkeep: The Living Archive. Wide 16:9 elevated orthographic terrain background, no horizon: pale weathered library courtyard tiles merge with moss and parchment-colored soil. Keep central 80 percent mostly flat quiet open space for future runtime road and build-plot overlays. Place broken book-shaped stone arches, root-bound shelving, small ink pools and enormous fossil quills only along the outer perimeter. No painted road, grid, circles, plot marks, towers, units or foreground obstructions. Cohesive premium painterly realistic stylized game art; ivory parchment, deep emerald, ink black and aged brass palette, soft warm upper-left light. Clean environmental painting; no game UI or layout overlays. No readable writing, letters, numbers, symbols resembling text, logos, watermark or recognizable franchise characters. This is preproduction environment art, not a shipped playable map."
+  },
+  {
+    "id": "archive:runebinder",
+    "file": "living-archive-runebinder.png",
+    "kind": "archive",
+    "role": "runebinder",
+    "transparent": true,
+    "prompt": "Create ONE finished design master for original fantasy RTS tower defense Aegis of the Borderkeep: The Living Archive. ONE Runebinder tower: compact rooted pale-stone lectern bastion, brass braces, a single floating open blank ivory book above an emerald crystal binding ring; book pages have abstract geometric ornament only, no writing. Full square footing, elevated three-quarter orthographic view looking down 35 degrees, facing upper right. Cohesive premium painterly realistic stylized game art; ivory parchment, deep emerald, ink black and aged brass palette, soft warm upper-left light. Square canvas, entire single subject centered and SMALL ENOUGH to occupy at most 72 percent of canvas with at least 12 percent clear margin on all sides. Genuine transparent background, no environment, ground plane, shadow, frame, multiple poses or grid. No readable writing, letters, numbers, symbols resembling text, logos, watermark or recognizable franchise characters. This is a single static design source, NOT an animation sheet."
+  },
+  {
+    "id": "archive:inkling",
+    "file": "living-archive-inkling.png",
+    "kind": "archive",
+    "role": "inkling",
+    "transparent": true,
+    "prompt": "Create ONE finished design master for original fantasy RTS tower defense Aegis of the Borderkeep: The Living Archive. ONE Inkling enemy: a compact expressive ink-black droplet creature with two stout legs, two small arms and two bright emerald eye lights, parchment-colored leaf collar and a tiny quill crest. Solid readable silhouette, no spreading puddle or loose splashes, feet visible. Cohesive premium painterly realistic stylized game art; ivory parchment, deep emerald, ink black and aged brass palette, soft warm upper-left light. Square canvas, entire single subject centered and SMALL ENOUGH to occupy at most 72 percent of canvas with at least 12 percent clear margin on all sides. Genuine transparent background, no environment, ground plane, shadow, frame, multiple poses or grid. No readable writing, letters, numbers, symbols resembling text, logos, watermark or recognizable franchise characters. This is a single static design source, NOT an animation sheet."
+  },
+  {
+    "id": "archive:folded-beast",
+    "file": "living-archive-folded-beast.png",
+    "kind": "archive",
+    "role": "folded-beast",
+    "transparent": true,
+    "prompt": "Create ONE finished design master for original fantasy RTS tower defense Aegis of the Borderkeep: The Living Archive. ONE Folded Beast enemy: a low compact wolf-like quadruped formed from thick folded ivory parchment plates with brass spine clips, emerald eyes and blank page surfaces. Four coherent legs, complete tail and ears, all extremities visible. Original fantasy paper creature, not a real animal photograph. Cohesive premium painterly realistic stylized game art; ivory parchment, deep emerald, ink black and aged brass palette, soft warm upper-left light. Square canvas, entire single subject centered and SMALL ENOUGH to occupy at most 72 percent of canvas with at least 12 percent clear margin on all sides. Genuine transparent background, no environment, ground plane, shadow, frame, multiple poses or grid. No readable writing, letters, numbers, symbols resembling text, logos, watermark or recognizable franchise characters. This is a single static design source, NOT an animation sheet."
+  },
+  {
+    "id": "archive:quillbound-curator",
+    "file": "living-archive-quillbound-curator.png",
+    "kind": "archive",
+    "role": "quillbound-curator",
+    "transparent": true,
+    "prompt": "Create ONE finished design master for original fantasy RTS tower defense Aegis of the Borderkeep: The Living Archive. ONE Quillbound Curator support enemy: stout masked librarian construct in forest-green robes, pale carved wooden face mask, brass book-binding shoulder clasps, one short quill staff and a closed blank book tucked at its side. Entire body, mask, staff tip and both feet visible. Cohesive premium painterly realistic stylized game art; ivory parchment, deep emerald, ink black and aged brass palette, soft warm upper-left light. Square canvas, entire single subject centered and SMALL ENOUGH to occupy at most 72 percent of canvas with at least 12 percent clear margin on all sides. Genuine transparent background, no environment, ground plane, shadow, frame, multiple poses or grid. No readable writing, letters, numbers, symbols resembling text, logos, watermark or recognizable franchise characters. This is a single static design source, NOT an animation sheet."
+  },
+  {
+    "id": "archive:unwritten-leviathan",
+    "file": "living-archive-unwritten-leviathan.png",
+    "kind": "archive",
+    "role": "unwritten-leviathan",
+    "transparent": true,
+    "prompt": "Create ONE finished design master for original fantasy RTS tower defense Aegis of the Borderkeep: The Living Archive. ONE Unwritten Leviathan boss: an imposing original serpentine creature made of overlapping ivory book-cover armor, ink-black connective body and roots, brass binding clasps and emerald eye/core lights. Coil the entire long body in a compact readable S shape, complete head, quill-like crown, fins and tail inside the canvas; no cropped appendages. Distinct closed-book armor plates, blank parchment, no words. Elevated three-quarter game view, facing upper right. Cohesive premium painterly realistic stylized game art; ivory parchment, deep emerald, ink black and aged brass palette, soft warm upper-left light. Square canvas, entire single subject centered and SMALL ENOUGH to occupy at most 72 percent of canvas with at least 12 percent clear margin on all sides. Genuine transparent background, no environment, ground plane, shadow, frame, multiple poses or grid. No readable writing, letters, numbers, symbols resembling text, logos, watermark or recognizable franchise characters. This is a single static design source, NOT an animation sheet."
+  }
+]

@@ -1,0 +1,17 @@
+# Individual visual review
+
+All 27 selected masters were opened individually. Accepted as source artwork, not runtime acceptance. No replacement generation was needed.
+
+## Ten world victories
+Borderkeep: forest keep, watchfires and dawn; ancient ruins remain. Emberfall: cooled basalt, limited lava seams and new flowers. Frostveil: meltwater and alpine flowers under snowy peaks. Whisperfen: clear water, lilies and sunlit vine-covered ruins. Sunken Aether: turquoise sanctuary water and restored blue crystals. Ironroot: recognizable foundry structures reclaimed by greenery. Sky Isles: floating gardens and luminous connecting bridges. Dreadmoon: lunar ruins retain purple identity under sunrise. Astral Rift: calm broken ring and quiet starfield. Aether Crown: ivory/gold sanctum and crystalline throne. All retain world identity and communicate recovery without baked UI. Detailed foregrounds mean text and controls should occupy separate UI regions; no safe-area claim is made.
+
+## Ten existing relic showcases
+Gold Rush: coin satchel. Meteor Strike: complete molten meteor/trail composition. Time Freeze: ornate frozen hourglass. Battle Cry: horn with red resonance accents. Arcane Surge: amethyst crystal and shards. Emergency Repair: hammer, shield and green sprigs. Treasure Goblin: full-body masked Pilferer with bag. Double Bounty: two coin stacks. Tower Overcharge: blue crystal turret and arcs. Ancient Blessing: violet orb and golden laurel. Complete isolated designs, without atlas grids or readable labels. These supplement existing relic identity/effects; the Pilferer is not an animated combat sheet.
+
+## Seven Living Archive assets
+Vista: book-shaped stone arches, rooted libraries, lanterns and reflective ink-like waterways; dramatic distant page forms. Terrain: elevated view with a broad quiet stone center, perimeter shelves, book arches, quills and ink pools; no painted road or plot markers. Runtime paths must be tested separately. Runebinder: complete stone/brass bastion, emerald ring and floating book with ornamental diagrams rather than readable writing; rooted foliage is less pronounced than the original prompt. Inkling: full-body ink creature, two feet/arms and parchment collar; oversized quill crest suits showcase art but needs silhouette checks at combat size. Folded Beast: coherent paper-armored quadruped with full ears, paws and tail; tail approaches the right boundary, so preserve padding in derivatives. Curator: complete masked green-robed construct, book, staff and feet. Leviathan: complete compact serpentine silhouette, layered ivory armor, emerald cores and ink body; crown/tail are close to the frame and need export padding. Shared parchment/emerald/brass palette is cohesive. Five cutouts are single static masters; no movement, death or attack frames exist.
+
+## File and integration limits
+All 27 source copies decode and match original generation hashes. All 15 transparent cutouts contain faint raw-alpha pixels at canvas edges; no alpha >=16 touches an edge. No solid canvas clipping was detected by that threshold, but faint edge residue still requires light/dark-background inspection and suitable padding during production export. Preserve originals. Review actual alpha bounds rather than trusting requested occupancy. No pixel edits were made by verification.
+
+No game integration, browser layout, animation, route geometry or gameplay balance was tested. Living Archive remains an unimplemented concept requiring a design before new IDs, unlocks or save changes.
