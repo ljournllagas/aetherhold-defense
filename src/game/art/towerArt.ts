@@ -138,6 +138,11 @@ const EVOLUTION_STATIC_ART: Partial<Readonly<Record<BranchId, EvolutionStaticArt
     textureKey: 'tower_ember_flame-mortar', sourceWidth: 1254, sourceHeight: 1254,
     bounds: { left: 246, top: 23, width: 786, height: 1186, bottom: 1208 },
     targetHeight: 84, focus: { x: -0.08, y: -0.72 }, groundCenterX: 627, groundInset: 225
+  },
+  winterguard: {
+    textureKey: 'tower_glacier_winterguard', sourceWidth: 1254, sourceHeight: 1254,
+    bounds: { left: 275, top: 21, width: 755, height: 1210, bottom: 1230 },
+    targetHeight: 96, focus: { x: 0, y: -0.64 }, groundCenterX: 627, groundInset: 220
   }
 };const PORTRAIT_BACKGROUNDS: Record<TowerId, string> = {
   longbow: '#344132', ember: '#443128', glacier: '#293944', starfire: '#352b46', tempest: '#293e3b',
