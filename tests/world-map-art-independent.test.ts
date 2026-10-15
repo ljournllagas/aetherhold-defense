@@ -25,6 +25,7 @@ describe('independent campaign world-map art acceptance', () => {
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path));
     expect(campaignArtAssetsForLoader('campaign')).toEqual([
       ...campaignLoadOrder.map(worldId => ({ kind: 'image' as const, key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-${worlds.indexOf(worldId) >= 3 ? 'v2' : 'v1'}.webp` })),
+      { kind: 'image' as const, key: 'campaign_sigil_borderkeep', path: '/assets/campaign/sigils/borderkeep-sigil-v1.webp' }
     ]);
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:astral_rift')).toMatchObject({
       path: '/assets/campaign/world-map/astral_rift-v2.webp', state: 'final', temporary: null

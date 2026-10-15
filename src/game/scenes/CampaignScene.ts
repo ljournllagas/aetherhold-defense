@@ -25,6 +25,10 @@ import { C, FONT_DISPLAY, style } from '../ui/tokens.ts';
 import { ScrollSheet } from '../ui/ScrollSheet.ts';
 import { handleViewportPointerUp, ViewportMaskController } from '../ui/ViewportMask.ts';
 import { drawCampaignEnemyBadge, paintCampaignWorldMap } from '../art/campaignArt.ts';
+import {
+  addSigilTrophy, SIGIL_TROPHY_CAPTION_COMPACT_PX, SIGIL_TROPHY_CAPTION_PX,
+  SIGIL_TROPHY_MASTERY_PX, sigilTrophyFor
+} from '../campaign/sigilArt.ts';
 
 const TARGETING_MODES: readonly TargetingMode[] = ['first', 'last', 'strongest', 'weakest', 'closest'];
 const TOWER_IDS: readonly TowerId[] = ['longbow', 'ember', 'glacier', 'starfire', 'tempest', 'sentinel', 'cinder'];
@@ -249,14 +253,25 @@ export class CampaignScene extends Phaser.Scene {
       const caption = campaignWorldCaptionLayout(wi, visibleMapStart, viewportW);
       if (!caption) continue;
       const compact = width < 520;
+      const trophySize = compact ? SIGIL_TROPHY_CAPTION_COMPACT_PX : SIGIL_TROPHY_CAPTION_PX;
+      const trophyReady = sigilTrophyFor(world.sigilId) !== null && this.textures.exists(sigilTrophyFor(world.sigilId)!.textureKey);
+      const trophyReserve = trophyReady && caption.textWidth - (trophySize + 12) >= 96 ? trophySize + 12 : 0;
+      const textWidth = caption.textWidth - trophyReserve;
       const title = this.add.text(caption.textX, 8, `WORLD ${world.worldNumber}  ·  ${world.name.toUpperCase()}`, style(compact ? 13 : 15, C.textPrimary, true, FONT_DISPLAY))
-        .setWordWrapWidth(caption.textWidth);
+        .setWordWrapWidth(textWidth);
       const sigilEarned = this.campaignView.profile.worldSigils.includes(world.sigilId);
       const sigil = this.add.text(caption.textX, 8 + title.height + 4,
         `${world.levelStart}–${world.levelEnd}   ${sigilEarned ? 'SIGIL EARNED' : `BOSS SIGIL · LEVEL ${world.bossLevel}`}`,
-        style(12, sigilEarned ? C.goldBright : C.textMuted)).setWordWrapWidth(caption.textWidth);
-      panel(this, mapRoot, caption.x, 0, caption.width, sigil.y + sigil.height + 6, 0x445564).setFillStyle(C.bgPanel, 0.88);
+        style(12, sigilEarned ? C.goldBright : C.textMuted)).setWordWrapWidth(textWidth);
+      const captionHeight = trophyReserve > 0
+        ? Math.max(sigil.y + sigil.height + 6, trophySize + 14)
+        : sigil.y + sigil.height + 6;
+      panel(this, mapRoot, caption.x, 0, caption.width, captionHeight, 0x445564).setFillStyle(C.bgPanel, 0.88);
       mapRoot.add([title, sigil]);
+      if (trophyReserve > 0) {
+        addSigilTrophy(this, mapRoot, world.sigilId,
+          caption.x + caption.width - 8 - trophySize / 2, captionHeight / 2, trophySize, sigilEarned);
+      }
     }
 
     // Route nodes, mastery stars and sigil labels are house-style vector/text pictograms; no raster files are needed.
@@ -432,7 +447,13 @@ export class CampaignScene extends Phaser.Scene {
       const earned = this.campaignView.profile.worldSigils.includes(sigil.id);
       const world = CAMPAIGN_WORLDS.find(candidate => candidate.sigilId === sigil.id);
       const name = `${world ? worldLabel(world.id) : sigil.id.replace('_sigil', '').replace(/_/g, ' ')} Sigil`;
-      y += sheet.text(y, `${earned ? 'EARNED' : `LEVEL ${sigil.level}`}  ·  ${name}`, earned ? C.goldBright : C.textMuted).height + 12;
+      const label = sheet.text(y, `${earned ? 'EARNED' : `LEVEL ${sigil.level}`}  ·  ${name}`, earned ? C.goldBright : C.textMuted);
+      const trophy = sigilTrophyFor(sigil.id) !== null && this.textures.exists(sigilTrophyFor(sigil.id)!.textureKey)
+        ? addSigilTrophy(this, sheet.content, sigil.id,
+          sheet.bounds.width - 20 - SIGIL_TROPHY_MASTERY_PX / 2, y + Math.max(label.height + 12, SIGIL_TROPHY_MASTERY_PX + 16) / 2,
+          SIGIL_TROPHY_MASTERY_PX, earned)
+        : null;
+      y += trophy ? Math.max(label.height + 12, SIGIL_TROPHY_MASTERY_PX + 16) : label.height + 12;
     }
     const tier = this.campaignView.profile.unlockedFeatures.includes('tower_visual_tier_iii') ? 'Runic Masterwork · Tier III'
       : this.campaignView.profile.unlockedFeatures.includes('tower_visual_tier_ii') ? 'Reinforced · Tier II' : 'Borderkeep Standard · Tier I';

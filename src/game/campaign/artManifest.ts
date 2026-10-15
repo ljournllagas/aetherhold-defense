@@ -60,7 +60,7 @@ export interface CampaignAnimationDefinition {
 export const CAMPAIGN_UI_ART_POLICY = {
   routeNodes: 'Phaser vector circles, road crossings and boss crests',
   masteryStars: 'text glyphs positioned at route nodes and in mastery panels',
-  worldSigils: 'text labels and earned-state colors in world headers and mastery panels'
+  worldSigils: 'earned raster world trophies with code-driven locked treatment, plus text labels and earned-state colors in world headers and mastery panels'
 } as const;
 
 /** Expose every registered atlas state so future production animation cues use exact manifest frames. */
@@ -163,7 +163,10 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
         temporary
       }
     ];
-  })
+  }),
+  imageSource(`sigil:borderkeep`, `campaign_sigil_borderkeep`,
+    `/assets/campaign/sigils/borderkeep-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null)
 ];
 
 /** A production file is queued only after its manifest entry is promoted and its exact path is listed here. */
@@ -180,7 +183,8 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
     `/assets/campaign/world-map/${worldId}-v2.webp`,
     ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v2.webp`),
     `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v2.webp`
-  ])
+  ]),
+  '/assets/campaign/sigils/borderkeep-sigil-v1.webp'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
