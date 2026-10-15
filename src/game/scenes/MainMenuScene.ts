@@ -186,7 +186,7 @@ export class MainMenuScene extends Phaser.Scene {
     const settings = loadSettings();
     if (settings.playerName) {
       const name = settings.playerName.slice(0, 20);
-      this.add.text(12, 16, `DEFENDER  ${name}`, style(12, C.textPrimary, true)).setWordWrapWidth(Math.max(120,W-190));
+      this.add.text(12, 12, `DEFENDER  ${name}`, { ...style(13, C.textPrimary, true), backgroundColor: 'rgba(10,14,18,0.78)', padding: { x: 8, y: 5 } }).setWordWrapWidth(Math.max(120,W-190));
     }
 
     this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);

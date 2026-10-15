@@ -6,9 +6,11 @@ import registryArtContract from '../tests/fixtures/campaign-v5/registry-art-cont
 
 const root = process.cwd();
 const atlasFolder = resolve(root, 'artifacts/campaign-production-completion-20261010/atlases');
-const handoff = readFileSync(resolve(atlasFolder, 'production-handoff.md'), 'utf8');
+// artifacts/ is gitignored local evidence; skip (don't fail) in clones that lack it.
+const hasArtifacts = existsSync(atlasFolder);
+const handoff = hasArtifacts ? readFileSync(resolve(atlasFolder, 'production-handoff.md'), 'utf8') : '';
 
-it('retains the historical missing-atlas inventory and verifies its completed production replacements', () => {
+it.skipIf(!hasArtifacts)('retains the historical missing-atlas inventory and verifies its completed production replacements', () => {
   const listed = handoff.split(/\r?\n/)
     .filter(line => line.startsWith('- `/assets/campaign/'))
     .map(line => {

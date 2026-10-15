@@ -1337,6 +1337,10 @@ because the width-limited 16:9 board would otherwise leave most of the field emp
 pinching out, Fit/Overview, or the More-sheet "Portrait zoom" toggle (per-device,
 Lane / Whole map) returns to the full-map view, and boss encounters stay at 1×. The speed
 button turns gold when not 1×, and short-landscape HUD status shows AUTO when enabled.
+While placing in short landscape, Build/Cancel replace the rail so the board stays
+uncovered, and the status line (PAUSED · 2x · AUTO) sits under the rail buttons. Buttons show
+a pressed fill on touch. The Difficulty screen lays out three side-by-side cards in short
+landscape. Boss warnings hold 2.6s. Desktop mouse-wheel zooms toward the cursor.
 First-play hints are compact bottom-anchored sheets sized
 to their text with side-by-side "Got it" / "Skip hints" actions.
 

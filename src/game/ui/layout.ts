@@ -116,7 +116,7 @@ export function sheetBounds(layout: GameLayout, kind: 'build' | 'tower' | 'more'
  * Fit view; pinch-out and the Fit button return to it. Boss encounters and wider screens stay at 1.
  */
 export function portraitComfortZoom(layout: GameLayout, fitScale: number): number {
-  if (layout.width >= 600 || layout.width >= layout.height || layout.rail || layout.portraitBossCommands || layout.bossStatusHeight > 0) return 1;
+  if (layout.width >= 900 || layout.width >= layout.height || layout.rail || layout.portraitBossCommands || layout.bossStatusHeight > 0) return 1;
   const boardHeight = fitScale * 584;
   if (!(boardHeight > 0)) return 1;
   return Math.max(1, Math.min(1.5, layout.field.height * 0.6 / boardHeight));

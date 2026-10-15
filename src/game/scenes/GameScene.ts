@@ -347,6 +347,13 @@ export class GameScene extends Phaser.Scene {
     this.updateGhost(point.x, point.y);
   };
 
+  /** Desktop mouse wheel zooms toward the cursor; ignored while a sheet or modal owns input. */
+  private readonly handleWheel = (ptr: Phaser.Input.Pointer, _over: unknown, _dx: number, dy: number): void => {
+    if (this.modal || this.sheetKind || this.pauseState.blocked || !this.cameraView.contains({ x: ptr.x, y: ptr.y })) return;
+    this.cameraTouched = true;
+    this.cameraView.zoomAt(this.cameraView.zoom * (dy < 0 ? 1.12 : 1 / 1.12), { x: ptr.x, y: ptr.y }); this.applyView();
+  };
+
   private readonly handlePointerUp = (ptr: Phaser.Input.Pointer): void => {
     if(this.trayOwner===ptr.id){const intent=this.trayGesture.up(this.pointerTrayInput(ptr));this.trayOwner=null;this.handleTrayIntent(intent);return;}
     const intent = this.gesture.up(ptr.id);
@@ -551,6 +558,7 @@ export class GameScene extends Phaser.Scene {
     this.input.on('pointermove', this.handlePointerMove);
     this.input.on('pointerup', this.handlePointerUp);
     this.input.on('pointerupoutside', this.cancelGesture);
+    this.input.on('wheel', this.handleWheel);
     this.game.canvas.addEventListener('touchcancel', this.cancelGesture);
     this.game.canvas.addEventListener('lostpointercapture', this.captureLost);
     this.game.canvas.addEventListener('pointercancel', this.cancelGesture);
@@ -823,9 +831,10 @@ export class GameScene extends Phaser.Scene {
     this.confirmStrip?.destroy(true); this.confirmStrip = null;
     if (!this.uiRoot || (!this.placingTowerId && !this.pendingMeteor)) return;
     if (this.sheetKind) return;
-    const w = Math.min(this.layout.minimal ? 400 : 600, (this.layout.rail ? this.layout.field.width : this.layout.width) - 16);
+    if (this.layout.rail) { this.showRailConfirm(); return; }
+    const w = Math.min(this.layout.minimal ? 400 : 600, this.layout.width - 16);
     const stripH = this.layout.minimal ? 64 : 76;
-    const f0 = this.layout.field, c = this.add.container(this.layout.rail ? f0.x + (f0.width - w) / 2 : (this.layout.width - w) / 2, this.layout.height - this.layout.tray - (this.layout.minimal ? 68 : 80)); this.uiRoot.add(c); this.confirmStrip = c;
+    const c = this.add.container((this.layout.width - w) / 2, this.layout.height - this.layout.tray - (this.layout.minimal ? 68 : 80)); this.uiRoot.add(c); this.confirmStrip = c;
     panel(this, c, 0, 0, w, stripH);
     const preview = this.touchPreview;
     const check = this.placingTowerId ? this.placementCheck(this.placingTowerId, preview?.plot ?? -1) : { ok: !!preview, reason: 'Tap a target' };
@@ -842,6 +851,33 @@ export class GameScene extends Phaser.Scene {
       this.showTouchPreview();
     }, check.ok ? 'primary' : 'secondary', btnH);
     button(this, c, 16 + bw, btnY, bw, 'Cancel', () => { this.touchPreview = null; this.onEscape(); this.showTouchPreview(); }, 'secondary', btnH);
+    if (preview) {
+      if (this.pendingMeteor) this.rangeCircle?.setPosition(preview.point.x, preview.point.y).setRadius(POWERUP_EFFECTS.meteor.radius).setVisible(true);
+      else this.updateGhost(preview.point.x, preview.point.y);
+    }
+  }
+
+  /** Short landscape: Build/Cancel replace the right rail while placing, so the board stays uncovered. */
+  private showRailConfirm(): void {
+    const rail = this.layout.waveBounds, w = rail.width;
+    const c = this.add.container(rail.x, rail.y); this.uiRoot!.add(c); this.confirmStrip = c;
+    c.add(this.add.rectangle(0, 0, w, rail.height, 0, 0).setOrigin(0).setInteractive().on('pointerdown', (_p: unknown, _x: number, _y: number, e: Phaser.Types.Input.EventData) => e.stopPropagation()));
+    panel(this, c, 0, 0, w, rail.height);
+    const preview = this.touchPreview;
+    const check = this.placingTowerId ? this.placementCheck(this.placingTowerId, preview?.plot ?? -1) : { ok: !!preview, reason: 'Tap a target' };
+    const cfg = TOWER_LIST.find(t => t.id === this.placingTowerId);
+    const message = preview ? (check.ok ? this.pendingMeteor ? 'Meteor target ready' : `${cfg?.name} · ${cfg?.levels[0].cost} gold` : check.reason) : this.pendingMeteor ? 'Tap the map to preview Meteor' : 'Tap a clearing to preview';
+    const text = this.add.text(8, 8, message, style(13, check.ok ? C.gold : C.textSecondary)).setWordWrapWidth(w - 16);
+    c.add(text);
+    const y = Math.min(8 + text.height + 8, rail.height - 8 - 96);
+    button(this, c, 8, y, w - 16, this.pendingMeteor ? 'Cast' : 'Build', () => {
+      if (!this.touchPreview || !check.ok || this.pauseState.blocked) return;
+      const p = this.touchPreview; this.touchPreview = null;
+      if (this.pendingMeteor) this.castMeteor(p.point.x, p.point.y);
+      else if (this.placingTowerId && p.plot !== null) this.tryBuild(this.placingTowerId, p.plot);
+      this.showTouchPreview();
+    }, check.ok ? 'primary' : 'secondary', 44);
+    button(this, c, 8, y + 52, w - 16, 'Cancel', () => { this.touchPreview = null; this.onEscape(); this.showTouchPreview(); }, 'secondary', 44);
     if (preview) {
       if (this.pendingMeteor) this.rangeCircle?.setPosition(preview.point.x, preview.point.y).setRadius(POWERUP_EFFECTS.meteor.radius).setVisible(true);
       else this.updateGhost(preview.point.x, preview.point.y);
@@ -973,7 +1009,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private detachInputListeners(): void {
-    this.input.off('pointerup', this.handlePointerUp); this.input.off('pointerupoutside', this.cancelGesture);
+    this.input.off('pointerup', this.handlePointerUp); this.input.off('pointerupoutside', this.cancelGesture); this.input.off('wheel', this.handleWheel);
     this.input.off('pointerdown', this.handlePointerDown);
     this.input.off('control:pointerdown',this.handleControlDown);
     this.input.keyboard?.off('keydown',this.handleBuildKey);
@@ -1375,7 +1411,9 @@ export class GameScene extends Phaser.Scene {
       this.uiRoot!.add(this.hudScoreValue);
       this.hudDiff = this.add.text(0, 0, '', style(13, C.textSecondary)).setVisible(false);
       this.autoStatusText = null;
-      this.hudStatus = this.add.text(8, this.layout.hud + 4, '', style(13, C.gold)).setWordWrapWidth(w - 16);
+      // Short landscape: status (PAUSED · 2x · AUTO) lives under the rail buttons instead of floating over the map.
+      const rail = this.layout.rail ? this.layout.waveBounds : null;
+      this.hudStatus = this.add.text(rail ? rail.x + 8 : 8, rail ? rail.y + 8 + 52 * 3 : this.layout.hud + 4, '', style(13, C.gold)).setWordWrapWidth(rail ? rail.width - 16 : w - 16);
       this.uiRoot!.add([this.hudDiff, this.hudStatus]); remember(); return;
     }
     if(this.layout.compact&&!this.layout.stackedHud){
@@ -1596,6 +1634,15 @@ export class GameScene extends Phaser.Scene {
       addBottomCommand(() => button(this, this.uiRoot!, waveX+waveWidth-58, waveY + 8, 54, 'More', () => this.openSheet('more'), 'secondary', 44));
   }
 
+  /** Portrait inspector popup: prefer the free band below the board, then the one above, else the old bottom anchor. */
+  private portraitPopupY(h: number): number {
+    const f = this.layout.field, bottomY = this.layout.height - this.layout.tray - h - 4;
+    const boardTop = Math.max(f.y, this.cameraView.project({ x: 0, y: 56 }).y), boardBottom = Math.min(f.y + f.height, this.cameraView.project({ x: 0, y: 640 }).y);
+    if (f.y + f.height - boardBottom >= h + 8) return bottomY;
+    if (boardTop - f.y >= h + 8) return f.y + 4;
+    return bottomY;
+  }
+
   private drawCatalog(): void {
     if (!this.layout.inspector) {
       this.infoPanel?.destroy(true);this.infoPanel=null;this.compactInspectorBounds=null;
@@ -1630,7 +1677,7 @@ export class GameScene extends Phaser.Scene {
       }
       const fw=this.layout.rail?this.layout.field.width:this.layout.width,w=Math.min(560,fw-16),h=108,cx0=this.layout.rail?this.layout.field.x:0;
       const screen=this.cameraView.project(t);
-      let y=this.layout.width<this.layout.height?this.layout.height-this.layout.tray-h-4:
+      let y=this.layout.width<this.layout.height?this.portraitPopupY(h):
         screen.y>this.layout.hud+this.layout.field.height/2?this.layout.hud+4:this.layout.height-this.layout.tray-h-4;
       if (this.bossBar?.visible && y < this.bossBar.y + this.bossPanelHeight + 8) {
         y = this.bossBar.y + this.bossPanelHeight + 8;
@@ -2114,14 +2161,14 @@ export class GameScene extends Phaser.Scene {
     this.waveActive = true;
     if (cfg.isBossWave) {
       this.bossWarned[this.wave] = true; SoundManager.get().boss();
-      this.showBanner(this.campaign ? getCampaignEnemy(this.campaign.definition.bossEnemyId!).name : wavePresentation(this.wave, this.siege.phase === 'endless').warning, C.dangerBright);
+      this.showBanner(this.campaign ? getCampaignEnemy(this.campaign.definition.bossEnemyId!).name : wavePresentation(this.wave, this.siege.phase === 'endless').warning, C.dangerBright, 2600);
     } else this.floatText(520, 128, `Wave ${this.wave}`, C.textPrimary, 22);
     this.updateNextPreview(); this.updateHUD();
   }
 
-  private showBanner(text: string, color: string): void {
-    const b = this.add.text(this.layout.field.width / 2, this.layout.hud + 32, text, { ...style(this.layout.compact ? 14 : 22, color, true, FONT_DISPLAY), backgroundColor: '#121920', padding: { x: 12, y: 8 }, wordWrap: { width: this.layout.field.width - 48 } }).setOrigin(0.5).setAlign('center').setDepth(1500);
-    this.addEffect(b, 1300);
+  private showBanner(text: string, color: string, holdMs = 1300): void {
+    const b = this.add.text(this.layout.field.x + this.layout.field.width / 2, this.layout.hud + 32, text, { ...style(this.layout.compact ? (holdMs > 1300 ? 16 : 14) : 22, color, true, FONT_DISPLAY), backgroundColor: '#121920', padding: { x: 12, y: 8 }, wordWrap: { width: this.layout.field.width - 48 } }).setOrigin(0.5).setAlign('center').setDepth(1500);
+    this.addEffect(b, holdMs);
   }
 
   private makeEnemyVisual(e: Enemy): void {

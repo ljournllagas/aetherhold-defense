@@ -295,6 +295,26 @@ export class DifficultyScene extends Phaser.Scene {
       const host = document.getElementById('game-root')!.getBoundingClientRect();
       this.accountButton.style.left = `${bounds.left - host.left + (W - 84) * bounds.width / W}px`;
     }
+    if (W > H && H < 540) {
+      // Short landscape: name field shares the title row and the three difficulties sit side by side,
+      // so the default (Medium) and its neighbours are all visible without scrolling.
+      const inputLeft = Math.round(W * 0.42);
+      Object.assign(this.nameInput.style, { left: `${bounds.left + inputLeft}px`, top: `${bounds.top + 4}px`, width: `${W - 96 - inputLeft}px` });
+      const gap = 8, top = 64, cardH = H - top - 64, cardW = (W - 16 - gap * 2) / 3;
+      DIFFICULTY_LIST.forEach((d, i) => {
+        const x = 8 + i * (cardW + gap), selected = d.id === this.selectedDiff;
+        const frame = this.add.rectangle(x, top, cardW, cardH, 0x121920, 0.96).setOrigin(0).setStrokeStyle(selected ? 2 : 1, selected ? 0xd7aa4e : 0x2c3945);
+        const pick = () => { this.selectedDiff = d.id; saveSettings({ ...loadSettings(), difficulty: d.id }); this.drawPhoneControls(); };
+        frame.setInteractive({ useHandCursor: true }).on('pointerup', pick);
+        this.add.text(x + cardW / 2, top + 24, `${selected ? '✓ ' : ''}${d.label}`, style(18, selected ? C.goldBright : C.textPrimary, true, FONT_DISPLAY)).setOrigin(0.5);
+        this.add.text(x + 12, top + 52, d.description, style(14, C.textSecondary)).setWordWrapWidth(cardW - 24);
+        this.add.text(x + 12, top + cardH - 12, `${d.startingGold} gold · ${d.startingLives} lives · ${d.scoreMultiplier}× score`, style(13, C.textPrimary, true)).setOrigin(0, 1).setWordWrapWidth(cardW - 24);
+      });
+      addButton(this, 16, H - 56, (W - 40) / 2, 44, 'Back', false, () => this.scene.start('MainMenu'));
+      addButton(this, 24 + (W - 40) / 2, H - 56, (W - 40) / 2, 44, 'Continue', true, () => this.beginSiege());
+      this.phoneRoot.add(this.children.list.filter(view => !before.has(view) && !view.parentContainer));
+      return;
+    }
     Object.assign(this.nameInput.style, { left: `${bounds.left + 16}px`, top: `${bounds.top + 70}px`, width: `${W - 32}px` });
     const height = Math.max(96, H - 198);
     const sheet = new ScrollSheet(this, this.phoneRoot, { x: 8, y: 126, width: W - 16, height }, 'Difficulty', () => this.scene.start('MainMenu')); this.phoneSheet = sheet;

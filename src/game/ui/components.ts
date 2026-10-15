@@ -70,6 +70,9 @@ export function etchedFrame(
   return graphics;
 }
 
+/** Visible press response on touch, where hover never fires. */
+const PRESSED_FILL = 0x2c3945;
+
 export function button(scene: Phaser.Scene, parent: Phaser.GameObjects.Container, x: number, y: number, width: number, label: string, action: () => void, kind: 'primary' | 'secondary' | 'danger' = 'secondary', height = 44): { box: Phaser.GameObjects.Rectangle; text: Phaser.GameObjects.Text } {
   const color = kind === 'danger' ? 0xd85f59 : kind === 'primary' ? 0xd7aa4e : 0x6b7f8e;
   const box = scene.add.rectangle(x, y, width, height, C.bgRaised).setOrigin(0).setStrokeStyle(kind === 'primary' ? 2 : 1, color);
@@ -81,12 +84,14 @@ export function button(scene: Phaser.Scene, parent: Phaser.GameObjects.Container
   box.on('pointerdown', (p: Phaser.Input.Pointer, _x: number, _y: number, event: Phaser.Types.Input.EventData) => {
     scene.input?.emit('control:pointerdown',p);
     event.stopPropagation(); press = { id: p.id, x: p.x, y: p.y };
+    box.setFillStyle(PRESSED_FILL); text.setScale?.(0.96);
   });
   box.on('pointerup', (p: Phaser.Input.Pointer, _x: number, _y: number, event: Phaser.Types.Input.EventData) => {
     const start = press; press = null;
+    box.setFillStyle(C.bgRaised); text.setScale?.(1);
     if (start?.id === p.id && Math.hypot(p.x - start.x, p.y - start.y) <= 8) action();
   });
-  box.on('pointerout', () => { press = null; });
+  box.on('pointerout', () => { press = null; text.setScale?.(1); });
   parent.add([box, text]);
   return { box, text };
 }

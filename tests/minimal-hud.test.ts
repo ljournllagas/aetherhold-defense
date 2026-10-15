@@ -55,7 +55,8 @@ it('portrait phones start zoomed toward the lane; everything else starts at the 
   expect(zoomFor(390, 844)).toBe(1.5);
   expect(zoomFor(360, 640)).toBeGreaterThan(1.1);
   expect(zoomFor(360, 640)).toBeLessThan(1.5);
-  expect(zoomFor(768, 1024)).toBe(1);
+  expect(zoomFor(768, 1024)).toBeGreaterThan(1.15);
+  expect(zoomFor(1024, 1366)).toBe(1);
   expect(zoomFor(844, 390)).toBe(1);
   expect(zoomFor(1280, 720)).toBe(1);
   const boss = toMinimalLayout(gameLayout(390, 844, { top: 0, right: 0, bottom: 0, left: 0 }, { portraitBossCommands: true }));

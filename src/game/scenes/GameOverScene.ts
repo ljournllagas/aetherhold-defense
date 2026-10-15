@@ -268,7 +268,13 @@ export class GameOverScene extends Phaser.Scene {
       if (legacyLine) lines.push(legacyLine);
       lines.push(this.scoreSummary(data), this.submitMessage);
       if (this.retryNotice) lines.push(this.retryNotice);
-      for (const line of lines) { const t = sheet.text(y, line, C.textPrimary, 14); y += t.height + 16; }
+      // Headline score, then tight stat rows (previously one uniform 16px-gap list that pushed actions off short phones).
+      lines.forEach((line, i) => {
+        const headline = i === 1, secondary = i === 0 || line === this.submitMessage || line === this.retryNotice;
+        const t = sheet.text(y, line, headline ? C.goldBright : secondary ? C.textSecondary : C.textPrimary, headline ? 24 : 14);
+        if (headline) t.setFontFamily(FONT_DISPLAY);
+        y += t.height + (headline ? 12 : i >= 2 && i <= 4 ? 6 : 12);
+      });
       sheet.action(y, this.submitLabel(), () => this.requestSubmit(data), this.canSubmit() ? 'primary' : 'secondary');
       sheet.action(y + 52, 'Play Again', () => this.scene.start('Preload', { stage: 'gameplay', destination: 'Game', data: { difficulty: data.difficulty, playerName: data.playerName } } satisfies LoadingRequest), 'primary');
       sheet.action(y + 104, 'Leaderboard', () => this.scene.start('Leaderboard', { filter: data.difficulty, highlightRunId: data.runId }));
