@@ -31,6 +31,7 @@ export const STAGE_ASSETS: Record<AssetStage, readonly AssetSpec[]> = {
     { kind: 'image', key: 'tower_sentinel_deadeye', path: '/assets/towers/tower_sentinel_deadeye-v1.webp' },
     { kind: 'image', key: 'tower_sentinel_headhunter', path: '/assets/towers/tower_sentinel_headhunter-v1.webp' },
     { kind: 'image', key: 'tower_cinder_pyre', path: '/assets/towers/tower_cinder_pyre-v1.webp' },
+    { kind: 'image', key: 'tower_cinder_contagion', path: '/assets/towers/tower_cinder_contagion-v1.webp' },
     ...([['nature-v2', 'nature-v3'], ['warden-v1', 'warden-v2'], ['elite-v1', 'elite-v2']] as const).map(([name, file]) => ({ kind: 'image' as const, key: `enemy_walk_atlas_${name}`, path: `/assets/enemies/enemy_walk_atlas_${file}.webp` })),
     { kind: 'image', key: 'relic_icons_atlas', path: '/assets/powerups/relic-icons-atlas-v2.webp' },
     { kind: 'image', key: 'hud_icons_atlas', path: '/assets/ui/hud-icons-atlas-v2.webp' },
