@@ -50,6 +50,15 @@ export const SIGIL_TROPHY_ART: Readonly<Record<string, SigilTrophyArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 42, top: 15, width: 1171, height: 1223, bottom: 1238 }
+  },
+  mire_sigil: {
+    sigilId: 'mire_sigil',
+    worldId: 'whisperfen',
+    textureKey: 'campaign_sigil_whisperfen',
+    path: '/assets/campaign/sigils/whisperfen-sigil-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 32, top: 15, width: 1192, height: 1216, bottom: 1230 }
   }
 };
 
