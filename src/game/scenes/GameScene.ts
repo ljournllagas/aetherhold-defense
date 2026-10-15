@@ -2072,7 +2072,7 @@ export class GameScene extends Phaser.Scene {
   private refreshTowerVisual(t: Tower): void {
     // Upgrade visibly evolves the silhouette (§15, §91): rebuild at new level.
     t.view?.destroy(true);
-    const rebuilt = buildTowerVisual(this, t.towerId, t.level, this.towerVisualTier);
+    const rebuilt = buildTowerVisual(this, t.towerId, t.level, this.towerVisualTier, t.progression.branchId);
     rebuilt.view.setData({ muzzleX: rebuilt.muzzleX, muzzleY: rebuilt.muzzleY, displayBounds: rebuilt.displayBounds });
     this.world(rebuilt.view).setPosition(t.x, t.y).setDepth(3 + t.y / 1000);
     const { branchId, rank } = t.progression;

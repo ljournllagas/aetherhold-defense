@@ -110,7 +110,21 @@ const ART: Record<TowerId, TowerArtSpec> = {
 };
 
 const IDS: readonly TowerId[] = ['longbow', 'ember', 'glacier', 'starfire', 'tempest', 'sentinel', 'cinder'];
-const PORTRAIT_BACKGROUNDS: Record<TowerId, string> = {
+
+// Separate static evolution appearances. Each entry replaces the foundation
+// frames for its branch only, at every rank; rank chevrons and branch crests
+// still come from decorateEvolution. Bounds were measured on the lossless
+// master (alpha > 8); targetHeight/focus inherit the tower family so muzzle,
+// selection and ground contact keep foundation behaviour, and campaign tiers
+// keep precedence (static art applies at visualTier 1 only).
+interface EvolutionStaticArt extends TowerStageArt { groundInset: number; }
+const EVOLUTION_STATIC_ART: Partial<Readonly<Record<BranchId, EvolutionStaticArt>>> = {
+  marksman: {
+    textureKey: 'tower_longbow_marksman', sourceWidth: 1254, sourceHeight: 1254,
+    bounds: { left: 319, top: 26, width: 843, height: 1209, bottom: 1234 },
+    targetHeight: 112, focus: { x: 0, y: -0.82 }, groundCenterX: 627, groundInset: 172
+  }
+};const PORTRAIT_BACKGROUNDS: Record<TowerId, string> = {
   longbow: '#344132', ember: '#443128', glacier: '#293944', starfire: '#352b46', tempest: '#293e3b',
   sentinel: '#3d3a2a', cinder: '#402a20'
 };
@@ -133,7 +147,11 @@ const CAMPAIGN_BOUNDS: Record<TowerId, readonly AlphaBounds[]> = {
   cinder: ADDITIONAL_TOWER_GEOMETRY.cinder.campaignBounds
 };
 
-function placedArt(id: TowerId, stage: number, visualTier: 1 | 2 | 3 = 1): TowerStageArt & { groundInset: number } {
+function placedArt(id: TowerId, stage: number, visualTier: 1 | 2 | 3 = 1, branchId: BranchId | null = null): TowerStageArt & { groundInset: number } {
+  if (visualTier === 1 && branchId !== null && EVOLUTIONS[branchId]?.towerId === id) {
+    const evo = EVOLUTION_STATIC_ART[branchId];
+    if (evo) return { ...evo };
+  }
   const art = stageArt(id, ART[id], stage);
   if (visualTier === 1) return { ...art, groundInset: GROUND_INSETS[id][stage] };
   const bounds = CAMPAIGN_BOUNDS[id][visualTier - 2];
@@ -192,14 +210,19 @@ function addCampaignTierOverlay(scene: Phaser.Scene, parent: Phaser.GameObjects.
   parent.add(g);
 }
 
-/** Production sprite art; campaign tiers add replaceable cosmetics without changing classic towers. */
-export function buildTowerVisual(scene: Phaser.Scene, towerId: string, level: number, visualTier: 1 | 2 | 3 = 1): TowerView {
+/** Production sprite art; campaign tiers add replaceable cosmetics without changing classic towers.
+ * An evolved branch with its own static appearance replaces the foundation
+ * frames at visualTier 1; a missing texture falls back to foundation art. */
+export function buildTowerVisual(scene: Phaser.Scene, towerId: string, level: number, visualTier: 1 | 2 | 3 = 1, branchId: BranchId | null = null): TowerView {
   const id = normalizeTowerId(towerId);
   const spec = ART[id];
   const stage = Math.max(1, Math.min(4, Math.floor(level))) - 1;
   const productionKey = visualTier === 2 || visualTier === 3 ? campaignTowerTextureKey(id, visualTier) : '';
   const hasProductionArt = productionKey !== '' && scene.textures.exists(productionKey);
-  const art = placedArt(id, stage, hasProductionArt ? visualTier : 1);
+  const tier: 1 | 2 | 3 = hasProductionArt ? visualTier : 1;
+  const wantsStatic = tier === 1 && branchId !== null && EVOLUTIONS[branchId]?.towerId === id
+    && EVOLUTION_STATIC_ART[branchId] !== undefined && scene.textures.exists(EVOLUTION_STATIC_ART[branchId].textureKey);
+  const art = placedArt(id, stage, tier, wantsStatic ? branchId : null);
   const bounds = art.bounds;
   const scale = art.targetHeight / bounds.height;
   const sourceCenterX = art.groundCenterX ?? bounds.left + bounds.width / 2;
@@ -420,13 +443,13 @@ export function decorateEvolution(scene: Phaser.Scene, parent: Phaser.GameObject
 }
 
 /** Read-only geometry for render audits and the consuming scene's contracts. */
-export function towerArtGeometry(towerId: string, level: number, visualTier: 1 | 2 | 3 = 1): TowerView['displayBounds'] & {
+export function towerArtGeometry(towerId: string, level: number, visualTier: 1 | 2 | 3 = 1, branchId: BranchId | null = null): TowerView['displayBounds'] & {
   footprintPx: number; visualWidth: number; visualHeight: number; muzzleX: number; muzzleY: number;
 } {
   const id = normalizeTowerId(towerId);
   const spec = ART[id];
   const stage = Math.max(1, Math.min(4, Math.floor(level))) - 1;
-  const art = placedArt(id, stage, visualTier);
+  const art = placedArt(id, stage, visualTier, branchId);
   const bounds = art.bounds;
   const scale = art.targetHeight / bounds.height;
   const center = art.groundCenterX ?? bounds.left + bounds.width / 2;

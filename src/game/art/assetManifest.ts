@@ -18,6 +18,7 @@ export const STAGE_ASSETS: Record<AssetStage, readonly AssetSpec[]> = {
     { kind: 'image', key: 'map_ancient_border_keep', path: '/assets/world/maps/ancient-border-keep-map-v3.webp' },
     ...Object.entries({ longbow: 'ranger_stages-v3', ember: 'bombard_stages-v2', glacier: 'frost_stages-v2', starfire: 'arcane_stages-v2', tempest: 'tempest_stages-v2', sentinel: 'sentinel_stages-v1', cinder: 'cinder_stages-v1' }).map(([id, name]) => ({ kind: 'sheet' as const, key: TOWERS[id].assetKey, path: `/assets/towers/tower_${name}.webp`, frameWidth: 627, frameHeight: 627 })),
     ...([1, 2, 3] as const).map(rank => ({ kind: 'image' as const, key: `tower_ember_stage_${rank}_v2`, path: `/assets/towers/tower_bombard_stage${rank}-v3.webp` })),
+    { kind: 'image', key: 'tower_longbow_marksman', path: '/assets/towers/tower_longbow_marksman-v1.webp' },
     ...([['nature-v2', 'nature-v3'], ['warden-v1', 'warden-v2'], ['elite-v1', 'elite-v2']] as const).map(([name, file]) => ({ kind: 'image' as const, key: `enemy_walk_atlas_${name}`, path: `/assets/enemies/enemy_walk_atlas_${file}.webp` })),
     { kind: 'image', key: 'relic_icons_atlas', path: '/assets/powerups/relic-icons-atlas-v2.webp' },
     { kind: 'image', key: 'hud_icons_atlas', path: '/assets/ui/hud-icons-atlas-v2.webp' },

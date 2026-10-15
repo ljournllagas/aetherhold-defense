@@ -209,7 +209,7 @@ export class GameOverScene extends Phaser.Scene {
       }
       for (const tower of snapshot.towers) {
         if (![tower.x, tower.y, tower.level].every(Number.isFinite)) continue;
-        const visual = buildTowerVisual(this, tower.towerId, tower.level);
+        const visual = buildTowerVisual(this, tower.towerId, tower.level, 1, tower.branchId ?? null);
         visual.view.setPosition(tower.x, tower.y).setDepth(4 + tower.y / 1000);
         visual.view.setData('displayBounds', visual.displayBounds);
         if (tower.branchId && EVOLUTIONS[tower.branchId] && tower.rank !== undefined && tower.rank !== null) {
