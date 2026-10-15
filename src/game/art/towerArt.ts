@@ -158,6 +158,11 @@ const EVOLUTION_STATIC_ART: Partial<Readonly<Record<BranchId, EvolutionStaticArt
     textureKey: 'tower_starfire_arcane-beacon', sourceWidth: 1254, sourceHeight: 1254,
     bounds: { left: 325, top: 13, width: 615, height: 1224, bottom: 1237 },
     targetHeight: 100, focus: { x: 0, y: -0.68 }, groundCenterX: 627, groundInset: 220
+  },
+  stormcaller: {
+    textureKey: 'tower_tempest_stormcaller', sourceWidth: 1254, sourceHeight: 1254,
+    bounds: { left: 342, top: 7, width: 704, height: 1217, bottom: 1224 },
+    targetHeight: 92, focus: { x: 0, y: -0.70 }, groundCenterX: 627, groundInset: 220
   }
 };const PORTRAIT_BACKGROUNDS: Record<TowerId, string> = {
   longbow: '#344132', ember: '#443128', glacier: '#293944', starfire: '#352b46', tempest: '#293e3b',
