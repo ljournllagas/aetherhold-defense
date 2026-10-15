@@ -26,6 +26,7 @@ import { gameLayout, sheetBounds, toMinimalLayout, viewportToWorld, worldToViewp
 import {TowerTray} from '../ui/TowerTray.ts';
 import {TowerTrayGesture,edgePan,type TrayInput,type TrayIntent} from '../systems/TowerTrayGesture.ts';
 import type {TowerId} from '../../shared/progression.ts';
+import {haptic} from '../systems/haptics.ts';
 import {localGuide,type GuideStep} from '../systems/ContextualGuide.ts';
 import {HELP_TOPICS} from '../ui/helpContent.ts';
 import {campaignProgressionLines,progressionPanelLines} from './ProgressionScene.ts';
@@ -525,6 +526,8 @@ export class GameScene extends Phaser.Scene {
       if (this.campaignResult && this.ended && this.runOwner) this.renderCampaignResult();
     });
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubscribeAccount);
+    document.body.dataset.battle = '1';
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => { delete document.body.dataset.battle; });
     const snd = SoundManager.get();
     const settings = loadSettings();
     Object.assign(snd, { masterVolume: settings.masterVolume, musicOn: settings.musicOn, sfxOn: settings.sfxOn, musicVolume: settings.musicVolume, sfxVolume: settings.sfxVolume });
@@ -1684,7 +1687,7 @@ export class GameScene extends Phaser.Scene {
       this.autoButton = null;
       this.speedBtnLabel = button(this, this.uiRoot!, w - this.layout.safe.right - 128, top, 56, `${this.speed}×`, () => this.cycleSpeed()).text;
       button(this, this.uiRoot!, w - this.layout.safe.right - 68, top, 60, 'II', () => this.togglePauseMenu());
-      button(this, this.uiRoot!, w - this.layout.safe.right - 192, top, 60, 'Map', () => { this.cancelGesture(); this.cameraView.reset(); this.applyView(); });
+      button(this, this.uiRoot!, w - this.layout.safe.right - 192, top, 60, 'Fit', () => { this.cancelGesture(); this.cameraView.reset(); this.applyView(); });
       remember(); return;
     }
     if (this.layout.compact && !portrait) {
@@ -1951,7 +1954,7 @@ export class GameScene extends Phaser.Scene {
     tw.shadow = null;
     this.towers.push(tw);
     this.occupied.add(plotIndex);
-    SoundManager.get().build();
+    SoundManager.get().build(); haptic(15);
     this.floatText(p.x, p.y - 28, `-${formatCount(cost)} gold`, C.gold);
     this.placingTowerId = null;
     this.selectedTower = tw; // deliberate build-then-inspect
@@ -2091,7 +2094,7 @@ export class GameScene extends Phaser.Scene {
     this.wave++;
     const d = getDifficulty(this.difficultyId);
     const cfg = this.campaign ? this.campaign.wave(this.wave, d.enemyCountMultiplier) : buildWave(this.wave, d.enemyCountMultiplier);
-    this.currentWaveIsBoss = cfg.isBossWave;
+    this.currentWaveIsBoss = cfg.isBossWave; if (cfg.isBossWave) haptic([40, 60, 40]);
     this.spawnQueue = 'spawns' in cfg ? cfg.spawns.map(spawn => ({ ...spawn, atMs: spawn.atMs + this.gameTimeMs })) : scheduleWave(cfg.groups, this.gameTimeMs + (cfg.isBossWave ? 1300 : 800));
     this.waveActive = true;
     if (cfg.isBossWave) {
@@ -3526,7 +3529,7 @@ export class GameScene extends Phaser.Scene {
     this.clearCampaignOwnedSummons(this.campaignBosses.remove(e.id));
     this.evolutionCombat.removeEnemy(e.id);
     this.lives = Math.max(0, this.lives - e.livesLost);
-    SoundManager.get().leak();
+    SoundManager.get().leak(); haptic(45);
     this.floatText(this.map.stronghold.x - 40, this.map.stronghold.y - 60, `-${e.livesLost} lives`, C.dangerBright, 16);
     this.destroyView(e);
     if (this.field) refreshStronghold(this.field.stronghold, this.lives / this.maxLives);

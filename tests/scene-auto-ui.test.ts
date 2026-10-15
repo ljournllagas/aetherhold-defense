@@ -157,7 +157,7 @@ it('keeps compact landscape header clear of a 10,000,000 score and cycles speed 
   expect(boxes.slice(-3).map(({x,y,width,height})=>[x,y,width,height])).toEqual([
     [716,4,56,44],[776,4,60,44],[652,4,60,44]
   ]);
-  expect(labels.slice(-3).map(label=>label.text)).toEqual(['1×','II','Map']);
+  expect(labels.slice(-3).map(label=>label.text)).toEqual(['1×','II','Fit']);
   expect(loose.speedBtnLabel).not.toBeNull();
   expect(boxes.slice(-3).every(box=>box.x>=highScoreBounds.right||box.x+box.width<=highScoreBounds.left)).toBe(true);
 
