@@ -1540,7 +1540,7 @@ export class GameScene extends Phaser.Scene {
     if (this.pendingMeteor) bits.push(this.touchMode ? 'METEOR: TAP TO PREVIEW' : 'METEOR: CLICK BATTLEFIELD');
     const devFixtureLabel = import.meta.env.DEV && this.qaCampaignFixture !== null;
     if (devFixtureLabel && this.layout.compact) this.hudStatus?.setPosition(8, this.layout.hud + 4).setWordWrapWidth(this.layout.width - 16);
-    this.hudStatus?.setText(bits.join(' · ')).setVisible(bits.length > 0 && !(this.layout.compact && this.compactBossActive && this.bossHudReservedHeight > 0) && (!(this.layout.compact && this.compactBossActive) || devFixtureLabel));
+    this.hudStatus?.setText(bits.join(' · ')).setVisible(bits.length > 0 && !(this.layout.compact && this.compactBossActive && this.bossHudReservedHeight > 0) && (this.layout.minimal || !(this.layout.compact && this.compactBossActive) || devFixtureLabel));
     if (!this.waveActive) {
       this.startBtnLabel?.setText(this.layout.minimal ? `Wave ${this.wave + 1}` : `Start Wave ${this.wave + 1}`);
       this.startBtn?.setFillStyle(0x19232d, 1).setStrokeStyle(2, 0xd7aa4e, 1);
@@ -2344,7 +2344,7 @@ export class GameScene extends Phaser.Scene {
   private updateCompactBossBar(boss: Enemy, pct: number): void {
     if(!this.bossBarText || !this.bossBarHp || !this.bossBarBackdrop)return;
     const stacked=this.layout.stackedHud;
-    const width=this.layout.field.width-(stacked?16:268);
+    const width=this.layout.field.width-(stacked||this.layout.minimal?16:268);
     this.bossBarText.setFontSize(12);
     this.bossBarHp.setFontSize(12).setWordWrapWidth(0);
     if(!this.bossCompactStatusWidth){
@@ -2357,19 +2357,26 @@ export class GameScene extends Phaser.Scene {
     this.bossBarText.setWordWrapWidth(nameWidth).setPosition(12,0);
     const lineHeight=Math.max(this.bossBarText.height,this.bossBarHp.height);
     const statusHeight=Math.max(24,lineHeight+8);
-    const regular=gameLayout(this.layout.width,this.layout.height,this.layout.safe);
-    const needsCommands=stacked&&regular.field.height-statusHeight<200;
-    this.setBossLayout(needsCommands,statusHeight);
-    this.refreshBossFit(boss);
-    const y=this.layout.safe.top+(stacked?49:21);
-    this.bossBar?.setPosition(this.layout.field.x+8,y);
+    if(this.layout.minimal){
+      // Minimal HUD keeps its geometry and camera for boss waves: the bar floats over the
+      // top edge of the board instead of re-laying out the screen when the boss spawns.
+      this.bossBar?.setPosition(this.layout.field.x+8,this.layout.field.y+6);
+    }else{
+      const regular=gameLayout(this.layout.width,this.layout.height,this.layout.safe);
+      const needsCommands=stacked&&regular.field.height-statusHeight<200;
+      this.setBossLayout(needsCommands,statusHeight);
+      this.refreshBossFit(boss);
+      const y=this.layout.safe.top+(stacked?49:21);
+      this.bossBar?.setPosition(this.layout.field.x+8,y);
+    }
     this.bossBarHp.setPosition(width-12-this.bossCompactStatusWidth,0);
     const trackY=lineHeight+3;
     this.bossBarTrack?.setPosition(12,trackY).setSize(width-24,4);
     this.bossBarFill?.setPosition(12,trackY).setDisplaySize((width-24)*pct,4);
     this.bossPanelHeight=trackY+7;
     this.bossBarBackdrop.setSize(width,this.bossPanelHeight);
-    this.hudStatus?.setVisible(false);
+    this.bossBarBackdrop.setFillStyle(C.bgPanel,this.layout.minimal?0.88:1);
+    if(!this.layout.minimal)this.hudStatus?.setVisible(false);
     this.repositionBossFloaters(boss);
   }
 
