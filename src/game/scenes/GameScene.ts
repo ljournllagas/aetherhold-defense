@@ -637,28 +637,37 @@ export class GameScene extends Phaser.Scene {
       if(!this.campaign&&this.progressionTab==='classic')for(const a of achievementViews(this.unlockRepository.view(),this.towers,this.wavesCompleted)){if(a.earned)continue;const t=sheet.text(y,`${TOWERS[a.towerId].name}: ${this.wavesCompleted>=20?`Try in a new Classic run. ${missedAchievementDetail(a.towerId,this.towers)}`:a.qualifiesNow?`On track · Wave ${this.wavesCompleted}/20`:'Build the starter branch and reach rank 2 before completing wave 20.'}`);y+=t.height+12;}
       sheet.action(y,'Back to battle',()=>this.closeDetails());
     }else if (kind === 'build') {
-      let rowY = 0;
-      TOWER_LIST.forEach(cfg => {
+      // Horizontal card grid: portraits side by side. Tap a card to arm
+      // placement, drag it onto a build circle to place directly.
+      const gridWidth = bounds.width - 24;
+      const cols = bounds.width >= 500 ? 4 : bounds.width >= 320 ? 3 : 2;
+      const gap = 8;
+      const cardW = (gridWidth - gap * (cols - 1)) / cols;
+      let cardBottom = 0;
+      TOWER_LIST.forEach((cfg, index) => {
         const affordable = this.gold >= cfg.levels[0].cost;
-        const title = `${cfg.name} · ${cfg.role} · ${formatCount(cfg.levels[0].cost)} gold${affordable ? '' : ' · Need gold'}`;
-        const choice = isTowerId(cfg.id) ? this.campaign?.choices[cfg.id] : null;
-        const specialization = choice ? getCampaignSpecialization(choice) : null;
-        const row = sheet.media(rowY, towerPortraitKey(cfg.id), title, affordable ? C.gold : C.textSecondary,
-          specialization ? `${specialization.name} · ${specialization.description}` : cfg.description);
-        row.image.setAlpha(affordable ? 1 : 0.55).setInteractive({ useHandCursor: true });
-        row.image.on('pointerdown', (p: Phaser.Input.Pointer, _x: number, _y: number, e: Phaser.Types.Input.EventData) => {
+        const cardX = 12 + (index % cols) * (cardW + gap);
+        const cardY = Math.floor(index / cols) === 0 ? 0 : cardBottom + gap;
+        const card = sheet.gridCard(cardX, cardY, cardW, towerPortraitKey(cfg.id),
+          cfg.name, affordable ? C.textPrimary : C.textSecondary,
+          `${formatCount(cfg.levels[0].cost)} gold`, affordable ? C.gold : C.textSecondary);
+        card.image.setAlpha(affordable ? 1 : 0.55).setInteractive({ useHandCursor: true });
+        card.image.on('pointerdown', (p: Phaser.Input.Pointer, _x: number, _y: number, e: Phaser.Types.Input.EventData) => {
           e.stopPropagation();
-          if (!isTowerId(cfg.id) || this.gold < cfg.levels[0].cost || this.isRunBlocked() || this.modal || this.pendingMeteor) return;
+          if (!isTowerId(cfg.id)) return;
+          if (this.gold < cfg.levels[0].cost) {
+            // Cannot afford: arm placement anyway so the preview explains the cost.
+            this.placingTowerId = cfg.id; this.touchPreview = null; this.sheetKind = null;
+            this.drawSheet(); this.refreshPlots(); this.showTouchPreview();
+            return;
+          }
+          if (this.isRunBlocked() || this.modal || this.pendingMeteor) return;
           // Drag out of the sheet onto a build circle: close it, then run the
           // normal tray drag gesture from this pointer.
           this.sheetKind = null; this.drawSheet(); this.showTouchPreview();
           this.beginTowerDrag(this.pointerTrayInput(p), cfg.id);
         });
-        sheet.action(row.bottom, affordable ? `Choose ${cfg.name}` : `Choose ${cfg.name} · Not enough gold`, () => {
-          this.placingTowerId = cfg.id; this.touchPreview = null; this.sheetKind = null;
-          this.drawSheet(); this.refreshPlots(); this.showTouchPreview();
-        }, 'primary');
-        rowY = row.bottom + 60;
+        cardBottom = Math.max(cardBottom, card.bottom);
       });
     } else if (kind === 'evolve' && this.selectedTower) {
       this.drawProgressionModel(sheet, this.selectedTower, 0);
@@ -1332,9 +1341,9 @@ export class GameScene extends Phaser.Scene {
       const top = this.layout.safe.top;
       const metric = (i: number, label: string, color: string) => {
         const cx = this.layout.safe.left + 8 + cell * (i + 0.5);
-        const caption = this.add.text(cx, top + 3, label, style(11, C.textSecondary, true)).setOrigin(0.5, 0);
+        const caption = this.add.text(cx, top + 5, label, style(11, C.textSecondary, true)).setOrigin(0.5, 0);
         this.hudMetricLabels.push(caption); this.uiRoot!.add(caption);
-        const t = this.add.text(cx, top + 19, '', style(15, color, true)).setOrigin(0.5, 0); this.uiRoot!.add(t); return t;
+        const t = this.add.text(cx, top + 24, '', style(15, color, true)).setOrigin(0.5, 0); this.uiRoot!.add(t); return t;
       };
       this.hudWaveValue = metric(0, 'WAVE', C.textPrimary); this.hudWaveLabel = this.hudMetricLabels[0];
       this.hudGoldValue = metric(1, 'GOLD', C.gold); this.hudLivesValue = metric(2, 'LIVES', C.textPrimary);

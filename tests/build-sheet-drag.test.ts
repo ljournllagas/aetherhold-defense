@@ -53,11 +53,12 @@ function makeSheetRun(): any {
   return run;
 }
 
-it('shows every tower portrait in the build sheet', () => {
+it('shows every tower portrait side by side in the build grid', () => {
   const run = makeSheetRun();
   run.openSheet('build');
   expect(run.sheetKind).toBe('build');
   expect(run.images).toHaveLength(TOWER_LIST.length);
+  expect(new Set(run.images.map((img: any) => img.x)).size).toBeGreaterThan(1);
 });
 
 it('starts a tray drag from a sheet portrait and closes the sheet', () => {
@@ -77,12 +78,13 @@ it('starts a tray drag from a sheet portrait and closes the sheet', () => {
   expect(run.placingTowerId).toBe(TOWER_LIST[0].id);
 });
 
-it('ignores sheet drag for towers the run cannot afford', () => {
+it('arms placement for towers the run cannot afford yet', () => {
   const run = makeSheetRun();
   run.gold = 0;
   run.openSheet('build');
   const portrait = run.images[0];
   portrait.handlers.get('pointerdown')({ id: 9, x: 36, y: 80, wasTouch: true }, 0, 0, { stopPropagation() {} });
-  expect(run.sheetKind).toBe('build');
+  expect(run.sheetKind).toBeNull();
   expect(run.trayOwner).toBeNull();
+  expect(run.placingTowerId).toBe(TOWER_LIST[0].id);
 });

@@ -53,15 +53,21 @@ export class ScrollSheet {
    * Icon + title + body row: 48px portrait left, texts indented. The image is
    * clipped like other content and returned for custom gestures (drag-to-place).
    */
-  media(y: number, texture: string, title: string, titleColor: string, body: string): { image: Phaser.GameObjects.Image; bottom: number } {
-    const image = this.scene.add.image(36, y + 26, texture).setDisplaySize(48, 48);
+  /**
+   * Horizontal grid card: portrait over centered name + cost lines. Texts are
+   * tracked for scroll clipping; the image is returned for gestures.
+   */
+  gridCard(x: number, y: number, width: number, texture: string, title: string, titleColor: string, sub: string, subColor: string): { image: Phaser.GameObjects.Image; bottom: number } {
+    const size = Math.min(64, Math.max(40, width - 16));
+    const cx = x + width / 2;
+    const image = this.scene.add.image(cx, y + 10 + size / 2, texture).setDisplaySize(size, size);
     this.content.add(image);
-    const textX = 68, wrapWidth = Math.max(80, this.bounds.width - textX - 12);
-    const heading = this.scene.add.text(textX, y, title, style(14, titleColor, true)).setWordWrapWidth(wrapWidth);
+    const wrapWidth = Math.max(60, width - 8);
+    const heading = this.scene.add.text(cx, y + 10 + size + 8, title, style(13, titleColor, true)).setOrigin(0.5, 0).setAlign('center').setWordWrapWidth(wrapWidth);
     this.content.add(heading); this.texts.push(heading);
-    const desc = this.scene.add.text(textX, y + heading.height + 4, body, style(12, C.textSecondary)).setWordWrapWidth(wrapWidth);
-    this.content.add(desc); this.texts.push(desc);
-    const bottom = y + Math.max(56, desc.y - y + desc.height + 8);
+    const cost = this.scene.add.text(cx, y + 10 + size + 8 + heading.height + 4, sub, style(13, subColor)).setOrigin(0.5, 0).setAlign('center').setWordWrapWidth(wrapWidth);
+    this.content.add(cost); this.texts.push(cost);
+    const bottom = cost.y + cost.height + 10;
     this.contentHeight = Math.max(this.contentHeight, bottom);
     this.clipControls();
     return { image, bottom };
