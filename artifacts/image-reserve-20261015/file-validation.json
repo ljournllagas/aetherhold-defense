@@ -1,0 +1,1379 @@
+{
+  "expected": 44,
+  "present": 44,
+  "assets": [
+    {
+      "id": "evolution:marksman",
+      "path": "masters/evolution-marksman.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        23,
+        1248,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        319,
+        26,
+        1162,
+        1235
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "19293a188dd415832626823d1f01c20c0ec3d588b1803edd9f30c8a6b2d01f74",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:volley",
+      "path": "masters/evolution-volley.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        19,
+        1238,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        200,
+        24,
+        1127,
+        1233
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "7af271d500ad65adbfec04de29d48c98ef8a51a5fb5ecfe023fc3b6c770f75b5",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:siegebreaker",
+      "path": "masters/evolution-siegebreaker.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        17,
+        1240,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        84,
+        26,
+        1222,
+        1233
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "523a4ce3ccc81d187e9191d9d044340d456b7251bd7f1f9a2ac89e09a64555f6",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:flame-mortar",
+      "path": "masters/evolution-flame-mortar.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        17,
+        1236,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        246,
+        23,
+        1032,
+        1209
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "666c9afebb2afe3206b30e5da1ba90efaf681058cba2ed09d23e6d01b9dec2db",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:winterguard",
+      "path": "masters/evolution-winterguard.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        0,
+        1236,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        275,
+        21,
+        1030,
+        1231
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "be51c739b62e81d90c1f1ff004c3e0275241661f8fefd189d16237e8858ff904",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:brittle-ice",
+      "path": "masters/evolution-brittle-ice.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        32,
+        1232,
+        1236
+      ],
+      "alphaBoundsAt16": [
+        300,
+        35,
+        975,
+        1233
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "1336df191b072803f4018bcfbecde66f38190be876384b1b9d8622e0115022b5",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:spellbreaker",
+      "path": "masters/evolution-spellbreaker.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        35,
+        16,
+        1214,
+        1230
+      ],
+      "alphaBoundsAt16": [
+        360,
+        18,
+        909,
+        1227
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "7e5104aecc4cffe174f25f3b6d515f52ba073e97360e98b6d25bf7f6e18d3c5b",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:arcane-beacon",
+      "path": "masters/evolution-arcane-beacon.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        10,
+        1242,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        325,
+        13,
+        940,
+        1237
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "7152a33a9b8e11bdc6361685e51aef0be2845dd0cb39aa4293254922fc0b3f13",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:stormcaller",
+      "path": "masters/evolution-stormcaller.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        1,
+        1240,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        342,
+        7,
+        1046,
+        1224
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "b02526b2b4e7228bd393b063cf203ee2fc4571d83a6a918907f4509d28c2a9b1",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:thunderlord",
+      "path": "masters/evolution-thunderlord.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        5,
+        1224,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        293,
+        21,
+        960,
+        1229
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "df7b41e471a58c5810d335892b623fec1aafddbb1ed7cc11e06b465c0c8ddb21",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:deadeye",
+      "path": "masters/evolution-deadeye.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        19,
+        1194,
+        1230
+      ],
+      "alphaBoundsAt16": [
+        303,
+        32,
+        1162,
+        1224
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "945ff4887979350d18ab1cbbe0bb03d109951de59fe4ec8a56af245b6acd6602",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:headhunter",
+      "path": "masters/evolution-headhunter.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        23,
+        1240,
+        1236
+      ],
+      "alphaBoundsAt16": [
+        271,
+        66,
+        1115,
+        1180
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "d892241fd0172d70c08db7612179c23201936c5315826b011107a45ff5cc2d90",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:pyre",
+      "path": "masters/evolution-pyre.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        0,
+        1240,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        159,
+        55,
+        1104,
+        1206
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "383674725ac7ef7f28228017ac897da218a9bd15271c1e8c82cbd37bcba9c4c5",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "evolution:contagion",
+      "path": "masters/evolution-contagion.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        9,
+        1253,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        273,
+        11,
+        992,
+        1233
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "87f43816dbc2d88d575b223bb0a99ee2f5eb0e51a09daf4b29288281f65d8024",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "sigil:borderkeep",
+      "path": "masters/sigil-borderkeep.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        9,
+        1220,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        42,
+        13,
+        1212,
+        1223
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "33ae76ce07ceeb801aa05feb5e0990b598b099e855d956bcbf057fe8f9bb48f0",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "sigil:emberfall",
+      "path": "masters/sigil-emberfall.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        0,
+        1242,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        132,
+        12,
+        1123,
+        1240
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "3644b555619fb42bc3aac1cb0c29f02b67b7f0bf292e3876221e6d88f6d08d43",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "sigil:frostveil",
+      "path": "masters/sigil-frostveil.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        13,
+        1254,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        42,
+        15,
+        1213,
+        1238
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "f22583b36c11895da4b5e4415cff4d4466e9f5d642f4724dd98d88e68827cbb9",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "sigil:whisperfen",
+      "path": "masters/sigil-whisperfen.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        13,
+        1232,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        32,
+        15,
+        1224,
+        1231
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "d9e6594f6e78722036c5ee162b2a8f298bf27577ca7038cb598596d2d5473f01",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "sigil:sunken_aether",
+      "path": "masters/sigil-sunken_aether.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        14,
+        1238,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        24,
+        17,
+        1229,
+        1238
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "34b188394388645b232ab3a1981f967769c1b3fe762967ef963fe8fb89391703",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "sigil:ironroot",
+      "path": "masters/sigil-ironroot.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        16,
+        1238,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        31,
+        32,
+        1223,
+        1182
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "4f004fe1296ed9736d0edc3409f1822e85dd1e5a9069c86475f23ea173caabc2",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "sigil:sky_isles",
+      "path": "masters/sigil-sky_isles.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        25,
+        23,
+        1244,
+        1228
+      ],
+      "alphaBoundsAt16": [
+        222,
+        55,
+        1130,
+        1202
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "e97713f3ec1875b7d714e9f8790f159d5b9d2e8b8a69fbc36cc3d8ca41cc8d79",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "sigil:dreadmoon",
+      "path": "masters/sigil-dreadmoon.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        18,
+        0,
+        1237,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        21,
+        3,
+        1233,
+        1252
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "526c3f2ef9a677e1df53e5ec4b7ab5c363a9cba72605317784959fa265e49696",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "sigil:astral_rift",
+      "path": "masters/sigil-astral_rift.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        21,
+        11,
+        1230,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        35,
+        14,
+        1218,
+        1216
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "980ea305c942b1aba05f8949f2d3ceb1a68a559a2362d5fb1c07335eccd8d747",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "sigil:aether_crown",
+      "path": "masters/sigil-aether_crown.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        7,
+        1238,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        82,
+        10,
+        1172,
+        1238
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "aa9fb7ba9897cedb023b25c287c8e8ba4592e9840c5f68297ff1741c779f67ae",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "portrait:hollow_warden",
+      "path": "masters/portrait-hollow_warden-v2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaExtrema": null,
+      "sha256": "c4a7bf14941aabd22f4ae1a9640c4bafc8a9b60bbefa74bda2bdc976ce503f86",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "portrait:cinder_colossus",
+      "path": "masters/portrait-cinder_colossus.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaExtrema": null,
+      "sha256": "451a23e89bed1d34d1191162000270c0bbc4e259fa49a71b9b0f9c8731b00763",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "portrait:frostbound_matriarch",
+      "path": "masters/portrait-frostbound_matriarch.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaExtrema": null,
+      "sha256": "1d1d7966d1bc00967f0502cdf654943c7932bd63c30a1603731f9e074ead0a5b",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "portrait:mireheart_hydra",
+      "path": "masters/portrait-mireheart_hydra.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaExtrema": null,
+      "sha256": "07ec27054c69d6522c8c6acadc15afa4b782682012bb03f3f5cbbb31b79b91c7",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "portrait:drowned_oracle",
+      "path": "masters/portrait-drowned_oracle-v2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaExtrema": null,
+      "sha256": "fab3fdf8e6189722482c49b667eaa71a137aed7ac3b87028d54fab095321d641",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "portrait:iron_tyrant",
+      "path": "masters/portrait-iron_tyrant.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaExtrema": null,
+      "sha256": "e84f212368c984a423025564313d159ab54fd6404f3e33d8506aaab4573d44b3",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "portrait:stormmaw_prime",
+      "path": "masters/portrait-stormmaw_prime.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaExtrema": null,
+      "sha256": "7f56bbcce80e2207305228c60b8d3ebebdd216b282637cac1cc55578ff4535ef",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "portrait:umbral_regent",
+      "path": "masters/portrait-umbral_regent-v2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaExtrema": null,
+      "sha256": "3c6032a718e5e00062d56bc42e6776ef7172ae66575195e68353bcad774507bc",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "portrait:rift_sovereign",
+      "path": "masters/portrait-rift_sovereign-v2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaExtrema": null,
+      "sha256": "eaa2e83655b7ccaf7b72e955e0f7de8829fda52f40410ae08e36fa6ffa6eaaa8",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "portrait:aether_devourer",
+      "path": "masters/portrait-aether_devourer.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "alphaExtrema": null,
+      "sha256": "adb4764de95a0ba3811b7492d2a2779147e42a949085ed8e0948f8c6759df6cb",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "finale:campaign",
+      "path": "masters/campaign-finale.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "7ecdccdd1dd0ca93a5d42bbb00ea25a7f598277f152877b1e967941c918985b0",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "map:last-lantern-night",
+      "path": "masters/last-lantern-night.png",
+      "size": [
+        1672,
+        940
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        940
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        940
+      ],
+      "alphaExtrema": null,
+      "sha256": "98dc22efebbf17c1ad6a0a1a547c4bc03483e59ffec1b337708a9981b02d4e18",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "map:last-lantern-dawn",
+      "path": "masters/last-lantern-dawn.png",
+      "size": [
+        1673,
+        940
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1673,
+        940
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1673,
+        940
+      ],
+      "alphaExtrema": null,
+      "sha256": "9938ac1249e4095e82a0e3ea4601c92a0ba76148eedd9d001903d9e31be880ff",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "expansion-vista:amber-hourglass",
+      "path": "masters/amber-hourglass-vista.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "f3c58952c469972172e34f2807d6420467aa161a541b34d246bc0e8350bc5ae4",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "expansion-map:amber-hourglass",
+      "path": "masters/amber-hourglass-terrain.png",
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB",
+      "alphaBounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaBoundsAt16": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "alphaExtrema": null,
+      "sha256": "e29a40b3b09a44f6133e138b44534d9429eae0bf73e0f25a1b9a2319561bd828",
+      "sourceCopyVerified": true,
+      "fileCheck": "pass",
+      "issues": [],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "expansion-tower:chronolens",
+      "path": "masters/amber-hourglass-chronolens.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        27,
+        1228,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        233,
+        31,
+        1027,
+        1206
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "98da32149787f49d3e740dbe43179f7effe0f04396efaae2afa92f8dccf3ede0",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "expansion-enemy:clockmite",
+      "path": "masters/amber-hourglass-clockmite.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        32,
+        1240,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        78,
+        84,
+        1181,
+        1169
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "05b464bd87231c3d23bf3d1dc9a4def5411cae1f61397498cb79c06d8f6055b1",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "expansion-enemy:pendulum-knight",
+      "path": "masters/amber-hourglass-pendulum-knight.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        35,
+        1218,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        66,
+        38,
+        1200,
+        1219
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "a266a3391d1f30f0fd909dbe4c3e9b5346989adf7774f871dc0d234caf5692fb",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "expansion-enemy:hourkeeper",
+      "path": "masters/amber-hourglass-hourkeeper.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        3,
+        1234,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        213,
+        10,
+        1134,
+        1222
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "fd5794bdf993f605f89efc3b40504142777eb21715e9ae3f850402b013297ea9",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    },
+    {
+      "id": "expansion-boss:unwound-king",
+      "path": "masters/amber-hourglass-unwound-king.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alphaBounds": [
+        0,
+        0,
+        1253,
+        1254
+      ],
+      "alphaBoundsAt16": [
+        152,
+        7,
+        1117,
+        1237
+      ],
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "57851717a93483cfab4d02db59164523ceada289dc0a7581d123635217a516da",
+      "sourceCopyVerified": true,
+      "fileCheck": "review",
+      "issues": [
+        "occupied pixels touch canvas edge; inspect clipping"
+      ],
+      "visualReview": "visual-review.md",
+      "runtimeIntegration": "not performed"
+    }
+  ]
+}

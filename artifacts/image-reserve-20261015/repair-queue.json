@@ -1,0 +1,34 @@
+[
+  {
+    "id": "portrait:hollow_warden",
+    "issue": "Upper antler tips leave the top canvas edge. Identity and overall painting are good, but the prompt requested head breathing room.",
+    "action": "After the main generation loop finishes, use imagegen editing on the saved portrait. Preserve exact character identity and existing painting; widen framing enough to show complete antlers against extra dark forest background. Save a versioned v2 master and retain the original as a draft. Update manifest, gallery, prompts and review. Do not pretend the crop has been repaired until the new output is inspected.",
+    "status": "resolved",
+    "selectedMaster": "masters/portrait-hollow_warden-v2.png",
+    "review": "Individually inspected: complete upper silhouette and additional background; identity retained."
+  },
+  {
+    "id": "portrait:drowned_oracle",
+    "issue": "Upper crown outline reaches and is cut by top edge.",
+    "action": "Use imagegen edit after main loop: preserve character identity, widen framing to show complete crown with dark underwater background above; save versioned master, retain original draft, update all companion paths and inspect.",
+    "status": "resolved",
+    "selectedMaster": "masters/portrait-drowned_oracle-v2.png",
+    "review": "Individually inspected: complete upper silhouette and additional background; identity retained."
+  },
+  {
+    "id": "portrait:umbral_regent",
+    "issue": "Tall crown or upper shoulder ornament leaves the top canvas edge.",
+    "action": "Use imagegen edit after main loop: preserve exact character painting and identity; widen framing enough that complete crown and upper ornaments fit with dark biome background above. Save versioned master and retain draft; inspect before acceptance.",
+    "status": "resolved",
+    "selectedMaster": "masters/portrait-umbral_regent-v2.png",
+    "review": "Individually inspected: complete upper silhouette and additional background; identity retained."
+  },
+  {
+    "id": "portrait:rift_sovereign",
+    "issue": "Tall crown or upper shoulder ornament leaves the top canvas edge.",
+    "action": "Use imagegen edit after main loop: preserve exact character painting and identity; widen framing enough that complete crown and upper ornaments fit with dark biome background above. Save versioned master and retain draft; inspect before acceptance.",
+    "status": "resolved",
+    "selectedMaster": "masters/portrait-rift_sovereign-v2.png",
+    "review": "Individually inspected: complete upper silhouette and additional background; identity retained."
+  }
+]

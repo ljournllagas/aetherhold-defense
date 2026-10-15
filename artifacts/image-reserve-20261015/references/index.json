@@ -1,0 +1,62 @@
+[
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/hollow_warden-atlas-v1.webp",
+    "copy": "references/hollow_warden-atlas-v1.webp",
+    "sha256": "300f970d7e03cbfb4253b7fdc2efc07dede2cfbb1aa291aa64675ee5962c5dc1"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/cinder_colossus-atlas-v1.webp",
+    "copy": "references/cinder_colossus-atlas-v1.webp",
+    "sha256": "41387cbf6a126ba6037c75f0f2d1595d3951a76e0347793c7ddfcfc8d3082280"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/frostbound_matriarch-atlas-v1.webp",
+    "copy": "references/frostbound_matriarch-atlas-v1.webp",
+    "sha256": "51bdb48f93ad03af7cad6cc090c66cd44ce5f6d4b357d45931420ca7520860b9"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/mireheart_hydra-atlas-v2.webp",
+    "copy": "references/mireheart_hydra-atlas-v2.webp",
+    "sha256": "2364680c45b89a8d09a066c445bb6518b9cfdb863ff3dcd9c5ddfc23660b3620"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/drowned_oracle-atlas-v2.webp",
+    "copy": "references/drowned_oracle-atlas-v2.webp",
+    "sha256": "d8f32131a9dad826fb885583d09ddddec748fda1be471f289d885a360fa1fcad"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/iron_tyrant-atlas-v2.webp",
+    "copy": "references/iron_tyrant-atlas-v2.webp",
+    "sha256": "a5a8ee979375f5437010b02cc81e61e1f53299bed0a6dd2a4cedc68be752264a"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/stormmaw_prime-atlas-v2.webp",
+    "copy": "references/stormmaw_prime-atlas-v2.webp",
+    "sha256": "10a2f578bf0e32ee1415beeeb40b4a9f50ef99ee4c198a5a2ed3f11ef89f4f41"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/umbral_regent-atlas-v2.webp",
+    "copy": "references/umbral_regent-atlas-v2.webp",
+    "sha256": "67f76922ea49f14fa42d3bd8e517c52900f73fa1e5238b02eb3195d71a7aede7"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/rift_sovereign-atlas-v2.webp",
+    "copy": "references/rift_sovereign-atlas-v2.webp",
+    "sha256": "1b71b033ea0e08d301dbb8ea5fb5ff8c4ac48e78d30f34f3ee7210ad75478665"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/aether_devourer-atlas-v2.webp",
+    "copy": "references/aether_devourer-atlas-v2.webp",
+    "sha256": "1fdc5ed16356c8824078842799ebe9807e88c858ff54ea76c3fe5f91eeaaa9cf"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/world/maps/ancient-border-keep-map-v3.webp",
+    "copy": "references/ancient-border-keep-map-v3.webp",
+    "sha256": "a23a70412e9d2508c6e0f09986661192e77cbfdfa536d4e05f1ed186a615f904"
+  },
+  {
+    "original": "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/towers/tower_ranger_stages-v3.webp",
+    "copy": "references/tower_ranger_stages-v3.webp",
+    "sha256": "66392bb0bd098df1e78dd89c7d6b509d05f0da1c8bce34cfdf3515f2d0a881db"
+  }
+]

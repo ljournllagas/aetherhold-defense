@@ -1,0 +1,583 @@
+{
+  "schemaVersion": 1,
+  "status": "source-package-complete",
+  "scope": {
+    "evolutions": 14,
+    "sigils": 10,
+    "bossPortraits": 10,
+    "finale": 1,
+    "lastLantern": 2,
+    "amberHourglass": 7
+  },
+  "assets": [
+    {
+      "id": "evolution:marksman",
+      "towerId": "longbow",
+      "name": "Marksman",
+      "design": "tall precision ballista with one scoped crossbow",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-marksman.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:/Users/ljour/.codex/generated_images/01a13fd3-7a08-70d1-83de-ed980b75a573/exec-70d21a70-2cdc-4af7-afa7-bcbca06e922f.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md",
+      "promptFile": "prompts/evolution-marksman.txt"
+    },
+    {
+      "id": "evolution:volley",
+      "towerId": "longbow",
+      "name": "Volley",
+      "design": "fan of three bows on a broad timber platform",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-volley.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-5ea08432-f11c-404f-ab4a-a29e9af7577a.png",
+      "promptFile": "prompts/evolution-volley.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "evolution:siegebreaker",
+      "towerId": "ember",
+      "name": "Siegebreaker",
+      "design": "heavy iron siege cannon with a reinforced ram-shaped barrel",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-siegebreaker.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-cf7f5029-22a0-4ed1-85b1-9a632718ee70.png",
+      "promptFile": "prompts/evolution-siegebreaker.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "evolution:flame-mortar",
+      "towerId": "ember",
+      "name": "Flame Mortar",
+      "design": "bronze mortar and contained orange flame chamber",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-flame-mortar.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-f907c2ce-2a18-44b8-be7d-06600d029132.png",
+      "promptFile": "prompts/evolution-flame-mortar.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "evolution:winterguard",
+      "towerId": "glacier",
+      "name": "Winterguard",
+      "design": "shielded ice bastion with one blue crystal focus",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-winterguard.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-2a6e7002-7d9a-475d-ba26-422eed1c038d.png",
+      "promptFile": "prompts/evolution-winterguard.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "evolution:brittle-ice",
+      "towerId": "glacier",
+      "name": "Brittle Ice",
+      "design": "jagged pale ice prism array with fractured crystals",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-brittle-ice.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-2d1a096e-4352-4139-8203-3aa75543eee2.png",
+      "promptFile": "prompts/evolution-brittle-ice.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "evolution:spellbreaker",
+      "towerId": "starfire",
+      "name": "Spellbreaker",
+      "design": "violet crystal spire inside a broken brass ward ring",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-spellbreaker.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-e7c70604-caea-46f3-88f9-16dddeee2bef.png",
+      "promptFile": "prompts/evolution-spellbreaker.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "evolution:arcane-beacon",
+      "towerId": "starfire",
+      "name": "Arcane Beacon",
+      "design": "radiant amethyst beacon with restrained concentric rings",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-arcane-beacon.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-f0ff0a23-c77d-4e05-a3f2-fdf3886f4762.png",
+      "promptFile": "prompts/evolution-arcane-beacon.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "evolution:stormcaller",
+      "towerId": "tempest",
+      "name": "Stormcaller",
+      "design": "twin forked lightning conductors and cobalt coils",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-stormcaller.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-b1cceeec-61b7-4bcd-bc9e-8e092975ff48.png",
+      "promptFile": "prompts/evolution-stormcaller.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "evolution:thunderlord",
+      "towerId": "tempest",
+      "name": "Thunderlord",
+      "design": "heavy hammer-shaped lightning conductor on dark stone",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-thunderlord.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-062fc1e4-08b3-4b45-a58e-72941d13f767.png",
+      "promptFile": "prompts/evolution-thunderlord.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "evolution:deadeye",
+      "towerId": "sentinel",
+      "name": "Deadeye",
+      "design": "slender execution ballista with gold sight and one huge bolt",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-deadeye.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-27ff6aa4-9345-44d2-a5e2-9e5f9e29f7a0.png",
+      "promptFile": "prompts/evolution-deadeye.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "evolution:headhunter",
+      "towerId": "sentinel",
+      "name": "Headhunter",
+      "design": "twin compact crossbows on an armored hunter lookout",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-headhunter.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-2e4cdb9e-a432-415a-986b-c3b1ec39c4b6.png",
+      "promptFile": "prompts/evolution-headhunter.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "evolution:pyre",
+      "towerId": "cinder",
+      "name": "Pyre",
+      "design": "low volcanic brazier mortar with contained orange coals",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-pyre.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-f31e044a-67ec-44de-8b4e-c7afb2834eee.png",
+      "promptFile": "prompts/evolution-pyre.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "evolution:contagion",
+      "towerId": "cinder",
+      "name": "Contagion",
+      "design": "cracked alchemical furnace with enclosed pale green reagent vessels",
+      "status": "reviewed-source-master",
+      "master": "masters/evolution-contagion.png",
+      "integration": "static evolution appearance; preserve ranks, crests, stats and campaign cosmetics; measure alpha bounds before use",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-ecfb67a7-4c05-4a0a-aaba-4b383279d09d.png",
+      "promptFile": "prompts/evolution-contagion.txt",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "sigil:borderkeep",
+      "status": "reviewed-source-master",
+      "master": "masters/sigil-borderkeep.png",
+      "promptFile": "prompts/sigil-borderkeep.txt",
+      "references": [],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-b35a4a7f-58e9-45e7-a901-0264b0633d3f.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "sigil:emberfall",
+      "status": "reviewed-source-master",
+      "master": "masters/sigil-emberfall.png",
+      "promptFile": "prompts/sigil-emberfall.txt",
+      "references": [],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-5b6e0b42-af44-46a7-aceb-3b572bff2e42.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "sigil:frostveil",
+      "status": "reviewed-source-master",
+      "master": "masters/sigil-frostveil.png",
+      "promptFile": "prompts/sigil-frostveil.txt",
+      "references": [],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-294c5133-e2e2-4d31-804b-6236cca6cf1f.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "sigil:whisperfen",
+      "status": "reviewed-source-master",
+      "master": "masters/sigil-whisperfen.png",
+      "promptFile": "prompts/sigil-whisperfen.txt",
+      "references": [],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-a17201b5-f04c-431b-bb01-b149c3f88692.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "sigil:sunken_aether",
+      "status": "reviewed-source-master",
+      "master": "masters/sigil-sunken_aether.png",
+      "promptFile": "prompts/sigil-sunken_aether.txt",
+      "references": [],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-04ec7ddc-608a-447a-96a7-dad18094a64b.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "sigil:ironroot",
+      "status": "reviewed-source-master",
+      "master": "masters/sigil-ironroot.png",
+      "promptFile": "prompts/sigil-ironroot.txt",
+      "references": [],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-a47eadf9-1add-4b22-b86a-c232000d8976.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "sigil:sky_isles",
+      "status": "reviewed-source-master",
+      "master": "masters/sigil-sky_isles.png",
+      "promptFile": "prompts/sigil-sky_isles.txt",
+      "references": [],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-40f20526-6a67-4d9a-b80a-36bd014a55bc.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "sigil:dreadmoon",
+      "status": "reviewed-source-master",
+      "master": "masters/sigil-dreadmoon.png",
+      "promptFile": "prompts/sigil-dreadmoon.txt",
+      "references": [],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-20074f9c-28ab-4ab4-a84b-6adb6d7923ea.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "sigil:astral_rift",
+      "status": "reviewed-source-master",
+      "master": "masters/sigil-astral_rift.png",
+      "promptFile": "prompts/sigil-astral_rift.txt",
+      "references": [],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-480484c6-3c53-417c-9b24-5df4bcddf683.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "sigil:aether_crown",
+      "status": "reviewed-source-master",
+      "master": "masters/sigil-aether_crown.png",
+      "promptFile": "prompts/sigil-aether_crown.txt",
+      "references": [],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-3d1df301-0d68-4f06-afcb-f43ec8ae3383.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "portrait:hollow_warden",
+      "status": "reviewed-source-master",
+      "master": "masters/portrait-hollow_warden-v2.png",
+      "promptFile": "prompts/portrait-hollow_warden-v2.txt",
+      "references": [
+        "drafts/portrait-hollow_warden.png"
+      ],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-6d0b8f6e-652e-4f35-aefc-7952d7f8d0d2.png",
+      "history": [
+        {
+          "master": "drafts/portrait-hollow_warden.png",
+          "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-ade06d89-5b1a-4777-8ac1-43b8d5c9d2aa.png",
+          "promptFile": "prompts/portrait-hollow_warden.txt",
+          "reason": "Upper antler tips leave the top canvas edge. Identity and overall painting are good, but the prompt requested head breathing room."
+        }
+      ],
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "portrait:cinder_colossus",
+      "status": "reviewed-source-master",
+      "master": "masters/portrait-cinder_colossus.png",
+      "promptFile": "prompts/portrait-cinder_colossus.txt",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/cinder_colossus-atlas-v1.webp"
+      ],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-23f10fea-da3e-420b-885f-542e9f8c1d29.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "portrait:frostbound_matriarch",
+      "status": "reviewed-source-master",
+      "master": "masters/portrait-frostbound_matriarch.png",
+      "promptFile": "prompts/portrait-frostbound_matriarch.txt",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/frostbound_matriarch-atlas-v1.webp"
+      ],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-dd182bcd-8958-4059-a66e-754b1ee6a5fa.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "portrait:mireheart_hydra",
+      "status": "reviewed-source-master",
+      "master": "masters/portrait-mireheart_hydra.png",
+      "promptFile": "prompts/portrait-mireheart_hydra.txt",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/mireheart_hydra-atlas-v2.webp"
+      ],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-d585009f-55d7-4dbb-b787-159fc206e0cd.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "portrait:drowned_oracle",
+      "status": "reviewed-source-master",
+      "master": "masters/portrait-drowned_oracle-v2.png",
+      "promptFile": "prompts/portrait-drowned_oracle-v2.txt",
+      "references": [
+        "drafts/portrait-drowned_oracle.png"
+      ],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-50a4e79b-2fa4-460d-9c9e-dd90b23f4ccc.png",
+      "history": [
+        {
+          "master": "drafts/portrait-drowned_oracle.png",
+          "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-73de8d20-eba2-4b22-999c-3d906544ebfd.png",
+          "promptFile": "prompts/portrait-drowned_oracle.txt",
+          "reason": "Upper crown outline reaches and is cut by top edge."
+        }
+      ],
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "portrait:iron_tyrant",
+      "status": "reviewed-source-master",
+      "master": "masters/portrait-iron_tyrant.png",
+      "promptFile": "prompts/portrait-iron_tyrant.txt",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/iron_tyrant-atlas-v2.webp"
+      ],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-d6996667-c8ce-4681-9bfa-c7f1431b0ef1.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "portrait:stormmaw_prime",
+      "status": "reviewed-source-master",
+      "master": "masters/portrait-stormmaw_prime.png",
+      "promptFile": "prompts/portrait-stormmaw_prime.txt",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/stormmaw_prime-atlas-v2.webp"
+      ],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-fab55113-abb1-405a-a975-0981e75bf5e6.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "portrait:umbral_regent",
+      "status": "reviewed-source-master",
+      "master": "masters/portrait-umbral_regent-v2.png",
+      "promptFile": "prompts/portrait-umbral_regent-v2.txt",
+      "references": [
+        "drafts/portrait-umbral_regent.png"
+      ],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-5bcd0b9d-e97f-42ab-85e0-c5945facbc26.png",
+      "history": [
+        {
+          "master": "drafts/portrait-umbral_regent.png",
+          "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-24648373-b55f-4307-b1da-903a79d8df98.png",
+          "promptFile": "prompts/portrait-umbral_regent.txt",
+          "reason": "Tall crown or upper shoulder ornament leaves the top canvas edge."
+        }
+      ],
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "portrait:rift_sovereign",
+      "status": "reviewed-source-master",
+      "master": "masters/portrait-rift_sovereign-v2.png",
+      "promptFile": "prompts/portrait-rift_sovereign-v2.txt",
+      "references": [
+        "drafts/portrait-rift_sovereign.png"
+      ],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-21aa2aad-b7a4-4438-90a3-85e1e71f53ac.png",
+      "history": [
+        {
+          "master": "drafts/portrait-rift_sovereign.png",
+          "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-e5987153-244f-4cc8-8727-ea8d62db1d77.png",
+          "promptFile": "prompts/portrait-rift_sovereign.txt",
+          "reason": "Tall crown or upper shoulder ornament leaves the top canvas edge."
+        }
+      ],
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "portrait:aether_devourer",
+      "status": "reviewed-source-master",
+      "master": "masters/portrait-aether_devourer.png",
+      "promptFile": "prompts/portrait-aether_devourer.txt",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/campaign/bosses/aether_devourer-atlas-v2.webp"
+      ],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-4d7e6cb8-fe08-4fdb-84c8-cf83e094e495.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "finale:campaign",
+      "status": "reviewed-source-master",
+      "master": "masters/campaign-finale.png",
+      "promptFile": "prompts/campaign-finale.txt",
+      "references": [],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-ee3f5482-d255-4874-b31c-7294898a01c1.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "map:last-lantern-night",
+      "status": "reviewed-source-master",
+      "master": "masters/last-lantern-night.png",
+      "promptFile": "prompts/last-lantern-night.txt",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/world/maps/ancient-border-keep-map-v3.webp"
+      ],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-8029c56b-3257-4e20-a89d-8638daf9b000.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "map:last-lantern-dawn",
+      "status": "reviewed-source-master",
+      "master": "masters/last-lantern-dawn.png",
+      "promptFile": "prompts/last-lantern-dawn.txt",
+      "references": [
+        "C:/dev/Warcraft 3 Inspired Tower Defense/public/assets/world/maps/ancient-border-keep-map-v3.webp"
+      ],
+      "integration": "cosmetic presentation; runtime integration not performed",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-989b8cde-d3fa-437b-878f-a94684bdf43e.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "expansion-vista:amber-hourglass",
+      "status": "reviewed-source-master",
+      "master": "masters/amber-hourglass-vista.png",
+      "promptFile": "prompts/amber-hourglass-vista.txt",
+      "references": [],
+      "integration": "preproduction design master; animation and gameplay work required",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-bc3ca790-3828-4246-8c0a-8eed4643efe5.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "expansion-map:amber-hourglass",
+      "status": "reviewed-source-master",
+      "master": "masters/amber-hourglass-terrain.png",
+      "promptFile": "prompts/amber-hourglass-terrain.txt",
+      "references": [],
+      "integration": "preproduction design master; animation and gameplay work required",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-bfbdc208-bcb7-4469-b91f-0be403ce58f0.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "expansion-tower:chronolens",
+      "status": "reviewed-source-master",
+      "master": "masters/amber-hourglass-chronolens.png",
+      "promptFile": "prompts/amber-hourglass-chronolens.txt",
+      "references": [],
+      "integration": "preproduction design master; animation and gameplay work required",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-e1316542-0963-4f99-9eae-75eccf954056.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "expansion-enemy:clockmite",
+      "status": "reviewed-source-master",
+      "master": "masters/amber-hourglass-clockmite.png",
+      "promptFile": "prompts/amber-hourglass-clockmite.txt",
+      "references": [],
+      "integration": "preproduction design master; animation and gameplay work required",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-a4c2a69b-66ac-4c39-8aef-36d348581103.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "expansion-enemy:pendulum-knight",
+      "status": "reviewed-source-master",
+      "master": "masters/amber-hourglass-pendulum-knight.png",
+      "promptFile": "prompts/amber-hourglass-pendulum-knight.txt",
+      "references": [],
+      "integration": "preproduction design master; animation and gameplay work required",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-d6b0d723-8ea5-4e78-9e4f-5a5474250887.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "expansion-enemy:hourkeeper",
+      "status": "reviewed-source-master",
+      "master": "masters/amber-hourglass-hourkeeper.png",
+      "promptFile": "prompts/amber-hourglass-hourkeeper.txt",
+      "references": [],
+      "integration": "preproduction design master; animation and gameplay work required",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-4ae34979-91f7-48c7-8a24-dc5612a66c70.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    },
+    {
+      "id": "expansion-boss:unwound-king",
+      "status": "reviewed-source-master",
+      "master": "masters/amber-hourglass-unwound-king.png",
+      "promptFile": "prompts/amber-hourglass-unwound-king.txt",
+      "references": [],
+      "integration": "preproduction design master; animation and gameplay work required",
+      "source": "C:\\Users\\ljour\\.codex\\generated_images\\01a13fd3-7a08-70d1-83de-ed980b75a573\\exec-c868dbee-e770-48a1-bccb-46e8c3707be2.png",
+      "runtimeIntegration": "not performed",
+      "visualReview": "visual-review.md"
+    }
+  ],
+  "productionAcceptance": "not claimed; use-case integration gates remain"
+}
