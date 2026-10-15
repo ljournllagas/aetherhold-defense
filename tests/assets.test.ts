@@ -4,6 +4,15 @@ import { ensureArtTextures, ensureMenuTextures } from '../src/game/art/artkit.ts
 import { STAGE_ASSETS, missingAssets, requiredAssets, requiredAssetsForRequest } from '../src/game/art/assetManifest.ts';
 import { campaignArtAssetsForLoader } from '../src/game/campaign/artManifest.ts';
 import { CAMPAIGN_LEVELS } from '../src/game/campaign/config.ts';
+it.each(['sentinel', 'cinder'])('%s loads its own four foundation frames and both campaign tiers', id => {
+  const foundation = STAGE_ASSETS.gameplay.find(asset => asset.key === `tower_${id}`);
+  expect(foundation).toEqual({ kind: 'sheet', key: `tower_${id}`, path: `/assets/towers/tower_${id}_stages-v1.webp`, frameWidth: 627, frameHeight: 627 });
+  for (const tier of [2, 3] as const) {
+    const asset = requiredAssetsForRequest('gameplay', { mode: 'campaign', campaignLevel: 1, campaignVisualTier: tier })
+      .find(asset => asset.key === `campaign_tower_${id}_tier${tier}`);
+    expect(asset).toEqual({ kind: 'image', key: `campaign_tower_${id}_tier${tier}`, path: `/assets/campaign/towers/${id}-tier${tier}-v1.webp` });
+  }
+});
 it('ships every file requested by menu, Classic and all Campaign visual tiers', async () => {
   const moduleName = 'node:fs';
   const { statSync } = await import(moduleName);

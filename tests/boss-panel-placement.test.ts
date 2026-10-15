@@ -594,7 +594,7 @@ it.each([[844,390],[320,390],[320,360]])('fits every campaign road capsule, plot
     for(const p of run.map.waypoints)for(const dx of [-25,25])for(const dy of [-25,25])check({x:p.x+dx,y:p.y+dy});
     for(const p of run.map.buildable){
       for(const dx of [-23.5,23.5])for(const dy of [-23.5,23.5])check({x:p.x+dx,y:p.y+dy});
-      for(const id of ['longbow','ember','glacier','starfire','tempest'])for(const level of [1,2,3,4]){
+      for(const id of ['longbow','ember','glacier','starfire','tempest','sentinel','cinder'])for(const level of [1,2,3,4]){
         const g=towerArtGeometry(id,level,1);
         check({x:p.x+g.left*1.25,y:p.y+(g.top-34)*1.25});
         check({x:p.x+(g.left+g.width)*1.25,y:p.y+(g.top+g.height)*1.25});

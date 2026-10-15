@@ -35,7 +35,7 @@ const NORMAL_ENEMIES = Object.fromEntries(CAMPAIGN_WORLDS.map(world => [world.id
   LEGACY_NORMAL_ENEMIES[world.id] ?? [...new Set(CAMPAIGN_LEVELS.filter(level => level.worldId === world.id).flatMap(level => level.enemyIds))]
 ])) as Readonly<Record<CampaignWorldId, readonly string[]>>;
 const BOSSES = Object.fromEntries(CAMPAIGN_WORLDS.map(world => [world.id, world.bossEnemyId])) as Readonly<Record<CampaignWorldId, string>>;
-const TOWERS = ['longbow', 'ember', 'glacier', 'starfire', 'tempest'] as const;
+const TOWERS = ['longbow', 'ember', 'glacier', 'starfire', 'tempest', 'sentinel', 'cinder'] as const;
 const NORMAL_STATES = { idle: { row: 0, frames: 4 }, walk: { row: 1, frames: 6 }, attack: { row: 2, frames: 6 }, death: { row: 3, frames: 6 } } as const;
 const SUPPORT_STATES = { ...NORMAL_STATES, buff: { row: 4, frames: 6 } } as const;
 const EXPANSION_SUPPORT_ENEMIES = new Set(['rootwretch', 'aetherbound', 'foundry_core', 'tempest_herald', 'echo_shade', 'rift_weaver', 'crown_archon']);

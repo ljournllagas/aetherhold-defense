@@ -1,0 +1,98 @@
+{
+  "tool": "built-in image_gen",
+  "transparent_background": true,
+  "accepted": [
+    {
+      "id": "cinder-level1",
+      "prompt": "Create one original transparent-background production game sprite: Cinder foundation level 1 for Aetherhold Defense. Use supplied Bombard ONLY as painted stone/iron quality and overhead strategy camera reference. New silhouette: squat OPEN BASALT BRAZIER/CAULDRON emplacement, wide open circular black iron basket containing glowing orange embers and a low restrained flame, squat clipped-corner cool charcoal stone base, simple iron braced bowl, small copper-orange rivets, TWO small rim vents, NO CANNON BARREL, no artillery tube, no roof. Simple basic first level. Stylized hand-painted fantasy strategy art, top-down three-quarter 40 degrees downward, visible bowl interior and front/right sides, upper-left light, broad readable value shapes, moderate painted texture, readable at 84px height. Entire tower and stone footprint fully in frame, 12% transparent margins, square canvas. True alpha transparency, no floor or cast shadow, no separate drifting sparks far away. No UI/text/grid/watermark/characters/franchise motifs/photorealism/thick outlines. Exactly ONE tower.",
+      "source": "output/tower-art/sources/cinder-level1.png",
+      "reference": "public/assets/towers/tower_bombard_stage1-v2.png",
+      "sourceSha256": "707822d336e8fecd37b7bfabe5b0705152061f2d658535fc591b1c5cc1bf01bf"
+    },
+    {
+      "id": "sentinel-level1",
+      "prompt": "Original transparent production fantasy RTS tower sprite, Sentinel level 1. New subject, do NOT reproduce reference wooden Ranger architecture: a SINGLE SOLID TAPERED OCTAGONAL COOL GRAY STONE PILLAR, compact wide clipped stone foot, no exposed timber scaffolding, NO wooden watchtower, NO platform battlements, NO four corner posts or gold spikes. At top a very narrow long iron execution bolt RAIL with a single enormous steel spear bolt projecting diagonally upper-right, small horizontal steel spring arms near rear, bronze aim ring, restrained gold fittings. Tower must read as a slim stone military obelisk supporting a precision rail arbalest, clearly distinct from Ranger watchtower. Basic level: stone shaft is simple undecorated with one bronze band. Style only from reference: hand-painted fantasy strategy art, 40 degree downward camera, upper-left lighting, painted stone/iron material planes, medium saturation. One complete object fully isolated with 12% transparent margin on all sides, actual alpha transparency, no ground plane, no baked cast shadow, no text/UI/watermark, no people, no symbols or franchise designs. Square canvas, clear silhouette at 112 pixels tall.",
+      "source": "output/tower-art/sources/sentinel-level1.png",
+      "reference": "public/assets/towers/tower_ranger_stages-v2.png",
+      "sourceSha256": "23e2db03791c843a41a3af0526ec8ed7053baf93b8696a6ff12f102e14d7b44c"
+    },
+    {
+      "id": "sentinel-level2",
+      "prompt": "Create exactly ONE original transparent-background production tower sprite for Aetherhold Defense: Sentinel foundation LEVEL 2: reinforce the stone shaft with two dark iron vertical straps and a wider bronze shoulder collar, strengthen bolt rail with twin lower tension rods and thicker rear crank, keep ONE spear bolt and one rail. Accepted Sentinel level1 reference locks the family design: solid octagonal cool gray stone shaft, narrow steel execution bolt rail pointing upper-right, restrained bronze/gold hardware, hand-painted fantasy RTS material finish and 40-degree overhead three-quarter camera with upper-left light. Paint new advanced structure as described. NO timber watchtower, platform battlements, corner gold spikes, flags, second weapon, roof or humanoid. Keep whole tower within square canvas with 12% transparent margins, actual alpha transparency, no ground plane, cast shadow, text, UI, grid, watermark, franchise motifs, photographic style or thick outlines. Strong value groups and broad readable shapes at 112px tall.",
+      "source": "output/tower-art/sources/sentinel-level2.png",
+      "reference": "output/tower-art/sources/sentinel-level1.png",
+      "sourceSha256": "85d093460abddeed11720330d37f4c562fcd71db476724e6c1fa7af3b7a9f6c6"
+    },
+    {
+      "id": "sentinel-level3",
+      "prompt": "Create exactly ONE original transparent-background production tower sprite for Aetherhold Defense: Sentinel foundation LEVEL 3: tall tapered stone shaft reinforced with four angular iron buttresses, larger armored precision rail firing head with bronze circular rear tension wheel, ONE long oversized steel execution bolt, broader clipped stone footing. Silhouette clearly more advanced than basic pillar. Accepted Sentinel level1 reference locks the family design: solid octagonal cool gray stone shaft, narrow steel execution bolt rail pointing upper-right, restrained bronze/gold hardware, hand-painted fantasy RTS material finish and 40-degree overhead three-quarter camera with upper-left light. Paint new advanced structure as described. NO timber watchtower, platform battlements, corner gold spikes, flags, second weapon, roof or humanoid. Keep whole tower within square canvas with 12% transparent margins, actual alpha transparency, no ground plane, cast shadow, text, UI, grid, watermark, franchise motifs, photographic style or thick outlines. Strong value groups and broad readable shapes at 112px tall.",
+      "source": "output/tower-art/sources/sentinel-level3.png",
+      "reference": "output/tower-art/sources/sentinel-level1.png",
+      "sourceSha256": "6c97c25d6f48e8e2fdb14394fb1d5f91d47a071ddcb0d406e26d25de12229311"
+    },
+    {
+      "id": "sentinel-level4",
+      "prompt": "Create exactly ONE original transparent-background production tower sprite for Aetherhold Defense: Sentinel foundation LEVEL 4: prestigious tapered stone pillar and strong angular iron shoulder armor, single very long armored execution bolt rail with ONE broad steel spear bolt, two compact bronze rear tension wheels and a small aiming crown/ring, faceted iron foot armor. Strong advanced silhouette, no second weapon. Accepted Sentinel level1 reference locks the family design: solid octagonal cool gray stone shaft, narrow steel execution bolt rail pointing upper-right, restrained bronze/gold hardware, hand-painted fantasy RTS material finish and 40-degree overhead three-quarter camera with upper-left light. Paint new advanced structure as described. NO timber watchtower, platform battlements, corner gold spikes, flags, second weapon, roof or humanoid. Keep whole tower within square canvas with 12% transparent margins, actual alpha transparency, no ground plane, cast shadow, text, UI, grid, watermark, franchise motifs, photographic style or thick outlines. Strong value groups and broad readable shapes at 112px tall.",
+      "source": "output/tower-art/sources/sentinel-level4.png",
+      "reference": "output/tower-art/sources/sentinel-level1.png",
+      "sourceSha256": "6b882964253e5e1e632ec07b9cd072e47d70b349de11eb30dca58c55fd567bc3"
+    },
+    {
+      "id": "sentinel-tier2",
+      "prompt": "Create exactly ONE original transparent-background production tower sprite for Aetherhold Defense: Sentinel CAMPAIGN COSMETIC TIER 2: reinforced tapered stone shaft with desaturated bronze diagonal armor bands, thick iron shoulder collar supporting a single long execution bolt rail, bronze aiming ring, one broad steel spear bolt. Slightly ornate compact military design. Accepted Sentinel level1 reference locks the family design: solid octagonal cool gray stone shaft, narrow steel execution bolt rail pointing upper-right, restrained bronze/gold hardware, hand-painted fantasy RTS material finish and 40-degree overhead three-quarter camera with upper-left light. Paint new advanced structure as described. NO timber watchtower, platform battlements, corner gold spikes, flags, second weapon, roof or humanoid. Keep whole tower within square canvas with 12% transparent margins, actual alpha transparency, no ground plane, cast shadow, text, UI, grid, watermark, franchise motifs, photographic style or thick outlines. Strong value groups and broad readable shapes at 112px tall.",
+      "source": "output/tower-art/sources/sentinel-tier2.png",
+      "reference": "output/tower-art/sources/sentinel-level1.png",
+      "sourceSha256": "8982cc8617e405d17674d8d4a8c4a0cd15867389c757a9cabecf0b588263878a"
+    },
+    {
+      "id": "sentinel-tier3",
+      "prompt": "Create exactly ONE original transparent-background production tower sprite for Aetherhold Defense: Sentinel CAMPAIGN COSMETIC TIER 3: prestigious tapered stone precision arbalest tower, faceted dark iron shaft armor with bronze seams, reinforced shoulder crown, long single armored rail and ONE oversized steel spear bolt, two small circular rear tension gears, small gold aim ring, broad clipped stone foot. Clear prestigious advanced silhouette. Accepted Sentinel level1 reference locks the family design: solid octagonal cool gray stone shaft, narrow steel execution bolt rail pointing upper-right, restrained bronze/gold hardware, hand-painted fantasy RTS material finish and 40-degree overhead three-quarter camera with upper-left light. Paint new advanced structure as described. NO timber watchtower, platform battlements, corner gold spikes, flags, second weapon, roof or humanoid. Keep whole tower within square canvas with 12% transparent margins, actual alpha transparency, no ground plane, cast shadow, text, UI, grid, watermark, franchise motifs, photographic style or thick outlines. Strong value groups and broad readable shapes at 112px tall.",
+      "source": "output/tower-art/sources/sentinel-tier3.png",
+      "reference": "output/tower-art/sources/sentinel-level1.png",
+      "sourceSha256": "6cb422d88d58bad87c224794fcb4d8f1ccfd17a4c59271ffd509c96dafa14780"
+    },
+    {
+      "id": "cinder-level2",
+      "prompt": "Generate exactly ONE transparent-background tower sprite for Aetherhold Defense: Cinder foundation LEVEL 2: heavier reinforced thick iron rim, four pronounced short square glowing rim vents, larger deep ember bowl, more stone reinforcement; recognizable silhouette improvement over reference level1. Reference image is accepted Cinder level1: preserve painted style, family identity, squat open brazier role, overhead three-quarter camera and upper-left light. Create the specified more advanced structure as a full newly painted sprite; do not just recolor. Cool gray stone, weathered dark iron, muted wood, restrained copper accents, orange embers. NO cannon barrel or artillery tube. Square canvas, complete object with 12% clear margin, genuine alpha transparency, no floor, no cast shadow, no detached sparks, no UI/text/grid/watermark/characters/franchise motifs, no photographic or flat vector treatment. Broad readable forms at 84 pixels height; flame does not obscure the structure.",
+      "source": "output/tower-art/sources/cinder-level2.png",
+      "reference": "output/tower-art/sources/cinder-level1.png",
+      "sourceSha256": "0faf14aed393ef24d5535c1b12acbc3d4a8b18ecbbd0eb60808e7894c1a2ab10"
+    },
+    {
+      "id": "cinder-level3",
+      "prompt": "Generate exactly ONE transparent-background tower sprite for Aetherhold Defense: Cinder foundation LEVEL 3: larger open ember basin with a pair of short broad rear black iron FLUES rising behind bowl, heavier stone buttresses, wider reinforced bronze rim; recognizable advanced silhouette. Reference image is accepted Cinder level1: preserve painted style, family identity, squat open brazier role, overhead three-quarter camera and upper-left light. Create the specified more advanced structure as a full newly painted sprite; do not just recolor. Cool gray stone, weathered dark iron, muted wood, restrained copper accents, orange embers. NO cannon barrel or artillery tube. Square canvas, complete object with 12% clear margin, genuine alpha transparency, no floor, no cast shadow, no detached sparks, no UI/text/grid/watermark/characters/franchise motifs, no photographic or flat vector treatment. Broad readable forms at 84 pixels height; flame does not obscure the structure.",
+      "source": "output/tower-art/sources/cinder-level3.png",
+      "reference": "output/tower-art/sources/cinder-level1.png",
+      "sourceSha256": "3a21f7919f1c1525032789fff676d0c51f114fae4ef9ed370d9897a083c83f23"
+    },
+    {
+      "id": "cinder-level4",
+      "prompt": "Generate exactly ONE transparent-background tower sprite for Aetherhold Defense: Cinder foundation LEVEL 4 ultimate foundation: broad ceremonial open glowing ember basin with FOUR compact square black iron CHIMNEYS surrounding the bowl, a strong controlled central pyre, thick dark iron rim and four faceted stone buttresses, visually prestigious compact silhouette. Reference image is accepted Cinder level1: preserve painted style, family identity, squat open brazier role, overhead three-quarter camera and upper-left light. Create the specified more advanced structure as a full newly painted sprite; do not just recolor. Cool gray stone, weathered dark iron, muted wood, restrained copper accents, orange embers. NO cannon barrel or artillery tube. Square canvas, complete object with 12% clear margin, genuine alpha transparency, no floor, no cast shadow, no detached sparks, no UI/text/grid/watermark/characters/franchise motifs, no photographic or flat vector treatment. Broad readable forms at 84 pixels height; flame does not obscure the structure.",
+      "source": "output/tower-art/sources/cinder-level4.png",
+      "reference": "output/tower-art/sources/cinder-level1.png",
+      "sourceSha256": "cc465cf88527d73580b6ca148608a49d00a9538d0b127cd00f41aaf921112a31"
+    },
+    {
+      "id": "cinder-tier2",
+      "prompt": "Generate exactly ONE transparent-background tower sprite for Aetherhold Defense: Cinder CAMPAIGN COSMETIC TIER 2: open ember basin in a thick bronze-and-black-iron rim on compact charcoal stone base, pair of short rear flues, angular bronze braces, restrained hot orange vents. More ornate but same gameplay size. Reference image is accepted Cinder level1: preserve painted style, family identity, squat open brazier role, overhead three-quarter camera and upper-left light. Create the specified more advanced structure as a full newly painted sprite; do not just recolor. Cool gray stone, weathered dark iron, muted wood, restrained copper accents, orange embers. NO cannon barrel or artillery tube. Square canvas, complete object with 12% clear margin, genuine alpha transparency, no floor, no cast shadow, no detached sparks, no UI/text/grid/watermark/characters/franchise motifs, no photographic or flat vector treatment. Broad readable forms at 84 pixels height; flame does not obscure the structure.",
+      "source": "output/tower-art/sources/cinder-tier2.png",
+      "reference": "output/tower-art/sources/cinder-level1.png",
+      "sourceSha256": "dc8782b846dc62fe32a4dff7f0f9c261f482cc1ecda4791d267ad878d335ee51"
+    },
+    {
+      "id": "cinder-tier3",
+      "prompt": "Generate exactly ONE transparent-background tower sprite for Aetherhold Defense: Cinder CAMPAIGN COSMETIC TIER 3: prestigious open ember basin, four squat angular iron chimneys, reinforced geometric bronze rim and riveted diagonal braces, controlled orange-red central pyre, charcoal cool stone base, sophisticated final structure but same gameplay size. Reference image is accepted Cinder level1: preserve painted style, family identity, squat open brazier role, overhead three-quarter camera and upper-left light. Create the specified more advanced structure as a full newly painted sprite; do not just recolor. Cool gray stone, weathered dark iron, muted wood, restrained copper accents, orange embers. NO cannon barrel or artillery tube. Square canvas, complete object with 12% clear margin, genuine alpha transparency, no floor, no cast shadow, no detached sparks, no UI/text/grid/watermark/characters/franchise motifs, no photographic or flat vector treatment. Broad readable forms at 84 pixels height; flame does not obscure the structure.",
+      "source": "output/tower-art/sources/cinder-tier3.png",
+      "reference": "output/tower-art/sources/cinder-level1.png",
+      "sourceSha256": "6a6e838264c81fcf642e45af2d7c500a8c4742c4bdaca6048f90ca1b107d3a27"
+    }
+  ],
+  "rejected": [
+    {
+      "id": "sentinel-level1-first",
+      "reason": "Watchtower silhouette too similar to Ranger",
+      "prompt": "Create one original transparent-background production game sprite: Sentinel foundation level 1 for Aetherhold Defense. Use provided Ranger sheet ONLY as painted material and overhead camera reference, not its wooden watchtower silhouette. Single narrow fortified precision arbalest: tall compact cool-gray stone pedestal, dark timber interior, desaturated iron braces, restrained brass/gold hardware, ONE oversized forward bolt rail and compact bow mechanism pointing upper-right. Simple first level, no roof, no flags. Stylized hand-painted fantasy strategy art, visible broad top surfaces and front/right sides, camera 40 degrees downward, upper-left light, clearly grouped values, moderate texture, readable at 112px height. Entire object including clipped-corner stone ground base fully in frame with 12% transparent margins. Square canvas. Actual alpha transparency, no floor, no cast shadow, no baked UI, text, grid, frame, watermarks, humans, recognizable franchise motifs, photorealism or thick outlines. Only ONE tower.",
+      "reference": "public/assets/towers/tower_ranger_stages-v2.png"
+    }
+  ]
+}

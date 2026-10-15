@@ -4,6 +4,7 @@ import { EVOLUTIONS } from '../config/evolutions.ts';
 import { contactShadow, P2 } from './artkit.ts';
 import type { BranchId, EvolutionRank } from '../../shared/progression.ts';
 import { campaignTowerTextureKey } from './campaignArt.ts';
+import { ADDITIONAL_TOWER_GEOMETRY } from './additionalTowerGeometry.ts';
 
 const CELL = 627;
 
@@ -17,12 +18,15 @@ interface TowerStageArt {
   targetHeight: number;
   focus: { x: number; y: number };
   frameIndex?: number;
+  groundCenterX?: number;
 }
 interface TowerArtSpec {
   targetHeight: number;
   focus: { x: number; y: number };
   bounds: readonly [AlphaBounds, AlphaBounds, AlphaBounds, AlphaBounds];
   stages?: readonly [TowerStageArt, TowerStageArt, TowerStageArt, TowerStageArt];
+  groundCentersX?: readonly number[];
+  focuses?: readonly { x: number; y: number }[];
 }
 
 // Alpha-trimmed source bounds were measured per frame in the reviewed atlases.
@@ -97,21 +101,11 @@ const ART: Record<TowerId, TowerArtSpec> = {
   },
   sentinel: {
     targetHeight: 112, focus: { x: 0, y: -0.82 },
-    bounds: [
-      { left: 157, top: 84, width: 354, height: 484, bottom: 567 },
-      { left: 0, top: 49, width: 519, height: 546, bottom: 594 },
-      { left: 104, top: 0, width: 504, height: 577, bottom: 576 },
-      { left: 0, top: 0, width: 584, height: 595, bottom: 594 }
-    ]
+    ...ADDITIONAL_TOWER_GEOMETRY.sentinel
   },
   cinder: {
     targetHeight: 84, focus: { x: -0.08, y: -0.72 },
-    bounds: [
-      { left: 102, top: 135, width: 448, height: 459, bottom: 593 },
-      { left: 21, top: 88, width: 571, height: 524, bottom: 611 },
-      { left: 35, top: 16, width: 581, height: 547, bottom: 562 },
-      { left: 7, top: 33, width: 613, height: 543, bottom: 575 }
-    ]
+    ...ADDITIONAL_TOWER_GEOMETRY.cinder
   }
 };
 
@@ -126,7 +120,7 @@ const PORTRAIT_BACKGROUNDS: Record<TowerId, string> = {
 const GROUND_INSETS: Record<TowerId, readonly number[]> = {
   longbow: [58, 76, 92, 103], ember: [135, 194, 190, 100],
   glacier: [75, 82, 92, 106], starfire: [80, 88, 100, 115],
-  tempest: [79, 88, 96, 104], sentinel: [58, 76, 92, 103], cinder: [135, 194, 190, 100]
+  tempest: [79, 88, 96, 104], sentinel: ADDITIONAL_TOWER_GEOMETRY.sentinel.groundInsets, cinder: ADDITIONAL_TOWER_GEOMETRY.cinder.groundInsets
 };
 // Occupied bounds of the 192px Campaign PNGs, excluding transparent padding.
 const CAMPAIGN_BOUNDS: Record<TowerId, readonly AlphaBounds[]> = {
@@ -135,16 +129,19 @@ const CAMPAIGN_BOUNDS: Record<TowerId, readonly AlphaBounds[]> = {
   glacier: [{ left:30, top:14, width:133, height:170, bottom:183 }, { left:32, top:13, width:131, height:168, bottom:180 }],
   starfire: [{ left:36, top:12, width:120, height:167, bottom:178 }, { left:35, top:6, width:122, height:175, bottom:180 }],
   tempest: [{ left:26, top:15, width:136, height:171, bottom:185 }, { left:27, top:12, width:139, height:173, bottom:184 }],
-  sentinel: [{ left:36, top:6, width:131, height:186, bottom:191 }, { left:33, top:5, width:133, height:187, bottom:191 }],
-  cinder: [{ left:10, top:17, width:178, height:171, bottom:187 }, { left:10, top:18, width:177, height:168, bottom:185 }]
+  sentinel: ADDITIONAL_TOWER_GEOMETRY.sentinel.campaignBounds,
+  cinder: ADDITIONAL_TOWER_GEOMETRY.cinder.campaignBounds
 };
 
 function placedArt(id: TowerId, stage: number, visualTier: 1 | 2 | 3 = 1): TowerStageArt & { groundInset: number } {
   const art = stageArt(id, ART[id], stage);
   if (visualTier === 1) return { ...art, groundInset: GROUND_INSETS[id][stage] };
   const bounds = CAMPAIGN_BOUNDS[id][visualTier - 2];
+  const additional = id === 'sentinel' || id === 'cinder' ? ADDITIONAL_TOWER_GEOMETRY[id] : undefined;
   return { ...art, textureKey: campaignTowerTextureKey(id, visualTier), frameIndex: undefined,
-    sourceWidth: 192, sourceHeight: 192, bounds, groundInset: bounds.width * 0.2 };
+    sourceWidth: 192, sourceHeight: 192, bounds, groundInset: bounds.width * 0.2,
+    groundCenterX: additional?.campaignGroundCentersX[visualTier - 2],
+    focus: additional?.campaignFocuses[visualTier - 2] ?? art.focus };
 }
 
 export interface TowerView {
@@ -173,7 +170,8 @@ function atlasKey(id: TowerId): string {
 function stageArt(id: TowerId, spec: TowerArtSpec, stage: number): TowerStageArt {
   return spec.stages?.[stage] ?? {
     textureKey: atlasKey(id), sourceWidth: CELL, sourceHeight: CELL,
-    frameIndex: stage, bounds: spec.bounds[stage], targetHeight: spec.targetHeight, focus: spec.focus
+    frameIndex: stage, bounds: spec.bounds[stage], targetHeight: spec.targetHeight, focus: spec.focuses?.[stage] ?? spec.focus,
+    groundCenterX: spec.groundCentersX?.[stage]
   };
 }
 
@@ -204,7 +202,7 @@ export function buildTowerVisual(scene: Phaser.Scene, towerId: string, level: nu
   const art = placedArt(id, stage, hasProductionArt ? visualTier : 1);
   const bounds = art.bounds;
   const scale = art.targetHeight / bounds.height;
-  const sourceCenterX = bounds.left + bounds.width / 2;
+  const sourceCenterX = art.groundCenterX ?? bounds.left + bounds.width / 2;
   const centerOffsetX = sourceCenterX - art.sourceWidth / 2;
   const bottomMargin = art.sourceHeight - 1 - bounds.bottom;
   const groundOffset = art.groundInset * scale;
@@ -431,7 +429,7 @@ export function towerArtGeometry(towerId: string, level: number, visualTier: 1 |
   const art = placedArt(id, stage, visualTier);
   const bounds = art.bounds;
   const scale = art.targetHeight / bounds.height;
-  const center = bounds.left + bounds.width / 2;
+  const center = art.groundCenterX ?? bounds.left + bounds.width / 2;
   return {
     left: (bounds.left - center) * scale,
     top: (bounds.top - bounds.bottom + art.groundInset) * scale,

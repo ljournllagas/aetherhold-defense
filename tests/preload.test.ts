@@ -86,7 +86,7 @@ it.each([1, 2, 3] as const)('snapshots DEV campaign fixture tier %i before prelo
   } });
   expect(f.loose.request.data.campaignVisualTier).toBe(visualTier);
   expect(f.loose.required.filter((asset: { path: string }) => asset.path.includes('/assets/campaign/towers/')).map((asset: { path: string }) => asset.path)).toEqual(
-    visualTier === 1 ? [] : ['longbow', 'ember', 'glacier', 'starfire', 'tempest'].map(id => `/assets/campaign/towers/${id}-tier${visualTier}-v1.webp`)
+    visualTier === 1 ? [] : ['longbow', 'ember', 'glacier', 'starfire', 'tempest', 'sentinel', 'cinder'].map(id => `/assets/campaign/towers/${id}-tier${visualTier}-v1.webp`)
   );
 });
 it('uses the isolated seeded tier for a DEV boss fixture without an explicit override', () => {
@@ -97,7 +97,7 @@ it('uses the isolated seeded tier for a DEV boss fixture without an explicit ove
   } });
   expect(f.loose.request.data.campaignVisualTier).toBe(3);
   expect(f.loose.required.filter((asset: { path: string }) => asset.path.includes('/assets/campaign/towers/')).map((asset: { path: string }) => asset.path)).toEqual(
-    ['longbow', 'ember', 'glacier', 'starfire', 'tempest'].map(id => `/assets/campaign/towers/${id}-tier3-v1.webp`)
+    ['longbow', 'ember', 'glacier', 'starfire', 'tempest', 'sentinel', 'cinder'].map(id => `/assets/campaign/towers/${id}-tier3-v1.webp`)
   );
 });
 it('does not request campaign art for classic or GameOver loading', () => {

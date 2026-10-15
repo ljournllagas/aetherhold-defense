@@ -318,27 +318,28 @@ describe('v5 campaign registry and route verification', () => {
     const contract = registryContract;
     expect(expectedFinalPaths).toHaveLength(43);
     const promotedPaths = contract.livePromotions.assets.map(asset => asset.promotedPath);
+    const additionalTowerPaths = ['sentinel', 'cinder'].flatMap(id => [2, 3].map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.webp`));
     expect(promotedPaths).toHaveLength(77);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS.slice(0, expectedFinalPaths.length)).toEqual(expectedFinalPaths);
-    expect(new Set(AVAILABLE_CAMPAIGN_ART_PATHS.slice(expectedFinalPaths.length))).toEqual(new Set(promotedPaths));
-    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toHaveLength(120);
+    expect(new Set(AVAILABLE_CAMPAIGN_ART_PATHS.slice(expectedFinalPaths.length))).toEqual(new Set([...additionalTowerPaths, ...promotedPaths]));
+    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toHaveLength(124);
     const currentFinalPaths = CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path);
-    expect(currentFinalPaths).toHaveLength(120);
+    expect(currentFinalPaths).toHaveLength(124);
     expect(currentFinalPaths.slice(0, expectedFinalPaths.length)).toEqual(expectedFinalPaths);
-    expect(new Set(currentFinalPaths.slice(expectedFinalPaths.length))).toEqual(new Set(promotedPaths));
+    expect(new Set(currentFinalPaths.slice(expectedFinalPaths.length))).toEqual(new Set([...additionalTowerPaths, ...promotedPaths]));
     expect(contract.legacyFinalAssets).toHaveLength(43);
     expect(contract.legacyFinalAssets.map(asset => asset.path)).toEqual(expectedFinalPaths);
     expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path)).toEqual(AVAILABLE_CAMPAIGN_ART_PATHS);
     expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toHaveLength(0);
     expect([...CAMPAIGN_PROVISIONAL_STARTER_PATHS].sort()).toEqual([...PROVISIONAL_EXPANSION_PATHS].sort());
-    expect(new Set([...expectedFinalPaths, ...promotedPaths, ...PROVISIONAL_EXPANSION_PATHS]).size).toBe(120);
+    expect(new Set([...expectedFinalPaths, ...promotedPaths, ...additionalTowerPaths, ...PROVISIONAL_EXPANSION_PATHS]).size).toBe(124);
     const moduleName = 'node:fs';
     const { existsSync, readFileSync } = await import(moduleName);
     for (const asset of contract.legacyFinalAssets) {
       const bytes: Uint8Array = readFileSync(new URL(`../public${asset.path}`, import.meta.url));
       expect(await sha256(bytes), `${asset.path} unchanged from baseline b33ea38`).toBe(asset.baselineSha256);
     }
-    for (const path of [...expectedFinalPaths, ...promotedPaths, ...PROVISIONAL_EXPANSION_PATHS]) {
+    for (const path of [...expectedFinalPaths, ...promotedPaths, ...additionalTowerPaths, ...PROVISIONAL_EXPANSION_PATHS]) {
       expect(existsSync(new URL(`../public${path}`, import.meta.url)), `${path} active file exists`).toBe(true);
     }
   });

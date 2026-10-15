@@ -17,9 +17,9 @@ describe('campaign art replacement contract', () => {
       || AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(true);
     expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toEqual([]);
     expect(required.filter(asset => asset.path.startsWith('/assets/campaign/'))).toEqual(campaignArtAssetsForLoader('campaign'));
-    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(120);
+    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(124);
     expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final_required')).toEqual([]);
-    expect(CAMPAIGN_ART_MANIFEST).toHaveLength(120);
+    expect(CAMPAIGN_ART_MANIFEST).toHaveLength(124);
   });
 
   it('registers the original and accepted World 4–10 terrain plates with the approved tower tiers', () => {
@@ -51,7 +51,7 @@ describe('campaign art replacement contract', () => {
     ]);
     expect(maps.every(asset => asset.state === 'final' && asset.temporary === null
       && asset.qualityFlags.join(',') === 'terrain_plate,runtime_geometry_overlay')).toBe(true);
-    expect(towers).toHaveLength(10);
+    expect(towers).toHaveLength(14);
     expect(towers.every(asset => asset.state === 'final' && asset.temporary === null && !asset.qualityFlags.includes('final_art_unverified'))).toBe(true);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual([
       ...CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path)
@@ -110,7 +110,7 @@ describe('campaign art replacement contract', () => {
     expect(tierTwo.map(asset => asset.path)).toEqual([
       '/assets/campaign/maps/borderkeep_a-v1.webp',
       ...CAMPAIGN_ART_MANIFEST.filter(asset => level.enemyIds.some(id => asset.id === `enemy:${id}`)).map(asset => asset.path),
-      ...['longbow', 'ember', 'glacier', 'starfire', 'tempest'].map(id => `/assets/campaign/towers/${id}-tier2-v1.webp`)
+      ...['longbow', 'ember', 'glacier', 'starfire', 'tempest', 'sentinel', 'cinder'].map(id => `/assets/campaign/towers/${id}-tier2-v1.webp`)
     ]);
     expect(campaignGameplayAssetsForLevel(level, 1).map(asset => asset.path)).toEqual(tierTwo.filter(asset => !asset.path.includes('/towers/')).map(asset => asset.path));
     expect(campaignGameplayAssetsForLevel(level, 3).filter(asset => asset.path.includes('/towers/')).every(asset => asset.path.includes('-tier3-'))).toBe(true);
