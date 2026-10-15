@@ -168,6 +168,11 @@ const EVOLUTION_STATIC_ART: Partial<Readonly<Record<BranchId, EvolutionStaticArt
     textureKey: 'tower_tempest_thunderlord', sourceWidth: 1254, sourceHeight: 1254,
     bounds: { left: 293, top: 21, width: 667, height: 1208, bottom: 1229 },
     targetHeight: 92, focus: { x: 0, y: -0.70 }, groundCenterX: 627, groundInset: 220
+  },
+  deadeye: {
+    textureKey: 'tower_sentinel_deadeye', sourceWidth: 1254, sourceHeight: 1254,
+    bounds: { left: 303, top: 32, width: 859, height: 1192, bottom: 1224 },
+    targetHeight: 112, focus: { x: 0, y: -0.82 }, groundCenterX: 627, groundInset: 172
   }
 };const PORTRAIT_BACKGROUNDS: Record<TowerId, string> = {
   longbow: '#344132', ember: '#443128', glacier: '#293944', starfire: '#352b46', tempest: '#293e3b',
