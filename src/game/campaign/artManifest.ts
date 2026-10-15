@@ -166,6 +166,9 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
   }),
   imageSource(`sigil:borderkeep`, `campaign_sigil_borderkeep`,
     `/assets/campaign/sigils/borderkeep-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`sigil:emberfall`, `campaign_sigil_emberfall`,
+    `/assets/campaign/sigils/emberfall-sigil-v1.webp`, 1254, 1254, 'campaign',
     ['sigil_trophy', 'transparent_png_required'], 'final', null)
 ];
 
@@ -184,7 +187,8 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
     ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v2.webp`),
     `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v2.webp`
   ]),
-  '/assets/campaign/sigils/borderkeep-sigil-v1.webp'
+  '/assets/campaign/sigils/borderkeep-sigil-v1.webp',
+  '/assets/campaign/sigils/emberfall-sigil-v1.webp'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */

@@ -32,6 +32,15 @@ export const SIGIL_TROPHY_ART: Readonly<Record<string, SigilTrophyArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 42, top: 13, width: 1170, height: 1210, bottom: 1223 }
+  },
+  ember_sigil: {
+    sigilId: 'ember_sigil',
+    worldId: 'emberfall',
+    textureKey: 'campaign_sigil_emberfall',
+    path: '/assets/campaign/sigils/emberfall-sigil-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 132, top: 12, width: 991, height: 1228, bottom: 1240 }
   }
 };
 
