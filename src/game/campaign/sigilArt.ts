@@ -68,6 +68,15 @@ export const SIGIL_TROPHY_ART: Readonly<Record<string, SigilTrophyArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 24, top: 17, width: 1205, height: 1221, bottom: 1237 }
+  },
+  iron_sigil: {
+    sigilId: 'iron_sigil',
+    worldId: 'ironroot',
+    textureKey: 'campaign_sigil_ironroot',
+    path: '/assets/campaign/sigils/ironroot-sigil-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 31, top: 32, width: 1192, height: 1150, bottom: 1182 }
   }
 };
 
