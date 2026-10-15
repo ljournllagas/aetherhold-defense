@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { gameLayout, toMinimalLayout } from '../src/game/ui/layout.ts';
+import { gameLayout, portraitComfortZoom, toMinimalLayout } from '../src/game/ui/layout.ts';
 
 it('flags landscape phones minimal; roomy portrait phones/tablets and desktop keep full chrome', () => {
   expect(gameLayout(844, 390).minimal).toBe(true);
@@ -48,4 +48,16 @@ it('preserves legacy boss geometry while boss chrome is reserved', () => {
   expect(slimmed.tray).toBe(boss.tray);
   const reserved = gameLayout(844, 390, { top: 0, right: 0, bottom: 0, left: 0 }, { bossStatusHeight: 24 });
   expect(toMinimalLayout(reserved).hud).toBe(reserved.hud);
+});
+
+it('portrait phones start zoomed toward the lane; everything else starts at the full-map fit', () => {
+  const zoomFor = (w: number, h: number) => { const l = toMinimalLayout(gameLayout(w, h)); return portraitComfortZoom(l, Math.min(l.field.width / 1040, l.field.height / 584)); };
+  expect(zoomFor(390, 844)).toBe(1.5);
+  expect(zoomFor(360, 640)).toBeGreaterThan(1.1);
+  expect(zoomFor(360, 640)).toBeLessThan(1.5);
+  expect(zoomFor(768, 1024)).toBe(1);
+  expect(zoomFor(844, 390)).toBe(1);
+  expect(zoomFor(1280, 720)).toBe(1);
+  const boss = toMinimalLayout(gameLayout(390, 844, { top: 0, right: 0, bottom: 0, left: 0 }, { portraitBossCommands: true }));
+  expect(portraitComfortZoom(boss, 0.375)).toBe(1);
 });

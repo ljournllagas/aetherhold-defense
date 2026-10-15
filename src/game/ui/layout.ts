@@ -109,3 +109,15 @@ export function sheetBounds(layout: GameLayout, kind: 'build' | 'tower' | 'more'
   const y=Math.max(layout.hud,layout.height-layout.tray-height-(touchPreview?56:0));
   return { x: layout.rail ? layout.field.x + (layout.field.width - width) / 2 : (layout.width - width) / 2, y, width, height };
 }
+
+/**
+ * Default camera zoom for narrow portrait phones: the width-limited 16:9 board is a thin strip, so
+ * start closer (up to 1.5x) instead of leaving ~60% of the field empty. Zoom 1 remains the full-map
+ * Fit view; pinch-out and the Fit button return to it. Boss encounters and wider screens stay at 1.
+ */
+export function portraitComfortZoom(layout: GameLayout, fitScale: number): number {
+  if (layout.width >= 600 || layout.width >= layout.height || layout.rail || layout.portraitBossCommands || layout.bossStatusHeight > 0) return 1;
+  const boardHeight = fitScale * 584;
+  if (!(boardHeight > 0)) return 1;
+  return Math.max(1, Math.min(1.5, layout.field.height * 0.6 / boardHeight));
+}

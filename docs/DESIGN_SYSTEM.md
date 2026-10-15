@@ -1332,7 +1332,12 @@ manifest does not lock orientation. Phone/tablet portrait keeps the full chrome
 (two-row stacked HUD on phones plus the always-visible tower tray) whenever the
 width-limited 16:9 board fits beside it. Short landscape (minimal HUD) uses a 48px
 top row and a 112px right-edge rail holding Build, Wave and More, giving the board
-the full remaining height. First-play hints are compact bottom-anchored sheets sized
+the full remaining height. Narrow portrait phones (width < 600) start the camera zoomed up to 1.5× on the board
+because the width-limited 16:9 board would otherwise leave most of the field empty;
+pinching out, Fit/Overview, or the More-sheet "Portrait zoom" toggle (per-device,
+Lane / Whole map) returns to the full-map view, and boss encounters stay at 1×. The speed
+button turns gold when not 1×, and short-landscape HUD status shows AUTO when enabled.
+First-play hints are compact bottom-anchored sheets sized
 to their text with side-by-side "Got it" / "Skip hints" actions.
 
 Respect safe-area insets and the dynamic viewport. Touch building and Meteor use

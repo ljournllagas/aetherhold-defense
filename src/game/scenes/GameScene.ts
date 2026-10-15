@@ -22,11 +22,12 @@ import { CAMPAIGN_SCORE_VERSION, calculateCampaignLiveScore, calculateCampaignSc
 import { buildWave, scheduleWave, enemyHpForWave, enemySpeedForWave } from '../systems/WaveSystem.ts';
 import { RelicVault, advanceFlights } from '../systems/RunSimulation.ts';
 import { AutoSystem, chooseAutoRelic, type AutoContext, type AutoRelicIntent } from '../systems/AutoSystem.ts';
-import { gameLayout, sheetBounds, toMinimalLayout, viewportToWorld, worldToViewport, type GameLayout } from '../ui/layout.ts';
+import { gameLayout, portraitComfortZoom, sheetBounds, toMinimalLayout, viewportToWorld, worldToViewport, type GameLayout } from '../ui/layout.ts';
 import {TowerTray} from '../ui/TowerTray.ts';
 import {TowerTrayGesture,edgePan,type TrayInput,type TrayIntent} from '../systems/TowerTrayGesture.ts';
 import type {TowerId} from '../../shared/progression.ts';
 import {haptic} from '../systems/haptics.ts';
+import {portraitZoomEnabled,setPortraitZoomEnabled} from '../systems/cameraPref.ts';
 import {localGuide,type GuideStep} from '../systems/ContextualGuide.ts';
 import {HELP_TOPICS} from '../ui/helpContent.ts';
 import {campaignProgressionLines,progressionPanelLines} from './ProgressionScene.ts';
@@ -339,7 +340,7 @@ export class GameScene extends Phaser.Scene {
       const intent = this.gesture.move(ptr.id, ptr);
       if (intent?.type === 'pinch') { this.cameraView.zoomAt(this.cameraView.zoom * intent.ratio, intent.point); this.cameraView.pan(intent.dx, intent.dy); }
       if (intent?.type === 'pan') this.cameraView.pan(intent.dx, intent.dy);
-      if (intent) this.applyView();
+      if (intent) { this.cameraTouched = true; this.applyView(); }
       return;
     }
     const point = this.cameraView.unproject(ptr);
@@ -535,6 +536,7 @@ export class GameScene extends Phaser.Scene {
     if (settings.musicOn) snd.startMusic();
     this.layout = toMinimalLayout(gameLayout(this.scale.width, this.scale.height));
     this.cameraView.resize(this.layout.field);
+    this.cameraTouched = false; this.applyComfortZoom();
     this.worldRoot = this.add.container(0, 0);
     this.drawMap();
     this.rangeBackdrop = this.world(this.add.circle(0, 0, 50, 0, 0).setStrokeStyle(5, 0x0a0e12, 0.6).setVisible(false).setDepth(4.99));
@@ -702,7 +704,8 @@ export class GameScene extends Phaser.Scene {
       sheet.action(y + 52, 'Relics', () => this.openSheet('relics'));
       sheet.action(y + 104, 'Next Wave', () => this.openSheet('next'));
       sheet.pair(y + 156, 'Zoom In', 'Zoom Out', () => this.changeZoom(1.25), () => this.changeZoom(.8));
-      sheet.action(y + 208, 'Reset View', () => { this.cameraView.reset(); this.applyView(); });
+      sheet.action(y + 416, portraitZoomEnabled() ? 'Portrait zoom: Lane' : 'Portrait zoom: Whole map', () => { setPortraitZoomEnabled(!portraitZoomEnabled()); this.cameraTouched = false; this.applyComfortZoom(); this.applyView(); this.drawSheet(sheet.scrollOffset); });
+      sheet.action(y + 208, 'Reset View', () => { this.cameraView.reset(); this.cameraTouched=true; this.applyView(); });
       sheet.action(y + 260,'Progression and requirements',()=>this.openDetails('progression'));
       sheet.action(y + 312,'Help',()=>this.openDetails('help'));
       sheet.action(y + 364,`Speed ${this.speed}×`,()=>{this.cycleSpeed();this.drawSheet();});
@@ -813,7 +816,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private changeZoom(factor: number): void {
-    const f = this.layout.field; this.cameraView.zoomAt(this.cameraView.zoom * factor, { x: f.x + f.width / 2, y: f.y + f.height / 2 }); this.applyView();
+    this.cameraTouched = true; const f = this.layout.field; this.cameraView.zoomAt(this.cameraView.zoom * factor, { x: f.x + f.width / 2, y: f.y + f.height / 2 }); this.applyView();
   }
 
   private showTouchPreview(): void {
@@ -866,6 +869,7 @@ export class GameScene extends Phaser.Scene {
     this.cameraView.setTopHeadroom(0);
     this.layout = toMinimalLayout(gameLayout(this.scale.width, this.scale.height));
     this.cameraView.resize(this.layout.field);
+    this.applyComfortZoom(); if (this.worldRoot) this.applyView();
     const render = this.modalRenderer;
     this.modalSheet?.destroy(); this.modalSheet = null;
     this.modal?.destroy(true); this.modal = null;
@@ -1490,6 +1494,7 @@ export class GameScene extends Phaser.Scene {
     if (import.meta.env.DEV && this.qaCampaignFixture) bits.push(`DEV CAMPAIGN FIXTURE · L${this.qaCampaignFixture.level} · unsaved`);
     if (this.paused || this.pausedByModal) bits.push('PAUSED');
     if (this.speed !== 1) bits.push(`${this.speed}x`);
+    if (this.layout.minimal && this.auto.enabled) bits.push('AUTO');
     if (this.gameTimeMs < this.freezeUntil) bits.push('FROZEN');
     if (this.gameTimeMs < this.doubleBountyUntil) bits.push('2x GOLD');
     if (this.gameTimeMs < this.battleCryUntil) bits.push('TEMPO');
@@ -1507,6 +1512,7 @@ export class GameScene extends Phaser.Scene {
     }
     if (this.layout.portraitBossCommands) this.startBtnLabel?.setText('Wave');
     this.startBtnLabel?.setVisible(true);
+    this.speedBtnLabel?.setColor?.(this.speed === 1 ? C.textPrimary : C.goldBright);
     this.tweens.timeScale = this.paused || this.pausedByModal ? 0 : this.speed;
     this.time.paused = this.paused || this.pauseState.has('background');
     this.syncEnemyAnimationPlayback();
@@ -1687,13 +1693,13 @@ export class GameScene extends Phaser.Scene {
       this.autoButton = null;
       this.speedBtnLabel = button(this, this.uiRoot!, w - this.layout.safe.right - 128, top, 56, `${this.speed}×`, () => this.cycleSpeed()).text;
       button(this, this.uiRoot!, w - this.layout.safe.right - 68, top, 60, 'II', () => this.togglePauseMenu());
-      button(this, this.uiRoot!, w - this.layout.safe.right - 192, top, 60, 'Fit', () => { this.cancelGesture(); this.cameraView.reset(); this.applyView(); });
+      button(this, this.uiRoot!, w - this.layout.safe.right - 192, top, 60, 'Fit', () => { this.cancelGesture(); this.cameraView.reset(); this.cameraTouched=true; this.applyView(); });
       remember(); return;
     }
     if (this.layout.compact && !portrait) {
       this.autoButton = button(this, this.uiRoot!, w - 252, y, 84, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => this.setAutoEnabled(!this.auto.enabled));
       this.speedBtnLabel = null;
-      button(this, this.uiRoot!, w - 164, y, 88, 'Overview', () => { this.cancelGesture(); this.cameraView.reset(); this.applyView(); });
+      button(this, this.uiRoot!, w - 164, y, 88, 'Overview', () => { this.cancelGesture(); this.cameraView.reset(); this.cameraTouched=true; this.applyView(); });
       button(this, this.uiRoot!, w - 72, y, 64, 'Pause', () => this.togglePauseMenu());
       remember(); return;
     }
@@ -1704,7 +1710,7 @@ export class GameScene extends Phaser.Scene {
         const result=button(this,this.uiRoot!,left+i*(width+4),y,width,label,action);
         result.text.setFontSize(13);return result;
       };
-      control(0,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
+      control(0,'Overview',()=>{this.cancelGesture();this.cameraView.reset(); this.cameraTouched=true;this.applyView();});
       this.autoButton=control(1,this.auto.enabled?'Auto ON':'Auto OFF',()=>this.setAutoEnabled(!this.auto.enabled));
       this.speedBtnLabel=control(2,`${this.speed}×`,()=>this.cycleSpeed()).text;
       control(3,'Pause',()=>this.togglePauseMenu());remember();return;
@@ -1712,12 +1718,21 @@ export class GameScene extends Phaser.Scene {
     this.autoButton = button(this, this.uiRoot!, w - 248, y, 88, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => this.setAutoEnabled(!this.auto.enabled));
     this.speedBtnLabel = button(this, this.uiRoot!, w - 152, y, 64, `${this.speed}×`, () => this.cycleSpeed()).text;
     button(this, this.uiRoot!, w - 80, y, 68, 'Pause', () => this.togglePauseMenu());
-    if(portrait)button(this,this.uiRoot!,8,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
-    else button(this,this.uiRoot!,w-344,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
+    if(portrait)button(this,this.uiRoot!,8,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset(); this.cameraTouched=true;this.applyView();});
+    else button(this,this.uiRoot!,w-344,y,88,'Overview',()=>{this.cancelGesture();this.cameraView.reset(); this.cameraTouched=true;this.applyView();});
     remember();
   }
 
   private speedBtnLabel: Phaser.GameObjects.Text | null = null;
+  private cameraTouched = false;
+
+  /** Portrait-phone default zoom; skipped once the player has moved the camera or while a boss owns it. */
+  private applyComfortZoom(): void {
+    if (this.cameraTouched || !portraitZoomEnabled() || this.enemies.some(e => e.alive && e.isBoss)) return;
+    this.cameraView.reset();
+    const zoom = portraitComfortZoom(this.layout, this.cameraView.fitScale);
+    if (zoom > 1) { const f = this.layout.field; this.cameraView.zoomAt(zoom, { x: f.x + f.width / 2, y: f.y + f.height / 2 }); }
+  }
 
   private autoShortStatus(): string {
     if (!this.auto.enabled) return '';
@@ -1834,7 +1849,7 @@ export class GameScene extends Phaser.Scene {
 
   private cycleSpeed(): void {
     this.speed = this.speed === 1 ? 2 : this.speed === 2 ? 3 : 1;
-    this.speedBtnLabel?.setText(`${this.speed}×`); this.updateHUD();
+    this.speedBtnLabel?.setText(`${this.speed}×`); this.speedBtnLabel?.setColor?.(this.speed === 1 ? C.textPrimary : C.goldBright); this.updateHUD();
   }
 
   // ---------- placement context panel (ref 05): role stats while placing ----------
