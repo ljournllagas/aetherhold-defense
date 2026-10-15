@@ -123,6 +123,11 @@ const EVOLUTION_STATIC_ART: Partial<Readonly<Record<BranchId, EvolutionStaticArt
     textureKey: 'tower_longbow_marksman', sourceWidth: 1254, sourceHeight: 1254,
     bounds: { left: 319, top: 26, width: 843, height: 1209, bottom: 1234 },
     targetHeight: 112, focus: { x: 0, y: -0.82 }, groundCenterX: 627, groundInset: 172
+  },
+  volley: {
+    textureKey: 'tower_longbow_volley', sourceWidth: 1254, sourceHeight: 1254,
+    bounds: { left: 200, top: 24, width: 927, height: 1209, bottom: 1232 },
+    targetHeight: 112, focus: { x: 0, y: -0.82 }, groundCenterX: 627, groundInset: 172
   }
 };const PORTRAIT_BACKGROUNDS: Record<TowerId, string> = {
   longbow: '#344132', ember: '#443128', glacier: '#293944', starfire: '#352b46', tempest: '#293e3b',

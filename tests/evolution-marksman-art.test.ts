@@ -59,7 +59,8 @@ describe('marksman static appearance', () => {
 
   it('leaves other branches, towers and campaign tiers on their existing art', () => {
     for (let level = 1; level <= 4; level++) {
-      expect(towerArtGeometry('longbow', level, 1, 'volley')).toEqual(towerArtGeometry('longbow', level, 1));
+      expect(towerArtGeometry('longbow', level, 1, 'volley')).not.toEqual(towerArtGeometry('longbow', level, 1));
+      expect(towerArtGeometry('longbow', level, 1, 'volley')).not.toEqual(towerArtGeometry('longbow', level, 1, 'marksman'));
       expect(towerArtGeometry('ember', level, 1, 'marksman')).toEqual(towerArtGeometry('ember', level, 1));
       for (const tier of [2, 3] as const) {
         expect(towerArtGeometry('longbow', level, tier, 'marksman'))
