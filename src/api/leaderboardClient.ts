@@ -64,6 +64,11 @@ function isScoreRecord(value: unknown): value is ScoreRecord {
 }
 
 function errorMessage(err: unknown, fallback: string): string {
+  try {
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      return 'Offline — will sync when back online.';
+    }
+  } catch { /* onLine check is best-effort */ }
   if (err && typeof err === 'object') {
     const e = err as { code?: unknown; message?: unknown };
     if (typeof e.message === 'string' && e.message) return e.message;

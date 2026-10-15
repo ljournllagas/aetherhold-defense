@@ -1,3 +1,10 @@
+/sw.js
+  Cache-Control: no-cache
+  Content-Type: application/javascript; charset=utf-8
+/workbox-*.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Content-Type: application/manifest+json
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY

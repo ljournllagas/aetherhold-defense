@@ -5,9 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Aegis of the Borderkeep — Ancient Border Keep</title>
     <meta name="description" content="Aegis of the Borderkeep: defend the Ancient Border Keep from the Gloomtide in an original fantasy tower defense." />
+    <meta name="theme-color" content="#0A0E12" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Aegis TD" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon-180.png" />
   </head>
   <body>
     <div id="game-root"></div>
+    <div id="pwa-install-bar" hidden>
+      <span id="pwa-install-text">Install Aegis for fullscreen offline play</span>
+      <button id="pwa-install-btn" type="button">Install</button>
+      <button id="pwa-install-dismiss" type="button" aria-label="Dismiss">✕</button>
+    </div>
+    <div id="pwa-update-bar" hidden>
+      <span>Update available — restart to apply</span>
+      <button id="pwa-update-btn" type="button">Restart</button>
+      <button id="pwa-update-dismiss" type="button" aria-label="Dismiss">✕</button>
+    </div>
+    <div id="pwa-ios-sheet" hidden>
+      <div class="pwa-ios-panel" role="dialog" aria-label="Install instructions">
+        <h2>Install Aegis</h2>
+        <p>Tap Share, then “Add to Home Screen” to install fullscreen offline play.</p>
+        <button id="pwa-ios-close" type="button">Got it</button>
+      </div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

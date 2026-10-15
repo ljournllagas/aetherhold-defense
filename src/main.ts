@@ -5,6 +5,7 @@ import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 import './style.css';
 import Phaser from 'phaser';
+import { initPWA } from './pwa.ts';
 import { BootScene } from './game/scenes/BootScene.ts';
 import { LoginScene } from './game/scenes/LoginScene.ts';
 import { PreloadScene } from './game/scenes/PreloadScene.ts';
@@ -19,6 +20,7 @@ import { ProgressionScene } from './game/scenes/ProgressionScene.ts';
 import { HelpScene } from './game/scenes/HelpScene.ts';
 
 document.title = 'Aegis of the Borderkeep';
+initPWA();
 const host = document.getElementById('game-root')!;
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -40,6 +42,7 @@ const config: Phaser.Types.Core.GameConfig = {
 
 // eslint-disable-next-line no-new
 const game = new Phaser.Game(config);
+if (import.meta.env.DEV) (window as unknown as { __game?: Phaser.Game }).__game = game;
 const resizeGame = () => {
   document.documentElement.style.setProperty('--viewport-height', `${window.visualViewport?.height ?? window.innerHeight}px`);
   if (game.isBooted && (game.scale.width !== host.clientWidth || game.scale.height !== host.clientHeight)) {

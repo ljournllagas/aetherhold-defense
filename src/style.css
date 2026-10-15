@@ -84,3 +84,11 @@ canvas {
 .account-panel button.account-primary { border-color:var(--color-gold);color:var(--color-gold-bright);background:#1e2a22; }
 .account-separator { margin:10px 0 0;text-align:center;color:#8a7045;font-size:14px; }
 .account-warning { color:#efc186; }.account-panel :focus-visible,.account-access:focus-visible { outline:3px solid #e7bb62;outline-offset:3px; }
+
+/* PWA install / update bars: HTML overlay, never changes battlefield layout. */
+#pwa-install-bar,#pwa-update-bar { position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;display:flex;gap:8px;align-items:center;max-width:min(520px,calc(100vw - 24px));padding:10px 12px;background:#121920;border:1px solid #6b6047;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);font:500 14px Inter,sans-serif;color:#f3ebdd; }
+#pwa-install-bar[hidden],#pwa-update-bar[hidden],#pwa-ios-sheet[hidden] { display:none; }
+#pwa-install-btn,#pwa-update-btn,#pwa-ios-close { min-height:44px;padding:10px 16px;border:1px solid var(--color-gold);border-radius:6px;background:#1e2a22;color:var(--color-gold-bright);font:inherit;cursor:pointer; }
+#pwa-install-dismiss,#pwa-update-dismiss { min-height:44px;min-width:44px;border:1px solid #2c3945;border-radius:6px;background:transparent;color:#b7c0c7;font:inherit;cursor:pointer; }
+#pwa-ios-sheet { position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;padding:20px;background:#0a0e1299;box-sizing:border-box; }
+.pwa-ios-panel { width:min(420px,100%);padding:24px;box-sizing:border-box;background:#101820;color:#ede4d2;border:1px solid #897249;border-radius:12px;font:500 16px/1.5 Inter,sans-serif; }
