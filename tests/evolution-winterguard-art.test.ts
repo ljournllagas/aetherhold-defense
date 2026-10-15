@@ -61,7 +61,8 @@ describe('winterguard static appearance', () => {
 
   it('leaves other branches, towers and campaign tiers on their existing art', () => {
     for (let level = 1; level <= 4; level++) {
-      expect(towerArtGeometry('glacier', level, 1, 'brittle-ice')).toEqual(towerArtGeometry('glacier', level, 1));
+      expect(towerArtGeometry('glacier', level, 1, 'brittle-ice')).not.toEqual(towerArtGeometry('glacier', level, 1));
+      expect(towerArtGeometry('glacier', level, 1, 'brittle-ice')).not.toEqual(towerArtGeometry('glacier', level, 1, 'winterguard'));
       expect(towerArtGeometry('ember', level, 1, 'winterguard')).toEqual(towerArtGeometry('ember', level, 1));
       for (const tier of [2, 3] as const) {
         expect(towerArtGeometry('glacier', level, tier, 'winterguard'))
