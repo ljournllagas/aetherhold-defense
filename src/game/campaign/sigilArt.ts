@@ -95,6 +95,15 @@ export const SIGIL_TROPHY_ART: Readonly<Record<string, SigilTrophyArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 21, top: 3, width: 1212, height: 1249, bottom: 1252 }
+  },
+  rift_sigil: {
+    sigilId: 'rift_sigil',
+    worldId: 'astral_rift',
+    textureKey: 'campaign_sigil_astral_rift',
+    path: '/assets/campaign/sigils/astral_rift-sigil-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 35, top: 14, width: 1183, height: 1202, bottom: 1215 }
   }
 };
 

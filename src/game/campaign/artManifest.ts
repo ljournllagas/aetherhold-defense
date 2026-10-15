@@ -187,6 +187,9 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
     ['sigil_trophy', 'transparent_png_required'], 'final', null),
   imageSource(`sigil:dreadmoon`, `campaign_sigil_dreadmoon`,
     `/assets/campaign/sigils/dreadmoon-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`sigil:astral_rift`, `campaign_sigil_astral_rift`,
+    `/assets/campaign/sigils/astral_rift-sigil-v1.webp`, 1254, 1254, 'campaign',
     ['sigil_trophy', 'transparent_png_required'], 'final', null)
 ];
 
@@ -212,7 +215,8 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
   '/assets/campaign/sigils/sunken_aether-sigil-v1.webp',
   '/assets/campaign/sigils/ironroot-sigil-v1.webp',
   '/assets/campaign/sigils/sky_isles-sigil-v1.webp',
-  '/assets/campaign/sigils/dreadmoon-sigil-v1.webp'
+  '/assets/campaign/sigils/dreadmoon-sigil-v1.webp',
+  '/assets/campaign/sigils/astral_rift-sigil-v1.webp'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
