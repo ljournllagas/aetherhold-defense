@@ -41,6 +41,15 @@ export const SIGIL_TROPHY_ART: Readonly<Record<string, SigilTrophyArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 132, top: 12, width: 991, height: 1228, bottom: 1240 }
+  },
+  frost_sigil: {
+    sigilId: 'frost_sigil',
+    worldId: 'frostveil',
+    textureKey: 'campaign_sigil_frostveil',
+    path: '/assets/campaign/sigils/frostveil-sigil-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 42, top: 15, width: 1171, height: 1223, bottom: 1238 }
   }
 };
 

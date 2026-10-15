@@ -44,7 +44,7 @@ describe('borderkeep world trophy', () => {
     expect(TROPHY.textureKey).toBe('campaign_sigil_borderkeep');
     expect(TROPHY.path).toBe('/assets/campaign/sigils/borderkeep-sigil-v1.webp');
     for (const sigil of CAMPAIGN_SIGILS) {
-      if (sigil.id === 'border_sigil' || sigil.id === 'ember_sigil') continue;
+      if (sigil.id === 'border_sigil' || sigil.id === 'ember_sigil' || sigil.id === 'frost_sigil') continue;
       expect(sigilTrophyFor(sigil.id)).toBeNull();
     }
   });
