@@ -9,6 +9,8 @@ export interface GameLayout {
   compact: boolean;
   narrow: boolean;
   stackedHud: boolean;
+  /** Minimal HUD: slim top row + Build/Wave/More bottom row (phones + portrait <1180). */
+  minimal: boolean;
   portraitBossCommands: boolean;
   bossStatusHeight: number;
   safe: Insets;
@@ -24,6 +26,7 @@ export function gameLayout(width: number, height: number, safe: Insets = {top:0,
   const narrow = width < 768;
   const portrait = width < height && narrow;
   const stackedHud = portrait || width < 600;
+  const minimal = compact || (width < height && width < 1180);
   const portraitBossCommands = stackedHud && options.portraitBossCommands === true;
   const bossStatusHeight = compact ? options.bossStatusHeight ?? 0 : 0;
   const hud = (stackedHud ? 104 + bossStatusHeight : 56 + Math.max(0,bossStatusHeight-24)) + safe.top;
@@ -36,7 +39,31 @@ export function gameLayout(width: number, height: number, safe: Insets = {top:0,
     : {x:portrait?safe.left:width-safe.right-240,y:portrait?y+76:y,width:portrait?available:240,height:portrait?52:76};
   const field={x:safe.left,y:hud,width:Math.max(1,available-inspector),height:Math.max(1,height-hud-tray)};
   const inspectorBounds=inspector?{x:width-safe.right-inspector,y:hud,width:inspector,height:field.height}:null;
-  return {width,height,hud,tray,inspector,compact,narrow,stackedHud,portraitBossCommands,bossStatusHeight,safe,trayBounds,waveBounds,inspectorBounds,field};
+  return {width,height,hud,tray,inspector,compact,narrow,stackedHud,minimal,portraitBossCommands,bossStatusHeight,safe,trayBounds,waveBounds,inspectorBounds,field};
+}
+
+/**
+ * Minimal HUD override (GameScene normal play only): slim stacked portrait
+ * chrome (104px top + 128px tray) to a 48px top row + 76px action row,
+ * maximizing the map field. Compact landscape is already 56/76 so only its
+ * content is minimized by draw branches, not its geometry. gameLayout()
+ * itself is unchanged so existing geometry contracts hold; boss encounters
+ * keep legacy geometry via their own reservation flags.
+ */
+export function toMinimalLayout(layout: GameLayout): GameLayout {
+  if (!layout.minimal) return layout;
+  if (layout.portraitBossCommands || layout.bossStatusHeight > 0) return { ...layout, minimal: false };
+  const { width, height, safe } = layout;
+  const hud = layout.stackedHud ? 48 + safe.top : layout.hud;
+  const portrait = width < height && width < 768;
+  const tray = portrait ? 76 + safe.bottom : layout.tray;
+  if (hud === layout.hud && tray === layout.tray) return layout;
+  const available = Math.max(44, width - safe.left - safe.right);
+  const y = height - tray;
+  const trayBounds = { x: safe.left, y, width: available, height: tray - safe.bottom };
+  const waveBounds = { x: safe.left, y, width: available, height: tray - safe.bottom };
+  const field = { x: safe.left, y: hud, width: available, height: Math.max(1, height - hud - tray) };
+  return { ...layout, hud, tray, trayBounds, waveBounds, field };
 }
 
 export function readSafeInsets():Insets {

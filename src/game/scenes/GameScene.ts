@@ -22,7 +22,7 @@ import { CAMPAIGN_SCORE_VERSION, calculateCampaignLiveScore, calculateCampaignSc
 import { buildWave, scheduleWave, enemyHpForWave, enemySpeedForWave } from '../systems/WaveSystem.ts';
 import { RelicVault, advanceFlights } from '../systems/RunSimulation.ts';
 import { AutoSystem, chooseAutoRelic, type AutoContext, type AutoRelicIntent } from '../systems/AutoSystem.ts';
-import { gameLayout, sheetBounds, viewportToWorld, worldToViewport, type GameLayout } from '../ui/layout.ts';
+import { gameLayout, sheetBounds, toMinimalLayout, viewportToWorld, worldToViewport, type GameLayout } from '../ui/layout.ts';
 import {TowerTray} from '../ui/TowerTray.ts';
 import {TowerTrayGesture,edgePan,type TrayInput,type TrayIntent} from '../systems/TowerTrayGesture.ts';
 import type {TowerId} from '../../shared/progression.ts';
@@ -530,7 +530,7 @@ export class GameScene extends Phaser.Scene {
     Object.assign(snd, { masterVolume: settings.masterVolume, musicOn: settings.musicOn, sfxOn: settings.sfxOn, musicVolume: settings.musicVolume, sfxVolume: settings.sfxVolume });
     snd.applyVolumes(); snd.unlock();
     if (settings.musicOn) snd.startMusic();
-    this.layout = gameLayout(this.scale.width, this.scale.height);
+    this.layout = toMinimalLayout(gameLayout(this.scale.width, this.scale.height));
     this.cameraView.resize(this.layout.field);
     this.worldRoot = this.add.container(0, 0);
     this.drawMap();
@@ -660,13 +660,14 @@ export class GameScene extends Phaser.Scene {
     } else if (kind === 'more') {
       this.autoDetailText = sheet.text(0, this.autoDetail());
       const y = this.autoDetailText.height + 12;
-      sheet.action(y, 'Relics', () => this.openSheet('relics'));
-      sheet.action(y + 52, 'Next Wave', () => this.openSheet('next'));
-      sheet.pair(y + 104, 'Zoom In', 'Zoom Out', () => this.changeZoom(1.25), () => this.changeZoom(.8));
-      sheet.action(y + 156, 'Reset View', () => { this.cameraView.reset(); this.applyView(); });
-      sheet.action(y+208,'Progression and requirements',()=>this.openDetails('progression'));
-      sheet.action(y+260,'Help',()=>this.openDetails('help'));
-      sheet.action(y+312,`Speed ${this.speed}×`,()=>{this.cycleSpeed();this.drawSheet();});
+      sheet.action(y, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => { this.setAutoEnabled(!this.auto.enabled); this.drawSheet(); });
+      sheet.action(y + 52, 'Relics', () => this.openSheet('relics'));
+      sheet.action(y + 104, 'Next Wave', () => this.openSheet('next'));
+      sheet.pair(y + 156, 'Zoom In', 'Zoom Out', () => this.changeZoom(1.25), () => this.changeZoom(.8));
+      sheet.action(y + 208, 'Reset View', () => { this.cameraView.reset(); this.applyView(); });
+      sheet.action(y + 260,'Progression and requirements',()=>this.openDetails('progression'));
+      sheet.action(y + 312,'Help',()=>this.openDetails('help'));
+      sheet.action(y + 364,`Speed ${this.speed}×`,()=>{this.cycleSpeed();this.drawSheet();});
     } else if (kind === 'relics') {
       let rowY = 0;
       for (let i = 0; i < 3; i++) {
@@ -781,22 +782,25 @@ export class GameScene extends Phaser.Scene {
     this.confirmStrip?.destroy(true); this.confirmStrip = null;
     if (!this.uiRoot || (!this.placingTowerId && !this.pendingMeteor)) return;
     if (this.sheetKind) return;
-    const w = Math.min(600, this.layout.width - 16);
-    const c = this.add.container((this.layout.width - w) / 2, this.layout.height - this.layout.tray - 80); this.uiRoot.add(c); this.confirmStrip = c;
-    panel(this, c, 0, 0, w, 76);
+    const w = Math.min(this.layout.minimal ? 400 : 600, this.layout.width - 16);
+    const stripH = this.layout.minimal ? 64 : 76;
+    const c = this.add.container((this.layout.width - w) / 2, this.layout.height - this.layout.tray - (this.layout.minimal ? 68 : 80)); this.uiRoot.add(c); this.confirmStrip = c;
+    panel(this, c, 0, 0, w, stripH);
     const preview = this.touchPreview;
     const check = this.placingTowerId ? this.placementCheck(this.placingTowerId, preview?.plot ?? -1) : { ok: !!preview, reason: 'Tap a target' };
     const message = preview ? (check.ok ? this.pendingMeteor ? 'Meteor target ready' : `${TOWER_LIST.find(t => t.id === this.placingTowerId)?.name} · ${TOWER_LIST.find(t => t.id === this.placingTowerId)?.levels[0].cost} gold` : check.reason) : this.pendingMeteor ? 'Tap the map to preview Meteor' : 'Tap a clearing to preview';
     c.add(this.add.text(8, 4, message, style(12, check.ok ? C.gold : C.textSecondary)).setWordWrapWidth(w - 16));
     const bw = (w - 24) / 2;
-    button(this, c, 8, 26, bw, this.pendingMeteor ? 'Cast' : 'Build', () => {
+    const btnY = this.layout.minimal ? 20 : 26;
+    const btnH = this.layout.minimal ? 40 : 44;
+    button(this, c, 8, btnY, bw, this.pendingMeteor ? 'Cast' : 'Build', () => {
       if (!this.touchPreview || !check.ok || this.pauseState.blocked) return;
       const p = this.touchPreview; this.touchPreview = null;
       if (this.pendingMeteor) this.castMeteor(p.point.x, p.point.y);
       else if (this.placingTowerId && p.plot !== null) this.tryBuild(this.placingTowerId, p.plot);
       this.showTouchPreview();
-    }, check.ok ? 'primary' : 'secondary');
-    button(this, c, 16 + bw, 26, bw, 'Cancel', () => { this.touchPreview = null; this.onEscape(); this.showTouchPreview(); });
+    }, check.ok ? 'primary' : 'secondary', btnH);
+    button(this, c, 16 + bw, btnY, bw, 'Cancel', () => { this.touchPreview = null; this.onEscape(); this.showTouchPreview(); }, 'secondary', btnH);
     if (preview) {
       if (this.pendingMeteor) this.rangeCircle?.setPosition(preview.point.x, preview.point.y).setRadius(POWERUP_EFFECTS.meteor.radius).setVisible(true);
       else this.updateGhost(preview.point.x, preview.point.y);
@@ -822,7 +826,7 @@ export class GameScene extends Phaser.Scene {
     this.bossFitBoss = null; this.bossFitMap = null;
     this.cameraView.setContentFit(null);
     this.cameraView.setTopHeadroom(0);
-    this.layout = gameLayout(this.scale.width, this.scale.height);
+    this.layout = toMinimalLayout(gameLayout(this.scale.width, this.scale.height));
     this.cameraView.resize(this.layout.field);
     const render = this.modalRenderer;
     this.modalSheet?.destroy(); this.modalSheet = null;
@@ -1309,6 +1313,27 @@ export class GameScene extends Phaser.Scene {
     const remember = (): void => { this.hudObjects = this.uiRoot!.list.slice(firstObject); };
     const w = this.layout.width;
     const scoreCaption = this.campaign ? 'COMBAT SCORE' : 'SCORE';
+    if (this.layout.minimal) {
+      // Slim single row: WAVE / GOLD / LIVES left, score+diff tucked into sheets.
+      panel(this, this.uiRoot!, 0, 0, w, this.layout.hud);
+      const usable = w - this.layout.safe.left - this.layout.safe.right - 200;
+      const cell = Math.max(64, usable / 3);
+      const metric = (i: number, label: string, color: string) => {
+        const caption = this.add.text(this.layout.safe.left + 8 + i * cell, this.layout.safe.top + 2, label, style(11, C.textSecondary, true));
+        this.hudMetricLabels.push(caption); this.uiRoot!.add(caption);
+        const t = this.add.text(caption.x, this.layout.safe.top + 18, '', style(15, color, true)); this.uiRoot!.add(t); return t;
+      };
+      this.hudWaveValue = metric(0, 'WAVE', C.textPrimary); this.hudWaveLabel = this.hudMetricLabels[0];
+      this.hudGoldValue = metric(1, 'GOLD', C.gold); this.hudLivesValue = metric(2, 'LIVES', C.textPrimary);
+      // Score/difficulty live in sheets in minimal mode; keep a hidden node so
+      // live updates and boss flows never null-deref.
+      this.hudScoreValue = this.add.text(-1000, -1000, '', style(12, C.textPrimary)).setVisible(false);
+      this.uiRoot!.add(this.hudScoreValue);
+      this.hudDiff = this.add.text(0, 0, '', style(12, C.textSecondary)).setVisible(false);
+      this.autoStatusText = null;
+      this.hudStatus = this.add.text(8, this.layout.hud + 4, '', style(12, C.gold)).setWordWrapWidth(w - 16);
+      this.uiRoot!.add([this.hudDiff, this.hudStatus]); remember(); return;
+    }
     if(this.layout.compact&&!this.layout.stackedHud){
       panel(this,this.uiRoot!,0,0,w,this.layout.hud);
       const cell=(w-this.layout.safe.left-this.layout.safe.right-268)/4;
@@ -1462,6 +1487,21 @@ export class GameScene extends Phaser.Scene {
         this.bottomCommandObjects.push(...this.uiRoot!.list.slice(before));
         return result;
       };
+      if (this.layout.minimal) {
+        // Single action row: Build sheet + Wave FAB + More (Auto/Relics inside sheets).
+        addBottomCommand(() => panel(this, this.uiRoot!, x, y, width, 76));
+        const gap = 8, moreW = 64, buildW = Math.max(96, (width - gap * 4 - moreW) / 2);
+        const waveW = width - gap * 4 - moreW - buildW;
+        addBottomCommand(() => button(this, this.uiRoot!, x + gap, y + 16, buildW, 'Build', () => this.openSheet('build'), 'primary', 44));
+        const wave = addBottomCommand(() => button(this, this.uiRoot!, x + gap * 2 + buildW, y + 16, waveW, '', () => {
+          if (this.waveActive || this.pauseState.blocked || this.pendingMeteor || (!this.auto.enabled && this.vault.pending.length)) { this.openSheet('next'); return; }
+          this.startNextWave();
+        }, 'primary', 44));
+        this.startBtn = wave.box; this.startBtnLabel = wave.text;
+        wave.text.setWordWrapWidth(waveW - 16).setAlign('center');
+        addBottomCommand(() => button(this, this.uiRoot!, x + width - gap - moreW, y + 16, moreW, 'More', () => this.openSheet('more'), 'secondary', 44));
+        return;
+      }
       if (this.layout.portraitBossCommands) {
         addBottomCommand(() => panel(this,this.uiRoot!,x,y,width,52));
         const inset = 8, gap = 4;
@@ -1499,6 +1539,34 @@ export class GameScene extends Phaser.Scene {
     if (!this.layout.inspector) {
       this.infoPanel?.destroy(true);this.infoPanel=null;this.compactInspectorBounds=null;
       const t=this.selectedTower;if(!t||this.sheetKind)return;
+      if (this.layout.minimal) {
+        // Near-tap popup: anchor by the tower, clamp inside the field.
+        const w = Math.min(320, this.layout.width - 16), h = 108;
+        const screen = this.cameraView.project(t);
+        const f = this.layout.field;
+        const x = Math.max(f.x + 4, Math.min(screen.x - w / 2, f.x + f.width - w - 4));
+        let y = screen.y - h - 12;
+        if (y < this.layout.hud + 4) y = Math.min(screen.y + 24, f.y + f.height - h - 4);
+        if (y < this.layout.hud + 4) y = this.layout.hud + 4;
+        if (this.bossBar?.visible && y < this.bossBar.y + this.bossPanelHeight + 8) {
+          // Boss panel collision: slim Details strip clear of the panel (Q9).
+          const detailsY = this.layout.field.y + this.layout.field.height - 48;
+          const s = this.add.container((this.layout.width - w) / 2, detailsY);
+          this.uiRoot!.add(s); this.infoPanel = s;
+          this.compactInspectorBounds = { x: s.x, y: detailsY, width: w, height: 44 };
+          button(this, s, 0, 0, w - 48, `${t.cfg.name} · Details`, () => this.openDetails('tower'), 'primary');
+          button(this, s, w - 44, 0, 44, '×', () => { this.selectedTower = null; this.refreshInfoPanel(); });
+          return;
+        }
+        const c = this.add.container(x, y); this.uiRoot!.add(c); this.infoPanel = c;
+        this.compactInspectorBounds = { x, y, width: w, height: h };
+        panel(this, c, 0, 0, w, h).setInteractive().on('pointerdown', (_p: unknown, _px: number, _py: number, e: Phaser.Types.Input.EventData) => e.stopPropagation());
+        c.add(this.add.text(8, 6, `${t.cfg.name} · Lv ${t.level}`, style(13, C.textPrimary, true)).setWordWrapWidth(w - 16));
+        button(this, c, 8, 52, w - 112, this.inspectorPrimaryLabel(t), () => this.inspectorPrimaryAction(), 'primary', 48);
+        button(this, c, w - 96, 52, 44, '···', () => this.openSheet('tower'), 'secondary', 48);
+        button(this, c, w - 48, 4, 40, '×', () => { this.selectedTower = null; this.refreshInfoPanel(); }, 'secondary', 40);
+        return;
+      }
       const w=Math.min(560,this.layout.width-16),h=108;
       const screen=this.cameraView.project(t);
       let y=this.layout.width<this.layout.height?this.layout.height-this.layout.tray-h-4:
@@ -1555,8 +1623,17 @@ export class GameScene extends Phaser.Scene {
     const firstObject=this.uiRoot!.list.length;
     const remember=():void=>{this.topControlObjects=this.uiRoot!.list.slice(firstObject);};
     const w = this.layout.width;
-    const portrait=this.layout.stackedHud;
+    const portrait = this.layout.stackedHud;
     const y = this.layout.safe.top + (portrait ? 54 + this.layout.bossStatusHeight : 6);
+    if (this.layout.minimal) {
+      // Same slim row as metrics: Overview icon + speed + pause right-aligned.
+      const top = this.layout.safe.top + 4;
+      this.autoButton = null;
+      this.speedBtnLabel = button(this, this.uiRoot!, w - this.layout.safe.right - 128, top, 56, `${this.speed}×`, () => this.cycleSpeed()).text;
+      button(this, this.uiRoot!, w - this.layout.safe.right - 68, top, 60, 'II', () => this.togglePauseMenu());
+      button(this, this.uiRoot!, w - this.layout.safe.right - 192, top, 60, 'Map', () => { this.cancelGesture(); this.cameraView.reset(); this.applyView(); });
+      remember(); return;
+    }
     if (this.layout.compact && !portrait) {
       this.autoButton = button(this, this.uiRoot!, w - 252, y, 84, this.auto.enabled ? 'Auto ON' : 'Auto OFF', () => this.setAutoEnabled(!this.auto.enabled));
       this.speedBtnLabel = null;
@@ -2389,15 +2466,16 @@ export class GameScene extends Phaser.Scene {
   }
 
   private setBossLayout(portraitBossCommands: boolean, reservedHeight: number): void {
-    const nextLayout = gameLayout(this.layout.width, this.layout.height, this.layout.safe, {
+    const nextLayout = toMinimalLayout(gameLayout(this.layout.width, this.layout.height, this.layout.safe, {
       portraitBossCommands, bossStatusHeight: this.layout.compact ? reservedHeight : 0
-    });
+    }));
     const baseField = nextLayout.field;
     const inset = this.layout.compact ? 0 : Math.max(0, Math.min(Math.round(reservedHeight), baseField.height - 72));
     const reservation = this.layout.compact ? reservedHeight : inset;
     if (portraitBossCommands === this.layout.portraitBossCommands && reservation === this.bossHudReservedHeight) return;
     const activeSheetScrollOffset = this.sheetKind && this.sheet ? this.sheet.scrollOffset : null;
     const commandRowChanged = portraitBossCommands !== this.layout.portraitBossCommands;
+    const minimalChanged = nextLayout.minimal !== this.layout.minimal;
     const wasReserved = this.layout.portraitBossCommands || this.bossHudReservedHeight > 0;
     const willBeReserved = portraitBossCommands || reservation > 0;
     const cameraSnapshot = this.bossHudCameraBeforeReservation;
@@ -2452,7 +2530,7 @@ export class GameScene extends Phaser.Scene {
       this.bossHudCameraBeforeReservation.reservedHeadroom = this.cameraView.topHeadroom;
     } else if (!willBeReserved) this.bossHudCameraBeforeReservation = null;
     this.fieldMask?.refresh(this.layout.field);
-    if (commandRowChanged) this.drawTowerPanel();
+    if (commandRowChanged || minimalChanged) this.drawTowerPanel();
     if(this.layout.compact){this.drawHUD();this.drawControls();if(this.bossBar)this.uiRoot?.bringToTop(this.bossBar);}
     this.updateHUD();
     this.drawCatalog();

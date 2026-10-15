@@ -81,7 +81,7 @@ it('house Auto button respects drag, pointerout and cancellation',()=>{
   release(box);expect(run.auto.enabled).toBe(true);
 });
 it.each([
-  {width:390,height:844,labels:['Overview','Auto OFF','1×','Pause'],bounds:[[8,54,90.5,44],[102.5,54,90.5,44],[197,54,90.5,44],[291.5,54,90.5,44]]},
+  {width:390,height:844,labels:['1×','II','Map'],bounds:[[262,4,56,44],[322,4,60,44],[198,4,60,44]]},
   {width:1280,height:720,labels:['Auto OFF','1×','Pause','Overview'],bounds:[[1032,6,88,44],[1128,6,64,44],[1200,6,68,44],[936,6,88,44]]}
 ])('keeps direct speed controls reachable at $width×$height without overlap',({width,height,labels:expectedLabels,bounds})=>{
   const {run,loose}=autoScene();run.layout=gameLayout(width,height);
@@ -155,10 +155,10 @@ it('keeps compact landscape header clear of a 10,000,000 score and cycles speed 
 
   run.drawControls();
   expect(boxes.slice(-3).map(({x,y,width,height})=>[x,y,width,height])).toEqual([
-    [592,6,84,44],[680,6,88,44],[772,6,64,44]
+    [716,4,56,44],[776,4,60,44],[652,4,60,44]
   ]);
-  expect(labels.slice(-3).map(label=>label.text)).toEqual(['Auto OFF','Overview','Pause']);
-  expect(loose.speedBtnLabel).toBeNull();
+  expect(labels.slice(-3).map(label=>label.text)).toEqual(['1×','II','Map']);
+  expect(loose.speedBtnLabel).not.toBeNull();
   expect(boxes.slice(-3).every(box=>box.x>=highScoreBounds.right||box.x+box.width<=highScoreBounds.left)).toBe(true);
 
   const drawSheet=(GameScene.prototype as unknown as {drawSheet(offset?:number):void}).drawSheet;
@@ -173,11 +173,11 @@ it('keeps compact landscape header clear of a 10,000,000 score and cycles speed 
     release(box as never);
     expect(loose.speed).toBe(expected===3?1:expected+1);
   };
-  (run.sheet as unknown as ScrollSheet).scrollTo(312);
+  (run.sheet as unknown as ScrollSheet).scrollTo(364);
   clickSpeed(1);
-  (run.sheet as unknown as ScrollSheet).scrollTo(312);
+  (run.sheet as unknown as ScrollSheet).scrollTo(364);
   clickSpeed(2);
-  (run.sheet as unknown as ScrollSheet).scrollTo(312);
+  (run.sheet as unknown as ScrollSheet).scrollTo(364);
   clickSpeed(3);
 });
 it('detach removes the Auto handler; replay attachment is verified in the real browser',()=>{

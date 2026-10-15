@@ -1,6 +1,6 @@
 import { expect, it, vi } from 'vitest';
 import { GameScene } from '../src/game/scenes/GameScene.ts';
-import { gameLayout, sheetBounds } from '../src/game/ui/layout.ts';
+import { gameLayout, sheetBounds, toMinimalLayout } from '../src/game/ui/layout.ts';
 import { BattlefieldView } from '../src/game/ui/viewport.ts';
 import { Tower } from '../src/game/entities/Tower.ts';
 import { getCampaignLevel } from '../src/game/campaign/config.ts';
@@ -306,8 +306,9 @@ it.each([[768,540],[767,540],[360,360]])('shares compact boss status with the HU
 
   run.enemies = [];
   run.updateBossBar();
-  expect(run.layout.field).toEqual(baseField);
-  expect(run.cameraView.field).toEqual(baseField);
+  // Boss cleared on a minimal size restores the slim normal-play field.
+  expect(run.layout.field).toEqual(toMinimalLayout(gameLayout(w,h)).field);
+  expect(run.cameraView.field).toEqual(toMinimalLayout(gameLayout(w,h)).field);
 });
 
 it.each([[768,540],[767,540],[360,360]])('keeps the boss panel fixed above the battlefield through camera movement at %ix%i', (w,h) => {
@@ -371,11 +372,12 @@ it.each([[320,390],[320,360]])('uses a temporary 52px portrait command row to re
   run.enemies = [];
   run.updateBossBar();
   expect(run.layout.portraitBossCommands).toBe(false);
-  expect(run.layout.field).toEqual(baseField);
-  expect(run.layout.tray).toBe(128);
+  // Boss cleared in portrait restores the minimal action row (Build/Wave/More).
+  expect(run.layout.field).toEqual(toMinimalLayout(gameLayout(w,h)).field);
+  expect(run.layout.tray).toBe(76);
   expect(run.cameraView.center).toEqual({x:520,y:348});
-  expect(run.towerTray).not.toBeNull();
-  expect(run.uiRoot.list.some((item: any) => item.text === 'Build')).toBe(false);
+  expect(run.towerTray).toBeNull();
+  expect(run.uiRoot.list.some((item: any) => item.text === 'Build')).toBe(true);
 });
 
 it('restores the ordinary portrait tray and keeps the stable boss strip after resizing to a roomy portrait', () => {
@@ -513,7 +515,8 @@ it('reflows an open Build sheet when the short portrait boss row starts and ends
   expect(sheet.scrollOffset).toBe(72);
   bounds = reflowedBounds[reflowedBounds.length - 1];
   expect(bounds.y + bounds.height).toBeLessThanOrEqual(run.layout.height - run.layout.tray);
-  expect(bounds.y + bounds.height).toBe(262);
+  // Slim minimal tray (76px) leaves the sheet bottom at 314, not the legacy 262.
+  expect(bounds.y + bounds.height).toBe(314);
   expect(run.pauseState.blocked).toBe(pauseState);
   expect(run.selectedTower).toBe(selectedTower);
 });
