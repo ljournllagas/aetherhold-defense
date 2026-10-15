@@ -100,7 +100,7 @@ describe('campaign art replacement contract', () => {
     expect(resolveCampaignProvisionalStarterAssets(panels, 'campaign', []).map(asset => asset.key)).toEqual([]);
     expect(requested).toEqual([...requiredAssets('menu'), ...campaign]);
     expect(requested.some(asset => STAGE_ASSETS.gameplay.some(gameplay => gameplay.key === asset.key))).toBe(false);
-    expect(STAGE_ASSETS.gameplay).toHaveLength(24);
+    expect(STAGE_ASSETS.gameplay).toHaveLength(25);
     expect(STAGE_ASSETS.gameplay.every(asset => !asset.path.startsWith('/assets/campaign/'))).toBe(true);
   });
 

@@ -62,7 +62,8 @@ describe('spellbreaker static appearance', () => {
   it('leaves other branches, towers and campaign tiers on their existing art', () => {
     for (let level = 1; level <= 4; level++) {
       expect(towerArtGeometry('starfire', level, 1, 'spellbreaker')).not.toEqual(towerArtGeometry('starfire', level, 1));
-      expect(towerArtGeometry('starfire', level, 1, 'arcane-beacon')).toEqual(towerArtGeometry('starfire', level, 1));
+      expect(towerArtGeometry('starfire', level, 1, 'arcane-beacon')).not.toEqual(towerArtGeometry('starfire', level, 1));
+      expect(towerArtGeometry('starfire', level, 1, 'arcane-beacon')).not.toEqual(towerArtGeometry('starfire', level, 1, 'spellbreaker'));
       expect(towerArtGeometry('glacier', level, 1, 'spellbreaker')).toEqual(towerArtGeometry('glacier', level, 1));
       for (const tier of [2, 3] as const) {
         expect(towerArtGeometry('starfire', level, tier, 'spellbreaker'))
