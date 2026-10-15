@@ -1,5 +1,38 @@
 # Latest session work
 
+## COMPLETE — Sentinel and Cinder artwork, 2026-10-15
+
+Deployment `sentinel-cinder-art-20261015`, Heavy route. Latest main synchronized
+at `c7301e124c84ad988a5c641a8640d9f893ef3c57`; initial tree clean. User requires
+generated compatible art, green required tests, main merge/push and production
+deployment. Art design accepted for execution: precision arbalest Sentinel,
+open ember-cauldron Cinder, four foundation stages and two campaign tiers each.
+Built-in imagegen, transparent assets, existing painted style/perspective/light;
+no balance changes. Independent acceptance passed at
+`4b9221db753303818df974bbf84b5faa9288b4ff`: 1,734 tests passed, 11 existing optional
+tuning/report skips, typecheck/build passed; 24 desktop/phone actual-loader art
+states and repaired effects accepted with no browser errors or failed requests.
+Browser evidence uses Vite QA, read stubs and blocked API writes, with synthetic
+visual sheets clearly distinguished from actual placed texture checks.
+Main merge/push and production verification are complete. Application and actual
+origin/main both matched `4b9221db753303818df974bbf84b5faa9288b4ff` at release.
+Worker `c844818a-823f-4749-a362-0203a659c756` serves
+https://aetherhold-defense.ljournllagas.workers.dev/; current bundle
+`/assets/index-C6XhnU6I.js` SHA-256
+`8bdddadc3fafe115dd281ad40a3195354807cea6267e5a5ce913c814752199fd`.
+Deploy repeated 1,734 passing tests and build. Live HTML/JS/all six runtime WebPs
+match dist exactly, health returns 200/ok/scoreVersion 3. Read-only production
+1280x720 and 390x844 guest-menu smoke passed with zero JS/server errors or writes.
+Evidence: `artifacts/tower-art-release/{release-summary.json,deploy.log,
+live-verification.json,production-browser-smoke.json}`; independent browser and
+packed/source reports under `artifacts/tower-art-verification/`.
+Sources/prompts/geometry/preview retained in `output/tower-art/`; durable provenance
+is `docs/SENTINEL_CINDER_ART_PROVENANCE.md`. Physical touch, authenticated live
+gameplay and full matches unverified. Existing large bundle warning retained.
+Only closing documentation Git sync and single Archivist token handoff remain.
+Root owns this file, progress and diary; Executor owns assets,
+integration and Git/release operations. Prior campaign history below is retained.
+
 ## COMPLETE - final campaign artwork, 2026-10-14
 
 Heavy deployment campaign-final-art-20261012 completed

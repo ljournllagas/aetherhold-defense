@@ -1,5 +1,33 @@
 # Project progress
 
+## Sentinel and Cinder artwork — COMPLETE, 2026-10-15
+
+Heavy deployment `sentinel-cinder-art-20261015` starts from latest main
+`c7301e124c84ad988a5c641a8640d9f893ef3c57`, with a clean working tree.
+Replace reused Ranger/Bombard imagery with original painted Sentinel arbalest
+and Cinder cauldron designs: four foundation stages and two campaign tiers each.
+Preserve combat, economy, saves and branch crests. Executor owns generation,
+integration and release operations; independent Tester must accept asset
+contracts, actual rendering and required tests before main merge/deployment.
+Twelve generated states and dedicated runtime assets are integrated. Independent
+acceptance at `4b9221db753303818df974bbf84b5faa9288b4ff` passed packed alpha/
+dimensions, 24 desktop/phone renderer states, portraits, crests, tier switching,
+restart/resize and legacy compatibility. Sentinel bolts and Cinder ember/impact
+repair resolves the old Tempest fallback. Full suite: 1,734 passed, 11 existing
+optional tuning/report skips; typecheck/build passed. No required test skipped.
+Application merged/pushed to main at `4b9221db753303818df974bbf84b5faa9288b4ff`;
+actual remote SHA matched. `npm run deploy` repeated the passing tests/build and
+published Worker `c844818a-823f-4749-a362-0203a659c756` at
+https://aetherhold-defense.ljournllagas.workers.dev/.
+Live HTML, current JS and all six runtime tower files match dist byte hashes;
+health is 200/ok/scoreVersion 3. Read-only desktop/phone guest-menu smoke passed
+with no JS/server errors or server writes. Authenticated live gameplay, physical
+touch and full matches were not tested; local QA covered actual loader/rendering.
+Evidence: `artifacts/tower-art-release/release-summary.json` and
+`artifacts/tower-art-verification/browser/browser-runtime-report.json`.
+Provenance and exact generation records: `docs/SENTINEL_CINDER_ART_PROVENANCE.md`.
+Final workflow documentation synchronization follows the application release.
+
 ## Final campaign artwork - COMPLETE, 2026-10-14
 
 Heavy deployment campaign-final-art-20261012 completed the approved77-asset scope.

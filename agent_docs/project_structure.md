@@ -4,6 +4,7 @@
 docs/                 Product, gameplay, design, art, and agent contracts
   sdd/                Spec-driven development specs/ and plans/ (task blocks, verify commands)
 references/           Visual reference guide and approved screenshots
+output/tower-art/     Accepted generated sources, prompts, measured geometry and review sheets for Sentinel/Cinder
 src/
   main.ts             Phaser bootstrap and ten-scene registration
   game/
@@ -13,7 +14,7 @@ src/
     config/           Classic tower, enemy, wave, difficulty, economy, score, power-up and evolution data
     entities/         Tower and enemy entities
     maps/             Map layout and game dimensions
-    art/              Phaser drawing and texture-generation helpers, including procedural campaign fallback art
+    art/              Phaser drawing/rendering helpers, measured tower geometry and procedural campaign fallbacks
     ui/               Shared tokens/layout, scroll sheets and ViewportMask.ts for Campaign, Game and Leaderboard clipping
   api/                Leaderboard and score client
   shared/             Shared types, validation, version values, progression contract and result progress rules
@@ -21,15 +22,15 @@ worker/               Cloudflare Worker API
 migrations/           D1 SQL migrations (0004 adds progression result columns)
 tests/                Vitest game and Worker tests, including campaign-v5 compatibility and save fixtures
   helpers/            Evolution and result fixtures, balance trace reporter and headless simulation bot
-public/assets/        Classic art, original campaign art, final World 4–10 v2 assets, and retained v1 rollback files
+public/assets/        Classic art, campaign art, retained v1 rollbacks, and Sentinel/Cinder foundation sheets and tier cosmetics
 dist/                 Vite build output served by Wrangler
 artifacts/            Verification evidence (including campaign-production-completion-20261010/) and promo/
 agent_docs/           Durable agent context and deployment handoff
 ```
 
-`src/game/art/` holds drawing and texture-generation helpers; runtime art is loaded from `public/assets/`. `docs/REFERENCE_AUDIT.md` is an older audit and contains stale inventory recommendations. Follow the current contracts in `SPEC.md`, `DESIGN_SYSTEM.md`, `ART_BIBLE.md`, and `AI_AGENT_INSTRUCTIONS.md`; use `references/VISUAL_REFERENCE_GUIDE.md` to interpret screenshots.
+`src/game/art/` holds drawing and texture-generation helpers; `towerArt.ts` and `additionalTowerGeometry.ts` define shared tower presentation and measured Sentinel/Cinder anchors. Runtime WebP art is loaded from `public/assets/`; source PNGs, exact prompts and geometry inputs are retained in `output/tower-art/`. See `docs/SENTINEL_CINDER_ART_PROVENANCE.md` for the dedicated tower asset inventory. `docs/REFERENCE_AUDIT.md` is an older audit and contains stale inventory recommendations. Follow the current contracts in `SPEC.md`, `DESIGN_SYSTEM.md`, `ART_BIBLE.md`, and `AI_AGENT_INSTRUCTIONS.md`; use `references/VISUAL_REFERENCE_GUIDE.md` to interpret screenshots.
 
-`docs/CAMPAIGN_WORLDS_1_3.md` preserves the original foundation contract; `docs/CAMPAIGN_WORLDS_4_10.md` records v5 requirements, verified runtime behavior, duration profile, review limits, and production evidence. The 100-level registry and routes are in `src/game/campaign/expansionContent.ts` and `expansionRoutes.ts`; campaign-v5 compatibility and save fixtures are under `tests/fixtures/campaign-v5/`. `docs/CAMPAIGN_PRODUCTION_ASSETS.md` tracks 120 active final assets (43 original and 77 accepted World 4–10 v2 assets), plus the 77 hash-pinned v1 rollback files.
+`docs/CAMPAIGN_WORLDS_1_3.md` preserves the original foundation contract; `docs/CAMPAIGN_WORLDS_4_10.md` records v5 requirements, verified runtime behavior, duration profile, review limits, and production evidence. The 100-level registry and routes are in `src/game/campaign/expansionContent.ts` and `expansionRoutes.ts`; campaign-v5 compatibility and save fixtures are under `tests/fixtures/campaign-v5/`. `docs/CAMPAIGN_PRODUCTION_ASSETS.md` records the original 120-asset campaign release and its 77 hash-pinned v1 rollbacks; the four newer Sentinel/Cinder tier cosmetics and source provenance are documented separately in `docs/SENTINEL_CINDER_ART_PROVENANCE.md`.
 
 ## Progression and evolutions files (2026-10-08)
 

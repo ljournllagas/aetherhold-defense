@@ -1,5 +1,17 @@
 ﻿# Project diary
 
+2026-10-15 Sentinel/Cinder art: dedicated painted sprites replace reused Ranger/
+Bombard imagery. Generate individual states, then pack mechanically; retain raw
+sources and exact prompt/reference records. Asymmetric weapon silhouettes need
+ground-center anchors measured from the pedestal rather than whole alpha bounds.
+Foundation anchors use 627px cells; campaign anchors use separate 192px coordinates.
+Keep historical 43-original/77-expansion asset fingerprints unchanged when adding
+four campaign tower images to the active manifest.
+Independent placed review must include shots and impacts: both new IDs fell
+through to Tempest lightning despite correct tower textures. Visual-only bolt/
+ember branches and a Cinder warm impact fix this without changing shot data,
+speed, damage or audio; six regressions demonstrated red then green behavior.
+
 World10 repeated-map lesson: correct coordinates and opaque white guide masks
 did not overcome architectural source references and preserve-composition edits.
 Paired evidence/prompt investigations distinguish harmless flat floor texture
