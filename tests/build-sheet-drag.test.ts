@@ -59,6 +59,11 @@ it('shows every tower portrait side by side in the build grid', () => {
   expect(run.sheetKind).toBe('build');
   expect(run.images).toHaveLength(TOWER_LIST.length);
   expect(new Set(run.images.map((img: any) => img.x)).size).toBeGreaterThan(1);
+  // Tempest, Sentinel and Cinder share one row instead of stranding Cinder.
+  const rowY = run.images.map((img: any) => img.y);
+  expect(new Set(rowY).size).toBe(2);
+  expect(rowY[4]).toBe(rowY[5]);
+  expect(rowY[5]).toBe(rowY[6]);
 });
 
 it('starts a tray drag from a sheet portrait and closes the sheet', () => {

@@ -638,16 +638,23 @@ export class GameScene extends Phaser.Scene {
       sheet.action(y,'Back to battle',()=>this.closeDetails());
     }else if (kind === 'build') {
       // Horizontal card grid: portraits side by side. Tap a card to arm
-      // placement, drag it onto a build circle to place directly.
+      // placement, drag it onto a build circle to place directly. Four columns
+      // keep Tempest, Sentinel and Cinder on one row instead of orphaning the
+      // last tower; wide sheets fit all seven in a single row.
       const gridWidth = bounds.width - 24;
-      const cols = bounds.width >= 500 ? 4 : bounds.width >= 320 ? 3 : 2;
+      const cols = bounds.width >= 560 ? 7 : bounds.width >= 340 ? 4 : 3;
       const gap = 8;
       const cardW = (gridWidth - gap * (cols - 1)) / cols;
-      let cardBottom = 0;
+      const size = Math.min(64, Math.max(40, cardW - 16));
+      const cardH = 10 + size + 8 + 18 + 4 + 18 + 10;
+      const total = TOWER_LIST.length;
       TOWER_LIST.forEach((cfg, index) => {
         const affordable = this.gold >= cfg.levels[0].cost;
-        const cardX = 12 + (index % cols) * (cardW + gap);
-        const cardY = Math.floor(index / cols) === 0 ? 0 : cardBottom + gap;
+        const row = Math.floor(index / cols);
+        const rowItems = Math.min(cols, total - row * cols);
+        const xOffset = ((cols - rowItems) * (cardW + gap)) / 2;
+        const cardX = 12 + xOffset + (index % cols) * (cardW + gap);
+        const cardY = row * (cardH + gap);
         const card = sheet.gridCard(cardX, cardY, cardW, towerPortraitKey(cfg.id),
           cfg.name, affordable ? C.textPrimary : C.textSecondary,
           `${formatCount(cfg.levels[0].cost)} gold`, affordable ? C.gold : C.textSecondary);
@@ -667,7 +674,6 @@ export class GameScene extends Phaser.Scene {
           this.sheetKind = null; this.drawSheet(); this.showTouchPreview();
           this.beginTowerDrag(this.pointerTrayInput(p), cfg.id);
         });
-        cardBottom = Math.max(cardBottom, card.bottom);
       });
     } else if (kind === 'evolve' && this.selectedTower) {
       this.drawProgressionModel(sheet, this.selectedTower, 0);
