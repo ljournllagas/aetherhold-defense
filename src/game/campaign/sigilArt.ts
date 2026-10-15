@@ -86,6 +86,15 @@ export const SIGIL_TROPHY_ART: Readonly<Record<string, SigilTrophyArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 222, top: 55, width: 908, height: 1147, bottom: 1202 }
+  },
+  moon_sigil: {
+    sigilId: 'moon_sigil',
+    worldId: 'dreadmoon',
+    textureKey: 'campaign_sigil_dreadmoon',
+    path: '/assets/campaign/sigils/dreadmoon-sigil-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 21, top: 3, width: 1212, height: 1249, bottom: 1252 }
   }
 };
 

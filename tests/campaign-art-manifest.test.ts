@@ -17,9 +17,9 @@ describe('campaign art replacement contract', () => {
       || AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(true);
     expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toEqual([]);
     expect(required.filter(asset => asset.path.startsWith('/assets/campaign/'))).toEqual(campaignArtAssetsForLoader('campaign'));
-    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(131);
+    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(132);
     expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final_required')).toEqual([]);
-    expect(CAMPAIGN_ART_MANIFEST).toHaveLength(131);
+    expect(CAMPAIGN_ART_MANIFEST).toHaveLength(132);
   });
 
   it('registers the original and accepted World 4–10 terrain plates with the approved tower tiers', () => {
@@ -90,7 +90,7 @@ describe('campaign art replacement contract', () => {
     expect(campaign.map(asset => asset.key)).toEqual([
       ...CAMPAIGN_WORLDS.slice(0, 8).map(world => `campaign_worldmap_${world.id}`),
       'campaign_worldmap_astral_rift', 'campaign_worldmap_aether_crown',
-      'campaign_sigil_borderkeep', 'campaign_sigil_emberfall', 'campaign_sigil_frostveil', 'campaign_sigil_whisperfen', 'campaign_sigil_sunken_aether', 'campaign_sigil_ironroot', 'campaign_sigil_sky_isles'
+      'campaign_sigil_borderkeep', 'campaign_sigil_emberfall', 'campaign_sigil_frostveil', 'campaign_sigil_whisperfen', 'campaign_sigil_sunken_aether', 'campaign_sigil_ironroot', 'campaign_sigil_sky_isles', 'campaign_sigil_dreadmoon'
     ]);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path));
     expect(panels.filter(asset => asset.state === 'final')).toHaveLength(10);
