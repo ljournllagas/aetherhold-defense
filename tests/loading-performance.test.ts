@@ -7,8 +7,11 @@ import { CAMPAIGN_ART_MANIFEST } from '../src/game/campaign/artManifest.ts';
 
 // The tsconfig has no Node types; load fs by variable name, as the other asset tests do.
 const moduleName = 'node:fs';
-const { existsSync, statSync } = await import(moduleName) as { existsSync(path: string): boolean; statSync(path: string): { size: number } };
-const onDisk = (path: string): string => new URL(`../public${path}`, import.meta.url).pathname;
+const { existsSync, statSync } = await import(moduleName) as { existsSync(path: string | URL): boolean; statSync(path: string | URL): { size: number } };
+const urlModuleName = 'node:url';
+const { fileURLToPath } = await import(urlModuleName) as { fileURLToPath(url: URL | string): string };
+const onDisk = (path: string): string => fileURLToPath(new URL(`../public${path}`, import.meta.url));
+const normalizedHeaders = headers.replace(/\r\n/g, '\n');
 
 describe('asset weight budgets', () => {
   const finalCampaign = CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final');
@@ -51,8 +54,8 @@ describe('first paint', () => {
 describe('cache headers', () => {
   it('caches content-hashed bundles and fonts as immutable and art for 30 days', () => {
     for (const pattern of ['/assets/index-*', '/assets/phaser-*', '/assets/*.woff2']) {
-      expect(headers).toMatch(new RegExp(`${pattern.replace(/\*/g, '\\*')}\\n  Cache-Control: public, max-age=31536000, immutable`));
+      expect(normalizedHeaders).toMatch(new RegExp(`${pattern.replace(/\*/g, '\\*')}\\n  Cache-Control: public, max-age=31536000, immutable`));
     }
-    expect(headers).toMatch(/\/assets\/\*\.webp\n  Cache-Control: public, max-age=2592000/);
+    expect(normalizedHeaders).toMatch(/\/assets\/\*\.webp\n  Cache-Control: public, max-age=2592000/);
   });
 });

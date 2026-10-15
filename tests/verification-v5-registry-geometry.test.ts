@@ -104,6 +104,29 @@ function pngDimensions(bytes: Uint8Array): [number, number] {
   return [view.getUint32(16, false), view.getUint32(20, false)];
 }
 
+function webpDimensions(bytes: Uint8Array): [number, number] {
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  expect(String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3])).toBe('RIFF');
+  expect(String.fromCharCode(bytes[8], bytes[9], bytes[10], bytes[11])).toBe('WEBP');
+  const fourcc = String.fromCharCode(bytes[12], bytes[13], bytes[14], bytes[15]);
+  if (fourcc === 'VP8X') {
+    const width = (bytes[24] | (bytes[25] << 8) | (bytes[26] << 16)) + 1;
+    const height = (bytes[27] | (bytes[28] << 8) | (bytes[29] << 16)) + 1;
+    return [width, height];
+  }
+  if (fourcc === 'VP8 ') {
+    return [view.getUint16(26, true) & 0x3fff, view.getUint16(28, true) & 0x3fff];
+  }
+  // VP8L lossless: packed 14-bit width-1 / height-1 at bytes 21-24.
+  const packed = view.getUint32(21, true);
+  return [(packed & 0x3fff) + 1, ((packed >> 14) & 0x3fff) + 1];
+}
+
+function imageDimensions(bytes: Uint8Array): [number, number] {
+  if (bytes[0] === 0x52 && bytes[1] === 0x49) return webpDimensions(bytes);
+  return pngDimensions(bytes);
+}
+
 describe('v5 campaign registry and route verification', () => {
   it('keeps the original 30-level data, routes, counts and sigils identical to baseline b33ea38', async () => {
     const view = unlockedCampaignView();
@@ -230,7 +253,7 @@ describe('v5 campaign registry and route verification', () => {
       expect(existsSync(baselineTarget), `${item.path} v1 rollback file remains`).toBe(true);
       const baselineBytes: Uint8Array = readFileSync(baselineTarget);
       expect(await sha256(baselineBytes), `${item.path} v1 baseline hash remains unchanged`).toBe(item.baselineSha256);
-      expect(pngDimensions(baselineBytes), `${item.path} v1 baseline dimensions`).toEqual([item.width, item.height]);
+      expect(imageDimensions(baselineBytes), `${item.path} v1 baseline dimensions`).toEqual([item.width, item.height]);
 
       const promotion = promotionsByBaselinePath.get(item.path);
       if (promotion) {
@@ -254,8 +277,10 @@ describe('v5 campaign registry and route verification', () => {
         expect(existsSync(promotedTarget), `${promotion.promotedPath} promoted target exists`).toBe(true);
         const promotedBytes: Uint8Array = readFileSync(promotedTarget);
         expect(await sha256(candidateBytes), `${promotion.id} accepted candidate hash`).toBe(promotion.candidateSha256);
-        expect(await sha256(promotedBytes), `${promotion.promotedPath} exact candidate bytes`).toBe(promotion.candidateSha256);
-        expect(pngDimensions(promotedBytes), `${promotion.promotedPath} PNG dimensions`).toEqual([item.width, item.height]);
+        // Promoted WebP is a lossy re-encode of the PNG candidate: identical
+        // pixel size, different bytes — compare dimensions, not hashes.
+        expect(imageDimensions(candidateBytes), `${promotion.id} candidate dimensions`).toEqual([item.width, item.height]);
+        expect(imageDimensions(promotedBytes), `${promotion.promotedPath} WebP dimensions`).toEqual([item.width, item.height]);
       } else {
         const source = registeredByPath.get(item.path);
         expect(source, `${item.id} remaining provisional registration`).toBeDefined();
