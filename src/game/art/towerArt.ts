@@ -173,6 +173,11 @@ const EVOLUTION_STATIC_ART: Partial<Readonly<Record<BranchId, EvolutionStaticArt
     textureKey: 'tower_sentinel_deadeye', sourceWidth: 1254, sourceHeight: 1254,
     bounds: { left: 303, top: 32, width: 859, height: 1192, bottom: 1224 },
     targetHeight: 112, focus: { x: 0, y: -0.82 }, groundCenterX: 627, groundInset: 172
+  },
+  headhunter: {
+    textureKey: 'tower_sentinel_headhunter', sourceWidth: 1254, sourceHeight: 1254,
+    bounds: { left: 271, top: 66, width: 844, height: 1114, bottom: 1180 },
+    targetHeight: 112, focus: { x: 0, y: -0.82 }, groundCenterX: 627, groundInset: 172
   }
 };const PORTRAIT_BACKGROUNDS: Record<TowerId, string> = {
   longbow: '#344132', ember: '#443128', glacier: '#293944', starfire: '#352b46', tempest: '#293e3b',
