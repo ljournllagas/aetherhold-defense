@@ -3004,18 +3004,24 @@ export class GameScene extends Phaser.Scene {
     const durationMs = Math.max(40, Math.hypot(enemy.x - x1, enemy.y - y1) / cfg.projectileSpeed * 1000);
     const origin = visualStart ?? { x: x1, y: y1 };
     const view = this.world(this.add.container(origin.x, origin.y).setDepth(8));
-    if (towerId === 'longbow') {
+    if (towerId === 'longbow' || towerId === 'sentinel') {
       // Arrow weight follows the branch captured on the shot, not the tower's current state.
-      if (shot.branchId === 'marksman') {
+      if (shot.branchId === 'marksman' || shot.branchId === 'deadeye') {
         view.add(this.add.rectangle(0, 0, 18, 3, 0xd7aa4e));
         view.add(this.add.triangle(10, 0, 0, -4, 0, 4, 8, 0, 0xe8e2d4));
-      } else if (shot.branchId === 'volley') {
+      } else if (shot.branchId === 'volley' || shot.branchId === 'headhunter') {
         view.add(this.add.rectangle(0, 0, 12, 1.5, 0xd7aa4e));
         view.add(this.add.triangle(7, 0, 0, -2, 0, 2, 5, 0, 0xb7c0c7));
       } else {
         view.add(this.add.rectangle(0, 0, 14, 2, 0xd7aa4e));
         view.add(this.add.triangle(8, 0, 0, -3, 0, 3, 6, 0, 0xb7c0c7));
       }
+    } else if (towerId === 'cinder') {
+      const ember = this.add.graphics();
+      ember.fillStyle(0xde8742, 0.45); ember.fillEllipse(-8, 0, 18, 7);
+      ember.fillStyle(0xde8742, 0.98); ember.fillCircle(0, 0, 5);
+      ember.fillStyle(0xffd17a, 1); ember.fillCircle(1, -1, 2.5);
+      view.add(ember);
     } else if (towerId === 'ember') {
       const shell = this.add.graphics();
       // A muted trailing wake separates the heavy shell from the busy painted field.
@@ -3146,6 +3152,11 @@ export class GameScene extends Phaser.Scene {
       g.fillStyle(0xde8742, 0.98); g.fillCircle(0, 0, 9);
       g.fillStyle(0xf0b45c, 0.98); g.fillCircle(-1, -2, 5.5);
       g.fillStyle(0xffe4a3, 0.96); g.fillCircle(-2, -3, 2.5);
+    } else if (towerId === 'cinder') {
+      g.fillStyle(0xde8742, 0.32); g.fillCircle(x, y, 12);
+      g.fillStyle(0xde8742, 0.98); g.fillCircle(x, y, 6);
+      g.fillStyle(0xffd17a, 1); g.fillCircle(x - 1, y - 1, 3);
+      g.fillStyle(0xde8742, 0.9); g.fillCircle(x - 9, y - 4, 2); g.fillCircle(x + 7, y + 5, 1.5);
     } else if (towerId === 'glacier') {
       g.fillStyle(0x9fd4e8, 0.9);
       g.fillPoints(V2([x - 6, y, x - 2, y - 3, x + 2, y, x - 2, y + 3]), true);
