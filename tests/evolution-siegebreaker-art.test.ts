@@ -61,7 +61,8 @@ describe('siegebreaker static appearance', () => {
 
   it('leaves other branches, towers and campaign tiers on their existing art', () => {
     for (let level = 1; level <= 4; level++) {
-      expect(towerArtGeometry('ember', level, 1, 'flame-mortar')).toEqual(towerArtGeometry('ember', level, 1));
+      expect(towerArtGeometry('ember', level, 1, 'flame-mortar')).not.toEqual(towerArtGeometry('ember', level, 1));
+      expect(towerArtGeometry('ember', level, 1, 'flame-mortar')).not.toEqual(towerArtGeometry('ember', level, 1, 'siegebreaker'));
       expect(towerArtGeometry('longbow', level, 1, 'siegebreaker')).toEqual(towerArtGeometry('longbow', level, 1));
       for (const tier of [2, 3] as const) {
         expect(towerArtGeometry('ember', level, tier, 'siegebreaker'))
