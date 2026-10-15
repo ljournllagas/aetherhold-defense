@@ -282,13 +282,13 @@ describe('v5 campaign registry and route verification', () => {
 
   it('keeps the 43 original final paths and promotes every v2 path without active provisional paths', async () => {
     const expectedFinalPaths = [
-      ...LEGACY_WORLD_IDS.flatMap(world => ['a', 'b', 'c', 'd'].map(family => `/assets/campaign/maps/${world}_${family}-v1.png`)),
+      ...LEGACY_WORLD_IDS.flatMap(world => ['a', 'b', 'c', 'd'].map(family => `/assets/campaign/maps/${world}_${family}-v1.webp`)),
       ...LEGACY_WORLD_IDS.flatMap((world, index) => [
-        `/assets/campaign/world-map/${world}-v1.png`,
-        ...LEGACY_NORMAL_ENEMIES[world].map(id => `/assets/campaign/enemies/${world}/${id}-atlas-v1.png`),
-        `/assets/campaign/bosses/${LEGACY_BOSSES[index]}-atlas-v1.png`
+        `/assets/campaign/world-map/${world}-v1.webp`,
+        ...LEGACY_NORMAL_ENEMIES[world].map(id => `/assets/campaign/enemies/${world}/${id}-atlas-v1.webp`),
+        `/assets/campaign/bosses/${LEGACY_BOSSES[index]}-atlas-v1.webp`
       ]),
-      ...TOWER_IDS.flatMap(id => [2, 3].map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.png`))
+      ...TOWER_IDS.flatMap(id => [2, 3].map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.webp`))
     ];
     const contract = registryContract;
     expect(expectedFinalPaths).toHaveLength(43);
@@ -338,16 +338,16 @@ describe('v5 campaign registry and route verification', () => {
       const world = CAMPAIGN_WORLDS.find(candidate => candidate.id === level.worldId)!;
       const family = level.mapLayoutId.slice(world.id.length + 1, world.id.length + 2);
       const expectedPaths = new Set<string>();
-      const mapPath = currentPath(`/assets/campaign/maps/${world.id}_${family}-v1.png`);
+      const mapPath = currentPath(`/assets/campaign/maps/${world.id}_${family}-v1.webp`);
       if (activePaths.has(mapPath)) expectedPaths.add(mapPath);
       for (const enemyId of level.enemyIds) {
-        const path = currentPath(`/assets/campaign/enemies/${world.id}/${enemyId}-atlas-v1.png`);
+        const path = currentPath(`/assets/campaign/enemies/${world.id}/${enemyId}-atlas-v1.webp`);
         if (activePaths.has(path)) expectedPaths.add(path);
       }
       if (level.bossEnemyId) {
-        const bossPath = currentPath(`/assets/campaign/bosses/${level.bossEnemyId}-atlas-v1.png`);
+        const bossPath = currentPath(`/assets/campaign/bosses/${level.bossEnemyId}-atlas-v1.webp`);
         if (activePaths.has(bossPath)) expectedPaths.add(bossPath);
-        const summonPath = currentPath('/assets/campaign/enemies/whisperfen/bogling-atlas-v1.png');
+        const summonPath = currentPath('/assets/campaign/enemies/whisperfen/bogling-atlas-v1.webp');
         if (level.bossEnemyId === 'mireheart_hydra' && activePaths.has(summonPath)) {
           expectedPaths.add(summonPath);
         }

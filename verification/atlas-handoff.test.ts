@@ -28,7 +28,7 @@ it.skipIf(!hasArtifacts)('retains the historical missing-atlas inventory and ver
   expect(listed).toHaveLength(18);
   expect(new Set(listed.map(item => item.path)).size).toBe(18);
   expect(listed.map(item => item.path).sort()).toEqual(expected.sort());
-  expect(attempted).toEqual([{ path: '/assets/campaign/enemies/borderkeep/marchling-atlas-v1.png', status: 'attempted' }]);
+  expect(attempted).toEqual([{ path: '/assets/campaign/enemies/borderkeep/marchling-atlas-v1.webp', status: 'attempted' }]);
   expect(missingTargets).toEqual([]);
 
   const marchling = CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'enemy:marchling')!;

@@ -55,15 +55,18 @@ describe('complete production monster artwork', () => {
     expect(releasedExpansion.find(asset => asset.id === 'boss:aether_devourer')?.qualityFlags).toContain('phase_state_readability_verified');
   });
 
-  it('packages every required row in an RGBA PNG with the declared cell dimensions', async () => {
+  it('packages every required row in an alpha WebP with the declared cell dimensions', async () => {
     const moduleName = 'node:fs';
     const { readFileSync } = await import(moduleName);
     for (const asset of sheets) {
       const image = readFileSync(new URL(`../public${asset.path}`, import.meta.url));
-      expect([...image.subarray(0, 8)]).toEqual([137, 80, 78, 71, 13, 10, 26, 10]);
-      expect(image.readUInt32BE(16), asset.id).toBe(asset.width);
-      expect(image.readUInt32BE(20), asset.id).toBe(asset.height);
-      expect(image[25], `${asset.id} PNG color type`).toBe(6);
+      expect(image.toString('ascii', 0, 4), `${asset.id} RIFF`).toBe('RIFF');
+      expect(image.toString('ascii', 8, 12), `${asset.id} WEBP`).toBe('WEBP');
+      // Extended (VP8X) header: flags at 20, 24-bit little-endian canvas size minus one at 24 and 27.
+      expect(image.toString('ascii', 12, 16), `${asset.id} VP8X`).toBe('VP8X');
+      expect(image[20] & 0x10, `${asset.id} alpha flag`).toBe(0x10);
+      expect(image.readUIntLE(24, 3) + 1, asset.id).toBe(asset.width);
+      expect(image.readUIntLE(27, 3) + 1, asset.id).toBe(asset.height);
       for (const state of Object.values(asset.states)) {
         expect(state.frames * asset.frameWidth!).toBeLessThanOrEqual(asset.width);
         expect((state.row + 1) * asset.frameHeight!).toBeLessThanOrEqual(asset.height);

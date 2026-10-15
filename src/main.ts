@@ -53,6 +53,13 @@ new ResizeObserver(resizeGame).observe(host);
 window.visualViewport?.addEventListener('resize', resizeGame);
 resizeGame();
 game.events.once(Phaser.Core.Events.READY, resizeGame);
+// Hand over from the HTML splash once Phaser has drawn its own first frame.
+game.events.once(Phaser.Core.Events.READY, () => requestAnimationFrame(() => requestAnimationFrame(() => {
+  const splash = document.getElementById('boot-splash');
+  if (!splash) return;
+  splash.classList.add('is-done');
+  window.setTimeout(() => splash.remove(), 300);
+})));
 
 if (import.meta.env.DEV) {
   void import('./game/qa.ts').then(({ installQA }) => installQA(game));

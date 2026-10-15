@@ -268,6 +268,7 @@ export class GameScene extends Phaser.Scene {
   private startBtnLabel: Phaser.GameObjects.Text | null = null;
   private nextPreview: Phaser.GameObjects.Text | null = null;
   private infoPanel: Phaser.GameObjects.Container | null = null;
+  private idleInspector: Phaser.GameObjects.Container | null = null;
   private towerCommands: Phaser.GameObjects.Container | null = null;
   private placePanel: Phaser.GameObjects.Container | null = null;
   private powerupRow: Phaser.GameObjects.Container | null = null;
@@ -638,7 +639,7 @@ export class GameScene extends Phaser.Scene {
     if (hintTopics) {
       // First-play hints hug their text and sit low, so they never bury the board they describe.
       const measure = (value: string, size: number): number => { const t = this.add.text(0, 0, value, style(size, C.textSecondary)).setWordWrapWidth(bounds.width - 24); const h = t.height; t.destroy(); return h; };
-      const content = hintTopics.reduce((n, t) => n + measure(t.title, 18) + 8 + measure(t.body, 15) + 12, 0);
+      const content = hintTopics.reduce((n, t) => n + measure(t.title, 18) + 8 + measure(t.hint ?? t.body, 15) + 12, 0);
       const fitted = Math.min(bounds.height, 48 + content + 44 + 12);
       bounds = { ...bounds, y: bounds.y + bounds.height - fitted, height: fitted };
     }
@@ -647,7 +648,7 @@ export class GameScene extends Phaser.Scene {
     sheet.root.setData('progressionContext', context);
     if(kind==='help'){
       let y=0;const topics=this.guideStep?HELP_TOPICS.filter(t=>t.id===this.guideStep):HELP_TOPICS;
-      for(const t of topics){const title=sheet.text(y,t.title,C.gold,18);y+=title.height+8;const body=sheet.text(y,t.body,C.textSecondary,this.guideStep?15:16);y+=body.height+(this.guideStep?12:20);}
+      for(const t of topics){const title=sheet.text(y,t.title,C.gold,18);y+=title.height+8;const body=sheet.text(y,this.guideStep?t.hint??t.body:t.body,C.textSecondary,this.guideStep?15:16);y+=body.height+(this.guideStep?12:20);}
       const dismiss=()=>this.closeDetails(),skipOrReplay=()=>{if(this.guideStep)this.guide.skip();else this.guide.replay();this.closeDetails();};
       if(this.guideStep)sheet.pair(y,'Got it','Skip hints',dismiss,skipOrReplay);
       else{sheet.action(y,'Back to battle',dismiss);sheet.action(y+52,'Replay hints',skipOrReplay);}
@@ -927,7 +928,7 @@ export class GameScene extends Phaser.Scene {
     this.bottomCommandObjects = [];
     this.nextPreview = null; this.confirmStrip = null;
     this.floaters = [];
-    this.infoPanel = null; this.towerCommands = null; this.placePanel = null; this.powerupRow = null; this.catalog = null;
+    this.infoPanel = null; this.idleInspector = null; this.towerCommands = null; this.placePanel = null; this.powerupRow = null; this.catalog = null;
     this.bossBar = null; this.bossBarHp = null; this.bossBarText = null; this.bossBarFill = null;
     this.bossBarBackdrop = null; this.bossBarTrack = null; this.bossPanelHeight = 0;
     this.bossBarTextWrapWidth = 0;
@@ -1915,6 +1916,20 @@ export class GameScene extends Phaser.Scene {
   }
 
   // ---------- selected tower inspector (240px, §31) ----------
+  /** The 240px column would otherwise be a black void until a tower is selected: say what to do next. */
+  private drawIdleInspector(): void {
+    const inspector = this.layout.inspectorBounds;
+    if (!inspector || !this.uiRoot) return;
+    const c = this.add.container(inspector.x, inspector.y); this.uiRoot.add(c); this.idleInspector = c;
+    panel(this, c, 0, 0, inspector.width, inspector.height);
+    const wrap = inspector.width - 32;
+    c.add(this.add.text(16, 16, 'Command Post', style(16, C.gold, true, FONT_DISPLAY)).setWordWrapWidth(wrap));
+    c.add(this.add.text(16, 46, 'Select a tower to inspect, upgrade, retarget or sell it. Tap an empty build circle to raise a new tower.', style(13, C.textSecondary)).setWordWrapWidth(wrap).setLineSpacing(3));
+    const keys = ['1–5   choose a tower', '←↑→↓   pick a circle', 'Enter   build or confirm', 'Esc   cancel'];
+    c.add(this.add.text(16, 156, 'Keyboard', style(12, C.textMuted, true)).setWordWrapWidth(wrap));
+    c.add(this.add.text(16, 178, keys.join('\n'), style(13, C.textSecondary)).setWordWrapWidth(wrap).setLineSpacing(6));
+  }
+
   private refreshInfoPanel(): void {
     const beacon = this.selectedTower;
     const showAura = !!beacon && beacon.progression.branchId === 'arcane-beacon' && beacon.progression.rank !== null;
@@ -1923,11 +1938,12 @@ export class GameScene extends Phaser.Scene {
     if (!this.layout.inspector) { this.drawCatalog(); return; }
     if (this.sheetKind === 'evolve') this.drawSheet();
     this.infoPanel?.destroy(true); this.infoPanel = null; this.hideGhost();
+    this.idleInspector?.destroy(true); this.idleInspector = null;
     this.towerCommands?.destroy(true); this.towerCommands = null;
     this.hudStatus?.setPosition(this.layout.compact ? 512 : 544, this.layout.height - this.layout.tray + 12);
     this.drawCatalog();
     const t = this.selectedTower;
-    if (!t) { if (this.sheetKind === 'evolve') { this.sheetKind = null;this.pauseState.set('details',false);this.drawSheet(); } return; }
+    if (!t) { if (this.sheetKind === 'evolve') { this.sheetKind = null;this.pauseState.set('details',false);this.drawSheet(); } this.drawIdleInspector(); return; }
     const compact = this.layout.compact;
     const width = compact ? Math.min(820, this.layout.width - 24) : 240;
     const height = compact ? 108 : this.layout.field.height;

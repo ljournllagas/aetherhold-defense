@@ -5,7 +5,7 @@
     {
       "id": "maps/whisperfen_a-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/whisperfen_a-v1.png",
+      "path": "/assets/campaign/maps/whisperfen_a-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "12599b41516debd92f1bd2379f464c4891f3448f4ee4f7d6a5cfd14fd3c430dc",
@@ -15,7 +15,7 @@
       "registration": {
         "id": "map:whisperfen:a",
         "key": "campaign_whisperfen_a",
-        "path": "/assets/campaign/maps/whisperfen_a-v1.png",
+        "path": "/assets/campaign/maps/whisperfen_a-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -27,7 +27,7 @@
     {
       "id": "maps/whisperfen_b-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/whisperfen_b-v1.png",
+      "path": "/assets/campaign/maps/whisperfen_b-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "47d6359ca7038cdec1fb4821bfec5b7cffeecec9e588e26f89dc692f9941a382",
@@ -37,7 +37,7 @@
       "registration": {
         "id": "map:whisperfen:b",
         "key": "campaign_whisperfen_b",
-        "path": "/assets/campaign/maps/whisperfen_b-v1.png",
+        "path": "/assets/campaign/maps/whisperfen_b-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -49,7 +49,7 @@
     {
       "id": "maps/whisperfen_c-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/whisperfen_c-v1.png",
+      "path": "/assets/campaign/maps/whisperfen_c-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "9a6c28ab96395a9373e5be4284881f18d479193b192e4b8f6c3981658e36bc71",
@@ -59,7 +59,7 @@
       "registration": {
         "id": "map:whisperfen:c",
         "key": "campaign_whisperfen_c",
-        "path": "/assets/campaign/maps/whisperfen_c-v1.png",
+        "path": "/assets/campaign/maps/whisperfen_c-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -71,7 +71,7 @@
     {
       "id": "maps/whisperfen_d-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/whisperfen_d-v1.png",
+      "path": "/assets/campaign/maps/whisperfen_d-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "8f9af49470911f9e9aaeef91d4b036293da2ad4f4e9da48aae61aa3987d39316",
@@ -81,7 +81,7 @@
       "registration": {
         "id": "map:whisperfen:d",
         "key": "campaign_whisperfen_d",
-        "path": "/assets/campaign/maps/whisperfen_d-v1.png",
+        "path": "/assets/campaign/maps/whisperfen_d-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -93,7 +93,7 @@
     {
       "id": "maps/sunken_aether_a-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/sunken_aether_a-v1.png",
+      "path": "/assets/campaign/maps/sunken_aether_a-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "629aaaa0cf2b6c609ca960e93bc9c2bab5262694ed01d4b556e91aa1e243731a",
@@ -103,7 +103,7 @@
       "registration": {
         "id": "map:sunken_aether:a",
         "key": "campaign_sunken_aether_a",
-        "path": "/assets/campaign/maps/sunken_aether_a-v1.png",
+        "path": "/assets/campaign/maps/sunken_aether_a-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -115,7 +115,7 @@
     {
       "id": "maps/sunken_aether_b-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/sunken_aether_b-v1.png",
+      "path": "/assets/campaign/maps/sunken_aether_b-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "76526d9f729baff252244baf1b8a6f357a2abddf834624c98a5ac2cdeac15bad",
@@ -125,7 +125,7 @@
       "registration": {
         "id": "map:sunken_aether:b",
         "key": "campaign_sunken_aether_b",
-        "path": "/assets/campaign/maps/sunken_aether_b-v1.png",
+        "path": "/assets/campaign/maps/sunken_aether_b-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -137,7 +137,7 @@
     {
       "id": "maps/sunken_aether_c-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/sunken_aether_c-v1.png",
+      "path": "/assets/campaign/maps/sunken_aether_c-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "88924d36064fe9288ba22948c1c46f8bab6dcc5407ce7abed68ce193d7f271f1",
@@ -147,7 +147,7 @@
       "registration": {
         "id": "map:sunken_aether:c",
         "key": "campaign_sunken_aether_c",
-        "path": "/assets/campaign/maps/sunken_aether_c-v1.png",
+        "path": "/assets/campaign/maps/sunken_aether_c-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -159,7 +159,7 @@
     {
       "id": "maps/sunken_aether_d-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/sunken_aether_d-v1.png",
+      "path": "/assets/campaign/maps/sunken_aether_d-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "9a87a45ac93fb823aa5d772e2bf486e9e52ccdd06d54ee87681587c7146fea67",
@@ -169,7 +169,7 @@
       "registration": {
         "id": "map:sunken_aether:d",
         "key": "campaign_sunken_aether_d",
-        "path": "/assets/campaign/maps/sunken_aether_d-v1.png",
+        "path": "/assets/campaign/maps/sunken_aether_d-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -181,7 +181,7 @@
     {
       "id": "maps/ironroot_a-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/ironroot_a-v1.png",
+      "path": "/assets/campaign/maps/ironroot_a-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "8b2c8022b55a4b333c7fb4047e4f0fc3bc258564f21a3600de0b1359d41bb59d",
@@ -191,7 +191,7 @@
       "registration": {
         "id": "map:ironroot:a",
         "key": "campaign_ironroot_a",
-        "path": "/assets/campaign/maps/ironroot_a-v1.png",
+        "path": "/assets/campaign/maps/ironroot_a-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -203,7 +203,7 @@
     {
       "id": "maps/ironroot_b-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/ironroot_b-v1.png",
+      "path": "/assets/campaign/maps/ironroot_b-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "f694aa8336c71d0a6ca711527e89056fde864ab96c10a920a98579fc0c270caa",
@@ -213,7 +213,7 @@
       "registration": {
         "id": "map:ironroot:b",
         "key": "campaign_ironroot_b",
-        "path": "/assets/campaign/maps/ironroot_b-v1.png",
+        "path": "/assets/campaign/maps/ironroot_b-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -225,7 +225,7 @@
     {
       "id": "maps/ironroot_c-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/ironroot_c-v1.png",
+      "path": "/assets/campaign/maps/ironroot_c-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "2823f945ab3a1d369ea678a31a83b8493a30cca735d89e7d5c7127048bec4066",
@@ -235,7 +235,7 @@
       "registration": {
         "id": "map:ironroot:c",
         "key": "campaign_ironroot_c",
-        "path": "/assets/campaign/maps/ironroot_c-v1.png",
+        "path": "/assets/campaign/maps/ironroot_c-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -247,7 +247,7 @@
     {
       "id": "maps/ironroot_d-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/ironroot_d-v1.png",
+      "path": "/assets/campaign/maps/ironroot_d-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "05db62f72281ee52b46cfa2422c5340f05bb04364221d0fa7192e5440b39db89",
@@ -257,7 +257,7 @@
       "registration": {
         "id": "map:ironroot:d",
         "key": "campaign_ironroot_d",
-        "path": "/assets/campaign/maps/ironroot_d-v1.png",
+        "path": "/assets/campaign/maps/ironroot_d-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -269,7 +269,7 @@
     {
       "id": "maps/sky_isles_a-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/sky_isles_a-v1.png",
+      "path": "/assets/campaign/maps/sky_isles_a-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "2f0d8d322a52f3c0570d80c1ea69eef8bf2b2b7262d25eb27fc1e84d6fcb0248",
@@ -279,7 +279,7 @@
       "registration": {
         "id": "map:sky_isles:a",
         "key": "campaign_sky_isles_a",
-        "path": "/assets/campaign/maps/sky_isles_a-v1.png",
+        "path": "/assets/campaign/maps/sky_isles_a-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -291,7 +291,7 @@
     {
       "id": "maps/sky_isles_b-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/sky_isles_b-v1.png",
+      "path": "/assets/campaign/maps/sky_isles_b-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "2f3e6c4a9a541173cec50f3c7db43bf843335ce1140e77e357f46bc71bdb18c3",
@@ -301,7 +301,7 @@
       "registration": {
         "id": "map:sky_isles:b",
         "key": "campaign_sky_isles_b",
-        "path": "/assets/campaign/maps/sky_isles_b-v1.png",
+        "path": "/assets/campaign/maps/sky_isles_b-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -313,7 +313,7 @@
     {
       "id": "maps/sky_isles_c-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/sky_isles_c-v1.png",
+      "path": "/assets/campaign/maps/sky_isles_c-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "8431ff0a40f49242ab02c136b071615aa7eb30b394f9de1a0b9f0578ea88f59d",
@@ -323,7 +323,7 @@
       "registration": {
         "id": "map:sky_isles:c",
         "key": "campaign_sky_isles_c",
-        "path": "/assets/campaign/maps/sky_isles_c-v1.png",
+        "path": "/assets/campaign/maps/sky_isles_c-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -335,7 +335,7 @@
     {
       "id": "maps/sky_isles_d-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/sky_isles_d-v1.png",
+      "path": "/assets/campaign/maps/sky_isles_d-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "0618441ef41e96dedd16972535ab841f780650a0d569678b7abbcddbc0f90157",
@@ -345,7 +345,7 @@
       "registration": {
         "id": "map:sky_isles:d",
         "key": "campaign_sky_isles_d",
-        "path": "/assets/campaign/maps/sky_isles_d-v1.png",
+        "path": "/assets/campaign/maps/sky_isles_d-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -357,7 +357,7 @@
     {
       "id": "maps/dreadmoon_a-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/dreadmoon_a-v1.png",
+      "path": "/assets/campaign/maps/dreadmoon_a-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "5cb6a57d48d0762384690bcc7f09ce1fd75280c1146b111a103b2099ba7f8ebe",
@@ -367,7 +367,7 @@
       "registration": {
         "id": "map:dreadmoon:a",
         "key": "campaign_dreadmoon_a",
-        "path": "/assets/campaign/maps/dreadmoon_a-v1.png",
+        "path": "/assets/campaign/maps/dreadmoon_a-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -379,7 +379,7 @@
     {
       "id": "maps/dreadmoon_b-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/dreadmoon_b-v1.png",
+      "path": "/assets/campaign/maps/dreadmoon_b-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "1f27e7b06b96904a1bc6001d58c4e6298d7653d86fba719515f892f4e3cf91c2",
@@ -389,7 +389,7 @@
       "registration": {
         "id": "map:dreadmoon:b",
         "key": "campaign_dreadmoon_b",
-        "path": "/assets/campaign/maps/dreadmoon_b-v1.png",
+        "path": "/assets/campaign/maps/dreadmoon_b-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -401,7 +401,7 @@
     {
       "id": "maps/dreadmoon_c-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/dreadmoon_c-v1.png",
+      "path": "/assets/campaign/maps/dreadmoon_c-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "936a470590651829cae35fcee1b48780bf7d77783addf28f305400fdd5991b62",
@@ -411,7 +411,7 @@
       "registration": {
         "id": "map:dreadmoon:c",
         "key": "campaign_dreadmoon_c",
-        "path": "/assets/campaign/maps/dreadmoon_c-v1.png",
+        "path": "/assets/campaign/maps/dreadmoon_c-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -423,7 +423,7 @@
     {
       "id": "maps/dreadmoon_d-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/dreadmoon_d-v1.png",
+      "path": "/assets/campaign/maps/dreadmoon_d-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "193828455cc6b46ee398ba17db004a3d8ce167e697815f200f05b125de38864c",
@@ -433,7 +433,7 @@
       "registration": {
         "id": "map:dreadmoon:d",
         "key": "campaign_dreadmoon_d",
-        "path": "/assets/campaign/maps/dreadmoon_d-v1.png",
+        "path": "/assets/campaign/maps/dreadmoon_d-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -445,7 +445,7 @@
     {
       "id": "maps/astral_rift_a-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/astral_rift_a-v1.png",
+      "path": "/assets/campaign/maps/astral_rift_a-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "0fc52438c3074e5cbad93b4f529ccae643e76a0f48143f23ce30d251247ff0b3",
@@ -455,7 +455,7 @@
       "registration": {
         "id": "map:astral_rift:a",
         "key": "campaign_astral_rift_a",
-        "path": "/assets/campaign/maps/astral_rift_a-v1.png",
+        "path": "/assets/campaign/maps/astral_rift_a-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -467,7 +467,7 @@
     {
       "id": "maps/astral_rift_b-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/astral_rift_b-v1.png",
+      "path": "/assets/campaign/maps/astral_rift_b-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "d03059e7adde4b252cec53ed6f30107bf08da1cfaf476c1136309600c7aba407",
@@ -477,7 +477,7 @@
       "registration": {
         "id": "map:astral_rift:b",
         "key": "campaign_astral_rift_b",
-        "path": "/assets/campaign/maps/astral_rift_b-v1.png",
+        "path": "/assets/campaign/maps/astral_rift_b-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -489,7 +489,7 @@
     {
       "id": "maps/astral_rift_c-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/astral_rift_c-v1.png",
+      "path": "/assets/campaign/maps/astral_rift_c-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "f00309f8b34c699966d6b5745998c6a30a448ac1bc97dbbc36a005b8462bfebc",
@@ -499,7 +499,7 @@
       "registration": {
         "id": "map:astral_rift:c",
         "key": "campaign_astral_rift_c",
-        "path": "/assets/campaign/maps/astral_rift_c-v1.png",
+        "path": "/assets/campaign/maps/astral_rift_c-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -511,7 +511,7 @@
     {
       "id": "maps/astral_rift_d-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/astral_rift_d-v1.png",
+      "path": "/assets/campaign/maps/astral_rift_d-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "8db2a745f6dabca73ed1cae6ae9ad5c1b934131a34c8156af07368bf3a527254",
@@ -521,7 +521,7 @@
       "registration": {
         "id": "map:astral_rift:d",
         "key": "campaign_astral_rift_d",
-        "path": "/assets/campaign/maps/astral_rift_d-v1.png",
+        "path": "/assets/campaign/maps/astral_rift_d-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -533,7 +533,7 @@
     {
       "id": "maps/aether_crown_a-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/aether_crown_a-v1.png",
+      "path": "/assets/campaign/maps/aether_crown_a-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "6ddcd6475e135b31d4fb1c5049d6aa038b43decb0d86624a86bb59072e68134b",
@@ -543,7 +543,7 @@
       "registration": {
         "id": "map:aether_crown:a",
         "key": "campaign_aether_crown_a",
-        "path": "/assets/campaign/maps/aether_crown_a-v1.png",
+        "path": "/assets/campaign/maps/aether_crown_a-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -555,7 +555,7 @@
     {
       "id": "maps/aether_crown_b-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/aether_crown_b-v1.png",
+      "path": "/assets/campaign/maps/aether_crown_b-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "a508dccd71ef183e0096c9853f04c8c1d4d84560c4eb23cf639bcf11a583c237",
@@ -565,7 +565,7 @@
       "registration": {
         "id": "map:aether_crown:b",
         "key": "campaign_aether_crown_b",
-        "path": "/assets/campaign/maps/aether_crown_b-v1.png",
+        "path": "/assets/campaign/maps/aether_crown_b-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -577,7 +577,7 @@
     {
       "id": "maps/aether_crown_c-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/aether_crown_c-v1.png",
+      "path": "/assets/campaign/maps/aether_crown_c-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "a462cc71f4b90f06f9327c698c9c48f6df7183d242a5367067533ea3570f1582",
@@ -587,7 +587,7 @@
       "registration": {
         "id": "map:aether_crown:c",
         "key": "campaign_aether_crown_c",
-        "path": "/assets/campaign/maps/aether_crown_c-v1.png",
+        "path": "/assets/campaign/maps/aether_crown_c-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -599,7 +599,7 @@
     {
       "id": "maps/aether_crown_d-v1.png",
       "category": "map",
-      "path": "/assets/campaign/maps/aether_crown_d-v1.png",
+      "path": "/assets/campaign/maps/aether_crown_d-v1.webp",
       "width": 1672,
       "height": 940,
       "baselineSha256": "6145204a136a634aff669869252da070fc6e41956bdfa56bb51c1be5b0da50d6",
@@ -609,7 +609,7 @@
       "registration": {
         "id": "map:aether_crown:d",
         "key": "campaign_aether_crown_d",
-        "path": "/assets/campaign/maps/aether_crown_d-v1.png",
+        "path": "/assets/campaign/maps/aether_crown_d-v1.webp",
         "kind": "image",
         "width": 1672,
         "height": 940,
@@ -621,7 +621,7 @@
     {
       "id": "world-map/whisperfen-v1.png",
       "category": "world-panel",
-      "path": "/assets/campaign/world-map/whisperfen-v1.png",
+      "path": "/assets/campaign/world-map/whisperfen-v1.webp",
       "width": 768,
       "height": 432,
       "baselineSha256": "cb76061c7cc1ed0873e057163cc63c30ba98f5872dfbabf751cdf080737fd153",
@@ -631,7 +631,7 @@
       "registration": {
         "id": "world-panel:whisperfen",
         "key": "campaign_worldmap_whisperfen",
-        "path": "/assets/campaign/world-map/whisperfen-v1.png",
+        "path": "/assets/campaign/world-map/whisperfen-v1.webp",
         "kind": "image",
         "width": 768,
         "height": 432,
@@ -643,7 +643,7 @@
     {
       "id": "world-map/sunken_aether-v1.png",
       "category": "world-panel",
-      "path": "/assets/campaign/world-map/sunken_aether-v1.png",
+      "path": "/assets/campaign/world-map/sunken_aether-v1.webp",
       "width": 768,
       "height": 432,
       "baselineSha256": "dde1152f4a68ee9057c6de55bd2679a8d053486a155aaab4b1527cf8ed676875",
@@ -653,7 +653,7 @@
       "registration": {
         "id": "world-panel:sunken_aether",
         "key": "campaign_worldmap_sunken_aether",
-        "path": "/assets/campaign/world-map/sunken_aether-v1.png",
+        "path": "/assets/campaign/world-map/sunken_aether-v1.webp",
         "kind": "image",
         "width": 768,
         "height": 432,
@@ -665,7 +665,7 @@
     {
       "id": "world-map/ironroot-v1.png",
       "category": "world-panel",
-      "path": "/assets/campaign/world-map/ironroot-v1.png",
+      "path": "/assets/campaign/world-map/ironroot-v1.webp",
       "width": 768,
       "height": 432,
       "baselineSha256": "b0f2cd62d5a4fe5e563b49aee44ed67f5821aa4b4ecc5eff34f59e42f4daa2a5",
@@ -675,7 +675,7 @@
       "registration": {
         "id": "world-panel:ironroot",
         "key": "campaign_worldmap_ironroot",
-        "path": "/assets/campaign/world-map/ironroot-v1.png",
+        "path": "/assets/campaign/world-map/ironroot-v1.webp",
         "kind": "image",
         "width": 768,
         "height": 432,
@@ -687,7 +687,7 @@
     {
       "id": "world-map/sky_isles-v1.png",
       "category": "world-panel",
-      "path": "/assets/campaign/world-map/sky_isles-v1.png",
+      "path": "/assets/campaign/world-map/sky_isles-v1.webp",
       "width": 768,
       "height": 432,
       "baselineSha256": "09f6b2ab8b30ed7fa5ad2b6d81b1e2850e345712409fc15298a9230015623dd1",
@@ -697,7 +697,7 @@
       "registration": {
         "id": "world-panel:sky_isles",
         "key": "campaign_worldmap_sky_isles",
-        "path": "/assets/campaign/world-map/sky_isles-v1.png",
+        "path": "/assets/campaign/world-map/sky_isles-v1.webp",
         "kind": "image",
         "width": 768,
         "height": 432,
@@ -709,7 +709,7 @@
     {
       "id": "world-map/dreadmoon-v1.png",
       "category": "world-panel",
-      "path": "/assets/campaign/world-map/dreadmoon-v1.png",
+      "path": "/assets/campaign/world-map/dreadmoon-v1.webp",
       "width": 768,
       "height": 432,
       "baselineSha256": "b8c7084e1532b95c6ee2bcf8a5d6fe0237c2f7249e39c3f8b9d8f1cfd28278f5",
@@ -719,7 +719,7 @@
       "registration": {
         "id": "world-panel:dreadmoon",
         "key": "campaign_worldmap_dreadmoon",
-        "path": "/assets/campaign/world-map/dreadmoon-v1.png",
+        "path": "/assets/campaign/world-map/dreadmoon-v1.webp",
         "kind": "image",
         "width": 768,
         "height": 432,
@@ -731,7 +731,7 @@
     {
       "id": "world-map/astral_rift-v1.png",
       "category": "world-panel",
-      "path": "/assets/campaign/world-map/astral_rift-v1.png",
+      "path": "/assets/campaign/world-map/astral_rift-v1.webp",
       "width": 768,
       "height": 432,
       "baselineSha256": "30c3c6442d1c1240a663369b93bc26fe2fa7082cf33bcb4734d8a8e6c4c40b27",
@@ -741,7 +741,7 @@
       "registration": {
         "id": "world-panel:astral_rift",
         "key": "campaign_worldmap_astral_rift",
-        "path": "/assets/campaign/world-map/astral_rift-v1.png",
+        "path": "/assets/campaign/world-map/astral_rift-v1.webp",
         "kind": "image",
         "width": 768,
         "height": 432,
@@ -753,7 +753,7 @@
     {
       "id": "world-map/aether_crown-v1.png",
       "category": "world-panel",
-      "path": "/assets/campaign/world-map/aether_crown-v1.png",
+      "path": "/assets/campaign/world-map/aether_crown-v1.webp",
       "width": 768,
       "height": 432,
       "baselineSha256": "0b461650f5a5e9645374adef3f0066a85a99be1d681143695fcbb941e971bc83",
@@ -763,7 +763,7 @@
       "registration": {
         "id": "world-panel:aether_crown",
         "key": "campaign_worldmap_aether_crown",
-        "path": "/assets/campaign/world-map/aether_crown-v1.png",
+        "path": "/assets/campaign/world-map/aether_crown-v1.webp",
         "kind": "image",
         "width": 768,
         "height": 432,
@@ -775,7 +775,7 @@
     {
       "id": "enemies/whisperfen/bogling-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v1.png",
+      "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "ccf03b98537a384a7aaa888b9b6b65640bbaa27ad30c3aa3efabe08b27e623c8",
@@ -785,7 +785,7 @@
       "registration": {
         "id": "enemy:bogling",
         "key": "campaign_enemy_bogling",
-        "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v1.png",
+        "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -816,7 +816,7 @@
     {
       "id": "enemies/whisperfen/fen_skitter-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v1.png",
+      "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "fc1b8ab86e247bf237aa0df2f045f41bc1f924656eb2502cce87966eee101a38",
@@ -826,7 +826,7 @@
       "registration": {
         "id": "enemy:fen_skitter",
         "key": "campaign_enemy_fen_skitter",
-        "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v1.png",
+        "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -857,7 +857,7 @@
     {
       "id": "enemies/whisperfen/rotback-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v1.png",
+      "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "5b6c9e68aa501cc81cd75901ec48476fffd6540d46710f043af4f3d7c9cb6ee3",
@@ -867,7 +867,7 @@
       "registration": {
         "id": "enemy:rotback",
         "key": "campaign_enemy_rotback",
-        "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v1.png",
+        "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -898,7 +898,7 @@
     {
       "id": "enemies/whisperfen/mossguard-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v1.png",
+      "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "ea57448d5789e92db3887a077b6704f0b9d2749d2dafa02124fa28bc20aca5af",
@@ -908,7 +908,7 @@
       "registration": {
         "id": "enemy:mossguard",
         "key": "campaign_enemy_mossguard",
-        "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v1.png",
+        "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -939,7 +939,7 @@
     {
       "id": "enemies/whisperfen/rootwretch-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v1.png",
+      "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v1.webp",
       "width": 768,
       "height": 640,
       "baselineSha256": "b1abec98a6ca346366099e098c7159f8d468848d247c7a639f99922296fbf579",
@@ -949,7 +949,7 @@
       "registration": {
         "id": "enemy:rootwretch",
         "key": "campaign_enemy_rootwretch",
-        "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v1.png",
+        "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 640,
@@ -984,7 +984,7 @@
     {
       "id": "enemies/sunken_aether/tideborn-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v1.png",
+      "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "c29acd629a2f9c37da33808cb7fe766bbe0e5f011117ebfc1ca8e546757f96ec",
@@ -994,7 +994,7 @@
       "registration": {
         "id": "enemy:tideborn",
         "key": "campaign_enemy_tideborn",
-        "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1025,7 +1025,7 @@
     {
       "id": "enemies/sunken_aether/crystal_wisp-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v1.png",
+      "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "3de60fe80292b311e83af4d895077d3a879ac56a07cb232c3f7127681c7efbef",
@@ -1035,7 +1035,7 @@
       "registration": {
         "id": "enemy:crystal_wisp",
         "key": "campaign_enemy_crystal_wisp",
-        "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1066,7 +1066,7 @@
     {
       "id": "enemies/sunken_aether/relic_guardian-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v1.png",
+      "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "e027c9274c445039b6afde8a1ac1bf3bc67bcd80efb908582448f532e9cefde1",
@@ -1076,7 +1076,7 @@
       "registration": {
         "id": "enemy:relic_guardian",
         "key": "campaign_enemy_relic_guardian",
-        "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1107,7 +1107,7 @@
     {
       "id": "enemies/sunken_aether/deepcrawler-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v1.png",
+      "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "102593add2dc545b65661124de50b31b5291b51ef8568ec97109f96fc6de65db",
@@ -1117,7 +1117,7 @@
       "registration": {
         "id": "enemy:deepcrawler",
         "key": "campaign_enemy_deepcrawler",
-        "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1148,7 +1148,7 @@
     {
       "id": "enemies/sunken_aether/aetherbound-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v1.png",
+      "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v1.webp",
       "width": 768,
       "height": 640,
       "baselineSha256": "955ee76bf98bfebf13f4b0211d997d2e1ce7d812149fb0f4b6fd789a5b3e1ce9",
@@ -1158,7 +1158,7 @@
       "registration": {
         "id": "enemy:aetherbound",
         "key": "campaign_enemy_aetherbound",
-        "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 640,
@@ -1193,7 +1193,7 @@
     {
       "id": "enemies/ironroot/scrapling-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v1.png",
+      "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "e5409ef4f568a88f56eefc46a7c21ed46bfdca20dd7ac7b59ca54f204057dfe7",
@@ -1203,7 +1203,7 @@
       "registration": {
         "id": "enemy:scrapling",
         "key": "campaign_enemy_scrapling",
-        "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v1.png",
+        "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1234,7 +1234,7 @@
     {
       "id": "enemies/ironroot/furnace_hound-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v1.png",
+      "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "6b341b5bcaf0268e127e67fcf6fb5a7c90220f291199280583760c4d4ea04f37",
@@ -1244,7 +1244,7 @@
       "registration": {
         "id": "enemy:furnace_hound",
         "key": "campaign_enemy_furnace_hound",
-        "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v1.png",
+        "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1275,7 +1275,7 @@
     {
       "id": "enemies/ironroot/ironbound-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v1.png",
+      "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "0838c0e98a047147915d5295520c8f9266dd8b793299575932bd87945a70281c",
@@ -1285,7 +1285,7 @@
       "registration": {
         "id": "enemy:ironbound",
         "key": "campaign_enemy_ironbound",
-        "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v1.png",
+        "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1316,7 +1316,7 @@
     {
       "id": "enemies/ironroot/siege_golem-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v1.png",
+      "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "bbce05d3b379c989d25f3b564e8764f9e13eedda8a7ceed1d382aad4d8a96929",
@@ -1326,7 +1326,7 @@
       "registration": {
         "id": "enemy:siege_golem",
         "key": "campaign_enemy_siege_golem",
-        "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v1.png",
+        "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1357,7 +1357,7 @@
     {
       "id": "enemies/ironroot/foundry_core-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v1.png",
+      "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v1.webp",
       "width": 768,
       "height": 640,
       "baselineSha256": "082eb51b768bf8a824235a99eb94e799cdc742203740f747cf4aeb5bbe5e2e3c",
@@ -1367,7 +1367,7 @@
       "registration": {
         "id": "enemy:foundry_core",
         "key": "campaign_enemy_foundry_core",
-        "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v1.png",
+        "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 640,
@@ -1402,7 +1402,7 @@
     {
       "id": "enemies/sky_isles/cloud_skitter-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v1.png",
+      "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "4e4bcd2fa5c95b325f8aa63a051b12375493de9fb28eb13e2c9b2ab523c88e8e",
@@ -1412,7 +1412,7 @@
       "registration": {
         "id": "enemy:cloud_skitter",
         "key": "campaign_enemy_cloud_skitter",
-        "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1443,7 +1443,7 @@
     {
       "id": "enemies/sky_isles/galeclaw-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v1.png",
+      "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "6761bc89530b374e5183402d2395a45c00ae4dea3ae2265eb5b6a4026a2b69c1",
@@ -1453,7 +1453,7 @@
       "registration": {
         "id": "enemy:galeclaw",
         "key": "campaign_enemy_galeclaw",
-        "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1484,7 +1484,7 @@
     {
       "id": "enemies/sky_isles/stormguard-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v1.png",
+      "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "4159f57bff2907cc2fb25f47fcd24e8db6ebaa694634ab42feee55574b54f4e3",
@@ -1494,7 +1494,7 @@
       "registration": {
         "id": "enemy:stormguard",
         "key": "campaign_enemy_stormguard",
-        "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1525,7 +1525,7 @@
     {
       "id": "enemies/sky_isles/aether_drake-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v1.png",
+      "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "c0cf317b68bafbc54765d5d6770e9d799a69f38fa77155ad759b76dcc57420e3",
@@ -1535,7 +1535,7 @@
       "registration": {
         "id": "enemy:aether_drake",
         "key": "campaign_enemy_aether_drake",
-        "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1566,7 +1566,7 @@
     {
       "id": "enemies/sky_isles/tempest_herald-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v1.png",
+      "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v1.webp",
       "width": 768,
       "height": 640,
       "baselineSha256": "09ecf254f70c1c71d54cb965b4d3a40daab0e5e46de7490e12152d37fe1abde2",
@@ -1576,7 +1576,7 @@
       "registration": {
         "id": "enemy:tempest_herald",
         "key": "campaign_enemy_tempest_herald",
-        "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v1.png",
+        "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 640,
@@ -1611,7 +1611,7 @@
     {
       "id": "enemies/dreadmoon/shadeborn-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v1.png",
+      "path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "16073f392ede1ef94ac8529c636b0344ac298a6e96424c452e3a3c9729f72df3",
@@ -1621,7 +1621,7 @@
       "registration": {
         "id": "enemy:shadeborn",
         "key": "campaign_enemy_shadeborn",
-        "path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v1.png",
+        "path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1652,7 +1652,7 @@
     {
       "id": "enemies/dreadmoon/dusk_runner-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v1.png",
+      "path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "cd8208aa6f15fb95e0fe3277a38a548f20f42bd579d995f38c1eaf5aa3a38ef8",
@@ -1662,7 +1662,7 @@
       "registration": {
         "id": "enemy:dusk_runner",
         "key": "campaign_enemy_dusk_runner",
-        "path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v1.png",
+        "path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1693,7 +1693,7 @@
     {
       "id": "enemies/dreadmoon/grave_hulk-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v1.png",
+      "path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "ce6de970266d6fc0e072aa123d22ee070ebde555130f981f9908860822885ba8",
@@ -1703,7 +1703,7 @@
       "registration": {
         "id": "enemy:grave_hulk",
         "key": "campaign_enemy_grave_hulk",
-        "path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v1.png",
+        "path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1734,7 +1734,7 @@
     {
       "id": "enemies/dreadmoon/moonstalker-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v1.png",
+      "path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "9ff34b61ba2b5b029286f40f97552fcc7eb9f26d0619e01a0fe8344718f9d2f5",
@@ -1744,7 +1744,7 @@
       "registration": {
         "id": "enemy:moonstalker",
         "key": "campaign_enemy_moonstalker",
-        "path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v1.png",
+        "path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1775,7 +1775,7 @@
     {
       "id": "enemies/dreadmoon/echo_shade-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v1.png",
+      "path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v1.webp",
       "width": 768,
       "height": 640,
       "baselineSha256": "1fb7ba3250e8910852c45c5a4dd7d43f3c2d25e97a4b8f004569812f5f0eb5e5",
@@ -1785,7 +1785,7 @@
       "registration": {
         "id": "enemy:echo_shade",
         "key": "campaign_enemy_echo_shade",
-        "path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v1.png",
+        "path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 640,
@@ -1820,7 +1820,7 @@
     {
       "id": "enemies/astral_rift/riftling-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/astral_rift/riftling-atlas-v1.png",
+      "path": "/assets/campaign/enemies/astral_rift/riftling-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "02ca9a1cdf19e107e0f32d8691b0054122de167d6e461da6111a9f3e3cf865d4",
@@ -1830,7 +1830,7 @@
       "registration": {
         "id": "enemy:riftling",
         "key": "campaign_enemy_riftling",
-        "path": "/assets/campaign/enemies/astral_rift/riftling-atlas-v1.png",
+        "path": "/assets/campaign/enemies/astral_rift/riftling-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1861,7 +1861,7 @@
     {
       "id": "enemies/astral_rift/phase_hound-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v1.png",
+      "path": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "e680a5111ea38ecd776ea3e00f9a83413c42af8fcfe46c910bb2d2ebeb178ab0",
@@ -1871,7 +1871,7 @@
       "registration": {
         "id": "enemy:phase_hound",
         "key": "campaign_enemy_phase_hound",
-        "path": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v1.png",
+        "path": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1902,7 +1902,7 @@
     {
       "id": "enemies/astral_rift/voidplate-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v1.png",
+      "path": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "47aafc8a058513d7041ffebaf34a83e7521c8ac9c1ff17923fe09d2b19722179",
@@ -1912,7 +1912,7 @@
       "registration": {
         "id": "enemy:voidplate",
         "key": "campaign_enemy_voidplate",
-        "path": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v1.png",
+        "path": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1943,7 +1943,7 @@
     {
       "id": "enemies/astral_rift/astral_horror-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v1.png",
+      "path": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "c93b45a7bd95ec778d25217d11a1513c17fd2210e93d6f37bc541a2ecf107d43",
@@ -1953,7 +1953,7 @@
       "registration": {
         "id": "enemy:astral_horror",
         "key": "campaign_enemy_astral_horror",
-        "path": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v1.png",
+        "path": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -1984,7 +1984,7 @@
     {
       "id": "enemies/astral_rift/rift_weaver-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v1.png",
+      "path": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v1.webp",
       "width": 768,
       "height": 640,
       "baselineSha256": "9157637796ed0f7d0bf8e028f6ab4f39d8998d3e79cfd2a0cd560e2c9c3a5050",
@@ -1994,7 +1994,7 @@
       "registration": {
         "id": "enemy:rift_weaver",
         "key": "campaign_enemy_rift_weaver",
-        "path": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v1.png",
+        "path": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 640,
@@ -2029,7 +2029,7 @@
     {
       "id": "enemies/aether_crown/aetherborn-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/aether_crown/aetherborn-atlas-v1.png",
+      "path": "/assets/campaign/enemies/aether_crown/aetherborn-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "b271e923f9e1f82f3f3ffb34db3020c51f6d28b62b65fe5260fc1f901677f78d",
@@ -2039,7 +2039,7 @@
       "registration": {
         "id": "enemy:aetherborn",
         "key": "campaign_enemy_aetherborn",
-        "path": "/assets/campaign/enemies/aether_crown/aetherborn-atlas-v1.png",
+        "path": "/assets/campaign/enemies/aether_crown/aetherborn-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -2070,7 +2070,7 @@
     {
       "id": "enemies/aether_crown/crown_runner-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/aether_crown/crown_runner-atlas-v1.png",
+      "path": "/assets/campaign/enemies/aether_crown/crown_runner-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "b79e6968a95d5750cb4bb8c51fa1224c711a3b3b291eae3f335b2d3422249eeb",
@@ -2080,7 +2080,7 @@
       "registration": {
         "id": "enemy:crown_runner",
         "key": "campaign_enemy_crown_runner",
-        "path": "/assets/campaign/enemies/aether_crown/crown_runner-atlas-v1.png",
+        "path": "/assets/campaign/enemies/aether_crown/crown_runner-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -2111,7 +2111,7 @@
     {
       "id": "enemies/aether_crown/sentry_colossus-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v1.png",
+      "path": "/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "a66053d660264d7459ea435464bebb303d0b5c1382791e06ad88548ef32136f1",
@@ -2121,7 +2121,7 @@
       "registration": {
         "id": "enemy:sentry_colossus",
         "key": "campaign_enemy_sentry_colossus",
-        "path": "/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v1.png",
+        "path": "/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -2152,7 +2152,7 @@
     {
       "id": "enemies/aether_crown/aether_seer-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/aether_crown/aether_seer-atlas-v1.png",
+      "path": "/assets/campaign/enemies/aether_crown/aether_seer-atlas-v1.webp",
       "width": 768,
       "height": 512,
       "baselineSha256": "07c25c747859ea05ef3dd54275bd152c8e8efe6c812a42157d652998130db127",
@@ -2162,7 +2162,7 @@
       "registration": {
         "id": "enemy:aether_seer",
         "key": "campaign_enemy_aether_seer",
-        "path": "/assets/campaign/enemies/aether_crown/aether_seer-atlas-v1.png",
+        "path": "/assets/campaign/enemies/aether_crown/aether_seer-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 512,
@@ -2193,7 +2193,7 @@
     {
       "id": "enemies/aether_crown/crown_archon-atlas-v1.png",
       "category": "normal-enemy",
-      "path": "/assets/campaign/enemies/aether_crown/crown_archon-atlas-v1.png",
+      "path": "/assets/campaign/enemies/aether_crown/crown_archon-atlas-v1.webp",
       "width": 768,
       "height": 640,
       "baselineSha256": "413cd82ea79d1b323dca3c30fce5cdd64a473e25959f0589e9d1d225f2246dfd",
@@ -2203,7 +2203,7 @@
       "registration": {
         "id": "enemy:crown_archon",
         "key": "campaign_enemy_crown_archon",
-        "path": "/assets/campaign/enemies/aether_crown/crown_archon-atlas-v1.png",
+        "path": "/assets/campaign/enemies/aether_crown/crown_archon-atlas-v1.webp",
         "kind": "sheet",
         "width": 768,
         "height": 640,
@@ -2238,7 +2238,7 @@
     {
       "id": "bosses/mireheart_hydra-atlas-v1.png",
       "category": "boss",
-      "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v1.png",
+      "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v1.webp",
       "width": 2048,
       "height": 1536,
       "baselineSha256": "9cced307ee1dee8c8736cabaeaa46d94cc61498238b1cf6d22c49019a887001d",
@@ -2248,7 +2248,7 @@
       "registration": {
         "id": "boss:mireheart_hydra",
         "key": "campaign_enemy_mireheart_hydra",
-        "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v1.png",
+        "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v1.webp",
         "kind": "sheet",
         "width": 2048,
         "height": 1536,
@@ -2287,7 +2287,7 @@
     {
       "id": "bosses/drowned_oracle-atlas-v1.png",
       "category": "boss",
-      "path": "/assets/campaign/bosses/drowned_oracle-atlas-v1.png",
+      "path": "/assets/campaign/bosses/drowned_oracle-atlas-v1.webp",
       "width": 2048,
       "height": 1536,
       "baselineSha256": "a503b6c99cbe3f2055a48be332e69b625e834f70502a22b7fb27da289f8887cf",
@@ -2297,7 +2297,7 @@
       "registration": {
         "id": "boss:drowned_oracle",
         "key": "campaign_enemy_drowned_oracle",
-        "path": "/assets/campaign/bosses/drowned_oracle-atlas-v1.png",
+        "path": "/assets/campaign/bosses/drowned_oracle-atlas-v1.webp",
         "kind": "sheet",
         "width": 2048,
         "height": 1536,
@@ -2336,7 +2336,7 @@
     {
       "id": "bosses/iron_tyrant-atlas-v1.png",
       "category": "boss",
-      "path": "/assets/campaign/bosses/iron_tyrant-atlas-v1.png",
+      "path": "/assets/campaign/bosses/iron_tyrant-atlas-v1.webp",
       "width": 2048,
       "height": 1536,
       "baselineSha256": "56b84da13a79e2c9808bf03ce5c9a3a9d1e9760213e94dc71ee6f1622185cea6",
@@ -2346,7 +2346,7 @@
       "registration": {
         "id": "boss:iron_tyrant",
         "key": "campaign_enemy_iron_tyrant",
-        "path": "/assets/campaign/bosses/iron_tyrant-atlas-v1.png",
+        "path": "/assets/campaign/bosses/iron_tyrant-atlas-v1.webp",
         "kind": "sheet",
         "width": 2048,
         "height": 1536,
@@ -2385,7 +2385,7 @@
     {
       "id": "bosses/stormmaw_prime-atlas-v1.png",
       "category": "boss",
-      "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v1.png",
+      "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v1.webp",
       "width": 2048,
       "height": 1536,
       "baselineSha256": "6b61e5a6765b20cf43c7298469cdce6b3a1cccc7140568909d84fdfe8dbdf299",
@@ -2395,7 +2395,7 @@
       "registration": {
         "id": "boss:stormmaw_prime",
         "key": "campaign_enemy_stormmaw_prime",
-        "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v1.png",
+        "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v1.webp",
         "kind": "sheet",
         "width": 2048,
         "height": 1536,
@@ -2434,7 +2434,7 @@
     {
       "id": "bosses/umbral_regent-atlas-v1.png",
       "category": "boss",
-      "path": "/assets/campaign/bosses/umbral_regent-atlas-v1.png",
+      "path": "/assets/campaign/bosses/umbral_regent-atlas-v1.webp",
       "width": 2048,
       "height": 1536,
       "baselineSha256": "d7ce13335672d57758376b3ed6aaf7c8451e0d10b6a173135b460c11c6d2cb3f",
@@ -2444,7 +2444,7 @@
       "registration": {
         "id": "boss:umbral_regent",
         "key": "campaign_enemy_umbral_regent",
-        "path": "/assets/campaign/bosses/umbral_regent-atlas-v1.png",
+        "path": "/assets/campaign/bosses/umbral_regent-atlas-v1.webp",
         "kind": "sheet",
         "width": 2048,
         "height": 1536,
@@ -2483,7 +2483,7 @@
     {
       "id": "bosses/rift_sovereign-atlas-v1.png",
       "category": "boss",
-      "path": "/assets/campaign/bosses/rift_sovereign-atlas-v1.png",
+      "path": "/assets/campaign/bosses/rift_sovereign-atlas-v1.webp",
       "width": 2048,
       "height": 1536,
       "baselineSha256": "d2ab29b09662f173373b0768b46075701228f464abfdb56cd97a1ba0c29cf660",
@@ -2493,7 +2493,7 @@
       "registration": {
         "id": "boss:rift_sovereign",
         "key": "campaign_enemy_rift_sovereign",
-        "path": "/assets/campaign/bosses/rift_sovereign-atlas-v1.png",
+        "path": "/assets/campaign/bosses/rift_sovereign-atlas-v1.webp",
         "kind": "sheet",
         "width": 2048,
         "height": 1536,
@@ -2532,7 +2532,7 @@
     {
       "id": "bosses/aether_devourer-atlas-v1.png",
       "category": "boss",
-      "path": "/assets/campaign/bosses/aether_devourer-atlas-v1.png",
+      "path": "/assets/campaign/bosses/aether_devourer-atlas-v1.webp",
       "width": 2048,
       "height": 1536,
       "baselineSha256": "d75972e113c027309466a7028140814c45ab834d928b22045193947d99ebf011",
@@ -2542,7 +2542,7 @@
       "registration": {
         "id": "boss:aether_devourer",
         "key": "campaign_enemy_aether_devourer",
-        "path": "/assets/campaign/bosses/aether_devourer-atlas-v1.png",
+        "path": "/assets/campaign/bosses/aether_devourer-atlas-v1.webp",
         "kind": "sheet",
         "width": 2048,
         "height": 1536,
@@ -2581,176 +2581,176 @@
   ],
   "legacyFinalAssets": [
     {
-      "path": "/assets/campaign/maps/borderkeep_a-v1.png",
-      "baselineSha256": "4037662ecaa3516498bd97f6379fab394f4536c75a2d123e5b9af1043feb5a3f"
+      "path": "/assets/campaign/maps/borderkeep_a-v1.webp",
+      "baselineSha256": "cba19f6f45b0a29b743f57a9b2f218cc25af688d113c4d70355539a4900d243f"
     },
     {
-      "path": "/assets/campaign/maps/borderkeep_b-v1.png",
-      "baselineSha256": "586d3381ee9763b15b538143c712451566049b138b2c79cd0980bd4020d39982"
+      "path": "/assets/campaign/maps/borderkeep_b-v1.webp",
+      "baselineSha256": "1a5a80cd90d9fa1a784b992c0e2cc7c8be70c430e74eaaa453ab796a0f7d2dfc"
     },
     {
-      "path": "/assets/campaign/maps/borderkeep_c-v1.png",
-      "baselineSha256": "72a4c78c8ba006537e3d5ec9a8fe41bc3d569e393b41e868d5b16ddfd4bcaacc"
+      "path": "/assets/campaign/maps/borderkeep_c-v1.webp",
+      "baselineSha256": "84f5f982ace2bf84844e550d70408283dc721cfaaeb8a327c075989720968f03"
     },
     {
-      "path": "/assets/campaign/maps/borderkeep_d-v1.png",
-      "baselineSha256": "27badc84706cfb873393278c9b7c96651c4b19e152f6f34b3d9f2d74f6007c6a"
+      "path": "/assets/campaign/maps/borderkeep_d-v1.webp",
+      "baselineSha256": "3c37831a60962a33219b3b47e7ccdb2c5d9054fd162f0cec1416a949b7060564"
     },
     {
-      "path": "/assets/campaign/maps/emberfall_a-v1.png",
-      "baselineSha256": "dc593f1d85c3331623dae9deaf3567804713b61b233fcf59b5f84d22025e3fa1"
+      "path": "/assets/campaign/maps/emberfall_a-v1.webp",
+      "baselineSha256": "26f2f9f5c9b887f86c597f8bf1e6c067d4f9ab4255d6375b8d16d4e8f2c58838"
     },
     {
-      "path": "/assets/campaign/maps/emberfall_b-v1.png",
-      "baselineSha256": "f7ea81b15eaac7e9ab4a656df9b05f75651e2f5793fcfec001c0ae6c91c19592"
+      "path": "/assets/campaign/maps/emberfall_b-v1.webp",
+      "baselineSha256": "9a7868361a419ce446abb14429376bd6f81d9cb910cc73051a3393c505b2c00d"
     },
     {
-      "path": "/assets/campaign/maps/emberfall_c-v1.png",
-      "baselineSha256": "ffc392fd1f0328779492fc34373227a9047ca03c1b5339d5e3491f91029edf4c"
+      "path": "/assets/campaign/maps/emberfall_c-v1.webp",
+      "baselineSha256": "b51c19034dc463bbd6c02eb1c2479f07efb87c8237fa842d577928965c748956"
     },
     {
-      "path": "/assets/campaign/maps/emberfall_d-v1.png",
-      "baselineSha256": "2c100931a6ff966b2e9ad8e2f5f6b0dfe4948a1e6482697c1e14f7187fae40af"
+      "path": "/assets/campaign/maps/emberfall_d-v1.webp",
+      "baselineSha256": "e64d3a5ce9071f0935e03a7702a36d6ef8c22a708eb266f2b0f2ef3ba57bbef4"
     },
     {
-      "path": "/assets/campaign/maps/frostveil_a-v1.png",
-      "baselineSha256": "eb7b4cbb97faee9169a47cdf5c11cf29217c71b8e0b3c6ad6f37670260624501"
+      "path": "/assets/campaign/maps/frostveil_a-v1.webp",
+      "baselineSha256": "82e188957b738bbcb442ecdb9fb34e45ae8abb7e9fd2f403efdda3fad71f9773"
     },
     {
-      "path": "/assets/campaign/maps/frostveil_b-v1.png",
-      "baselineSha256": "114fea39b99e11822463c6c697238849747e1de93d6174bd8c16655de6dc2d3f"
+      "path": "/assets/campaign/maps/frostveil_b-v1.webp",
+      "baselineSha256": "a9ee42ecb708a12db427d89b763dca3874f6f713055e449a20bd9a0cf190206d"
     },
     {
-      "path": "/assets/campaign/maps/frostveil_c-v1.png",
-      "baselineSha256": "3c0e9e66571f742a892fa371cd0469eb2a4807e1694bdc46842c4c1b2c384ab9"
+      "path": "/assets/campaign/maps/frostveil_c-v1.webp",
+      "baselineSha256": "f239becdb86579fcfc3c14e830b08cb6e2e4de5ef6d1729015d1c6b2ca547983"
     },
     {
-      "path": "/assets/campaign/maps/frostveil_d-v1.png",
-      "baselineSha256": "546ef885e48d7047f6402ffea7a5e3771b3e6ba00ebe36f334a80fade2022cb9"
+      "path": "/assets/campaign/maps/frostveil_d-v1.webp",
+      "baselineSha256": "5756f2f316c663e71fb0361244ff8327c6c54a0c6abe7f54656b9f6c79771395"
     },
     {
-      "path": "/assets/campaign/world-map/borderkeep-v1.png",
-      "baselineSha256": "3e992478ad4fa7bba9d6e913218d8fd188164ba56588d6bb21f248a29c4bc37c"
+      "path": "/assets/campaign/world-map/borderkeep-v1.webp",
+      "baselineSha256": "e5761f8f89a72802efe4852207beb38769dccf43bd1048d0bc3ff6c2bd454bf5"
     },
     {
-      "path": "/assets/campaign/enemies/borderkeep/marchling-atlas-v1.png",
-      "baselineSha256": "9200e75aee1109807b151aecba6946e1d55c6d532b6f4e21e62140986cd56c72"
+      "path": "/assets/campaign/enemies/borderkeep/marchling-atlas-v1.webp",
+      "baselineSha256": "85ed2777dc8d3749e2d28de39b083a839ef6822e45c1c4182d70fd651934844a"
     },
     {
-      "path": "/assets/campaign/enemies/borderkeep/skitter-atlas-v1.png",
-      "baselineSha256": "b9f8eb069d437c4d78b1cc95276a90ebab65da1bdab96c6cf581151f92de2b3b"
+      "path": "/assets/campaign/enemies/borderkeep/skitter-atlas-v1.webp",
+      "baselineSha256": "5498ec9c1f560d665e01ec161262e5ca203c8b7026fcb0403778397bb899a015"
     },
     {
-      "path": "/assets/campaign/enemies/borderkeep/stoneback-atlas-v1.png",
-      "baselineSha256": "28d5b3a0eae451d2bba4111d86e1c4ac49658ea0c877864a4f57753b49689060"
+      "path": "/assets/campaign/enemies/borderkeep/stoneback-atlas-v1.webp",
+      "baselineSha256": "50a93d271cc94daa4ecb00a71d6d17e302256eee1603676a2ed9a2c504b362b3"
     },
     {
-      "path": "/assets/campaign/enemies/borderkeep/ironhide-atlas-v1.png",
-      "baselineSha256": "e5e23d946a02efdad537be22c3caaec3c9412664e6899918c14f316e8c49e7fe"
+      "path": "/assets/campaign/enemies/borderkeep/ironhide-atlas-v1.webp",
+      "baselineSha256": "67a869fcbecd38a5e0d611352dfb809a50ca3cc5692687ba804ee31069c89bda"
     },
     {
-      "path": "/assets/campaign/enemies/borderkeep/veilborn-atlas-v1.png",
-      "baselineSha256": "e32f2908dbb6ae76793c737e814b6ff6e2b132a172c2785e4d91d09b0725e200"
+      "path": "/assets/campaign/enemies/borderkeep/veilborn-atlas-v1.webp",
+      "baselineSha256": "69e23b6ab0a5338f59bd4b886a8d6e2eaef7d17358d63bd904c0d8166dc60353"
     },
     {
-      "path": "/assets/campaign/bosses/hollow_warden-atlas-v1.png",
-      "baselineSha256": "e5cd3b89ee905bf5f79ba64e32f672e0c05794091eb2fb081f1e762199dc3f87"
+      "path": "/assets/campaign/bosses/hollow_warden-atlas-v1.webp",
+      "baselineSha256": "300f970d7e03cbfb4253b7fdc2efc07dede2cfbb1aa291aa64675ee5962c5dc1"
     },
     {
-      "path": "/assets/campaign/world-map/emberfall-v1.png",
-      "baselineSha256": "0405fba11386789870d4f29ac8065412ccee5c5cc55d29f46a3ee286b8d4b920"
+      "path": "/assets/campaign/world-map/emberfall-v1.webp",
+      "baselineSha256": "dd74b2a860f59afeb0ad27b304919f554f914a5b657eb50633ddfd4630a443bb"
     },
     {
-      "path": "/assets/campaign/enemies/emberfall/cinderling-atlas-v1.png",
-      "baselineSha256": "003cd5e2d61b10eba749367bcf33d70f592f37b5ad17c17623a72412e239f11f"
+      "path": "/assets/campaign/enemies/emberfall/cinderling-atlas-v1.webp",
+      "baselineSha256": "06c09d35e040f9c86dff7a4ab4ff5f066a0a8db4a9deb3b71096f077798942ff"
     },
     {
-      "path": "/assets/campaign/enemies/emberfall/ashrunner-atlas-v1.png",
-      "baselineSha256": "db2645f560b9a349777fdb98afb4b9813984ea763a7e944401337641b37a17f1"
+      "path": "/assets/campaign/enemies/emberfall/ashrunner-atlas-v1.webp",
+      "baselineSha256": "ca401feccd082bb91b423116d819a91129e790ee88e002ec46a10abc9734c873"
     },
     {
-      "path": "/assets/campaign/enemies/emberfall/magmahide-atlas-v1.png",
-      "baselineSha256": "83f0a142bd1e1329fb23c6324d25556f90c8989f5a9b17bb65ce598606c6f600"
+      "path": "/assets/campaign/enemies/emberfall/magmahide-atlas-v1.webp",
+      "baselineSha256": "bcb9343a8da141f3fb96a5a48457333ff4f3c0c7f5fa412604363db65226b56b"
     },
     {
-      "path": "/assets/campaign/enemies/emberfall/ember_brute-atlas-v1.png",
-      "baselineSha256": "8938af40c27d0647ecfd8d97856de9ca57dc87eca09e5bc229c45b1f8295d70b"
+      "path": "/assets/campaign/enemies/emberfall/ember_brute-atlas-v1.webp",
+      "baselineSha256": "a640584b9c773f45c9f658980c654d995278d518bec75c35e7ce3d1ade459010"
     },
     {
-      "path": "/assets/campaign/enemies/emberfall/ashcaller-atlas-v1.png",
-      "baselineSha256": "61335dca97fd2a0f53ef189ed92a6fa888070d957ed937b9da51a5c2da151cb1"
+      "path": "/assets/campaign/enemies/emberfall/ashcaller-atlas-v1.webp",
+      "baselineSha256": "0b96b85d0ad9723d07df3b787a22e639c101b40a0dda0a7ec8e7aff934e44036"
     },
     {
-      "path": "/assets/campaign/bosses/cinder_colossus-atlas-v1.png",
-      "baselineSha256": "88250d82e367a3309515c3eacd9f56c5d372bfac9e766321c28781fa34f1414d"
+      "path": "/assets/campaign/bosses/cinder_colossus-atlas-v1.webp",
+      "baselineSha256": "41387cbf6a126ba6037c75f0f2d1595d3951a76e0347793c7ddfcfc8d3082280"
     },
     {
-      "path": "/assets/campaign/world-map/frostveil-v1.png",
-      "baselineSha256": "ac56d70e228f1fc6302640f599482d8e9fa66b44351e3210f4012964a796f4fa"
+      "path": "/assets/campaign/world-map/frostveil-v1.webp",
+      "baselineSha256": "937b98c87b61e1fc779182f4b7a7058f0cac946f8cfbd2e98b2f6b5690647577"
     },
     {
-      "path": "/assets/campaign/enemies/frostveil/snowstalker-atlas-v1.png",
-      "baselineSha256": "cf570e5764a791bf8d3d4ccc9a51bcb391eafdae2fadf21105d34b19c42adccc"
+      "path": "/assets/campaign/enemies/frostveil/snowstalker-atlas-v1.webp",
+      "baselineSha256": "9969bfd32d3124c800a8179b49d9ee532a52774e970088fa1609209febe1041f"
     },
     {
-      "path": "/assets/campaign/enemies/frostveil/icebound-atlas-v1.png",
-      "baselineSha256": "8bd7042984d3b5cad74d54b6c4175d9a7eb02848b9b929ac751811fde3268766"
+      "path": "/assets/campaign/enemies/frostveil/icebound-atlas-v1.webp",
+      "baselineSha256": "9fc661cfef5246c8b718915e0a2eacfa57f6ca2bb0cb1935dbdbd762d3b421d7"
     },
     {
-      "path": "/assets/campaign/enemies/frostveil/frostback-atlas-v1.png",
-      "baselineSha256": "3986f4c5bd86068031e4c325ad9a636ffc5f34c4d6419be324cc7431c10c1c2d"
+      "path": "/assets/campaign/enemies/frostveil/frostback-atlas-v1.webp",
+      "baselineSha256": "8d1c8691398d90135fac471ac16d38286f0ceb8579806883bdb4e79b529ec849"
     },
     {
-      "path": "/assets/campaign/enemies/frostveil/glacier_knight-atlas-v1.png",
-      "baselineSha256": "4f9bc299ffa6d0c92da67f84810c9eeb12cc2f11169ec847202b67eb1cbd942b"
+      "path": "/assets/campaign/enemies/frostveil/glacier_knight-atlas-v1.webp",
+      "baselineSha256": "26e62f6bda63938df5cc3b5682ad13a7874f6d850fe03f85b4788fd437025b5b"
     },
     {
-      "path": "/assets/campaign/enemies/frostveil/frost_shaman-atlas-v1.png",
-      "baselineSha256": "9fa486e305e6cbad0c28390c3a283c2b17f2c19d6c3b0b0cffaf2ef710edb3ed"
+      "path": "/assets/campaign/enemies/frostveil/frost_shaman-atlas-v1.webp",
+      "baselineSha256": "6f7881401ef78a0ea965b0101269fe75b6d7b18ab3221728eead3e414f24696d"
     },
     {
-      "path": "/assets/campaign/bosses/frostbound_matriarch-atlas-v1.png",
-      "baselineSha256": "c37811937425845b620e40e0e82c9313046b917c85f32bd4f3e1b7b757cc3eeb"
+      "path": "/assets/campaign/bosses/frostbound_matriarch-atlas-v1.webp",
+      "baselineSha256": "51bdb48f93ad03af7cad6cc090c66cd44ce5f6d4b357d45931420ca7520860b9"
     },
     {
-      "path": "/assets/campaign/towers/longbow-tier2-v1.png",
-      "baselineSha256": "cfe35daada1e3a1b5d6977ee27b52d5a0477b095455c4b1275cf475356159324"
+      "path": "/assets/campaign/towers/longbow-tier2-v1.webp",
+      "baselineSha256": "5153fc5f4d3e14fc89bf34c6fc6f2781ea7131e91d6ad5b5d09ce9488d300ecd"
     },
     {
-      "path": "/assets/campaign/towers/longbow-tier3-v1.png",
-      "baselineSha256": "915c48cd12cdd1be142ca8bcc036d2233183e5861c18c0f14eeafbcfe1720f4f"
+      "path": "/assets/campaign/towers/longbow-tier3-v1.webp",
+      "baselineSha256": "3de5356109121289672515d6e60275409b885cefd91de5d7d3f5485bc64aa2fe"
     },
     {
-      "path": "/assets/campaign/towers/ember-tier2-v1.png",
-      "baselineSha256": "734599887abaad7589d2e2aec0496acdc904b61067325458feaac88769f7fffb"
+      "path": "/assets/campaign/towers/ember-tier2-v1.webp",
+      "baselineSha256": "9f6740e5d28fbc99c645ca3914be9576c13321525388c3d596e5e97b91103015"
     },
     {
-      "path": "/assets/campaign/towers/ember-tier3-v1.png",
-      "baselineSha256": "08d1ab6b40577bb2e5c61f71f46903d4ddd488dfab901fa7f113a4f8c420f2c7"
+      "path": "/assets/campaign/towers/ember-tier3-v1.webp",
+      "baselineSha256": "92726c626f219cb65fe906a40f1f40db05771be1cd7eebb2e169337e5186769f"
     },
     {
-      "path": "/assets/campaign/towers/glacier-tier2-v1.png",
-      "baselineSha256": "440312bdb8f88989777d298692b08ad3068e1701cc0aba6bec5bfc0099e24cf5"
+      "path": "/assets/campaign/towers/glacier-tier2-v1.webp",
+      "baselineSha256": "cb161c1f6e8a43113b3b04ec39f8f6e553e4aebc0afa95ddac69e9cf4681d89b"
     },
     {
-      "path": "/assets/campaign/towers/glacier-tier3-v1.png",
-      "baselineSha256": "b4d39322b050e702fce19783aa2ccffa28eb7929c603489766dacd554fc670a9"
+      "path": "/assets/campaign/towers/glacier-tier3-v1.webp",
+      "baselineSha256": "1134a0d6e09697bc9180ef273e3b515bcec900b8383a167e4206ca3e72733e61"
     },
     {
-      "path": "/assets/campaign/towers/starfire-tier2-v1.png",
-      "baselineSha256": "384362b183450efebbc59748055991f18a6a76641553ebaf268fe8236e84adf1"
+      "path": "/assets/campaign/towers/starfire-tier2-v1.webp",
+      "baselineSha256": "9961c91d743e275d0a6b49515444604e05b0bbe969c1fe72c5a422da5f63abdb"
     },
     {
-      "path": "/assets/campaign/towers/starfire-tier3-v1.png",
-      "baselineSha256": "17f3b88ba00533062729f4a008291590d3650908ad521b9ae0720a60fc8aec50"
+      "path": "/assets/campaign/towers/starfire-tier3-v1.webp",
+      "baselineSha256": "cb6edb7a4ddf2a264a7da1cf4c1c3bb2fd751ab05ace1a79f31db1f5a11e27dc"
     },
     {
-      "path": "/assets/campaign/towers/tempest-tier2-v1.png",
-      "baselineSha256": "f4744b2a8704464677c4860c78092de27ac4947783e6969ef234f3dd11eb95d4"
+      "path": "/assets/campaign/towers/tempest-tier2-v1.webp",
+      "baselineSha256": "1f56925fb89ad51d6c977ca367acba5a7bfde63d6550cdc44d708df53f3df758"
     },
     {
-      "path": "/assets/campaign/towers/tempest-tier3-v1.png",
-      "baselineSha256": "b84478b91cabab8fc5002904fe390f34ed90737847872b941c3efc5034476870"
+      "path": "/assets/campaign/towers/tempest-tier3-v1.webp",
+      "baselineSha256": "01ca8cfda097ba80e532bb63c95330ae489507072194c7ab69470fd4513f74cc"
     }
   ],
   "livePromotions": {
@@ -2759,16 +2759,16 @@
     "assets": [
       {
         "id": "map:whisperfen:a",
-        "baselineV1Path": "/assets/campaign/maps/whisperfen_a-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/whisperfen_a-v1.webp",
         "baselineSha256": "12599b41516debd92f1bd2379f464c4891f3448f4ee4f7d6a5cfd14fd3c430dc",
         "candidatePath": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen_a-v2-candidate.png",
         "candidateSha256": "4f1fef06db7ec2ee7caa18ddd48b20f34e85d0051ba3000e852d268c69017797",
-        "promotedPath": "/assets/campaign/maps/whisperfen_a-v2.png",
+        "promotedPath": "/assets/campaign/maps/whisperfen_a-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:whisperfen:a",
           "key": "campaign_whisperfen_a",
-          "path": "/assets/campaign/maps/whisperfen_a-v2.png",
+          "path": "/assets/campaign/maps/whisperfen_a-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -2785,16 +2785,16 @@
       },
       {
         "id": "map:whisperfen:b",
-        "baselineV1Path": "/assets/campaign/maps/whisperfen_b-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/whisperfen_b-v1.webp",
         "baselineSha256": "47d6359ca7038cdec1fb4821bfec5b7cffeecec9e588e26f89dc692f9941a382",
         "candidatePath": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen_b-v2-candidate.png",
         "candidateSha256": "ee69916e9344e97ce8f9b7bc9d1aed0b451cd3f87f7195665f602f57329258d2",
-        "promotedPath": "/assets/campaign/maps/whisperfen_b-v2.png",
+        "promotedPath": "/assets/campaign/maps/whisperfen_b-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:whisperfen:b",
           "key": "campaign_whisperfen_b",
-          "path": "/assets/campaign/maps/whisperfen_b-v2.png",
+          "path": "/assets/campaign/maps/whisperfen_b-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -2811,16 +2811,16 @@
       },
       {
         "id": "map:whisperfen:c",
-        "baselineV1Path": "/assets/campaign/maps/whisperfen_c-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/whisperfen_c-v1.webp",
         "baselineSha256": "9a6c28ab96395a9373e5be4284881f18d479193b192e4b8f6c3981658e36bc71",
         "candidatePath": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen_c-v2-candidate.png",
         "candidateSha256": "2a9bcdbf759048c2026295878e6c264ba0ba749642890a7a3cd239bf3b912d5a",
-        "promotedPath": "/assets/campaign/maps/whisperfen_c-v2.png",
+        "promotedPath": "/assets/campaign/maps/whisperfen_c-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:whisperfen:c",
           "key": "campaign_whisperfen_c",
-          "path": "/assets/campaign/maps/whisperfen_c-v2.png",
+          "path": "/assets/campaign/maps/whisperfen_c-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -2837,16 +2837,16 @@
       },
       {
         "id": "map:whisperfen:d",
-        "baselineV1Path": "/assets/campaign/maps/whisperfen_d-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/whisperfen_d-v1.webp",
         "baselineSha256": "8f9af49470911f9e9aaeef91d4b036293da2ad4f4e9da48aae61aa3987d39316",
         "candidatePath": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen_d-v2-candidate.png",
         "candidateSha256": "0617810e89ca06ef608fad09882ddce04265b4507d3c5cf30a0ac7b8e00299da",
-        "promotedPath": "/assets/campaign/maps/whisperfen_d-v2.png",
+        "promotedPath": "/assets/campaign/maps/whisperfen_d-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:whisperfen:d",
           "key": "campaign_whisperfen_d",
-          "path": "/assets/campaign/maps/whisperfen_d-v2.png",
+          "path": "/assets/campaign/maps/whisperfen_d-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -2863,16 +2863,16 @@
       },
       {
         "id": "world-panel:whisperfen",
-        "baselineV1Path": "/assets/campaign/world-map/whisperfen-v1.png",
+        "baselineV1Path": "/assets/campaign/world-map/whisperfen-v1.webp",
         "baselineSha256": "cb76061c7cc1ed0873e057163cc63c30ba98f5872dfbabf751cdf080737fd153",
         "candidatePath": "artifacts/campaign-final-art-20261012/world4/maps/whisperfen-v2-candidate.png",
         "candidateSha256": "c585a31df7245d4b99f00a916c8226ffbb877ed95178fbe883db66443f77a2c9",
-        "promotedPath": "/assets/campaign/world-map/whisperfen-v2.png",
+        "promotedPath": "/assets/campaign/world-map/whisperfen-v2.webp",
         "approved": true,
         "registration": {
           "id": "world-panel:whisperfen",
           "key": "campaign_worldmap_whisperfen",
-          "path": "/assets/campaign/world-map/whisperfen-v2.png",
+          "path": "/assets/campaign/world-map/whisperfen-v2.webp",
           "kind": "image",
           "width": 768,
           "height": 432,
@@ -2888,16 +2888,16 @@
       },
       {
         "id": "enemy:bogling",
-        "baselineV1Path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v1.webp",
         "baselineSha256": "ccf03b98537a384a7aaa888b9b6b65640bbaa27ad30c3aa3efabe08b27e623c8",
         "candidatePath": "artifacts/campaign-final-art-20261012/world4/atlases/final/A10-bogling-atlas-candidate-v1.png",
         "candidateSha256": "1ebb5f24fe3e6e09192d2508679c6e7a4f949c7520b50ba27b87404af0105873",
-        "promotedPath": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:bogling",
           "key": "campaign_enemy_bogling",
-          "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png",
+          "path": "/assets/campaign/enemies/whisperfen/bogling-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -2989,16 +2989,16 @@
       },
       {
         "id": "enemy:fen_skitter",
-        "baselineV1Path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v1.webp",
         "baselineSha256": "fc1b8ab86e247bf237aa0df2f045f41bc1f924656eb2502cce87966eee101a38",
         "candidatePath": "artifacts/campaign-final-art-20261012/world4/fen-gait-extreme-pilot/continuation/final/fen-skitter-atlas-extreme-cycle-candidate.png",
         "candidateSha256": "d67e435f9f9263e6cce676974b3aa15cc558976951cb9012aa55bc1c755fa79e",
-        "promotedPath": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:fen_skitter",
           "key": "campaign_enemy_fen_skitter",
-          "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.png",
+          "path": "/assets/campaign/enemies/whisperfen/fen_skitter-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -3090,16 +3090,16 @@
       },
       {
         "id": "enemy:mossguard",
-        "baselineV1Path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v1.webp",
         "baselineSha256": "ea57448d5789e92db3887a077b6704f0b9d2749d2dafa02124fa28bc20aca5af",
         "candidatePath": "artifacts/campaign-final-art-20261012/world4/atlases/final/A10-mossguard-atlas-candidate-v1.png",
         "candidateSha256": "c19d9b8ce50736c225d9e4b6c6ea56eec246bbda75923162190cfba26bb4ea10",
-        "promotedPath": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:mossguard",
           "key": "campaign_enemy_mossguard",
-          "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.png",
+          "path": "/assets/campaign/enemies/whisperfen/mossguard-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -3191,16 +3191,16 @@
       },
       {
         "id": "enemy:rotback",
-        "baselineV1Path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v1.webp",
         "baselineSha256": "5b6c9e68aa501cc81cd75901ec48476fffd6540d46710f043af4f3d7c9cb6ee3",
         "candidatePath": "artifacts/campaign-final-art-20261012/world4/atlases/final/A10-rotback-atlas-candidate-v1.png",
         "candidateSha256": "93ce8dab3a75d253e0c989c26c58ffc720444b2ca7e03b4bb648c7ae7e9c5ec7",
-        "promotedPath": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:rotback",
           "key": "campaign_enemy_rotback",
-          "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.png",
+          "path": "/assets/campaign/enemies/whisperfen/rotback-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -3292,16 +3292,16 @@
       },
       {
         "id": "enemy:rootwretch",
-        "baselineV1Path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v1.webp",
         "baselineSha256": "b1abec98a6ca346366099e098c7159f8d468848d247c7a639f99922296fbf579",
         "candidatePath": "artifacts/campaign-final-art-20261012/world4/atlases/final/A10-rootwretch-atlas-candidate-v1.png",
         "candidateSha256": "09eaaccab4034bf36e79920c6e697c444ff95ef0da4f583b7634c697f1a72b74",
-        "promotedPath": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:rootwretch",
           "key": "campaign_enemy_rootwretch",
-          "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png",
+          "path": "/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 640,
@@ -3412,16 +3412,16 @@
       },
       {
         "id": "boss:mireheart_hydra",
-        "baselineV1Path": "/assets/campaign/bosses/mireheart_hydra-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/bosses/mireheart_hydra-atlas-v1.webp",
         "baselineSha256": "9cced307ee1dee8c8736cabaeaa46d94cc61498238b1cf6d22c49019a887001d",
         "candidatePath": "artifacts/campaign-final-art-20261012/world4/hydra-atlas/finalcandidate/mireheart_hydra-atlas-v3-candidate.png",
         "candidateSha256": "cbed46bbc139e37cbda59775203e850d8a320161c586cc91a033f70ba5da7500",
-        "promotedPath": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.png",
+        "promotedPath": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "boss:mireheart_hydra",
           "key": "campaign_enemy_mireheart_hydra",
-          "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.png",
+          "path": "/assets/campaign/bosses/mireheart_hydra-atlas-v2.webp",
           "kind": "sheet",
           "width": 2048,
           "height": 1536,
@@ -3561,16 +3561,16 @@
       },
       {
         "id": "world-panel:sunken_aether",
-        "baselineV1Path": "/assets/campaign/world-map/sunken_aether-v1.png",
+        "baselineV1Path": "/assets/campaign/world-map/sunken_aether-v1.webp",
         "baselineSha256": "dde1152f4a68ee9057c6de55bd2679a8d053486a155aaab4b1527cf8ed676875",
         "candidatePath": "artifacts/campaign-final-art-20261012/world5/panels/sunken-aether-panel-candidate-v1.png",
         "candidateSha256": "a8d0b31fa2d7323ee47a0a8f5de2b71d47992db0863358adbba22ea115fad0af",
-        "promotedPath": "/assets/campaign/world-map/sunken_aether-v2.png",
+        "promotedPath": "/assets/campaign/world-map/sunken_aether-v2.webp",
         "approved": true,
         "registration": {
           "id": "world-panel:sunken_aether",
           "key": "campaign_worldmap_sunken_aether",
-          "path": "/assets/campaign/world-map/sunken_aether-v2.png",
+          "path": "/assets/campaign/world-map/sunken_aether-v2.webp",
           "kind": "image",
           "width": 768,
           "height": 432,
@@ -3586,16 +3586,16 @@
       },
       {
         "id": "map:sunken_aether:a",
-        "baselineV1Path": "/assets/campaign/maps/sunken_aether_a-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/sunken_aether_a-v1.webp",
         "baselineSha256": "629aaaa0cf2b6c609ca960e93bc9c2bab5262694ed01d4b556e91aa1e243731a",
         "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_a-v1-candidate.png",
         "candidateSha256": "884c699225f32f88b51a970cf0593fecfb9e7cd73481a3900329a12ebbe332d7",
-        "promotedPath": "/assets/campaign/maps/sunken_aether_a-v2.png",
+        "promotedPath": "/assets/campaign/maps/sunken_aether_a-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:sunken_aether:a",
           "key": "campaign_sunken_aether_a",
-          "path": "/assets/campaign/maps/sunken_aether_a-v2.png",
+          "path": "/assets/campaign/maps/sunken_aether_a-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -3612,16 +3612,16 @@
       },
       {
         "id": "map:sunken_aether:b",
-        "baselineV1Path": "/assets/campaign/maps/sunken_aether_b-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/sunken_aether_b-v1.webp",
         "baselineSha256": "76526d9f729baff252244baf1b8a6f357a2abddf834624c98a5ac2cdeac15bad",
         "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_b-v1-candidate.png",
         "candidateSha256": "dfd66ef9fa4c88b678a482af4ef2e6f3a522d03ac4f9ea5026dcb54a2dc1903d",
-        "promotedPath": "/assets/campaign/maps/sunken_aether_b-v2.png",
+        "promotedPath": "/assets/campaign/maps/sunken_aether_b-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:sunken_aether:b",
           "key": "campaign_sunken_aether_b",
-          "path": "/assets/campaign/maps/sunken_aether_b-v2.png",
+          "path": "/assets/campaign/maps/sunken_aether_b-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -3638,16 +3638,16 @@
       },
       {
         "id": "map:sunken_aether:c",
-        "baselineV1Path": "/assets/campaign/maps/sunken_aether_c-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/sunken_aether_c-v1.webp",
         "baselineSha256": "88924d36064fe9288ba22948c1c46f8bab6dcc5407ce7abed68ce193d7f271f1",
         "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_c-v1-candidate.png",
         "candidateSha256": "580c0b22d986c28e74134dbe37932bd3aa477d808dfc6787dd9deef51c053e3e",
-        "promotedPath": "/assets/campaign/maps/sunken_aether_c-v2.png",
+        "promotedPath": "/assets/campaign/maps/sunken_aether_c-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:sunken_aether:c",
           "key": "campaign_sunken_aether_c",
-          "path": "/assets/campaign/maps/sunken_aether_c-v2.png",
+          "path": "/assets/campaign/maps/sunken_aether_c-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -3664,16 +3664,16 @@
       },
       {
         "id": "map:sunken_aether:d",
-        "baselineV1Path": "/assets/campaign/maps/sunken_aether_d-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/sunken_aether_d-v1.webp",
         "baselineSha256": "9a87a45ac93fb823aa5d772e2bf486e9e52ccdd06d54ee87681587c7146fea67",
         "candidatePath": "artifacts/campaign-final-art-20261012/world5/maps/sunken_aether_d-v1-candidate.png",
         "candidateSha256": "47a83efd27dfbc07d7efcf333e2e8c0aa3ba2240d7130fb076148cf457ed6225",
-        "promotedPath": "/assets/campaign/maps/sunken_aether_d-v2.png",
+        "promotedPath": "/assets/campaign/maps/sunken_aether_d-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:sunken_aether:d",
           "key": "campaign_sunken_aether_d",
-          "path": "/assets/campaign/maps/sunken_aether_d-v2.png",
+          "path": "/assets/campaign/maps/sunken_aether_d-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -3690,16 +3690,16 @@
       },
       {
         "id": "enemy:tideborn",
-        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v1.webp",
         "baselineSha256": "c29acd629a2f9c37da33808cb7fe766bbe0e5f011117ebfc1ca8e546757f96ec",
         "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/tideborn/tideborn-atlas-candidate-v3.png",
         "candidateSha256": "c003c2ecd9fc4ec12f1fafad1ac3e52eabf654fdaa5e233bca3541e165a34122",
-        "promotedPath": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:tideborn",
           "key": "campaign_enemy_tideborn",
-          "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png",
+          "path": "/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -3791,16 +3791,16 @@
       },
       {
         "id": "enemy:crystal_wisp",
-        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v1.webp",
         "baselineSha256": "3de60fe80292b311e83af4d895077d3a879ac56a07cb232c3f7127681c7efbef",
         "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/crystal-wisp/crystal-wisp-atlas-candidate-v4.png",
         "candidateSha256": "fe8be230637cefbef9ad887c6d628671a422fbd20e1094ccd9b50a3cbb28084d",
-        "promotedPath": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:crystal_wisp",
           "key": "campaign_enemy_crystal_wisp",
-          "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.png",
+          "path": "/assets/campaign/enemies/sunken_aether/crystal_wisp-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -3892,16 +3892,16 @@
       },
       {
         "id": "enemy:deepcrawler",
-        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v1.webp",
         "baselineSha256": "102593add2dc545b65661124de50b31b5291b51ef8568ec97109f96fc6de65db",
         "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/deepcrawler/deepcrawler-atlas-candidate-v3.png",
         "candidateSha256": "b4b9ec1910437a7fd270b009bb126c3442b9fa187e2ab9debeb7f2292f84504e",
-        "promotedPath": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:deepcrawler",
           "key": "campaign_enemy_deepcrawler",
-          "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.png",
+          "path": "/assets/campaign/enemies/sunken_aether/deepcrawler-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -3993,16 +3993,16 @@
       },
       {
         "id": "enemy:relic_guardian",
-        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v1.webp",
         "baselineSha256": "e027c9274c445039b6afde8a1ac1bf3bc67bcd80efb908582448f532e9cefde1",
         "candidatePath": "artifacts/campaign-final-art-20261012/world5/enemies/relic-guardian/relic-guardian-atlas-candidate-v1.png",
         "candidateSha256": "2089222291f53968107c7c3d467cd5c298c7b7ca92a1fa5a26dfe17593ca121f",
-        "promotedPath": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:relic_guardian",
           "key": "campaign_enemy_relic_guardian",
-          "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.png",
+          "path": "/assets/campaign/enemies/sunken_aether/relic_guardian-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -4094,16 +4094,16 @@
       },
       {
         "id": "enemy:aetherbound",
-        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v1.webp",
         "baselineSha256": "955ee76bf98bfebf13f4b0211d997d2e1ce7d812149fb0f4b6fd789a5b3e1ce9",
         "candidatePath": "artifacts/campaign-final-art-20261012/world5/repair-v1/candidates/aetherbound-atlas-candidate-repair-r3.png",
         "candidateSha256": "c54ead85262b714e2c3507a9f61689b26d94f04c1bc5ad2db218fa8c0b21dd6b",
-        "promotedPath": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:aetherbound",
           "key": "campaign_enemy_aetherbound",
-          "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.png",
+          "path": "/assets/campaign/enemies/sunken_aether/aetherbound-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 640,
@@ -4214,16 +4214,16 @@
       },
       {
         "id": "boss:drowned_oracle",
-        "baselineV1Path": "/assets/campaign/bosses/drowned_oracle-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/bosses/drowned_oracle-atlas-v1.webp",
         "baselineSha256": "a503b6c99cbe3f2055a48be332e69b625e834f70502a22b7fb27da289f8887cf",
         "candidatePath": "artifacts/campaign-final-art-20261012/world5/repair-v1/candidates/drowned-oracle-atlas-candidate-repair-r2.png",
         "candidateSha256": "1710521cc2377ff1c5ca7c0a879c59aa83a523783106481c49f3210a3e205cf7",
-        "promotedPath": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
+        "promotedPath": "/assets/campaign/bosses/drowned_oracle-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "boss:drowned_oracle",
           "key": "campaign_enemy_drowned_oracle",
-          "path": "/assets/campaign/bosses/drowned_oracle-atlas-v2.png",
+          "path": "/assets/campaign/bosses/drowned_oracle-atlas-v2.webp",
           "kind": "sheet",
           "width": 2048,
           "height": 1536,
@@ -4363,16 +4363,16 @@
       },
       {
         "id": "world-panel:ironroot",
-        "baselineV1Path": "/assets/campaign/world-map/ironroot-v1.png",
+        "baselineV1Path": "/assets/campaign/world-map/ironroot-v1.webp",
         "baselineSha256": "b0f2cd62d5a4fe5e563b49aee44ed67f5821aa4b4ecc5eff34f59e42f4daa2a5",
         "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-panel-v2-candidate.png",
         "candidateSha256": "bb46fa28e5e9e5acf8d77a9bd2e059c0dfc71fead420fbc93ce5205bf98a499e",
-        "promotedPath": "/assets/campaign/world-map/ironroot-v2.png",
+        "promotedPath": "/assets/campaign/world-map/ironroot-v2.webp",
         "approved": true,
         "registration": {
           "id": "world-panel:ironroot",
           "key": "campaign_worldmap_ironroot",
-          "path": "/assets/campaign/world-map/ironroot-v2.png",
+          "path": "/assets/campaign/world-map/ironroot-v2.webp",
           "kind": "image",
           "width": 768,
           "height": 432,
@@ -4388,16 +4388,16 @@
       },
       {
         "id": "map:ironroot:a",
-        "baselineV1Path": "/assets/campaign/maps/ironroot_a-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/ironroot_a-v1.webp",
         "baselineSha256": "8b2c8022b55a4b333c7fb4047e4f0fc3bc258564f21a3600de0b1359d41bb59d",
         "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-a-v2-candidate.png",
         "candidateSha256": "f094f9dcf725d28be8409430baa1ae0adb6bf82faded6d13f567349db5ef2e2c",
-        "promotedPath": "/assets/campaign/maps/ironroot_a-v2.png",
+        "promotedPath": "/assets/campaign/maps/ironroot_a-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:ironroot:a",
           "key": "campaign_ironroot_a",
-          "path": "/assets/campaign/maps/ironroot_a-v2.png",
+          "path": "/assets/campaign/maps/ironroot_a-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -4414,16 +4414,16 @@
       },
       {
         "id": "map:ironroot:b",
-        "baselineV1Path": "/assets/campaign/maps/ironroot_b-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/ironroot_b-v1.webp",
         "baselineSha256": "f694aa8336c71d0a6ca711527e89056fde864ab96c10a920a98579fc0c270caa",
         "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-b-v2-candidate.png",
         "candidateSha256": "5dcdb71ba2d33df1f4cd734b346f6cd216058737285ed597a4cfcaba74787404",
-        "promotedPath": "/assets/campaign/maps/ironroot_b-v2.png",
+        "promotedPath": "/assets/campaign/maps/ironroot_b-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:ironroot:b",
           "key": "campaign_ironroot_b",
-          "path": "/assets/campaign/maps/ironroot_b-v2.png",
+          "path": "/assets/campaign/maps/ironroot_b-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -4440,16 +4440,16 @@
       },
       {
         "id": "map:ironroot:c",
-        "baselineV1Path": "/assets/campaign/maps/ironroot_c-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/ironroot_c-v1.webp",
         "baselineSha256": "2823f945ab3a1d369ea678a31a83b8493a30cca735d89e7d5c7127048bec4066",
         "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-c-v2-candidate.png",
         "candidateSha256": "53aeece9783bfa5ed5f87ee766a9701939665f06b4bf9f93e350cd3a0aaf2b23",
-        "promotedPath": "/assets/campaign/maps/ironroot_c-v2.png",
+        "promotedPath": "/assets/campaign/maps/ironroot_c-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:ironroot:c",
           "key": "campaign_ironroot_c",
-          "path": "/assets/campaign/maps/ironroot_c-v2.png",
+          "path": "/assets/campaign/maps/ironroot_c-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -4466,16 +4466,16 @@
       },
       {
         "id": "map:ironroot:d",
-        "baselineV1Path": "/assets/campaign/maps/ironroot_d-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/ironroot_d-v1.webp",
         "baselineSha256": "05db62f72281ee52b46cfa2422c5340f05bb04364221d0fa7192e5440b39db89",
         "candidatePath": "artifacts/campaign-final-art-20261012/world6/candidates/ironroot-map-d-v2-candidate.png",
         "candidateSha256": "72b13d5e41d2c0fd088fb2fcade469a79fb9f61cebf3bc24921b64baeab5821d",
-        "promotedPath": "/assets/campaign/maps/ironroot_d-v2.png",
+        "promotedPath": "/assets/campaign/maps/ironroot_d-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:ironroot:d",
           "key": "campaign_ironroot_d",
-          "path": "/assets/campaign/maps/ironroot_d-v2.png",
+          "path": "/assets/campaign/maps/ironroot_d-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -4492,16 +4492,16 @@
       },
       {
         "id": "enemy:scrapling",
-        "baselineV1Path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v1.webp",
         "baselineSha256": "e5409ef4f568a88f56eefc46a7c21ed46bfdca20dd7ac7b59ca54f204057dfe7",
         "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/scrapling-atlas-repair-v3-candidate.png",
         "candidateSha256": "e56efb79c8859dc17ddd79ad5abfd410d310a7c5b4e5836e91022ce8858689ae",
-        "promotedPath": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:scrapling",
           "key": "campaign_enemy_scrapling",
-          "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png",
+          "path": "/assets/campaign/enemies/ironroot/scrapling-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -4593,16 +4593,16 @@
       },
       {
         "id": "enemy:furnace_hound",
-        "baselineV1Path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v1.webp",
         "baselineSha256": "6b341b5bcaf0268e127e67fcf6fb5a7c90220f291199280583760c4d4ea04f37",
         "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/furnace-hound-atlas-repair-v3-candidate.png",
         "candidateSha256": "b1ffb21ef0244005289abae0bcfc897a3d8a479a278d327c9f6c2755e4f0e017",
-        "promotedPath": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:furnace_hound",
           "key": "campaign_enemy_furnace_hound",
-          "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.png",
+          "path": "/assets/campaign/enemies/ironroot/furnace_hound-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -4694,16 +4694,16 @@
       },
       {
         "id": "enemy:ironbound",
-        "baselineV1Path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v1.webp",
         "baselineSha256": "0838c0e98a047147915d5295520c8f9266dd8b793299575932bd87945a70281c",
         "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/ironbound-atlas-repair-v3-candidate.png",
         "candidateSha256": "127fbe7f27c2aa4996cb9a09c95a029520ba9c664d113368ae10788d2694696d",
-        "promotedPath": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:ironbound",
           "key": "campaign_enemy_ironbound",
-          "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.png",
+          "path": "/assets/campaign/enemies/ironroot/ironbound-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -4795,16 +4795,16 @@
       },
       {
         "id": "enemy:foundry_core",
-        "baselineV1Path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v1.webp",
         "baselineSha256": "082eb51b768bf8a824235a99eb94e799cdc742203740f747cf4aeb5bbe5e2e3c",
         "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/foundry-core-atlas-repair-v3-candidate.png",
         "candidateSha256": "4d9ceee2092c1bc1e514f0e76125b3deaefd26246753df27c968259f889012f1",
-        "promotedPath": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:foundry_core",
           "key": "campaign_enemy_foundry_core",
-          "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.png",
+          "path": "/assets/campaign/enemies/ironroot/foundry_core-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 640,
@@ -4915,16 +4915,16 @@
       },
       {
         "id": "enemy:siege_golem",
-        "baselineV1Path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v1.webp",
         "baselineSha256": "bbce05d3b379c989d25f3b564e8764f9e13eedda8a7ceed1d382aad4d8a96929",
         "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/siege-golem-atlas-repair-v3-candidate.png",
         "candidateSha256": "2a74f89fd8d4610009ba55fb3b281489dd1aa2eafcd99479bf8ee0cb9862cde2",
-        "promotedPath": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:siege_golem",
           "key": "campaign_enemy_siege_golem",
-          "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.png",
+          "path": "/assets/campaign/enemies/ironroot/siege_golem-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -5016,16 +5016,16 @@
       },
       {
         "id": "boss:iron_tyrant",
-        "baselineV1Path": "/assets/campaign/bosses/iron_tyrant-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/bosses/iron_tyrant-atlas-v1.webp",
         "baselineSha256": "56b84da13a79e2c9808bf03ce5c9a3a9d1e9760213e94dc71ee6f1622185cea6",
         "candidatePath": "artifacts/campaign-final-art-20261012/world6/repair-v3/candidates/iron-tyrant-atlas-repair-v3-candidate.png",
         "candidateSha256": "7efca9d25dbe0f27b370f798c8c5e6035120a1f77e7fb5c473c2da856aa504d9",
-        "promotedPath": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
+        "promotedPath": "/assets/campaign/bosses/iron_tyrant-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "boss:iron_tyrant",
           "key": "campaign_enemy_iron_tyrant",
-          "path": "/assets/campaign/bosses/iron_tyrant-atlas-v2.png",
+          "path": "/assets/campaign/bosses/iron_tyrant-atlas-v2.webp",
           "kind": "sheet",
           "width": 2048,
           "height": 1536,
@@ -5165,16 +5165,16 @@
       },
       {
         "id": "world-panel:sky_isles",
-        "baselineV1Path": "/assets/campaign/world-map/sky_isles-v1.png",
+        "baselineV1Path": "/assets/campaign/world-map/sky_isles-v1.webp",
         "baselineSha256": "09f6b2ab8b30ed7fa5ad2b6d81b1e2850e345712409fc15298a9230015623dd1",
         "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-world-panel.png",
         "candidateSha256": "dc83257253d0f9906f916153aa236ee5b693cb988e2b760503df7de5d83b9494",
-        "promotedPath": "/assets/campaign/world-map/sky_isles-v2.png",
+        "promotedPath": "/assets/campaign/world-map/sky_isles-v2.webp",
         "approved": true,
         "registration": {
           "id": "world-panel:sky_isles",
           "key": "campaign_worldmap_sky_isles",
-          "path": "/assets/campaign/world-map/sky_isles-v2.png",
+          "path": "/assets/campaign/world-map/sky_isles-v2.webp",
           "kind": "image",
           "width": 768,
           "height": 432,
@@ -5190,16 +5190,16 @@
       },
       {
         "id": "map:sky_isles:a",
-        "baselineV1Path": "/assets/campaign/maps/sky_isles_a-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/sky_isles_a-v1.webp",
         "baselineSha256": "2f0d8d322a52f3c0570d80c1ea69eef8bf2b2b7262d25eb27fc1e84d6fcb0248",
         "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-a.png",
         "candidateSha256": "98f5adff17d7b9b8e469238b12ef09bc39ab95ec3c8eb9b7fcad1c665e023a26",
-        "promotedPath": "/assets/campaign/maps/sky_isles_a-v2.png",
+        "promotedPath": "/assets/campaign/maps/sky_isles_a-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:sky_isles:a",
           "key": "campaign_sky_isles_a",
-          "path": "/assets/campaign/maps/sky_isles_a-v2.png",
+          "path": "/assets/campaign/maps/sky_isles_a-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -5216,16 +5216,16 @@
       },
       {
         "id": "map:sky_isles:b",
-        "baselineV1Path": "/assets/campaign/maps/sky_isles_b-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/sky_isles_b-v1.webp",
         "baselineSha256": "2f3e6c4a9a541173cec50f3c7db43bf843335ce1140e77e357f46bc71bdb18c3",
         "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-b.png",
         "candidateSha256": "79c4bb5d3831c648b35c192f0c35aeeec1fa14db73830c75f915cce3eef9a660",
-        "promotedPath": "/assets/campaign/maps/sky_isles_b-v2.png",
+        "promotedPath": "/assets/campaign/maps/sky_isles_b-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:sky_isles:b",
           "key": "campaign_sky_isles_b",
-          "path": "/assets/campaign/maps/sky_isles_b-v2.png",
+          "path": "/assets/campaign/maps/sky_isles_b-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -5242,16 +5242,16 @@
       },
       {
         "id": "map:sky_isles:c",
-        "baselineV1Path": "/assets/campaign/maps/sky_isles_c-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/sky_isles_c-v1.webp",
         "baselineSha256": "8431ff0a40f49242ab02c136b071615aa7eb30b394f9de1a0b9f0578ea88f59d",
         "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-c.png",
         "candidateSha256": "e8967fcf6b32700efcf0105183313fc3fd6015bb43eaed681147d06d3b556fb0",
-        "promotedPath": "/assets/campaign/maps/sky_isles_c-v2.png",
+        "promotedPath": "/assets/campaign/maps/sky_isles_c-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:sky_isles:c",
           "key": "campaign_sky_isles_c",
-          "path": "/assets/campaign/maps/sky_isles_c-v2.png",
+          "path": "/assets/campaign/maps/sky_isles_c-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -5268,16 +5268,16 @@
       },
       {
         "id": "map:sky_isles:d",
-        "baselineV1Path": "/assets/campaign/maps/sky_isles_d-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/sky_isles_d-v1.webp",
         "baselineSha256": "0618441ef41e96dedd16972535ab841f780650a0d569678b7abbcddbc0f90157",
         "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-map-d.png",
         "candidateSha256": "b1e1caddce8899a663f8bb6312584fc102e6bba3df111c91c24ed0643d02818c",
-        "promotedPath": "/assets/campaign/maps/sky_isles_d-v2.png",
+        "promotedPath": "/assets/campaign/maps/sky_isles_d-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:sky_isles:d",
           "key": "campaign_sky_isles_d",
-          "path": "/assets/campaign/maps/sky_isles_d-v2.png",
+          "path": "/assets/campaign/maps/sky_isles_d-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -5294,16 +5294,16 @@
       },
       {
         "id": "enemy:aether_drake",
-        "baselineV1Path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v1.webp",
         "baselineSha256": "c0cf317b68bafbc54765d5d6770e9d799a69f38fa77155ad759b76dcc57420e3",
         "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-aether-drake-atlas.png",
         "candidateSha256": "6127080ff7abdbe60dbf514836e59ac1fce1a398fe7c74b5e958701b89dc8d3a",
-        "promotedPath": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:aether_drake",
           "key": "campaign_enemy_aether_drake",
-          "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.png",
+          "path": "/assets/campaign/enemies/sky_isles/aether_drake-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -5395,16 +5395,16 @@
       },
       {
         "id": "enemy:cloud_skitter",
-        "baselineV1Path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v1.webp",
         "baselineSha256": "4e4bcd2fa5c95b325f8aa63a051b12375493de9fb28eb13e2c9b2ab523c88e8e",
         "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-cloud-skitter-atlas.png",
         "candidateSha256": "f2581cf68be8769764dc2b347be104a0f9b8fbb5b4ea88bbfb345920f879de96",
-        "promotedPath": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:cloud_skitter",
           "key": "campaign_enemy_cloud_skitter",
-          "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png",
+          "path": "/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -5496,16 +5496,16 @@
       },
       {
         "id": "enemy:galeclaw",
-        "baselineV1Path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v1.webp",
         "baselineSha256": "6761bc89530b374e5183402d2395a45c00ae4dea3ae2265eb5b6a4026a2b69c1",
         "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-galeclaw-atlas.png",
         "candidateSha256": "b2b8cde192c826776fabb8356490928c4c80611d0b203f6d70da8d27f0cfb2ec",
-        "promotedPath": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:galeclaw",
           "key": "campaign_enemy_galeclaw",
-          "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.png",
+          "path": "/assets/campaign/enemies/sky_isles/galeclaw-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -5597,16 +5597,16 @@
       },
       {
         "id": "enemy:stormguard",
-        "baselineV1Path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v1.webp",
         "baselineSha256": "4159f57bff2907cc2fb25f47fcd24e8db6ebaa694634ab42feee55574b54f4e3",
         "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-stormguard-atlas.png",
         "candidateSha256": "ee13c36d209f3a750bce70b5fe16b408b225434ebe5007556944eca4fa37c5f3",
-        "promotedPath": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:stormguard",
           "key": "campaign_enemy_stormguard",
-          "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.png",
+          "path": "/assets/campaign/enemies/sky_isles/stormguard-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -5698,16 +5698,16 @@
       },
       {
         "id": "enemy:tempest_herald",
-        "baselineV1Path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v1.webp",
         "baselineSha256": "09ecf254f70c1c71d54cb965b4d3a40daab0e5e46de7490e12152d37fe1abde2",
         "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-tempest-herald-atlas.png",
         "candidateSha256": "8aac34b5a6783fc943b1333c8e035c19689840f26d03d2ada6a20bef86e20d49",
-        "promotedPath": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:tempest_herald",
           "key": "campaign_enemy_tempest_herald",
-          "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.png",
+          "path": "/assets/campaign/enemies/sky_isles/tempest_herald-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 640,
@@ -5818,16 +5818,16 @@
       },
       {
         "id": "boss:stormmaw_prime",
-        "baselineV1Path": "/assets/campaign/bosses/stormmaw_prime-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/bosses/stormmaw_prime-atlas-v1.webp",
         "baselineSha256": "6b61e5a6765b20cf43c7298469cdce6b3a1cccc7140568909d84fdfe8dbdf299",
         "candidatePath": "artifacts/campaign-final-art-20261012/world7/candidates/sky-isles-stormmaw-prime-boss-atlas.png",
         "candidateSha256": "43eb4be1cda70caa1aa89830ecce8964952370312ffeb08110845864e6cb165b",
-        "promotedPath": "/assets/campaign/bosses/stormmaw_prime-atlas-v2.png",
+        "promotedPath": "/assets/campaign/bosses/stormmaw_prime-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "boss:stormmaw_prime",
           "key": "campaign_enemy_stormmaw_prime",
-          "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v2.png",
+          "path": "/assets/campaign/bosses/stormmaw_prime-atlas-v2.webp",
           "kind": "sheet",
           "width": 2048,
           "height": 1536,
@@ -5967,16 +5967,16 @@
       },
       {
         "id": "world-panel:dreadmoon",
-        "baselineV1Path": "/assets/campaign/world-map/dreadmoon-v1.png",
+        "baselineV1Path": "/assets/campaign/world-map/dreadmoon-v1.webp",
         "baselineSha256": "b8c7084e1532b95c6ee2bcf8a5d6fe0237c2f7249e39c3f8b9d8f1cfd28278f5",
         "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-world-panel.png",
         "candidateSha256": "5265dc72db5643fcc1aeb053de8c0f106257aa7aa383d2bb1f9e412631ff8f57",
-        "promotedPath": "/assets/campaign/world-map/dreadmoon-v2.png",
+        "promotedPath": "/assets/campaign/world-map/dreadmoon-v2.webp",
         "approved": true,
         "registration": {
           "id": "world-panel:dreadmoon",
           "key": "campaign_worldmap_dreadmoon",
-          "path": "/assets/campaign/world-map/dreadmoon-v2.png",
+          "path": "/assets/campaign/world-map/dreadmoon-v2.webp",
           "kind": "image",
           "width": 768,
           "height": 432,
@@ -5992,16 +5992,16 @@
       },
       {
         "id": "map:dreadmoon:a",
-        "baselineV1Path": "/assets/campaign/maps/dreadmoon_a-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/dreadmoon_a-v1.webp",
         "baselineSha256": "5cb6a57d48d0762384690bcc7f09ce1fd75280c1146b111a103b2099ba7f8ebe",
         "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-map-a.png",
         "candidateSha256": "1e9948f299017acf0a1831d911496f859666205d9245d8797a3422feb59dc9a8",
-        "promotedPath": "/assets/campaign/maps/dreadmoon_a-v2.png",
+        "promotedPath": "/assets/campaign/maps/dreadmoon_a-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:dreadmoon:a",
           "key": "campaign_dreadmoon_a",
-          "path": "/assets/campaign/maps/dreadmoon_a-v2.png",
+          "path": "/assets/campaign/maps/dreadmoon_a-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -6018,16 +6018,16 @@
       },
       {
         "id": "map:dreadmoon:b",
-        "baselineV1Path": "/assets/campaign/maps/dreadmoon_b-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/dreadmoon_b-v1.webp",
         "baselineSha256": "1f27e7b06b96904a1bc6001d58c4e6298d7653d86fba719515f892f4e3cf91c2",
         "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-map-b.png",
         "candidateSha256": "b48f3e80abb216782fbc24fc28ce215f126947a7878eeaf3758dec148c07d5e1",
-        "promotedPath": "/assets/campaign/maps/dreadmoon_b-v2.png",
+        "promotedPath": "/assets/campaign/maps/dreadmoon_b-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:dreadmoon:b",
           "key": "campaign_dreadmoon_b",
-          "path": "/assets/campaign/maps/dreadmoon_b-v2.png",
+          "path": "/assets/campaign/maps/dreadmoon_b-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -6044,16 +6044,16 @@
       },
       {
         "id": "map:dreadmoon:c",
-        "baselineV1Path": "/assets/campaign/maps/dreadmoon_c-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/dreadmoon_c-v1.webp",
         "baselineSha256": "936a470590651829cae35fcee1b48780bf7d77783addf28f305400fdd5991b62",
         "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-map-c.png",
         "candidateSha256": "b052f72f6a0e9ef861728d52b0fc39c7e6ef995b618c8378a50519fb5af11095",
-        "promotedPath": "/assets/campaign/maps/dreadmoon_c-v2.png",
+        "promotedPath": "/assets/campaign/maps/dreadmoon_c-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:dreadmoon:c",
           "key": "campaign_dreadmoon_c",
-          "path": "/assets/campaign/maps/dreadmoon_c-v2.png",
+          "path": "/assets/campaign/maps/dreadmoon_c-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -6070,16 +6070,16 @@
       },
       {
         "id": "map:dreadmoon:d",
-        "baselineV1Path": "/assets/campaign/maps/dreadmoon_d-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/dreadmoon_d-v1.webp",
         "baselineSha256": "193828455cc6b46ee398ba17db004a3d8ce167e697815f200f05b125de38864c",
         "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-map-d.png",
         "candidateSha256": "75e57c7913b871523513130b1cbb5d1575e613e6e0a901b38600ff8b02d1a100",
-        "promotedPath": "/assets/campaign/maps/dreadmoon_d-v2.png",
+        "promotedPath": "/assets/campaign/maps/dreadmoon_d-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:dreadmoon:d",
           "key": "campaign_dreadmoon_d",
-          "path": "/assets/campaign/maps/dreadmoon_d-v2.png",
+          "path": "/assets/campaign/maps/dreadmoon_d-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -6096,16 +6096,16 @@
       },
       {
         "id": "enemy:shadeborn",
-        "baselineV1Path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v1.webp",
         "baselineSha256": "16073f392ede1ef94ac8529c636b0344ac298a6e96424c452e3a3c9729f72df3",
         "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-shadeborn-atlas.png",
         "candidateSha256": "afe8203fd49130e5fc44da7205e941b66f8f552a5ff4753c389e03b048d7ff56",
-        "promotedPath": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:shadeborn",
           "key": "campaign_enemy_shadeborn",
-          "path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v2.png",
+          "path": "/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -6197,16 +6197,16 @@
       },
       {
         "id": "enemy:dusk_runner",
-        "baselineV1Path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v1.webp",
         "baselineSha256": "cd8208aa6f15fb95e0fe3277a38a548f20f42bd579d995f38c1eaf5aa3a38ef8",
         "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-dusk-runner-atlas.png",
         "candidateSha256": "7b0cc66af71cc0f62e1fe0e02dbfc93f3f55b34aa096a990c1821e13791e4a33",
-        "promotedPath": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:dusk_runner",
           "key": "campaign_enemy_dusk_runner",
-          "path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v2.png",
+          "path": "/assets/campaign/enemies/dreadmoon/dusk_runner-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -6298,16 +6298,16 @@
       },
       {
         "id": "enemy:moonstalker",
-        "baselineV1Path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v1.webp",
         "baselineSha256": "9ff34b61ba2b5b029286f40f97552fcc7eb9f26d0619e01a0fe8344718f9d2f5",
         "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-moonstalker-atlas.png",
         "candidateSha256": "d3584094b09d7700617fecc591f9b07435ed727b56567290d38a8517ef1776ff",
-        "promotedPath": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:moonstalker",
           "key": "campaign_enemy_moonstalker",
-          "path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v2.png",
+          "path": "/assets/campaign/enemies/dreadmoon/moonstalker-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -6399,16 +6399,16 @@
       },
       {
         "id": "enemy:grave_hulk",
-        "baselineV1Path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v1.webp",
         "baselineSha256": "ce6de970266d6fc0e072aa123d22ee070ebde555130f981f9908860822885ba8",
         "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-grave-hulk-atlas.png",
         "candidateSha256": "4cf391664b3403e12fc10c8d70dae25e5346232f9e5f39637baa092092e11294",
-        "promotedPath": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:grave_hulk",
           "key": "campaign_enemy_grave_hulk",
-          "path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v2.png",
+          "path": "/assets/campaign/enemies/dreadmoon/grave_hulk-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -6500,16 +6500,16 @@
       },
       {
         "id": "enemy:echo_shade",
-        "baselineV1Path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v1.webp",
         "baselineSha256": "1fb7ba3250e8910852c45c5a4dd7d43f3c2d25e97a4b8f004569812f5f0eb5e5",
         "candidatePath": "artifacts/campaign-final-art-20261012/world8/candidates/dreadmoon-echo-shade-atlas.png",
         "candidateSha256": "d51cb8c255ef3abab0ae3d52d2fe281b66408b4d4c96d5a5c3d3e28da16e1b97",
-        "promotedPath": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:echo_shade",
           "key": "campaign_enemy_echo_shade",
-          "path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v2.png",
+          "path": "/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 640,
@@ -6620,16 +6620,16 @@
       },
       {
         "id": "boss:umbral_regent",
-        "baselineV1Path": "/assets/campaign/bosses/umbral_regent-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/bosses/umbral_regent-atlas-v1.webp",
         "baselineSha256": "d7ce13335672d57758376b3ed6aaf7c8451e0d10b6a173135b460c11c6d2cb3f",
         "candidatePath": "artifacts/campaign-final-art-20261012/world8/repair-v1/candidates/dreadmoon-umbral-regent-boss-atlas.png",
         "candidateSha256": "84be00d661c6257be484845715d45308b61fb1028fa5e937db2b4b8aec79fba4",
-        "promotedPath": "/assets/campaign/bosses/umbral_regent-atlas-v2.png",
+        "promotedPath": "/assets/campaign/bosses/umbral_regent-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "boss:umbral_regent",
           "key": "campaign_enemy_umbral_regent",
-          "path": "/assets/campaign/bosses/umbral_regent-atlas-v2.png",
+          "path": "/assets/campaign/bosses/umbral_regent-atlas-v2.webp",
           "kind": "sheet",
           "width": 2048,
           "height": 1536,
@@ -6769,16 +6769,16 @@
       },
       {
         "id": "world-panel:aether_crown",
-        "baselineV1Path": "/assets/campaign/world-map/aether_crown-v1.png",
+        "baselineV1Path": "/assets/campaign/world-map/aether_crown-v1.webp",
         "baselineSha256": "0b461650f5a5e9645374adef3f0066a85a99be1d681143695fcbb941e971bc83",
         "candidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/aether-crown-world-panel.png",
         "candidateSha256": "f8f435616240ba841b84bcd472bae3eeb961f0a6408c8d236363b94a0eeef083",
-        "promotedPath": "/assets/campaign/world-map/aether_crown-v2.png",
+        "promotedPath": "/assets/campaign/world-map/aether_crown-v2.webp",
         "approved": true,
         "registration": {
           "id": "world-panel:aether_crown",
           "key": "campaign_worldmap_aether_crown",
-          "path": "/assets/campaign/world-map/aether_crown-v2.png",
+          "path": "/assets/campaign/world-map/aether_crown-v2.webp",
           "kind": "image",
           "width": 768,
           "height": 432,
@@ -6794,16 +6794,16 @@
       },
       {
         "id": "map:aether_crown:a",
-        "baselineV1Path": "/assets/campaign/maps/aether_crown_a-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/aether_crown_a-v1.webp",
         "baselineSha256": "6ddcd6475e135b31d4fb1c5049d6aa038b43decb0d86624a86bb59072e68134b",
         "candidatePath": "artifacts/campaign-final-art-20261012/world10/repair-v2/candidates/aether-crown-map-a-repair-v2-attempt2.png",
         "candidateSha256": "2a5a18c73d4914f8451b0d8b74c9a936f8a611c2db1879c2269a468fa339daa9",
-        "promotedPath": "/assets/campaign/maps/aether_crown_a-v2.png",
+        "promotedPath": "/assets/campaign/maps/aether_crown_a-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:aether_crown:a",
           "key": "campaign_aether_crown_a",
-          "path": "/assets/campaign/maps/aether_crown_a-v2.png",
+          "path": "/assets/campaign/maps/aether_crown_a-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -6820,16 +6820,16 @@
       },
       {
         "id": "map:aether_crown:b",
-        "baselineV1Path": "/assets/campaign/maps/aether_crown_b-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/aether_crown_b-v1.webp",
         "baselineSha256": "a508dccd71ef183e0096c9853f04c8c1d4d84560c4eb23cf639bcf11a583c237",
         "candidatePath": "artifacts/campaign-final-art-20261012/world10/repair-v2/candidates/aether-crown-map-b-repair-v2-attempt1.png",
         "candidateSha256": "066eda646130c0847701b1f1694104f276fa24fccd81ec07c688ae445f11097b",
-        "promotedPath": "/assets/campaign/maps/aether_crown_b-v2.png",
+        "promotedPath": "/assets/campaign/maps/aether_crown_b-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:aether_crown:b",
           "key": "campaign_aether_crown_b",
-          "path": "/assets/campaign/maps/aether_crown_b-v2.png",
+          "path": "/assets/campaign/maps/aether_crown_b-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -6846,16 +6846,16 @@
       },
       {
         "id": "map:aether_crown:c",
-        "baselineV1Path": "/assets/campaign/maps/aether_crown_c-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/aether_crown_c-v1.webp",
         "baselineSha256": "a462cc71f4b90f06f9327c698c9c48f6df7183d242a5367067533ea3570f1582",
         "candidatePath": "artifacts/campaign-final-art-20261012/world10/repair-v2/candidates/aether-crown-map-c-repair-v2-attempt1.png",
         "candidateSha256": "024234dcf969ccea0f76141471a2b200815bb15e0cb4b99be46bbc7b5db2d964",
-        "promotedPath": "/assets/campaign/maps/aether_crown_c-v2.png",
+        "promotedPath": "/assets/campaign/maps/aether_crown_c-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:aether_crown:c",
           "key": "campaign_aether_crown_c",
-          "path": "/assets/campaign/maps/aether_crown_c-v2.png",
+          "path": "/assets/campaign/maps/aether_crown_c-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -6872,16 +6872,16 @@
       },
       {
         "id": "map:aether_crown:d",
-        "baselineV1Path": "/assets/campaign/maps/aether_crown_d-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/aether_crown_d-v1.webp",
         "baselineSha256": "6145204a136a634aff669869252da070fc6e41956bdfa56bb51c1be5b0da50d6",
         "candidatePath": "artifacts/campaign-final-art-20261012/world10/repair-v2/candidates/aether-crown-map-d-repair-v2-attempt1.png",
         "candidateSha256": "49e427473869ca967add41f80d237e2b2978b467dc3218cc0f0493e0da6926cb",
-        "promotedPath": "/assets/campaign/maps/aether_crown_d-v2.png",
+        "promotedPath": "/assets/campaign/maps/aether_crown_d-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:aether_crown:d",
           "key": "campaign_aether_crown_d",
-          "path": "/assets/campaign/maps/aether_crown_d-v2.png",
+          "path": "/assets/campaign/maps/aether_crown_d-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -6898,16 +6898,16 @@
       },
       {
         "id": "enemy:aetherborn",
-        "baselineV1Path": "/assets/campaign/enemies/aether_crown/aetherborn-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/aether_crown/aetherborn-atlas-v1.webp",
         "baselineSha256": "b271e923f9e1f82f3f3ffb34db3020c51f6d28b62b65fe5260fc1f901677f78d",
         "candidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/aetherborn-atlas.png",
         "candidateSha256": "17323698c1f2bf34939390e56726bb2f5cd8b1f1f2307e1098fe81bdaa7beb30",
-        "promotedPath": "/assets/campaign/enemies/aether_crown/aetherborn-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/aether_crown/aetherborn-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:aetherborn",
           "key": "campaign_enemy_aetherborn",
-          "path": "/assets/campaign/enemies/aether_crown/aetherborn-atlas-v2.png",
+          "path": "/assets/campaign/enemies/aether_crown/aetherborn-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -6999,16 +6999,16 @@
       },
       {
         "id": "enemy:crown_runner",
-        "baselineV1Path": "/assets/campaign/enemies/aether_crown/crown_runner-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/aether_crown/crown_runner-atlas-v1.webp",
         "baselineSha256": "b79e6968a95d5750cb4bb8c51fa1224c711a3b3b291eae3f335b2d3422249eeb",
         "candidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/crown-runner-atlas.png",
         "candidateSha256": "e177eae916c36c576c0190e411e6f46239e2c6bbe9f8f9600705486c1e6cf417",
-        "promotedPath": "/assets/campaign/enemies/aether_crown/crown_runner-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/aether_crown/crown_runner-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:crown_runner",
           "key": "campaign_enemy_crown_runner",
-          "path": "/assets/campaign/enemies/aether_crown/crown_runner-atlas-v2.png",
+          "path": "/assets/campaign/enemies/aether_crown/crown_runner-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -7100,16 +7100,16 @@
       },
       {
         "id": "enemy:aether_seer",
-        "baselineV1Path": "/assets/campaign/enemies/aether_crown/aether_seer-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/aether_crown/aether_seer-atlas-v1.webp",
         "baselineSha256": "07c25c747859ea05ef3dd54275bd152c8e8efe6c812a42157d652998130db127",
         "candidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/aether-seer-atlas.png",
         "candidateSha256": "026c459442aaa6e98ed9ce5be856b90005edafa1bfed6f54a26db401939c7c05",
-        "promotedPath": "/assets/campaign/enemies/aether_crown/aether_seer-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/aether_crown/aether_seer-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:aether_seer",
           "key": "campaign_enemy_aether_seer",
-          "path": "/assets/campaign/enemies/aether_crown/aether_seer-atlas-v2.png",
+          "path": "/assets/campaign/enemies/aether_crown/aether_seer-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -7201,16 +7201,16 @@
       },
       {
         "id": "enemy:sentry_colossus",
-        "baselineV1Path": "/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v1.webp",
         "baselineSha256": "a66053d660264d7459ea435464bebb303d0b5c1382791e06ad88548ef32136f1",
         "candidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/sentry-colossus-atlas.png",
         "candidateSha256": "31c9a5eda829070c05e0b2571eafaece2af1382859a0a26ee3ffd953932f2edc",
-        "promotedPath": "/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:sentry_colossus",
           "key": "campaign_enemy_sentry_colossus",
-          "path": "/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v2.png",
+          "path": "/assets/campaign/enemies/aether_crown/sentry_colossus-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -7302,16 +7302,16 @@
       },
       {
         "id": "enemy:crown_archon",
-        "baselineV1Path": "/assets/campaign/enemies/aether_crown/crown_archon-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/aether_crown/crown_archon-atlas-v1.webp",
         "baselineSha256": "413cd82ea79d1b323dca3c30fce5cdd64a473e25959f0589e9d1d225f2246dfd",
         "candidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/crown-archon-atlas.png",
         "candidateSha256": "28098ac3e6433f91759c2327ab01614322e2e1e3152fd3ee78d7750fc91e9fb9",
-        "promotedPath": "/assets/campaign/enemies/aether_crown/crown_archon-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/aether_crown/crown_archon-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:crown_archon",
           "key": "campaign_enemy_crown_archon",
-          "path": "/assets/campaign/enemies/aether_crown/crown_archon-atlas-v2.png",
+          "path": "/assets/campaign/enemies/aether_crown/crown_archon-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 640,
@@ -7422,16 +7422,16 @@
       },
       {
         "id": "boss:aether_devourer",
-        "baselineV1Path": "/assets/campaign/bosses/aether_devourer-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/bosses/aether_devourer-atlas-v1.webp",
         "baselineSha256": "d75972e113c027309466a7028140814c45ab834d928b22045193947d99ebf011",
         "candidatePath": "artifacts/campaign-final-art-20261012/world10/candidates/aether-devourer-atlas.png",
         "candidateSha256": "4ce4f9d0d079ae04968c6f4659f10822f8e603a84e68565602d5c9c7e03a103c",
-        "promotedPath": "/assets/campaign/bosses/aether_devourer-atlas-v2.png",
+        "promotedPath": "/assets/campaign/bosses/aether_devourer-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "boss:aether_devourer",
           "key": "campaign_enemy_aether_devourer",
-          "path": "/assets/campaign/bosses/aether_devourer-atlas-v2.png",
+          "path": "/assets/campaign/bosses/aether_devourer-atlas-v2.webp",
           "kind": "sheet",
           "width": 2048,
           "height": 1536,
@@ -7571,16 +7571,16 @@
       },
       {
         "id": "world-panel:astral_rift",
-        "baselineV1Path": "/assets/campaign/world-map/astral_rift-v1.png",
+        "baselineV1Path": "/assets/campaign/world-map/astral_rift-v1.webp",
         "baselineSha256": "30c3c6442d1c1240a663369b93bc26fe2fa7082cf33bcb4734d8a8e6c4c40b27",
         "candidatePath": "artifacts/campaign-final-art-20261012/world9/candidates/world-panel-astral-rift-candidate.png",
         "candidateSha256": "dab7467998334b9e5bb630506cca0ab684d9c55fed8098a04f5cf0a2bff4908a",
-        "promotedPath": "/assets/campaign/world-map/astral_rift-v2.png",
+        "promotedPath": "/assets/campaign/world-map/astral_rift-v2.webp",
         "approved": true,
         "registration": {
           "id": "world-panel:astral_rift",
           "key": "campaign_worldmap_astral_rift",
-          "path": "/assets/campaign/world-map/astral_rift-v2.png",
+          "path": "/assets/campaign/world-map/astral_rift-v2.webp",
           "kind": "image",
           "width": 768,
           "height": 432,
@@ -7596,16 +7596,16 @@
       },
       {
         "id": "map:astral_rift:a",
-        "baselineV1Path": "/assets/campaign/maps/astral_rift_a-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/astral_rift_a-v1.webp",
         "baselineSha256": "0fc52438c3074e5cbad93b4f529ccae643e76a0f48143f23ce30d251247ff0b3",
         "candidatePath": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/astral-rift-map-a-repair-v2.png",
         "candidateSha256": "be0ecbc01bfcd5b4fda7ffedd7a88485e7c9bf02d5978e9a28baa3f57ebd2b2e",
-        "promotedPath": "/assets/campaign/maps/astral_rift_a-v2.png",
+        "promotedPath": "/assets/campaign/maps/astral_rift_a-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:astral_rift:a",
           "key": "campaign_astral_rift_a",
-          "path": "/assets/campaign/maps/astral_rift_a-v2.png",
+          "path": "/assets/campaign/maps/astral_rift_a-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -7622,16 +7622,16 @@
       },
       {
         "id": "map:astral_rift:b",
-        "baselineV1Path": "/assets/campaign/maps/astral_rift_b-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/astral_rift_b-v1.webp",
         "baselineSha256": "d03059e7adde4b252cec53ed6f30107bf08da1cfaf476c1136309600c7aba407",
         "candidatePath": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/astral-rift-map-b-repair-v2.png",
         "candidateSha256": "cf0e176ef41c74728f03256a5243bc77e73bc01c46de8d04bebe05b9456f3dab",
-        "promotedPath": "/assets/campaign/maps/astral_rift_b-v2.png",
+        "promotedPath": "/assets/campaign/maps/astral_rift_b-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:astral_rift:b",
           "key": "campaign_astral_rift_b",
-          "path": "/assets/campaign/maps/astral_rift_b-v2.png",
+          "path": "/assets/campaign/maps/astral_rift_b-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -7648,16 +7648,16 @@
       },
       {
         "id": "map:astral_rift:c",
-        "baselineV1Path": "/assets/campaign/maps/astral_rift_c-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/astral_rift_c-v1.webp",
         "baselineSha256": "f00309f8b34c699966d6b5745998c6a30a448ac1bc97dbbc36a005b8462bfebc",
         "candidatePath": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/astral-rift-map-c-repair-v2.png",
         "candidateSha256": "94b137421d54dcb87e46cde7adc71c0ab5ff5f1ae790443f66555bcb71652536",
-        "promotedPath": "/assets/campaign/maps/astral_rift_c-v2.png",
+        "promotedPath": "/assets/campaign/maps/astral_rift_c-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:astral_rift:c",
           "key": "campaign_astral_rift_c",
-          "path": "/assets/campaign/maps/astral_rift_c-v2.png",
+          "path": "/assets/campaign/maps/astral_rift_c-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -7674,16 +7674,16 @@
       },
       {
         "id": "map:astral_rift:d",
-        "baselineV1Path": "/assets/campaign/maps/astral_rift_d-v1.png",
+        "baselineV1Path": "/assets/campaign/maps/astral_rift_d-v1.webp",
         "baselineSha256": "8db2a745f6dabca73ed1cae6ae9ad5c1b934131a34c8156af07368bf3a527254",
         "candidatePath": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/astral-rift-map-d-repair-v3.png",
         "candidateSha256": "3119f0db247fe479181964205235ed936f182f952362e31c8b75ecdbcd7814ab",
-        "promotedPath": "/assets/campaign/maps/astral_rift_d-v2.png",
+        "promotedPath": "/assets/campaign/maps/astral_rift_d-v2.webp",
         "approved": true,
         "registration": {
           "id": "map:astral_rift:d",
           "key": "campaign_astral_rift_d",
-          "path": "/assets/campaign/maps/astral_rift_d-v2.png",
+          "path": "/assets/campaign/maps/astral_rift_d-v2.webp",
           "kind": "image",
           "width": 1672,
           "height": 940,
@@ -7700,16 +7700,16 @@
       },
       {
         "id": "enemy:riftling",
-        "baselineV1Path": "/assets/campaign/enemies/astral_rift/riftling-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/astral_rift/riftling-atlas-v1.webp",
         "baselineSha256": "02ca9a1cdf19e107e0f32d8691b0054122de167d6e461da6111a9f3e3cf865d4",
         "candidatePath": "artifacts/campaign-final-art-20261012/world9/candidates/riftling-atlas-candidate.png",
         "candidateSha256": "767eea2dec08a2825a323fb5cb62656c2857a247ce48aae40d93985f988695f6",
-        "promotedPath": "/assets/campaign/enemies/astral_rift/riftling-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/astral_rift/riftling-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:riftling",
           "key": "campaign_enemy_riftling",
-          "path": "/assets/campaign/enemies/astral_rift/riftling-atlas-v2.png",
+          "path": "/assets/campaign/enemies/astral_rift/riftling-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -7801,16 +7801,16 @@
       },
       {
         "id": "enemy:phase_hound",
-        "baselineV1Path": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v1.webp",
         "baselineSha256": "e680a5111ea38ecd776ea3e00f9a83413c42af8fcfe46c910bb2d2ebeb178ab0",
         "candidatePath": "artifacts/campaign-final-art-20261012/world9/candidates/phase-hound-atlas-candidate.png",
         "candidateSha256": "6b26a78225e14baf8d7c39f8729b6f613ce4d637b3abae66666752f995750c13",
-        "promotedPath": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:phase_hound",
           "key": "campaign_enemy_phase_hound",
-          "path": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v2.png",
+          "path": "/assets/campaign/enemies/astral_rift/phase_hound-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -7902,16 +7902,16 @@
       },
       {
         "id": "enemy:astral_horror",
-        "baselineV1Path": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v1.webp",
         "baselineSha256": "c93b45a7bd95ec778d25217d11a1513c17fd2210e93d6f37bc541a2ecf107d43",
         "candidatePath": "artifacts/campaign-final-art-20261012/world9/candidates/astral-horror-atlas-candidate.png",
         "candidateSha256": "15917d79ae4d4e05bc51c36470d94ea3ff87db27a12eba79cc798d319aae1140",
-        "promotedPath": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:astral_horror",
           "key": "campaign_enemy_astral_horror",
-          "path": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v2.png",
+          "path": "/assets/campaign/enemies/astral_rift/astral_horror-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -8003,16 +8003,16 @@
       },
       {
         "id": "enemy:voidplate",
-        "baselineV1Path": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v1.webp",
         "baselineSha256": "47aafc8a058513d7041ffebaf34a83e7521c8ac9c1ff17923fe09d2b19722179",
         "candidatePath": "artifacts/campaign-final-art-20261012/world9/candidates/voidplate-atlas-candidate.png",
         "candidateSha256": "61b31d9a92649908e8c51dc77a83aea9c677f7789170532db9f607dbf52240b4",
-        "promotedPath": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:voidplate",
           "key": "campaign_enemy_voidplate",
-          "path": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v2.png",
+          "path": "/assets/campaign/enemies/astral_rift/voidplate-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 512,
@@ -8104,16 +8104,16 @@
       },
       {
         "id": "enemy:rift_weaver",
-        "baselineV1Path": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v1.webp",
         "baselineSha256": "9157637796ed0f7d0bf8e028f6ab4f39d8998d3e79cfd2a0cd560e2c9c3a5050",
         "candidatePath": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/rift-weaver-atlas-repair-v1.png",
         "candidateSha256": "025a247ebbc0115c4ebd18f2aca659ae1a158c32a84d002e79f63e5cdbc39b18",
-        "promotedPath": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v2.png",
+        "promotedPath": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "enemy:rift_weaver",
           "key": "campaign_enemy_rift_weaver",
-          "path": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v2.png",
+          "path": "/assets/campaign/enemies/astral_rift/rift_weaver-atlas-v2.webp",
           "kind": "sheet",
           "width": 768,
           "height": 640,
@@ -8224,16 +8224,16 @@
       },
       {
         "id": "boss:rift_sovereign",
-        "baselineV1Path": "/assets/campaign/bosses/rift_sovereign-atlas-v1.png",
+        "baselineV1Path": "/assets/campaign/bosses/rift_sovereign-atlas-v1.webp",
         "baselineSha256": "d2ab29b09662f173373b0768b46075701228f464abfdb56cd97a1ba0c29cf660",
         "candidatePath": "artifacts/campaign-final-art-20261012/world9/repair-v1/candidates/rift-sovereign-atlas-repair-v1.png",
         "candidateSha256": "afeb43fde71948dcd9b45bf2e6ee528dd0ef4d4f1b4b01f42b55e00422408620",
-        "promotedPath": "/assets/campaign/bosses/rift_sovereign-atlas-v2.png",
+        "promotedPath": "/assets/campaign/bosses/rift_sovereign-atlas-v2.webp",
         "approved": true,
         "registration": {
           "id": "boss:rift_sovereign",
           "key": "campaign_enemy_rift_sovereign",
-          "path": "/assets/campaign/bosses/rift_sovereign-atlas-v2.png",
+          "path": "/assets/campaign/bosses/rift_sovereign-atlas-v2.webp",
           "kind": "sheet",
           "width": 2048,
           "height": 1536,

@@ -11,7 +11,12 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: false
+    sourcemap: false,
+    // Phaser changes rarely: a separate chunk stays cached across game-code deploys.
+    chunkSizeWarningLimit: 1500,
+    rollupOptions: {
+      output: { manualChunks: { phaser: ['phaser'] } }
+    }
   },
   plugins: [
     VitePWA({
@@ -48,7 +53,9 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         // Shell only: JS/CSS/HTML/fonts. Game art (~295MB) is runtime-cached
         // per level on demand (Q9) instead of precached upfront.
-        globPatterns: ['**/*.{js,css,html,woff,woff2}'],
+        globPatterns: ['**/*.{js,css,html,woff2}'],
+        // woff2 is universal; the .woff twins and non-Latin subsets would only inflate first install.
+        globIgnores: ['**/*-cyrillic*', '**/*-greek*', '**/*-vietnamese*'],
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.destination === 'image',

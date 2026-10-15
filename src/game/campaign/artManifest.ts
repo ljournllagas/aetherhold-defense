@@ -88,18 +88,18 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
   ...LEGACY_WORLD_IDS.flatMap(worldId => FAMILIES.map(family => {
     return imageSource(
       `map:${worldId}:${family}`, `campaign_${worldId}_${family}`,
-      `/assets/campaign/maps/${worldId}_${family}-v1.png`, 1672, 940, 'gameplay',
+      `/assets/campaign/maps/${worldId}_${family}-v1.webp`, 1672, 940, 'gameplay',
       ['terrain_plate', 'runtime_geometry_overlay'], 'final', null
     );
   })),
   ...LEGACY_WORLD_IDS.flatMap(worldId => [
     imageSource(`world-panel:${worldId}`, `campaign_worldmap_${worldId}`,
-      `/assets/campaign/world-map/${worldId}-v1.png`, 768, 432, 'campaign', ['biome_illustration'], 'final', null),
+      `/assets/campaign/world-map/${worldId}-v1.webp`, 768, 432, 'campaign', ['biome_illustration'], 'final', null),
     ...NORMAL_ENEMIES[worldId].map(id => {
       const states = id === 'ashcaller' || id === 'frost_shaman' ? SUPPORT_STATES : NORMAL_STATES;
       const rows = Math.max(...Object.values(states).map(state => state.row)) + 1;
       return {
-        id: `enemy:${id}`, key: `campaign_enemy_${id}`, path: `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.png`,
+        id: `enemy:${id}`, key: `campaign_enemy_${id}`, path: `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.webp`,
         state: 'final' as const, stage: 'gameplay' as const, kind: 'sheet' as const, width: 768, height: rows * 128,
         frameWidth: 128, frameHeight: 128, states,
         qualityFlags: ['authored_animation_reviewed', 'transparent_png_required', 'consistent_feet_anchor', 'no_baked_ui_or_large_shadow', ...(id === 'ashcaller' || id === 'frost_shaman' ? ['support_buff_playback_verified'] : [])], temporary: null
@@ -112,7 +112,7 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
         : { idle: { row: 0, frames: 6 }, walk: { row: 1, frames: 8 }, attack: { row: 2, frames: 8 }, special: { row: 3, frames: 8 }, death: { row: 4, frames: 8 } };
       const rows = Math.max(...Object.values(states).map(state => state.row)) + 1;
       return {
-        id: `boss:${id}`, key: `campaign_enemy_${id}`, path: `/assets/campaign/bosses/${id}-atlas-v1.png`,
+        id: `boss:${id}`, key: `campaign_enemy_${id}`, path: `/assets/campaign/bosses/${id}-atlas-v1.webp`,
         state: 'final' as const, stage: 'gameplay' as const, kind: 'sheet' as const, width: 2048, height: rows * 256,
         frameWidth: 256, frameHeight: 256, states,
         qualityFlags: ['authored_animation_reviewed', 'transparent_png_required', 'consistent_feet_anchor', 'phase_state_readability_verified'], temporary: null
@@ -121,7 +121,7 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
   ]),
   ...TOWERS.flatMap(id => ([2, 3] as const).map(tier => imageSource(
     `tower:${id}:tier${tier}`, `campaign_tower_${id}_tier${tier}`,
-    `/assets/campaign/towers/${id}-tier${tier}-v1.png`, 192, 192, 'gameplay', ['transparent_png_required', 'cosmetic_only', 'classic_art_unchanged'], 'final', null
+    `/assets/campaign/towers/${id}-tier${tier}-v1.webp`, 192, 192, 'gameplay', ['transparent_png_required', 'cosmetic_only', 'classic_art_unchanged'], 'final', null
   ))),
   ...EXPANSION_WORLD_IDS.flatMap(worldId => {
     const isReleasedWorld = RELEASED_EXPANSION_WORLD_IDS.has(worldId);
@@ -135,11 +135,11 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
     return [
       ...FAMILIES.map(family => imageSource(
         `map:${worldId}:${family}`, `campaign_${worldId}_${family}`,
-        `/assets/campaign/maps/${worldId}_${family}-${pathVersion}.png`, 1672, 940, 'gameplay',
+        `/assets/campaign/maps/${worldId}_${family}-${pathVersion}.webp`, 1672, 940, 'gameplay',
         qualityFlags(['terrain_plate', 'runtime_geometry_overlay']), state, temporary
       )),
       imageSource(`world-panel:${worldId}`, `campaign_worldmap_${worldId}`,
-        `/assets/campaign/world-map/${worldId}-${pathVersion}.png`, 768, 432, 'campaign',
+        `/assets/campaign/world-map/${worldId}-${pathVersion}.webp`, 768, 432, 'campaign',
         qualityFlags(['biome_illustration']), state, temporary),
       ...NORMAL_ENEMIES[worldId].map(id => {
         const support = EXPANSION_SUPPORT_ENEMIES.has(id);
@@ -147,7 +147,7 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
         const rows = Math.max(...Object.values(states).map(state => state.row)) + 1;
         return {
           id: `enemy:${id}`, key: `campaign_enemy_${id}`,
-          path: `/assets/campaign/enemies/${worldId}/${id}-atlas-${pathVersion}.png`,
+          path: `/assets/campaign/enemies/${worldId}/${id}-atlas-${pathVersion}.webp`,
           state, stage: 'gameplay' as const, kind: 'sheet' as const, width: 768, height: rows * 128,
           frameWidth: 128, frameHeight: 128, states,
           qualityFlags: qualityFlags(['transparent_png_required', 'consistent_feet_anchor', 'no_baked_ui_or_large_shadow', ...(support ? ['support_buff_playback_verified'] : [])]),
@@ -156,7 +156,7 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
       }),
       {
         id: `boss:${BOSSES[worldId]}`, key: `campaign_enemy_${BOSSES[worldId]}`,
-        path: `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-${pathVersion}.png`,
+        path: `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-${pathVersion}.webp`,
         state, stage: 'gameplay' as const, kind: 'sheet' as const,
         width: 2048, height: 1536, frameWidth: 256, frameHeight: 256, states: EXPANSION_BOSS_STATES,
         qualityFlags: qualityFlags(['transparent_png_required', 'consistent_feet_anchor', 'phase_state_readability_verified']),
@@ -168,18 +168,18 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
 
 /** A production file is queued only after its manifest entry is promoted and its exact path is listed here. */
 export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
-  ...LEGACY_WORLD_IDS.flatMap(worldId => FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v1.png`)),
+  ...LEGACY_WORLD_IDS.flatMap(worldId => FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v1.webp`)),
   ...LEGACY_WORLD_IDS.flatMap(worldId => [
-    `/assets/campaign/world-map/${worldId}-v1.png`,
-    ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.png`),
-    `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v1.png`
+    `/assets/campaign/world-map/${worldId}-v1.webp`,
+    ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.webp`),
+    `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v1.webp`
   ]),
-  ...TOWERS.flatMap(id => ([2, 3] as const).map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.png`)),
+  ...TOWERS.flatMap(id => ([2, 3] as const).map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.webp`)),
   ...EXPANSION_WORLD_IDS.filter(worldId => RELEASED_EXPANSION_WORLD_IDS.has(worldId)).flatMap(worldId => [
-    ...FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v2.png`),
-    `/assets/campaign/world-map/${worldId}-v2.png`,
-    ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v2.png`),
-    `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v2.png`
+    ...FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v2.webp`),
+    `/assets/campaign/world-map/${worldId}-v2.webp`,
+    ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v2.webp`),
+    `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v2.webp`
   ])
 ];
 
@@ -207,10 +207,10 @@ export function campaignArtAssetsForLoader(
 
 /** Exact provisional art bundle for expansion worlds, ordered from World 4 through World 10. */
 export const CAMPAIGN_PROVISIONAL_STARTER_PATHS: readonly string[] = EXPANSION_WORLD_IDS.filter(worldId => !RELEASED_EXPANSION_WORLD_IDS.has(worldId)).flatMap(worldId => [
-  ...FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v1.png`),
-  `/assets/campaign/world-map/${worldId}-v1.png`,
-  ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.png`),
-  `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v1.png`
+  ...FAMILIES.map(family => `/assets/campaign/maps/${worldId}_${family}-v1.webp`),
+  `/assets/campaign/world-map/${worldId}-v1.webp`,
+  ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v1.webp`),
+  `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v1.webp`
 ]);
 
 /** Starter files need both final_required registration and an exact explicit provisional path approval. */

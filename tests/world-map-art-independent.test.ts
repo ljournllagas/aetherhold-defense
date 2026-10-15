@@ -15,7 +15,7 @@ describe('independent campaign world-map art acceptance', () => {
     expect(worldPanels).toHaveLength(10);
     expect(worldPanels.map(({ path, width, height, stage, state }) => ({ path, width, height, stage, state }))).toEqual(
       worlds.map((worldId, index) => ({
-        path: `/assets/campaign/world-map/${worldId}-${index >= 3 ? 'v2' : 'v1'}.png`, width: 768, height: 432,
+        path: `/assets/campaign/world-map/${worldId}-${index >= 3 ? 'v2' : 'v1'}.webp`, width: 768, height: 432,
         stage: 'campaign', state: 'final'
       }))
     );
@@ -24,28 +24,28 @@ describe('independent campaign world-map art acceptance', () => {
     expect(worldPanels.filter(asset => asset.state === 'final_required')).toEqual([]);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path));
     expect(campaignArtAssetsForLoader('campaign')).toEqual([
-      ...campaignLoadOrder.map(worldId => ({ kind: 'image' as const, key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-${worlds.indexOf(worldId) >= 3 ? 'v2' : 'v1'}.png` })),
+      ...campaignLoadOrder.map(worldId => ({ kind: 'image' as const, key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-${worlds.indexOf(worldId) >= 3 ? 'v2' : 'v1'}.webp` })),
     ]);
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:astral_rift')).toMatchObject({
-      path: '/assets/campaign/world-map/astral_rift-v2.png', state: 'final', temporary: null
+      path: '/assets/campaign/world-map/astral_rift-v2.webp', state: 'final', temporary: null
     });
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:aether_crown')).toMatchObject({
-      path: '/assets/campaign/world-map/aether_crown-v2.png', state: 'final', temporary: null
+      path: '/assets/campaign/world-map/aether_crown-v2.webp', state: 'final', temporary: null
     });
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:whisperfen')).toMatchObject({
-      path: '/assets/campaign/world-map/whisperfen-v2.png', state: 'final', temporary: null
+      path: '/assets/campaign/world-map/whisperfen-v2.webp', state: 'final', temporary: null
     });
     for (const worldId of ['sunken_aether', 'ironroot', 'sky_isles', 'dreadmoon']) {
       expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === `world-panel:${worldId}`)).toMatchObject({
-        path: `/assets/campaign/world-map/${worldId}-v2.png`, state: 'final', temporary: null
+        path: `/assets/campaign/world-map/${worldId}-v2.webp`, state: 'final', temporary: null
       });
     }
-    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/whisperfen-v1.png');
-    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toContain('/assets/campaign/world-map/whisperfen-v2.png');
-    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/sunken_aether-v1.png');
-    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/sky_isles-v1.png');
-    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/dreadmoon-v1.png');
-    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/aether_crown-v1.png');
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/whisperfen-v1.webp');
+    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toContain('/assets/campaign/world-map/whisperfen-v2.webp');
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/sunken_aether-v1.webp');
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/sky_isles-v1.webp');
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/dreadmoon-v1.webp');
+    expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).not.toContain('/assets/campaign/world-map/aether_crown-v1.webp');
     expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toEqual([]);
   });
 
@@ -53,7 +53,7 @@ describe('independent campaign world-map art acceptance', () => {
     const assets = resolveCampaignArtAssets(worldPanels, 'campaign', AVAILABLE_CAMPAIGN_ART_PATHS);
 
     expect(assets).toEqual(worlds.map((worldId, index) => ({
-      kind: 'image', key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-${index >= 3 ? 'v2' : 'v1'}.png`
+      kind: 'image', key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-${index >= 3 ? 'v2' : 'v1'}.webp`
     })));
     expect(resolveCampaignArtAssets(worldPanels, 'menu', AVAILABLE_CAMPAIGN_ART_PATHS)).toEqual([]);
     expect(resolveCampaignArtAssets(worldPanels, 'gameplay', AVAILABLE_CAMPAIGN_ART_PATHS)).toEqual([]);
@@ -64,12 +64,12 @@ describe('independent campaign world-map art acceptance', () => {
 
   it('retains the six existing menu image sources without adding campaign art to menu loading', () => {
     expect(STAGE_ASSETS.menu.map(({ key, path }) => ({ key, path }))).toEqual([
-      { key: 'emblem', path: '/assets/branding/aegis-emblem-v1.webp' },
-      { key: 'menu_vista', path: '/assets/world/vistas/ancient-border-keep-vista-v1.webp' },
-      { key: 'menu_vista_sunset', path: '/assets/world/vistas/ancient-border-keep-vista-menu-v2.webp' },
-      { key: 'difficulty_helm_easy', path: '/assets/ui/difficulty-helm-easy-v1.webp' },
-      { key: 'difficulty_helm_medium', path: '/assets/ui/difficulty-helm-medium-v1.webp' },
-      { key: 'difficulty_helm_hard', path: '/assets/ui/difficulty-helm-hard-v1.webp' }
+      { key: 'emblem', path: '/assets/branding/aegis-emblem-v2.webp' },
+      { key: 'menu_vista', path: '/assets/world/vistas/ancient-border-keep-vista-v2.webp' },
+      { key: 'menu_vista_sunset', path: '/assets/world/vistas/ancient-border-keep-vista-menu-v3.webp' },
+      { key: 'difficulty_helm_easy', path: '/assets/ui/difficulty-helm-easy-v2.webp' },
+      { key: 'difficulty_helm_medium', path: '/assets/ui/difficulty-helm-medium-v2.webp' },
+      { key: 'difficulty_helm_hard', path: '/assets/ui/difficulty-helm-hard-v2.webp' }
     ]);
     expect(campaignArtAssetsForLoader('menu')).toEqual([]);
     expect(campaignArtAssetsForLoader('gameplay').some(asset => asset.path.includes('/world-map/'))).toBe(false);

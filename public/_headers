@@ -5,6 +5,16 @@
   Cache-Control: no-cache
 /manifest.webmanifest
   Content-Type: application/manifest+json
+/assets/index-*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/phaser-*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.webp
+  Cache-Control: public, max-age=2592000
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY

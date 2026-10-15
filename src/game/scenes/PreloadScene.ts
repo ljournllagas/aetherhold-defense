@@ -7,6 +7,7 @@ import { button } from '../ui/components.ts';
 import { ensureArtTextures, ensureMenuTextures } from '../art/artkit.ts';
 import { ensureTowerPortraits } from '../art/towerArt.ts';
 import { requiredAssetsForRequest, type AssetSpec } from '../art/assetManifest.ts';
+import { ensureUiFonts } from '../ui/fonts.ts';
 import { campaignVisualTier } from '../campaign/battle.ts';
 import { campaignRepository } from '../campaign/progress.ts';
 import type { CampaignVisualTier } from '../campaign/types.ts';
@@ -101,7 +102,7 @@ export class PreloadScene extends Phaser.Scene {
       else this.time.delayedCall(0, transition);
       return;
     }
-    const fontsReady = typeof document !== 'undefined' ? document.fonts?.ready ?? Promise.resolve() : Promise.resolve();
+    const fontsReady = ensureUiFonts();
     void fontsReady.then(transition, transition);
     this.fontTimer?.remove(); this.fontTimer = this.time.delayedCall(2500, transition);
   }

@@ -134,7 +134,7 @@ export class MainMenuScene extends Phaser.Scene {
     const blockHeight = textHeight + (emblemSize ? emblemSize + 8 : 0);
     let rowY = Math.max(8, (actionTop - 12 - blockHeight) / 2);
     const backingTop = rowY - 6;
-    this.add.rectangle((W - Math.min(720, W - 24)) / 2, backingTop, Math.min(720, W - 24), blockHeight + 12, C.bgPanel, 1)
+    this.add.rectangle((W - Math.min(720, W - 24)) / 2, backingTop, Math.min(720, W - 24), blockHeight + 12, C.bgPanel, 0.7)
       .setOrigin(0).setStrokeStyle(1, 0x6b6047, 0.8).setDepth(-6);
     if (emblemSize) {
       this.add.image(W / 2, rowY + emblemSize / 2, emblemKey()).setDisplaySize(emblemSize, emblemSize);
@@ -181,12 +181,6 @@ export class MainMenuScene extends Phaser.Scene {
       const lastY = startY + playHeight + gap + secondaryHeight + gap;
       addButton(this, (W - width) / 2, lastY, half, secondaryHeight, 'Settings', false, () => this.scene.start('Settings'));
       addButton(this, (W - width) / 2 + half + 12, lastY, half, secondaryHeight, 'Progression', false, () => this.scene.start('Progression'));
-    }
-
-    const settings = loadSettings();
-    if (settings.playerName) {
-      const name = settings.playerName.slice(0, 20);
-      this.add.text(12, 12, `DEFENDER  ${name}`, { ...style(13, C.textPrimary, true), backgroundColor: 'rgba(10,14,18,0.78)', padding: { x: 8, y: 5 } }).setWordWrapWidth(Math.max(120,W-190));
     }
 
     this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);

@@ -174,7 +174,7 @@ export class SettingsScene extends Phaser.Scene {
     const settings = loadSettings();
     const apply = () => { this.savedScroll = sheet.scrollOffset; saveSettings(settings); Object.assign(SoundManager.get(), settings); SoundManager.get().applyVolumes(); this.scene.restart(); };
     (['masterVolume', 'musicVolume', 'sfxVolume'] as const).forEach((key, i) => {
-      sheet.text(i * 88, `${key.replace('Volume', ' volume')} · ${Math.round(settings[key] * 100)}%`);
+      sheet.text(i * 88, `${({ masterVolume: 'Master volume', musicVolume: 'Music volume', sfxVolume: 'Sound effects volume' } as const)[key]} · ${Math.round(settings[key] * 100)}%`);
       sheet.pair(i * 88 + 28, '−', '+', () => { settings[key] = Math.max(0, Math.round((settings[key] - .1) * 10) / 10); apply(); }, () => { settings[key] = Math.min(1, Math.round((settings[key] + .1) * 10) / 10); apply(); });
     });
     sheet.action(272, `Music · ${settings.musicOn ? 'ON' : 'OFF'}`, () => { settings.musicOn = !settings.musicOn; if (!settings.musicOn) SoundManager.get().stopMusic(); apply(); if (settings.musicOn) SoundManager.get().startMusic(); });

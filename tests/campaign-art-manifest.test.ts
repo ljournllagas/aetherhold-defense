@@ -28,26 +28,26 @@ describe('campaign art replacement contract', () => {
     const towers = CAMPAIGN_ART_MANIFEST.filter(asset => asset.id.startsWith('tower:'));
     expect(maps).toHaveLength(40);
     expect(maps.map(asset => asset.path)).toEqual([
-      '/assets/campaign/maps/borderkeep_a-v1.png', '/assets/campaign/maps/borderkeep_b-v1.png',
-      '/assets/campaign/maps/borderkeep_c-v1.png', '/assets/campaign/maps/borderkeep_d-v1.png',
-      '/assets/campaign/maps/emberfall_a-v1.png', '/assets/campaign/maps/emberfall_b-v1.png',
-      '/assets/campaign/maps/emberfall_c-v1.png', '/assets/campaign/maps/emberfall_d-v1.png',
-      '/assets/campaign/maps/frostveil_a-v1.png', '/assets/campaign/maps/frostveil_b-v1.png',
-      '/assets/campaign/maps/frostveil_c-v1.png', '/assets/campaign/maps/frostveil_d-v1.png',
-      '/assets/campaign/maps/whisperfen_a-v2.png', '/assets/campaign/maps/whisperfen_b-v2.png',
-      '/assets/campaign/maps/whisperfen_c-v2.png', '/assets/campaign/maps/whisperfen_d-v2.png',
-      '/assets/campaign/maps/sunken_aether_a-v2.png', '/assets/campaign/maps/sunken_aether_b-v2.png',
-      '/assets/campaign/maps/sunken_aether_c-v2.png', '/assets/campaign/maps/sunken_aether_d-v2.png',
-      '/assets/campaign/maps/ironroot_a-v2.png', '/assets/campaign/maps/ironroot_b-v2.png',
-      '/assets/campaign/maps/ironroot_c-v2.png', '/assets/campaign/maps/ironroot_d-v2.png',
-      '/assets/campaign/maps/sky_isles_a-v2.png', '/assets/campaign/maps/sky_isles_b-v2.png',
-      '/assets/campaign/maps/sky_isles_c-v2.png', '/assets/campaign/maps/sky_isles_d-v2.png',
-      '/assets/campaign/maps/dreadmoon_a-v2.png', '/assets/campaign/maps/dreadmoon_b-v2.png',
-      '/assets/campaign/maps/dreadmoon_c-v2.png', '/assets/campaign/maps/dreadmoon_d-v2.png',
-      '/assets/campaign/maps/astral_rift_a-v2.png', '/assets/campaign/maps/astral_rift_b-v2.png',
-      '/assets/campaign/maps/astral_rift_c-v2.png', '/assets/campaign/maps/astral_rift_d-v2.png',
-      '/assets/campaign/maps/aether_crown_a-v2.png', '/assets/campaign/maps/aether_crown_b-v2.png',
-      '/assets/campaign/maps/aether_crown_c-v2.png', '/assets/campaign/maps/aether_crown_d-v2.png'
+      '/assets/campaign/maps/borderkeep_a-v1.webp', '/assets/campaign/maps/borderkeep_b-v1.webp',
+      '/assets/campaign/maps/borderkeep_c-v1.webp', '/assets/campaign/maps/borderkeep_d-v1.webp',
+      '/assets/campaign/maps/emberfall_a-v1.webp', '/assets/campaign/maps/emberfall_b-v1.webp',
+      '/assets/campaign/maps/emberfall_c-v1.webp', '/assets/campaign/maps/emberfall_d-v1.webp',
+      '/assets/campaign/maps/frostveil_a-v1.webp', '/assets/campaign/maps/frostveil_b-v1.webp',
+      '/assets/campaign/maps/frostveil_c-v1.webp', '/assets/campaign/maps/frostveil_d-v1.webp',
+      '/assets/campaign/maps/whisperfen_a-v2.webp', '/assets/campaign/maps/whisperfen_b-v2.webp',
+      '/assets/campaign/maps/whisperfen_c-v2.webp', '/assets/campaign/maps/whisperfen_d-v2.webp',
+      '/assets/campaign/maps/sunken_aether_a-v2.webp', '/assets/campaign/maps/sunken_aether_b-v2.webp',
+      '/assets/campaign/maps/sunken_aether_c-v2.webp', '/assets/campaign/maps/sunken_aether_d-v2.webp',
+      '/assets/campaign/maps/ironroot_a-v2.webp', '/assets/campaign/maps/ironroot_b-v2.webp',
+      '/assets/campaign/maps/ironroot_c-v2.webp', '/assets/campaign/maps/ironroot_d-v2.webp',
+      '/assets/campaign/maps/sky_isles_a-v2.webp', '/assets/campaign/maps/sky_isles_b-v2.webp',
+      '/assets/campaign/maps/sky_isles_c-v2.webp', '/assets/campaign/maps/sky_isles_d-v2.webp',
+      '/assets/campaign/maps/dreadmoon_a-v2.webp', '/assets/campaign/maps/dreadmoon_b-v2.webp',
+      '/assets/campaign/maps/dreadmoon_c-v2.webp', '/assets/campaign/maps/dreadmoon_d-v2.webp',
+      '/assets/campaign/maps/astral_rift_a-v2.webp', '/assets/campaign/maps/astral_rift_b-v2.webp',
+      '/assets/campaign/maps/astral_rift_c-v2.webp', '/assets/campaign/maps/astral_rift_d-v2.webp',
+      '/assets/campaign/maps/aether_crown_a-v2.webp', '/assets/campaign/maps/aether_crown_b-v2.webp',
+      '/assets/campaign/maps/aether_crown_c-v2.webp', '/assets/campaign/maps/aether_crown_d-v2.webp'
     ]);
     expect(maps.every(asset => asset.state === 'final' && asset.temporary === null
       && asset.qualityFlags.join(',') === 'terrain_plate,runtime_geometry_overlay')).toBe(true);
@@ -108,73 +108,73 @@ describe('campaign art replacement contract', () => {
     const level = getCampaignLevel(1)!;
     const tierTwo = campaignGameplayAssetsForLevel(level, 2);
     expect(tierTwo.map(asset => asset.path)).toEqual([
-      '/assets/campaign/maps/borderkeep_a-v1.png',
+      '/assets/campaign/maps/borderkeep_a-v1.webp',
       ...CAMPAIGN_ART_MANIFEST.filter(asset => level.enemyIds.some(id => asset.id === `enemy:${id}`)).map(asset => asset.path),
-      ...['longbow', 'ember', 'glacier', 'starfire', 'tempest'].map(id => `/assets/campaign/towers/${id}-tier2-v1.png`)
+      ...['longbow', 'ember', 'glacier', 'starfire', 'tempest'].map(id => `/assets/campaign/towers/${id}-tier2-v1.webp`)
     ]);
     expect(campaignGameplayAssetsForLevel(level, 1).map(asset => asset.path)).toEqual(tierTwo.filter(asset => !asset.path.includes('/towers/')).map(asset => asset.path));
     expect(campaignGameplayAssetsForLevel(level, 3).filter(asset => asset.path.includes('/towers/')).every(asset => asset.path.includes('-tier3-'))).toBe(true);
     const astralRift = campaignGameplayAssetsForLevel(getCampaignLevel(81)!, 1).map(asset => asset.path);
-    expect(astralRift).toContain('/assets/campaign/maps/astral_rift_a-v2.png');
-    expect(astralRift).toContain('/assets/campaign/enemies/astral_rift/riftling-atlas-v2.png');
+    expect(astralRift).toContain('/assets/campaign/maps/astral_rift_a-v2.webp');
+    expect(astralRift).toContain('/assets/campaign/enemies/astral_rift/riftling-atlas-v2.webp');
     const astralRiftBoss = campaignGameplayAssetsForLevel(getCampaignLevel(90)!, 1).map(asset => asset.path);
     expect(astralRiftBoss).toEqual(expect.arrayContaining([
-      '/assets/campaign/maps/astral_rift_d-v2.png',
-      '/assets/campaign/bosses/rift_sovereign-atlas-v2.png'
+      '/assets/campaign/maps/astral_rift_d-v2.webp',
+      '/assets/campaign/bosses/rift_sovereign-atlas-v2.webp'
     ]));
     const otherFamily = campaignGameplayAssetsForLevel(getCampaignLevel(11)!, 2);
-    expect(otherFamily.some(asset => asset.path === '/assets/campaign/maps/emberfall_a-v1.png')).toBe(true);
+    expect(otherFamily.some(asset => asset.path === '/assets/campaign/maps/emberfall_a-v1.webp')).toBe(true);
     expect(otherFamily.some(asset => asset.key === 'campaign_borderkeep_a')).toBe(false);
     expect(requiredAssetsForRequest('gameplay', { mode: 'campaign', campaignLevel: 1, campaignVisualTier: 2 }).filter(asset => asset.path.startsWith('/assets/campaign/'))).toEqual(tierTwo);
     const whisperfen = campaignGameplayAssetsForLevel(getCampaignLevel(31)!, 1);
     expect(whisperfen.map(asset => asset.path)).toEqual([
-      '/assets/campaign/maps/whisperfen_a-v2.png',
-      '/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png'
+      '/assets/campaign/maps/whisperfen_a-v2.webp',
+      '/assets/campaign/enemies/whisperfen/bogling-atlas-v2.webp'
     ]);
     const hydraAssets = campaignGameplayAssetsForLevel(getCampaignLevel(40)!, 1).map(asset => asset.path);
     expect(hydraAssets).toEqual(expect.arrayContaining([
-      '/assets/campaign/maps/whisperfen_d-v2.png',
-      '/assets/campaign/enemies/whisperfen/bogling-atlas-v2.png',
-      '/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.png',
-      '/assets/campaign/bosses/mireheart_hydra-atlas-v2.png'
+      '/assets/campaign/maps/whisperfen_d-v2.webp',
+      '/assets/campaign/enemies/whisperfen/bogling-atlas-v2.webp',
+      '/assets/campaign/enemies/whisperfen/rootwretch-atlas-v2.webp',
+      '/assets/campaign/bosses/mireheart_hydra-atlas-v2.webp'
     ]));
     const sunkenAether = campaignGameplayAssetsForLevel(getCampaignLevel(41)!, 1);
     expect(sunkenAether.map(asset => asset.path)).toEqual([
-      '/assets/campaign/maps/sunken_aether_a-v2.png',
-      '/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.png'
+      '/assets/campaign/maps/sunken_aether_a-v2.webp',
+      '/assets/campaign/enemies/sunken_aether/tideborn-atlas-v2.webp'
     ]);
     expect(campaignGameplayAssetsForLevel(getCampaignLevel(50)!, 1).map(asset => asset.path)).toEqual(expect.arrayContaining([
-      '/assets/campaign/maps/sunken_aether_d-v2.png',
-      '/assets/campaign/bosses/drowned_oracle-atlas-v2.png'
+      '/assets/campaign/maps/sunken_aether_d-v2.webp',
+      '/assets/campaign/bosses/drowned_oracle-atlas-v2.webp'
     ]));
     expect(campaignGameplayAssetsForLevel(getCampaignLevel(51)!, 1).map(asset => asset.path)).toEqual(expect.arrayContaining([
-      '/assets/campaign/maps/ironroot_a-v2.png',
-      '/assets/campaign/enemies/ironroot/scrapling-atlas-v2.png'
+      '/assets/campaign/maps/ironroot_a-v2.webp',
+      '/assets/campaign/enemies/ironroot/scrapling-atlas-v2.webp'
     ]));
     expect(campaignGameplayAssetsForLevel(getCampaignLevel(60)!, 1).map(asset => asset.path)).toEqual(expect.arrayContaining([
-      '/assets/campaign/maps/ironroot_d-v2.png',
-      '/assets/campaign/bosses/iron_tyrant-atlas-v2.png'
+      '/assets/campaign/maps/ironroot_d-v2.webp',
+      '/assets/campaign/bosses/iron_tyrant-atlas-v2.webp'
     ]));
     expect(campaignGameplayAssetsForLevel(getCampaignLevel(61)!, 1).map(asset => asset.path)).toEqual(expect.arrayContaining([
-      '/assets/campaign/maps/sky_isles_a-v2.png',
-      '/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.png'
+      '/assets/campaign/maps/sky_isles_a-v2.webp',
+      '/assets/campaign/enemies/sky_isles/cloud_skitter-atlas-v2.webp'
     ]));
     expect(campaignGameplayAssetsForLevel(getCampaignLevel(70)!, 1).map(asset => asset.path)).toEqual(expect.arrayContaining([
-      '/assets/campaign/maps/sky_isles_d-v2.png',
-      '/assets/campaign/bosses/stormmaw_prime-atlas-v2.png'
+      '/assets/campaign/maps/sky_isles_d-v2.webp',
+      '/assets/campaign/bosses/stormmaw_prime-atlas-v2.webp'
     ]));
     expect(campaignGameplayAssetsForLevel(getCampaignLevel(71)!, 1).map(asset => asset.path)).toEqual(expect.arrayContaining([
-      '/assets/campaign/maps/dreadmoon_a-v2.png',
-      '/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v2.png'
+      '/assets/campaign/maps/dreadmoon_a-v2.webp',
+      '/assets/campaign/enemies/dreadmoon/shadeborn-atlas-v2.webp'
     ]));
     expect(campaignGameplayAssetsForLevel(getCampaignLevel(80)!, 1).map(asset => asset.path)).toEqual(expect.arrayContaining([
-      '/assets/campaign/maps/dreadmoon_d-v2.png',
-      '/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v2.png',
-      '/assets/campaign/bosses/umbral_regent-atlas-v2.png'
+      '/assets/campaign/maps/dreadmoon_d-v2.webp',
+      '/assets/campaign/enemies/dreadmoon/echo_shade-atlas-v2.webp',
+      '/assets/campaign/bosses/umbral_regent-atlas-v2.webp'
     ]));
     expect(campaignGameplayAssetsForLevel(getCampaignLevel(100)!, 1).map(asset => asset.path)).toEqual(expect.arrayContaining([
-      '/assets/campaign/maps/aether_crown_d-v2.png',
-      '/assets/campaign/bosses/aether_devourer-atlas-v2.png'
+      '/assets/campaign/maps/aether_crown_d-v2.webp',
+      '/assets/campaign/bosses/aether_devourer-atlas-v2.webp'
     ]));
     expect(requiredAssetsForRequest('gameplay', { mode: 'campaign', campaignLevel: 31, campaignVisualTier: 1 }).filter(asset => asset.path.startsWith('/assets/campaign/'))).toEqual(whisperfen);
     expect(requiredAssetsForRequest('gameplay', { mode: 'campaign', campaignLevel: 41, campaignVisualTier: 3 })).toEqual([
