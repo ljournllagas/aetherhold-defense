@@ -5,7 +5,7 @@ import { stepProjectile } from '../src/game/systems/ProjectileSystem.ts';
 
 describe('shared rebuild logic', () => {
   it('keeps asset, audio, and projectile settings on every tower config', () => {
-    expect(Object.values(TOWERS).map((tower) => tower.name)).toEqual(['Ranger', 'Bombard', 'Frost', 'Arcane', 'Tempest']);
+    expect(Object.values(TOWERS).map((tower) => tower.name)).toEqual(['Ranger', 'Bombard', 'Frost', 'Arcane', 'Tempest', 'Sentinel', 'Cinder']);
     for (const tower of Object.values(TOWERS)) {
       expect(tower.assetKey).toBe(`tower_${tower.id}`);
       expect(tower.audioKey.length).toBeGreaterThan(0);

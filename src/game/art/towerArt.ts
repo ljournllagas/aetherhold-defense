@@ -7,7 +7,7 @@ import { campaignTowerTextureKey } from './campaignArt.ts';
 
 const CELL = 627;
 
-type TowerId = 'longbow' | 'ember' | 'glacier' | 'starfire' | 'tempest';
+type TowerId = 'longbow' | 'ember' | 'glacier' | 'starfire' | 'tempest' | 'sentinel' | 'cinder';
 interface AlphaBounds { left: number; top: number; width: number; height: number; bottom: number; }
 interface TowerStageArt {
   textureKey: string;
@@ -94,12 +94,31 @@ const ART: Record<TowerId, TowerArtSpec> = {
       { left: 137, top: 14, width: 478, height: 575, bottom: 588 },
       { left: 67, top: 10, width: 513, height: 586, bottom: 595 }
     ]
+  },
+  sentinel: {
+    targetHeight: 112, focus: { x: 0, y: -0.82 },
+    bounds: [
+      { left: 157, top: 84, width: 354, height: 484, bottom: 567 },
+      { left: 0, top: 49, width: 519, height: 546, bottom: 594 },
+      { left: 104, top: 0, width: 504, height: 577, bottom: 576 },
+      { left: 0, top: 0, width: 584, height: 595, bottom: 594 }
+    ]
+  },
+  cinder: {
+    targetHeight: 84, focus: { x: -0.08, y: -0.72 },
+    bounds: [
+      { left: 102, top: 135, width: 448, height: 459, bottom: 593 },
+      { left: 21, top: 88, width: 571, height: 524, bottom: 611 },
+      { left: 35, top: 16, width: 581, height: 547, bottom: 562 },
+      { left: 7, top: 33, width: 613, height: 543, bottom: 575 }
+    ]
   }
 };
 
-const IDS: readonly TowerId[] = ['longbow', 'ember', 'glacier', 'starfire', 'tempest'];
+const IDS: readonly TowerId[] = ['longbow', 'ember', 'glacier', 'starfire', 'tempest', 'sentinel', 'cinder'];
 const PORTRAIT_BACKGROUNDS: Record<TowerId, string> = {
-  longbow: '#344132', ember: '#443128', glacier: '#293944', starfire: '#352b46', tempest: '#293e3b'
+  longbow: '#344132', ember: '#443128', glacier: '#293944', starfire: '#352b46', tempest: '#293e3b',
+  sentinel: '#3d3a2a', cinder: '#402a20'
 };
 
 // Source-pixel distance from the front edge to the center of the stone footprint,
@@ -107,7 +126,7 @@ const PORTRAIT_BACKGROUNDS: Record<TowerId, string> = {
 const GROUND_INSETS: Record<TowerId, readonly number[]> = {
   longbow: [58, 76, 92, 103], ember: [135, 194, 190, 100],
   glacier: [75, 82, 92, 106], starfire: [80, 88, 100, 115],
-  tempest: [79, 88, 96, 104]
+  tempest: [79, 88, 96, 104], sentinel: [58, 76, 92, 103], cinder: [135, 194, 190, 100]
 };
 // Occupied bounds of the 192px Campaign PNGs, excluding transparent padding.
 const CAMPAIGN_BOUNDS: Record<TowerId, readonly AlphaBounds[]> = {
@@ -115,7 +134,9 @@ const CAMPAIGN_BOUNDS: Record<TowerId, readonly AlphaBounds[]> = {
   ember: [{ left:10, top:17, width:178, height:171, bottom:187 }, { left:10, top:18, width:177, height:168, bottom:185 }],
   glacier: [{ left:30, top:14, width:133, height:170, bottom:183 }, { left:32, top:13, width:131, height:168, bottom:180 }],
   starfire: [{ left:36, top:12, width:120, height:167, bottom:178 }, { left:35, top:6, width:122, height:175, bottom:180 }],
-  tempest: [{ left:26, top:15, width:136, height:171, bottom:185 }, { left:27, top:12, width:139, height:173, bottom:184 }]
+  tempest: [{ left:26, top:15, width:136, height:171, bottom:185 }, { left:27, top:12, width:139, height:173, bottom:184 }],
+  sentinel: [{ left:36, top:6, width:131, height:186, bottom:191 }, { left:33, top:5, width:133, height:187, bottom:191 }],
+  cinder: [{ left:10, top:17, width:178, height:171, bottom:187 }, { left:10, top:18, width:177, height:168, bottom:185 }]
 };
 
 function placedArt(id: TowerId, stage: number, visualTier: 1 | 2 | 3 = 1): TowerStageArt & { groundInset: number } {
@@ -259,7 +280,7 @@ export function ensureTowerPortraits(scene: Phaser.Scene): void {
 }
 
 export interface EvolutionAccent {
-  silhouette: 'scope-crest' | 'fanned-quiver' | 'ram-wedge' | 'flame-crown' | 'shield-crest' | 'shard-spikes' | 'broken-ward' | 'beacon-spire' | 'twin-forks' | 'hammer-head';
+  silhouette: 'scope-crest' | 'fanned-quiver' | 'ram-wedge' | 'flame-crown' | 'shield-crest' | 'shard-spikes' | 'broken-ward' | 'beacon-spire' | 'twin-forks' | 'hammer-head' | 'crosshair' | 'twin-daggers' | 'fire-pit' | 'plague-drop';
   color: number;
   label: string;
 }
@@ -274,7 +295,11 @@ export const EVOLUTION_ACCENTS: Readonly<Record<BranchId, EvolutionAccent>> = {
   spellbreaker: { silhouette: 'broken-ward', color: 0xd1b3ff, label: EVOLUTIONS.spellbreaker.name },
   'arcane-beacon': { silhouette: 'beacon-spire', color: 0xba68c8, label: EVOLUTIONS['arcane-beacon'].name },
   stormcaller: { silhouette: 'twin-forks', color: 0x67d0c4, label: EVOLUTIONS.stormcaller.name },
-  thunderlord: { silhouette: 'hammer-head', color: 0xffee58, label: EVOLUTIONS.thunderlord.name }
+  thunderlord: { silhouette: 'hammer-head', color: 0xffee58, label: EVOLUTIONS.thunderlord.name },
+  deadeye: { silhouette: 'crosshair', color: 0xd7aa4e, label: EVOLUTIONS.deadeye.name },
+  headhunter: { silhouette: 'twin-daggers', color: 0x8ee6a0, label: EVOLUTIONS.headhunter.name },
+  pyre: { silhouette: 'fire-pit', color: 0xde8742, label: EVOLUTIONS.pyre.name },
+  contagion: { silhouette: 'plague-drop', color: 0x9fd4e8, label: EVOLUTIONS.contagion.name }
 };
 
 const ACCENT_OUTLINE = 0x0a0e12;
@@ -348,6 +373,23 @@ function drawSilhouette(g: Phaser.GameObjects.Graphics, accent: EvolutionAccent)
     case 'hammer-head':
       accentPolygon(g, c, [-2, -17, 2, -17, 2, -3, -2, -3]);
       accentPolygon(g, c, [-11, -25, 11, -25, 11, -17, -11, -17]);
+      break;
+    case 'crosshair':
+      accentLines(g, c, () => { g.strokeCircle(0, -14, 8); g.lineBetween(-11, -14, 11, -14); g.lineBetween(0, -25, 0, -3); });
+      accentPolygon(g, c, [0, -26, 4, -20, 0, -18, -4, -20]);
+      break;
+    case 'twin-daggers':
+      accentPolygon(g, c, [-11, -3, -6, -3, -8, -24]);
+      accentPolygon(g, c, [11, -3, 6, -3, 8, -24]);
+      accentPolygon(g, c, [-3, -8, 3, -8, 0, -26]);
+      break;
+    case 'fire-pit':
+      accentPolygon(g, c, [-11, -3, 11, -3, 8, -12, -8, -12]);
+      accentPolygon(g, c, [-5, -12, 5, -12, 3, -25, -3, -25]);
+      break;
+    case 'plague-drop':
+      accentLines(g, c, () => { g.strokeCircle(0, -17, 7); });
+      accentPolygon(g, c, [0, -26, 5, -14, 3, -3, -3, -3, -5, -14]);
       break;
   }
 }

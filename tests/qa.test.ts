@@ -242,14 +242,14 @@ describe('development campaign fixtures', () => {
     vi.mocked(buildTowerVisual).mockClear();
     const run: any = qaScene(request.campaignFixture); run.seedQACampaignFixture();
     expect(run.campaign.visualTier).toBe(visualTier); expect(run.qaCampaignRepository.view().totalMasteryStars).toBe(0);
-    expect(run.towers).toHaveLength(5);
+    expect(run.towers).toHaveLength(7);
     for (const tower of run.towers) {
       expect(tower.y).toBeGreaterThanOrEqual(210);
       expect(run.map.buildable[tower.plotIndex]).toEqual({ x: tower.x, y: tower.y });
       const baseline = new Tower(tower.towerId,tower.x,tower.y,tower.plotIndex); baseline.progression.foundationLevel = tower.level;
       expect(tower.level).toBe(2); expect(tower.stats).toEqual(baseline.stats);
     }
-    expect(vi.mocked(buildTowerVisual).mock.calls).toHaveLength(5);
+    expect(vi.mocked(buildTowerVisual).mock.calls).toHaveLength(7);
     expect(vi.mocked(buildTowerVisual).mock.calls.every(call => call[3] === visualTier)).toBe(true);
     const status = run.events.emit.mock.calls[run.events.emit.mock.calls.length - 1][1];
     expect(status.progression.every((tower: { visualTier: number }) => tower.visualTier === visualTier)).toBe(true);
@@ -275,7 +275,7 @@ describe('development campaign fixtures', () => {
     const run: any = qaScene(fixture(level,'initial','campaign')); run.seedQACampaignFixture();
     expect([run.campaign.definition.level,run.wave,run.waveActive,run.debugAssisted,run.paused]).toEqual([level,1,true,true,true]);
     expect(run.map.id).toBe(run.campaign.definition.mapLayoutId);
-    expect(run.towers).toHaveLength(5);
+    expect(run.towers).toHaveLength(7);
     expect(run.spawnQueue.length + run.enemies.filter((enemy: Enemy) => enemy.alive).length).toBeGreaterThan(0);
     const inFlightEnemyIds = [...run.spawnQueue.map((spawn: { enemyId: string }) => spawn.enemyId), ...run.enemies.map((enemy: Enemy) => enemy.campaignId)];
     expect(inFlightEnemyIds.some(id => run.campaign.definition.enemyIds.includes(id))).toBe(true);

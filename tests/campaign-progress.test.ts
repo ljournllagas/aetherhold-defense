@@ -57,8 +57,8 @@ describe('campaign progress', () => {
 
     expect(view.profile.campaignVersion).toBe(1);
     expect(view.profile.progressionVersion).toBe(1);
-    expect(view.profile.choices).toEqual({ longbow: null, ember: null, glacier: null, starfire: null, tempest: null });
-    expect(view.profile.targeting).toEqual({ longbow: 'first', ember: 'first', glacier: 'first', starfire: 'first', tempest: 'first' });
+    expect(view.profile.choices).toEqual({ longbow: null, ember: null, glacier: null, starfire: null, tempest: null, sentinel: null, cinder: null });
+    expect(view.profile.targeting).toEqual({ longbow: 'first', ember: 'first', glacier: 'first', starfire: 'first', tempest: 'first', sentinel: 'first', cinder: 'first' });
     expect(view.highestUnlockedLevel).toBe(1);
     expect(isLevelUnlocked(1, view)).toBe(true);
     expect(isLevelUnlocked(2, view)).toBe(false);

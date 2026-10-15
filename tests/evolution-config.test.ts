@@ -17,7 +17,7 @@ function expectDerived(b: BranchId, damage: number, interval: number): void {
 
 describe('evolution roster', () => {
   it('has one starter and one alternative per archetype with four integer-priced ranks', () => {
-    expect(ids).toHaveLength(10);
+    expect(ids).toHaveLength(14);
     expect([...TOWER_IDS].sort()).toEqual(Object.keys(TOWERS).sort());
     for (const id of TOWER_IDS) {
       expect(EVOLUTIONS[STARTER_BRANCH[id]].starter).toBe(true);
@@ -35,9 +35,9 @@ describe('evolution roster', () => {
     }
   });
   it('names the approved branches and starters', () => {
-    expect(STARTER_BRANCH).toEqual({ longbow: 'marksman', ember: 'siegebreaker', glacier: 'winterguard', starfire: 'spellbreaker', tempest: 'stormcaller' });
-    expect(ALTERNATIVE_BRANCH).toEqual({ longbow: 'volley', ember: 'flame-mortar', glacier: 'brittle-ice', starfire: 'arcane-beacon', tempest: 'thunderlord' });
-    expect(ids.map((b) => EVOLUTIONS[b].name).sort()).toEqual(['Arcane Beacon', 'Brittle Ice', 'Flame Mortar', 'Marksman', 'Siegebreaker', 'Spellbreaker', 'Stormcaller', 'Thunderlord', 'Volley', 'Winterguard']);
+    expect(STARTER_BRANCH).toEqual({ longbow: 'marksman', ember: 'siegebreaker', glacier: 'winterguard', starfire: 'spellbreaker', tempest: 'stormcaller', sentinel: 'deadeye', cinder: 'pyre' });
+    expect(ALTERNATIVE_BRANCH).toEqual({ longbow: 'volley', ember: 'flame-mortar', glacier: 'brittle-ice', starfire: 'arcane-beacon', tempest: 'thunderlord', sentinel: 'headhunter', cinder: 'contagion' });
+    expect(ids.map((b) => EVOLUTIONS[b].name).sort()).toEqual(['Arcane Beacon', 'Brittle Ice', 'Contagion', 'Deadeye', 'Flame Mortar', 'Headhunter', 'Marksman', 'Pyre', 'Siegebreaker', 'Spellbreaker', 'Stormcaller', 'Thunderlord', 'Volley', 'Winterguard']);
   });
   it('narrows tower ids', () => { expect(isTowerId('longbow')).toBe(true); expect(isTowerId('laser')).toBe(false); });
 });
@@ -75,6 +75,10 @@ describe('branch modifiers (seed values)', () => {
   it('Arcane Beacon', () => { expectDerived('arcane-beacon', 0.6, 1); expect(all('arcane-beacon', 'auraDamageMultiplier')).toEqual([1.15, 1.2, 1.25, 1.3]); expect(all('arcane-beacon', 'auraRange')).toEqual([160, 160, 160, 160]); });
   it('Stormcaller', () => { expectDerived('stormcaller', 1, 1); expect(all('stormcaller', 'chainCount')).toEqual([2, 3, 4, 5].map((n) => TOWERS.tempest.levels[3].chainCount! + n)); expect(all('stormcaller', 'chainCount')).toEqual([9, 10, 11, 12]); });
   it('Thunderlord', () => { expectDerived('thunderlord', 1.6, 1); expect(all('thunderlord', 'chainCount')).toEqual([3, 3, 3, 3]); expect(all('thunderlord', 'control')).toEqual(['stun', 'stun', 'stun', 'stun']); expect(all('thunderlord', 'controlMs')).toEqual([350, 350, 350, 350]); expect(all('thunderlord', 'bossControlMs')).toEqual([100, 100, 100, 100]); });
+  it('Deadeye', () => { expectDerived('deadeye', 1.35, 1.25); expect(all('deadeye', 'bossDamageMultiplier')).toEqual([2, 2, 2, 2]); expect(all('deadeye', 'volleyTargets')).toEqual([1, 1, 1, 1]); });
+  it('Headhunter', () => { expectDerived('headhunter', 0.75, 1); expect(all('headhunter', 'volleyTargets')).toEqual([2, 2, 2, 2]); expect(all('headhunter', 'bossDamageMultiplier')).toEqual([1, 1, 1, 1]); });
+  it('Pyre', () => { expectDerived('pyre', 0.75, 1); expect(all('pyre', 'burningField')).toEqual([true, true, true, true]); expect(all('pyre', 'splashRadius')).toEqual([110, 110, 110, 110]); });
+  it('Contagion', () => { expectDerived('contagion', 0.6, 1); expect(all('contagion', 'burningField')).toEqual([true, true, true, true]); expect(all('contagion', 'vulnerabilityMultiplier')).toEqual([1.15, 1.2, 1.25, 1.3]); expect(all('contagion', 'vulnerabilityMs')).toEqual([3000, 3000, 3000, 3000]); });
   it('keeps neutral defaults where a branch does not override', () => {
     expect(EVOLUTIONS.marksman.stats[0]).toMatchObject({ physicalArmorScale: 1, wardArmorScale: 1, burningField: false, vulnerabilityMultiplier: 1, vulnerabilityMs: 0, auraDamageMultiplier: 1, auraRange: 0, control: null, controlMs: 0, bossControlMs: 0 });
   });

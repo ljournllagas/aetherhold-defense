@@ -10,7 +10,9 @@ export type CampaignSpecializationId =
   | 'siege_mortar' | 'ember_cannon'
   | 'glacial_spire' | 'shatter_spire'
   | 'aether_obelisk' | 'prism_tower'
-  | 'storm_conduit' | 'thunder_crown';
+  | 'storm_conduit' | 'thunder_crown'
+  | 'sentinel_bastion' | 'sentinel_repeater'
+  | 'cinder_mortar' | 'cinder_cannon';
 export type CampaignSigilId =
   | 'border_sigil' | 'ember_sigil' | 'frost_sigil' | 'mire_sigil' | 'tide_sigil'
   | 'iron_sigil' | 'sky_sigil' | 'moon_sigil' | 'rift_sigil' | 'crown_sigil';

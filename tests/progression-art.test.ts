@@ -24,7 +24,7 @@ afterEach(() => vi.restoreAllMocks());
 describe('branch accents', () => {
   it('defines a distinct labelled silhouette per branch', () => {
     const ids = Object.keys(EVOLUTIONS) as BranchId[];
-    expect(new Set(ids.map((b) => EVOLUTION_ACCENTS[b].silhouette)).size).toBe(10);
+    expect(new Set(ids.map((b) => EVOLUTION_ACCENTS[b].silhouette)).size).toBe(14);
     for (const b of ids) expect(EVOLUTION_ACCENTS[b].label).toBe(EVOLUTIONS[b].name);
   });
   it('adds one accent with rank chevrons and replaces it on update', () => {

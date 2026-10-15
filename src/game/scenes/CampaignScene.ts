@@ -27,7 +27,7 @@ import { handleViewportPointerUp, ViewportMaskController } from '../ui/ViewportM
 import { drawCampaignEnemyBadge, paintCampaignWorldMap } from '../art/campaignArt.ts';
 
 const TARGETING_MODES: readonly TargetingMode[] = ['first', 'last', 'strongest', 'weakest', 'closest'];
-const TOWER_IDS: readonly TowerId[] = ['longbow', 'ember', 'glacier', 'starfire', 'tempest'];
+const TOWER_IDS: readonly TowerId[] = ['longbow', 'ember', 'glacier', 'starfire', 'tempest', 'sentinel', 'cinder'];
 const WORLD_ACCENTS: Readonly<Record<CampaignWorldId, number>> = {
   borderkeep: 0x8cae70, emberfall: 0xe27737, frostveil: 0xa8d4e4, whisperfen: 0x83bf72,
   sunken_aether: 0x55c7c6, ironroot: 0xd58b57, sky_isles: 0x83c7ee,

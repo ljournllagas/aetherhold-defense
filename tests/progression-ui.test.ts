@@ -103,9 +103,9 @@ describe('next purchase stats', () => {
 });
 
 describe('achievement and wave views', () => {
-  it('lists five achievements for the menu without run qualification', () => {
+  it('lists seven achievements for the menu without run qualification', () => {
     const views = achievementViews(new UnlockRepository(null).view(), [], 0);
-    expect(views.map((v) => v.branchId)).toEqual(['volley', 'flame-mortar', 'brittle-ice', 'arcane-beacon', 'thunderlord']);
+    expect(views.map((v) => v.branchId)).toEqual(['volley', 'flame-mortar', 'brittle-ice', 'arcane-beacon', 'thunderlord', 'headhunter', 'contagion']);
     expect(views.every((v) => !v.earned && !v.unsaved && !v.qualifiesNow)).toBe(true);
     expect(views[0]).toMatchObject({ starterName: 'Marksman', alternativeName: 'Volley', requirement: 'Keep a Marksman tower at evolution rank 2 or higher when wave 20 is completed.' });
   });

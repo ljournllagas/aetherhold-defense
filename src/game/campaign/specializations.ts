@@ -57,6 +57,26 @@ export const CAMPAIGN_SPECIALIZATIONS: readonly CampaignSpecializationDefinition
     id: 'thunder_crown', towerId: 'tempest', name: 'Thunder Crown',
     description: 'A heavier first strike that reaches fewer foes.',
     effects: { chainTargetDelta: -2, primaryDamageMultiplier: 1.28, chainDamageMultiplier: 0.75 }
+  },
+  {
+    id: 'sentinel_bastion', towerId: 'sentinel', name: 'Sentinel Bastion',
+    description: 'Longer reach and heavier bolts, with a slower draw.',
+    effects: { damageMultiplier: 1.15, rangeMultiplier: 1.12, attackIntervalMultiplier: 1.2 }
+  },
+  {
+    id: 'sentinel_repeater', towerId: 'sentinel', name: 'Sentinel Repeater',
+    description: 'Short-range rapid bolts with lighter hits.',
+    effects: { damageMultiplier: 0.8, rangeMultiplier: 0.88, attackIntervalMultiplier: 0.82 }
+  },
+  {
+    id: 'cinder_mortar', towerId: 'cinder', name: 'Cinder Mortar',
+    description: 'A wider burning pool at a slower firing pace.',
+    effects: { splashRadiusMultiplier: 1.25, attackIntervalMultiplier: 1.2 }
+  },
+  {
+    id: 'cinder_cannon', towerId: 'cinder', name: 'Cinder Cannon',
+    description: 'Tighter, quicker shells with a shorter burn.',
+    effects: { damageMultiplier: 0.9, splashRadiusMultiplier: 0.8, attackIntervalMultiplier: 0.9, burnDurationMs: 1000, burnDamageMultiplier: 0.12 }
   }
 ];
 

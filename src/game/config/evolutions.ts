@@ -74,13 +74,31 @@ export const EVOLUTIONS: Readonly<Record<BranchId, EvolutionDefinition>> = {
   thunderlord: {
     id: 'thunderlord', towerId: 'tempest', name: 'Thunderlord', description: 'Heavy short chains; every fifth hit stuns the target.', starter: false,
     stats: branchStats('tempest', 1.6, 1, () => ({ chainCount: 3, control: 'stun', controlMs: 350, bossControlMs: 100 }))
+  },
+  deadeye: {
+    id: 'deadeye', towerId: 'sentinel', name: 'Deadeye', description: 'Heavy execution bolts; double damage to bosses.', starter: true,
+    stats: branchStats('sentinel', 1.35, 1.25, () => ({ bossDamageMultiplier: 2 }))
+  },
+  headhunter: {
+    id: 'headhunter', towerId: 'sentinel', name: 'Headhunter', description: 'Lighter bolts split between two foes. Cleanup build.', starter: false,
+    stats: branchStats('sentinel', 0.75, 1, () => ({ volleyTargets: 2 }))
+  },
+  pyre: {
+    id: 'pyre', towerId: 'cinder', name: 'Pyre', description: 'Wide burning pools deny large zones. Weaker direct hit.', starter: true,
+    stats: branchStats('cinder', 0.75, 1, () => ({ burningField: true, splashRadius: 110 }))
+  },
+  contagion: {
+    id: 'contagion', towerId: 'cinder', name: 'Contagion', description: 'Smaller burning pools that make targets take more damage.', starter: false,
+    stats: branchStats('cinder', 0.6, 1, (rank) => ({ burningField: true, vulnerabilityMultiplier: RANKED_BONUS[rank], vulnerabilityMs: 3000 }))
   }
 };
 
 export const STARTER_BRANCH: Readonly<Record<TowerId, BranchId>> = {
-  longbow: 'marksman', ember: 'siegebreaker', glacier: 'winterguard', starfire: 'spellbreaker', tempest: 'stormcaller'
+  longbow: 'marksman', ember: 'siegebreaker', glacier: 'winterguard', starfire: 'spellbreaker', tempest: 'stormcaller',
+  sentinel: 'deadeye', cinder: 'pyre'
 };
 
 export const ALTERNATIVE_BRANCH: Readonly<Record<TowerId, BranchId>> = {
-  longbow: 'volley', ember: 'flame-mortar', glacier: 'brittle-ice', starfire: 'arcane-beacon', tempest: 'thunderlord'
+  longbow: 'volley', ember: 'flame-mortar', glacier: 'brittle-ice', starfire: 'arcane-beacon', tempest: 'thunderlord',
+  sentinel: 'headhunter', cinder: 'contagion'
 };

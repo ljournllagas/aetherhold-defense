@@ -1,8 +1,8 @@
 import type { TowerLevelStats } from './types.ts';
 import type { TargetCandidate } from '../game/systems/CombatSystem.ts';
 
-export type TowerId = 'longbow' | 'ember' | 'glacier' | 'starfire' | 'tempest';
-export type BranchId = 'marksman' | 'volley' | 'siegebreaker' | 'flame-mortar' | 'winterguard' | 'brittle-ice' | 'spellbreaker' | 'arcane-beacon' | 'stormcaller' | 'thunderlord';
+export type TowerId = 'longbow' | 'ember' | 'glacier' | 'starfire' | 'tempest' | 'sentinel' | 'cinder';
+export type BranchId = 'marksman' | 'volley' | 'siegebreaker' | 'flame-mortar' | 'winterguard' | 'brittle-ice' | 'spellbreaker' | 'arcane-beacon' | 'stormcaller' | 'thunderlord' | 'deadeye' | 'headhunter' | 'pyre' | 'contagion';
 export type EvolutionRank = 0 | 1 | 2 | 3;
 export interface EvolutionState { foundationLevel: number; branchId: BranchId | null; rank: EvolutionRank | null; masteryRank: number; invested: number; revision: number; }
 export type RunOutcome = 'victory' | 'defeat' | 'siege-failed';

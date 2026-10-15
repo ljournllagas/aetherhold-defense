@@ -159,6 +159,11 @@ function normalizeChoices(value: unknown): CampaignProfile['choices'] | null {
   const choices = {} as CampaignProfile['choices'];
   for (const towerId of TOWER_IDS) {
     const id = value[towerId];
+    // Legacy v1 saves predate sentinel/cinder: backfill missing new keys.
+    if (id === undefined && (towerId === 'sentinel' || towerId === 'cinder')) {
+      choices[towerId] = null;
+      continue;
+    }
     if (id === null) {
       choices[towerId] = null;
       continue;
@@ -177,6 +182,11 @@ function normalizeTargeting(value: unknown): CampaignProfile['targeting'] | null
   const targeting = {} as CampaignProfile['targeting'];
   for (const towerId of TOWER_IDS) {
     const mode = value[towerId];
+    // Legacy v1 saves predate sentinel/cinder: backfill missing new keys.
+    if (mode === undefined && (towerId === 'sentinel' || towerId === 'cinder')) {
+      targeting[towerId] = 'first';
+      continue;
+    }
     if (typeof mode !== 'string' || !(TARGETING_MODES as readonly string[]).includes(mode)) return null;
     targeting[towerId] = mode as TargetingMode;
   }

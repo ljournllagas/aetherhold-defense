@@ -6,7 +6,7 @@ describe('campaign tower specializations', () => {
   it('offers exactly two typed options for each existing tower archetype', () => {
     expect(CAMPAIGN_SPECIALIZATION_UNLOCK_STARS).toBe(30);
     expect(Object.keys(SPECIALIZATIONS_BY_TOWER).sort()).toEqual([...TOWER_IDS].sort());
-    expect(CAMPAIGN_SPECIALIZATIONS).toHaveLength(10);
+    expect(CAMPAIGN_SPECIALIZATIONS).toHaveLength(14);
     for (const towerId of TOWER_IDS) {
       const choices = getTowerSpecializations(towerId);
       expect(choices).toHaveLength(2);
@@ -18,6 +18,8 @@ describe('campaign tower specializations', () => {
     expect(getTowerSpecializations('glacier').map((choice) => choice.id)).toEqual(['glacial_spire', 'shatter_spire']);
     expect(getTowerSpecializations('starfire').map((choice) => choice.id)).toEqual(['aether_obelisk', 'prism_tower']);
     expect(getTowerSpecializations('tempest').map((choice) => choice.id)).toEqual(['storm_conduit', 'thunder_crown']);
+    expect(getTowerSpecializations('sentinel').map((choice) => choice.id)).toEqual(['sentinel_bastion', 'sentinel_repeater']);
+    expect(getTowerSpecializations('cinder').map((choice) => choice.id)).toEqual(['cinder_mortar', 'cinder_cannon']);
   });
 
   it('expresses tradeoffs in each option and resolves stable specialization IDs', () => {

@@ -109,7 +109,7 @@ The authoritative feature specification is
 
 ### Branch achievements
 
-There are exactly five branch achievements, one per archetype.
+There are exactly seven branch achievements, one per archetype.
 
 | Archetype | Starter branch | Alternative branch (unlocked by the achievement) |
 |---|---|---|
@@ -118,6 +118,8 @@ There are exactly five branch achievements, one per archetype.
 | Frost | Winterguard | Brittle Ice |
 | Arcane | Spellbreaker | Arcane Beacon |
 | Tempest | Stormcaller | Thunderlord |
+| Sentinel | Deadeye | Headhunter |
+| Cinder | Pyre | Contagion |
 
 - **Requirement.** Complete wave 20 with lives > 0 while at least one starter-branch tower
   of the archetype is still present at evolution rank 2 or higher. This applies on every
@@ -137,7 +139,7 @@ There are exactly five branch achievements, one per archetype.
   branches available to a run are fixed when the run is created.
 - **Notice.** A brief nonblocking notice appears for each earned achievement, and the
   results summary lists them.
-- **Menu panel.** A menu Progression panel lists the five achievements with their
+- **Menu panel.** A menu Progression panel lists the seven achievements with their
   requirement, earned state and saved state (confirmed-saved or earned-but-unsaved).
 - **In-run qualification.** During a run, a locked alternative branch in the tower
   inspector shows its requirement and the current run's qualification state.

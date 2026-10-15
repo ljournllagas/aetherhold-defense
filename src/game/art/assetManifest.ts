@@ -16,7 +16,7 @@ export const STAGE_ASSETS: Record<AssetStage, readonly AssetSpec[]> = {
   campaign: [...campaignArtAssetsForLoader('campaign')],
   gameplay: [
     { kind: 'image', key: 'map_ancient_border_keep', path: '/assets/world/maps/ancient-border-keep-map-v2.webp' },
-    ...Object.entries({ longbow: 'ranger_stages-v2', ember: 'bombard_stages-v1', glacier: 'frost_stages-v1', starfire: 'arcane_stages-v1', tempest: 'tempest_stages-v1' }).map(([id, name]) => ({ kind: 'sheet' as const, key: TOWERS[id].assetKey, path: `/assets/towers/tower_${name}.webp`, frameWidth: 627, frameHeight: 627 })),
+    ...Object.entries({ longbow: 'ranger_stages-v2', ember: 'bombard_stages-v1', glacier: 'frost_stages-v1', starfire: 'arcane_stages-v1', tempest: 'tempest_stages-v1', sentinel: 'ranger_stages-v2', cinder: 'bombard_stages-v1' }).map(([id, name]) => ({ kind: 'sheet' as const, key: TOWERS[id].assetKey, path: `/assets/towers/tower_${name}.webp`, frameWidth: 627, frameHeight: 627 })),
     ...([1, 2, 3] as const).map(rank => ({ kind: 'image' as const, key: `tower_ember_stage_${rank}_v2`, path: `/assets/towers/tower_bombard_stage${rank}-v2.webp` })),
     ...(['nature-v2', 'warden-v1', 'elite-v1'] as const).map(name => ({ kind: 'image' as const, key: `enemy_walk_atlas_${name}`, path: `/assets/enemies/enemy_walk_atlas_${name}.webp` })),
     { kind: 'image', key: 'relic_icons_atlas', path: '/assets/powerups/relic-icons-atlas-v1.webp' },

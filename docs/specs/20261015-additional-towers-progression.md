@@ -61,13 +61,21 @@ sentinel L4 724, full deadeye 5512; cinder L4 700, full pyre 5388.
 - Deferred painted drop-ins: `tower_sentinel/cinder_stages-v1.webp` (627px),
   `sentinel/cinder-tier2/3-v1.png` (192px). No `artManifest.ts` change until present.
 
-## Files
+## Files (enabled in core)
 
-- `src/game/config/additionalTowers.ts`
-- `src/game/config/additionalEvolutions.ts`
-- `src/game/campaign/additionalSpecializations.ts`
-- `src/game/art/additionalTowerArt.ts`
+- `src/game/config/towers.ts` (sentinel + cinder, `TOWER_IDS` 7)
+- `src/game/config/evolutions.ts` (deadeye/headhunter/pyre/contagion, 14 branches)
+- `src/game/campaign/specializations.ts` (+4 specs, 14 total)
+- `src/game/campaign/types.ts` (+4 specialization ids)
+- `src/game/art/towerArt.ts` (+2 art entries reusing classic bounds, +4 accents with distinct silhouettes)
+  (`tower_sentinel` aliases `ranger_stages-v2`, `tower_cinder` aliases
+  `bombard_stages-v1` in `assetManifest.ts` — unique keys, zero new files)
+- `src/game/scenes/CampaignScene.ts` (7-tower prep list), `GameScene.ts` (hotkeys 1–7)
 - `tests/additional-towers-progression.test.ts`
+- Campaign tier PNGs for new towers deferred: classic art reuses
+  `tower_longbow`/`tower_ember`; campaign visual tiers fall back to overlay
+  (`towerArt.ts:198-201`) until painted 192px PNGs + `artManifest.ts` entries land.
+  `campaign-art-manifest` + `verification-v5-registry-geometry` counts unchanged.
 
 ## Enablement (not done — keeps 5/10-count tests green)
 

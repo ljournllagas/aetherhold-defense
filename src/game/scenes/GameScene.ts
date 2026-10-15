@@ -377,7 +377,7 @@ export class GameScene extends Phaser.Scene {
   private readonly handleBuildKey=(event:KeyboardEvent):void=>{
     const target=event.target as HTMLElement|null;
     if(event.repeat||this.isRunBlocked()||this.modal||this.sheetKind||target?.isContentEditable||['INPUT','TEXTAREA','SELECT'].includes(target?.tagName??''))return;
-    if(/^[1-5]$/.test(event.key)){
+    if(/^[1-7]$/.test(event.key)){
       this.cancelGesture();this.touchMode=true;this.selectedTower=null;this.placingTowerId=TOWER_LIST[Number(event.key)-1].id;
       this.refreshPlots();this.showTouchPreview();return;
     }

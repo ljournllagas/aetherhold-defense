@@ -94,12 +94,48 @@ export const TOWERS: Record<string, TowerConfig> = {
       { damage: 44, range: 158, attackInterval: 0.85, damageType: 'elemental', chainCount: 5, cost: 280 },
       { damage: 95, range: 175, attackInterval: 0.7, damageType: 'elemental', chainCount: 7, cost: 520 }
     ]
+  },
+  sentinel: {
+    id: 'sentinel',
+    name: 'Sentinel',
+    description: 'Slow execution bolts. Hunts bosses, weak vs packs.',
+    role: 'EXEC',
+    color: 0xd7aa4e,
+    damageType: 'physical',
+    assetKey: 'tower_sentinel',
+    audioKey: 'shoot',
+    projectileSpeed: 430,
+    sellRefundRate: SELL_REFUND_RATE,
+    levels: [
+      { damage: 30, range: 150, attackInterval: 1.4, damageType: 'physical', cost: 150 },
+      { damage: 55, range: 155, attackInterval: 1.3, damageType: 'physical', cost: 135 },
+      { damage: 105, range: 165, attackInterval: 1.15, damageType: 'physical', cost: 270 },
+      { damage: 210, range: 180, attackInterval: 1.0, damageType: 'physical', cost: 480 }
+    ]
+  },
+  cinder: {
+    id: 'cinder',
+    name: 'Cinder',
+    description: 'Ember pools deny zones. Weak direct hit, strong field.',
+    role: 'ZONE',
+    color: 0xde8742,
+    damageType: 'elemental',
+    assetKey: 'tower_cinder',
+    audioKey: 'cannon',
+    projectileSpeed: 260,
+    sellRefundRate: SELL_REFUND_RATE,
+    levels: [
+      { damage: 12, range: 130, attackInterval: 1.6, damageType: 'elemental', splashRadius: 60, cost: 150 },
+      { damage: 22, range: 138, attackInterval: 1.5, damageType: 'elemental', splashRadius: 66, cost: 130 },
+      { damage: 42, range: 148, attackInterval: 1.35, damageType: 'elemental', splashRadius: 74, cost: 250 },
+      { damage: 88, range: 162, attackInterval: 1.2, damageType: 'elemental', splashRadius: 88, cost: 470 }
+    ]
   }
 };
 
 export const TOWER_LIST = Object.values(TOWERS);
 
-export const TOWER_IDS: readonly TowerId[] = ['longbow', 'ember', 'glacier', 'starfire', 'tempest'];
+export const TOWER_IDS: readonly TowerId[] = ['longbow', 'ember', 'glacier', 'starfire', 'tempest', 'sentinel', 'cinder'];
 
 export function isTowerId(value: string): value is TowerId {
   return (TOWER_IDS as readonly string[]).includes(value);
