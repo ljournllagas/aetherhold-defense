@@ -11,6 +11,8 @@ export interface GameLayout {
   stackedHud: boolean;
   /** Minimal HUD: slim top row + Build/Wave/More bottom row (phones + portrait <1180). */
   minimal: boolean;
+  /** Short landscape: Build/Wave/More live in a right-edge rail instead of a bottom bar. */
+  rail: boolean;
   portraitBossCommands: boolean;
   bossStatusHeight: number;
   safe: Insets;
@@ -26,7 +28,6 @@ export function gameLayout(width: number, height: number, safe: Insets = {top:0,
   const narrow = width < 768;
   const portrait = width < height && narrow;
   const stackedHud = portrait || width < 600;
-  const minimal = compact || (width < height && width < 1180);
   const portraitBossCommands = stackedHud && options.portraitBossCommands === true;
   const bossStatusHeight = compact ? options.bossStatusHeight ?? 0 : 0;
   const hud = (stackedHud ? 104 + bossStatusHeight : 56 + Math.max(0,bossStatusHeight-24)) + safe.top;
@@ -38,8 +39,12 @@ export function gameLayout(width: number, height: number, safe: Insets = {top:0,
     ? {x:safe.left,y,width:available,height:52}
     : {x:portrait?safe.left:width-safe.right-240,y:portrait?y+76:y,width:portrait?available:240,height:portrait?52:76};
   const field={x:safe.left,y:hud,width:Math.max(1,available-inspector),height:Math.max(1,height-hud-tray)};
+  // The 16:9 board is width-limited in portrait, so a slim HUD would only enlarge empty bands:
+  // keep the full chrome (always-visible tower tray) whenever the board fits beside it.
+  const roomyPortrait = width < height && available * 584 / 1040 + 24 <= field.height;
+  const minimal = !roomyPortrait && (compact || (width < height && width < 1180));
   const inspectorBounds=inspector?{x:width-safe.right-inspector,y:hud,width:inspector,height:field.height}:null;
-  return {width,height,hud,tray,inspector,compact,narrow,stackedHud,minimal,portraitBossCommands,bossStatusHeight,safe,trayBounds,waveBounds,inspectorBounds,field};
+  return {width,height,hud,tray,inspector,compact,narrow,stackedHud,minimal,portraitBossCommands,bossStatusHeight,safe,trayBounds,waveBounds,inspectorBounds,field,rail:false};
 }
 
 /**
@@ -54,6 +59,15 @@ export function toMinimalLayout(layout: GameLayout): GameLayout {
   if (!layout.minimal) return layout;
   if (layout.portraitBossCommands || layout.bossStatusHeight > 0) return { ...layout, minimal: false };
   const { width, height, safe } = layout;
+  if (!layout.stackedHud && width > height) {
+    // Short landscape: slim top row; Build/Wave/More stack in a right-edge rail so the
+    // board gets the full remaining height (a bottom bar would cost 76px of a ~390px screen).
+    const railWidth = 112, railHud = 48 + safe.top, railTray = safe.bottom;
+    const available = Math.max(44, width - safe.left - safe.right);
+    const rail = { x: width - safe.right - railWidth, y: railHud, width: railWidth, height: Math.max(1, height - railHud - railTray) };
+    const field = { x: safe.left, y: railHud, width: Math.max(1, available - railWidth), height: rail.height };
+    return { ...layout, hud: railHud, tray: railTray, rail: true, trayBounds: rail, waveBounds: rail, field };
+  }
   const hud = layout.stackedHud ? 48 + safe.top : layout.hud;
   const portrait = width < height && width < 768;
   const tray = portrait ? 76 + safe.bottom : layout.tray;
@@ -88,10 +102,10 @@ export function viewportToWorld(layout: GameLayout, point: { x: number; y: numbe
 }
 
 export function sheetBounds(layout: GameLayout, kind: 'build' | 'tower' | 'more' | 'relics' | 'next' | 'evolve' | 'help' | 'progression', touchPreview: boolean): GameLayout['field'] {
-  const width = Math.min(560, layout.width - layout.safe.left - layout.safe.right - 16);
+  const width = Math.min(560, (layout.rail ? layout.field.width : layout.width - layout.safe.left - layout.safe.right) - 16);
   const shortLandscape = layout.compact && layout.width > layout.height && !touchPreview && (kind === 'tower' || kind === 'evolve');
   const availableHeight=Math.max(96,layout.field.height-(touchPreview?56:0));
   const height = Math.min(availableHeight,shortLandscape ? Math.max(96, layout.field.height - 4) : Math.max(160, layout.field.height * 0.7));
   const y=Math.max(layout.hud,layout.height-layout.tray-height-(touchPreview?56:0));
-  return { x: (layout.width - width) / 2, y, width, height };
+  return { x: layout.rail ? layout.field.x + (layout.field.width - width) / 2 : (layout.width - width) / 2, y, width, height };
 }

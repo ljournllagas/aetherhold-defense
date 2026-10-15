@@ -620,15 +620,24 @@ export class GameScene extends Phaser.Scene {
     this.sheet?.destroy(); this.sheet = null;
     if (!this.sheetKind || !this.uiRoot) return;
     const kind = this.sheetKind;
-    const bounds = sheetBounds(this.layout, kind, this.touchPreview !== null);
+    let bounds = sheetBounds(this.layout, kind, this.touchPreview !== null);
+    const hintTopics = kind === 'help' && this.guideStep ? HELP_TOPICS.filter(t => t.id === this.guideStep) : null;
+    if (hintTopics) {
+      // First-play hints hug their text and sit low, so they never bury the board they describe.
+      const measure = (value: string, size: number): number => { const t = this.add.text(0, 0, value, style(size, C.textSecondary)).setWordWrapWidth(bounds.width - 24); const h = t.height; t.destroy(); return h; };
+      const content = hintTopics.reduce((n, t) => n + measure(t.title, 18) + 8 + measure(t.body, 15) + 12, 0);
+      const fitted = Math.min(bounds.height, 48 + content + 44 + 12);
+      bounds = { ...bounds, y: bounds.y + bounds.height - fitted, height: fitted };
+    }
     const title = { build: 'Build Towers', tower: 'Selected Tower', more: 'Battle Controls', relics: 'Relics', next: 'Next Wave', evolve: 'Tower Progression',help:'How to play',progression:'Progression' }[kind];
     const sheet = new ScrollSheet(this, this.uiRoot, bounds, title, () => { this.closeDetails();this.showTouchPreview(); }); this.sheet = sheet;
     sheet.root.setData('progressionContext', context);
     if(kind==='help'){
       let y=0;const topics=this.guideStep?HELP_TOPICS.filter(t=>t.id===this.guideStep):HELP_TOPICS;
-      for(const t of topics){const title=sheet.text(y,t.title,C.gold,18);y+=title.height+8;const body=sheet.text(y,t.body,C.textSecondary,16);y+=body.height+20;}
-      sheet.action(y,this.guideStep?'Dismiss hint':'Back to battle',()=>this.closeDetails());
-      sheet.action(y+52,this.guideStep?'Skip all hints':'Replay hints',()=>{if(this.guideStep)this.guide.skip();else this.guide.replay();this.closeDetails();});
+      for(const t of topics){const title=sheet.text(y,t.title,C.gold,18);y+=title.height+8;const body=sheet.text(y,t.body,C.textSecondary,this.guideStep?15:16);y+=body.height+(this.guideStep?12:20);}
+      const dismiss=()=>this.closeDetails(),skipOrReplay=()=>{if(this.guideStep)this.guide.skip();else this.guide.replay();this.closeDetails();};
+      if(this.guideStep)sheet.pair(y,'Got it','Skip hints',dismiss,skipOrReplay);
+      else{sheet.action(y,'Back to battle',dismiss);sheet.action(y+52,'Replay hints',skipOrReplay);}
     }else if(kind==='progression'){
       sheet.pair(0,'Campaign','Classic',()=>{this.progressionTab='campaign';this.drawSheet();},()=>{this.progressionTab='classic';this.drawSheet();});
       const lines=this.progressionTab==='campaign'?campaignProgressionLines(campaignRepository.view()):progressionPanelLines(this.unlockRepository.view(),loadBest(),loadLegacyBests());
@@ -808,14 +817,14 @@ export class GameScene extends Phaser.Scene {
     this.confirmStrip?.destroy(true); this.confirmStrip = null;
     if (!this.uiRoot || (!this.placingTowerId && !this.pendingMeteor)) return;
     if (this.sheetKind) return;
-    const w = Math.min(this.layout.minimal ? 400 : 600, this.layout.width - 16);
+    const w = Math.min(this.layout.minimal ? 400 : 600, (this.layout.rail ? this.layout.field.width : this.layout.width) - 16);
     const stripH = this.layout.minimal ? 64 : 76;
-    const c = this.add.container((this.layout.width - w) / 2, this.layout.height - this.layout.tray - (this.layout.minimal ? 68 : 80)); this.uiRoot.add(c); this.confirmStrip = c;
+    const f0 = this.layout.field, c = this.add.container(this.layout.rail ? f0.x + (f0.width - w) / 2 : (this.layout.width - w) / 2, this.layout.height - this.layout.tray - (this.layout.minimal ? 68 : 80)); this.uiRoot.add(c); this.confirmStrip = c;
     panel(this, c, 0, 0, w, stripH);
     const preview = this.touchPreview;
     const check = this.placingTowerId ? this.placementCheck(this.placingTowerId, preview?.plot ?? -1) : { ok: !!preview, reason: 'Tap a target' };
     const message = preview ? (check.ok ? this.pendingMeteor ? 'Meteor target ready' : `${TOWER_LIST.find(t => t.id === this.placingTowerId)?.name} · ${TOWER_LIST.find(t => t.id === this.placingTowerId)?.levels[0].cost} gold` : check.reason) : this.pendingMeteor ? 'Tap the map to preview Meteor' : 'Tap a clearing to preview';
-    c.add(this.add.text(8, 4, message, style(12, check.ok ? C.gold : C.textSecondary)).setWordWrapWidth(w - 16));
+    c.add(this.add.text(8, 4, message, style(13, check.ok ? C.gold : C.textSecondary)).setWordWrapWidth(w - 16));
     const bw = (w - 24) / 2;
     const btnY = this.layout.minimal ? 20 : 26;
     const btnH = this.layout.minimal ? 40 : 44;
@@ -1327,7 +1336,7 @@ export class GameScene extends Phaser.Scene {
   // ---------- HUD (icon + label-over-value metrics, DS §19-22, ref 03) ----------
   private hudMetric(x: number, icon: string, label: string, valueSize: number, valueColor: string): Phaser.GameObjects.Text {
     this.uiRoot!.add(this.add.image(x + 12, 30, icon).setDisplaySize(22, 22));
-    this.uiRoot!.add(this.add.text(x + 32, 6, label, style(12, C.textSecondary, true)));
+    this.uiRoot!.add(this.add.text(x + 32, 6, label, style(13, C.textSecondary, true)));
     const value = this.add.text(x + 32, 24, '—', style(valueSize, valueColor, true));
     this.uiRoot!.add(value); return value;
   }
@@ -1347,7 +1356,7 @@ export class GameScene extends Phaser.Scene {
       const top = this.layout.safe.top;
       const metric = (i: number, label: string, color: string) => {
         const cx = this.layout.safe.left + 8 + cell * (i + 0.5);
-        const caption = this.add.text(cx, top + 5, label, style(11, C.textSecondary, true)).setOrigin(0.5, 0);
+        const caption = this.add.text(cx, top + 5, label, style(13, C.textSecondary, true)).setOrigin(0.5, 0);
         this.hudMetricLabels.push(caption); this.uiRoot!.add(caption);
         const t = this.add.text(cx, top + 24, '', style(15, color, true)).setOrigin(0.5, 0); this.uiRoot!.add(t); return t;
       };
@@ -1355,23 +1364,23 @@ export class GameScene extends Phaser.Scene {
       this.hudGoldValue = metric(1, 'GOLD', C.gold); this.hudLivesValue = metric(2, 'LIVES', C.textPrimary);
       // Score/difficulty live in sheets in minimal mode; keep a hidden node so
       // live updates and boss flows never null-deref.
-      this.hudScoreValue = this.add.text(-1000, -1000, '', style(12, C.textPrimary)).setVisible(false);
+      this.hudScoreValue = this.add.text(-1000, -1000, '', style(13, C.textPrimary)).setVisible(false);
       this.uiRoot!.add(this.hudScoreValue);
-      this.hudDiff = this.add.text(0, 0, '', style(12, C.textSecondary)).setVisible(false);
+      this.hudDiff = this.add.text(0, 0, '', style(13, C.textSecondary)).setVisible(false);
       this.autoStatusText = null;
-      this.hudStatus = this.add.text(8, this.layout.hud + 4, '', style(12, C.gold)).setWordWrapWidth(w - 16);
+      this.hudStatus = this.add.text(8, this.layout.hud + 4, '', style(13, C.gold)).setWordWrapWidth(w - 16);
       this.uiRoot!.add([this.hudDiff, this.hudStatus]); remember(); return;
     }
     if(this.layout.compact&&!this.layout.stackedHud){
       panel(this,this.uiRoot!,0,0,w,this.layout.hud);
       const cell=(w-this.layout.safe.left-this.layout.safe.right-268)/4;
-      const metric=(i:number,label:string,color:string,size=12)=>{
+      const metric=(i:number,label:string,color:string,size=13)=>{
         const caption=this.add.text(this.layout.safe.left+8+i*cell,this.layout.safe.top+4,label,style(size,C.textSecondary,true));
         this.hudMetricLabels.push(caption);this.uiRoot!.add(caption);
         const t=this.add.text(caption.x,this.layout.safe.top+24,'',style(16,color,true));this.uiRoot!.add(t);return t;
       };
       this.hudWaveValue=metric(0,'WAVE',C.textPrimary);this.hudGoldValue=metric(1,'GOLD',C.gold);
-      this.hudLivesValue=metric(2,'LIVES',C.textPrimary);this.hudScoreValue=metric(3,scoreCaption,C.textPrimary,this.campaign?10:12);
+      this.hudLivesValue=metric(2,'LIVES',C.textPrimary);this.hudScoreValue=metric(3,scoreCaption,C.textPrimary,this.campaign?11:13);
       this.hudWaveLabel=null;this.hudDiff=this.add.text(0,0,'',style(14,C.textSecondary)).setVisible(false);
       this.autoStatusText=null;this.hudStatus=this.add.text(8,this.layout.hud+4,'',style(14,C.gold)).setWordWrapWidth(w-16);
       this.uiRoot!.add([this.hudDiff,this.hudStatus]);remember();return;
@@ -1379,16 +1388,16 @@ export class GameScene extends Phaser.Scene {
     if (this.layout.stackedHud) {
       panel(this, this.uiRoot!, 0, 0, w, this.layout.hud);
       const cell = (w - this.layout.safe.left - this.layout.safe.right - 16) / 4;
-      const metric = (i: number, label: string, color: string, size = 12) => {
+      const metric = (i: number, label: string, color: string, size = 13) => {
         const caption=this.add.text(this.layout.safe.left+8+cell*i,this.layout.safe.top+6,label,style(size,C.textSecondary,true));
         this.hudMetricLabels.push(caption); this.uiRoot!.add(caption);
         const value = this.add.text(caption.x,this.layout.safe.top+24,'',style(16,color,true)); this.uiRoot!.add(value); return value;
       };
       this.hudWaveValue = metric(0,'WAVE',C.textPrimary); this.hudWaveLabel = this.hudMetricLabels[0];
-      this.hudGoldValue = metric(1, 'GOLD', C.gold); this.hudLivesValue = metric(2, 'LIVES', C.textPrimary); this.hudScoreValue = metric(3, scoreCaption, C.textPrimary, this.campaign ? 10 : 12);
+      this.hudGoldValue = metric(1, 'GOLD', C.gold); this.hudLivesValue = metric(2, 'LIVES', C.textPrimary); this.hudScoreValue = metric(3, scoreCaption, C.textPrimary, this.campaign ? 11 : 13);
       this.hudDiff = this.add.text(8, 62, '', style(14, C.textSecondary, true)).setVisible(false); this.uiRoot!.add(this.hudDiff);
       this.autoStatusText = null;
-      this.hudStatus = this.add.text(8, this.layout.hud + 4, '', style(12, C.gold)).setWordWrapWidth(w - 16); this.uiRoot!.add(this.hudStatus);
+      this.hudStatus = this.add.text(8, this.layout.hud + 4, '', style(13, C.gold)).setWordWrapWidth(w - 16); this.uiRoot!.add(this.hudStatus);
       remember(); return;
     }
     panel(this, this.uiRoot!, 0, 0, w, 56);
@@ -1404,11 +1413,11 @@ export class GameScene extends Phaser.Scene {
     this.hudGoldValue = this.hudMetric(offset + step, 'hud_gold', 'GOLD', 18, C.gold);
     this.hudLivesValue = this.hudMetric(offset + step * 2, 'hud_lives', 'LIVES', 18, C.textPrimary);
     this.hudScoreValue = this.hudMetric(offset + step * 3, 'hud_score', scoreCaption, 18, C.textPrimary);
-    this.uiRoot!.add(this.add.text(offset + step * 4, 6, 'DIFFICULTY', style(12, C.textSecondary, true)));
+    this.uiRoot!.add(this.add.text(offset + step * 4, 6, 'DIFFICULTY', style(13, C.textSecondary, true)));
     this.hudDiff = this.add.text(offset + step * 4, 22, '', style(14, C.textPrimary, true));
     this.uiRoot!.add(this.hudDiff);
-    this.autoStatusText = this.add.text(offset + step * 4, 40, '', style(12, C.gold)).setWordWrapWidth(step - 8); this.uiRoot!.add(this.autoStatusText);
-    this.hudStatus = this.add.text(this.layout.compact ? 512 : 544, this.layout.height - this.layout.tray + 12, '', style(12, C.gold)).setWordWrapWidth(Math.max(160, this.layout.field.width - 560));
+    this.autoStatusText = this.add.text(offset + step * 4, 40, '', style(13, C.gold)).setWordWrapWidth(step - 8); this.uiRoot!.add(this.autoStatusText);
+    this.hudStatus = this.add.text(this.layout.compact ? 512 : 544, this.layout.height - this.layout.tray + 12, '', style(13, C.gold)).setWordWrapWidth(Math.max(160, this.layout.field.width - 560));
     this.uiRoot!.add(this.hudStatus);
     remember();
   }
@@ -1422,7 +1431,7 @@ export class GameScene extends Phaser.Scene {
     values.forEach((value,i)=>{
       if(!value)return;
       const label=this.hudMetricLabels[i], full=value.text;
-      label.setFontSize(i===3&&this.campaign?10:12);
+      label.setFontSize(i===3&&this.campaign?11:13);
       const x=inline?label.x+label.width+4:label.x;
       const available=inline?cell-label.width-12:cell-8;
       value.setPosition(x,this.layout.safe.top+(inline?4:24)).setFontSize(inline?12:16).setData('fullValue',full);
@@ -1515,6 +1524,20 @@ export class GameScene extends Phaser.Scene {
         this.bottomCommandObjects.push(...this.uiRoot!.list.slice(before));
         return result;
       };
+      if (this.layout.minimal && this.layout.rail) {
+        // Short landscape: stacked Build / Wave / More rail on the right edge.
+        const {height: railH} = this.layout.waveBounds, inner = width - 16, step = 52;
+        addBottomCommand(() => panel(this, this.uiRoot!, x, y, width, railH));
+        addBottomCommand(() => button(this, this.uiRoot!, x + 8, y + 8, inner, 'Build', () => this.openSheet('build'), 'primary', 44));
+        const wave = addBottomCommand(() => button(this, this.uiRoot!, x + 8, y + 8 + step, inner, '', () => {
+          if (this.waveActive || this.pauseState.blocked || this.pendingMeteor || (!this.auto.enabled && this.vault.pending.length)) { this.openSheet('next'); return; }
+          this.startNextWave();
+        }, 'primary', 44));
+        this.startBtn = wave.box; this.startBtnLabel = wave.text;
+        wave.text.setWordWrapWidth(inner - 8).setAlign('center');
+        addBottomCommand(() => button(this, this.uiRoot!, x + 8, y + 8 + step * 2, inner, 'More', () => this.openSheet('more'), 'secondary', 44));
+        return;
+      }
       if (this.layout.minimal) {
         // Single action row: Build sheet + wide Wave button + More (Auto/Relics inside sheets).
         addBottomCommand(() => panel(this, this.uiRoot!, x, y, width, 76));
@@ -1596,7 +1619,7 @@ export class GameScene extends Phaser.Scene {
         button(this, c, w - 48, 4, 40, '×', () => { this.selectedTower = null; this.refreshInfoPanel(); }, 'secondary', 40);
         return;
       }
-      const w=Math.min(560,this.layout.width-16),h=108;
+      const fw=this.layout.rail?this.layout.field.width:this.layout.width,w=Math.min(560,fw-16),h=108,cx0=this.layout.rail?this.layout.field.x:0;
       const screen=this.cameraView.project(t);
       let y=this.layout.width<this.layout.height?this.layout.height-this.layout.tray-h-4:
         screen.y>this.layout.hud+this.layout.field.height/2?this.layout.hud+4:this.layout.height-this.layout.tray-h-4;
@@ -1604,7 +1627,7 @@ export class GameScene extends Phaser.Scene {
         y = this.bossBar.y + this.bossPanelHeight + 8;
         if (y + h > this.layout.field.y + this.layout.field.height - 4) {
           const detailsY = this.layout.field.y + this.layout.field.height - 48;
-          const c = this.add.container((this.layout.width - w) / 2, detailsY);
+          const c = this.add.container(cx0 + (fw - w) / 2, detailsY);
           this.uiRoot!.add(c); this.infoPanel = c;
           this.compactInspectorBounds = {x:c.x,y:detailsY,width:w,height:44};
           button(this, c, 0, 0, w - 48, `${t.cfg.name} · Details`, () => this.openDetails('tower'), 'primary');
@@ -1612,7 +1635,7 @@ export class GameScene extends Phaser.Scene {
           return;
         }
       }
-      const x=(this.layout.width-w)/2,c=this.add.container(x,y);this.uiRoot!.add(c);this.infoPanel=c;
+      const x=cx0+(fw-w)/2,c=this.add.container(x,y);this.uiRoot!.add(c);this.infoPanel=c;
       this.compactInspectorBounds={x,y,width:w,height:h};
       panel(this,c,0,0,w,h).setInteractive().on('pointerdown',(_p:unknown,_x:number,_y:number,e:Phaser.Types.Input.EventData)=>e.stopPropagation());
       c.add(this.add.image(26, 27, towerPortraitKey(t.towerId)).setDisplaySize(38, 38));
@@ -1676,7 +1699,7 @@ export class GameScene extends Phaser.Scene {
       const width=(available-12)/4;
       const control=(i:number,label:string,action:()=>void)=>{
         const result=button(this,this.uiRoot!,left+i*(width+4),y,width,label,action);
-        result.text.setFontSize(12);return result;
+        result.text.setFontSize(13);return result;
       };
       control(0,'Overview',()=>{this.cancelGesture();this.cameraView.reset();this.applyView();});
       this.autoButton=control(1,this.auto.enabled?'Auto ON':'Auto OFF',()=>this.setAutoEnabled(!this.auto.enabled));
@@ -1821,7 +1844,7 @@ export class GameScene extends Phaser.Scene {
     const c = this.add.container(12, this.layout.height - this.layout.tray - 56); this.uiRoot!.add(c);
     panel(this, c, 0, 0, width, 48);
     c.add(this.add.text(12, 8, `Place ${cfg.name} · ${formatCount(cfg.levels[0].cost)} gold`, style(14, C.textPrimary, true)));
-    c.add(this.add.text(12, 28, 'Choose a clearing. Escape cancels.', style(12, C.textSecondary)));
+    c.add(this.add.text(12, 28, 'Choose a clearing. Escape cancels.', style(13, C.textSecondary)));
     button(this, c, width - 56, 2, 44, '×', () => { this.placingTowerId = null; this.hideGhost(); this.refreshPlots(); this.refreshPlacePanel(); this.drawCatalog(); });
     this.placePanel = c;
   }
@@ -1858,7 +1881,7 @@ export class GameScene extends Phaser.Scene {
       c.add(this.add.image(28, 28, towerPortraitKey(t.towerId)).setDisplaySize(40, 40));
       c.add(this.add.text(60, 6, progressionLabel, style(14, C.textPrimary, true, FONT_DISPLAY)).setWordWrapWidth(width - 120));
       c.add(this.add.text(60, 28, `Damage ${formatStat('damage', st.damage)} · Attack ${formatStat('attackInterval', st.attackInterval)}s · Range ${formatStat('range', st.range)} · Type ${st.damageType}`, style(14, C.textSecondary)));
-      if (next) c.add(this.add.text(width - 60, 8, `Next: ${formatStat('damage', next.damage)} damage · ${formatStat('range', next.range)} range · ${formatStat('attackInterval', next.attackInterval)}s`, style(12, C.gold)).setOrigin(1, 0));
+      if (next) c.add(this.add.text(width - 60, 8, `Next: ${formatStat('damage', next.damage)} damage · ${formatStat('range', next.range)} range · ${formatStat('attackInterval', next.attackInterval)}s`, style(13, C.gold)).setOrigin(1, 0));
       button(this, c, width - 52, 4, 44, '×', () => { this.selectedTower = null; this.refreshInfoPanel(); });
       TARGET_MODES.forEach((mode, i) => {
         const bw = (width - 16) / 5;
@@ -1874,11 +1897,11 @@ export class GameScene extends Phaser.Scene {
     }
     c.add(this.add.image(40, 40, towerPortraitKey(t.towerId)).setDisplaySize(56, 56));
     c.add(this.add.text(76, 12, t.cfg.name, style(18, C.textPrimary, true, FONT_DISPLAY)));
-    const progressionTitle = this.add.text(76, 36, progressionLabel, style(12, C.gold, true)).setWordWrapWidth(width - 130);
+    const progressionTitle = this.add.text(76, 36, progressionLabel, style(13, C.gold, true)).setWordWrapWidth(width - 130);
     c.add(progressionTitle);
     const detailsY = Math.max(80, 36 + progressionTitle.height + 8);
     const detailsOffset = detailsY - 80;
-    if (!compact) c.add(this.add.text(16, detailsY, t.cfg.role, style(12, C.textSecondary)).setWordWrapWidth(width - 32));
+    if (!compact) c.add(this.add.text(16, detailsY, t.cfg.role, style(13, C.textSecondary)).setWordWrapWidth(width - 32));
     button(this, c, width - 52, 4, 44, '×', () => { if(this.pauseState.has('details'))this.closeDetails();this.selectedTower = null; this.refreshInfoPanel(); });
     const st = t.stats;
     const rows: Array<[string, string]> = [['Damage', formatStat('damage', st.damage)], ['Attack', `${formatStat('attackInterval', st.attackInterval)}s`], ['Range', formatStat('range', st.range)], ['Type', st.damageType]];
@@ -1893,8 +1916,8 @@ export class GameScene extends Phaser.Scene {
     const next = nextBase && this.campaign ? campaignTowerStats(nextBase, t.specialization) : nextBase;
     if (next) {
       const preview = `Damage ${formatStat('damage', st.damage)} → ${formatStat('damage', next.damage)}   Range ${formatStat('range', st.range)} → ${formatStat('range', next.range)}\nAttack ${formatStat('attackInterval', st.attackInterval)}s → ${formatStat('attackInterval', next.attackInterval)}s`;
-      if (!compact) c.add(this.add.text(16, upgradeY, preview, style(12, C.textSecondary)).setWordWrapWidth(width - 32));
-      else c.add(this.add.text(width / 2 + 12, 12, `Next: ${formatStat('damage', next.damage)} damage\n${formatStat('range', next.range)} range · ${formatStat('attackInterval', next.attackInterval)}s`, style(12, C.textSecondary)));
+      if (!compact) c.add(this.add.text(16, upgradeY, preview, style(13, C.textSecondary)).setWordWrapWidth(width - 32));
+      else c.add(this.add.text(width / 2 + 12, 12, `Next: ${formatStat('damage', next.damage)} damage\n${formatStat('range', next.range)} range · ${formatStat('attackInterval', next.attackInterval)}s`, style(13, C.textSecondary)));
     }
     const buttonsY = compact ? 192 : upgradeY + 56;
     button(this, c, 16, buttonsY, compact ? width / 2 - 24 : width - 32, this.inspectorPrimaryLabel(t), () => this.inspectorPrimaryAction(), 'primary');
@@ -2680,11 +2703,11 @@ export class GameScene extends Phaser.Scene {
     c.add(headerTrim);
     c.add(this.add.text(width / 2, 9, title, style(18, C.goldBright, true, FONT_DISPLAY)).setOrigin(0.5, 0));
     if (full) {
-      c.add(this.add.text(width / 2, 32, 'INVENTORY FULL · 3/3', style(12, C.textSecondary, true)).setOrigin(0.5, 0));
+      c.add(this.add.text(width / 2, 32, 'INVENTORY FULL · 3/3', style(13, C.textSecondary, true)).setOrigin(0.5, 0));
     } else if (import.meta.env.DEV && reason === 'QA fixture') {
-      c.add(this.add.text(width - 12, 14, 'DEV FIXTURE', style(12, C.textMuted, true)).setOrigin(1, 0));
+      c.add(this.add.text(width - 12, 14, 'DEV FIXTURE', style(13, C.textMuted, true)).setOrigin(1, 0));
     } else if (reason !== 'Stored Power-Up') {
-      c.add(this.add.text(width / 2, 32, reason, style(12, C.textSecondary)).setOrigin(0.5, 0));
+      c.add(this.add.text(width / 2, 32, reason, style(13, C.textSecondary)).setOrigin(0.5, 0));
     }
 
     const portraitWidth = compact ? 180 : 174;
@@ -2704,17 +2727,17 @@ export class GameScene extends Phaser.Scene {
 
     const rarityBanner = this.add.rectangle(detailsX, artY + 6, detailsWidth, 26, rarityColor, 0.12).setOrigin(0).setStrokeStyle(1, rarityColor, 0.8);
     c.add(rarityBanner);
-    c.add(this.add.text(detailsX + detailsWidth / 2, artY + 19, cfg.rarity.toUpperCase(), style(12, RARITY_COLOR[cfg.rarity], true)).setOrigin(0.5));
+    c.add(this.add.text(detailsX + detailsWidth / 2, artY + 19, cfg.rarity.toUpperCase(), style(13, RARITY_COLOR[cfg.rarity], true)).setOrigin(0.5));
     c.add(this.add.text(detailsX, artY + 42, cfg.name, style(22, C.textPrimary, true, FONT_DISPLAY)).setWordWrapWidth(detailsWidth));
     const summaryY = artY + (full ? 100 : 82);
     const summary = this.add.text(detailsX, summaryY, this.modalError || cfg.description, style(14, C.textSecondary)).setWordWrapWidth(detailsWidth).setLineSpacing(2);
     c.add(summary); this.modal!.setData('message', summary);
-    if (full) c.add(this.add.text(detailsX, artY + 76, 'Choose one action to make room.', style(12, C.textSecondary)));
+    if (full) c.add(this.add.text(detailsX, artY + 76, 'Choose one action to make room.', style(13, C.textSecondary)));
 
     const y = height - 56;
     if (reroll) button(this, c, detailsX, y - 52, detailsWidth, 'Reroll · Once this level', () => this.rerollReward(id, reason), 'secondary', 44);
     if (victory) {
-      c.add(this.add.text(detailsX, y - 24, 'Continue into endless to use relics', style(12, C.gold)).setWordWrapWidth(detailsWidth));
+      c.add(this.add.text(detailsX, y - 24, 'Continue into endless to use relics', style(13, C.gold)).setWordWrapWidth(detailsWidth));
       const gap = 8;
       const choiceWidth = (detailsWidth - gap) / 2;
       button(this, c, detailsX, y, choiceWidth, full ? 'Replace oldest' : 'Store', use, 'primary', 44);
@@ -3566,7 +3589,7 @@ export class GameScene extends Phaser.Scene {
     c.add(this.add.text(width / 2, 14, 'Siege complete', style(22, C.goldBright, true, FONT_DISPLAY)).setOrigin(0.5, 0));
     c.add(this.add.text(width / 2, 50, `Score ${formatCount(this.scoreSoFar())} · Lives ${this.lives}/${this.maxLives}`, style(14, C.textPrimary, true)).setOrigin(0.5, 0));
     const unlocked = this.unlocksEarnedThisRun.length ? `Unlocked: ${this.unlocksEarnedThisRun.map((id) => EVOLUTIONS[id].name).join(', ')}` : '';
-    c.add(this.add.text(width / 2, 74, unlocked, style(12, C.textSecondary)).setOrigin(0.5, 0).setWordWrapWidth(width - 32));
+    c.add(this.add.text(width / 2, 74, unlocked, style(13, C.textSecondary)).setOrigin(0.5, 0).setWordWrapWidth(width - 32));
     const resolved = victoryRewardsResolved(this.vault, this.modal !== null, this.auto.enabled);
     const suffix = resolved ? '' : ' · Resolve rewards first';
     const kind = resolved ? 'primary' : 'secondary';

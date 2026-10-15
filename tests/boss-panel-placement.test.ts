@@ -613,7 +613,7 @@ it('moves existing floaters into the boss battlefield strip without changing the
   run.enemies = [];
   run.updateBossBar();
   const restoredBounds = floater.getBounds(), restoredField = run.layout.field;
-  expect(restoredField).toEqual(gameLayout(768,390).field);
+  expect(restoredField).toEqual(toMinimalLayout(gameLayout(768,390)).field);
   expect(restoredBounds.x).toBeGreaterThanOrEqual(restoredField.x);
   expect(restoredBounds.x+restoredBounds.width).toBeLessThanOrEqual(restoredField.x+restoredField.width);
   expect(restoredBounds.y).toBeGreaterThanOrEqual(restoredField.y);

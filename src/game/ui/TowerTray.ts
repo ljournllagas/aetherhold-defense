@@ -37,9 +37,9 @@ export class TowerTray {
    });
    const g=towerTrayCardLayout(),top=4;
    this.root.add([box,this.scene.add.image(x+g.portrait.x+14,top+g.portrait.y+14,towerPortraitKey(id)).setDisplaySize(28,28),
-    this.scene.add.text(x+g.name.x,top+g.name.y,cfg.name,style(12,C.textPrimary,true)),
+    this.scene.add.text(x+g.name.x,top+g.name.y,cfg.name,style(13,C.textPrimary,true)),
     this.scene.add.text(x+g.cost.x,top+g.cost.y,formatCount(cost),style(14,this.gold>=cost?C.gold:C.textSecondary)),
-    this.scene.add.text(x+g.status.x,top+g.status.y,this.gold>=cost?'gold':'Need\ngold',style(12,C.textSecondary))]);
+    this.scene.add.text(x+g.status.x,top+g.status.y,this.gold>=cost?'gold':'Need\ngold',style(13,C.textSecondary))]);
   });
   if(this.maxOffset)button(this.scene,this.root,this.bounds.width-44,4,44,this.offset>=this.maxOffset?'↺':'›',()=>{this.offset=this.offset>=this.maxOffset?0:Math.min(this.maxOffset,this.offset+94);this.draw();},'secondary',68);
  }

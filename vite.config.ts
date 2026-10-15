@@ -25,7 +25,7 @@ export default defineConfig({
         start_url: '/?utm_source=pwa',
         scope: '/',
         display: 'standalone',
-        orientation: 'landscape',
+        orientation: 'any',
         background_color: '#0A0E12',
         theme_color: '#0A0E12',
         dir: 'ltr',

@@ -81,7 +81,7 @@ it('house Auto button respects drag, pointerout and cancellation',()=>{
   release(box);expect(run.auto.enabled).toBe(true);
 });
 it.each([
-  {width:390,height:844,labels:['1×','II','Map'],bounds:[[262,4,56,44],[322,4,60,44],[198,4,60,44]]},
+  {width:390,height:844,labels:['Overview','Auto OFF','1×','Pause'],bounds:[[8,54,90.5,44],[102.5,54,90.5,44],[197,54,90.5,44],[291.5,54,90.5,44]]},
   {width:1280,height:720,labels:['Auto OFF','1×','Pause','Overview'],bounds:[[1032,6,88,44],[1128,6,64,44],[1200,6,68,44],[936,6,88,44]]}
 ])('keeps direct speed controls reachable at $width×$height without overlap',({width,height,labels:expectedLabels,bounds})=>{
   const {run,loose}=autoScene();run.layout=gameLayout(width,height);

@@ -1326,8 +1326,14 @@ Use:
 Use a 64px action tray and expandable controls. Fit the battlefield proportionally
 with overview, pinch zoom, drag-to-pan and Reset View. Touch actions have at least
 44×44px hit targets and 8px separation. Body text is at least 14px; supplementary
-text is at least 12px. No mandatory rotate prompt is shown. Short landscape layouts
-at widths of at least 768px use a 56px HUD and the same sheet controls.
+text is at least 13px (exceptions: the compact boss HUD and the campaign combat-score
+caption, which stay at 11–12px). No mandatory rotate prompt is shown and the PWA
+manifest does not lock orientation. Phone/tablet portrait keeps the full chrome
+(two-row stacked HUD on phones plus the always-visible tower tray) whenever the
+width-limited 16:9 board fits beside it. Short landscape (minimal HUD) uses a 48px
+top row and a 112px right-edge rail holding Build, Wave and More, giving the board
+the full remaining height. First-play hints are compact bottom-anchored sheets sized
+to their text with side-by-side "Got it" / "Skip hints" actions.
 
 Respect safe-area insets and the dynamic viewport. Touch building and Meteor use
 preview/confirm/cancel. Preserve run and modal state through rotation. The approved
