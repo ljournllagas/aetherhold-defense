@@ -639,15 +639,26 @@ export class GameScene extends Phaser.Scene {
     }else if (kind === 'build') {
       let rowY = 0;
       TOWER_LIST.forEach(cfg => {
-        const title = sheet.text(rowY, `${cfg.name} · ${cfg.role} · ${formatCount(cfg.levels[0].cost)} gold`, C.gold); rowY += title.height + 8;
+        const affordable = this.gold >= cfg.levels[0].cost;
+        const title = `${cfg.name} · ${cfg.role} · ${formatCount(cfg.levels[0].cost)} gold${affordable ? '' : ' · Need gold'}`;
         const choice = isTowerId(cfg.id) ? this.campaign?.choices[cfg.id] : null;
         const specialization = choice ? getCampaignSpecialization(choice) : null;
-        const description = sheet.text(rowY, specialization ? `${specialization.name} · ${specialization.description}` : cfg.description, C.textSecondary, 12); rowY += description.height + 8;
-        sheet.action(rowY, this.gold < cfg.levels[0].cost ? `Choose ${cfg.name} · Not enough gold` : `Choose ${cfg.name}`, () => {
+        const row = sheet.media(rowY, towerPortraitKey(cfg.id), title, affordable ? C.gold : C.textSecondary,
+          specialization ? `${specialization.name} · ${specialization.description}` : cfg.description);
+        row.image.setAlpha(affordable ? 1 : 0.55).setInteractive({ useHandCursor: true });
+        row.image.on('pointerdown', (p: Phaser.Input.Pointer, _x: number, _y: number, e: Phaser.Types.Input.EventData) => {
+          e.stopPropagation();
+          if (!isTowerId(cfg.id) || this.gold < cfg.levels[0].cost || this.isRunBlocked() || this.modal || this.pendingMeteor) return;
+          // Drag out of the sheet onto a build circle: close it, then run the
+          // normal tray drag gesture from this pointer.
+          this.sheetKind = null; this.drawSheet(); this.showTouchPreview();
+          this.beginTowerDrag(this.pointerTrayInput(p), cfg.id);
+        });
+        sheet.action(row.bottom, affordable ? `Choose ${cfg.name}` : `Choose ${cfg.name} · Not enough gold`, () => {
           this.placingTowerId = cfg.id; this.touchPreview = null; this.sheetKind = null;
           this.drawSheet(); this.refreshPlots(); this.showTouchPreview();
         }, 'primary');
-        rowY += 60;
+        rowY = row.bottom + 60;
       });
     } else if (kind === 'evolve' && this.selectedTower) {
       this.drawProgressionModel(sheet, this.selectedTower, 0);
@@ -1586,7 +1597,8 @@ export class GameScene extends Phaser.Scene {
       const x=(this.layout.width-w)/2,c=this.add.container(x,y);this.uiRoot!.add(c);this.infoPanel=c;
       this.compactInspectorBounds={x,y,width:w,height:h};
       panel(this,c,0,0,w,h).setInteractive().on('pointerdown',(_p:unknown,_x:number,_y:number,e:Phaser.Types.Input.EventData)=>e.stopPropagation());
-      c.add(this.add.text(8,6,`${t.cfg.name} · Level ${t.level}`,style(14,C.textPrimary,true)));
+      c.add(this.add.image(26, 27, towerPortraitKey(t.towerId)).setDisplaySize(38, 38));
+      c.add(this.add.text(50, 6, `${t.cfg.name} · Level ${t.level}`, style(14, C.textPrimary, true)).setWordWrapWidth(w - 58));
       const next=towerProgressionView(t,this.purchaseContext(),this.wavesCompleted,this.towers).actions[0];
       c.add(this.add.text(8,26,next?.nextStats?`Damage ${formatQuantity(t.stats.damage,1)} → ${formatQuantity(next.nextStats.damage,1)} · Range ${formatQuantity(t.stats.range,1)} → ${formatQuantity(next.nextStats.range,1)}`:'View progression and requirements',style(14,C.textSecondary)).setWordWrapWidth(w-16));
       button(this,c,8,58,w-128,this.inspectorPrimaryLabel(t),()=>this.inspectorPrimaryAction(),'primary');

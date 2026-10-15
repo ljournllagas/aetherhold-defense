@@ -49,6 +49,23 @@ export class ScrollSheet {
       control.text.setText(value).setAlpha(enabled ? 1 : 0.6).setColor(edge === 'danger' ? C.dangerBright : C.textPrimary);
     } };
   }
+  /**
+   * Icon + title + body row: 48px portrait left, texts indented. The image is
+   * clipped like other content and returned for custom gestures (drag-to-place).
+   */
+  media(y: number, texture: string, title: string, titleColor: string, body: string): { image: Phaser.GameObjects.Image; bottom: number } {
+    const image = this.scene.add.image(36, y + 26, texture).setDisplaySize(48, 48);
+    this.content.add(image);
+    const textX = 68, wrapWidth = Math.max(80, this.bounds.width - textX - 12);
+    const heading = this.scene.add.text(textX, y, title, style(14, titleColor, true)).setWordWrapWidth(wrapWidth);
+    this.content.add(heading); this.texts.push(heading);
+    const desc = this.scene.add.text(textX, y + heading.height + 4, body, style(12, C.textSecondary)).setWordWrapWidth(wrapWidth);
+    this.content.add(desc); this.texts.push(desc);
+    const bottom = y + Math.max(56, desc.y - y + desc.height + 8);
+    this.contentHeight = Math.max(this.contentHeight, bottom);
+    this.clipControls();
+    return { image, bottom };
+  }
   pair(y: number, left: string, right: string, first: () => void, second: () => void): void {
     const width = (this.bounds.width - 32) / 2;
     for (const [x, label, action] of [[12, left, first], [20 + width, right, second]] as const) {
