@@ -48,7 +48,7 @@ describe('sunken_aether world trophy', () => {
     expect(sigilTrophyFor('frost_sigil')).not.toBeNull();
     expect(sigilTrophyFor('mire_sigil')).not.toBeNull();
     for (const sigil of CAMPAIGN_SIGILS) {
-      if (sigil.id === 'tide_sigil' || sigil.id === 'border_sigil' || sigil.id === 'ember_sigil' || sigil.id === 'frost_sigil' || sigil.id === 'mire_sigil' || sigil.id === 'iron_sigil') continue;
+      if (sigil.id === 'tide_sigil' || sigil.id === 'border_sigil' || sigil.id === 'ember_sigil' || sigil.id === 'frost_sigil' || sigil.id === 'mire_sigil' || sigil.id === 'iron_sigil' || sigil.id === 'sky_sigil') continue;
       expect(sigilTrophyFor(sigil.id)).toBeNull();
     }
   });
