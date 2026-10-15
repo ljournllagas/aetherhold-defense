@@ -28,11 +28,11 @@ it('ships every file requested by menu, Classic and all Campaign visual tiers', 
 it('assigns all source assets once and keeps cold menu small', () => {
   expect(STAGE_ASSETS.menu).toHaveLength(6);
   expect(STAGE_ASSETS.campaign.map(asset => asset.path)).toEqual(campaignArtAssetsForLoader('campaign').map(asset => asset.path));
-  expect(STAGE_ASSETS.gameplay).toHaveLength(19);
+  expect(STAGE_ASSETS.gameplay).toHaveLength(20);
   expect(STAGE_ASSETS.gameplay.every(asset => !asset.path.startsWith('/assets/campaign/'))).toBe(true);
   expect(STAGE_ASSETS.defeat).toHaveLength(1);
   const all = Object.values(STAGE_ASSETS).flat();
-  expect(new Set(all.map(a => a.key)).size).toBe(36);
+  expect(new Set(all.map(a => a.key)).size).toBe(37);
   expect(STAGE_ASSETS.menu.some(a => a.path.includes('/enemies/'))).toBe(false);
   expect(requiredAssets('campaign')).toEqual([...STAGE_ASSETS.menu, ...STAGE_ASSETS.campaign]);
   expect(requiredAssets('menu')).toHaveLength(6);
