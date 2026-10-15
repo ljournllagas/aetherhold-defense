@@ -175,6 +175,9 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
     ['sigil_trophy', 'transparent_png_required'], 'final', null),
   imageSource(`sigil:whisperfen`, `campaign_sigil_whisperfen`,
     `/assets/campaign/sigils/whisperfen-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`sigil:sunken_aether`, `campaign_sigil_sunken_aether`,
+    `/assets/campaign/sigils/sunken_aether-sigil-v1.webp`, 1254, 1254, 'campaign',
     ['sigil_trophy', 'transparent_png_required'], 'final', null)
 ];
 
@@ -196,7 +199,8 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
   '/assets/campaign/sigils/borderkeep-sigil-v1.webp',
   '/assets/campaign/sigils/emberfall-sigil-v1.webp',
   '/assets/campaign/sigils/frostveil-sigil-v1.webp',
-  '/assets/campaign/sigils/whisperfen-sigil-v1.webp'
+  '/assets/campaign/sigils/whisperfen-sigil-v1.webp',
+  '/assets/campaign/sigils/sunken_aether-sigil-v1.webp'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */

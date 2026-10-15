@@ -45,7 +45,7 @@ describe('emberfall world trophy', () => {
     expect(TROPHY.path).toBe('/assets/campaign/sigils/emberfall-sigil-v1.webp');
     expect(sigilTrophyFor('border_sigil')).not.toBeNull();
     for (const sigil of CAMPAIGN_SIGILS) {
-      if (sigil.id === 'ember_sigil' || sigil.id === 'border_sigil' || sigil.id === 'frost_sigil' || sigil.id === 'mire_sigil') continue;
+      if (sigil.id === 'ember_sigil' || sigil.id === 'border_sigil' || sigil.id === 'frost_sigil' || sigil.id === 'mire_sigil' || sigil.id === 'tide_sigil') continue;
       expect(sigilTrophyFor(sigil.id)).toBeNull();
     }
   });

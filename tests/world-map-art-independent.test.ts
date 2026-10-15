@@ -28,7 +28,8 @@ describe('independent campaign world-map art acceptance', () => {
       { kind: 'image' as const, key: 'campaign_sigil_borderkeep', path: '/assets/campaign/sigils/borderkeep-sigil-v1.webp' },
       { kind: 'image' as const, key: 'campaign_sigil_emberfall', path: '/assets/campaign/sigils/emberfall-sigil-v1.webp' },
       { kind: 'image' as const, key: 'campaign_sigil_frostveil', path: '/assets/campaign/sigils/frostveil-sigil-v1.webp' },
-      { kind: 'image' as const, key: 'campaign_sigil_whisperfen', path: '/assets/campaign/sigils/whisperfen-sigil-v1.webp' }
+      { kind: 'image' as const, key: 'campaign_sigil_whisperfen', path: '/assets/campaign/sigils/whisperfen-sigil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_sigil_sunken_aether', path: '/assets/campaign/sigils/sunken_aether-sigil-v1.webp' }
     ]);
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:astral_rift')).toMatchObject({
       path: '/assets/campaign/world-map/astral_rift-v2.webp', state: 'final', temporary: null

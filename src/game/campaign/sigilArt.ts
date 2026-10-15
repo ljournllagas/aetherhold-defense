@@ -59,6 +59,15 @@ export const SIGIL_TROPHY_ART: Readonly<Record<string, SigilTrophyArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 32, top: 15, width: 1192, height: 1216, bottom: 1230 }
+  },
+  tide_sigil: {
+    sigilId: 'tide_sigil',
+    worldId: 'sunken_aether',
+    textureKey: 'campaign_sigil_sunken_aether',
+    path: '/assets/campaign/sigils/sunken_aether-sigil-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 24, top: 17, width: 1205, height: 1221, bottom: 1237 }
   }
 };
 
