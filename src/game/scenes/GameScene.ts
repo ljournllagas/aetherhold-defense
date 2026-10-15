@@ -1325,14 +1325,16 @@ export class GameScene extends Phaser.Scene {
     const w = this.layout.width;
     const scoreCaption = this.campaign ? 'COMBAT SCORE' : 'SCORE';
     if (this.layout.minimal) {
-      // Slim single row: WAVE / GOLD / LIVES left, score+diff tucked into sheets.
+      // Slim single row: WAVE / GOLD / LIVES centered in their cells, score+diff tucked into sheets.
       panel(this, this.uiRoot!, 0, 0, w, this.layout.hud);
       const usable = w - this.layout.safe.left - this.layout.safe.right - 200;
       const cell = Math.max(64, usable / 3);
+      const top = this.layout.safe.top;
       const metric = (i: number, label: string, color: string) => {
-        const caption = this.add.text(this.layout.safe.left + 8 + i * cell, this.layout.safe.top + 2, label, style(11, C.textSecondary, true));
+        const cx = this.layout.safe.left + 8 + cell * (i + 0.5);
+        const caption = this.add.text(cx, top + 3, label, style(11, C.textSecondary, true)).setOrigin(0.5, 0);
         this.hudMetricLabels.push(caption); this.uiRoot!.add(caption);
-        const t = this.add.text(caption.x, this.layout.safe.top + 18, '', style(15, color, true)); this.uiRoot!.add(t); return t;
+        const t = this.add.text(cx, top + 19, '', style(15, color, true)).setOrigin(0.5, 0); this.uiRoot!.add(t); return t;
       };
       this.hudWaveValue = metric(0, 'WAVE', C.textPrimary); this.hudWaveLabel = this.hudMetricLabels[0];
       this.hudGoldValue = metric(1, 'GOLD', C.gold); this.hudLivesValue = metric(2, 'LIVES', C.textPrimary);
@@ -1470,10 +1472,10 @@ export class GameScene extends Phaser.Scene {
     if (devFixtureLabel && this.layout.compact) this.hudStatus?.setPosition(8, this.layout.hud + 4).setWordWrapWidth(this.layout.width - 16);
     this.hudStatus?.setText(bits.join(' · ')).setVisible(bits.length > 0 && !(this.layout.compact && this.compactBossActive && this.bossHudReservedHeight > 0) && (!(this.layout.compact && this.compactBossActive) || devFixtureLabel));
     if (!this.waveActive) {
-      this.startBtnLabel?.setText(`Start Wave ${this.wave + 1}`);
+      this.startBtnLabel?.setText(this.layout.minimal ? `Wave ${this.wave + 1}` : `Start Wave ${this.wave + 1}`);
       this.startBtn?.setFillStyle(0x19232d, 1).setStrokeStyle(2, 0xd7aa4e, 1);
     } else {
-      this.startBtnLabel?.setText(`Wave ${this.wave} · In battle`);
+      this.startBtnLabel?.setText(this.layout.minimal ? `Wave ${this.wave}` : `Wave ${this.wave} · In battle`);
       this.startBtn?.setFillStyle(0x121920, 1).setStrokeStyle(1, 0x2c3945, 1);
     }
     if (this.layout.portraitBossCommands) this.startBtnLabel?.setText('Wave');
@@ -1499,9 +1501,10 @@ export class GameScene extends Phaser.Scene {
         return result;
       };
       if (this.layout.minimal) {
-        // Single action row: Build sheet + Wave FAB + More (Auto/Relics inside sheets).
+        // Single action row: Build sheet + wide Wave button + More (Auto/Relics inside sheets).
         addBottomCommand(() => panel(this, this.uiRoot!, x, y, width, 76));
-        const gap = 8, moreW = 64, buildW = Math.max(96, (width - gap * 4 - moreW) / 2);
+        const gap = 8, moreW = 64;
+        const buildW = Math.min(200, Math.max(96, Math.floor((width - gap * 4 - moreW) * 0.32)));
         const waveW = width - gap * 4 - moreW - buildW;
         addBottomCommand(() => button(this, this.uiRoot!, x + gap, y + 16, buildW, 'Build', () => this.openSheet('build'), 'primary', 44));
         const wave = addBottomCommand(() => button(this, this.uiRoot!, x + gap * 2 + buildW, y + 16, waveW, '', () => {
@@ -1705,7 +1708,7 @@ export class GameScene extends Phaser.Scene {
     }
     if (!this.waveActive && this.auto.enabled) {
       const status = this.autoSnapshot().blocked ? 'waiting' : this.autoShortStatus();
-      this.startBtnLabel?.setText(`Start Wave ${this.wave + 1} · ${status}`);
+      this.startBtnLabel?.setText(this.layout.minimal ? `Wave ${this.wave + 1} · ${status}` : `Start Wave ${this.wave + 1} · ${status}`);
     }
   }
 
