@@ -50,7 +50,7 @@ export function addFinaleIllustration(
   top: number,
   slotWidth: number
 ): { image: Phaser.GameObjects.Image; bottom: number } | null {
-  if (!scene.textures.exists(FINALE_CAMPAIGN_ART.textureKey)) return null;
+  if (!scene.textures?.exists(FINALE_CAMPAIGN_ART.textureKey)) return null;
   const { width, height } = finaleDisplaySize(slotWidth);
   const image = scene.add.image(centerX, top + height / 2, FINALE_CAMPAIGN_ART.textureKey)
     .setDisplaySize(width, height);

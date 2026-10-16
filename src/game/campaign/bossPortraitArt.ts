@@ -167,7 +167,7 @@ export function addBossPortrait(
   aspectHeight = 1
 ): Phaser.GameObjects.Image | null {
   const portrait = bossPortraitFor(bossId);
-  if (!portrait || !scene.textures.exists(portrait.textureKey)) return null;
+  if (!portrait || !(scene.textures?.exists(portrait.textureKey) ?? false)) return null;
   const frame = bossPortraitCoverFrame(
     portrait.sourceWidth, portrait.sourceHeight, aspectWidth, aspectHeight, portrait.focal
   );

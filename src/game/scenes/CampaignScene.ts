@@ -255,7 +255,7 @@ export class CampaignScene extends Phaser.Scene {
       if (!caption) continue;
       const compact = width < 520;
       const trophySize = compact ? SIGIL_TROPHY_CAPTION_COMPACT_PX : SIGIL_TROPHY_CAPTION_PX;
-      const trophyReady = sigilTrophyFor(world.sigilId) !== null && this.textures.exists(sigilTrophyFor(world.sigilId)!.textureKey);
+      const trophyReady = sigilTrophyFor(world.sigilId) !== null && (this.textures?.exists(sigilTrophyFor(world.sigilId)!.textureKey) ?? false);
       const trophyReserve = trophyReady && caption.textWidth - (trophySize + 12) >= 96 ? trophySize + 12 : 0;
       const textWidth = caption.textWidth - trophyReserve;
       const title = this.add.text(caption.textX, 8, `WORLD ${world.worldNumber}  ·  ${world.name.toUpperCase()}`, style(compact ? 13 : 15, C.textPrimary, true, FONT_DISPLAY))
@@ -449,7 +449,7 @@ export class CampaignScene extends Phaser.Scene {
       const world = CAMPAIGN_WORLDS.find(candidate => candidate.sigilId === sigil.id);
       const name = `${world ? worldLabel(world.id) : sigil.id.replace('_sigil', '').replace(/_/g, ' ')} Sigil`;
       const label = sheet.text(y, `${earned ? 'EARNED' : `LEVEL ${sigil.level}`}  ·  ${name}`, earned ? C.goldBright : C.textMuted);
-      const trophy = sigilTrophyFor(sigil.id) !== null && this.textures.exists(sigilTrophyFor(sigil.id)!.textureKey)
+      const trophy = sigilTrophyFor(sigil.id) !== null && (this.textures?.exists(sigilTrophyFor(sigil.id)!.textureKey) ?? false)
         ? addSigilTrophy(this, sheet.content, sigil.id,
           sheet.bounds.width - 20 - SIGIL_TROPHY_MASTERY_PX / 2, y + Math.max(label.height + 12, SIGIL_TROPHY_MASTERY_PX + 16) / 2,
           SIGIL_TROPHY_MASTERY_PX, earned)
