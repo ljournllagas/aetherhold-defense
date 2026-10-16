@@ -43,6 +43,15 @@ export const WORLD_LANDMARK_ART: Readonly<Record<string, WorldLandmarkArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 102, top: 61, width: 1121, height: 1112, bottom: 1172 }
+  },
+  frostveil: {
+    landmarkId: 'landmark:frostveil',
+    worldId: 'frostveil',
+    textureKey: 'campaign_landmark_frostveil',
+    path: '/assets/world/landmarks/landmark-frostveil-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 151, top: 85, width: 968, height: 1031, bottom: 1115 }
   }
 };
 
