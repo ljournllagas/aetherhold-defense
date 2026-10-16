@@ -52,6 +52,28 @@ export const MIXED_BUILD: readonly PlannedPurchase[] = [
   evolve('ember', 'siegebreaker'), up('starfire'), evolve('starfire', 'spellbreaker'), up('tempest'), up('glacier'), rank('longbow'), evolve('glacier', 'winterguard'),
   up('tempest'), rank('ember'), evolve('tempest', 'stormcaller'), rank('ember'), rank('starfire')
 ];
+/**
+ * Sentinel variant of MIXED_BUILD: longbow steps swap to sentinel/deadeye.
+ * Same shape and length, so the Medium gates (first-evo wave, rank-2 wave,
+ * 2–5 fully evolved at victory, duration) apply unchanged. Proves a
+ * Sentinel-carried comp clears the siege rather than only winning DPS math.
+ */
+export const SENTINEL_BUILD: readonly PlannedPurchase[] = [
+  build('sentinel'), build('ember'), build('glacier'), up('sentinel'), build('starfire'), up('ember'), up('sentinel'), build('tempest'), up('glacier'), up('starfire'),
+  up('ember'), up('sentinel'), evolve('sentinel', 'deadeye'), rank('sentinel'), up('starfire'), rank('sentinel'), up('ember'), up('tempest'), up('glacier'),
+  evolve('ember', 'siegebreaker'), up('starfire'), evolve('starfire', 'spellbreaker'), up('tempest'), up('glacier'), rank('sentinel'), evolve('glacier', 'winterguard'),
+  up('tempest'), rank('ember'), evolve('tempest', 'stormcaller'), rank('ember'), rank('starfire')
+];
+/**
+ * Cinder variant of MIXED_BUILD: ember steps swap to cinder/pyre.
+ * Same shape and length; proves a Cinder-carried comp clears the siege.
+ */
+export const CINDER_BUILD: readonly PlannedPurchase[] = [
+  build('longbow'), build('cinder'), build('glacier'), up('longbow'), build('starfire'), up('cinder'), up('longbow'), build('tempest'), up('glacier'), up('starfire'),
+  up('cinder'), up('longbow'), evolve('longbow', 'marksman'), rank('longbow'), up('starfire'), rank('longbow'), up('cinder'), up('tempest'), up('glacier'),
+  evolve('cinder', 'pyre'), up('starfire'), evolve('starfire', 'spellbreaker'), up('tempest'), up('glacier'), rank('longbow'), evolve('glacier', 'winterguard'),
+  up('tempest'), rank('cinder'), evolve('tempest', 'stormcaller'), rank('cinder'), rank('starfire')
+];
 /** Buys plan items strictly in order during each wave's preparation; evolution opens after wave 10 completes. */
 export function simulatePurchases(difficulty: DifficultyId, plan: readonly PlannedPurchase[], throughWave: number): PurchaseTrace[] {
   const income = ordinaryIncomeByWave(difficulty, throughWave), states = new Map<TowerId, EvolutionState>(), trace: PurchaseTrace[] = [];

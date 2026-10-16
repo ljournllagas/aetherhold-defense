@@ -1,4 +1,5 @@
 import type { SimulationOptions } from './simulationBot.ts';
+import { CINDER_BUILD, SENTINEL_BUILD } from './progressionTrace.ts';
 
 /**
  * The accepted reference scenarios for the fixed-strategy balance evidence.
@@ -8,7 +9,10 @@ import type { SimulationOptions } from './simulationBot.ts';
  * mirror their base run's profile (difficulty, seed, unlock set) and differ only
  * in `goldRelics: 'disabled'`, so an economy difference is attributable to the
  * gold-producing relics alone. All three finish the siege at wave 30 so they
- * produce a terminal payload rather than an endless checkpoint.
+ * produce a terminal payload rather than an endless checkpoint. The final two
+ * swap one tower family for its new-tower counterpart (sentinel for longbow,
+ * cinder for ember) under the same Medium gates, proving each new tower can
+ * carry a siege-clearing comp rather than only winning static DPS math.
  *
  * This is test data for the acceptance suite and the opt-in report/candidate
  * runners; it is not runtime configuration.
@@ -21,5 +25,7 @@ export const BALANCE_RUNS: readonly SimulationOptions[] = [
   { label: 'hard-1', difficulty: 'hard', seed: 5, unlockAll: false, throughWave: 30, continueEndless: false },
   { label: 'medium-nogold-1', difficulty: 'medium', seed: 1, unlockAll: false, throughWave: 30, continueEndless: false, goldRelics: 'disabled' },
   { label: 'medium-nogold-2', difficulty: 'medium', seed: 2, unlockAll: false, throughWave: 30, continueEndless: false, goldRelics: 'disabled' },
-  { label: 'medium-nogold-3', difficulty: 'medium', seed: 3, unlockAll: true, throughWave: 30, continueEndless: false, goldRelics: 'disabled' }
+  { label: 'medium-nogold-3', difficulty: 'medium', seed: 3, unlockAll: true, throughWave: 30, continueEndless: false, goldRelics: 'disabled' },
+  { label: 'medium-sentinel-1', difficulty: 'medium', seed: 6, unlockAll: false, throughWave: 30, continueEndless: false, plan: SENTINEL_BUILD },
+  { label: 'medium-cinder-1', difficulty: 'medium', seed: 7, unlockAll: false, throughWave: 30, continueEndless: false, plan: CINDER_BUILD }
 ];

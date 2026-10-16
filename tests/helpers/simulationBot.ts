@@ -16,7 +16,7 @@ import { getDifficulty } from '../../src/game/config/difficulties.ts';
 import { MAP1 } from '../../src/game/maps/map1.ts';
 import type { BranchId, TowerId } from '../../src/shared/progression.ts';
 import type { DifficultyId, GameResultPayload, PowerUpId, TargetingMode } from '../../src/shared/types.ts';
-import { MIXED_BUILD, type ProgressionTrace, type PurchaseTrace } from './progressionTrace.ts';
+import { MIXED_BUILD, type PlannedPurchase, type ProgressionTrace, type PurchaseTrace } from './progressionTrace.ts';
 
 export const SIM_STEP_MS = 50;
 export const PREP_MS = 10_000;
@@ -25,7 +25,7 @@ export const RELIC_ATTRIBUTION_NOTE = 'relics[].used is attributed, not tracked:
 
 /** 'disabled' keeps every gold-producing relic out of the run: no Gold Rush preparation and no gold relic at boss arrival. */
 export type GoldRelicMode = 'normal' | 'disabled';
-export interface SimulationOptions { label: string; difficulty: DifficultyId; seed: number; unlockAll: boolean; throughWave: number; continueEndless: boolean; goldRelics?: GoldRelicMode; }
+export interface SimulationOptions { label: string; difficulty: DifficultyId; seed: number; unlockAll: boolean; throughWave: number; continueEndless: boolean; goldRelics?: GoldRelicMode; plan?: readonly PlannedPurchase[]; }
 export interface EndlessCheckpoint { wave: number; reached: boolean; lives: number; leaks: number; gold: number; scheduledHp: number; gameTimeMs: number; masteryRanks: number[]; nextMasteryCosts: Array<number | null>; }
 export interface SimulationTrace extends ProgressionTrace {
   simulated: true; label: string; seed: number; strategy: string; stepMs: number; prepSecondsPerWave: number;
@@ -150,6 +150,7 @@ export function runSimulation(options: SimulationOptions): SimulationTrace {
 
 function simulate(options: SimulationOptions): SimulationTrace {
   const { difficulty, unlockAll, throughWave, continueEndless } = options;
+  const plan = options.plan ?? MIXED_BUILD;
   const goldRelics: GoldRelicMode = options.goldRelics ?? 'normal';
   const instance = new GameScene();
   const run = instance as unknown as Run, loose = instance as unknown as Record<string, unknown>;
@@ -227,8 +228,8 @@ function simulate(options: SimulationOptions): SimulationTrace {
   type NextResult = { candidate: Candidate | null; fromPlan: boolean; hasNext: boolean; locked: boolean; cheapestCost: number | null; status: PlanStepStatus | 'after-plan' };
   /** Next candidate, or null with hasNext when nothing can be bought now. */
   const nextCandidate = (): NextResult => {
-    while (planIndex < MIXED_BUILD.length) {
-      const planned = MIXED_BUILD[planIndex];
+    while (planIndex < plan.length) {
+      const planned = plan[planIndex];
       if (planned.intent === 'build') {
         const plot = bestPlot(run.occupied, TOWERS[planned.towerId].levels[0].range);
         if (plot === null) { planIndex++; continue; }
