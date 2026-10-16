@@ -223,7 +223,10 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
     ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
   imageSource(`portrait:aether_devourer`, `campaign_portrait_aether_devourer`,
     `/assets/campaign/portraits/aether_devourer-portrait-v1.webp`, 1254, 1254, 'campaign',
-    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null)
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`finale:campaign`, `campaign_finale`,
+    `/assets/campaign/finale/campaign-finale-v1.webp`, 1672, 941, 'gameplay',
+    ['finale_illustration', 'landscape_full_bleed', 'final_completion_only'], 'final', null)
 ];
 
 /** A production file is queued only after its manifest entry is promoted and its exact path is listed here. */
@@ -260,7 +263,8 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
   '/assets/campaign/portraits/stormmaw_prime-portrait-v1.webp',
   '/assets/campaign/portraits/umbral_regent-portrait-v1.webp',
   '/assets/campaign/portraits/rift_sovereign-portrait-v1.webp',
-  '/assets/campaign/portraits/aether_devourer-portrait-v1.webp'
+  '/assets/campaign/portraits/aether_devourer-portrait-v1.webp',
+  '/assets/campaign/finale/campaign-finale-v1.webp'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
@@ -323,7 +327,10 @@ export function campaignGameplayAssetsForLevel(
     `map:${level.worldId}:${family}`,
     ...level.enemyIds.map(id => `enemy:${id}`),
     ...(level.bossEnemyId ? [`boss:${level.bossEnemyId}`, ...(BOSS_SUMMONS[level.bossEnemyId] ?? []).map(id => `enemy:${id}`)] : []),
-    ...(visualTier === 1 ? [] : TOWERS.map(id => `tower:${id}:tier${visualTier}`))
+    ...(visualTier === 1 ? [] : TOWERS.map(id => `tower:${id}:tier${visualTier}`)),
+    // Finale illustration preloads only with the final-level bundle, so the
+    // completion presentation never costs earlier levels a download.
+    ...(level.level === CAMPAIGN_LEVELS.length ? ['finale:campaign'] : [])
   ]);
   const selected = manifest.filter(asset => ids.has(asset.id));
   return [

@@ -1,4 +1,5 @@
 import {campaignResultActions} from '../ui/campaignResultActions.ts';
+import {addFinaleIllustration, isFinalCampaignCompletion} from '../campaign/finaleArt.ts';
 import {enemyPresentation} from '../ui/enemyPresentation.ts';
 import {guestRunProgress} from '../systems/GuestProgress.ts';
 import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
@@ -3757,6 +3758,10 @@ export class GameScene extends Phaser.Scene {
     const sheet = new ScrollSheet(this, root, { x: 0, y: 0, width, height }, result.outcome === 'victory' ? `Level ${level} cleared` : result.outcome === 'siege-failed' ? 'Boss escaped · Battle failed' : 'Stronghold lost', () => this.scene.start('Campaign'));
     this.modalSheet = sheet;
     let y = 0;
+    if (isFinalCampaignCompletion(level, result.outcome)) {
+      const finale = addFinaleIllustration(this, sheet.content, width / 2, y, width - 24);
+      if (finale) y = finale.bottom + 12;
+    }
     const line = (message: string, color: string = C.textSecondary) => { const text = sheet.text(y, message, color); y += text.height + 12; };
     if (import.meta.env.DEV && this.qaCampaignFixture) line('DEV CAMPAIGN FIXTURE · Reward preview · Not saved', C.gold);
     line(`Scheduled enemies: ${formatCount(result.scheduledEnemiesKilled)} × 10 = ${formatCount(result.breakdown.killScore)} points`);
