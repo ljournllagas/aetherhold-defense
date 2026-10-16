@@ -52,6 +52,15 @@ export const WORLD_LANDMARK_ART: Readonly<Record<string, WorldLandmarkArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 151, top: 85, width: 968, height: 1031, bottom: 1115 }
+  },
+  whisperfen: {
+    landmarkId: 'landmark:whisperfen',
+    worldId: 'whisperfen',
+    textureKey: 'campaign_landmark_whisperfen',
+    path: '/assets/world/landmarks/landmark-whisperfen-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 91, top: 20, width: 1070, height: 1181, bottom: 1200 }
   }
 };
 
