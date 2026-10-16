@@ -17,9 +17,9 @@ describe('campaign art replacement contract', () => {
       || AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(true);
     expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toEqual([]);
     expect(required.filter(asset => asset.path.startsWith('/assets/campaign/'))).toEqual(campaignArtAssetsForLoader('campaign'));
-    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(145);
+    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(155);
     expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final_required')).toEqual([]);
-    expect(CAMPAIGN_ART_MANIFEST).toHaveLength(145);
+    expect(CAMPAIGN_ART_MANIFEST).toHaveLength(155);
   });
 
   it('registers the original and accepted World 4–10 terrain plates with the approved tower tiers', () => {

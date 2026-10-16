@@ -226,7 +226,37 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
     ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
   imageSource(`finale:campaign`, `campaign_finale`,
     `/assets/campaign/finale/campaign-finale-v1.webp`, 1672, 941, 'gameplay',
-    ['finale_illustration', 'landscape_full_bleed', 'final_completion_only'], 'final', null)
+    ['finale_illustration', 'landscape_full_bleed', 'final_completion_only'], 'final', null),
+  imageSource(`victory:borderkeep`, `campaign_victory_borderkeep`,
+    `/assets/campaign/victory/borderkeep-victory-v1.webp`, 1672, 941, 'gameplay',
+    ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null),
+  imageSource(`victory:emberfall`, `campaign_victory_emberfall`,
+    `/assets/campaign/victory/emberfall-victory-v1.webp`, 1672, 941, 'gameplay',
+    ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null),
+  imageSource(`victory:frostveil`, `campaign_victory_frostveil`,
+    `/assets/campaign/victory/frostveil-victory-v1.webp`, 1672, 941, 'gameplay',
+    ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null),
+  imageSource(`victory:whisperfen`, `campaign_victory_whisperfen`,
+    `/assets/campaign/victory/whisperfen-victory-v1.webp`, 1672, 941, 'gameplay',
+    ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null),
+  imageSource(`victory:sunken_aether`, `campaign_victory_sunken_aether`,
+    `/assets/campaign/victory/sunken_aether-victory-v1.webp`, 1672, 941, 'gameplay',
+    ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null),
+  imageSource(`victory:ironroot`, `campaign_victory_ironroot`,
+    `/assets/campaign/victory/ironroot-victory-v1.webp`, 1672, 941, 'gameplay',
+    ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null),
+  imageSource(`victory:sky_isles`, `campaign_victory_sky_isles`,
+    `/assets/campaign/victory/sky_isles-victory-v1.webp`, 1672, 941, 'gameplay',
+    ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null),
+  imageSource(`victory:dreadmoon`, `campaign_victory_dreadmoon`,
+    `/assets/campaign/victory/dreadmoon-victory-v1.webp`, 1672, 941, 'gameplay',
+    ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null),
+  imageSource(`victory:astral_rift`, `campaign_victory_astral_rift`,
+    `/assets/campaign/victory/astral_rift-victory-v1.webp`, 1672, 941, 'gameplay',
+    ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null),
+  imageSource(`victory:aether_crown`, `campaign_victory_aether_crown`,
+    `/assets/campaign/victory/aether_crown-victory-v1.webp`, 1672, 941, 'gameplay',
+    ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null)
 ];
 
 /** A production file is queued only after its manifest entry is promoted and its exact path is listed here. */
@@ -264,7 +294,17 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
   '/assets/campaign/portraits/umbral_regent-portrait-v1.webp',
   '/assets/campaign/portraits/rift_sovereign-portrait-v1.webp',
   '/assets/campaign/portraits/aether_devourer-portrait-v1.webp',
-  '/assets/campaign/finale/campaign-finale-v1.webp'
+  '/assets/campaign/finale/campaign-finale-v1.webp',
+  '/assets/campaign/victory/borderkeep-victory-v1.webp',
+  '/assets/campaign/victory/emberfall-victory-v1.webp',
+  '/assets/campaign/victory/frostveil-victory-v1.webp',
+  '/assets/campaign/victory/whisperfen-victory-v1.webp',
+  '/assets/campaign/victory/sunken_aether-victory-v1.webp',
+  '/assets/campaign/victory/ironroot-victory-v1.webp',
+  '/assets/campaign/victory/sky_isles-victory-v1.webp',
+  '/assets/campaign/victory/dreadmoon-victory-v1.webp',
+  '/assets/campaign/victory/astral_rift-victory-v1.webp',
+  '/assets/campaign/victory/aether_crown-victory-v1.webp'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
@@ -329,8 +369,22 @@ export function campaignGameplayAssetsForLevel(
     ...(level.bossEnemyId ? [`boss:${level.bossEnemyId}`, ...(BOSS_SUMMONS[level.bossEnemyId] ?? []).map(id => `enemy:${id}`)] : []),
     ...(visualTier === 1 ? [] : TOWERS.map(id => `tower:${id}:tier${visualTier}`)),
     // Finale illustration preloads only with the final-level bundle, so the
-    // completion presentation never costs earlier levels a download.
-    ...(level.level === CAMPAIGN_LEVELS.length ? ['finale:campaign'] : [])
+    // completion presentation never costs earlier levels a download. Each
+    // world victory illustration likewise preloads only with its own world
+    // boss level bundle.
+    ...(level.level === CAMPAIGN_LEVELS.length ? ['finale:campaign'] : []),
+    ...(level.level === CAMPAIGN_WORLDS.find(world => world.id === 'borderkeep')!.bossLevel ? ['victory:borderkeep'] : []),
+    ...(level.level === CAMPAIGN_WORLDS.find(world => world.id === 'emberfall')!.bossLevel ? ['victory:emberfall'] : []),
+    ...(level.level === CAMPAIGN_WORLDS.find(world => world.id === 'frostveil')!.bossLevel ? ['victory:frostveil'] : []),
+    ...(level.level === CAMPAIGN_WORLDS.find(world => world.id === 'whisperfen')!.bossLevel ? ['victory:whisperfen'] : []),
+    ...(level.level === CAMPAIGN_WORLDS.find(world => world.id === 'sunken_aether')!.bossLevel ? ['victory:sunken_aether'] : []),
+    ...(level.level === CAMPAIGN_WORLDS.find(world => world.id === 'ironroot')!.bossLevel ? ['victory:ironroot'] : []),
+    ...(level.level === CAMPAIGN_WORLDS.find(world => world.id === 'sky_isles')!.bossLevel ? ['victory:sky_isles'] : []),
+    ...(level.level === CAMPAIGN_WORLDS.find(world => world.id === 'dreadmoon')!.bossLevel ? ['victory:dreadmoon'] : []),
+    ...(level.level === CAMPAIGN_WORLDS.find(world => world.id === 'astral_rift')!.bossLevel ? ['victory:astral_rift'] : []),
+    // The Aether Crown boss level is also the final campaign level, so the
+    // level-100 bundle preloads both the finale and the world victory art.
+    ...(level.level === CAMPAIGN_WORLDS.find(world => world.id === 'aether_crown')!.bossLevel ? ['victory:aether_crown'] : [])
   ]);
   const selected = manifest.filter(asset => ids.has(asset.id));
   return [

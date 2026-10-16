@@ -322,20 +322,21 @@ describe('v5 campaign registry and route verification', () => {
     const additionalSigilPaths = ['/assets/campaign/sigils/borderkeep-sigil-v1.webp', '/assets/campaign/sigils/emberfall-sigil-v1.webp', '/assets/campaign/sigils/frostveil-sigil-v1.webp', '/assets/campaign/sigils/whisperfen-sigil-v1.webp', '/assets/campaign/sigils/sunken_aether-sigil-v1.webp', '/assets/campaign/sigils/ironroot-sigil-v1.webp', '/assets/campaign/sigils/sky_isles-sigil-v1.webp', '/assets/campaign/sigils/dreadmoon-sigil-v1.webp', '/assets/campaign/sigils/astral_rift-sigil-v1.webp', '/assets/campaign/sigils/aether_crown-sigil-v1.webp'];
     const additionalPortraitPaths = ['/assets/campaign/portraits/hollow_warden-portrait-v1.webp', '/assets/campaign/portraits/cinder_colossus-portrait-v1.webp', '/assets/campaign/portraits/frostbound_matriarch-portrait-v1.webp', '/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp', '/assets/campaign/portraits/drowned_oracle-portrait-v1.webp', '/assets/campaign/portraits/iron_tyrant-portrait-v1.webp', '/assets/campaign/portraits/stormmaw_prime-portrait-v1.webp', '/assets/campaign/portraits/umbral_regent-portrait-v1.webp', '/assets/campaign/portraits/rift_sovereign-portrait-v1.webp', '/assets/campaign/portraits/aether_devourer-portrait-v1.webp'];
     const additionalFinalePaths = ['/assets/campaign/finale/campaign-finale-v1.webp'];
+    const additionalVictoryPaths = ['/assets/campaign/victory/borderkeep-victory-v1.webp', '/assets/campaign/victory/emberfall-victory-v1.webp', '/assets/campaign/victory/frostveil-victory-v1.webp', '/assets/campaign/victory/whisperfen-victory-v1.webp', '/assets/campaign/victory/sunken_aether-victory-v1.webp', '/assets/campaign/victory/ironroot-victory-v1.webp', '/assets/campaign/victory/sky_isles-victory-v1.webp', '/assets/campaign/victory/dreadmoon-victory-v1.webp', '/assets/campaign/victory/astral_rift-victory-v1.webp', '/assets/campaign/victory/aether_crown-victory-v1.webp'];
     expect(promotedPaths).toHaveLength(77);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS.slice(0, expectedFinalPaths.length)).toEqual(expectedFinalPaths);
-    expect(new Set(AVAILABLE_CAMPAIGN_ART_PATHS.slice(expectedFinalPaths.length))).toEqual(new Set([...additionalTowerPaths, ...promotedPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...additionalFinalePaths]));
-    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toHaveLength(145);
+    expect(new Set(AVAILABLE_CAMPAIGN_ART_PATHS.slice(expectedFinalPaths.length))).toEqual(new Set([...additionalTowerPaths, ...promotedPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...additionalFinalePaths, ...additionalVictoryPaths]));
+    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toHaveLength(155);
     const currentFinalPaths = CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path);
-    expect(currentFinalPaths).toHaveLength(145);
+    expect(currentFinalPaths).toHaveLength(155);
     expect(currentFinalPaths.slice(0, expectedFinalPaths.length)).toEqual(expectedFinalPaths);
-    expect(new Set(currentFinalPaths.slice(expectedFinalPaths.length))).toEqual(new Set([...additionalTowerPaths, ...promotedPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...additionalFinalePaths]));
+    expect(new Set(currentFinalPaths.slice(expectedFinalPaths.length))).toEqual(new Set([...additionalTowerPaths, ...promotedPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...additionalFinalePaths, ...additionalVictoryPaths]));
     expect(contract.legacyFinalAssets).toHaveLength(43);
     expect(contract.legacyFinalAssets.map(asset => asset.path)).toEqual(expectedFinalPaths);
     expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path)).toEqual(AVAILABLE_CAMPAIGN_ART_PATHS);
     expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toHaveLength(0);
     expect([...CAMPAIGN_PROVISIONAL_STARTER_PATHS].sort()).toEqual([...PROVISIONAL_EXPANSION_PATHS].sort());
-    expect(new Set([...expectedFinalPaths, ...promotedPaths, ...additionalTowerPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...additionalFinalePaths, ...PROVISIONAL_EXPANSION_PATHS]).size).toBe(145);
+    expect(new Set([...expectedFinalPaths, ...promotedPaths, ...additionalTowerPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...additionalFinalePaths, ...additionalVictoryPaths, ...PROVISIONAL_EXPANSION_PATHS]).size).toBe(155);
     const moduleName = 'node:fs';
     const { existsSync, readFileSync } = await import(moduleName);
     for (const asset of contract.legacyFinalAssets) {
@@ -383,6 +384,36 @@ describe('v5 campaign registry and route verification', () => {
       }
       if (level.level === CAMPAIGN_LEVELS.length) {
         expectedPaths.add('/assets/campaign/finale/campaign-finale-v1.webp');
+      }
+      if (level.level === CAMPAIGN_WORLDS.find(world => world.id === 'borderkeep')!.bossLevel) {
+        expectedPaths.add('/assets/campaign/victory/borderkeep-victory-v1.webp');
+      }
+      if (level.level === CAMPAIGN_WORLDS.find(world => world.id === 'emberfall')!.bossLevel) {
+        expectedPaths.add('/assets/campaign/victory/emberfall-victory-v1.webp');
+      }
+      if (level.level === CAMPAIGN_WORLDS.find(world => world.id === 'frostveil')!.bossLevel) {
+        expectedPaths.add('/assets/campaign/victory/frostveil-victory-v1.webp');
+      }
+      if (level.level === CAMPAIGN_WORLDS.find(world => world.id === 'whisperfen')!.bossLevel) {
+        expectedPaths.add('/assets/campaign/victory/whisperfen-victory-v1.webp');
+      }
+      if (level.level === CAMPAIGN_WORLDS.find(world => world.id === 'sunken_aether')!.bossLevel) {
+        expectedPaths.add('/assets/campaign/victory/sunken_aether-victory-v1.webp');
+      }
+      if (level.level === CAMPAIGN_WORLDS.find(world => world.id === 'ironroot')!.bossLevel) {
+        expectedPaths.add('/assets/campaign/victory/ironroot-victory-v1.webp');
+      }
+      if (level.level === CAMPAIGN_WORLDS.find(world => world.id === 'sky_isles')!.bossLevel) {
+        expectedPaths.add('/assets/campaign/victory/sky_isles-victory-v1.webp');
+      }
+      if (level.level === CAMPAIGN_WORLDS.find(world => world.id === 'dreadmoon')!.bossLevel) {
+        expectedPaths.add('/assets/campaign/victory/dreadmoon-victory-v1.webp');
+      }
+      if (level.level === CAMPAIGN_WORLDS.find(world => world.id === 'astral_rift')!.bossLevel) {
+        expectedPaths.add('/assets/campaign/victory/astral_rift-victory-v1.webp');
+      }
+      if (level.level === CAMPAIGN_WORLDS.find(world => world.id === 'aether_crown')!.bossLevel) {
+        expectedPaths.add('/assets/campaign/victory/aether_crown-victory-v1.webp');
       }
 
       const selected = campaignGameplayAssetsForLevel(level, 1);
