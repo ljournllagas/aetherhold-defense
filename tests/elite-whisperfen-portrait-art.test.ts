@@ -50,7 +50,7 @@ describe('elite whisperfen portrait showcase', () => {
     expect(elitePortraitFor('borderkeep')).toBe(WORLD_ELITE_PORTRAIT_ART.borderkeep);
     expect(elitePortraitFor('emberfall')).toBe(WORLD_ELITE_PORTRAIT_ART.emberfall);
     expect(elitePortraitFor('frostveil')).toBe(WORLD_ELITE_PORTRAIT_ART.frostveil);
-    expect(elitePortraitFor('dreadmoon')).toBeNull();
+    expect(elitePortraitFor('astral_rift')).toBeNull();
     expect(elitePortraitFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'elite:whisperfen')).toMatchObject({
       key: PORTRAIT.textureKey, path: PORTRAIT.path, stage: 'campaign',
