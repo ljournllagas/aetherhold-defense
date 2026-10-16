@@ -48,6 +48,7 @@ describe('independent campaign world-map art acceptance', () => {
       { kind: 'image' as const, key: 'campaign_elite_portrait_borderkeep', path: '/assets/campaign/portraits/elite-borderkeep-v1.webp' },
       { kind: 'image' as const, key: 'campaign_elite_portrait_emberfall', path: '/assets/campaign/portraits/elite-emberfall-v1.webp' },
       { kind: 'image' as const, key: 'campaign_elite_portrait_frostveil', path: '/assets/campaign/portraits/elite-frostveil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_whisperfen', path: '/assets/campaign/portraits/elite-whisperfen-v1.webp' },
       { kind: 'image' as const, key: 'campaign_landmark_borderkeep', path: '/assets/world/landmarks/landmark-borderkeep-v1.webp' },
       { kind: 'image' as const, key: 'campaign_landmark_emberfall', path: '/assets/world/landmarks/landmark-emberfall-v1.webp' },
       { kind: 'image' as const, key: 'campaign_landmark_frostveil', path: '/assets/world/landmarks/landmark-frostveil-v1.webp' },

@@ -71,6 +71,18 @@ export const WORLD_ELITE_PORTRAIT_ART: Readonly<Record<string, ElitePortraitArt>
     focal: { left: 420, top: 180, width: 420, height: 420 },
     provisional: true,
     label: 'Rime Standard-Bearer (provisional elite concept)'
+  },
+  whisperfen: {
+    eliteId: 'elite:whisperfen',
+    worldId: 'whisperfen',
+    provisionalName: 'Mire Bellkeeper',
+    textureKey: 'campaign_elite_portrait_whisperfen',
+    path: '/assets/campaign/portraits/elite-whisperfen-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 430, top: 160, width: 420, height: 420 },
+    provisional: true,
+    label: 'Mire Bellkeeper (provisional elite concept)'
   }
 };
 
