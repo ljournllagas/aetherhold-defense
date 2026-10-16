@@ -143,6 +143,18 @@ export const WORLD_ELITE_PORTRAIT_ART: Readonly<Record<string, ElitePortraitArt>
     focal: { left: 440, top: 150, width: 420, height: 420 },
     provisional: true,
     label: 'Ringbound Harbinger (provisional elite concept)'
+  },
+  aether_crown: {
+    eliteId: 'elite:aether_crown',
+    worldId: 'aether_crown',
+    provisionalName: 'Crownless Justiciar',
+    textureKey: 'campaign_elite_portrait_aether_crown',
+    path: '/assets/campaign/portraits/elite-aether_crown-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 430, top: 145, width: 420, height: 420 },
+    provisional: true,
+    label: 'Crownless Justiciar (provisional elite concept)'
   }
 };
 

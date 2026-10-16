@@ -55,7 +55,7 @@ describe('elite astral_rift portrait showcase', () => {
     expect(elitePortraitFor('ironroot')).toBe(WORLD_ELITE_PORTRAIT_ART.ironroot);
     expect(elitePortraitFor('sky_isles')).toBe(WORLD_ELITE_PORTRAIT_ART.sky_isles);
     expect(elitePortraitFor('dreadmoon')).toBe(WORLD_ELITE_PORTRAIT_ART.dreadmoon);
-    expect(elitePortraitFor('aether_crown')).toBeNull();
+    expect(elitePortraitFor('aether_crown')).toBe(WORLD_ELITE_PORTRAIT_ART.aether_crown);
     expect(elitePortraitFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'elite:astral_rift')).toMatchObject({
       key: PORTRAIT.textureKey, path: PORTRAIT.path, stage: 'campaign',
@@ -121,7 +121,7 @@ describe('elite astral_rift portrait showcase', () => {
     expect(addElitePortrait(cold.scene, cold.parent, 'astral_rift', 60, 60, 96)).toBeNull();
     expect(cold.added).toHaveLength(0);
     const unknown = fakeRender([PORTRAIT.textureKey]);
-    expect(addElitePortrait(unknown.scene, unknown.parent, 'aether_crown', 60, 60, 96)).toBeNull();
+    expect(addElitePortrait(unknown.scene, unknown.parent, 'unknown', 60, 60, 96)).toBeNull();
     expect(unknown.added).toHaveLength(0);
   });
 

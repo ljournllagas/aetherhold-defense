@@ -47,7 +47,7 @@ describe('elite borderkeep portrait showcase', () => {
     expect(PORTRAIT.path).toBe('/assets/campaign/portraits/elite-borderkeep-v1.webp');
     expect(PORTRAIT.sourceWidth).toBe(1254);
     expect(PORTRAIT.sourceHeight).toBe(1254);
-    expect(elitePortraitFor('aether_crown')).toBeNull();
+    expect(elitePortraitFor('aether_crown')).toBe(WORLD_ELITE_PORTRAIT_ART.aether_crown);
     expect(elitePortraitFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'elite:borderkeep')).toMatchObject({
       key: PORTRAIT.textureKey, path: PORTRAIT.path, stage: 'campaign',
