@@ -1183,7 +1183,7 @@ Maximum stored Power-Ups:
 
 If inventory is full and a new stored Power-Up is received:
 
-- player must use, replace, or discard one;
+- player must use oldest, use new, replace, or discard one;
 - game must clearly communicate the choice.
 
 No hidden replacement.
@@ -1192,14 +1192,16 @@ No hidden replacement.
 
 During the victory decision:
 
-- pending relics are resolved in FIFO order with **Store** (when a slot is free),
-  **Replace Oldest** (when full) or **Discard New**;
-- relic activation and Use Oldest are unavailable, with the reason "Continue into endless
+- pending relics are resolved in FIFO order with **Use New** (always available),
+  **Store** (when a slot is free), **Replace Oldest** (when full) or **Discard New**;
+- bar relic activation and Use Oldest remain unavailable, with the reason "Continue into endless
   to use relics";
-- no relic is ever auto-used, and a full inventory always has the Replace Oldest and
+- no relic is ever auto-used, and a full inventory always has the Use New, Replace Oldest and
   Discard New exits;
-- no Meteor targeting, no repair that changes the result and no Treasure Creature can
-  occur;
+- instant Use New applies immediately during victory; a Meteor Use New defers targeting
+  until after Continue Endless;
+- no repair that changes the result and no Treasure Creature can occur before resolution
+  beyond an explicit Use New choice;
 - repeated resolution cannot store or replace twice.
 
 Choosing Finish Run leaves the stored relics unused. Choosing Continue Endless carries them

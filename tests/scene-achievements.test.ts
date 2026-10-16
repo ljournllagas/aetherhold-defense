@@ -85,18 +85,21 @@ describe('in-run achievements', () => {
 });
 
 describe('victory-only relic exits', () => {
-  it.each(['meteor_strike', 'treasure_goblin', 'emergency_repair'] as const)('blocks use of %s during the victory decision', (id) => {
+  it('blocks meteor targeting during the victory decision while allowing instant Use new', ( ) => {
     const { run } = sceneFixture(); run.siege = advanceSiege(30);
     const enemies = run.enemies.length, lives = run.lives, gold = run.gold;
-    run.applyPowerup(id);
+    run.applyPowerup('meteor_strike');
     expect([run.enemies.length, run.lives, run.gold, run.pendingMeteor]).toEqual([enemies, lives, gold, false]);
+    const beforeGold = run.gold;
+    run.applyPowerup('gold_rush');
+    expect(run.gold).toBeGreaterThan(beforeGold);
   });
-  it('offers Replace Oldest or Store plus Discard New and never activates', () => {
+  it('offers Use new plus Replace Oldest or Store plus Discard New without auto-activating stored', () => {
     const { run } = sceneFixture(); run.siege = advanceSiege(30);
     run.vault.stored.push('meteor_strike', 'treasure_goblin', 'emergency_repair'); run.vault.offer('battle_cry', 'boss', true);
     run.showRelicPanel = vi.fn(); const beginUse = vi.spyOn(run.vault, 'beginUse');
     run.presentReward();
-    expect(run.showRelicPanel).toHaveBeenCalledWith('battle_cry', 'boss', true, expect.any(Function), expect.any(Function), true);
+    expect(run.showRelicPanel).toHaveBeenCalledWith('battle_cry', 'boss', true, expect.any(Function), expect.any(Function), true, expect.any(Function));
     (run.showRelicPanel.mock.calls[0][3] as () => void)();
     expect(run.vault.stored).toEqual(['treasure_goblin', 'emergency_repair', 'battle_cry']);
     expect(run.vault.pending).toHaveLength(0); expect(beginUse).not.toHaveBeenCalled();
@@ -110,7 +113,8 @@ describe('victory-only relic exits', () => {
     const { run } = sceneFixture();
     run.vault.stored.push('meteor_strike', 'treasure_goblin', 'emergency_repair'); run.vault.offer('battle_cry', 'boss', true);
     run.showRelicPanel = vi.fn(); run.presentReward();
-    expect(run.showRelicPanel.mock.calls[0][5]).toBeUndefined();
+    expect(run.showRelicPanel.mock.calls[0][5]).toBe(false);
+    expect(run.showRelicPanel.mock.calls[0][6]).toEqual(expect.any(Function));
   });
 });
 

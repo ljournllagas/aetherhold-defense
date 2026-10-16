@@ -91,8 +91,8 @@ export class SiegeSystem {
   }
 }
 
-export function victoryRewardChoices(inventoryCount: number): readonly ('store' | 'replace-oldest' | 'discard-new')[] {
-  return inventoryCount >= POWERUP_INVENTORY_LIMIT ? ['replace-oldest', 'discard-new'] : ['store', 'discard-new'];
+export function victoryRewardChoices(inventoryCount: number): readonly ('use-new' | 'store' | 'replace-oldest' | 'discard-new')[] {
+  return inventoryCount >= POWERUP_INVENTORY_LIMIT ? ['use-new', 'replace-oldest', 'discard-new'] : ['use-new', 'store', 'discard-new'];
 }
 
 export function victoryRewardsResolved(vault: RelicVault, rewardModalOpen: boolean, retainPending = false): boolean {

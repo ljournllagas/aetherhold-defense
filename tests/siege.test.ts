@@ -73,18 +73,18 @@ describe('siege lifecycle', () => {
 });
 
 describe('victory relic exits', () => {
-  it('resolves a full inventory in FIFO order without activation', () => {
+  it('resolves a full inventory in FIFO order with Use new available', () => {
     const vault = new RelicVault(); vault.stored.push('meteor_strike', 'treasure_goblin', 'emergency_repair');
     vault.offer('battle_cry', 'boss', true); vault.offer('arcane_surge', 'second', true);
-    expect(victoryRewardChoices(3)).toEqual(['replace-oldest', 'discard-new']);
+    expect(victoryRewardChoices(3)).toEqual(['use-new', 'replace-oldest', 'discard-new']);
     expect(victoryRewardsResolved(vault, false)).toBe(false);
     expect(vault.resolve('replace-oldest')).toBe(true); expect(vault.pending).toHaveLength(1);
     expect(vault.resolve('discard-new')).toBe(true); expect(vault.resolve('discard-new')).toBe(false);
     expect(victoryRewardsResolved(vault, false)).toBe(true); expect(victoryRewardsResolved(vault, true)).toBe(false);
     expect(vault.stored).toEqual(['treasure_goblin', 'emergency_repair', 'battle_cry']);
   });
-  it('offers Store and Discard New while space remains', () => {
-    expect(victoryRewardChoices(0)).toEqual(['store', 'discard-new']); expect(victoryRewardChoices(2)).toEqual(['store', 'discard-new']);
+  it('offers Use new plus Store and Discard New while space remains', () => {
+    expect(victoryRewardChoices(0)).toEqual(['use-new', 'store', 'discard-new']); expect(victoryRewardChoices(2)).toEqual(['use-new', 'store', 'discard-new']);
   });
   it('cancels a Meteor target without consuming the reserved relic', () => {
     const vault = new RelicVault(); vault.stored.push('meteor_strike'); vault.beginUse(0, true);

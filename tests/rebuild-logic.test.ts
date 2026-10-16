@@ -30,6 +30,6 @@ describe('shared rebuild logic', () => {
     expect(rewardDisposition(2, 0, 1)).toEqual({ kind: 'full', choices: FULL_REWARD_CHOICES });
     expect(rewardDisposition(3, 0)).toEqual({ kind: 'full', choices: FULL_REWARD_CHOICES });
     expect(rewardDisposition(3, 1000)).toEqual({ kind: 'queue' });
-    expect(FULL_REWARD_CHOICES).toEqual(['use-oldest', 'replace-oldest', 'discard-new']);
+    expect(FULL_REWARD_CHOICES).toEqual(['use-oldest', 'use-new', 'replace-oldest', 'discard-new']);
   });
 });

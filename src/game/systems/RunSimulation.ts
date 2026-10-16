@@ -62,6 +62,20 @@ export class RelicVault {
 
   cancelTarget(): void { if (this.target) { this.target = null; this.revision++; } }
 
+  /** Consume the pending head without applying (used to defer a Victory meteor until endless). */
+  consumePendingHead(): PowerUpId | null {
+    if (this.target || !this.pending.length) return null;
+    const reward = this.pending.shift()!;
+    this.revision++;
+    return reward.id;
+  }
+
+  /** Requeue a previously consumed reward at the front (used when entering endless with a deferred meteor). */
+  requeuePendingFront(id: PowerUpId, reason: string, reveal = false): void {
+    this.pending.unshift({ id, reason, reveal });
+    this.revision++;
+  }
+
   resolve(choice: 'store' | 'replace-oldest' | 'discard-new'): boolean {
     if (this.target || !this.pending.length) return false;
     if (choice === 'store' && rewardDisposition(this.stored.length, 0).kind !== 'store') return false;

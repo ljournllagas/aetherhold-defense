@@ -1168,8 +1168,9 @@ and unlocks above two actions: **Finish Run** and **Continue Endless**.
 
 - The battlefield stays visible behind it and the simulation is frozen.
 - Both actions are disabled until pending relic rewards are resolved.
-- In the reward choice, relic activation and Use Oldest are unavailable, with the reason
-  "Continue into endless to use relics".
+- In the reward choice, bar relic activation and Use Oldest are unavailable, with the reason
+  "Continue into endless to use relics". Use New on the pending relic itself stays available
+  and applies immediately (Meteor defers targeting until endless).
 - Pause stays reachable, using the existing pause-menu rules.
 - The panel survives resize, rotation and backgrounding.
 

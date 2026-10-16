@@ -40,6 +40,35 @@ describe('relic transactions', () => {
     expect(vault.stored).toEqual(['tower_overcharge']);
     expect(vault.pending).toHaveLength(0);
   });
+
+  it('uses the new relic without touching a full stored inventory', () => {
+    const vault = new RelicVault();
+    vault.stored.push('meteor_strike', 'gold_rush', 'time_freeze');
+    vault.offer('battle_cry', 'overflow', true);
+    expect(vault.beginPendingUse(true)).toEqual({ kind: 'apply', id: 'battle_cry' });
+    expect(vault.stored).toEqual(['meteor_strike', 'gold_rush', 'time_freeze']);
+    expect(vault.pending).toHaveLength(0);
+  });
+
+  it('reports unusable new overcharge without mutating full inventory', () => {
+    const vault = new RelicVault();
+    vault.stored.push('gold_rush', 'time_freeze', 'battle_cry');
+    vault.offer('tower_overcharge', 'overflow', true);
+    expect(vault.beginPendingUse(false)).toEqual({ kind: 'unusable', id: 'tower_overcharge' });
+    expect(vault.stored).toHaveLength(3);
+    expect(vault.pending).toHaveLength(1);
+  });
+
+  it('consumes and requeues a pending head for deferred victory targeting', () => {
+    const vault = new RelicVault();
+    vault.stored.push('gold_rush');
+    vault.offer('meteor_strike', 'boss', true);
+    expect(vault.consumePendingHead()).toBe('meteor_strike');
+    expect(vault.pending).toHaveLength(0);
+    vault.requeuePendingFront('meteor_strike', 'boss', false);
+    expect(vault.pending.map(r => r.id)).toEqual(['meteor_strike']);
+    expect(vault.beginPendingUse(true)).toEqual({ kind: 'target', id: 'meteor_strike' });
+  });
 });
 
 describe('flight game-time stepping', () => {

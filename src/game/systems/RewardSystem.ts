@@ -1,6 +1,6 @@
 import { POWERUP_INVENTORY_LIMIT } from '../config/powerUps.ts';
 
-export const FULL_REWARD_CHOICES = ['use-oldest', 'replace-oldest', 'discard-new'] as const;
+export const FULL_REWARD_CHOICES = ['use-oldest', 'use-new', 'replace-oldest', 'discard-new'] as const;
 export type FullRewardChoice = typeof FULL_REWARD_CHOICES[number];
 export type RewardDisposition =
   | { kind: 'store' }

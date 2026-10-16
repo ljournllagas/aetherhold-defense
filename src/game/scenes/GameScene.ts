@@ -265,6 +265,7 @@ export class GameScene extends Phaser.Scene {
   private ghostTowerId = '';
   private revealTimer: Phaser.Time.TimerEvent | null = null;
   private storeAfterTarget = false;
+  private deferredVictoryMeteors: Array<{ id: PowerUpId; reason: string }> = [];
 
   // selection / placement
   private selectedTower: Tower | null = null;
@@ -511,6 +512,7 @@ export class GameScene extends Phaser.Scene {
     this.ghostTowerId = '';
     this.revealTimer = null;
     this.storeAfterTarget = false;
+    this.deferredVictoryMeteors = [];
     this.startTime = Date.now();
     this.runningDurationMs = 0; this.simulationClock.reset(); this.inSimulationTick = false;
     this.bossWarned = {};
@@ -1026,7 +1028,7 @@ export class GameScene extends Phaser.Scene {
     for (const flight of this.flights) flight.view.destroy(true);
     for (const effect of this.effects) effect.view.destroy();
     this.flights = []; this.effects = []; this.spawnQueue = [];
-    this.vault = new RelicVault();
+    this.vault = new RelicVault(); this.storeAfterTarget = false; this.deferredVictoryMeteors = [];
     this.modal?.destroy(true); this.modal = null;
     this.fieldMask?.destroy(); this.fieldMask = null;
     this.worldRoot?.destroy(true); this.worldRoot = null;
@@ -1186,7 +1188,7 @@ export class GameScene extends Phaser.Scene {
       this.auto.setEnabled(true);
       this.startNextWave();
       for (let step = 0; step < 300 && !this.ended; step++) this.simulateTick(SIMULATION_STEP_MS);
-      this.auto.reset(); this.vault = new RelicVault(); this.drawPowerupBar();
+      this.auto.reset(); this.vault = new RelicVault(); this.storeAfterTarget = false; this.deferredVictoryMeteors = []; this.drawPowerupBar();
     } else {
       const finalWave = this.campaign.waveCount;
       this.wave = finalWave; this.wavesCompleted = finalWave - 1;
@@ -2820,16 +2822,42 @@ export class GameScene extends Phaser.Scene {
     else this.showPowerupModal(reward.id, reward.reason);
   }
 
-  /** Victory decision: relics may only be stored (or replace the oldest) or discarded, never used. */
+  /** Victory decision: stored relics resolve via Store/Replace/Discard, plus always-available Use new. */
   private showVictoryReward(id: PowerUpId, reason: string): void {
     const full = this.powerups.length >= POWERUP_INVENTORY_LIMIT;
-    this.showRelicPanel(id, reason, full, () => this.resolveVictoryReward(full ? 'replace-oldest' : 'store'), () => this.resolveVictoryReward('discard-new'), true);
+    this.showRelicPanel(id, reason, full, () => this.resolveVictoryReward(full ? 'replace-oldest' : 'store'), () => this.resolveVictoryReward('discard-new'), true, () => this.useNewFromVictory());
   }
 
-  private resolveVictoryReward(choice: 'store' | 'replace-oldest' | 'discard-new'): void {
-    if (this.siege.phase !== 'victory' || !victoryRewardChoices(this.powerups.length).includes(choice)) return;
+  private resolveVictoryReward(choice: 'store' | 'replace-oldest' | 'discard-new' | 'use-new'): void {
+    if (this.siege.phase !== 'victory') return;
+    if (choice === 'use-new') { this.useNewFromVictory(); return; }
+    if (!victoryRewardChoices(this.powerups.length).includes(choice)) return;
     this.vault.resolve(choice);
     this.closeModal(); this.drawPowerupBar(); this.presentReward(); this.renderVictory();
+  }
+
+  /** Full inventory: activate the new relic immediately, leaving stored untouched. */
+  private useNewFromFull(): void {
+    const result = this.vault.beginPendingUse(this.towers.length > 0);
+    this.finishUse(result);
+  }
+
+  /** Victory: apply the new relic immediately; meteor defers targeting until endless. */
+  private useNewFromVictory(): void {
+    const head = this.vault.pending[0];
+    if (!head || this.siege.phase !== 'victory') return;
+    if (POWERUPS[head.id].requiresTarget) {
+      const consumed = this.vault.consumePendingHead();
+      if (!consumed) return;
+      this.deferredVictoryMeteors.push({ id: consumed, reason: head.reason });
+      this.closeModal(); this.drawPowerupBar();
+      this.floatText(520, 140, `${POWERUPS[consumed].name} ready — Continue to choose target`, C.gold, 14);
+      SoundManager.get().powerup();
+      this.presentReward(); this.renderVictory(); this.updateHUD();
+      return;
+    }
+    const result = this.vault.beginPendingUse(this.towers.length > 0);
+    this.finishUse(result);
   }
 
   private showPowerupModal(id: PowerUpId, reason: string): void {
@@ -2839,10 +2867,10 @@ export class GameScene extends Phaser.Scene {
     }, () => { this.vault.resolve('store'); this.closeModal(); this.drawPowerupBar(); this.presentReward(); });
   }
 
-  private showRelicPanel(id: PowerUpId, reason: string, full: boolean, use: () => void, keep: () => void, victory = false): void {
+  private showRelicPanel(id: PowerUpId, reason: string, full: boolean, use: () => void, keep: () => void, victory = false, useNew?: () => void): void {
     if (!this.rebuildingModal) this.modalError = '';
     this.cancelGesture();
-    this.modalRenderer = () => this.showRelicPanel(id, reason, full, use, keep, victory);
+    this.modalRenderer = () => this.showRelicPanel(id, reason, full, use, keep, victory, useNew);
     const panelRenderer = this.modalRenderer;
     ensureRelicShowcaseTexture(this, id, () => {
       if (this.modalRenderer !== panelRenderer || !this.modal) return;
@@ -2862,18 +2890,26 @@ export class GameScene extends Phaser.Scene {
       sheet.text(104, `${cfg.name} · ${cfg.rarity.toUpperCase()}`, RARITY_COLOR[cfg.rarity], 18);
       const summary = sheet.text(140, this.modalError || cfg.description); this.modal!.setData('message', summary);
       let y = 156 + summary.height;
-      if (victory) { const message = sheet.text(y, 'Continue into endless to use relics'); y += message.height + 12;
-        sheet.action(y, full ? 'Replace oldest' : 'Store', use, 'primary'); sheet.action(y + 52, 'Discard new', keep);
-      } else if (full) { const message = sheet.text(y, 'Inventory full · Choose one action to make room.'); y += message.height + 12;
-        sheet.action(y, 'Use oldest', use, 'primary'); sheet.action(y + 52, 'Replace oldest', keep);
-        sheet.action(y + 104, 'Discard new', () => { this.vault.resolve('discard-new'); this.closeModal(); this.presentReward(); });
+      if (victory) {
+        const message = sheet.text(y, 'Continue into endless to use relics'); y += message.height + 12;
+        if (useNew) sheet.action(y, 'Use new', useNew, 'primary');
+        sheet.action(y + (useNew ? 52 : 0), full ? 'Replace oldest' : 'Store', use, useNew ? 'secondary' : 'primary');
+        sheet.action(y + (useNew ? 104 : 52), 'Discard new', keep);
+      } else if (full) {
+        const message = sheet.text(y, 'Inventory full · Choose one action to make room.'); y += message.height + 12;
+        sheet.action(y, 'Use oldest', use, 'primary');
+        if (useNew) sheet.action(y + 52, 'Use new', useNew, 'primary');
+        sheet.action(y + (useNew ? 104 : 52), 'Replace oldest', keep);
+        sheet.action(y + (useNew ? 156 : 104), 'Discard new', () => { this.vault.resolve('discard-new'); this.closeModal(); this.presentReward(); });
       } else { sheet.action(y, cfg.requiresTarget ? 'Choose target' : 'Use Now', use, 'primary'); sheet.action(y + 52, reason === 'Stored Power-Up' ? 'Keep' : 'Store', keep); }
-      if (reroll) sheet.action(y + (full ? 156 : 104), 'Reroll · Once this level', () => this.rerollReward(id, reason));
+      const mobileButtonCount = victory ? (useNew ? 3 : 2) : full ? (useNew ? 4 : 3) : 2;
+      if (reroll) sheet.action(y + mobileButtonCount * 52, 'Reroll · Once this level', () => this.rerollReward(id, reason));
       this.updateHUD(); return;
     }
     const compact = this.layout.compact;
     const width = Math.min(compact ? 650 : 620, this.layout.width - 32);
-    const height = (compact ? 324 : (full ? 348 : 332)) + (reroll ? 52 : 0);
+    const needsTwoRows = !victory && full && !!useNew;
+    const height = (compact ? 324 : (full ? 348 : 332)) + (needsTwoRows ? 52 : 0) + (reroll ? 52 : 0);
     const rarityColor = Number(RARITY_COLOR[cfg.rarity].replace('#', '0x'));
     const c = this.modalFrame(width, height, 0x80674a);
     const frame = this.add.graphics();
@@ -2938,19 +2974,36 @@ export class GameScene extends Phaser.Scene {
     if (full) c.add(this.add.text(detailsX, artY + 76, 'Choose one action to make room.', style(13, C.textSecondary)));
 
     const y = height - 56;
-    if (reroll) button(this, c, detailsX, y - 52, detailsWidth, 'Reroll · Once this level', () => this.rerollReward(id, reason), 'secondary', 44);
+    if (reroll) button(this, c, detailsX, y - (needsTwoRows ? 104 : 52), detailsWidth, 'Reroll · Once this level', () => this.rerollReward(id, reason), 'secondary', 44);
     if (victory) {
       c.add(this.add.text(detailsX, y - 24, 'Continue into endless to use relics', style(13, C.gold)).setWordWrapWidth(detailsWidth));
-      const gap = 8;
-      const choiceWidth = (detailsWidth - gap) / 2;
-      button(this, c, detailsX, y, choiceWidth, full ? 'Replace oldest' : 'Store', use, 'primary', 44);
-      button(this, c, detailsX + choiceWidth + gap, y, choiceWidth, 'Discard new', keep, 'secondary', 44);
+      if (useNew) {
+        const gap = 6;
+        const choiceWidth = (detailsWidth - gap * 2) / 3;
+        button(this, c, detailsX, y, choiceWidth, 'Use new', useNew, 'primary', 44);
+        button(this, c, detailsX + choiceWidth + gap, y, choiceWidth, full ? 'Replace oldest' : 'Store', use, 'primary', 44);
+        button(this, c, detailsX + (choiceWidth + gap) * 2, y, choiceWidth, 'Discard new', keep, 'secondary', 44);
+      } else {
+        const gap = 8;
+        const choiceWidth = (detailsWidth - gap) / 2;
+        button(this, c, detailsX, y, choiceWidth, full ? 'Replace oldest' : 'Store', use, 'primary', 44);
+        button(this, c, detailsX + choiceWidth + gap, y, choiceWidth, 'Discard new', keep, 'secondary', 44);
+      }
     } else if (full) {
-      const gap = 6;
-      const choiceWidth = (detailsWidth - gap * 2) / 3;
-      button(this, c, detailsX, y, choiceWidth, 'Use oldest', use, 'primary', 44);
-      button(this, c, detailsX + choiceWidth + gap, y, choiceWidth, 'Replace oldest', keep, 'secondary', 44);
-      button(this, c, detailsX + (choiceWidth + gap) * 2, y, choiceWidth, 'Discard new', () => { this.vault.resolve('discard-new'); this.closeModal(); this.presentReward(); }, 'secondary', 44);
+      if (useNew) {
+        const gap = 8;
+        const choiceWidth = (detailsWidth - gap) / 2;
+        button(this, c, detailsX, y - 52, choiceWidth, 'Use oldest', use, 'primary', 44);
+        button(this, c, detailsX + choiceWidth + gap, y - 52, choiceWidth, 'Use new', useNew, 'primary', 44);
+        button(this, c, detailsX, y, choiceWidth, 'Replace oldest', keep, 'secondary', 44);
+        button(this, c, detailsX + choiceWidth + gap, y, choiceWidth, 'Discard new', () => { this.vault.resolve('discard-new'); this.closeModal(); this.presentReward(); }, 'secondary', 44);
+      } else {
+        const gap = 6;
+        const choiceWidth = (detailsWidth - gap * 2) / 3;
+        button(this, c, detailsX, y, choiceWidth, 'Use oldest', use, 'primary', 44);
+        button(this, c, detailsX + choiceWidth + gap, y, choiceWidth, 'Replace oldest', keep, 'secondary', 44);
+        button(this, c, detailsX + (choiceWidth + gap) * 2, y, choiceWidth, 'Discard new', () => { this.vault.resolve('discard-new'); this.closeModal(); this.presentReward(); }, 'secondary', 44);
+      }
     } else {
       const gap = 8;
       const choiceWidth = (detailsWidth - gap) / 2;
@@ -2966,7 +3019,7 @@ export class GameScene extends Phaser.Scene {
       if (result.kind === 'target') this.storeAfterTarget = true;
       if (result.kind === 'apply') { this.applyPowerup(result.id); this.vault.resolve('store'); }
       this.finishUse(result, result.kind === 'apply');
-    }, () => { this.vault.resolve('replace-oldest'); this.closeModal(); this.drawPowerupBar(); this.presentReward(); });
+    }, () => { this.vault.resolve('replace-oldest'); this.closeModal(); this.drawPowerupBar(); this.presentReward(); }, false, () => this.useNewFromFull());
   }
 
   private rollReward(): PowerUpId { return this.campaign ? this.campaign.rollReward() : rollPowerUp(); }
@@ -3009,7 +3062,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private applyPowerup(id: PowerUpId): void {
-    if (this.siege.phase === 'victory' || this.siege.phase === 'terminal') return;
+    if (this.siege.phase === 'terminal') return;
     const d = getDifficulty(this.difficultyId);
     switch (id) {
       case 'gold_rush': {
@@ -3815,8 +3868,17 @@ export class GameScene extends Phaser.Scene {
     if (this.siege.phase !== 'victory' || this.pauseState.blocked) return;
     if (!this.siege.choose(action, victoryRewardsResolved(this.vault, this.modal !== null, this.auto.enabled))) return;
     this.victoryPanel?.destroy(true); this.victoryPanel = null;
-    if (action === 'finish') this.finishRun('victory');
-    else { this.updateNextPreview(); this.updateHUD(); }
+    if (action === 'finish') { this.deferredVictoryMeteors = []; this.finishRun('victory'); }
+    else {
+      this.updateNextPreview(); this.updateHUD();
+      if (this.deferredVictoryMeteors.length) {
+        const deferred = [...this.deferredVictoryMeteors];
+        this.deferredVictoryMeteors = [];
+        for (let i = deferred.length - 1; i >= 0; i--) this.vault.requeuePendingFront(deferred[i].id, deferred[i].reason, false);
+        const result = this.vault.beginPendingUse(this.towers.length > 0);
+        this.finishUse(result);
+      }
+    }
   }
 
   private gameOver(): void { this.finishRun('defeat'); }
@@ -3852,7 +3914,7 @@ export class GameScene extends Phaser.Scene {
     for (const flight of this.flights) flight.view.destroy(true);
     for (const effect of this.effects) effect.view.destroy();
     this.flights = []; this.effects = [];
-    this.vault = new RelicVault(); this.storeAfterTarget = false;
+    this.vault = new RelicVault(); this.storeAfterTarget = false; this.deferredVictoryMeteors = [];
     this.placingTowerId = null; this.selectedTower = null; this.touchPreview = null;
     this.closeModal(); this.cleanupProgression(); this.hideGhost();
     SoundManager.get().gameover(); SoundManager.get().stopMusic();
