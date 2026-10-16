@@ -41,7 +41,7 @@ describe('cinder colossus boss portrait', () => {
     expect(PORTRAIT.textureKey).toBe('campaign_portrait_cinder_colossus');
     expect(PORTRAIT.path).toBe('/assets/campaign/portraits/cinder_colossus-portrait-v1.webp');
     for (const world of CAMPAIGN_WORLDS) {
-      if (world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'frostbound_matriarch' || world.bossEnemyId === 'mireheart_hydra' || world.bossEnemyId === 'drowned_oracle') continue;
+      if (world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'frostbound_matriarch' || world.bossEnemyId === 'mireheart_hydra' || world.bossEnemyId === 'drowned_oracle' || world.bossEnemyId === 'iron_tyrant') continue;
       expect(bossPortraitFor(world.bossEnemyId)).toBeNull();
     }
   });
@@ -104,7 +104,7 @@ describe('cinder colossus boss portrait', () => {
     expect(addBossPortrait(cold.scene, cold.parent, 'cinder_colossus', 60, 60, 96)).toBeNull();
     expect(cold.added).toHaveLength(0);
     const unknown = fakeRender([PORTRAIT.textureKey]);
-    expect(addBossPortrait(unknown.scene, unknown.parent, 'iron_tyrant', 60, 60, 96)).toBeNull();
+    expect(addBossPortrait(unknown.scene, unknown.parent, 'stormmaw_prime', 60, 60, 96)).toBeNull();
     expect(unknown.added).toHaveLength(0);
   });
 

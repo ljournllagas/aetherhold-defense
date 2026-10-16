@@ -66,6 +66,14 @@ export const BOSS_PORTRAIT_ART: Readonly<Record<string, BossPortraitArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     focal: { left: 390, top: 80, width: 430, height: 430 }
+  },
+  iron_tyrant: {
+    bossId: 'iron_tyrant',
+    textureKey: 'campaign_portrait_iron_tyrant',
+    path: '/assets/campaign/portraits/iron_tyrant-portrait-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 430, top: 135, width: 430, height: 430 }
   }
 };
 

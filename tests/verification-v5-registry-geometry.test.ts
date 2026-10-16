@@ -320,13 +320,13 @@ describe('v5 campaign registry and route verification', () => {
     const promotedPaths = contract.livePromotions.assets.map(asset => asset.promotedPath);
     const additionalTowerPaths = ['sentinel', 'cinder'].flatMap(id => [2, 3].map(tier => `/assets/campaign/towers/${id}-tier${tier}-v1.webp`));
     const additionalSigilPaths = ['/assets/campaign/sigils/borderkeep-sigil-v1.webp', '/assets/campaign/sigils/emberfall-sigil-v1.webp', '/assets/campaign/sigils/frostveil-sigil-v1.webp', '/assets/campaign/sigils/whisperfen-sigil-v1.webp', '/assets/campaign/sigils/sunken_aether-sigil-v1.webp', '/assets/campaign/sigils/ironroot-sigil-v1.webp', '/assets/campaign/sigils/sky_isles-sigil-v1.webp', '/assets/campaign/sigils/dreadmoon-sigil-v1.webp', '/assets/campaign/sigils/astral_rift-sigil-v1.webp', '/assets/campaign/sigils/aether_crown-sigil-v1.webp'];
-    const additionalPortraitPaths = ['/assets/campaign/portraits/hollow_warden-portrait-v1.webp', '/assets/campaign/portraits/cinder_colossus-portrait-v1.webp', '/assets/campaign/portraits/frostbound_matriarch-portrait-v1.webp', '/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp', '/assets/campaign/portraits/drowned_oracle-portrait-v1.webp'];
+    const additionalPortraitPaths = ['/assets/campaign/portraits/hollow_warden-portrait-v1.webp', '/assets/campaign/portraits/cinder_colossus-portrait-v1.webp', '/assets/campaign/portraits/frostbound_matriarch-portrait-v1.webp', '/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp', '/assets/campaign/portraits/drowned_oracle-portrait-v1.webp', '/assets/campaign/portraits/iron_tyrant-portrait-v1.webp'];
     expect(promotedPaths).toHaveLength(77);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS.slice(0, expectedFinalPaths.length)).toEqual(expectedFinalPaths);
     expect(new Set(AVAILABLE_CAMPAIGN_ART_PATHS.slice(expectedFinalPaths.length))).toEqual(new Set([...additionalTowerPaths, ...promotedPaths, ...additionalSigilPaths, ...additionalPortraitPaths]));
-    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toHaveLength(139);
+    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toHaveLength(140);
     const currentFinalPaths = CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path);
-    expect(currentFinalPaths).toHaveLength(139);
+    expect(currentFinalPaths).toHaveLength(140);
     expect(currentFinalPaths.slice(0, expectedFinalPaths.length)).toEqual(expectedFinalPaths);
     expect(new Set(currentFinalPaths.slice(expectedFinalPaths.length))).toEqual(new Set([...additionalTowerPaths, ...promotedPaths, ...additionalSigilPaths, ...additionalPortraitPaths]));
     expect(contract.legacyFinalAssets).toHaveLength(43);
@@ -334,7 +334,7 @@ describe('v5 campaign registry and route verification', () => {
     expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path)).toEqual(AVAILABLE_CAMPAIGN_ART_PATHS);
     expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toHaveLength(0);
     expect([...CAMPAIGN_PROVISIONAL_STARTER_PATHS].sort()).toEqual([...PROVISIONAL_EXPANSION_PATHS].sort());
-    expect(new Set([...expectedFinalPaths, ...promotedPaths, ...additionalTowerPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...PROVISIONAL_EXPANSION_PATHS]).size).toBe(139);
+    expect(new Set([...expectedFinalPaths, ...promotedPaths, ...additionalTowerPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...PROVISIONAL_EXPANSION_PATHS]).size).toBe(140);
     const moduleName = 'node:fs';
     const { existsSync, readFileSync } = await import(moduleName);
     for (const asset of contract.legacyFinalAssets) {
