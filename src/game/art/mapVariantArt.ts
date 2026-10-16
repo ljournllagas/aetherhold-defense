@@ -1,7 +1,7 @@
 import { MAP1 } from '../maps/map1.ts';
 
 /** Selectable painted backdrop for the Classic battlefield. Classic stays default. */
-export type MapBackdropVariant = 'classic' | 'last-lantern-night';
+export type MapBackdropVariant = 'classic' | 'last-lantern-night' | 'last-lantern-dawn';
 
 /** Measured delivery bundle for the Last Lantern night backdrop. */
 export interface MapBackdropArt {
@@ -21,25 +21,47 @@ export const LAST_LANTERN_NIGHT_ART: MapBackdropArt = {
 };
 
 /**
- * On-demand loader spec for the night backdrop. It is intentionally absent
+ * Measured delivery bundle for the Last Lantern dawn backdrop. The
+ * 1673x940 master is a uniform ~0.06% stretch of the canonical frame
+ * (edge registration favored resampling over either 1px crop), so the
+ * delivery file is normalized to 1672x940 with a 1px-max displacement
+ * at the extreme right edge — far inside road and plot tolerances.
+ */
+export const LAST_LANTERN_DAWN_ART: MapBackdropArt = {
+  variant: 'last-lantern-dawn',
+  textureKey: 'map_ancient_border_keep_last_lantern_dawn',
+  path: '/assets/world/maps/ancient-border-keep-map-last-lantern-dawn-v1.webp',
+  sourceWidth: 1672,
+  sourceHeight: 940
+};
+
+const VARIANT_ART: Record<Exclude<MapBackdropVariant, 'classic'>, MapBackdropArt> = {
+  'last-lantern-night': LAST_LANTERN_NIGHT_ART,
+  'last-lantern-dawn': LAST_LANTERN_DAWN_ART
+};
+
+/**
+ * On-demand loader spec for a variant backdrop. It is intentionally absent
  * from every STAGE_ASSETS bundle so Classic gameplay never pays for it until
  * a caller explicitly requests this variant.
  */
 export function mapBackdropVariantAsset(variant: MapBackdropVariant): { kind: 'image'; key: string; path: string } | null {
-  if (variant !== LAST_LANTERN_NIGHT_ART.variant) return null;
-  return { kind: 'image', key: LAST_LANTERN_NIGHT_ART.textureKey, path: LAST_LANTERN_NIGHT_ART.path };
+  const art = variant === 'classic' ? undefined : VARIANT_ART[variant];
+  if (!art) return null;
+  return { kind: 'image', key: art.textureKey, path: art.path };
 }
 
 /**
- * Backdrop texture for a Classic battlefield. The night plate passed the
+ * Backdrop texture for a Classic battlefield. Each variant plate passed the
  * geometry gate against the accepted Classic plate and the authored
- * map1.ts route, so it reuses the exact route, plot, gate, stronghold and
- * beacon anchors. Falls back to the Classic texture whenever the variant is
- * not requested or its texture is absent.
+ * map1.ts route, so every variant reuses the exact route, plot, gate,
+ * stronghold and beacon anchors. Falls back to the Classic texture whenever
+ * the variant is not requested or its texture is absent.
  */
 export function resolveMapBackdropKey(variant: MapBackdropVariant, exists: (key: string) => boolean): string {
-  if (variant === LAST_LANTERN_NIGHT_ART.variant && exists(LAST_LANTERN_NIGHT_ART.textureKey)) {
-    return LAST_LANTERN_NIGHT_ART.textureKey;
+  const art = variant === 'classic' ? undefined : VARIANT_ART[variant];
+  if (art && exists(art.textureKey)) {
+    return art.textureKey;
   }
   return MAP1.backgroundKey;
 }
