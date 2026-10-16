@@ -13,6 +13,7 @@ import {
   INTERVAL_FACTORS
 } from '../src/game/config/evolutions.ts';
 import { CAMPAIGN_SPECIALIZATIONS } from '../src/game/campaign/specializations.ts';
+import { effectiveStats, initialEvolution } from '../src/game/systems/EvolutionSystem.ts';
 
 function totalInvested(towerId: 'sentinel' | 'cinder', level: number): number {
   const t = TOWERS[towerId];
@@ -32,6 +33,17 @@ describe('additional tower foundations', () => {
     for (const t of [TOWERS.sentinel, TOWERS.cinder]) {
       for (const lvl of t.levels) expect(lvl.damageType).toBe(t.damageType);
     }
+  });
+  it('sentinel foundation carries +25% boss damage without evolving', () => {
+    for (const lvl of TOWERS.sentinel.levels) expect(lvl.bossDamageMultiplier).toBe(1.25);
+    expect(effectiveStats('sentinel', initialEvolution('sentinel')).bossDamageMultiplier).toBe(1.25);
+    const l4 = TOWERS.sentinel.levels[3];
+    expect((l4.damage / l4.attackInterval) * 1.25).toBeGreaterThan(85 / 0.32); // beats ranger L4 vs bosses
+  });
+  it('cinder foundation damage rises ~40% while staying below ember', () => {
+    expect(TOWERS.cinder.levels.map((l) => l.damage)).toEqual([17, 31, 59, 123]);
+    const l4 = TOWERS.cinder.levels[3];
+    expect(l4.damage / l4.attackInterval).toBeGreaterThan((200 / 1.15) * 0.5); // no longer less than half of ember
   });
   it('sentinel loses base DPS but wins vs bosses via deadeye x2', () => {
     const l4 = TOWERS.sentinel.levels[3];
@@ -92,7 +104,7 @@ describe('additional evolutions mirror core factors', () => {
     expect(refundForInvested(1035)).toBe(Math.floor(1035 * 0.7));
     expect(Math.ceil(3840 * 1.25)).toBe(4800);
     expect(Math.ceil(3760 * 1.25)).toBe(4700);
-    expect(Math.round(958 * 1.05)).toBe(Math.round(958 * (1 + EVOLUTION_RULES.masteryGain)));
+    expect(Math.round(EVOLUTIONS.deadeye.stats[3].damage * 1.05)).toBe(Math.round(EVOLUTIONS.deadeye.stats[3].damage * (1 + EVOLUTION_RULES.masteryGain)));
   });
 });
 

@@ -98,7 +98,7 @@ export const TOWERS: Record<string, TowerConfig> = {
   sentinel: {
     id: 'sentinel',
     name: 'Sentinel',
-    description: 'Slow execution bolts. Hunts bosses, weak vs packs.',
+    description: 'Slow execution bolts, +25% vs bosses. Weak vs packs.',
     role: 'EXEC',
     color: 0xd7aa4e,
     damageType: 'physical',
@@ -107,10 +107,10 @@ export const TOWERS: Record<string, TowerConfig> = {
     projectileSpeed: 430,
     sellRefundRate: SELL_REFUND_RATE,
     levels: [
-      { damage: 30, range: 150, attackInterval: 1.4, damageType: 'physical', cost: 150 },
-      { damage: 55, range: 155, attackInterval: 1.3, damageType: 'physical', cost: 135 },
-      { damage: 105, range: 165, attackInterval: 1.15, damageType: 'physical', cost: 270 },
-      { damage: 210, range: 180, attackInterval: 1.0, damageType: 'physical', cost: 480 }
+      { damage: 30, range: 150, attackInterval: 1.4, damageType: 'physical', bossDamageMultiplier: 1.25, cost: 150 },
+      { damage: 55, range: 155, attackInterval: 1.3, damageType: 'physical', bossDamageMultiplier: 1.25, cost: 135 },
+      { damage: 105, range: 165, attackInterval: 1.15, damageType: 'physical', bossDamageMultiplier: 1.25, cost: 270 },
+      { damage: 250, range: 180, attackInterval: 1.0, damageType: 'physical', bossDamageMultiplier: 1.25, cost: 480 }
     ]
   },
   cinder: {
@@ -125,10 +125,10 @@ export const TOWERS: Record<string, TowerConfig> = {
     projectileSpeed: 260,
     sellRefundRate: SELL_REFUND_RATE,
     levels: [
-      { damage: 12, range: 130, attackInterval: 1.6, damageType: 'elemental', splashRadius: 60, cost: 150 },
-      { damage: 22, range: 138, attackInterval: 1.5, damageType: 'elemental', splashRadius: 66, cost: 130 },
-      { damage: 42, range: 148, attackInterval: 1.35, damageType: 'elemental', splashRadius: 74, cost: 250 },
-      { damage: 88, range: 162, attackInterval: 1.2, damageType: 'elemental', splashRadius: 88, cost: 470 }
+      { damage: 17, range: 130, attackInterval: 1.6, damageType: 'elemental', splashRadius: 60, cost: 150 },
+      { damage: 31, range: 138, attackInterval: 1.5, damageType: 'elemental', splashRadius: 66, cost: 130 },
+      { damage: 59, range: 148, attackInterval: 1.35, damageType: 'elemental', splashRadius: 74, cost: 250 },
+      { damage: 123, range: 162, attackInterval: 1.2, damageType: 'elemental', splashRadius: 88, cost: 470 }
     ]
   }
 };

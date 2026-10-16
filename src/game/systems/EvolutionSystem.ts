@@ -43,9 +43,10 @@ function masteryDamage(branchId: BranchId, masteryRank: number): number {
 
 export function effectiveStats(id: TowerId, state: EvolutionState): EffectiveTowerStats {
   if (state.branchId === null || state.rank === null) {
+    const foundation = TOWERS[id].levels[state.foundationLevel - 1];
     return {
-      ...TOWERS[id].levels[state.foundationLevel - 1],
-      bossDamageMultiplier: 1, physicalArmorScale: 1, wardArmorScale: 1, volleyTargets: 1, burningField: false,
+      ...foundation,
+      bossDamageMultiplier: foundation.bossDamageMultiplier ?? 1, physicalArmorScale: 1, wardArmorScale: 1, volleyTargets: 1, burningField: false,
       vulnerabilityMultiplier: 1, vulnerabilityMs: 0, auraDamageMultiplier: 1, auraRange: 0, control: null, controlMs: 0, bossControlMs: 0
     };
   }

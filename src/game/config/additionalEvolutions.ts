@@ -104,5 +104,5 @@ export const ADDITIONAL_ALTERNATIVE_BRANCH: Readonly<Record<AdditionalTowerId, A
 // Derived reference (computed by same formula — asserted in tests):
 // sentinel L4 480 -> evo costs [720, 960, 1320, 3840], total w/ foundation 7875.
 // cinder L4 470 -> evo costs [705, 940, 1293, 3760], total w/ foundation 7698.
-// deadeye R0-R3 dmg [340, 439, 737, 958], headhunter [189, 244, 410, 532],
-// pyre [79, 102, 172, 223], contagion [63, 82, 137, 178].
+// deadeye R0-R3 dmg [405, 523, 878, 1141], headhunter [225, 291, 488, 634],
+// pyre [111, 143, 240, 312], contagion [89, 114, 192, 249].

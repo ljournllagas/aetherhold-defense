@@ -30,6 +30,7 @@ export interface TowerLevelStats {
   slowFactor?: number; // 0..1 (e.g. 0.4 = 40% slow)
   slowDuration?: number;
   chainCount?: number;
+  bossDamageMultiplier?: number; // vs bosses (e.g. Sentinel execution bolts)
   cost: number; // cost to buy (lvl1) or upgrade to this level
 }
 
