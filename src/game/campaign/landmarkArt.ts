@@ -70,6 +70,15 @@ export const WORLD_LANDMARK_ART: Readonly<Record<string, WorldLandmarkArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 134, top: 44, width: 994, height: 1102, bottom: 1145 }
+  },
+  ironroot: {
+    landmarkId: 'landmark:ironroot',
+    worldId: 'ironroot',
+    textureKey: 'campaign_landmark_ironroot',
+    path: '/assets/world/landmarks/landmark-ironroot-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 143, top: 68, width: 1005, height: 1105, bottom: 1172 }
   }
 };
 

@@ -271,6 +271,9 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
     ['landmark_decoration', 'transparent_png_required', 'cosmetic_only', 'non_obstructive'], 'final', null),
   imageSource(`landmark:sunken_aether`, `campaign_landmark_sunken_aether`,
     `/assets/world/landmarks/landmark-sunken_aether-v1.webp`, 1254, 1254, 'campaign',
+    ['landmark_decoration', 'transparent_png_required', 'cosmetic_only', 'non_obstructive'], 'final', null),
+  imageSource(`landmark:ironroot`, `campaign_landmark_ironroot`,
+    `/assets/world/landmarks/landmark-ironroot-v1.webp`, 1254, 1254, 'campaign',
     ['landmark_decoration', 'transparent_png_required', 'cosmetic_only', 'non_obstructive'], 'final', null)
 ];
 
@@ -324,7 +327,8 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
   '/assets/world/landmarks/landmark-emberfall-v1.webp',
   '/assets/world/landmarks/landmark-frostveil-v1.webp',
   '/assets/world/landmarks/landmark-whisperfen-v1.webp',
-  '/assets/world/landmarks/landmark-sunken_aether-v1.webp'
+  '/assets/world/landmarks/landmark-sunken_aether-v1.webp',
+  '/assets/world/landmarks/landmark-ironroot-v1.webp'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
