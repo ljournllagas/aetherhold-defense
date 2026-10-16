@@ -79,6 +79,15 @@ export const WORLD_LANDMARK_ART: Readonly<Record<string, WorldLandmarkArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 143, top: 68, width: 1005, height: 1105, bottom: 1172 }
+  },
+  sky_isles: {
+    landmarkId: 'landmark:sky_isles',
+    worldId: 'sky_isles',
+    textureKey: 'campaign_landmark_sky_isles',
+    path: '/assets/world/landmarks/landmark-sky_isles-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 265, top: 30, width: 848, height: 1180, bottom: 1209 }
   }
 };
 

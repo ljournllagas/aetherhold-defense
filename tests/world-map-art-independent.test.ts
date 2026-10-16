@@ -50,7 +50,8 @@ describe('independent campaign world-map art acceptance', () => {
       { kind: 'image' as const, key: 'campaign_landmark_frostveil', path: '/assets/world/landmarks/landmark-frostveil-v1.webp' },
       { kind: 'image' as const, key: 'campaign_landmark_whisperfen', path: '/assets/world/landmarks/landmark-whisperfen-v1.webp' },
       { kind: 'image' as const, key: 'campaign_landmark_sunken_aether', path: '/assets/world/landmarks/landmark-sunken_aether-v1.webp' },
-      { kind: 'image' as const, key: 'campaign_landmark_ironroot', path: '/assets/world/landmarks/landmark-ironroot-v1.webp' }
+      { kind: 'image' as const, key: 'campaign_landmark_ironroot', path: '/assets/world/landmarks/landmark-ironroot-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_landmark_sky_isles', path: '/assets/world/landmarks/landmark-sky_isles-v1.webp' }
     ]);
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:astral_rift')).toMatchObject({
       path: '/assets/campaign/world-map/astral_rift-v2.webp', state: 'final', temporary: null

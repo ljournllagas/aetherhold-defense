@@ -43,7 +43,7 @@ describe('ironroot world landmark decoration', () => {
     expect(LANDMARK.path).toBe('/assets/world/landmarks/landmark-ironroot-v1.webp');
     expect(LANDMARK.sourceWidth).toBe(1254);
     expect(LANDMARK.sourceHeight).toBe(1254);
-    expect(landmarkFor('sky_isles')).toBeNull();
+    expect(landmarkFor('dreadmoon')).toBeNull();
     expect(landmarkFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'landmark:ironroot')).toMatchObject({
       key: LANDMARK.textureKey, path: LANDMARK.path,
@@ -116,7 +116,7 @@ describe('ironroot world landmark decoration', () => {
     expect(addLandmarkDecoration(cold.scene, cold.parent, 'ironroot', 100, 50, 96)).toBeNull();
     expect(cold.added).toHaveLength(0);
     const unknown = fakeRender([LANDMARK.textureKey]);
-    expect(addLandmarkDecoration(unknown.scene, unknown.parent, 'sky_isles', 100, 50, 96)).toBeNull();
+    expect(addLandmarkDecoration(unknown.scene, unknown.parent, 'dreadmoon', 100, 50, 96)).toBeNull();
     expect(unknown.added).toHaveLength(0);
   });
 
