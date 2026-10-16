@@ -42,6 +42,14 @@ export const BOSS_PORTRAIT_ART: Readonly<Record<string, BossPortraitArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     focal: { left: 590, top: 360, width: 430, height: 430 }
+  },
+  frostbound_matriarch: {
+    bossId: 'frostbound_matriarch',
+    textureKey: 'campaign_portrait_frostbound_matriarch',
+    path: '/assets/campaign/portraits/frostbound_matriarch-portrait-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 385, top: 275, width: 430, height: 430 }
   }
 };
 

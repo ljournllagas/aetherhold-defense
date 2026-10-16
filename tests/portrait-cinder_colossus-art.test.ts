@@ -41,7 +41,7 @@ describe('cinder colossus boss portrait', () => {
     expect(PORTRAIT.textureKey).toBe('campaign_portrait_cinder_colossus');
     expect(PORTRAIT.path).toBe('/assets/campaign/portraits/cinder_colossus-portrait-v1.webp');
     for (const world of CAMPAIGN_WORLDS) {
-      if (world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'hollow_warden') continue;
+      if (world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'frostbound_matriarch') continue;
       expect(bossPortraitFor(world.bossEnemyId)).toBeNull();
     }
   });
@@ -104,7 +104,7 @@ describe('cinder colossus boss portrait', () => {
     expect(addBossPortrait(cold.scene, cold.parent, 'cinder_colossus', 60, 60, 96)).toBeNull();
     expect(cold.added).toHaveLength(0);
     const unknown = fakeRender([PORTRAIT.textureKey]);
-    expect(addBossPortrait(unknown.scene, unknown.parent, 'frostbound_matriarch', 60, 60, 96)).toBeNull();
+    expect(addBossPortrait(unknown.scene, unknown.parent, 'mireheart_hydra', 60, 60, 96)).toBeNull();
     expect(unknown.added).toHaveLength(0);
   });
 
