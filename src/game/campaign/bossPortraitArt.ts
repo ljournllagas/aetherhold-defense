@@ -90,6 +90,14 @@ export const BOSS_PORTRAIT_ART: Readonly<Record<string, BossPortraitArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     focal: { left: 440, top: 140, width: 430, height: 430 }
+  },
+  rift_sovereign: {
+    bossId: 'rift_sovereign',
+    textureKey: 'campaign_portrait_rift_sovereign',
+    path: '/assets/campaign/portraits/rift_sovereign-portrait-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 480, top: 300, width: 430, height: 430 }
   }
 };
 

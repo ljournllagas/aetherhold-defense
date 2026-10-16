@@ -41,7 +41,7 @@ describe('mireheart hydra boss portrait', () => {
     expect(PORTRAIT.textureKey).toBe('campaign_portrait_mireheart_hydra');
     expect(PORTRAIT.path).toBe('/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp');
     for (const world of CAMPAIGN_WORLDS) {
-      if (world.bossEnemyId === 'mireheart_hydra' || world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'frostbound_matriarch' || world.bossEnemyId === 'drowned_oracle' || world.bossEnemyId === 'iron_tyrant' || world.bossEnemyId === 'stormmaw_prime' || world.bossEnemyId === 'umbral_regent') continue;
+      if (world.bossEnemyId === 'mireheart_hydra' || world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'frostbound_matriarch' || world.bossEnemyId === 'drowned_oracle' || world.bossEnemyId === 'iron_tyrant' || world.bossEnemyId === 'stormmaw_prime' || world.bossEnemyId === 'umbral_regent' || world.bossEnemyId === 'rift_sovereign') continue;
       expect(bossPortraitFor(world.bossEnemyId)).toBeNull();
     }
   });
@@ -104,7 +104,7 @@ describe('mireheart hydra boss portrait', () => {
     expect(addBossPortrait(cold.scene, cold.parent, 'mireheart_hydra', 60, 60, 96)).toBeNull();
     expect(cold.added).toHaveLength(0);
     const unknown = fakeRender([PORTRAIT.textureKey]);
-    expect(addBossPortrait(unknown.scene, unknown.parent, 'rift_sovereign', 60, 60, 96)).toBeNull();
+    expect(addBossPortrait(unknown.scene, unknown.parent, 'aether_devourer', 60, 60, 96)).toBeNull();
     expect(unknown.added).toHaveLength(0);
   });
 
