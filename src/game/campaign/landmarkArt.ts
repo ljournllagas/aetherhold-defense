@@ -88,6 +88,15 @@ export const WORLD_LANDMARK_ART: Readonly<Record<string, WorldLandmarkArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 265, top: 30, width: 848, height: 1180, bottom: 1209 }
+  },
+  dreadmoon: {
+    landmarkId: 'landmark:dreadmoon',
+    worldId: 'dreadmoon',
+    textureKey: 'campaign_landmark_dreadmoon',
+    path: '/assets/world/landmarks/landmark-dreadmoon-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 166, top: 67, width: 944, height: 1119, bottom: 1185 }
   }
 };
 

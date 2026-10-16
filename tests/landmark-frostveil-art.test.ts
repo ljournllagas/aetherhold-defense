@@ -43,7 +43,7 @@ describe('frostveil world landmark decoration', () => {
     expect(LANDMARK.path).toBe('/assets/world/landmarks/landmark-frostveil-v1.webp');
     expect(LANDMARK.sourceWidth).toBe(1254);
     expect(LANDMARK.sourceHeight).toBe(1254);
-    expect(landmarkFor('dreadmoon')).toBeNull();
+    expect(landmarkFor('astral_rift')).toBeNull();
     expect(landmarkFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'landmark:frostveil')).toMatchObject({
       key: LANDMARK.textureKey, path: LANDMARK.path,
