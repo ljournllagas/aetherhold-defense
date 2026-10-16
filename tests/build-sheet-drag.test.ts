@@ -66,7 +66,7 @@ it('shows every tower portrait side by side in the build grid', () => {
   expect(rowY[5]).toBe(rowY[6]);
 });
 
-it('starts a tray drag from a sheet portrait and closes the sheet', () => {
+it('tapping a sheet portrait previews its details without closing the sheet', () => {
   const run = makeSheetRun();
   run.openSheet('build');
   const portrait = run.images[0];
@@ -74,22 +74,45 @@ it('starts a tray drag from a sheet portrait and closes the sheet', () => {
   expect(down).toBeDefined();
   const pointer: any = { id: 7, x: 36, y: 80, wasTouch: true };
   down(pointer, 0, 0, { stopPropagation() {} });
-  expect(run.sheetKind).toBeNull();
-  expect(run.trayOwner).toBe(7);
+  // Tap fills the detail strip; gold is never committed by browsing.
+  expect(run.sheetKind).toBe('build');
+  expect(run.towerPreviewId).toBe(TOWER_LIST[0].id);
   expect(run.placingTowerId).toBeNull();
-  // Drag continues through the normal tray gesture: dragging upward out of the
-  // sheet starts ghost targeting for that tower.
-  run.handlePointerMove({ ...pointer, x: 40, y: 20, isDown: true });
+  expect(run.towers ?? []).toHaveLength(0);
+});
+
+it('the sheet Build action arms placement and closes the sheet', () => {
+  const run = makeSheetRun();
+  run.openSheet('build');
+  run.images[0].handlers.get('pointerdown')({ id: 7, x: 36, y: 80, wasTouch: true }, 0, 0, { stopPropagation() {} });
+  const build = (run.sheet.controls as any[]).find((control: any) => String(control.text.text).startsWith('Build '));
+  expect(build).toBeDefined();
+  expect(String(build.text.text)).toContain(`Build ${TOWER_LIST[0].name}`);
+  expect(run.commitBuildPreview()).toBe(true);
+  expect(run.sheetKind).toBeNull();
   expect(run.placingTowerId).toBe(TOWER_LIST[0].id);
 });
 
-it('arms placement for towers the run cannot afford yet', () => {
+it('the sheet Build commit refuses towers the run cannot afford', () => {
+  const run = makeSheetRun();
+  run.gold = 0;
+  run.openSheet('build');
+  expect(run.commitBuildPreview()).toBe(false);
+  expect(run.sheetKind).toBe('build');
+  expect(run.placingTowerId).toBeNull();
+});
+
+it('unaffordable towers preview with a disabled Build action', () => {
   const run = makeSheetRun();
   run.gold = 0;
   run.openSheet('build');
   const portrait = run.images[0];
   portrait.handlers.get('pointerdown')({ id: 9, x: 36, y: 80, wasTouch: true }, 0, 0, { stopPropagation() {} });
-  expect(run.sheetKind).toBeNull();
+  // Preview always works; Build gates on gold instead of arming placement.
+  expect(run.sheetKind).toBe('build');
+  expect(run.towerPreviewId).toBe(TOWER_LIST[0].id);
   expect(run.trayOwner).toBeNull();
-  expect(run.placingTowerId).toBe(TOWER_LIST[0].id);
+  expect(run.placingTowerId).toBeNull();
+  const build = (run.sheet.controls as any[]).find((control: any) => String(control.text.text).startsWith('Build '));
+  expect(String(build.text.text)).toContain('Need');
 });

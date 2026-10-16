@@ -74,6 +74,7 @@ import { EvolutionCombat, chainShot, nextChainTarget, volleyTargets } from '../s
 import { purchaseEvolution, effectiveStats, initialEvolution, investedRefund, previewPurchaseStats, PURCHASE_REASON_TEXT, type PurchaseContext, type PurchaseIntent } from '../systems/EvolutionSystem.ts';
 import { unlockRepository as sharedUnlockRepository, earnedBranches, SAVE_FAILED_WARNING, UNLOCK_STORAGE_KEY, type UnlockRepository } from '../systems/UnlockSystem.ts';
 import { formatStat, towerProgressionView, wavePresentation } from '../ui/progressionView.ts';
+import { towerBuildDetail, towerDetailCostLine, towerDetailSpecialLine, towerDetailStatsLine } from '../ui/towerDetails.ts';
 import type { BranchId, RunOutcome, ShotSnapshot } from '../../shared/progression.ts';
 import { CampaignBattle, CAMPAIGN_BATTLE_TUNING, campaignTowerStats, specializeShot, type CampaignShot, type CampaignSpawn } from '../campaign/battle.ts';
 import { CAMPAIGN_BOSS_PHASE_LABELS, CampaignBossSystem, CAMPAIGN_BOSS_TUNING, type CampaignBossPhaseLabel } from '../campaign/bosses.ts';
@@ -170,12 +171,21 @@ export class GameScene extends Phaser.Scene {
     if(intent.type==='scroll'){this.towerTray?.scrollBy(intent.dx);return;}
     if(intent.type==='cancel'){this.cancelGesture();return;}
     if(intent.type==='select'){
-      this.touchMode=true;this.placingTowerId=intent.towerId;this.selectedTower=null;this.touchPreview=null;
-      this.refreshInfoPanel();this.refreshPlots();this.showTouchPreview();return;
+      // Tap previews first; a second tap on the same tower arms placement.
+      // Drag still takes the fast path below, so mouse/stylus browsing never
+      // spends gold by accident.
+      if(this.towerPreviewId===intent.towerId&&this.placingTowerId!==intent.towerId){
+        this.touchMode=true;this.placingTowerId=intent.towerId;this.selectedTower=null;this.touchPreview=null;
+        this.refreshInfoPanel();this.refreshPlots();this.refreshPreviewPanel();this.refreshPlacePanel();this.showTouchPreview();return;
+      }
+      this.touchMode=true;this.towerPreviewId=intent.towerId;this.selectedTower=null;
+      this.towerTray?.refresh(this.gold,this.towerPreviewId);
+      this.refreshInfoPanel();this.refreshPlots();this.refreshPreviewPanel();this.refreshPlacePanel();return;
     }
     if(intent.type==='drag'){
       const changed=this.placingTowerId!==intent.towerId;
       this.placingTowerId=intent.towerId;this.selectedTower=null;this.trayDrag=intent;
+      this.towerPreviewId=null;this.refreshPreviewPanel();
       if(changed)this.refreshPlots();
       this.infoPanel?.destroy(true);this.infoPanel=null;this.compactInspectorBounds=null;
       this.confirmStrip?.destroy(true);this.confirmStrip=null;this.touchPreview=null;
@@ -184,11 +194,11 @@ export class GameScene extends Phaser.Scene {
       this.updateGhost(point.x,point.y);return;
     }
     this.trayDrag=null;this.placingTowerId=null;
-    if(!this.cameraView.inField(intent.point)||this.overBattleControls(intent.point)||this.isRunBlocked()){this.hideGhost();return;}
+    if(!this.cameraView.inField(intent.point)||this.overBattleControls(intent.point)||this.isRunBlocked()){this.hideGhost();this.refreshPreviewPanel();return;}
     const plot=this.cameraView.nearest(this.map.buildable,intent.anchor,28);
     if(plot>=0)this.tryBuild(intent.towerId,plot);
     else this.showBanner('Drop onto a build circle.',C.gold);
-    this.hideGhost();this.refreshPlots();
+    this.hideGhost();this.refreshPlots();this.refreshPreviewPanel();
   }
   private touchMode = false;
   private sheet: ScrollSheet | null = null;
@@ -259,6 +269,9 @@ export class GameScene extends Phaser.Scene {
   // selection / placement
   private selectedTower: Tower | null = null;
   private placingTowerId: string | null = null;
+  /** Build browsing preview: tap fills the detail strip, Build/drag commits. */
+  private towerPreviewId: TowerId | null = null;
+  private previewPanel: Phaser.GameObjects.Container | null = null;
 
   // rendering refs
   private hudWaveLabel: Phaser.GameObjects.Text | null = null;
@@ -341,6 +354,7 @@ export class GameScene extends Phaser.Scene {
       const index = this.cameraView.nearest(this.towers, screen, Math.max(22, 24 * this.cameraView.scale));
       const t = touch ? this.towers[index] ?? null : this.towerAt(point.x, point.y);
       this.selectedTower = t;
+      if (t) { this.towerPreviewId = null; this.refreshPreviewPanel(); }
       if (!this.layout.inspector) this.sheetKind = null;
       this.refreshInfoPanel();
     }
@@ -400,7 +414,8 @@ export class GameScene extends Phaser.Scene {
     if(event.repeat||this.isRunBlocked()||this.modal||this.sheetKind||target?.isContentEditable||['INPUT','TEXTAREA','SELECT'].includes(target?.tagName??''))return;
     if(/^[1-7]$/.test(event.key)){
       this.cancelGesture();this.touchMode=true;this.selectedTower=null;this.placingTowerId=TOWER_LIST[Number(event.key)-1].id;
-      this.refreshPlots();this.showTouchPreview();return;
+      this.towerPreviewId=null;this.refreshPreviewPanel();
+      this.refreshInfoPanel();this.refreshPlots();this.refreshPlacePanel();this.showTouchPreview();return;
     }
     if(!this.placingTowerId)return;
     if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){
@@ -484,6 +499,8 @@ export class GameScene extends Phaser.Scene {
     this.scheduledBossIds = new Map(); this.victoryPanel = null;
     this.selectedTower = null;
     this.placingTowerId = null;
+    this.towerPreviewId = null;
+    this.previewPanel = null;
     this.worldRoot = null;
     this.fieldMask = null;
     this.uiRoot = null;
@@ -620,10 +637,24 @@ export class GameScene extends Phaser.Scene {
     if (this.modal || this.pauseState.has('background')) return;
     if (this.pendingMeteor && (kind === 'build' || kind === 'tower')) return;
     this.cancelGesture();
-    if (kind === 'build') this.selectedTower = null;
+    if (kind === 'build') {
+      this.selectedTower = null;
+      if (!this.towerPreviewId || !isTowerId(this.towerPreviewId)) this.towerPreviewId = TOWER_LIST[0].id as TowerId;
+    }
     this.sheetKind = this.sheetKind === kind ? null : kind;
     this.pauseState.set('details',['tower','evolve','help','progression'].includes(this.sheetKind??''));
     this.drawSheet(); this.showTouchPreview();
+  }
+  /** Commit the Build-sheet preview: close the sheet and arm placement. */
+  private commitBuildPreview(): boolean {
+    const previewId = this.towerPreviewId;
+    const detail = previewId ? towerBuildDetail(previewId) : null;
+    if (!detail || this.gold < detail.cost || this.isRunBlocked() || this.modal || this.pendingMeteor) return false;
+    this.sheetKind = null; this.drawSheet();
+    this.touchMode = true; this.placingTowerId = previewId; this.selectedTower = null; this.touchPreview = null;
+    this.towerPreviewId = null; this.refreshPreviewPanel();
+    this.refreshInfoPanel(); this.refreshPlots(); this.refreshPlacePanel(); this.showTouchPreview();
+    return true;
   }
   private detailsPurchaseContext():PurchaseContext {
     return {...this.purchaseContext(),blocked:this.ended||this.siege.phase==='victory'||this.siege.phase==='terminal'||this.pauseState.blockedExcept('details')};
@@ -671,10 +702,12 @@ export class GameScene extends Phaser.Scene {
       if(!this.campaign&&this.progressionTab==='classic')for(const a of achievementViews(this.unlockRepository.view(),this.towers,this.wavesCompleted)){if(a.earned)continue;const t=sheet.text(y,`${TOWERS[a.towerId].name}: ${this.wavesCompleted>=20?`Try in a new Classic run. ${missedAchievementDetail(a.towerId,this.towers)}`:a.qualifiesNow?`On track · Wave ${this.wavesCompleted}/20`:'Build the starter branch and reach rank 2 before completing wave 20.'}`);y+=t.height+12;}
       sheet.action(y,'Back to battle',()=>this.closeDetails());
     }else if (kind === 'build') {
-      // Horizontal card grid: portraits side by side. Tap a card to arm
-      // placement, drag it onto a build circle to place directly. Four columns
-      // keep Tempest, Sentinel and Cinder on one row instead of orphaning the
-      // last tower; wide sheets fit all seven in a single row.
+      // Horizontal card grid: portraits side by side. Tap a card to preview
+      // its description and strengths below; Build commits, drag on the tray
+      // keeps the fast path. Four columns keep Tempest, Sentinel and Cinder
+      // on one row instead of orphaning the last tower; wide sheets fit all
+      // seven in a single row.
+      if (!this.towerPreviewId || !isTowerId(this.towerPreviewId)) this.towerPreviewId = TOWER_LIST[0].id as TowerId;
       const gridWidth = bounds.width - 24;
       const cols = bounds.width >= 560 ? 7 : bounds.width >= 340 ? 4 : 3;
       const gap = 8;
@@ -689,26 +722,33 @@ export class GameScene extends Phaser.Scene {
         const xOffset = ((cols - rowItems) * (cardW + gap)) / 2;
         const cardX = 12 + xOffset + (index % cols) * (cardW + gap);
         const cardY = row * (cardH + gap);
+        const previewed = this.towerPreviewId === cfg.id;
         const card = sheet.gridCard(cardX, cardY, cardW, towerPortraitKey(cfg.id),
-          cfg.name, affordable ? C.textPrimary : C.textSecondary,
+          `${previewed ? '▶ ' : ''}${cfg.name}`, previewed ? C.gold : affordable ? C.textPrimary : C.textSecondary,
           `${formatCount(cfg.levels[0].cost)} gold`, affordable ? C.gold : C.textSecondary);
         card.image.setAlpha(affordable ? 1 : 0.55).setInteractive({ useHandCursor: true });
-        card.image.on('pointerdown', (p: Phaser.Input.Pointer, _x: number, _y: number, e: Phaser.Types.Input.EventData) => {
+        card.image.on('pointerdown', (_p: Phaser.Input.Pointer, _x: number, _y: number, e: Phaser.Types.Input.EventData) => {
           e.stopPropagation();
           if (!isTowerId(cfg.id)) return;
-          if (this.gold < cfg.levels[0].cost) {
-            // Cannot afford: arm placement anyway so the preview explains the cost.
-            this.placingTowerId = cfg.id; this.touchPreview = null; this.sheetKind = null;
-            this.drawSheet(); this.refreshPlots(); this.showTouchPreview();
-            return;
-          }
-          if (this.isRunBlocked() || this.modal || this.pendingMeteor) return;
-          // Drag out of the sheet onto a build circle: close it, then run the
-          // normal tray drag gesture from this pointer.
-          this.sheetKind = null; this.drawSheet(); this.showTouchPreview();
-          this.beginTowerDrag(this.pointerTrayInput(p), cfg.id);
+          this.towerPreviewId = cfg.id;
+          this.drawSheet();
         });
       });
+      const rows = Math.ceil(total / cols);
+      let detailY = rows * (cardH + gap) + 8;
+      const detail = this.towerPreviewId ? towerBuildDetail(this.towerPreviewId) : null;
+      if (detail) {
+        const cost = towerDetailCostLine(detail, this.gold);
+        const title = sheet.text(detailY, `${detail.name} · ${detail.role}`, C.gold, 16); detailY += title.height + 8;
+        const description = sheet.text(detailY, detail.description, C.textSecondary, 14); detailY += description.height + 8;
+        const stats = sheet.text(detailY, towerDetailStatsLine(detail), C.textPrimary, 14); detailY += stats.height + 4;
+        const special = towerDetailSpecialLine(detail);
+        if (special) { const specialText = sheet.text(detailY, special, C.textSecondary, 13); detailY += specialText.height + 4; }
+        const costText = sheet.text(detailY, cost.text, cost.affordable ? C.gold : C.textSecondary, 14); detailY += costText.height + 12;
+        sheet.action(detailY, cost.affordable ? `Build ${detail.name} · ${formatCount(detail.cost)} gold` : `Build ${detail.name} · Need ${formatCount(detail.cost - this.gold)} more`, () => {
+          this.commitBuildPreview();
+        }, cost.affordable ? 'primary' : 'secondary', cost.affordable);
+      }
     } else if (kind === 'evolve' && this.selectedTower) {
       this.drawProgressionModel(sheet, this.selectedTower, 0);
     } else if (kind === 'tower' && this.selectedTower) {
@@ -774,6 +814,13 @@ export class GameScene extends Phaser.Scene {
     line(view.title, C.gold);
     line(view.role, C.textSecondary, 16);
     line(`Damage ${formatStat('damage', st.damage)} · Range ${formatStat('range', st.range)} · Attack ${formatStat('attackInterval', st.attackInterval)}s · ${st.damageType}`);
+    {
+      const specials: string[] = [];
+      if (st.splashRadius) specials.push(`Splash ${formatStat('splashRadius', st.splashRadius)}`);
+      if (st.chainCount) specials.push(`Chain ${st.chainCount}`);
+      if (st.slowFactor) specials.push(`Slow ${Math.round(st.slowFactor * 100)}%${st.slowDuration !== undefined ? ` for ${formatQuantity(st.slowDuration, 1)}s` : ''}`);
+      if (specials.length) line(specials.join(' · '), C.textSecondary, 14);
+    }
     line('Lower seconds means faster firing.');
     const next = view.actions[0]?.nextStats ?? null;
     if (next) {
@@ -939,7 +986,7 @@ export class GameScene extends Phaser.Scene {
     this.bottomCommandObjects = [];
     this.nextPreview = null; this.confirmStrip = null;
     this.floaters = [];
-    this.infoPanel = null; this.idleInspector = null; this.towerCommands = null; this.placePanel = null; this.powerupRow = null; this.catalog = null;
+    this.infoPanel = null; this.idleInspector = null; this.towerCommands = null; this.placePanel = null; this.previewPanel = null; this.powerupRow = null; this.catalog = null;
     this.bossBar = null; this.bossBarHp = null; this.bossBarText = null; this.bossBarFill = null;
     this.bossBarBackdrop = null; this.bossBarTrack = null; this.bossPanelHeight = 0;
     this.bossBarTextWrapWidth = 0;
@@ -951,7 +998,7 @@ export class GameScene extends Phaser.Scene {
     }
     for (const view of [...this.towers.map(t => t.view), ...this.enemies.map(e => e.view), this.ghost]) if (view) this.projectEntity(view);
     this.drawHUD(); this.drawTowerPanel(); this.drawControls(); this.drawPowerupBar(); this.drawBossBar();
-    this.refreshInfoPanel(); this.refreshPlacePanel(); this.updateNextPreview(); this.updateHUD();
+    this.refreshInfoPanel(); this.refreshPlacePanel(); this.refreshPreviewPanel(); this.updateNextPreview(); this.updateHUD();
     this.drawSheet(scrollOffset); this.showTouchPreview();
     if (this.campaignResult) this.renderCampaignResult();
     else if (this.siege.phase === 'victory') this.renderVictory();
@@ -1279,10 +1326,12 @@ export class GameScene extends Phaser.Scene {
 
   private onEscape(): void {
     if(this.pauseState.has('details')){this.closeDetails();return;}
-    const wasPlacing=this.placingTowerId;this.cancelGesture();
+    const wasPlacing=this.placingTowerId;const wasPreview=this.towerPreviewId;this.cancelGesture();
+    this.towerPreviewId=null;this.refreshPreviewPanel();
     if (this.modal) { if (this.modal.getData('pauseMenu') === true) this.togglePauseMenu(); return; }
     if (this.pendingMeteor) { this.vault.cancelTarget(); this.storeAfterTarget = false; this.hideGhost(); this.showTouchPreview(); this.presentReward(); this.updateHUD(); }
     else if (wasPlacing) { this.refreshPlots(); this.refreshPlacePanel(); this.drawCatalog(); }
+    else if (wasPreview) { this.refreshPlots(); this.drawCatalog(); }
     else if (this.selectedTower) { this.selectedTower = null; this.refreshInfoPanel(); }
     else { this.catalogOpen = false; this.drawCatalog(); }
   }
@@ -1633,7 +1682,7 @@ export class GameScene extends Phaser.Scene {
         return;
       }
       this.towerTray=new TowerTray(this,this.uiRoot!,this.layout.trayBounds,(input,id)=>this.beginTowerDrag(input,id));
-      this.towerTray.refresh(this.gold,this.placingTowerId as TowerId|null);
+      this.towerTray.refresh(this.gold,(this.placingTowerId ?? this.towerPreviewId) as TowerId|null);
       const {x:waveX,y:waveY,width:waveWidth,height}=this.layout.waveBounds;
       addBottomCommand(() => panel(this,this.uiRoot!,waveX,waveY,waveWidth,height));
       addBottomCommand(() => button(this,this.uiRoot!,waveX+4,waveY+8,54,'Relics',()=>this.openSheet('relics')));
@@ -1916,14 +1965,46 @@ export class GameScene extends Phaser.Scene {
     if (!this.layout.inspector) { this.showTouchPreview(); return; }
     this.placePanel?.destroy(true); this.placePanel = null;
     if (!this.placingTowerId) return;
-    const cfg = TOWER_LIST.find(t => t.id === this.placingTowerId)!;
+    const detail = towerBuildDetail(this.placingTowerId);
+    if (!detail) return;
     const width = Math.min(440, this.layout.field.width - 24);
-    const c = this.add.container(12, this.layout.height - this.layout.tray - 56); this.uiRoot!.add(c);
-    panel(this, c, 0, 0, width, 48);
-    c.add(this.add.text(12, 8, `Place ${cfg.name} · ${formatCount(cfg.levels[0].cost)} gold`, style(14, C.textPrimary, true)));
-    c.add(this.add.text(12, 28, 'Choose a clearing. Escape cancels.', style(13, C.textSecondary)));
+    const c = this.add.container(12, this.layout.height - this.layout.tray - 124); this.uiRoot!.add(c);
+    panel(this, c, 0, 0, width, 116);
+    c.add(this.add.text(12, 8, `Place ${detail.name} · ${formatCount(detail.cost)} gold`, style(14, C.textPrimary, true)).setWordWrapWidth(width - 68));
+    c.add(this.add.text(12, 30, detail.description, style(13, C.textSecondary)).setWordWrapWidth(width - 24));
+    const special = towerDetailSpecialLine(detail);
+    c.add(this.add.text(12, 52, `${towerDetailStatsLine(detail)}${special ? ` · ${special}` : ''}`, style(12, C.textSecondary)).setWordWrapWidth(width - 24));
+    c.add(this.add.text(12, 74, 'Choose a clearing. Escape cancels.', style(12, C.textSecondary)));
     button(this, c, width - 56, 2, 44, '×', () => { this.placingTowerId = null; this.hideGhost(); this.refreshPlots(); this.refreshPlacePanel(); this.drawCatalog(); });
     this.placePanel = c;
+  }
+
+  /** Tray detail strip: tap a tower card to preview its description and strengths. */
+  private refreshPreviewPanel(): void {
+    this.previewPanel?.destroy(true); this.previewPanel = null;
+    const previewId = this.towerPreviewId;
+    if (!previewId || this.placingTowerId || this.sheetKind || this.modal || !this.uiRoot) return;
+    const detail = towerBuildDetail(previewId);
+    if (!detail) return;
+    const cost = towerDetailCostLine(detail, this.gold);
+    const width = Math.min(440, this.layout.width - 24);
+    const height = 168;
+    const c = this.add.container(12, this.layout.height - this.layout.tray - height - 8); this.uiRoot.add(c);
+    panel(this, c, 0, 0, width, height);
+    c.add(this.add.text(12, 8, `${detail.name} · ${detail.role}`, style(14, C.gold, true)).setWordWrapWidth(width - 68));
+    c.add(this.add.text(12, 30, detail.description, style(13, C.textSecondary)).setWordWrapWidth(width - 24));
+    c.add(this.add.text(12, 52, towerDetailStatsLine(detail), style(13, C.textPrimary)).setWordWrapWidth(width - 24));
+    const special = towerDetailSpecialLine(detail);
+    if (special) c.add(this.add.text(12, 72, special, style(12, C.textSecondary)).setWordWrapWidth(width - 24));
+    c.add(this.add.text(12, 92, cost.text, style(13, cost.affordable ? C.gold : C.textSecondary)).setWordWrapWidth(width - 24));
+    button(this, c, 12, 116, width - 68, cost.affordable ? `Build · ${formatCount(detail.cost)} gold` : `Need ${formatCount(detail.cost - this.gold)} more`, () => {
+      if (!this.towerPreviewId || this.gold < detail.cost || this.isRunBlocked() || this.modal || this.pendingMeteor) return;
+      this.touchMode = true; this.placingTowerId = this.towerPreviewId; this.selectedTower = null; this.touchPreview = null;
+      this.towerPreviewId = null; this.refreshPreviewPanel();
+      this.refreshInfoPanel(); this.refreshPlots(); this.refreshPlacePanel(); this.showTouchPreview();
+    }, cost.affordable ? 'primary' : 'secondary', 44);
+    button(this, c, width - 48, 4, 36, '×', () => { this.towerPreviewId = null; this.refreshPreviewPanel(); this.towerTray?.refresh(this.gold, this.placingTowerId as TowerId | null); }, 'secondary', 36);
+    this.previewPanel = c;
   }
 
   // ---------- selected tower inspector (240px, §31) ----------
@@ -1994,15 +2075,16 @@ export class GameScene extends Phaser.Scene {
     const detailsY = Math.max(80, 36 + progressionTitle.height + 8);
     const detailsOffset = detailsY - 80;
     if (!compact) c.add(this.add.text(16, detailsY, t.cfg.role, style(13, C.textSecondary)).setWordWrapWidth(width - 32));
+    if (!compact) c.add(this.add.text(16, detailsY + 20, t.cfg.description, style(12, C.textSecondary)).setWordWrapWidth(width - 32));
     button(this, c, width - 52, 4, 44, '×', () => { if(this.pauseState.has('details'))this.closeDetails();this.selectedTower = null; this.refreshInfoPanel(); });
     const st = t.stats;
     const rows: Array<[string, string]> = [['Damage', formatStat('damage', st.damage)], ['Attack', `${formatStat('attackInterval', st.attackInterval)}s`], ['Range', formatStat('range', st.range)], ['Type', st.damageType]];
     if (st.splashRadius) rows.push(['Splash', formatStat('splashRadius', st.splashRadius)]);
     if (st.chainCount) rows.push(['Chain', `${st.chainCount}`]);
-    if (st.slowFactor) rows.push(['Slow', `${Math.round(st.slowFactor * 100)}%`]);
+    if (st.slowFactor) rows.push(['Slow', st.slowDuration !== undefined ? `${Math.round(st.slowFactor * 100)}% for ${formatQuantity(st.slowDuration, 1)}s` : `${Math.round(st.slowFactor * 100)}%`]);
     if (compact) rows.forEach(([k,v], i) => c.add(this.add.text(16 + (i % 3) * (width - 32) / 3, 72 + Math.floor(i / 3) * 24, `${k}  ${v}`, style(14, C.textSecondary))));
-    else rows.forEach(([k, v], i) => statRow(this, c, 120 + detailsOffset + i * 24, k, v, width));
-    const modesY = compact ? 132 : 144 + detailsOffset + rows.length * 24;
+    else rows.forEach(([k, v], i) => statRow(this, c, 160 + detailsOffset + i * 24, k, v, width));
+    const modesY = compact ? 132 : 184 + detailsOffset + rows.length * 24;
     const upgradeY = compact ? 184 : modesY;
     const nextBase = this.campaign && t.maxLevel ? null : view.actions[0]?.nextStats ?? null;
     const next = nextBase && this.campaign ? campaignTowerStats(nextBase, t.specialization) : nextBase;
@@ -2046,6 +2128,7 @@ export class GameScene extends Phaser.Scene {
     SoundManager.get().build(); haptic(15);
     this.floatText(p.x, p.y - 28, `-${formatCount(cost)} gold`, C.gold);
     this.placingTowerId = null;
+    this.towerPreviewId = null; this.refreshPreviewPanel();
     this.selectedTower = tw; // deliberate build-then-inspect
     this.refreshInfoPanel();
     this.refreshPlots();
@@ -3460,7 +3543,7 @@ export class GameScene extends Phaser.Scene {
       const plot=this.cameraView.nearest(this.map.buildable,this.trayDrag.anchor,28);
       const p=plot>=0?this.map.buildable[plot]:this.cameraView.unproject(this.trayDrag.anchor);this.updateGhost(p.x,p.y);
     }
-    this.towerTray?.refresh(this.gold,this.placingTowerId as TowerId|null);
+    this.towerTray?.refresh(this.gold,(this.placingTowerId ?? this.towerPreviewId) as TowerId|null);
     const validDelta = Number.isFinite(deltaMs) && deltaMs > 0 ? deltaMs : 0;
     const autoDeltaMs = this.autoLastUpdateAt === null ? 0 : time - this.autoLastUpdateAt;
     if (Number.isFinite(time) && (this.autoLastUpdateAt === null || time >= this.autoLastUpdateAt)) this.autoLastUpdateAt = time;
