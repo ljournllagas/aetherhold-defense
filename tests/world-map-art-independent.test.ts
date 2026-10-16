@@ -44,7 +44,27 @@ describe('independent campaign world-map art acceptance', () => {
       { kind: 'image' as const, key: 'campaign_portrait_stormmaw_prime', path: '/assets/campaign/portraits/stormmaw_prime-portrait-v1.webp' },
       { kind: 'image' as const, key: 'campaign_portrait_umbral_regent', path: '/assets/campaign/portraits/umbral_regent-portrait-v1.webp' },
       { kind: 'image' as const, key: 'campaign_portrait_rift_sovereign', path: '/assets/campaign/portraits/rift_sovereign-portrait-v1.webp' },
-      { kind: 'image' as const, key: 'campaign_portrait_aether_devourer', path: '/assets/campaign/portraits/aether_devourer-portrait-v1.webp' }
+      { kind: 'image' as const, key: 'campaign_portrait_aether_devourer', path: '/assets/campaign/portraits/aether_devourer-portrait-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_borderkeep', path: '/assets/campaign/portraits/elite-borderkeep-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_emberfall', path: '/assets/campaign/portraits/elite-emberfall-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_frostveil', path: '/assets/campaign/portraits/elite-frostveil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_whisperfen', path: '/assets/campaign/portraits/elite-whisperfen-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_sunken_aether', path: '/assets/campaign/portraits/elite-sunken_aether-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_ironroot', path: '/assets/campaign/portraits/elite-ironroot-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_sky_isles', path: '/assets/campaign/portraits/elite-sky_isles-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_dreadmoon', path: '/assets/campaign/portraits/elite-dreadmoon-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_astral_rift', path: '/assets/campaign/portraits/elite-astral_rift-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_aether_crown', path: '/assets/campaign/portraits/elite-aether_crown-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_landmark_borderkeep', path: '/assets/world/landmarks/landmark-borderkeep-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_landmark_emberfall', path: '/assets/world/landmarks/landmark-emberfall-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_landmark_frostveil', path: '/assets/world/landmarks/landmark-frostveil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_landmark_whisperfen', path: '/assets/world/landmarks/landmark-whisperfen-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_landmark_sunken_aether', path: '/assets/world/landmarks/landmark-sunken_aether-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_landmark_ironroot', path: '/assets/world/landmarks/landmark-ironroot-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_landmark_sky_isles', path: '/assets/world/landmarks/landmark-sky_isles-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_landmark_dreadmoon', path: '/assets/world/landmarks/landmark-dreadmoon-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_landmark_astral_rift', path: '/assets/world/landmarks/landmark-astral_rift-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_landmark_aether_crown', path: '/assets/world/landmarks/landmark-aether_crown-v1.webp' }
     ]);
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:astral_rift')).toMatchObject({
       path: '/assets/campaign/world-map/astral_rift-v2.webp', state: 'final', temporary: null

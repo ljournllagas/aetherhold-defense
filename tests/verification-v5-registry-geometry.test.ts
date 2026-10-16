@@ -323,20 +323,22 @@ describe('v5 campaign registry and route verification', () => {
     const additionalPortraitPaths = ['/assets/campaign/portraits/hollow_warden-portrait-v1.webp', '/assets/campaign/portraits/cinder_colossus-portrait-v1.webp', '/assets/campaign/portraits/frostbound_matriarch-portrait-v1.webp', '/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp', '/assets/campaign/portraits/drowned_oracle-portrait-v1.webp', '/assets/campaign/portraits/iron_tyrant-portrait-v1.webp', '/assets/campaign/portraits/stormmaw_prime-portrait-v1.webp', '/assets/campaign/portraits/umbral_regent-portrait-v1.webp', '/assets/campaign/portraits/rift_sovereign-portrait-v1.webp', '/assets/campaign/portraits/aether_devourer-portrait-v1.webp'];
     const additionalFinalePaths = ['/assets/campaign/finale/campaign-finale-v1.webp'];
     const additionalVictoryPaths = ['/assets/campaign/victory/borderkeep-victory-v1.webp', '/assets/campaign/victory/emberfall-victory-v1.webp', '/assets/campaign/victory/frostveil-victory-v1.webp', '/assets/campaign/victory/whisperfen-victory-v1.webp', '/assets/campaign/victory/sunken_aether-victory-v1.webp', '/assets/campaign/victory/ironroot-victory-v1.webp', '/assets/campaign/victory/sky_isles-victory-v1.webp', '/assets/campaign/victory/dreadmoon-victory-v1.webp', '/assets/campaign/victory/astral_rift-victory-v1.webp', '/assets/campaign/victory/aether_crown-victory-v1.webp'];
+    const additionalLandmarkPaths = ['/assets/world/landmarks/landmark-borderkeep-v1.webp', '/assets/world/landmarks/landmark-emberfall-v1.webp', '/assets/world/landmarks/landmark-frostveil-v1.webp', '/assets/world/landmarks/landmark-whisperfen-v1.webp', '/assets/world/landmarks/landmark-sunken_aether-v1.webp', '/assets/world/landmarks/landmark-ironroot-v1.webp', '/assets/world/landmarks/landmark-sky_isles-v1.webp', '/assets/world/landmarks/landmark-dreadmoon-v1.webp', '/assets/world/landmarks/landmark-astral_rift-v1.webp', '/assets/world/landmarks/landmark-aether_crown-v1.webp'];
+    const additionalElitePortraitPaths = ['/assets/campaign/portraits/elite-borderkeep-v1.webp', '/assets/campaign/portraits/elite-emberfall-v1.webp', '/assets/campaign/portraits/elite-frostveil-v1.webp', '/assets/campaign/portraits/elite-whisperfen-v1.webp', '/assets/campaign/portraits/elite-sunken_aether-v1.webp', '/assets/campaign/portraits/elite-ironroot-v1.webp', '/assets/campaign/portraits/elite-sky_isles-v1.webp', '/assets/campaign/portraits/elite-dreadmoon-v1.webp', '/assets/campaign/portraits/elite-astral_rift-v1.webp', '/assets/campaign/portraits/elite-aether_crown-v1.webp'];
     expect(promotedPaths).toHaveLength(77);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS.slice(0, expectedFinalPaths.length)).toEqual(expectedFinalPaths);
-    expect(new Set(AVAILABLE_CAMPAIGN_ART_PATHS.slice(expectedFinalPaths.length))).toEqual(new Set([...additionalTowerPaths, ...promotedPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...additionalFinalePaths, ...additionalVictoryPaths]));
-    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toHaveLength(155);
+    expect(new Set(AVAILABLE_CAMPAIGN_ART_PATHS.slice(expectedFinalPaths.length))).toEqual(new Set([...additionalTowerPaths, ...promotedPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...additionalFinalePaths, ...additionalVictoryPaths, ...additionalLandmarkPaths, ...additionalElitePortraitPaths]));
+    expect(AVAILABLE_CAMPAIGN_ART_PATHS).toHaveLength(175);
     const currentFinalPaths = CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path);
-    expect(currentFinalPaths).toHaveLength(155);
+    expect(currentFinalPaths).toHaveLength(175);
     expect(currentFinalPaths.slice(0, expectedFinalPaths.length)).toEqual(expectedFinalPaths);
-    expect(new Set(currentFinalPaths.slice(expectedFinalPaths.length))).toEqual(new Set([...additionalTowerPaths, ...promotedPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...additionalFinalePaths, ...additionalVictoryPaths]));
+    expect(new Set(currentFinalPaths.slice(expectedFinalPaths.length))).toEqual(new Set([...additionalTowerPaths, ...promotedPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...additionalFinalePaths, ...additionalVictoryPaths, ...additionalLandmarkPaths, ...additionalElitePortraitPaths]));
     expect(contract.legacyFinalAssets).toHaveLength(43);
     expect(contract.legacyFinalAssets.map(asset => asset.path)).toEqual(expectedFinalPaths);
     expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path)).toEqual(AVAILABLE_CAMPAIGN_ART_PATHS);
     expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toHaveLength(0);
     expect([...CAMPAIGN_PROVISIONAL_STARTER_PATHS].sort()).toEqual([...PROVISIONAL_EXPANSION_PATHS].sort());
-    expect(new Set([...expectedFinalPaths, ...promotedPaths, ...additionalTowerPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...additionalFinalePaths, ...additionalVictoryPaths, ...PROVISIONAL_EXPANSION_PATHS]).size).toBe(155);
+    expect(new Set([...expectedFinalPaths, ...promotedPaths, ...additionalTowerPaths, ...additionalSigilPaths, ...additionalPortraitPaths, ...additionalFinalePaths, ...additionalVictoryPaths, ...additionalLandmarkPaths, ...additionalElitePortraitPaths, ...PROVISIONAL_EXPANSION_PATHS]).size).toBe(175);
     const moduleName = 'node:fs';
     const { existsSync, readFileSync } = await import(moduleName);
     for (const asset of contract.legacyFinalAssets) {
