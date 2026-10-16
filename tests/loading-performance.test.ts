@@ -31,9 +31,11 @@ describe('asset weight budgets', () => {
     expect(total).toBeLessThan(3 * 1024 * 1024);
   });
 
-  it('keeps the classic gameplay stage under 8MB', () => {
+  // image_integration_20261015: 14 approved static evolution appearances
+  // (≈300KB each) joined the eager gameplay stage; measured 10.1MB.
+  it('keeps the classic gameplay stage under 12MB', () => {
     const total = STAGE_ASSETS.gameplay.reduce((sum, asset) => sum + statSync(onDisk(asset.path)).size, 0);
-    expect(total).toBeLessThan(8 * 1024 * 1024);
+    expect(total).toBeLessThan(12 * 1024 * 1024);
   });
 });
 

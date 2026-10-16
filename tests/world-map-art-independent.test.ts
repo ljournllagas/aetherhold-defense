@@ -25,6 +25,26 @@ describe('independent campaign world-map art acceptance', () => {
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path));
     expect(campaignArtAssetsForLoader('campaign')).toEqual([
       ...campaignLoadOrder.map(worldId => ({ kind: 'image' as const, key: `campaign_worldmap_${worldId}`, path: `/assets/campaign/world-map/${worldId}-${worlds.indexOf(worldId) >= 3 ? 'v2' : 'v1'}.webp` })),
+      { kind: 'image' as const, key: 'campaign_sigil_borderkeep', path: '/assets/campaign/sigils/borderkeep-sigil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_sigil_emberfall', path: '/assets/campaign/sigils/emberfall-sigil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_sigil_frostveil', path: '/assets/campaign/sigils/frostveil-sigil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_sigil_whisperfen', path: '/assets/campaign/sigils/whisperfen-sigil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_sigil_sunken_aether', path: '/assets/campaign/sigils/sunken_aether-sigil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_sigil_ironroot', path: '/assets/campaign/sigils/ironroot-sigil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_sigil_sky_isles', path: '/assets/campaign/sigils/sky_isles-sigil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_sigil_dreadmoon', path: '/assets/campaign/sigils/dreadmoon-sigil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_sigil_astral_rift', path: '/assets/campaign/sigils/astral_rift-sigil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_sigil_aether_crown', path: '/assets/campaign/sigils/aether_crown-sigil-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_portrait_hollow_warden', path: '/assets/campaign/portraits/hollow_warden-portrait-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_portrait_cinder_colossus', path: '/assets/campaign/portraits/cinder_colossus-portrait-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_portrait_frostbound_matriarch', path: '/assets/campaign/portraits/frostbound_matriarch-portrait-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_portrait_mireheart_hydra', path: '/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_portrait_drowned_oracle', path: '/assets/campaign/portraits/drowned_oracle-portrait-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_portrait_iron_tyrant', path: '/assets/campaign/portraits/iron_tyrant-portrait-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_portrait_stormmaw_prime', path: '/assets/campaign/portraits/stormmaw_prime-portrait-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_portrait_umbral_regent', path: '/assets/campaign/portraits/umbral_regent-portrait-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_portrait_rift_sovereign', path: '/assets/campaign/portraits/rift_sovereign-portrait-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_portrait_aether_devourer', path: '/assets/campaign/portraits/aether_devourer-portrait-v1.webp' }
     ]);
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:astral_rift')).toMatchObject({
       path: '/assets/campaign/world-map/astral_rift-v2.webp', state: 'final', temporary: null

@@ -60,7 +60,7 @@ export interface CampaignAnimationDefinition {
 export const CAMPAIGN_UI_ART_POLICY = {
   routeNodes: 'Phaser vector circles, road crossings and boss crests',
   masteryStars: 'text glyphs positioned at route nodes and in mastery panels',
-  worldSigils: 'text labels and earned-state colors in world headers and mastery panels'
+  worldSigils: 'earned raster world trophies with code-driven locked treatment, plus text labels and earned-state colors in world headers and mastery panels'
 } as const;
 
 /** Expose every registered atlas state so future production animation cues use exact manifest frames. */
@@ -163,7 +163,70 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
         temporary
       }
     ];
-  })
+  }),
+  imageSource(`sigil:borderkeep`, `campaign_sigil_borderkeep`,
+    `/assets/campaign/sigils/borderkeep-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`sigil:emberfall`, `campaign_sigil_emberfall`,
+    `/assets/campaign/sigils/emberfall-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`sigil:frostveil`, `campaign_sigil_frostveil`,
+    `/assets/campaign/sigils/frostveil-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`sigil:whisperfen`, `campaign_sigil_whisperfen`,
+    `/assets/campaign/sigils/whisperfen-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`sigil:sunken_aether`, `campaign_sigil_sunken_aether`,
+    `/assets/campaign/sigils/sunken_aether-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`sigil:ironroot`, `campaign_sigil_ironroot`,
+    `/assets/campaign/sigils/ironroot-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`sigil:sky_isles`, `campaign_sigil_sky_isles`,
+    `/assets/campaign/sigils/sky_isles-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`sigil:dreadmoon`, `campaign_sigil_dreadmoon`,
+    `/assets/campaign/sigils/dreadmoon-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`sigil:astral_rift`, `campaign_sigil_astral_rift`,
+    `/assets/campaign/sigils/astral_rift-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`sigil:aether_crown`, `campaign_sigil_aether_crown`,
+    `/assets/campaign/sigils/aether_crown-sigil-v1.webp`, 1254, 1254, 'campaign',
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`portrait:hollow_warden`, `campaign_portrait_hollow_warden`,
+    `/assets/campaign/portraits/hollow_warden-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`portrait:cinder_colossus`, `campaign_portrait_cinder_colossus`,
+    `/assets/campaign/portraits/cinder_colossus-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`portrait:frostbound_matriarch`, `campaign_portrait_frostbound_matriarch`,
+    `/assets/campaign/portraits/frostbound_matriarch-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`portrait:mireheart_hydra`, `campaign_portrait_mireheart_hydra`,
+    `/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`portrait:drowned_oracle`, `campaign_portrait_drowned_oracle`,
+    `/assets/campaign/portraits/drowned_oracle-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`portrait:iron_tyrant`, `campaign_portrait_iron_tyrant`,
+    `/assets/campaign/portraits/iron_tyrant-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`portrait:stormmaw_prime`, `campaign_portrait_stormmaw_prime`,
+    `/assets/campaign/portraits/stormmaw_prime-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`portrait:umbral_regent`, `campaign_portrait_umbral_regent`,
+    `/assets/campaign/portraits/umbral_regent-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`portrait:rift_sovereign`, `campaign_portrait_rift_sovereign`,
+    `/assets/campaign/portraits/rift_sovereign-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`portrait:aether_devourer`, `campaign_portrait_aether_devourer`,
+    `/assets/campaign/portraits/aether_devourer-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`finale:campaign`, `campaign_finale`,
+    `/assets/campaign/finale/campaign-finale-v1.webp`, 1672, 941, 'gameplay',
+    ['finale_illustration', 'landscape_full_bleed', 'final_completion_only'], 'final', null)
 ];
 
 /** A production file is queued only after its manifest entry is promoted and its exact path is listed here. */
@@ -180,7 +243,28 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
     `/assets/campaign/world-map/${worldId}-v2.webp`,
     ...NORMAL_ENEMIES[worldId].map(id => `/assets/campaign/enemies/${worldId}/${id}-atlas-v2.webp`),
     `/assets/campaign/bosses/${BOSSES[worldId]}-atlas-v2.webp`
-  ])
+  ]),
+  '/assets/campaign/sigils/borderkeep-sigil-v1.webp',
+  '/assets/campaign/sigils/emberfall-sigil-v1.webp',
+  '/assets/campaign/sigils/frostveil-sigil-v1.webp',
+  '/assets/campaign/sigils/whisperfen-sigil-v1.webp',
+  '/assets/campaign/sigils/sunken_aether-sigil-v1.webp',
+  '/assets/campaign/sigils/ironroot-sigil-v1.webp',
+  '/assets/campaign/sigils/sky_isles-sigil-v1.webp',
+  '/assets/campaign/sigils/dreadmoon-sigil-v1.webp',
+  '/assets/campaign/sigils/astral_rift-sigil-v1.webp',
+  '/assets/campaign/sigils/aether_crown-sigil-v1.webp',
+  '/assets/campaign/portraits/hollow_warden-portrait-v1.webp',
+  '/assets/campaign/portraits/cinder_colossus-portrait-v1.webp',
+  '/assets/campaign/portraits/frostbound_matriarch-portrait-v1.webp',
+  '/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp',
+  '/assets/campaign/portraits/drowned_oracle-portrait-v1.webp',
+  '/assets/campaign/portraits/iron_tyrant-portrait-v1.webp',
+  '/assets/campaign/portraits/stormmaw_prime-portrait-v1.webp',
+  '/assets/campaign/portraits/umbral_regent-portrait-v1.webp',
+  '/assets/campaign/portraits/rift_sovereign-portrait-v1.webp',
+  '/assets/campaign/portraits/aether_devourer-portrait-v1.webp',
+  '/assets/campaign/finale/campaign-finale-v1.webp'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
@@ -243,7 +327,10 @@ export function campaignGameplayAssetsForLevel(
     `map:${level.worldId}:${family}`,
     ...level.enemyIds.map(id => `enemy:${id}`),
     ...(level.bossEnemyId ? [`boss:${level.bossEnemyId}`, ...(BOSS_SUMMONS[level.bossEnemyId] ?? []).map(id => `enemy:${id}`)] : []),
-    ...(visualTier === 1 ? [] : TOWERS.map(id => `tower:${id}:tier${visualTier}`))
+    ...(visualTier === 1 ? [] : TOWERS.map(id => `tower:${id}:tier${visualTier}`)),
+    // Finale illustration preloads only with the final-level bundle, so the
+    // completion presentation never costs earlier levels a download.
+    ...(level.level === CAMPAIGN_LEVELS.length ? ['finale:campaign'] : [])
   ]);
   const selected = manifest.filter(asset => ids.has(asset.id));
   return [
