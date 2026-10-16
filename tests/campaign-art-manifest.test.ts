@@ -17,9 +17,9 @@ describe('campaign art replacement contract', () => {
       || AVAILABLE_CAMPAIGN_ART_PATHS.includes(asset.path))).toBe(true);
     expect(CAMPAIGN_PROVISIONAL_STARTER_PATHS).toEqual([]);
     expect(required.filter(asset => asset.path.startsWith('/assets/campaign/') || asset.path.startsWith('/assets/world/landmarks/'))).toEqual(campaignArtAssetsForLoader('campaign'));
-    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(167);
+    expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final')).toHaveLength(168);
     expect(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final_required')).toEqual([]);
-    expect(CAMPAIGN_ART_MANIFEST).toHaveLength(167);
+    expect(CAMPAIGN_ART_MANIFEST).toHaveLength(168);
   });
 
   it('registers the original and accepted World 4–10 terrain plates with the approved tower tiers', () => {
@@ -91,7 +91,7 @@ describe('campaign art replacement contract', () => {
       ...CAMPAIGN_WORLDS.slice(0, 8).map(world => `campaign_worldmap_${world.id}`),
       'campaign_worldmap_astral_rift', 'campaign_worldmap_aether_crown',
       'campaign_sigil_borderkeep', 'campaign_sigil_emberfall', 'campaign_sigil_frostveil', 'campaign_sigil_whisperfen', 'campaign_sigil_sunken_aether', 'campaign_sigil_ironroot', 'campaign_sigil_sky_isles', 'campaign_sigil_dreadmoon', 'campaign_sigil_astral_rift', 'campaign_sigil_aether_crown',
-      'campaign_portrait_hollow_warden', 'campaign_portrait_cinder_colossus', 'campaign_portrait_frostbound_matriarch', 'campaign_portrait_mireheart_hydra', 'campaign_portrait_drowned_oracle', 'campaign_portrait_iron_tyrant', 'campaign_portrait_stormmaw_prime', 'campaign_portrait_umbral_regent', 'campaign_portrait_rift_sovereign', 'campaign_portrait_aether_devourer', 'campaign_elite_portrait_borderkeep', 'campaign_elite_portrait_emberfall',
+      'campaign_portrait_hollow_warden', 'campaign_portrait_cinder_colossus', 'campaign_portrait_frostbound_matriarch', 'campaign_portrait_mireheart_hydra', 'campaign_portrait_drowned_oracle', 'campaign_portrait_iron_tyrant', 'campaign_portrait_stormmaw_prime', 'campaign_portrait_umbral_regent', 'campaign_portrait_rift_sovereign', 'campaign_portrait_aether_devourer', 'campaign_elite_portrait_borderkeep', 'campaign_elite_portrait_emberfall', 'campaign_elite_portrait_frostveil',
       'campaign_landmark_borderkeep', 'campaign_landmark_emberfall', 'campaign_landmark_frostveil', 'campaign_landmark_whisperfen', 'campaign_landmark_sunken_aether', 'campaign_landmark_ironroot', 'campaign_landmark_sky_isles', 'campaign_landmark_dreadmoon', 'campaign_landmark_astral_rift', 'campaign_landmark_aether_crown'
     ]);
     expect(AVAILABLE_CAMPAIGN_ART_PATHS).toEqual(CAMPAIGN_ART_MANIFEST.filter(asset => asset.state === 'final').map(asset => asset.path));

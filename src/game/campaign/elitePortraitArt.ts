@@ -59,6 +59,18 @@ export const WORLD_ELITE_PORTRAIT_ART: Readonly<Record<string, ElitePortraitArt>
     focal: { left: 440, top: 140, width: 420, height: 420 },
     provisional: true,
     label: 'Ashen Headsman (provisional elite concept)'
+  },
+  frostveil: {
+    eliteId: 'elite:frostveil',
+    worldId: 'frostveil',
+    provisionalName: 'Rime Standard-Bearer',
+    textureKey: 'campaign_elite_portrait_frostveil',
+    path: '/assets/campaign/portraits/elite-frostveil-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 420, top: 180, width: 420, height: 420 },
+    provisional: true,
+    label: 'Rime Standard-Bearer (provisional elite concept)'
   }
 };
 
