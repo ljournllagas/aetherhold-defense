@@ -74,6 +74,14 @@ export const BOSS_PORTRAIT_ART: Readonly<Record<string, BossPortraitArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     focal: { left: 430, top: 135, width: 430, height: 430 }
+  },
+  stormmaw_prime: {
+    bossId: 'stormmaw_prime',
+    textureKey: 'campaign_portrait_stormmaw_prime',
+    path: '/assets/campaign/portraits/stormmaw_prime-portrait-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 400, top: 150, width: 430, height: 430 }
   }
 };
 

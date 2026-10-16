@@ -41,7 +41,7 @@ describe('iron tyrant boss portrait', () => {
     expect(PORTRAIT.textureKey).toBe('campaign_portrait_iron_tyrant');
     expect(PORTRAIT.path).toBe('/assets/campaign/portraits/iron_tyrant-portrait-v1.webp');
     for (const world of CAMPAIGN_WORLDS) {
-      if (world.bossEnemyId === 'iron_tyrant' || world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'frostbound_matriarch' || world.bossEnemyId === 'mireheart_hydra' || world.bossEnemyId === 'drowned_oracle') continue;
+      if (world.bossEnemyId === 'iron_tyrant' || world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'frostbound_matriarch' || world.bossEnemyId === 'mireheart_hydra' || world.bossEnemyId === 'drowned_oracle' || world.bossEnemyId === 'stormmaw_prime') continue;
       expect(bossPortraitFor(world.bossEnemyId)).toBeNull();
     }
   });
@@ -104,7 +104,7 @@ describe('iron tyrant boss portrait', () => {
     expect(addBossPortrait(cold.scene, cold.parent, 'iron_tyrant', 60, 60, 96)).toBeNull();
     expect(cold.added).toHaveLength(0);
     const unknown = fakeRender([PORTRAIT.textureKey]);
-    expect(addBossPortrait(unknown.scene, unknown.parent, 'stormmaw_prime', 60, 60, 96)).toBeNull();
+    expect(addBossPortrait(unknown.scene, unknown.parent, 'umbral_regent', 60, 60, 96)).toBeNull();
     expect(unknown.added).toHaveLength(0);
   });
 
