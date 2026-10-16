@@ -51,7 +51,7 @@ describe('elite sunken_aether portrait showcase', () => {
     expect(elitePortraitFor('emberfall')).toBe(WORLD_ELITE_PORTRAIT_ART.emberfall);
     expect(elitePortraitFor('frostveil')).toBe(WORLD_ELITE_PORTRAIT_ART.frostveil);
     expect(elitePortraitFor('whisperfen')).toBe(WORLD_ELITE_PORTRAIT_ART.whisperfen);
-    expect(elitePortraitFor('astral_rift')).toBeNull();
+    expect(elitePortraitFor('aether_crown')).toBeNull();
     expect(elitePortraitFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'elite:sunken_aether')).toMatchObject({
       key: PORTRAIT.textureKey, path: PORTRAIT.path, stage: 'campaign',

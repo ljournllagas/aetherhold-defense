@@ -53,6 +53,7 @@ describe('independent campaign world-map art acceptance', () => {
       { kind: 'image' as const, key: 'campaign_elite_portrait_ironroot', path: '/assets/campaign/portraits/elite-ironroot-v1.webp' },
       { kind: 'image' as const, key: 'campaign_elite_portrait_sky_isles', path: '/assets/campaign/portraits/elite-sky_isles-v1.webp' },
       { kind: 'image' as const, key: 'campaign_elite_portrait_dreadmoon', path: '/assets/campaign/portraits/elite-dreadmoon-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_astral_rift', path: '/assets/campaign/portraits/elite-astral_rift-v1.webp' },
       { kind: 'image' as const, key: 'campaign_landmark_borderkeep', path: '/assets/world/landmarks/landmark-borderkeep-v1.webp' },
       { kind: 'image' as const, key: 'campaign_landmark_emberfall', path: '/assets/world/landmarks/landmark-emberfall-v1.webp' },
       { kind: 'image' as const, key: 'campaign_landmark_frostveil', path: '/assets/world/landmarks/landmark-frostveil-v1.webp' },

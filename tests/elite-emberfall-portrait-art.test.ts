@@ -48,7 +48,7 @@ describe('elite emberfall portrait showcase', () => {
     expect(PORTRAIT.sourceWidth).toBe(1254);
     expect(PORTRAIT.sourceHeight).toBe(1254);
     expect(elitePortraitFor('borderkeep')).toBe(WORLD_ELITE_PORTRAIT_ART.borderkeep);
-    expect(elitePortraitFor('astral_rift')).toBeNull();
+    expect(elitePortraitFor('aether_crown')).toBeNull();
     expect(elitePortraitFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'elite:emberfall')).toMatchObject({
       key: PORTRAIT.textureKey, path: PORTRAIT.path, stage: 'campaign',

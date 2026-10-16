@@ -131,6 +131,18 @@ export const WORLD_ELITE_PORTRAIT_ART: Readonly<Record<string, ElitePortraitArt>
     focal: { left: 440, top: 130, width: 420, height: 420 },
     provisional: true,
     label: 'Eclipse Mourner (provisional elite concept)'
+  },
+  astral_rift: {
+    eliteId: 'elite:astral_rift',
+    worldId: 'astral_rift',
+    provisionalName: 'Ringbound Harbinger',
+    textureKey: 'campaign_elite_portrait_astral_rift',
+    path: '/assets/campaign/portraits/elite-astral_rift-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 440, top: 150, width: 420, height: 420 },
+    provisional: true,
+    label: 'Ringbound Harbinger (provisional elite concept)'
   }
 };
 

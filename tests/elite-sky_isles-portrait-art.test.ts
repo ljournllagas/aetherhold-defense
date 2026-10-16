@@ -53,7 +53,7 @@ describe('elite sky_isles portrait showcase', () => {
     expect(elitePortraitFor('whisperfen')).toBe(WORLD_ELITE_PORTRAIT_ART.whisperfen);
     expect(elitePortraitFor('sunken_aether')).toBe(WORLD_ELITE_PORTRAIT_ART.sunken_aether);
     expect(elitePortraitFor('ironroot')).toBe(WORLD_ELITE_PORTRAIT_ART.ironroot);
-    expect(elitePortraitFor('astral_rift')).toBeNull();
+    expect(elitePortraitFor('aether_crown')).toBeNull();
     expect(elitePortraitFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'elite:sky_isles')).toMatchObject({
       key: PORTRAIT.textureKey, path: PORTRAIT.path, stage: 'campaign',
