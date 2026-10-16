@@ -45,6 +45,7 @@ describe('independent campaign world-map art acceptance', () => {
       { kind: 'image' as const, key: 'campaign_portrait_umbral_regent', path: '/assets/campaign/portraits/umbral_regent-portrait-v1.webp' },
       { kind: 'image' as const, key: 'campaign_portrait_rift_sovereign', path: '/assets/campaign/portraits/rift_sovereign-portrait-v1.webp' },
       { kind: 'image' as const, key: 'campaign_portrait_aether_devourer', path: '/assets/campaign/portraits/aether_devourer-portrait-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_elite_portrait_borderkeep', path: '/assets/campaign/portraits/elite-borderkeep-v1.webp' },
       { kind: 'image' as const, key: 'campaign_landmark_borderkeep', path: '/assets/world/landmarks/landmark-borderkeep-v1.webp' },
       { kind: 'image' as const, key: 'campaign_landmark_emberfall', path: '/assets/world/landmarks/landmark-emberfall-v1.webp' },
       { kind: 'image' as const, key: 'campaign_landmark_frostveil', path: '/assets/world/landmarks/landmark-frostveil-v1.webp' },
