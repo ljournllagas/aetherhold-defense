@@ -1014,6 +1014,7 @@ export class GameScene extends Phaser.Scene {
     this.game.canvas.removeEventListener('touchcancel', this.cancelGesture);
     this.game.canvas.removeEventListener('lostpointercapture', this.captureLost);
     this.game.canvas.removeEventListener('pointercancel', this.cancelGesture);
+    this.selectedTower = null;
     this.cancelGesture(); this.touchPreview = null; this.modalRenderer = null;
     this.ended = true;
     this.cleanupProgression();
@@ -1029,6 +1030,8 @@ export class GameScene extends Phaser.Scene {
     this.modal?.destroy(true); this.modal = null;
     this.fieldMask?.destroy(); this.fieldMask = null;
     this.worldRoot?.destroy(true); this.worldRoot = null;
+    this.rangeCircle = null; this.rangeBackdrop = null; this.selectionRing = null;
+    this.auraCircle = null; this.ghost = null; this.ghostBase = null;
     this.ghostReason?.destroy(); this.ghostReason = null;
     this.uiRoot?.destroy(true); this.uiRoot = null;
   }
@@ -1425,15 +1428,27 @@ export class GameScene extends Phaser.Scene {
   }
 
   private hideGhost(): void {
-    this.ghost?.setVisible(false); this.ghostBase?.setVisible(false); this.ghostReason?.setVisible(false);
+    // Shutdown/teardown may leave destroyed display objects behind until init
+    // recreates them. Never let a stale range ring abort the scene queue.
+    const usable = (view: Phaser.GameObjects.GameObject | null | undefined): boolean =>
+      !!view && !(view as { isDestroyed?: boolean }).isDestroyed && !!(view as { scene?: unknown }).scene;
+    if (usable(this.ghost)) this.ghost?.setVisible(false);
+    if (usable(this.ghostBase)) this.ghostBase?.setVisible(false);
+    if (usable(this.ghostReason)) this.ghostReason?.setVisible(false);
     const t = this.selectedTower;
-    this.rangeCircle?.setVisible(t !== null);
-    this.rangeBackdrop?.setVisible(t !== null);
-    this.selectionRing?.setVisible(t !== null);
+    const setArc = (arc: Phaser.GameObjects.Arc | null | undefined, x: number, y: number, radius: number, stroke = false): void => {
+      if (!usable(arc) || !(arc as unknown as { geom?: unknown }).geom) return;
+      arc?.setPosition(x, y).setRadius(radius);
+      if (stroke) arc?.setStrokeStyle(2, RANGE_STROKE, RANGE_STROKE_ALPHA);
+      arc?.setVisible(true);
+    };
+    if (usable(this.rangeCircle)) this.rangeCircle?.setVisible(t !== null);
+    if (usable(this.rangeBackdrop)) this.rangeBackdrop?.setVisible(t !== null);
+    if (usable(this.selectionRing)) this.selectionRing?.setVisible(t !== null);
     if (t) {
-      this.rangeCircle?.setPosition(t.x, t.y).setRadius(t.stats.range).setStrokeStyle(2, RANGE_STROKE, RANGE_STROKE_ALPHA);
-      this.rangeBackdrop?.setPosition(t.x, t.y).setRadius(t.stats.range);
-      this.selectionRing?.setPosition(t.x, t.y);
+      setArc(this.rangeCircle, t.x, t.y, t.stats.range, true);
+      setArc(this.rangeBackdrop, t.x, t.y, t.stats.range);
+      if (usable(this.selectionRing)) this.selectionRing?.setPosition(t.x, t.y);
     }
   }
 
