@@ -106,6 +106,15 @@ export const WORLD_LANDMARK_ART: Readonly<Record<string, WorldLandmarkArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 181, top: 54, width: 896, height: 1111, bottom: 1164 }
+  },
+  aether_crown: {
+    landmarkId: 'landmark:aether_crown',
+    worldId: 'aether_crown',
+    textureKey: 'campaign_landmark_aether_crown',
+    path: '/assets/world/landmarks/landmark-aether_crown-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 200, top: 55, width: 885, height: 1115, bottom: 1169 }
   }
 };
 

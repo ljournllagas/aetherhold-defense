@@ -43,7 +43,7 @@ describe('astral_rift world landmark decoration', () => {
     expect(LANDMARK.path).toBe('/assets/world/landmarks/landmark-astral_rift-v1.webp');
     expect(LANDMARK.sourceWidth).toBe(1254);
     expect(LANDMARK.sourceHeight).toBe(1254);
-    expect(landmarkFor('aether_crown')).toBeNull();
+    expect(landmarkFor('aether_crown')).not.toBeNull();
     expect(landmarkFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'landmark:astral_rift')).toMatchObject({
       key: LANDMARK.textureKey, path: LANDMARK.path,
