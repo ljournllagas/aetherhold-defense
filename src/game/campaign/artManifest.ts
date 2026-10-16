@@ -256,7 +256,10 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
     ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null),
   imageSource(`victory:aether_crown`, `campaign_victory_aether_crown`,
     `/assets/campaign/victory/aether_crown-victory-v1.webp`, 1672, 941, 'gameplay',
-    ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null)
+    ['victory_illustration', 'landscape_full_bleed', 'world_completion_only'], 'final', null),
+  imageSource(`landmark:borderkeep`, `campaign_landmark_borderkeep`,
+    `/assets/world/landmarks/landmark-borderkeep-v1.webp`, 1254, 1254, 'campaign',
+    ['landmark_decoration', 'transparent_png_required', 'cosmetic_only', 'non_obstructive'], 'final', null)
 ];
 
 /** A production file is queued only after its manifest entry is promoted and its exact path is listed here. */
@@ -304,7 +307,8 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
   '/assets/campaign/victory/sky_isles-victory-v1.webp',
   '/assets/campaign/victory/dreadmoon-victory-v1.webp',
   '/assets/campaign/victory/astral_rift-victory-v1.webp',
-  '/assets/campaign/victory/aether_crown-victory-v1.webp'
+  '/assets/campaign/victory/aether_crown-victory-v1.webp',
+  '/assets/world/landmarks/landmark-borderkeep-v1.webp'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
