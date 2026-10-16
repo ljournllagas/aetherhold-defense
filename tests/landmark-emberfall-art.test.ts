@@ -43,7 +43,7 @@ describe('emberfall world landmark decoration', () => {
     expect(LANDMARK.path).toBe('/assets/world/landmarks/landmark-emberfall-v1.webp');
     expect(LANDMARK.sourceWidth).toBe(1254);
     expect(LANDMARK.sourceHeight).toBe(1254);
-    expect(landmarkFor('sunken_aether')).toBeNull();
+    expect(landmarkFor('ironroot')).toBeNull();
     expect(landmarkFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'landmark:emberfall')).toMatchObject({
       key: LANDMARK.textureKey, path: LANDMARK.path,

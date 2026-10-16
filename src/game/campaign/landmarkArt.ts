@@ -61,6 +61,15 @@ export const WORLD_LANDMARK_ART: Readonly<Record<string, WorldLandmarkArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 91, top: 20, width: 1070, height: 1181, bottom: 1200 }
+  },
+  sunken_aether: {
+    landmarkId: 'landmark:sunken_aether',
+    worldId: 'sunken_aether',
+    textureKey: 'campaign_landmark_sunken_aether',
+    path: '/assets/world/landmarks/landmark-sunken_aether-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 134, top: 44, width: 994, height: 1102, bottom: 1145 }
   }
 };
 
