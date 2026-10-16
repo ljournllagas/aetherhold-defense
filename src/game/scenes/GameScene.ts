@@ -1,5 +1,15 @@
 import {campaignResultActions} from '../ui/campaignResultActions.ts';
 import {addFinaleIllustration, isFinalCampaignCompletion} from '../campaign/finaleArt.ts';
+import {addBorderkeepVictoryIllustration, isBorderkeepVictoryCompletion} from '../campaign/borderkeepVictoryArt.ts';
+import {addEmberfallVictoryIllustration, isEmberfallVictoryCompletion} from '../campaign/emberfallVictoryArt.ts';
+import {addFrostveilVictoryIllustration, isFrostveilVictoryCompletion} from '../campaign/frostveilVictoryArt.ts';
+import {addWhisperfenVictoryIllustration, isWhisperfenVictoryCompletion} from '../campaign/whisperfenVictoryArt.ts';
+import {addSunkenAetherVictoryIllustration, isSunkenAetherVictoryCompletion} from '../campaign/sunkenAetherVictoryArt.ts';
+import {addIronrootVictoryIllustration, isIronrootVictoryCompletion} from '../campaign/ironrootVictoryArt.ts';
+import {addSkyIslesVictoryIllustration, isSkyIslesVictoryCompletion} from '../campaign/skyIslesVictoryArt.ts';
+import {addDreadmoonVictoryIllustration, isDreadmoonVictoryCompletion} from '../campaign/dreadmoonVictoryArt.ts';
+import {addAstralRiftVictoryIllustration, isAstralRiftVictoryCompletion} from '../campaign/astralRiftVictoryArt.ts';
+import {addAetherCrownVictoryIllustration, isAetherCrownVictoryCompletion} from '../campaign/aetherCrownVictoryArt.ts';
 import {enemyPresentation} from '../ui/enemyPresentation.ts';
 import {guestRunProgress} from '../systems/GuestProgress.ts';
 import {formatCount,formatQuantity} from '../../shared/displayNumbers.ts';
@@ -47,7 +57,7 @@ import { SoundManager } from '../systems/SoundManager.ts';
 import { newRunId } from '../../api/leaderboardClient.ts';
 import { C, FONT_DISPLAY, RARITY_COLOR, RANGE_FILL_ALPHA, RANGE_STROKE, RANGE_STROKE_ALPHA, style } from '../ui/tokens.ts';
 import { V2, emblemKey } from '../art/artkit.ts';
-import { relicHeroTexture } from '../art/iconArt.ts';
+import { ensureRelicShowcaseTexture, relicShowcaseHeroTexture } from '../art/relicShowcaseArt.ts';
 import { buildTowerVisual, decorateEvolution, towerPortraitKey, towerArtGeometry } from '../art/towerArt.ts';
 import { buildEnemyVisual, enemyVisualSupport, enemyVisibleDimension, type EnemyView } from '../art/enemyArt.ts';
 import { paintBattlefield, refreshStronghold } from '../art/terrain.ts';
@@ -2735,6 +2745,12 @@ export class GameScene extends Phaser.Scene {
     if (!this.rebuildingModal) this.modalError = '';
     this.cancelGesture();
     this.modalRenderer = () => this.showRelicPanel(id, reason, full, use, keep, victory);
+    const panelRenderer = this.modalRenderer;
+    ensureRelicShowcaseTexture(this, id, () => {
+      if (this.modalRenderer !== panelRenderer || !this.modal) return;
+      this.modalSheet?.destroy(); this.modalSheet = null; this.modal?.destroy(true); this.modal = null;
+      this.rebuildingModal = true; panelRenderer(); this.rebuildingModal = false;
+    });
     const cfg = POWERUPS[id];
     const reroll = this.canRerollReward(id, reason);
     this.pausedByModal = true;
@@ -2744,7 +2760,7 @@ export class GameScene extends Phaser.Scene {
       const root = this.modalFrame(width, height, 0x80674a);
       const sheet = new ScrollSheet(this, root, { x: 0, y: 0, width, height }, reason === 'Stored Power-Up' ? 'Stored Relic' : 'Power-Up Revealed', () => {}); this.modalSheet = sheet;
       for (const item of sheet.root.list.slice(3, 5)) (item as Phaser.GameObjects.Rectangle).setVisible(false);
-      sheet.content.add(this.add.image(width / 2, 48, relicHeroTexture(this, id)).setDisplaySize(88, 88));
+      sheet.content.add(this.add.image(width / 2, 48, relicShowcaseHeroTexture(this, id)).setDisplaySize(88, 88));
       sheet.text(104, `${cfg.name} · ${cfg.rarity.toUpperCase()}`, RARITY_COLOR[cfg.rarity], 18);
       const summary = sheet.text(140, this.modalError || cfg.description); this.modal!.setData('message', summary);
       let y = 156 + summary.height;
@@ -2812,7 +2828,7 @@ export class GameScene extends Phaser.Scene {
     etching.lineBetween(portraitWidth - 6, artY + 18, portraitWidth / 2, artY + 8);
     c.add(etching);
     const heroSize = Math.min(compact ? 152 : 154, height - artY - 44);
-    c.add(this.add.image(12 + portraitWidth / 2, artY + (height - artY - 12) / 2, relicHeroTexture(this, id)).setDisplaySize(heroSize, heroSize));
+    c.add(this.add.image(12 + portraitWidth / 2, artY + (height - artY - 12) / 2, relicShowcaseHeroTexture(this, id)).setDisplaySize(heroSize, heroSize));
 
     const rarityBanner = this.add.rectangle(detailsX, artY + 6, detailsWidth, 26, rarityColor, 0.12).setOrigin(0).setStrokeStyle(1, rarityColor, 0.8);
     c.add(rarityBanner);
@@ -3761,6 +3777,40 @@ export class GameScene extends Phaser.Scene {
     if (isFinalCampaignCompletion(level, result.outcome)) {
       const finale = addFinaleIllustration(this, sheet.content, width / 2, y, width - 24);
       if (finale) y = finale.bottom + 12;
+    }
+    if (isBorderkeepVictoryCompletion(level, result.outcome)) {
+      const victory = addBorderkeepVictoryIllustration(this, sheet.content, width / 2, y, width - 24);
+      if (victory) y = victory.bottom + 12;
+    } else if (isEmberfallVictoryCompletion(level, result.outcome)) {
+      const victory = addEmberfallVictoryIllustration(this, sheet.content, width / 2, y, width - 24);
+      if (victory) y = victory.bottom + 12;
+    } else if (isFrostveilVictoryCompletion(level, result.outcome)) {
+      const victory = addFrostveilVictoryIllustration(this, sheet.content, width / 2, y, width - 24);
+      if (victory) y = victory.bottom + 12;
+    } else if (isWhisperfenVictoryCompletion(level, result.outcome)) {
+      const victory = addWhisperfenVictoryIllustration(this, sheet.content, width / 2, y, width - 24);
+      if (victory) y = victory.bottom + 12;
+    } else if (isSunkenAetherVictoryCompletion(level, result.outcome)) {
+      const victory = addSunkenAetherVictoryIllustration(this, sheet.content, width / 2, y, width - 24);
+      if (victory) y = victory.bottom + 12;
+    } else if (isIronrootVictoryCompletion(level, result.outcome)) {
+      const victory = addIronrootVictoryIllustration(this, sheet.content, width / 2, y, width - 24);
+      if (victory) y = victory.bottom + 12;
+    } else if (isSkyIslesVictoryCompletion(level, result.outcome)) {
+      const victory = addSkyIslesVictoryIllustration(this, sheet.content, width / 2, y, width - 24);
+      if (victory) y = victory.bottom + 12;
+    } else if (isDreadmoonVictoryCompletion(level, result.outcome)) {
+      const victory = addDreadmoonVictoryIllustration(this, sheet.content, width / 2, y, width - 24);
+      if (victory) y = victory.bottom + 12;
+    } else if (isAstralRiftVictoryCompletion(level, result.outcome)) {
+      const victory = addAstralRiftVictoryIllustration(this, sheet.content, width / 2, y, width - 24);
+      if (victory) y = victory.bottom + 12;
+    } else if (isAetherCrownVictoryCompletion(level, result.outcome)) {
+      // The Aether Crown boss level is also the final campaign level, so the
+      // finale illustration above keeps primacy and this world victory stacks
+      // below it in the same result presentation.
+      const victory = addAetherCrownVictoryIllustration(this, sheet.content, width / 2, y, width - 24);
+      if (victory) y = victory.bottom + 12;
     }
     const line = (message: string, color: string = C.textSecondary) => { const text = sheet.text(y, message, color); y += text.height + 12; };
     if (import.meta.env.DEV && this.qaCampaignFixture) line('DEV CAMPAIGN FIXTURE · Reward preview · Not saved', C.gold);
