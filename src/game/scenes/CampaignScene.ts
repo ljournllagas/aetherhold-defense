@@ -29,6 +29,7 @@ import {
   addSigilTrophy, SIGIL_TROPHY_CAPTION_COMPACT_PX, SIGIL_TROPHY_CAPTION_PX,
   SIGIL_TROPHY_MASTERY_PX, sigilTrophyFor
 } from '../campaign/sigilArt.ts';
+import { addBossPortrait, BOSS_PORTRAIT_CODEX_PX } from '../campaign/bossPortraitArt.ts';
 
 const TARGETING_MODES: readonly TargetingMode[] = ['first', 'last', 'strongest', 'weakest', 'closest'];
 const TOWER_IDS: readonly TowerId[] = ['longbow', 'ember', 'glacier', 'starfire', 'tempest', 'sentinel', 'cinder'];
@@ -487,6 +488,9 @@ export class CampaignScene extends Phaser.Scene {
         : this.campaignView.profile.worldSigils.includes(world.sigilId);
       y += sheet.text(y, `${unlocked ? 'CODEX ENTRY' : `REQUIRES ${world.sigilId.replace('_', ' ').toUpperCase()}`}  ·  ${enemy.name}`, unlocked ? C.goldBright : C.textMuted).height + 8;
       if (unlocked) {
+        const portrait = addBossPortrait(this, sheet.content, world.bossEnemyId,
+          12 + BOSS_PORTRAIT_CODEX_PX / 2, y + BOSS_PORTRAIT_CODEX_PX / 2, BOSS_PORTRAIT_CODEX_PX);
+        if (portrait) y += BOSS_PORTRAIT_CODEX_PX + 12;
         const description = sheet.text(y, BOSS_CODEX_GUIDANCE[world.bossEnemyId] ?? 'Observe its phases and protect the stronghold.');
         y += description.height + 22;
         if (this.campaignView.profile.unlockedFeatures.includes('advanced_codex_stats')) {

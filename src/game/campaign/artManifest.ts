@@ -193,7 +193,10 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
     ['sigil_trophy', 'transparent_png_required'], 'final', null),
   imageSource(`sigil:aether_crown`, `campaign_sigil_aether_crown`,
     `/assets/campaign/sigils/aether_crown-sigil-v1.webp`, 1254, 1254, 'campaign',
-    ['sigil_trophy', 'transparent_png_required'], 'final', null)
+    ['sigil_trophy', 'transparent_png_required'], 'final', null),
+  imageSource(`portrait:hollow_warden`, `campaign_portrait_hollow_warden`,
+    `/assets/campaign/portraits/hollow_warden-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null)
 ];
 
 /** A production file is queued only after its manifest entry is promoted and its exact path is listed here. */
@@ -220,7 +223,8 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
   '/assets/campaign/sigils/sky_isles-sigil-v1.webp',
   '/assets/campaign/sigils/dreadmoon-sigil-v1.webp',
   '/assets/campaign/sigils/astral_rift-sigil-v1.webp',
-  '/assets/campaign/sigils/aether_crown-sigil-v1.webp'
+  '/assets/campaign/sigils/aether_crown-sigil-v1.webp',
+  '/assets/campaign/portraits/hollow_warden-portrait-v1.webp'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
