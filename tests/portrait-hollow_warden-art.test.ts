@@ -41,7 +41,7 @@ describe('hollow warden boss portrait', () => {
     expect(PORTRAIT.textureKey).toBe('campaign_portrait_hollow_warden');
     expect(PORTRAIT.path).toBe('/assets/campaign/portraits/hollow_warden-portrait-v1.webp');
     for (const world of CAMPAIGN_WORLDS) {
-      if (world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'frostbound_matriarch') continue;
+      if (world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'frostbound_matriarch' || world.bossEnemyId === 'mireheart_hydra') continue;
       expect(bossPortraitFor(world.bossEnemyId)).toBeNull();
     }
   });
@@ -104,7 +104,7 @@ describe('hollow warden boss portrait', () => {
     expect(addBossPortrait(cold.scene, cold.parent, 'hollow_warden', 60, 60, 96)).toBeNull();
     expect(cold.added).toHaveLength(0);
     const unknown = fakeRender([PORTRAIT.textureKey]);
-    expect(addBossPortrait(unknown.scene, unknown.parent, 'mireheart_hydra', 60, 60, 96)).toBeNull();
+    expect(addBossPortrait(unknown.scene, unknown.parent, 'drowned_oracle', 60, 60, 96)).toBeNull();
     expect(unknown.added).toHaveLength(0);
   });
 

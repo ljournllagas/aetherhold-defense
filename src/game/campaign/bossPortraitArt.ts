@@ -50,6 +50,14 @@ export const BOSS_PORTRAIT_ART: Readonly<Record<string, BossPortraitArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     focal: { left: 385, top: 275, width: 430, height: 430 }
+  },
+  mireheart_hydra: {
+    bossId: 'mireheart_hydra',
+    textureKey: 'campaign_portrait_mireheart_hydra',
+    path: '/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 585, top: 165, width: 430, height: 430 }
   }
 };
 
