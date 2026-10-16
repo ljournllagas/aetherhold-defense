@@ -3,6 +3,7 @@ import { MAP1, HUD_HEIGHT } from '../maps/map1.ts';
 import type { MapDef } from '../maps/map1.ts';
 import type { CampaignWorldId } from '../campaign/types.ts';
 import { ensureCampaignBattleBackground } from './campaignArt.ts';
+import { mapBackdropDisplaySize, resolveMapBackdropKey, type MapBackdropVariant } from './mapVariantArt.ts';
 
 export interface StrongholdArt {
   root: Phaser.GameObjects.Container;
@@ -37,12 +38,15 @@ function ensureBeaconFrames(scene: Phaser.Scene): void {
  * The texture includes road, clearings, ruins, forest, keep, and its original
  * beacon; this layer adds relocated ground clearings and runtime health cues.
  */
-export function paintBattlefield(scene: Phaser.Scene, map: MapDef = MAP1, worldId?: CampaignWorldId): BattlefieldArt {
+export function paintBattlefield(scene: Phaser.Scene, map: MapDef = MAP1, worldId?: CampaignWorldId, backdrop: MapBackdropVariant = 'classic'): BattlefieldArt {
   const field = map.field;
-  const backgroundKey = worldId ? ensureCampaignBattleBackground(scene, map, worldId) : map.backgroundKey;
+  const backgroundKey = worldId
+    ? ensureCampaignBattleBackground(scene, map, worldId)
+    : resolveMapBackdropKey(backdrop, key => scene.textures.exists(key));
+  const display = mapBackdropDisplaySize(field.width, field.height);
   scene.add.image(field.x, field.y, backgroundKey)
     .setOrigin(0, 0)
-    .setDisplaySize(field.width, field.height)
+    .setDisplaySize(display.width, display.height)
     .setDepth(0);
 
   if (!worldId) {
