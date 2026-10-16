@@ -214,6 +214,9 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
     ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
   imageSource(`portrait:stormmaw_prime`, `campaign_portrait_stormmaw_prime`,
     `/assets/campaign/portraits/stormmaw_prime-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`portrait:umbral_regent`, `campaign_portrait_umbral_regent`,
+    `/assets/campaign/portraits/umbral_regent-portrait-v1.webp`, 1254, 1254, 'campaign',
     ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null)
 ];
 
@@ -248,7 +251,8 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
   '/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp',
   '/assets/campaign/portraits/drowned_oracle-portrait-v1.webp',
   '/assets/campaign/portraits/iron_tyrant-portrait-v1.webp',
-  '/assets/campaign/portraits/stormmaw_prime-portrait-v1.webp'
+  '/assets/campaign/portraits/stormmaw_prime-portrait-v1.webp',
+  '/assets/campaign/portraits/umbral_regent-portrait-v1.webp'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */

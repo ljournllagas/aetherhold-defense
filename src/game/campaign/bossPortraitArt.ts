@@ -82,6 +82,14 @@ export const BOSS_PORTRAIT_ART: Readonly<Record<string, BossPortraitArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     focal: { left: 400, top: 150, width: 430, height: 430 }
+  },
+  umbral_regent: {
+    bossId: 'umbral_regent',
+    textureKey: 'campaign_portrait_umbral_regent',
+    path: '/assets/campaign/portraits/umbral_regent-portrait-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 440, top: 140, width: 430, height: 430 }
   }
 };
 
