@@ -52,7 +52,7 @@ describe('elite ironroot portrait showcase', () => {
     expect(elitePortraitFor('frostveil')).toBe(WORLD_ELITE_PORTRAIT_ART.frostveil);
     expect(elitePortraitFor('whisperfen')).toBe(WORLD_ELITE_PORTRAIT_ART.whisperfen);
     expect(elitePortraitFor('sunken_aether')).toBe(WORLD_ELITE_PORTRAIT_ART.sunken_aether);
-    expect(elitePortraitFor('sky_isles')).toBeNull();
+    expect(elitePortraitFor('dreadmoon')).toBeNull();
     expect(elitePortraitFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'elite:ironroot')).toMatchObject({
       key: PORTRAIT.textureKey, path: PORTRAIT.path, stage: 'campaign',

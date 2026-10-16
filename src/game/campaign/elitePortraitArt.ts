@@ -107,6 +107,18 @@ export const WORLD_ELITE_PORTRAIT_ART: Readonly<Record<string, ElitePortraitArt>
     focal: { left: 420, top: 120, width: 420, height: 420 },
     provisional: true,
     label: 'Chain Marshal (provisional elite concept)'
+  },
+  sky_isles: {
+    eliteId: 'elite:sky_isles',
+    worldId: 'sky_isles',
+    provisionalName: 'Gale Castellan',
+    textureKey: 'campaign_elite_portrait_sky_isles',
+    path: '/assets/campaign/portraits/elite-sky_isles-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 420, top: 130, width: 420, height: 420 },
+    provisional: true,
+    label: 'Gale Castellan (provisional elite concept)'
   }
 };
 
