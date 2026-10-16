@@ -41,7 +41,7 @@ describe('frostbound matriarch boss portrait', () => {
     expect(PORTRAIT.textureKey).toBe('campaign_portrait_frostbound_matriarch');
     expect(PORTRAIT.path).toBe('/assets/campaign/portraits/frostbound_matriarch-portrait-v1.webp');
     for (const world of CAMPAIGN_WORLDS) {
-      if (world.bossEnemyId === 'frostbound_matriarch' || world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'mireheart_hydra' || world.bossEnemyId === 'drowned_oracle' || world.bossEnemyId === 'iron_tyrant' || world.bossEnemyId === 'stormmaw_prime' || world.bossEnemyId === 'umbral_regent' || world.bossEnemyId === 'rift_sovereign') continue;
+      if (world.bossEnemyId === 'frostbound_matriarch' || world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'mireheart_hydra' || world.bossEnemyId === 'drowned_oracle' || world.bossEnemyId === 'iron_tyrant' || world.bossEnemyId === 'stormmaw_prime' || world.bossEnemyId === 'umbral_regent' || world.bossEnemyId === 'rift_sovereign' || world.bossEnemyId === 'aether_devourer') continue;
       expect(bossPortraitFor(world.bossEnemyId)).toBeNull();
     }
   });

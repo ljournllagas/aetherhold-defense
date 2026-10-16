@@ -41,7 +41,7 @@ describe('iron tyrant boss portrait', () => {
     expect(PORTRAIT.textureKey).toBe('campaign_portrait_iron_tyrant');
     expect(PORTRAIT.path).toBe('/assets/campaign/portraits/iron_tyrant-portrait-v1.webp');
     for (const world of CAMPAIGN_WORLDS) {
-      if (world.bossEnemyId === 'iron_tyrant' || world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'frostbound_matriarch' || world.bossEnemyId === 'mireheart_hydra' || world.bossEnemyId === 'drowned_oracle' || world.bossEnemyId === 'stormmaw_prime' || world.bossEnemyId === 'umbral_regent' || world.bossEnemyId === 'rift_sovereign') continue;
+      if (world.bossEnemyId === 'iron_tyrant' || world.bossEnemyId === 'hollow_warden' || world.bossEnemyId === 'cinder_colossus' || world.bossEnemyId === 'frostbound_matriarch' || world.bossEnemyId === 'mireheart_hydra' || world.bossEnemyId === 'drowned_oracle' || world.bossEnemyId === 'stormmaw_prime' || world.bossEnemyId === 'umbral_regent' || world.bossEnemyId === 'rift_sovereign' || world.bossEnemyId === 'aether_devourer') continue;
       expect(bossPortraitFor(world.bossEnemyId)).toBeNull();
     }
   });

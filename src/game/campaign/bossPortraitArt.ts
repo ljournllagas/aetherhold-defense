@@ -98,6 +98,14 @@ export const BOSS_PORTRAIT_ART: Readonly<Record<string, BossPortraitArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     focal: { left: 480, top: 300, width: 430, height: 430 }
+  },
+  aether_devourer: {
+    bossId: 'aether_devourer',
+    textureKey: 'campaign_portrait_aether_devourer',
+    path: '/assets/campaign/portraits/aether_devourer-portrait-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 520, top: 150, width: 430, height: 430 }
   }
 };
 

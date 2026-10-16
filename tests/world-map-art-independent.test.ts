@@ -43,7 +43,8 @@ describe('independent campaign world-map art acceptance', () => {
       { kind: 'image' as const, key: 'campaign_portrait_iron_tyrant', path: '/assets/campaign/portraits/iron_tyrant-portrait-v1.webp' },
       { kind: 'image' as const, key: 'campaign_portrait_stormmaw_prime', path: '/assets/campaign/portraits/stormmaw_prime-portrait-v1.webp' },
       { kind: 'image' as const, key: 'campaign_portrait_umbral_regent', path: '/assets/campaign/portraits/umbral_regent-portrait-v1.webp' },
-      { kind: 'image' as const, key: 'campaign_portrait_rift_sovereign', path: '/assets/campaign/portraits/rift_sovereign-portrait-v1.webp' }
+      { kind: 'image' as const, key: 'campaign_portrait_rift_sovereign', path: '/assets/campaign/portraits/rift_sovereign-portrait-v1.webp' },
+      { kind: 'image' as const, key: 'campaign_portrait_aether_devourer', path: '/assets/campaign/portraits/aether_devourer-portrait-v1.webp' }
     ]);
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'world-panel:astral_rift')).toMatchObject({
       path: '/assets/campaign/world-map/astral_rift-v2.webp', state: 'final', temporary: null
