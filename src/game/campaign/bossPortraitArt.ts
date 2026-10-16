@@ -34,6 +34,14 @@ export const BOSS_PORTRAIT_ART: Readonly<Record<string, BossPortraitArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     focal: { left: 480, top: 380, width: 420, height: 420 }
+  },
+  cinder_colossus: {
+    bossId: 'cinder_colossus',
+    textureKey: 'campaign_portrait_cinder_colossus',
+    path: '/assets/campaign/portraits/cinder_colossus-portrait-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 590, top: 360, width: 430, height: 430 }
   }
 };
 
