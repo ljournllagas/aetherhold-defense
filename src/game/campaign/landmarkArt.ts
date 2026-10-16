@@ -34,6 +34,15 @@ export const WORLD_LANDMARK_ART: Readonly<Record<string, WorldLandmarkArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 293, top: 7, width: 767, height: 1208, bottom: 1214 }
+  },
+  emberfall: {
+    landmarkId: 'landmark:emberfall',
+    worldId: 'emberfall',
+    textureKey: 'campaign_landmark_emberfall',
+    path: '/assets/world/landmarks/landmark-emberfall-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 102, top: 61, width: 1121, height: 1112, bottom: 1172 }
   }
 };
 
