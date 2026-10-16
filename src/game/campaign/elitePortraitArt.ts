@@ -95,6 +95,18 @@ export const WORLD_ELITE_PORTRAIT_ART: Readonly<Record<string, ElitePortraitArt>
     focal: { left: 420, top: 140, width: 420, height: 420 },
     provisional: true,
     label: 'Pearlbound Custodian (provisional elite concept)'
+  },
+  ironroot: {
+    eliteId: 'elite:ironroot',
+    worldId: 'ironroot',
+    provisionalName: 'Chain Marshal',
+    textureKey: 'campaign_elite_portrait_ironroot',
+    path: '/assets/campaign/portraits/elite-ironroot-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 420, top: 120, width: 420, height: 420 },
+    provisional: true,
+    label: 'Chain Marshal (provisional elite concept)'
   }
 };
 

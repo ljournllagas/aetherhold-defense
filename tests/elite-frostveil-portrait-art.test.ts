@@ -49,7 +49,7 @@ describe('elite frostveil portrait showcase', () => {
     expect(PORTRAIT.sourceHeight).toBe(1254);
     expect(elitePortraitFor('borderkeep')).toBe(WORLD_ELITE_PORTRAIT_ART.borderkeep);
     expect(elitePortraitFor('emberfall')).toBe(WORLD_ELITE_PORTRAIT_ART.emberfall);
-    expect(elitePortraitFor('ironroot')).toBeNull();
+    expect(elitePortraitFor('sky_isles')).toBeNull();
     expect(elitePortraitFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'elite:frostveil')).toMatchObject({
       key: PORTRAIT.textureKey, path: PORTRAIT.path, stage: 'campaign',
