@@ -47,7 +47,7 @@ describe('elite borderkeep portrait showcase', () => {
     expect(PORTRAIT.path).toBe('/assets/campaign/portraits/elite-borderkeep-v1.webp');
     expect(PORTRAIT.sourceWidth).toBe(1254);
     expect(PORTRAIT.sourceHeight).toBe(1254);
-    expect(elitePortraitFor('emberfall')).toBeNull();
+    expect(elitePortraitFor('frostveil')).toBeNull();
     expect(elitePortraitFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'elite:borderkeep')).toMatchObject({
       key: PORTRAIT.textureKey, path: PORTRAIT.path, stage: 'campaign',
@@ -113,7 +113,7 @@ describe('elite borderkeep portrait showcase', () => {
     expect(addElitePortrait(cold.scene, cold.parent, 'borderkeep', 60, 60, 96)).toBeNull();
     expect(cold.added).toHaveLength(0);
     const unknown = fakeRender([PORTRAIT.textureKey]);
-    expect(addElitePortrait(unknown.scene, unknown.parent, 'emberfall', 60, 60, 96)).toBeNull();
+    expect(addElitePortrait(unknown.scene, unknown.parent, 'frostveil', 60, 60, 96)).toBeNull();
     expect(unknown.added).toHaveLength(0);
   });
 

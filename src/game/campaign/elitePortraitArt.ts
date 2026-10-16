@@ -47,6 +47,18 @@ export const WORLD_ELITE_PORTRAIT_ART: Readonly<Record<string, ElitePortraitArt>
     focal: { left: 430, top: 220, width: 420, height: 420 },
     provisional: true,
     label: 'Briar Captain (provisional elite concept)'
+  },
+  emberfall: {
+    eliteId: 'elite:emberfall',
+    worldId: 'emberfall',
+    provisionalName: 'Ashen Headsman',
+    textureKey: 'campaign_elite_portrait_emberfall',
+    path: '/assets/campaign/portraits/elite-emberfall-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 440, top: 140, width: 420, height: 420 },
+    provisional: true,
+    label: 'Ashen Headsman (provisional elite concept)'
   }
 };
 
