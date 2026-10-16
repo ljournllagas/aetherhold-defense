@@ -97,6 +97,15 @@ export const WORLD_LANDMARK_ART: Readonly<Record<string, WorldLandmarkArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 166, top: 67, width: 944, height: 1119, bottom: 1185 }
+  },
+  astral_rift: {
+    landmarkId: 'landmark:astral_rift',
+    worldId: 'astral_rift',
+    textureKey: 'campaign_landmark_astral_rift',
+    path: '/assets/world/landmarks/landmark-astral_rift-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 181, top: 54, width: 896, height: 1111, bottom: 1164 }
   }
 };
 
