@@ -58,6 +58,14 @@ export const BOSS_PORTRAIT_ART: Readonly<Record<string, BossPortraitArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     focal: { left: 585, top: 165, width: 430, height: 430 }
+  },
+  drowned_oracle: {
+    bossId: 'drowned_oracle',
+    textureKey: 'campaign_portrait_drowned_oracle',
+    path: '/assets/campaign/portraits/drowned_oracle-portrait-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    focal: { left: 390, top: 80, width: 430, height: 430 }
   }
 };
 

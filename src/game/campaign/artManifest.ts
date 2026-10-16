@@ -205,6 +205,9 @@ export const CAMPAIGN_ART_MANIFEST: readonly CampaignArtSource[] = [
     ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
   imageSource(`portrait:mireheart_hydra`, `campaign_portrait_mireheart_hydra`,
     `/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp`, 1254, 1254, 'campaign',
+    ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null),
+  imageSource(`portrait:drowned_oracle`, `campaign_portrait_drowned_oracle`,
+    `/assets/campaign/portraits/drowned_oracle-portrait-v1.webp`, 1254, 1254, 'campaign',
     ['boss_portrait', 'full_bleed_square', 'codex_presentation'], 'final', null)
 ];
 
@@ -236,7 +239,8 @@ export const AVAILABLE_CAMPAIGN_ART_PATHS: readonly string[] = [
   '/assets/campaign/portraits/hollow_warden-portrait-v1.webp',
   '/assets/campaign/portraits/cinder_colossus-portrait-v1.webp',
   '/assets/campaign/portraits/frostbound_matriarch-portrait-v1.webp',
-  '/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp'
+  '/assets/campaign/portraits/mireheart_hydra-portrait-v1.webp',
+  '/assets/campaign/portraits/drowned_oracle-portrait-v1.webp'
 ];
 
 /** Resolve a promotable manifest snapshot against its exact approved source paths. */
