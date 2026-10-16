@@ -46,7 +46,7 @@ describe('frostveil world trophy', () => {
     expect(sigilTrophyFor('border_sigil')).not.toBeNull();
     expect(sigilTrophyFor('ember_sigil')).not.toBeNull();
     for (const sigil of CAMPAIGN_SIGILS) {
-      if (sigil.id === 'frost_sigil' || sigil.id === 'border_sigil' || sigil.id === 'ember_sigil' || sigil.id === 'mire_sigil' || sigil.id === 'tide_sigil' || sigil.id === 'iron_sigil' || sigil.id === 'sky_sigil' || sigil.id === 'moon_sigil' || sigil.id === 'rift_sigil') continue;
+      if (sigil.id === 'frost_sigil' || sigil.id === 'border_sigil' || sigil.id === 'ember_sigil' || sigil.id === 'mire_sigil' || sigil.id === 'tide_sigil' || sigil.id === 'iron_sigil' || sigil.id === 'sky_sigil' || sigil.id === 'moon_sigil' || sigil.id === 'rift_sigil' || sigil.id === 'crown_sigil') continue;
       expect(sigilTrophyFor(sigil.id)).toBeNull();
     }
   });

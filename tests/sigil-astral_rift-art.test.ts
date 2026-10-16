@@ -52,7 +52,7 @@ describe('astral rift world trophy', () => {
     expect(sigilTrophyFor('sky_sigil')).not.toBeNull();
     expect(sigilTrophyFor('moon_sigil')).not.toBeNull();
     for (const sigil of CAMPAIGN_SIGILS) {
-      if (sigil.id === 'rift_sigil' || sigil.id === 'border_sigil' || sigil.id === 'ember_sigil' || sigil.id === 'frost_sigil' || sigil.id === 'mire_sigil' || sigil.id === 'tide_sigil' || sigil.id === 'iron_sigil' || sigil.id === 'sky_sigil' || sigil.id === 'moon_sigil') continue;
+      if (sigil.id === 'rift_sigil' || sigil.id === 'border_sigil' || sigil.id === 'ember_sigil' || sigil.id === 'frost_sigil' || sigil.id === 'mire_sigil' || sigil.id === 'tide_sigil' || sigil.id === 'iron_sigil' || sigil.id === 'sky_sigil' || sigil.id === 'moon_sigil' || sigil.id === 'crown_sigil') continue;
       expect(sigilTrophyFor(sigil.id)).toBeNull();
     }
   });
@@ -111,7 +111,7 @@ describe('astral rift world trophy', () => {
     expect(addSigilTrophy(cold.scene, cold.parent, 'rift_sigil', 100, 50, 64, true)).toBeNull();
     expect(cold.added).toHaveLength(0);
     const unknown = fakeRender([TROPHY.textureKey]);
-    expect(addSigilTrophy(unknown.scene, unknown.parent, 'crown_sigil', 100, 50, 64, false)).toBeNull();
+    expect(addSigilTrophy(unknown.scene, unknown.parent, 'nonexistent_sigil_for_test', 100, 50, 64, false)).toBeNull();
     expect(unknown.added).toHaveLength(0);
   });
 

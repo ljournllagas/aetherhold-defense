@@ -104,6 +104,15 @@ export const SIGIL_TROPHY_ART: Readonly<Record<string, SigilTrophyArt>> = {
     sourceWidth: 1254,
     sourceHeight: 1254,
     bounds: { left: 35, top: 14, width: 1183, height: 1202, bottom: 1215 }
+  },
+  crown_sigil: {
+    sigilId: 'crown_sigil',
+    worldId: 'aether_crown',
+    textureKey: 'campaign_sigil_aether_crown',
+    path: '/assets/campaign/sigils/aether_crown-sigil-v1.webp',
+    sourceWidth: 1254,
+    sourceHeight: 1254,
+    bounds: { left: 82, top: 10, width: 1090, height: 1228, bottom: 1237 }
   }
 };
 
