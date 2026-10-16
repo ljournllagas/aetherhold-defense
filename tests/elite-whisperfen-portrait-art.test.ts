@@ -50,7 +50,7 @@ describe('elite whisperfen portrait showcase', () => {
     expect(elitePortraitFor('borderkeep')).toBe(WORLD_ELITE_PORTRAIT_ART.borderkeep);
     expect(elitePortraitFor('emberfall')).toBe(WORLD_ELITE_PORTRAIT_ART.emberfall);
     expect(elitePortraitFor('frostveil')).toBe(WORLD_ELITE_PORTRAIT_ART.frostveil);
-    expect(elitePortraitFor('sunken_aether')).toBeNull();
+    expect(elitePortraitFor('ironroot')).toBeNull();
     expect(elitePortraitFor('unknown')).toBeNull();
     expect(CAMPAIGN_ART_MANIFEST.find(asset => asset.id === 'elite:whisperfen')).toMatchObject({
       key: PORTRAIT.textureKey, path: PORTRAIT.path, stage: 'campaign',
@@ -116,7 +116,7 @@ describe('elite whisperfen portrait showcase', () => {
     expect(addElitePortrait(cold.scene, cold.parent, 'whisperfen', 60, 60, 96)).toBeNull();
     expect(cold.added).toHaveLength(0);
     const unknown = fakeRender([PORTRAIT.textureKey]);
-    expect(addElitePortrait(unknown.scene, unknown.parent, 'sunken_aether', 60, 60, 96)).toBeNull();
+    expect(addElitePortrait(unknown.scene, unknown.parent, 'ironroot', 60, 60, 96)).toBeNull();
     expect(unknown.added).toHaveLength(0);
   });
 
