@@ -69,28 +69,41 @@ it('shows every tower portrait side by side in the build grid', () => {
 it('tapping a sheet portrait previews its details without closing the sheet', () => {
   const run = makeSheetRun();
   run.openSheet('build');
-  const portrait = run.images[0];
+  // Default preview is TOWER_LIST[0]; tap a different portrait to browse.
+  const portrait = run.images[1];
   const down = portrait.handlers.get('pointerdown');
   expect(down).toBeDefined();
-  const pointer: any = { id: 7, x: 36, y: 80, wasTouch: true };
+  const pointer: any = { id: 7, x: 136, y: 80, wasTouch: true };
   down(pointer, 0, 0, { stopPropagation() {} });
   // Tap fills the detail strip; gold is never committed by browsing.
   expect(run.sheetKind).toBe('build');
-  expect(run.towerPreviewId).toBe(TOWER_LIST[0].id);
+  expect(run.towerPreviewId).toBe(TOWER_LIST[1].id);
   expect(run.placingTowerId).toBeNull();
   expect(run.towers ?? []).toHaveLength(0);
 });
 
-it('the sheet Build action arms placement and closes the sheet', () => {
+it('tapping the previewed portrait again arms placement without scrolling', () => {
   const run = makeSheetRun();
   run.openSheet('build');
+  expect(run.towerPreviewId).toBe(TOWER_LIST[0].id);
   run.images[0].handlers.get('pointerdown')({ id: 7, x: 36, y: 80, wasTouch: true }, 0, 0, { stopPropagation() {} });
-  const build = (run.sheet.controls as any[]).find((control: any) => String(control.text.text).startsWith('Build '));
-  expect(build).toBeDefined();
-  expect(String(build.text.text)).toContain(`Build ${TOWER_LIST[0].name}`);
-  expect(run.commitBuildPreview()).toBe(true);
   expect(run.sheetKind).toBeNull();
   expect(run.placingTowerId).toBe(TOWER_LIST[0].id);
+});
+
+it('the sheet Build action sits above the details and arms placement', () => {
+  const run = makeSheetRun();
+  run.openSheet('build');
+  run.images[1].handlers.get('pointerdown')({ id: 7, x: 136, y: 80, wasTouch: true }, 0, 0, { stopPropagation() {} });
+  const build = (run.sheet.controls as any[]).find((control: any) => String(control.text.text).startsWith('Build '));
+  expect(build).toBeDefined();
+  expect(String(build.text.text)).toContain(`Build ${TOWER_LIST[1].name}`);
+  // Build action is the first control (right under the grid), details follow below.
+  const firstControl = (run.sheet.controls as any[])[0];
+  expect(String(firstControl.text.text).startsWith('Build ')).toBe(true);
+  expect(run.commitBuildPreview()).toBe(true);
+  expect(run.sheetKind).toBeNull();
+  expect(run.placingTowerId).toBe(TOWER_LIST[1].id);
 });
 
 it('the sheet Build commit refuses towers the run cannot afford', () => {
@@ -106,11 +119,12 @@ it('unaffordable towers preview with a disabled Build action', () => {
   const run = makeSheetRun();
   run.gold = 0;
   run.openSheet('build');
-  const portrait = run.images[0];
-  portrait.handlers.get('pointerdown')({ id: 9, x: 36, y: 80, wasTouch: true }, 0, 0, { stopPropagation() {} });
+  // Browse a different tower so the tap previews instead of attempting commit.
+  const portrait = run.images[1];
+  portrait.handlers.get('pointerdown')({ id: 9, x: 136, y: 80, wasTouch: true }, 0, 0, { stopPropagation() {} });
   // Preview always works; Build gates on gold instead of arming placement.
   expect(run.sheetKind).toBe('build');
-  expect(run.towerPreviewId).toBe(TOWER_LIST[0].id);
+  expect(run.towerPreviewId).toBe(TOWER_LIST[1].id);
   expect(run.trayOwner).toBeNull();
   expect(run.placingTowerId).toBeNull();
   const build = (run.sheet.controls as any[]).find((control: any) => String(control.text.text).startsWith('Build '));

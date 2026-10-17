@@ -30,6 +30,8 @@ export class ScrollSheet {
   contains(p: Point): boolean { const b = this.bounds; return p.x >= b.x && p.y >= b.y && p.x < b.x + b.width && p.y < b.y + b.height; }
   get scrollOffset(): number { return this.offset; }
   scrollTo(offset: number): void { this.scroll(offset - this.offset); }
+  /** Abort an in-progress scroll drag (e.g. a tower portrait drag takes over). */
+  cancelScroll(): void { this.drag = null; }
   text(y: number, value: string, color: string = C.textSecondary, size = 16): Phaser.GameObjects.Text {
     const text = this.scene.add.text(12, y, value, style(size, color)).setWordWrapWidth(this.bounds.width - 24);
     this.content.add(text); this.texts.push(text); this.contentHeight = Math.max(this.contentHeight, y + text.height + 12); this.clipControls(); return text;

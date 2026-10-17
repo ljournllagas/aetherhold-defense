@@ -152,11 +152,20 @@ export class GameScene extends Phaser.Scene {
   private trayOwner:number|null=null;
   private trayPoint:Point|null=null;
   private trayDrag:{point:Point;anchor:Point}|null=null;
+  /** Build-sheet drag-to-place: press a portrait, drag out of the sheet onto a circle. */
+  private sheetDrag:{towerId:TowerId;pointerId:number;startX:number;startY:number;dragging:boolean}|null=null;
   private compactInspectorBounds:{x:number;y:number;width:number;height:number}|null=null;
   private beginTowerDrag(input:TrayInput,id:TowerId):void {
     if(this.trayOwner!==null&&this.trayOwner!==input.id){const owner=this.trayOwner,point=this.trayPoint;this.cancelGesture();if(point)this.gesture.down(owner,point);this.gesture.down(input.id,input.point);return;}
     if(this.gesture.contactCount){this.gesture.down(input.id,input.point);return;}
-    if(this.isRunBlocked()||this.modal||this.sheetKind||this.pendingMeteor)return;
+    if(this.isRunBlocked()||this.modal||this.pendingMeteor)return;
+    if(this.sheetKind){
+      // The Build sheet owns its own portraits: dragging from the tray while it
+      // is open closes it and continues as a normal tray drag. Other sheets
+      // (tower/evolve/help/...) keep blocking placement gestures.
+      if(this.sheetKind!=='build')return;
+      this.sheetDrag=null;this.sheetKind=null;this.drawSheet();this.showTouchPreview();
+    }
     this.trayOwner=input.id;this.trayPoint=input.point;this.trayGesture.down(input,id);this.gesture.cancel();
   }
   private pointerTrayInput(p:Phaser.Input.Pointer):TrayInput {
@@ -323,6 +332,7 @@ export class GameScene extends Phaser.Scene {
 
   private readonly handlePointerDown = (ptr: Phaser.Input.Pointer): void => {
     if(this.trayOwner!==null&&ptr.id!==this.trayOwner){const id=this.trayOwner,point=this.trayPoint;this.cancelGesture();if(point)this.gesture.down(id,point);this.gesture.down(ptr.id,ptr);return;}
+    if(this.sheetDrag&&!this.sheetDrag.dragging&&ptr.id!==this.sheetDrag.pointerId){this.sheetDrag=null;}
     if (this.pauseState.has('background')) return;
     SoundManager.get().unlock();
     if (this.modal || this.sheet?.contains(ptr)) return;
@@ -346,6 +356,19 @@ export class GameScene extends Phaser.Scene {
       else if (inField) this.castMeteor(point.x, point.y);
       return;
     }
+    // Build-sheet fast path (mobile/tablet): a previewed tower + tap on an
+    // empty build circle builds immediately without scrolling to the Build button.
+    if (this.sheetKind === 'build' && this.towerPreviewId && !this.placingTowerId) {
+      const plot = this.cameraView.nearest(this.map.buildable, screen, Math.max(22, 26 * this.cameraView.scale));
+      if (plot >= 0) {
+        const detail = towerBuildDetail(this.towerPreviewId);
+        if (!detail || this.gold < detail.cost) { this.showBanner(detail ? `Need ${formatCount(detail.cost - this.gold)} more gold` : 'Cannot build here', C.gold); return; }
+        const towerId = this.towerPreviewId;
+        this.sheetDrag = null; this.sheetKind = null; this.drawSheet();
+        this.tryBuild(towerId, plot); this.showTouchPreview();
+        return;
+      }
+    }
     if (this.placingTowerId && inField) {
       const index = touch ? this.cameraView.nearest(this.map.buildable, screen, Math.max(22, 26 * this.cameraView.scale)) : this.nearestPlot(point.x, point.y)?.index ?? -1;
       this.touchMode=true;this.touchPreview = { point: index >= 0 ? this.map.buildable[index] : point, plot: index >= 0 ? index : null }; this.showTouchPreview();
@@ -363,6 +386,31 @@ export class GameScene extends Phaser.Scene {
 
   private readonly handlePointerMove = (ptr: Phaser.Input.Pointer): void => {
     if(this.trayOwner===ptr.id){if(!ptr.isDown){this.cancelGesture();return;}this.trayPoint={x:ptr.x,y:ptr.y};this.handleTrayIntent(this.trayGesture.move(this.pointerTrayInput(ptr)));return;}
+    if(this.sheetDrag&&ptr.id===this.sheetDrag.pointerId){
+      if(!ptr.isDown){this.sheetDrag=null;return;}
+      if(!this.sheetDrag.dragging){
+        const dx=ptr.x-this.sheetDrag.startX,dy=ptr.y-this.sheetDrag.startY;
+        const threshold=ptr.wasTouch?10:6;
+        if(Math.hypot(dx,dy)<=threshold)return;
+        // Touch scrolls vertically inside the sheet: only hijack the gesture
+        // once it leaves the sheet (dragging toward the map) or moves up/far.
+        if(ptr.wasTouch&&this.sheet?.contains({x:ptr.x,y:ptr.y})&&!(dy<-12||Math.hypot(dx,dy)>24))return;
+        const detail=towerBuildDetail(this.sheetDrag.towerId);
+        if(!detail||this.gold<detail.cost||this.isRunBlocked()||this.modal||this.pendingMeteor){this.sheetDrag=null;return;}
+        this.sheet?.cancelScroll();
+        // Arm placement and close the sheet so the board is fully visible for the drop.
+        this.sheetDrag.dragging=true;
+        this.sheetKind=null;this.drawSheet();
+        this.touchMode=true;this.placingTowerId=detail.id;this.selectedTower=null;this.touchPreview=null;
+        this.towerPreviewId=null;this.refreshPreviewPanel();
+        this.refreshInfoPanel();this.refreshPlots();this.refreshPlacePanel();this.showTouchPreview();
+      }
+      const anchor={x:ptr.x,y:ptr.y-(ptr.wasTouch?48:0)};
+      const index=this.cameraView.nearest(this.map.buildable,anchor,28);
+      const target=index>=0?this.map.buildable[index]:this.cameraView.unproject(anchor);
+      this.updateGhost(target.x,target.y);
+      return;
+    }
     if (ptr.wasTouch || (ptr.event as PointerEvent)?.pointerType === 'pen') {
       const intent = this.gesture.move(ptr.id, ptr);
       if (intent?.type === 'pinch') { this.cameraView.zoomAt(this.cameraView.zoom * intent.ratio, intent.point); this.cameraView.pan(intent.dx, intent.dy); }
@@ -383,10 +431,27 @@ export class GameScene extends Phaser.Scene {
 
   private readonly handlePointerUp = (ptr: Phaser.Input.Pointer): void => {
     if(this.trayOwner===ptr.id){const intent=this.trayGesture.up(this.pointerTrayInput(ptr));this.trayOwner=null;this.handleTrayIntent(intent);return;}
+    if(this.sheetDrag&&ptr.id===this.sheetDrag.pointerId){
+      const drag=this.sheetDrag;this.sheetDrag=null;
+      if(drag.dragging){
+        const towerId=drag.towerId;
+        this.placingTowerId=null;
+        const screen={x:ptr.x,y:ptr.y};
+        const anchor={x:ptr.x,y:ptr.y-(ptr.wasTouch?48:0)};
+        if(!this.cameraView.inField(screen)||this.overBattleControls(screen)||this.isRunBlocked()){this.hideGhost();this.refreshPreviewPanel();this.refreshPlots();return;}
+        const plot=this.cameraView.nearest(this.map.buildable,anchor,28);
+        if(plot>=0)this.tryBuild(towerId,plot);
+        else this.showBanner('Drop onto a build circle.',C.gold);
+        this.hideGhost();this.refreshPlots();this.refreshPreviewPanel();
+        return;
+      }
+      // Plain tap: preview was already set on pointerdown; let the sheet handle it.
+      return;
+    }
     const intent = this.gesture.up(ptr.id);
     if (intent?.type === 'tap') this.selectBattlefield(intent.point, true);
   };
-  private readonly cancelGesture = (): void => { this.gesture.cancel();this.trayGesture.cancel();this.trayOwner=null;this.trayDrag=null;this.placingTowerId=null;this.touchPreview=null;this.hideGhost(); this.cancelAutoPress(); };
+  private readonly cancelGesture = (): void => { this.gesture.cancel();this.trayGesture.cancel();this.trayOwner=null;this.trayDrag=null;this.sheetDrag=null;this.placingTowerId=null;this.touchPreview=null;this.hideGhost(); this.cancelAutoPress(); };
   private readonly handleControlDown = ():void=>{if(this.trayOwner!==null||this.gesture.contactCount)this.cancelGesture();};
   private readonly captureLost = (event: PointerEvent): void => { if (event.buttons !== 0) this.cancelGesture(); };
   private readonly visibilityChanged = (): void => {
@@ -435,7 +500,7 @@ export class GameScene extends Phaser.Scene {
 
   init(data: Partial<GameStartData>): void {
     this.unlockRepository = sharedUnlockRepository;
-    this.pauseState = new PauseState(); this.gesture.cancel();this.trayGesture.cancel();this.trayOwner=null;this.trayDrag=null;this.trayPoint=null; this.cameraView.setContentFit(null); this.cameraView.setTopHeadroom(0); this.cameraView.reset();
+    this.pauseState = new PauseState(); this.gesture.cancel();this.trayGesture.cancel();this.trayOwner=null;this.trayDrag=null;this.sheetDrag=null;this.trayPoint=null; this.cameraView.setContentFit(null); this.cameraView.setTopHeadroom(0); this.cameraView.reset();
     this.touchPreview = null; this.touchMode = false; this.sheetKind = null; this.sheet = null;
     this.modalRenderer = null; this.modalSheet = null; this.backgroundOverlay = null; this.gestureHintShown = false;
     this.modalError = '';
@@ -652,7 +717,7 @@ export class GameScene extends Phaser.Scene {
     const previewId = this.towerPreviewId;
     const detail = previewId ? towerBuildDetail(previewId) : null;
     if (!detail || this.gold < detail.cost || this.isRunBlocked() || this.modal || this.pendingMeteor) return false;
-    this.sheetKind = null; this.drawSheet();
+    this.sheetDrag = null; this.sheetKind = null; this.drawSheet();
     this.touchMode = true; this.placingTowerId = previewId; this.selectedTower = null; this.touchPreview = null;
     this.towerPreviewId = null; this.refreshPreviewPanel();
     this.refreshInfoPanel(); this.refreshPlots(); this.refreshPlacePanel(); this.showTouchPreview();
@@ -662,7 +727,7 @@ export class GameScene extends Phaser.Scene {
     return {...this.purchaseContext(),blocked:this.ended||this.siege.phase==='victory'||this.siege.phase==='terminal'||this.pauseState.blockedExcept('details')};
   }
   private openDetails(kind:'tower'|'evolve'|'help'|'progression'):void {this.cancelGesture();this.sheetKind=kind;this.pauseState.set('details',true);this.drawSheet();}
-  private closeDetails():void {if(this.guideStep)this.guide.complete(this.guideStep);this.guideStep=null;this.sheetKind=null;this.pauseState.set('details',false);this.refreshProgressionActions=null;this.sheet?.destroy();this.sheet=null;this.refreshInfoPanel();}
+  private closeDetails():void {if(this.guideStep)this.guide.complete(this.guideStep);this.guideStep=null;this.sheetDrag=null;this.sheetKind=null;this.pauseState.set('details',false);this.refreshProgressionActions=null;this.sheet?.destroy();this.sheet=null;this.refreshInfoPanel();}
   private performDetailedAction(action:()=>boolean):void {
     const kind=this.sheetKind==='evolve'?'evolve':'tower';
     this.closeDetails();
@@ -704,11 +769,14 @@ export class GameScene extends Phaser.Scene {
       if(!this.campaign&&this.progressionTab==='classic')for(const a of achievementViews(this.unlockRepository.view(),this.towers,this.wavesCompleted)){if(a.earned)continue;const t=sheet.text(y,`${TOWERS[a.towerId].name}: ${this.wavesCompleted>=20?`Try in a new Classic run. ${missedAchievementDetail(a.towerId,this.towers)}`:a.qualifiesNow?`On track · Wave ${this.wavesCompleted}/20`:'Build the starter branch and reach rank 2 before completing wave 20.'}`);y+=t.height+12;}
       sheet.action(y,'Back to battle',()=>this.closeDetails());
     }else if (kind === 'build') {
-      // Horizontal card grid: portraits side by side. Tap a card to preview
-      // its description and strengths below; Build commits, drag on the tray
-      // keeps the fast path. Four columns keep Tempest, Sentinel and Cinder
-      // on one row instead of orphaning the last tower; wide sheets fit all
-      // seven in a single row.
+      // Horizontal card grid: portraits side by side. First tap previews the
+      // description below; second tap on the previewed card (or the Build
+      // button, or a build circle on the map) arms placement; dragging a
+      // portrait out of the sheet drops it directly onto a circle. The Build
+      // action sits immediately under the grid so phones/tablets never have
+      // to scroll past the details just to build. Four columns keep Tempest,
+      // Sentinel and Cinder on one row instead of orphaning the last tower;
+      // wide sheets fit all seven in a single row.
       if (!this.towerPreviewId || !isTowerId(this.towerPreviewId)) this.towerPreviewId = TOWER_LIST[0].id as TowerId;
       const gridWidth = bounds.width - 24;
       const cols = bounds.width >= 560 ? 7 : bounds.width >= 340 ? 4 : 3;
@@ -729,11 +797,18 @@ export class GameScene extends Phaser.Scene {
           `${previewed ? '▶ ' : ''}${cfg.name}`, previewed ? C.gold : affordable ? C.textPrimary : C.textSecondary,
           `${formatCount(cfg.levels[0].cost)} gold`, affordable ? C.gold : C.textSecondary);
         card.image.setAlpha(affordable ? 1 : 0.55).setInteractive({ useHandCursor: true });
-        card.image.on('pointerdown', (_p: Phaser.Input.Pointer, _x: number, _y: number, e: Phaser.Types.Input.EventData) => {
+        card.image.on('pointerdown', (p: Phaser.Input.Pointer, _x: number, _y: number, e: Phaser.Types.Input.EventData) => {
           e.stopPropagation();
           if (!isTowerId(cfg.id)) return;
+          // Second tap on the previewed tower arms placement immediately.
+          if (this.towerPreviewId === cfg.id) { this.sheetDrag = null; this.commitBuildPreview(); return; }
           this.towerPreviewId = cfg.id;
-          this.drawSheet();
+          // Track a potential drag-to-place starting from this press. The
+          // global move/up handlers promote it to a real drag once the pointer
+          // leaves the sheet (or moves up/far), otherwise it stays a tap.
+          this.sheetDrag = { towerId: cfg.id, pointerId: p.id, startX: p.x, startY: p.y, dragging: false };
+          const offset = this.sheet?.scrollOffset ?? 0;
+          this.drawSheet(offset);
         });
       });
       const rows = Math.ceil(total / cols);
@@ -741,15 +816,17 @@ export class GameScene extends Phaser.Scene {
       const detail = this.towerPreviewId ? towerBuildDetail(this.towerPreviewId) : null;
       if (detail) {
         const cost = towerDetailCostLine(detail, this.gold);
+        // Build first: visible right under the grid without scrolling past details.
+        sheet.action(detailY, cost.affordable ? `Build ${detail.name} · ${formatCount(detail.cost)} gold` : `Build ${detail.name} · Need ${formatCount(detail.cost - this.gold)} more`, () => {
+          this.sheetDrag = null; this.commitBuildPreview();
+        }, cost.affordable ? 'primary' : 'secondary', cost.affordable);
+        detailY += 56;
         const title = sheet.text(detailY, `${detail.name} · ${detail.role}`, C.gold, 16); detailY += title.height + 8;
         const description = sheet.text(detailY, detail.description, C.textSecondary, 14); detailY += description.height + 8;
         const stats = sheet.text(detailY, towerDetailStatsLine(detail), C.textPrimary, 14); detailY += stats.height + 4;
         const special = towerDetailSpecialLine(detail);
         if (special) { const specialText = sheet.text(detailY, special, C.textSecondary, 13); detailY += specialText.height + 4; }
-        const costText = sheet.text(detailY, cost.text, cost.affordable ? C.gold : C.textSecondary, 14); detailY += costText.height + 12;
-        sheet.action(detailY, cost.affordable ? `Build ${detail.name} · ${formatCount(detail.cost)} gold` : `Build ${detail.name} · Need ${formatCount(detail.cost - this.gold)} more`, () => {
-          this.commitBuildPreview();
-        }, cost.affordable ? 'primary' : 'secondary', cost.affordable);
+        sheet.text(detailY, cost.text, cost.affordable ? C.gold : C.textSecondary, 14);
       }
     } else if (kind === 'evolve' && this.selectedTower) {
       this.drawProgressionModel(sheet, this.selectedTower, 0);
