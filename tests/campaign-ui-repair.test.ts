@@ -2,6 +2,8 @@ import { describe, expect, it, vi } from 'vitest';
 import Phaser from 'phaser';
 import { CampaignScene } from '../src/game/scenes/CampaignScene.ts';
 import { SettingsScene } from '../src/game/scenes/SettingsScene.ts';
+import { CAMPAIGN_SIGILS, CAMPAIGN_WORLDS } from '../src/game/campaign/config.ts';
+import { WORLD_ELITE_PORTRAIT_ART } from '../src/game/campaign/elitePortraitArt.ts';
 import { handleViewportPointerUp, ViewportMaskController } from '../src/game/ui/ViewportMask.ts';
 
 vi.mock('phaser', () => ({
@@ -112,6 +114,47 @@ it.each([[844, 320], [1280, 350], [390, 844]])('uses scrollable Settings at %ix%
   scene.createPhone = vi.fn();
   scene.create();
   expect(scene.createPhone).toHaveBeenCalledOnce();
+});
+
+describe('Codex elite concept art', () => {
+  it('shows each world’s provisional elite concept without claiming an encounter', () => {
+    const texts: Array<{ y: number; value: string }> = [];
+    const images: Array<{ x: number; y: number; key: string; size: [number, number] }> = [];
+    const sheet = {
+      bounds: { width: 420 },
+      content: { add: () => {} },
+      text: (y: number, value: string) => { texts.push({ y, value }); return { height: 16 }; },
+      action: () => {}
+    };
+    const scene = Object.create(CampaignScene.prototype) as any;
+    scene.scale = { width: 800, height: 600 };
+    scene.textures = { exists: () => true };
+    scene.add = { image: (x: number, y: number, key: string) => {
+      const view: any = { setDisplaySize: (w: number, h: number) => { images.push({ x, y, key, size: [w, h] }); return view; }, setCrop: () => view };
+      return view;
+    } };
+    scene.campaignView = {
+      totalMasteryStars: 90,
+      profile: {
+        worldSigils: CAMPAIGN_SIGILS.map(sigil => sigil.id),
+        unlockedFeatures: ['aether_codex_tactics', 'advanced_codex_stats',
+          'hollow_warden_codex_entry', 'cinder_colossus_codex_entry', 'frostbound_matriarch_codex_entry']
+      }
+    };
+    scene.makeSheet = () => sheet;
+
+    scene.openCodex();
+
+    const eliteKeys = new Set(Object.values(WORLD_ELITE_PORTRAIT_ART).map(art => art.textureKey));
+    const eliteImages = images.filter(image => eliteKeys.has(image.key));
+    expect(eliteImages).toHaveLength(CAMPAIGN_WORLDS.length);
+    expect(eliteImages.every(image => image.size[0] === image.size[1])).toBe(true);
+    for (const world of CAMPAIGN_WORLDS) {
+      expect(texts.some(row => row.value === `Concept · ${WORLD_ELITE_PORTRAIT_ART[world.id].provisionalName}`), world.id).toBe(true);
+    }
+    // The concept rows are labelled as concepts, never as encounters.
+    expect(texts.every(row => !/elite enemy/i.test(row.value))).toBe(true);
+  });
 });
 
 describe('fully unlocked Codex spacing', () => {

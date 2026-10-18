@@ -31,6 +31,9 @@ import {
 } from '../campaign/sigilArt.ts';
 import { addBossPortrait, BOSS_PORTRAIT_CODEX_PX } from '../campaign/bossPortraitArt.ts';
 import {
+  addElitePortrait, ELITE_PORTRAIT_CODEX_COMPACT_PX, ELITE_PORTRAIT_CODEX_PX, elitePortraitFor
+} from '../campaign/elitePortraitArt.ts';
+import {
   addLandmarkDecoration, LANDMARK_CAPTION_COMPACT_PX, LANDMARK_CAPTION_PX,
   landmarkCaptionReserve, landmarkCosmeticUnlocked
 } from '../campaign/landmarkArt.ts';
@@ -512,6 +515,17 @@ export class CampaignScene extends Phaser.Scene {
         y += description.height + 22;
         if (this.campaignView.profile.unlockedFeatures.includes('advanced_codex_stats')) {
           y += sheet.text(y, `HP ${enemy.baseHp} · Speed ${enemy.baseSpeed} · Physical armor ${Math.round(enemy.physicalArmor * 100)}% · Ward ${Math.round(enemy.wardArmor * 100)}%`, C.textMuted, 12).height + 18;
+        }
+        // Provisional elite concept art for this world. It is display-only: the
+        // labelled concept is not an encounter, so the caption never claims one.
+        const elite = elitePortraitFor(world.id);
+        if (elite && (this.textures?.exists(elite.textureKey) ?? false)) {
+          const eliteSize = (this.scale?.width ?? 999) < 520 ? ELITE_PORTRAIT_CODEX_COMPACT_PX : ELITE_PORTRAIT_CODEX_PX;
+          const elitePortrait = addElitePortrait(this, sheet.content, world.id, 12 + eliteSize / 2, y + eliteSize / 2, eliteSize);
+          if (elitePortrait) {
+            y += eliteSize + 8;
+            y += sheet.text(y, `Concept · ${elite.provisionalName}`, C.textMuted, 12).height + 18;
+          }
         }
       } else y += 32;
     }

@@ -1,5 +1,19 @@
 # Project progress
 
+## Codex elite concept art — COMPLETE, 2026-10-18
+
+Wires the ten provisional elite portraits into the Aether Codex. Each unlocked
+world's Codex entry now shows its elite concept portrait and a `Concept · <name>`
+caption; the portraits are display-only and never claim an encounter (the art's
+own tests assert no enemy, boss, evolution or animation mechanics exist). The
+assets keep their `showcase_only`/`provisional` flags. `CampaignScene.openCodex`
+gates the block on the texture being loaded, so headless paths are unaffected.
+Test: `tests/campaign-ui-repair.test.ts` ("Codex elite concept art"). Docs:
+`docs/SPEC.md`. Note: these are the only provisional assets in the repository, so
+the Codex now presents concept art by design.
+
+Full suite: 2,352 passed, 11 configured skips.
+
 ## Balance evidence (F4/F5/F6) — COMPLETE, 2026-10-18
 
 Re-ran the Campaign and Classic simulation gates on current `main` and recorded
