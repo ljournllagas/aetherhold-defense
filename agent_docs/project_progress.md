@@ -1,5 +1,18 @@
 # Project progress
 
+## Balance evidence (F4/F5/F6) — COMPLETE, 2026-10-18
+
+Re-ran the Campaign and Classic simulation gates on current `main` and recorded
+the evidence in `docs/BALANCE_EVIDENCE_2026-10-18.md`. No tuning performed. The
+live Campaign star target is `ceil(0.9 × perfectScore / 10) × 10`; levels 21–30
+clear it, with the tightest margins at level 26 (0.36%), 21 (2.53%) and 23
+(3.90%), all driven by lives lost. The configured `mastery.scoreTarget` values
+for those levels are unreachable (above the perfect score) and are now only
+legacy alternative bars, so the 2026-10-11 audit's F4 margins no longer describe
+the live target. Classic Easy/Medium/Hard all finish at full lives, reproducing
+F5. Score-target reconciliation is flagged REQUIRES-HUMAN and deferred pending
+human playtesting.
+
 ## Roomy-portrait boss overlay — COMPLETE, 2026-10-18
 
 Extends the 2026-10-15 compact boss fix to roomy portrait phones. `gameLayout`
