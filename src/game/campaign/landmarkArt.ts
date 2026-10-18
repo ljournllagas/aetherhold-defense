@@ -122,9 +122,45 @@ export function landmarkFor(worldId: string): WorldLandmarkArt | null {
   return WORLD_LANDMARK_ART[worldId] ?? null;
 }
 
+/**
+ * Biome-cosmetic gate. The foundation Sigils advertise "biome cosmetics", so the
+ * Emberfall and Frostveil landmark decorations are earned with their Sigils.
+ * Worlds without an advertised cosmetic keep their landmark as base decoration.
+ */
+export const LANDMARK_COSMETIC_FEATURE: Readonly<Record<string, string>> = {
+  emberfall: 'emberfall_cosmetics',
+  frostveil: 'frostveil_cosmetics'
+};
+
+/**
+ * Whether a world's landmark decoration is earned: worlds with no advertised
+ * cosmetic always qualify; Emberfall and Frostveil require their Sigil cosmetic.
+ */
+export function landmarkCosmeticUnlocked(worldId: string, unlockedFeatures: readonly string[]): boolean {
+  const feature = LANDMARK_COSMETIC_FEATURE[worldId];
+  return feature === undefined || unlockedFeatures.includes(feature);
+}
+
 /** Decoration sizes keep the world caption legible on desktop and phones. */
 export const LANDMARK_DISPLAY_PX = 96;
 export const LANDMARK_DISPLAY_COMPACT_PX = 64;
+
+/** Caption emblem sizes fit inside the existing reserved caption strip. */
+export const LANDMARK_CAPTION_PX = 44;
+export const LANDMARK_CAPTION_COMPACT_PX = 34;
+
+/**
+ * Space reserved beside the world label for the caption landmark, or 0 when
+ * showing it would squeeze the label below its legible minimum. Mirrors the
+ * sigil-trophy reserve so both decorations never overlap the runtime text.
+ */
+export function landmarkCaptionReserve(
+  compact: boolean, textWidth: number, trophyReserve: number, hasLandmark: boolean
+): number {
+  if (!hasLandmark) return 0;
+  const reserve = (compact ? LANDMARK_CAPTION_COMPACT_PX : LANDMARK_CAPTION_PX) + 12;
+  return textWidth - reserve - trophyReserve >= 96 ? reserve : 0;
+}
 
 /**
  * Square display size: fit the square master inside the slot without

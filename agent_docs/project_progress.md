@@ -1,5 +1,30 @@
 # Project progress
 
+## Biome-cosmetic Sigil rewards (F3) — COMPLETE, 2026-10-18
+
+Defines the two advertised Campaign biome cosmetics so they have a visible
+effect. The Ember Sigil's `emberfall_cosmetics` now earns the Emberfall
+forge-gate landmark and the Frost Sigil's `frostveil_cosmetics` the Frostveil
+landmark; each appears beside its world's caption on the Campaign map once
+earned. Worlds with no advertised cosmetic keep their landmark as base
+decoration. Decoration is display-only: it is never interactive and never
+alters routes, plots or tap targets.
+
+Implementation: `landmarkArt.ts` adds `landmarkCosmeticUnlocked` and
+`landmarkCaptionReserve`; `CampaignScene.drawMap` reserves caption space and
+places the landmark. New `tests/landmark-biome-cosmetics.test.ts` (6 tests)
+covers the gate, Sigil binding, caption reserve and scene rendering before and
+after unlock. Docs updated: `SPEC.md`, `CAMPAIGN_WORLDS_1_3.md` and the F3 row
+of `FEATURE_ART_BALANCE_AUDIT.md`.
+
+Full suite: 2,341 passed, 11 configured skips; typecheck/build passed with the
+existing large-chunk advisory. `npm run deploy` published Worker
+`f9e88e23-a900-4d00-b8bf-5e5087bdd6f5` at
+https://aetherhold-defense.ljournllagas.workers.dev/ serving
+`index-DC8exxaJ.js`; live HTML, bundle SHA-256 and `/api/health`
+(ok/scoreVersion 3) matched `dist`. A live Campaign-map interaction was not
+browser-exercised (the desktop window was not visible for canvas input).
+
 ## Sentinel and Cinder artwork — COMPLETE, 2026-10-15
 
 Heavy deployment `sentinel-cinder-art-20261015` starts from latest main

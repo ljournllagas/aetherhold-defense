@@ -81,7 +81,11 @@ completion of this three-world foundation.
 
 World Sigils separately grant the next world, Tier II visuals, boss Codex entries,
 biome cosmetics and their named Power-Up additions. No permanent damage, gold
-or lives bonus is granted. Specialization I offers two choices per tower:
+or lives bonus is granted. Each world's painted landmark is its biome cosmetic:
+the Ember Sigil earns the Emberfall forge-gate and the Frost Sigil earns the
+Frostveil landmark, which then appear beside that world's map caption. Worlds
+without an advertised cosmetic keep their landmark as base decoration.
+Specialization I offers two choices per tower:
 Longbow Bastion / Repeater Tower; Siege Mortar / Ember Cannon; Glacial Spire /
 Shatter Spire; Aether Obelisk / Prism Tower; Storm Conduit / Thunder Crown.
 These choices are selected before battle and may be changed between levels.

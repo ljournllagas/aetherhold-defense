@@ -30,6 +30,10 @@ import {
   SIGIL_TROPHY_MASTERY_PX, sigilTrophyFor
 } from '../campaign/sigilArt.ts';
 import { addBossPortrait, BOSS_PORTRAIT_CODEX_PX } from '../campaign/bossPortraitArt.ts';
+import {
+  addLandmarkDecoration, LANDMARK_CAPTION_COMPACT_PX, LANDMARK_CAPTION_PX,
+  landmarkCaptionReserve, landmarkCosmeticUnlocked
+} from '../campaign/landmarkArt.ts';
 
 const TARGETING_MODES: readonly TargetingMode[] = ['first', 'last', 'strongest', 'weakest', 'closest'];
 const TOWER_IDS: readonly TowerId[] = ['longbow', 'ember', 'glacier', 'starfire', 'tempest', 'sentinel', 'cinder'];
@@ -257,18 +261,31 @@ export class CampaignScene extends Phaser.Scene {
       const trophySize = compact ? SIGIL_TROPHY_CAPTION_COMPACT_PX : SIGIL_TROPHY_CAPTION_PX;
       const trophyReady = sigilTrophyFor(world.sigilId) !== null && (this.textures?.exists(sigilTrophyFor(world.sigilId)!.textureKey) ?? false);
       const trophyReserve = trophyReady && caption.textWidth - (trophySize + 12) >= 96 ? trophySize + 12 : 0;
-      const textWidth = caption.textWidth - trophyReserve;
-      const title = this.add.text(caption.textX, 8, `WORLD ${world.worldNumber}  ·  ${world.name.toUpperCase()}`, style(compact ? 13 : 15, C.textPrimary, true, FONT_DISPLAY))
+      // The earned Sigil's biome cosmetic reveals this world's painted landmark
+      // beside the runtime label. It is display-only and never alters the route.
+      const landmarkSize = compact ? LANDMARK_CAPTION_COMPACT_PX : LANDMARK_CAPTION_PX;
+      const landmarkReserve = landmarkCaptionReserve(
+        compact, caption.textWidth, trophyReserve,
+        landmarkCosmeticUnlocked(world.id, this.campaignView.profile.unlockedFeatures)
+      );
+      const textX = caption.textX + landmarkReserve;
+      const textWidth = caption.textWidth - landmarkReserve - trophyReserve;
+      const title = this.add.text(textX, 8, `WORLD ${world.worldNumber}  ·  ${world.name.toUpperCase()}`, style(compact ? 13 : 15, C.textPrimary, true, FONT_DISPLAY))
         .setWordWrapWidth(textWidth);
       const sigilEarned = this.campaignView.profile.worldSigils.includes(world.sigilId);
-      const sigil = this.add.text(caption.textX, 8 + title.height + 4,
+      const sigil = this.add.text(textX, 8 + title.height + 4,
         `${world.levelStart}–${world.levelEnd}   ${sigilEarned ? 'SIGIL EARNED' : `BOSS SIGIL · LEVEL ${world.bossLevel}`}`,
         style(12, sigilEarned ? C.goldBright : C.textMuted)).setWordWrapWidth(textWidth);
-      const captionHeight = trophyReserve > 0
-        ? Math.max(sigil.y + sigil.height + 6, trophySize + 14)
-        : sigil.y + sigil.height + 6;
+      const captionHeight = Math.max(
+        sigil.y + sigil.height + 6,
+        trophyReserve > 0 ? trophySize + 14 : 0,
+        landmarkReserve > 0 ? landmarkSize + 14 : 0
+      );
       panel(this, mapRoot, caption.x, 0, caption.width, captionHeight, 0x445564).setFillStyle(C.bgPanel, 0.88);
       mapRoot.add([title, sigil]);
+      if (landmarkReserve > 0) {
+        addLandmarkDecoration(this, mapRoot, world.id, caption.x + 8 + landmarkSize / 2, captionHeight / 2, landmarkSize);
+      }
       if (trophyReserve > 0) {
         addSigilTrophy(this, mapRoot, world.sigilId,
           caption.x + caption.width - 8 - trophySize / 2, captionHeight / 2, trophySize, sigilEarned);

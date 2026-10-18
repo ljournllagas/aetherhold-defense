@@ -2146,7 +2146,10 @@ combat-stat bonuses. The existing foundation milestones remain:
 
 Specialization I is selected before battle and can be changed between levels.
 World Sigils also add their documented Codex entries, cosmetics, tower visual
-tiers and campaign Power-Ups. Stable level IDs and tuning live in
+tiers and campaign Power-Ups. A world's painted landmark is its biome cosmetic:
+the Ember and Frost Sigils earn the Emberfall and Frostveil landmarks, shown
+beside those world captions on the campaign map; other worlds keep theirs as
+base decoration. Stable level IDs and tuning live in
 `src/game/campaign/`.
 
 Local campaign progress retains the `aetherhold-campaign-v1` key and version-1
