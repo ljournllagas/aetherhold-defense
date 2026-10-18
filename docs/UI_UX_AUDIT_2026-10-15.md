@@ -14,7 +14,7 @@ Known tradeoff: the bar covers about 24px of the board's top edge during a boss.
 
 | # | Finding | Status |
 |---|---|---|
-| 1 | Canvas menu/sheet actions not keyboard-operable | Open (no tabindex/aria in components.ts or MainMenuScene.ts); needs its own spec |
+| 1 | Canvas menu/sheet actions not keyboard-operable | Partly fixed: main menu (2026-10-18) and Classic difficulty selection (2026-10-18) have DOM button layers; in-battle and portrait-phone ScrollSheet rows remain open |
 | 2-5 | Short-landscape Settings, Campaign row heights, header overlap, leaderboard recovery | Not re-checked |
 | 6 | Escape closes sheet first | Fixed |
 | 7 | Preparation scroll preserved | Fixed |

@@ -6,6 +6,7 @@ interface StubEl {
   style: Record<string, string>; attrs: Record<string, string>; children: StubEl[];
   listeners: Record<string, Array<() => void>>; removed?: boolean;
   appendChild(child: StubEl): StubEl;
+  replaceChildren(): void;
   setAttribute(k: string, v: string): void;
   addEventListener(type: string, handler: () => void): void;
   getBoundingClientRect(): { left: number; top: number; width: number; height: number };
@@ -17,6 +18,7 @@ function makeEl(tag: string): StubEl {
   const el: StubEl = {
     tag, type: '', className: '', textContent: '', disabled: false, style: {}, attrs: {}, children: [], listeners: {},
     appendChild(child) { this.children.push(child); return child; },
+    replaceChildren() { this.children.length = 0; },
     setAttribute(k, v) { this.attrs[k] = v; },
     addEventListener(type, handler) { (this.listeners[type] ??= []).push(handler); },
     getBoundingClientRect() { return { left: 0, top: 0, width: 0, height: 0 }; },
@@ -83,6 +85,20 @@ describe('accessible action layer', () => {
     buttons[1].click();
     expect(run).toHaveBeenCalledTimes(2);
     expect(blocked).not.toHaveBeenCalled();
+  });
+
+  it('replaces every mirrored control when set is called', () => {
+    const { scene } = sceneStub();
+    const first = vi.fn(), replacement = vi.fn();
+    const layer = mountAccessibleActions(scene, [action('Campaign', 0, 0, 10, 10, first), action('Settings', 0, 0, 10, 10)])!;
+
+    layer.set([action('Easy difficulty (selected)', 0, 0, 10, 10, replacement), action('Continue', 0, 0, 10, 10)]);
+
+    const buttons = host.children[0].children;
+    expect(buttons.map(button => button.textContent)).toEqual(['Easy difficulty (selected)', 'Continue']);
+    buttons[0].click();
+    expect(replacement).toHaveBeenCalledTimes(1);
+    expect(first).not.toHaveBeenCalled();
   });
 
   it('positions buttons over the canvas and follows resize', () => {

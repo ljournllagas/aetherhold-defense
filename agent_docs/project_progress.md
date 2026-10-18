@@ -1,5 +1,40 @@
 # Project progress
 
+## Hardening and accessibility pass — COMPLETE, 2026-10-18
+
+Five changes from a repo audit follow-up:
+
+- **Worker rate limiting** (`worker/rateLimit.ts`). `/api/auth/start` is now
+  limited per client address and `/api/account/*` writes per player, closing the
+  unauthenticated amplification path and the unbounded account-write loop. The
+  shared `consumeRateLimit` helper replaces the three inline copies; the missing
+  or failing binding still fails closed (503) and a healthy denial returns 429
+  with `Retry-After`. Tests: `tests/rate-limit.test.ts`.
+- **Deploy size**. `public/.assetsignore` excludes `/assets/**/*.png` from the
+  uploaded asset set. The 225 build-source PNGs (unstripped, ~270 MB) stay in the
+  repository for `tools/optimize-art.py` regeneration but no longer ship; the PWA
+  icons, screenshots and favicon still upload. Verified with
+  `wrangler deploy --dry-run` at debug level: 225 PNGs ignored, 0 WebP.
+  Test: `tests/loading-performance.test.ts` ("deployed asset set").
+- **Reduced motion**. `src/game/art/reducedMotion.ts` centralises the preference
+  check; the battlefield stronghold beacon no longer pulses when it is set (the
+  painted menu backdrop already honoured it, and the login screen shares that
+  primitive). Tests: `tests/reduced-motion.test.ts`, plus a beacon case in
+  `tests/campaign-map-composite.test.ts`.
+- **Classic difficulty selection is keyboard/screen-reader operable**. The
+  `AccessibleActionLayer` gained `set()` and `DifficultyScene` mirrors the three
+  cards and Back/Continue, announcing the selected card. Spec:
+  `docs/specs/2026-10-18-accessible-difficulty-controls.md`. Tests:
+  `tests/difficulty-accessible.test.ts`, `tests/accessible-actions.test.ts`.
+- Two 2026-10-15 audit items were confirmed already resolved and recorded as
+  such: Sentinel/Cinder no longer reuse the Ranger/Bombard sheets, and portrait
+  phones already start at a comfort zoom instead of leaving an empty band.
+
+Still open (recorded, not done here): keyboard access to the in-battle sheets and
+the portrait-phone `ScrollSheet` rows; in-battle sheets need their own design.
+The level 21–30 Campaign `mastery.scoreTarget` reconciliation stays
+REQUIRES-HUMAN and deferred pending human playtesting.
+
 ## Codex elite concept art — COMPLETE, 2026-10-18
 
 Wires the ten provisional elite portraits into the Aether Codex. Each unlocked

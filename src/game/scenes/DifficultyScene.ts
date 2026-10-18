@@ -13,8 +13,15 @@ import { emblemKey } from '../art/artkit.ts';
 import { paintVista } from '../art/menubg.ts';
 import { ScrollSheet } from '../ui/ScrollSheet.ts';
 import { editPlayerName, runPlayerName } from '../../shared/playerName.ts';
+import { mountAccessibleActions, type AccessibleAction, type AccessibleActionLayer } from '../ui/accessibleActions.ts';
 
 const COLORS = { selected: 0xd7aa4e, line: 0x445564, card: 0x101820, raised: 0x19232d };
+
+/** Screen-reader label for a difficulty card, announcing which one is chosen. */
+function difficultyAccessibleLabel(id: DifficultyId, selected: DifficultyId): string {
+  const label = DIFFICULTY_LIST.find(difficulty => difficulty.id === id)?.label ?? id;
+  return `${label} difficulty${id === selected ? ' (selected)' : ''}`;
+}
 
 function addButton(scene: Phaser.Scene, x: number, y: number, width: number, height: number, label: string, primary: boolean, action: () => void): Phaser.GameObjects.Rectangle {
   const fill = primary ? 0x153c31 : COLORS.raised;
@@ -50,6 +57,9 @@ export class DifficultyScene extends Phaser.Scene {
   private phoneSheet: ScrollSheet | null = null;
   private phoneRoot: Phaser.GameObjects.Container | null = null;
   private diffCards: Array<{ id: DifficultyId; box: Phaser.GameObjects.Rectangle; marker: Phaser.GameObjects.Text; frame: Phaser.GameObjects.Graphics; band: Phaser.GameObjects.Rectangle }> = [];
+  private accessibility: AccessibleActionLayer | null = null;
+  private accessibleActions: AccessibleAction[] = [];
+  private cardActions: Array<{ id: DifficultyId; action: AccessibleAction }> = [];
   private readonly handleResize = (): void => {
     if (this.phoneRoot) this.drawPhoneControls();
     else if (this.nameInput && this.nameInput === document.activeElement) { this.nameInput.blur(); this.scene.restart(); }
@@ -71,6 +81,9 @@ export class DifficultyScene extends Phaser.Scene {
     this.selectedDiff = settings.difficulty;
     this.playerName = accountSystem.currentPlayerName() || settings.playerName || '';
     this.diffCards = [];
+    this.accessibility = null;
+    this.accessibleActions = [];
+    this.cardActions = [];
     if (phone) { this.createPhone(); return; }
 
     paintVista(this, 'menu');
@@ -220,6 +233,13 @@ export class DifficultyScene extends Phaser.Scene {
       box.on('pointerout', () => { cardPress = null; });
       band.setDepth(1);
       this.diffCards.push({ id: difficulty.id, box, marker, frame, band });
+      const cardAction: AccessibleAction = {
+        label: difficultyAccessibleLabel(difficulty.id, this.selectedDiff),
+        x, y: cardY, width: cardWidth, height: cardHeight,
+        action: () => this.selectDifficulty(difficulty.id)
+      };
+      this.cardActions.push({ id: difficulty.id, action: cardAction });
+      this.accessibleActions.push(cardAction);
     });
 
     const actionHeight = 48;
@@ -227,11 +247,14 @@ export class DifficultyScene extends Phaser.Scene {
     const actionWidth = Math.min(compact ? 232 : 240, (W - 44 - actionGap) / 2);
     const actionY = H - actionHeight - (compact ? 8 : 24);
     const actionStartX = W / 2 - actionWidth - actionGap / 2;
-    addButton(this, actionStartX, actionY, actionWidth, actionHeight, 'Back', false, () => {
-      SoundManager.get().click();
-      this.scene.start('MainMenu');
-    });
+    const goBack = (): void => { SoundManager.get().click(); this.scene.start('MainMenu'); };
+    addButton(this, actionStartX, actionY, actionWidth, actionHeight, 'Back', false, goBack);
     addButton(this, W / 2 + actionGap / 2, actionY, actionWidth, actionHeight, 'Continue', true, () => this.beginSiege());
+    this.accessibleActions.push(
+      { label: 'Back', x: actionStartX, y: actionY, width: actionWidth, height: actionHeight, action: goBack },
+      { label: 'Continue', x: W / 2 + actionGap / 2, y: actionY, width: actionWidth, height: actionHeight, action: () => this.beginSiege() }
+    );
+    this.syncAccessibility();
 
     this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -260,6 +283,14 @@ export class DifficultyScene extends Phaser.Scene {
       etchedFrame(this, x, y, box.width, box.height, selected, frame);
       band.setFillStyle(selected ? 0xf0cd72 : (cardId === 'easy' ? 0x66865d : cardId === 'medium' ? 0x6686aa : 0x925454), selected ? 0.96 : 0.72);
     });
+    this.cardActions.forEach(({ id: cardId, action }) => { action.label = difficultyAccessibleLabel(cardId, id); });
+    this.syncAccessibility();
+  }
+
+  /** Rebuild or refresh the DOM control layer over the canvas controls. */
+  private syncAccessibility(): void {
+    if (this.accessibility) this.accessibility.set(this.accessibleActions);
+    else this.accessibility = mountAccessibleActions(this, this.accessibleActions);
   }
 
   private createPhone(): void {
@@ -287,6 +318,7 @@ export class DifficultyScene extends Phaser.Scene {
     if (!this.phoneRoot || !this.nameInput) return;
     const W = this.scale.width, H = this.scale.height;
     this.phoneSheet?.destroy(); this.phoneSheet = null; this.phoneRoot.removeAll(true);
+    this.accessibleActions = []; this.cardActions = [];
     const before = new Set(this.children.list);
     this.add.text(16, 24, 'Choose Your Defense', style(W < 400 ? 16 : 20, C.goldBright, true, FONT_DISPLAY)).setOrigin(0, .5).setWordWrapWidth(W - 112);
     this.add.text(16, 48, 'DEFENDER NAME · 20 CHARACTERS MAX', style(12, C.textSecondary));
@@ -309,10 +341,19 @@ export class DifficultyScene extends Phaser.Scene {
         this.add.text(x + cardW / 2, top + 24, `${selected ? '✓ ' : ''}${d.label}`, style(18, selected ? C.goldBright : C.textPrimary, true, FONT_DISPLAY)).setOrigin(0.5);
         this.add.text(x + 12, top + 52, d.description, style(14, C.textSecondary)).setWordWrapWidth(cardW - 24);
         this.add.text(x + 12, top + cardH - 12, `${d.startingGold} gold · ${d.startingLives} lives · ${d.scoreMultiplier}× score`, style(13, C.textPrimary, true)).setOrigin(0, 1).setWordWrapWidth(cardW - 24);
+        const cardAction: AccessibleAction = { label: difficultyAccessibleLabel(d.id, this.selectedDiff), x, y: top, width: cardW, height: cardH, action: pick };
+        this.cardActions.push({ id: d.id, action: cardAction });
+        this.accessibleActions.push(cardAction);
       });
-      addButton(this, 16, H - 56, (W - 40) / 2, 44, 'Back', false, () => this.scene.start('MainMenu'));
+      const goBack = (): void => { this.scene.start('MainMenu'); };
+      addButton(this, 16, H - 56, (W - 40) / 2, 44, 'Back', false, goBack);
       addButton(this, 24 + (W - 40) / 2, H - 56, (W - 40) / 2, 44, 'Continue', true, () => this.beginSiege());
+      this.accessibleActions.push(
+        { label: 'Back', x: 16, y: H - 56, width: (W - 40) / 2, height: 44, action: goBack },
+        { label: 'Continue', x: 24 + (W - 40) / 2, y: H - 56, width: (W - 40) / 2, height: 44, action: () => this.beginSiege() }
+      );
       this.phoneRoot.add(this.children.list.filter(view => !before.has(view) && !view.parentContainer));
+      this.syncAccessibility();
       return;
     }
     Object.assign(this.nameInput.style, { left: `${bounds.left + 16}px`, top: `${bounds.top + 70}px`, width: `${W - 32}px` });
@@ -322,9 +363,15 @@ export class DifficultyScene extends Phaser.Scene {
       sheet.action(i * 132, `${d.id === this.selectedDiff ? '✓ ' : ''}${d.label}`, () => { this.selectedDiff = d.id; saveSettings({ ...loadSettings(), difficulty: d.id }); this.drawPhoneControls(); }, d.id === this.selectedDiff ? 'primary' : 'secondary');
       sheet.text(i * 132 + 52, `${d.description}\n${d.startingGold} gold · ${d.startingLives} lives · ${d.scoreMultiplier}× score`);
     });
-    addButton(this, 16, H - 56, (W - 40) / 2, 44, 'Back', false, () => this.scene.start('MainMenu'));
+    const goBack = (): void => { this.scene.start('MainMenu'); };
+    addButton(this, 16, H - 56, (W - 40) / 2, 44, 'Back', false, goBack);
     addButton(this, 24 + (W - 40) / 2, H - 56, (W - 40) / 2, 44, 'Continue', true, () => this.beginSiege());
+    this.accessibleActions.push(
+      { label: 'Back', x: 16, y: H - 56, width: (W - 40) / 2, height: 44, action: goBack },
+      { label: 'Continue', x: 24 + (W - 40) / 2, y: H - 56, width: (W - 40) / 2, height: 44, action: () => this.beginSiege() }
+    );
     this.phoneRoot.add(this.children.list.filter(view => !before.has(view) && !view.parentContainer));
+    this.syncAccessibility();
   }
 
   private beginSiege(): void {

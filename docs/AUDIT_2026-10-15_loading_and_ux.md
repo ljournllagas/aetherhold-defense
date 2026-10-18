@@ -32,7 +32,7 @@ Version-bumped classic assets: menu vistas, emblem, difficulty helms, HUD/relic/
 
 ## Still open (not changed here)
 
-- Canvas menu and sheet actions are not keyboard-operable (needs its own spec; see the 2026-10-14 audit).
+- Canvas menu and sheet actions are not keyboard-operable (needs its own spec; see the 2026-10-14 audit). Main menu and Classic difficulty selection were completed as separate slices (2026-10-18); in-battle sheets and portrait-phone ScrollSheet rows remain.
 - Roomy portrait phones still refit the layout for boss waves.
 - Portrait phones show ~140 px of empty band above the board; a larger default zoom or relocating hints there is a follow-up.
 - Sentinel/Cinder now ship their own sheets (`tower_sentinel_stages-v1.webp`, `tower_cinder_stages-v1.webp`), so the double decode is gone. Superseded by the 2026-10-15 Sentinel and Cinder artwork release.

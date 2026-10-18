@@ -11,6 +11,8 @@ export interface AccessibleAction extends Rect {
 export interface AccessibleActionLayer {
   /** Add a control created after mount (e.g. an async menu action). */
   add(action: AccessibleAction): void;
+  /** Replace every mirrored control, e.g. after a layout change or a redraw. */
+  set(actions: readonly AccessibleAction[]): void;
   destroy(): void;
 }
 
@@ -70,10 +72,16 @@ export function mountAccessibleActions(
   position();
   scene.scale.on('resize', position);
 
+  const set = (actions: readonly AccessibleAction[]): void => {
+    entries.length = 0;
+    root.replaceChildren();
+    for (const action of actions) add(action);
+  };
+
   const destroy = (): void => {
     scene.scale.off('resize', position);
     root.remove();
   };
   scene.events.once('shutdown', destroy);
-  return { add, destroy };
+  return { add, set, destroy };
 }
