@@ -63,6 +63,12 @@ canvas {
 .account-separator { margin:10px 0 0;text-align:center;color:#8a7045;font-size:14px; }
 .account-warning { color:#efc186; }.account-panel :focus-visible,.account-access:focus-visible { outline:3px solid #e7bb62;outline-offset:3px; }
 
+/* Keyboard/screen-reader layer over canvas menu actions. Transparent and
+   pointer-transparent so mouse/touch keeps canvas behaviour; focus stays visible. */
+.a11y-actions { position:absolute;inset:0;z-index:29;pointer-events:none; }
+.a11y-action { position:absolute;pointer-events:none;margin:0;padding:0;border:0;border-radius:6px;background:transparent;color:transparent;font:inherit; }
+.a11y-action:focus-visible { outline:3px solid #e7bb62;outline-offset:3px;background:#00000040; }
+
 /* PWA install / update bars: HTML overlay, never changes battlefield layout. */
 #pwa-install-bar,#pwa-update-bar { position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;display:flex;gap:8px;align-items:center;max-width:min(520px,calc(100vw - 24px));padding:10px 12px;background:#121920;border:1px solid #6b6047;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);font:500 14px Inter,sans-serif;color:#f3ebdd; }
 #pwa-install-bar[hidden],#pwa-update-bar[hidden],#pwa-ios-sheet[hidden] { display:none; }

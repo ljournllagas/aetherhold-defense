@@ -1,5 +1,24 @@
 # Project progress
 
+## Accessible main-menu controls — COMPLETE, 2026-10-18
+
+Adds a keyboard and screen-reader layer for the main-menu destinations, the
+entry-flow half of the 2026-10-14/15 audit's P1 (WCAG 2.1.1/4.1.2).
+`src/game/ui/accessibleActions.ts` mounts one real `<button>` per canvas action
+inside `#game-root`, labelled from the same string as the canvas control and
+positioned over it. Buttons are transparent and `pointer-events:none`, so
+mouse/touch keeps the existing canvas press/release behaviour while Tab focus
+and Enter/Space activation work; `:focus-visible` shows the shared gold outline.
+The layer is removed on scene shutdown and exposes `add` for the async Saved
+Score button. `MainMenuScene` collects its action descriptors and mounts the
+layer. Spec: `docs/specs/2026-10-18-accessible-menu-controls.md`. Tests:
+`tests/accessible-actions.test.ts` and `tests/main-menu-accessible.test.ts`.
+Difficulty selection and in-battle sheets remain separate slices.
+
+Full suite: 2,349 passed, 11 configured skips. `npm run deploy` published Worker
+`05cf45df-ee2b-4c30-9a59-de7e248ea9de` serving `index-kN433Deu.js`; live HTML,
+bundle SHA-256 and `/api/health` (ok/scoreVersion 3) matched `dist`.
+
 ## Biome-cosmetic Sigil rewards (F3) — COMPLETE, 2026-10-18
 
 Defines the two advertised Campaign biome cosmetics so they have a visible

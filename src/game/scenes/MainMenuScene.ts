@@ -8,6 +8,7 @@ import { SoundManager } from '../systems/SoundManager.ts';
 import { C, FONT_DISPLAY, style } from '../ui/tokens.ts';
 import { etchedFrame } from '../ui/components.ts';
 import { ScrollSheet } from '../ui/ScrollSheet.ts';
+import { mountAccessibleActions, type AccessibleAction, type AccessibleActionLayer } from '../ui/accessibleActions.ts';
 import { emblemKey } from '../art/artkit.ts';
 import { paintVista } from '../art/menubg.ts';
 import type { LoadingRequest } from './PreloadScene.ts';
@@ -25,7 +26,7 @@ function addButton(
   primary: boolean,
   action: () => void,
   iconKey?: string
-): void {
+): AccessibleAction {
   const fill = primary ? 0x153c31 : 0x101820;
   const edge = primary ? 0xd7aa4e : 0x6d7880;
   scene.add.rectangle(x + 2, y + 4, width, height, 0x080b0d, 0.76).setOrigin(0);
@@ -71,6 +72,7 @@ function addButton(
     }
   });
   button.on('pointerout', () => { menuPress = null; });
+  return { label, x, y, width, height, action };
 }
 
 export class MainMenuScene extends Phaser.Scene {
@@ -81,6 +83,7 @@ export class MainMenuScene extends Phaser.Scene {
   private savedSubmitting = false;
   private openSaved = false;
   private sceneGeneration = 0;
+  private accessibility: AccessibleActionLayer | null = null;
   private readonly handleResize = (): void => { this.scene.restart({ openSaved: this.openSaved }); };
 
   constructor() {
@@ -102,6 +105,8 @@ export class MainMenuScene extends Phaser.Scene {
     this.savedRoot = null;
     this.savedRetryAction = null;
     this.savedSubmitting = false;
+    this.accessibility = null;
+    const accessibleActions: AccessibleAction[] = [];
     const compact = H < 520 || W < 780;
     const narrowCompact = compact && W < 720 && W < H;
     paintVista(this, 'menu');
@@ -148,13 +153,13 @@ export class MainMenuScene extends Phaser.Scene {
       const height = 44;
       const gap = 8;
       const startY = H - SAVED_BAND_HEIGHT - (height * 4 + gap * 3) - 12;
-      addButton(this, (W - width) / 2, startY, width, height, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave');
-      addButton(this, (W - width) / 2, startY + height + gap, width, height, 'Classic Siege', true, () => this.scene.start('Difficulty'), 'hud_wave');
-      addButton(this, (W - width) / 2, startY + (height + gap) * 2, width, height, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score');
+      accessibleActions.push(addButton(this, (W - width) / 2, startY, width, height, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave'));
+      accessibleActions.push(addButton(this, (W - width) / 2, startY + height + gap, width, height, 'Classic Siege', true, () => this.scene.start('Difficulty'), 'hud_wave'));
+      accessibleActions.push(addButton(this, (W - width) / 2, startY + (height + gap) * 2, width, height, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score'));
       const half = (width - gap) / 2;
       const lastY = startY + (height + gap) * 3;
-      addButton(this, (W - width) / 2, lastY, half, height, 'Settings', false, () => this.scene.start('Settings'));
-      addButton(this, (W - width) / 2 + half + gap, lastY, half, height, 'Progression', false, () => this.scene.start('Progression'));
+      accessibleActions.push(addButton(this, (W - width) / 2, lastY, half, height, 'Settings', false, () => this.scene.start('Settings')));
+      accessibleActions.push(addButton(this, (W - width) / 2 + half + gap, lastY, half, height, 'Progression', false, () => this.scene.start('Progression')));
     } else if (compact) {
       const gap = 12;
       const margin = 24;
@@ -163,11 +168,11 @@ export class MainMenuScene extends Phaser.Scene {
       const width = (total - gap * 2) / 3;
       const height = 44;
       const y = H - SAVED_BAND_HEIGHT - 12 - height * 2 - gap;
-      addButton(this, margin, y, modeWidth, height, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave');
-      addButton(this, margin + modeWidth + gap, y, modeWidth, height, 'Classic Siege', true, () => this.scene.start('Difficulty'), 'hud_wave');
-      addButton(this, margin, y + height + gap, width, height, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score');
-      addButton(this, margin + width + gap, y + height + gap, width, height, 'Settings', false, () => this.scene.start('Settings'));
-      addButton(this, margin + (width + gap) * 2, y + height + gap, width, height, 'Progression', false, () => this.scene.start('Progression'));
+      accessibleActions.push(addButton(this, margin, y, modeWidth, height, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave'));
+      accessibleActions.push(addButton(this, margin + modeWidth + gap, y, modeWidth, height, 'Classic Siege', true, () => this.scene.start('Difficulty'), 'hud_wave'));
+      accessibleActions.push(addButton(this, margin, y + height + gap, width, height, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score'));
+      accessibleActions.push(addButton(this, margin + width + gap, y + height + gap, width, height, 'Settings', false, () => this.scene.start('Settings')));
+      accessibleActions.push(addButton(this, margin + (width + gap) * 2, y + height + gap, width, height, 'Progression', false, () => this.scene.start('Progression')));
     } else {
       const width = Math.min(680, Math.max(600, W * 0.4));
       const startY = H * (best ? 0.588 : 0.566);
@@ -175,13 +180,14 @@ export class MainMenuScene extends Phaser.Scene {
       const secondaryHeight = Math.min(76, H * 0.082);
       const gap = Math.max(12, Math.min(16, H * 0.018));
       const half = (width - 12) / 2;
-      addButton(this, (W - width) / 2, startY, half, playHeight, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave');
-      addButton(this, (W - width) / 2 + half + 12, startY, half, playHeight, 'Classic Siege', true, () => this.scene.start('Difficulty'), 'hud_wave');
-      addButton(this, (W - width) / 2, startY + playHeight + gap, width, secondaryHeight, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score');
+      accessibleActions.push(addButton(this, (W - width) / 2, startY, half, playHeight, 'Campaign', true, () => this.scene.start('Preload', { stage: 'campaign', destination: 'Campaign' } satisfies LoadingRequest), 'hud_wave'));
+      accessibleActions.push(addButton(this, (W - width) / 2 + half + 12, startY, half, playHeight, 'Classic Siege', true, () => this.scene.start('Difficulty'), 'hud_wave'));
+      accessibleActions.push(addButton(this, (W - width) / 2, startY + playHeight + gap, width, secondaryHeight, 'Hall of Legends', false, () => this.scene.start('Leaderboard', {}), 'hud_score'));
       const lastY = startY + playHeight + gap + secondaryHeight + gap;
-      addButton(this, (W - width) / 2, lastY, half, secondaryHeight, 'Settings', false, () => this.scene.start('Settings'));
-      addButton(this, (W - width) / 2 + half + 12, lastY, half, secondaryHeight, 'Progression', false, () => this.scene.start('Progression'));
+      accessibleActions.push(addButton(this, (W - width) / 2, lastY, half, secondaryHeight, 'Settings', false, () => this.scene.start('Settings')));
+      accessibleActions.push(addButton(this, (W - width) / 2 + half + 12, lastY, half, secondaryHeight, 'Progression', false, () => this.scene.start('Progression')));
     }
+    this.accessibility = mountAccessibleActions(this, accessibleActions);
 
     this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -211,7 +217,8 @@ export class MainMenuScene extends Phaser.Scene {
     this.savedView = view;
     if (view.status === 'ready' || view.status === 'incompatible') {
       const width = Math.min(320, W - 48);
-      addButton(this, (W - width) / 2, savedY, width, 44, 'Saved Score', false, () => { void this.openSavedScore(); });
+      const savedAction = addButton(this, (W - width) / 2, savedY, width, 44, 'Saved Score', false, () => { void this.openSavedScore(); });
+      this.accessibility?.add(savedAction);
     } else if (view.status === 'unreadable' && view.warning) {
       this.add.text(W / 2, savedY + 22, view.warning, style(11, C.dangerBright, true)).setOrigin(0.5).setWordWrapWidth(Math.min(440, W - 32)).setAlign('center');
     }
