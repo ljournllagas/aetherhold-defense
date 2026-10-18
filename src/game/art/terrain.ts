@@ -3,6 +3,7 @@ import { MAP1, HUD_HEIGHT } from '../maps/map1.ts';
 import type { MapDef } from '../maps/map1.ts';
 import type { CampaignWorldId } from '../campaign/types.ts';
 import { ensureCampaignBattleBackground } from './campaignArt.ts';
+import { prefersReducedMotion } from './reducedMotion.ts';
 import { mapBackdropDisplaySize, resolveMapBackdropKey, type MapBackdropVariant } from './mapVariantArt.ts';
 
 export interface StrongholdArt {
@@ -85,17 +86,20 @@ export function paintBattlefield(scene: Phaser.Scene, map: MapDef = MAP1, worldI
     : undefined;
   if (beaconSprite) root.add(beaconSprite);
 
-  const beacon = scene.add.circle(beaconPoint.x, beaconPoint.y, 8, 0x9e7ae6, 0.28).setDepth(4);
+  const calm = prefersReducedMotion();
+  const beacon = scene.add.circle(beaconPoint.x, beaconPoint.y, 8, 0x9e7ae6, calm ? 0.2 : 0.28).setDepth(4);
   root.add(beacon);
-  scene.tweens.add({
-    targets: beacon,
-    alpha: 0.16,
-    scale: 1.18,
-    duration: 1450,
-    yoyo: true,
-    repeat: -1,
-    ease: 'Sine.easeInOut'
-  });
+  if (!calm) {
+    scene.tweens.add({
+      targets: beacon,
+      alpha: 0.16,
+      scale: 1.18,
+      duration: 1450,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+  }
 
   const cracks = scene.add.graphics().setDepth(4).setVisible(false);
   cracks.lineStyle(1.4, 0x211b17, 0.92);

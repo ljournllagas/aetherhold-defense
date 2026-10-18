@@ -176,4 +176,19 @@ describe('campaign terrain plate composition', () => {
     expect(classicSprite.args).toEqual([MAP1.beacon.x, MAP1.beacon.y, 'stronghold_beacon_atlas', 'healthy']);
     expect(classicSprite.object.scale).toBeCloseTo(34 / 622);
   });
+
+  it('drops the ambient beacon pulse when motion is reduced', () => {
+    const animated = fakeBattlefieldScene(['stronghold_beacon_atlas']);
+    paintBattlefield(animated.scene as never, MAP1);
+    expect(animated.scene.tweens.add).toHaveBeenCalledTimes(1);
+
+    vi.stubGlobal('window', { matchMedia: () => ({ matches: true }) });
+    try {
+      const calm = fakeBattlefieldScene(['stronghold_beacon_atlas']);
+      paintBattlefield(calm.scene as never, MAP1);
+      expect(calm.scene.tweens.add).not.toHaveBeenCalled();
+      const beacon = calm.calls.find(call => call.kind === 'circle' && call.args[3] === 0x9e7ae6)!;
+      expect(beacon.args[4]).toBe(0.2);
+    } finally { vi.unstubAllGlobals(); }
+  });
 });

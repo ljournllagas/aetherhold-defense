@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { prefersReducedMotion } from './reducedMotion.ts';
 
 // One painted view of the same borderkeep realm used by the battlefield. The
 // live menu text and controls remain separate scene UI.
@@ -31,8 +32,7 @@ export function paintVista(scene: Phaser.Scene, variant: VistaVariant): void {
       .setDepth(-8);
   }
 
-const reducedMotion = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
-    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reducedMotion = prefersReducedMotion();
 
   // A small number of motes keeps the menu connected to the live battlefield.
   const emberColor = variant === 'gameover' ? 0xe8643c : 0xd7aa4e;

@@ -18,7 +18,7 @@ Known tradeoff: the bar covers about 24px of the board's top edge during a boss.
 | 2-5 | Short-landscape Settings, Campaign row heights, header overlap, leaderboard recovery | Not re-checked |
 | 6 | Escape closes sheet first | Fixed |
 | 7 | Preparation scroll preserved | Fixed |
-| 8 | Reduced motion | Partly fixed (menubg motes); Login/phone paths unconfirmed |
+| 8 | Reduced motion | Resolved (2026-10-18): boot splash, painted menu backdrop motes and the battlefield stronghold beacon all honour the preference; the login screen shares the backdrop primitive |
 | 9 | Press vs release | Mostly fixed; MainMenu buttons unconfirmed |
 
 ## New observations
