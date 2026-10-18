@@ -1,0 +1,5 @@
+# Build source PNGs are kept in the repository as the regeneration source for the
+# optimised WebP files that the game actually loads (tools/optimize-art.py encodes
+# PNG -> WebP beside the source). Nothing requests the PNGs at runtime, so they are
+# excluded from the deployed asset set; this keeps each deploy ~270 MB smaller.
+/assets/**/*.png

@@ -14,7 +14,7 @@ Base: `origin/main` at 41c3513. Method: code review, asset/bundle measurement, a
 | Blank page until the 2 MB script parsed | blank | inline HTML splash, removed after Phaser's first frame |
 | Hashed bundles/fonts had no cache policy; the service worker precached `.woff` twins and Cyrillic/Greek/Vietnamese subsets | 63 entries, 2.95 MB | immutable cache headers; 23 entries, 2.42 MB precache |
 
-Source PNGs were left in the repository, unused, because deleting them was not authorised in this session. Removing `public/assets/campaign/**/*.png` and the classic `*.png` twins would shrink every deploy by ~250 MB. `tools/optimize-art.py` regenerates the WebP files from PNG sources (additive only).
+Source PNGs were left in the repository, unused, because deleting them was not authorised in this session. Removing `public/assets/campaign/**/*.png` and the classic `*.png` twins would shrink every deploy by ~250 MB. `tools/optimize-art.py` regenerates the WebP files from PNG sources (additive only). Resolved 2026-10-18: `public/.assetsignore` excludes `/assets/**/*.png` from the deployed asset set, so the sources stay in the repository for regeneration but no longer ship. Verified with `wrangler deploy --dry-run` at debug level: 225 PNGs ignored, 0 WebP; the PWA icons, screenshots and favicon still upload.
 
 The frozen SHA-256 baselines in `tests/fixtures/campaign-v5/registry-art-contract.json` now describe the optimised WebP files. Budgets are enforced by `tests/loading-performance.test.ts`.
 
@@ -35,5 +35,5 @@ Version-bumped classic assets: menu vistas, emblem, difficulty helms, HUD/relic/
 - Canvas menu and sheet actions are not keyboard-operable (needs its own spec; see the 2026-10-14 audit).
 - Roomy portrait phones still refit the layout for boss waves.
 - Portrait phones show ~140 px of empty band above the board; a larger default zoom or relocating hints there is a follow-up.
-- Sentinel/Cinder reuse the Ranger/Bombard sheets under separate texture keys, so those two files are decoded twice.
+- Sentinel/Cinder now ship their own sheets (`tower_sentinel_stages-v1.webp`, `tower_cinder_stages-v1.webp`), so the double decode is gone. Superseded by the 2026-10-15 Sentinel and Cinder artwork release.
 - `npm ci` failed on main because `package-lock.json` lacked the `sharp` override entries; `npm install` regenerated them (included in this change).

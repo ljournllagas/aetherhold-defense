@@ -53,6 +53,18 @@ describe('first paint', () => {
   });
 });
 
+describe('deployed asset set', () => {
+  it('excludes build-source PNGs without hiding served art, icons or screenshots', async () => {
+    const { readFileSync } = await import(moduleName) as { readFileSync(path: string | URL, encoding: string): string };
+    const ignore = readFileSync(new URL('../public/.assetsignore', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+    const patterns = ignore.split('\n').map(line => line.trim()).filter(line => line.length > 0 && !line.startsWith('#'));
+
+    expect(patterns).toContain('/assets/**/*.png');
+    // Every rule is scoped to build sources; icons/ and screenshots/ are PWA assets and must ship.
+    for (const pattern of patterns) expect(pattern.startsWith('/assets/'), `${pattern} must stay under /assets/`).toBe(true);
+  });
+});
+
 describe('cache headers', () => {
   it('caches content-hashed bundles and fonts as immutable and art for 30 days', () => {
     for (const pattern of ['/assets/index-*', '/assets/phaser-*', '/assets/*.woff2']) {
