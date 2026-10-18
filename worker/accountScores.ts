@@ -3,6 +3,7 @@ import { validateScorePayload } from '../src/shared/validation.ts';
 import { validateCampaignResult } from '../src/shared/campaignResult.ts';
 import { plain, only } from '../src/shared/cloudProgress.ts';
 import { body,checkMutation,fail,hash,missingSession,reply,requireSession,type AuthEnv } from './auth.ts';
+import { consumeRateLimit } from './rateLimit.ts';
 export function canonicalResult(result:{mode:string;payload:object}):string { return JSON.stringify({mode:result.mode,payload:Object.fromEntries(Object.entries(result.payload).filter(([key])=>key!=='playerName').sort(([a],[b])=>a.localeCompare(b)))}); }
 export function validateRunResult(v:unknown):RunResult|null {
   if(!plain(v)||!only(v,['mode','payload'])||!plain(v.payload))return null;
@@ -10,10 +11,10 @@ export function validateRunResult(v:unknown):RunResult|null {
   if(v.mode==='classic'){const p=validateScorePayload({...v.payload,playerName:'Warden'});return p.ok&&p.value?{mode:'classic',payload:p.value}:null;}
   return null;
 }
-export async function handleAccountScore(request:Request,env:AuthEnv & {SCORE_RATE_LIMITER?:RateLimit}):Promise<Response|null> {
+export async function handleAccountScore(request:Request,env:AuthEnv):Promise<Response|null> {
   if(new URL(request.url).pathname!=='/api/account/scores'||request.method!=='POST')return null;
   const session=await requireSession(request,env);if(!session)return missingSession(request,env);if(!checkMutation(request,session,env))return fail('CSRF','Request could not be verified.',403);
-  const quota=await env.SCORE_RATE_LIMITER?.limit({key:`account-scores:${session.account.playerId}`});if(!quota)return fail('API_UNAVAILABLE','Score submission is temporarily unavailable.',503);if(!quota.success){const r=fail('RATE_LIMITED','Uploads are limited. Retrying shortly.',429);r.headers.set('Retry-After','60');return r;}
+  const verdict=await consumeRateLimit(env,`account-scores:${session.account.playerId}`);if(verdict==='unavailable')return fail('API_UNAVAILABLE','Score submission is temporarily unavailable.',503);if(verdict==='limited'){const limited=fail('RATE_LIMITED','Uploads are limited. Retrying shortly.',429);limited.headers.set('Retry-After','60');return limited;}
   const input=await body(request,4096),result=validateRunResult(input);if(!result)return fail('INVALID_SCORE','Invalid or unsupported terminal result.',400);
   const canonical=canonicalResult(result),p=result.payload;
   if(result.mode==='campaign')await env.DB.prepare('INSERT INTO campaign_scores(run_id,player_id,generation,nickname,payload_json) SELECT ?,id,generation,nickname,? FROM players WHERE id=? AND generation=? ON CONFLICT(run_id) DO NOTHING').bind(p.runId,canonical,session.account.playerId,session.account.generation).run();

@@ -4,6 +4,7 @@ import { handleAccount } from './accounts.ts';
 import { handleAccountScore } from './accountScores.ts';
 import { handleCampaignLeaderboard } from './campaignLeaderboard.ts';
 import { apiError, json } from './response.ts';
+import { consumeRateLimit } from './rateLimit.ts';
 
 export interface Env extends AuthEnv {
   DB: D1Database;
@@ -109,14 +110,9 @@ export default {
       }
 
       if (path === '/api/scores' && request.method === 'POST') {
-        let quota: RateLimitOutcome | undefined;
-        try {
-          quota = await env.SCORE_RATE_LIMITER?.limit({ key: `scores:${request.headers.get('CF-Connecting-IP') ?? 'anon'}` });
-        } catch {
-          return apiError('SCORE_API_UNAVAILABLE', 'Score submission is temporarily unavailable. Please retry.', 503);
-        }
-        if (!quota) return apiError('SCORE_API_UNAVAILABLE', 'Score submission is temporarily unavailable. Please retry.', 503);
-        if (!quota.success) {
+        const verdict = await consumeRateLimit(env, `scores:${request.headers.get('CF-Connecting-IP') ?? 'anon'}`);
+        if (verdict === 'unavailable') return apiError('SCORE_API_UNAVAILABLE', 'Score submission is temporarily unavailable. Please retry.', 503);
+        if (verdict === 'limited') {
           const response = apiError('RATE_LIMITED', 'Rate limit exceeded. Slow down, warden.', 429);
           response.headers.set('Retry-After', '60');
           return response;

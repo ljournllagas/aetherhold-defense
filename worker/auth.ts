@@ -1,7 +1,8 @@
 import * as oauth from 'oauth4webapi';
 import type { AccountSession } from '../src/shared/account.ts';
 import { emptyCloudProgress, plain } from '../src/shared/cloudProgress.ts';
-export interface AuthEnv { DB:D1Database; GOOGLE_CLIENT_ID?:string; GOOGLE_CLIENT_SECRET?:string; APP_ORIGIN?:string; ACCOUNT_LOGIN_REQUIRED?:string }
+import { consumeRateLimit } from './rateLimit.ts';
+export interface AuthEnv { DB:D1Database; GOOGLE_CLIENT_ID?:string; GOOGLE_CLIENT_SECRET?:string; APP_ORIGIN?:string; ACCOUNT_LOGIN_REQUIRED?:string; SCORE_RATE_LIMITER?:RateLimit }
 export function reply(value:unknown,status=200):Response { return Response.json(value,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}}); }
 export function fail(code:string,message:string,status:number):Response { return reply({ok:false,code,message,status},status); }
 export async function hash(value:string):Promise<string> { return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value))),n=>n.toString(16).padStart(2,'0')).join(''); }
@@ -38,6 +39,11 @@ export async function handleAuth(request:Request,env:AuthEnv):Promise<Response|n
     const response=reply({ok:true,value:{loggedOut:true}});response.headers.set('Set-Cookie',authCookie('',origin,0));return response;
   }
   if(!env.GOOGLE_CLIENT_ID||!env.GOOGLE_CLIENT_SECRET||!env.APP_ORIGIN) return fail('AUTH_UNCONFIGURED','Google sign-in has not been configured yet.',503);
+  if(url.pathname==='/api/auth/start'&&request.method==='GET') {
+    const verdict=await consumeRateLimit(env,`auth-start:${request.headers.get('CF-Connecting-IP')??'anon'}`);
+    if(verdict==='unavailable')return fail('API_UNAVAILABLE','Google sign-in is temporarily unavailable. Please retry.',503);
+    if(verdict==='limited'){const limited=fail('RATE_LIMITED','Too many sign-in attempts. Please retry in a minute.',429);limited.headers.set('Retry-After','60');return limited;}
+  }
   const issuer=new URL('https://accounts.google.com');
   const options={signal:AbortSignal.timeout(8000)};
   let as:Awaited<ReturnType<typeof oauth.processDiscoveryResponse>>;

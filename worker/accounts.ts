@@ -2,6 +2,7 @@ import type { AccountProfile, AccountRef, AccountSession } from '../src/shared/a
 import { mergeCloudProgress, validateCloudProgress, plain, only } from '../src/shared/cloudProgress.ts';
 import { validatePlayerName, runPlayerName } from '../src/shared/playerName.ts';
 import { body, checkMutation, fail, hash, missingSession, reply, requireSession, sessionToken, authCookie, type AuthEnv } from './auth.ts';
+import { consumeRateLimit } from './rateLimit.ts';
 import { canonicalResult, validateRunResult } from './accountScores.ts';
 interface ProfileRow { id:string;generation:string;nickname:string;revision:number;progress_json:string }
 type ProfileReadResult = {kind:'missing'}|{kind:'incompatible'}|{kind:'readable';profile:AccountProfile};
@@ -16,6 +17,9 @@ export async function handleAccount(request:Request,env:AuthEnv):Promise<Respons
   const session=await requireSession(request,env);if(!session)return missingSession(request,env);
   if(path==='/api/account'&&request.method==='GET'){const result=await read(env.DB,session.account);return result.kind==='readable'?reply({ok:true,value:result.profile}):profileReadError(result);}
   if(!checkMutation(request,session,env))return fail('CSRF','Request could not be verified.',403);
+  const verdict=await consumeRateLimit(env,`account:${session.account.playerId}`);
+  if(verdict==='unavailable')return fail('API_UNAVAILABLE','Account updates are temporarily unavailable.',503);
+  if(verdict==='limited'){const limited=fail('RATE_LIMITED','Too many account updates. Retrying shortly.',429);limited.headers.set('Retry-After','60');return limited;}
   if(path==='/api/account/delete'&&request.method==='POST')return deleteAccount(request,env,session);
   const input=await body(request,path==='/api/account/nickname'?1024:65536);if(!input)return fail('INVALID_BODY','Request body is invalid or too large.',400);
   if(path==='/api/account/nickname'&&request.method==='PATCH'){
