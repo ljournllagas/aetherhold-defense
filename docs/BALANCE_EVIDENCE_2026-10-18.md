@@ -50,8 +50,11 @@ with and without gold relics; Sentinel and Cinder builds now clear Medium.
 
 ## Findings
 
-1. **The configured `mastery.scoreTarget` values are unreachable.** For levels
-   21–30 they exceed the level's perfect score, so no play can satisfy them:
+1. **The configured `mastery.scoreTarget` values are unreachable — on 98 of the
+   100 levels.** Every level from 3 to 100 authors a bar above its own perfect
+   score, so no play can satisfy it. Only level 1 (1,950) and level 2 (2,400)
+   author a bar *below* the live one; no level authors a value between the live
+   bar and its perfect score. Levels 21–30 illustrate it:
 
    | Level | Perfect score | Live target | Config target |
    | ---: | ---: | ---: | ---: |
@@ -66,10 +69,22 @@ with and without gold relics; Sentinel and Cinder builds now clear Medium.
    | 29 | 7,590 | 6,840 | 20,550 |
    | 30 | 9,490 | 8,550 | 21,500 |
 
-   The config value still acts as an alternative star bar in
-   `campaignProgress.ts` (save validation and `applyCampaignClear`), and is the
-   only bar in the `GuestProgress.ts` legacy-payload branch, but the live bar is
-   always the metadata target.
+   The config value is an alternative star bar in `campaignProgress.ts` (save
+   validation and `applyCampaignClear`), the only bar in the `GuestProgress.ts`
+   legacy-payload branch, and the campaign leaderboard's `legacy_target`; it is
+   never player-visible. The bar the player is shown and judged against
+   (`presentation.ts`, `prerequisites.ts`) is always the metadata target.
+
+   **Resolved 2026-10-18.** `legacyCampaignScoreTarget(level)` clamps the authored
+   value to the live bar. Levels 3–100 therefore drop from an unreachable bar to
+   the live one — a strict relaxation, since the legacy clause is OR-ed with the
+   live clause — while levels 1–2 keep their authored bars, so an existing legacy
+   save that earned a score star through the old bar still validates. No
+   re-authoring and no production data change was needed; the clamp can only
+   accept more, never less. `tests/campaign-legacy-score-target.test.ts` pins the
+   invariant, the level 1–2 floor, and the save-validation and guest-payload
+   behaviour; `tests/campaign-leaderboard-worker.test.ts` pins the leaderboard
+   clause.
 2. **The 2026-10-11 audit's F4 margins no longer describe the live target.**
    Its table's "score-star target" column equals the config values, so those
    percentages were measured against a bar that cannot be met.
@@ -82,13 +97,16 @@ with and without gold relics; Sentinel and Cinder builds now clear Medium.
 
 ## Recommendation (no change made)
 
-- Treat score-target tuning as a business-rule change: it needs human sign-off
-  and is **REQUIRES-HUMAN**. Decide whether to reconcile `mastery.scoreTarget`
-  with the computed metadata target (which touches save validation and the guest
-  legacy path) or to keep it as documented legacy compatibility.
-- Before changing any numbers, playtest levels 21, 23 and 26 (margins) and 26/29
-  (pacing) with novice builds, and play Classic Easy/Medium/Hard with a
-  non-optimized strategy. Bot success is not evidence that a human target is
-  fair.
+- **Decided 2026-10-18.** The authored `mastery.scoreTarget` is reconciled with
+  the live bar by clamping (`legacyCampaignScoreTarget`) rather than re-authoring
+  numbers: the legacy and live bars now agree wherever the authored value was
+  unreachable, and no existing save is invalidated. Re-authoring the values, or
+  deleting the now-inert field, stays **REQUIRES-HUMAN** and is deferred.
+- The *live* bar (`ceil(0.9 × perfectScore / 10) × 10`) was deliberately left
+  unchanged: it is player-visible and self-consistent, and retuning it is a
+  separate balance decision, not a correctness fix. If that is ever taken up,
+  playtest levels 21, 23 and 26 (margins) and 26/29 (pacing) with novice builds,
+  and play Classic Easy/Medium/Hard with a non-optimized strategy. Bot success is
+  not evidence that a human target is fair.
 - Levels 22 and 28 are no longer tight against the live target; the earlier
   concern about them is superseded.

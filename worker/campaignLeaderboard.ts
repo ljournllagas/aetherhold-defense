@@ -1,5 +1,5 @@
 import { CAMPAIGN_LEVELS } from '../src/game/campaign/config.ts';
-import { campaignScoreMetadata, CAMPAIGN_SCORE_VERSION } from '../src/shared/campaignScoring.ts';
+import { campaignScoreMetadata, CAMPAIGN_SCORE_VERSION, legacyCampaignScoreTarget } from '../src/shared/campaignScoring.ts';
 import { compareCampaignRows, validateCampaignLeaderboard } from '../src/shared/campaignLeaderboard.ts';
 import type { CampaignLeaderboardResponse, CampaignLeaderboardRow } from '../src/shared/campaignLeaderboard.ts';
 import { validateCloudProgress } from '../src/shared/cloudProgress.ts';
@@ -10,7 +10,7 @@ const PAGE_SIZE = 100;
 const metadataJson = JSON.stringify(CAMPAIGN_LEVELS.map(({ level, mastery }) => ({
   level,
   minimumLivesForStar: mastery.minimumLivesForStar,
-  legacyTarget: mastery.scoreTarget,
+  legacyTarget: legacyCampaignScoreTarget(level),
   scoreTarget: campaignScoreMetadata(level).scoreTarget,
   perfectScore: campaignScoreMetadata(level).perfectScore
 })));

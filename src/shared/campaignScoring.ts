@@ -72,3 +72,20 @@ export function campaignScoreMetadata(level: number): CampaignScoreMetadata {
   metadataByLevel.set(level, metadata);
   return metadata;
 }
+
+/**
+ * The legacy score-star bar: the authored `mastery.scoreTarget`, clamped so it can
+ * never exceed the live bar (`campaignScoreMetadata(level).scoreTarget`, 90% of the
+ * perfect score).
+ *
+ * Levels 3–100 author a value above the level's own perfect score, so it is
+ * unreachable and the clamp drops it to the live bar. Levels 1–2 author a value
+ * *below* the live bar and keep it, so a legacy save that earned a score star through
+ * the old bar still validates. The clamp is therefore never narrowing: it can only
+ * accept more than the raw authored value.
+ */
+export function legacyCampaignScoreTarget(level: number): number {
+  const definition = getCampaignLevel(level);
+  if (!definition) throw new Error('Campaign level is locked or invalid');
+  return Math.min(definition.mastery.scoreTarget, campaignScoreMetadata(level).scoreTarget);
+}

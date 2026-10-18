@@ -299,3 +299,20 @@ it('validates public response shape, aggregate bounds, unique IDs, and determini
   expect(validateCampaignLeaderboard({ ...response, scores: [row({ totalStars: 1.5 })] })).toBeNull();
   expect(validateCampaignLeaderboard({ ...response, scores: [{ ...row(), debug: true }] })).toBeNull();
 });
+
+it('keeps a legacy score star that reached the clamped bar on the board', async () => {
+  const f = await accountDb();
+  try {
+    const level = 30;
+    const live = campaignScoreMetadata(level).scoreTarget;
+    const legacy: CampaignLevelProgress = {
+      completed: true, completionStar: true, livesStar: false, scoreStar: true,
+      bestScore: live, bestRemainingLives: 0
+    };
+
+    expect((await sync(f, 'a', progressWith({ [level]: legacy }))).status).toBe(200);
+    expect((await scores(await board(f))).scores).toEqual([
+      { playerId: 'a', nickname: 'Name a', missionsCompleted: 1, totalStars: 2, totalScore: 0 }
+    ]);
+  } finally { await f.dispose(); }
+});

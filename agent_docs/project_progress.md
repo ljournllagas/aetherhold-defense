@@ -1,5 +1,32 @@
 # Project progress
 
+## Campaign legacy score target reconciled — COMPLETE, 2026-10-18
+
+The authored `mastery.scoreTarget` bars were unreachable on **98 of the 100**
+levels (every level 3–100 authors a value above its own perfect score); only
+levels 1 (1,950) and 2 (2,400) sat below the live bar. The bar the player is
+shown and judged against was never affected — it is the computed
+`campaignScoreMetadata(level).scoreTarget` — so this was inert-but-incoherent
+data plus a footgun, and the 2026-10-11 audit's F4 margins described the wrong
+bar. The 2026-10-18 evidence doc's "levels 21–30" was too narrow.
+
+Resolved by clamping, not re-authoring: new `legacyCampaignScoreTarget(level)` =
+`min(mastery.scoreTarget, metadataTarget)`, used by save validation and
+`applyCampaignClear` (`campaignProgress.ts`), the guest legacy payload
+(`GuestProgress.ts`), and the campaign leaderboard's `legacy_target`
+(`worker/campaignLeaderboard.ts`). Levels 3–100 drop to the live bar (strictly
+more permissive, since the legacy clause is OR-ed with the live one); levels 1–2
+keep their authored bars so an existing legacy save that earned a star through the
+old bar still validates — critical because `validateCloudProgress` is
+all-or-nothing, so one rejected level would null an entire cloud save. No
+production data was read or changed. Tests:
+`tests/campaign-legacy-score-target.test.ts`, plus a leaderboard case in
+`tests/campaign-leaderboard-worker.test.ts`. Docs corrected: the F4 row and its
+table in `FEATURE_ART_BALANCE_AUDIT.md`, and `BALANCE_EVIDENCE_2026-10-18.md`.
+
+Still REQUIRES-HUMAN and deferred: re-authoring the authored values, deleting the
+now-inert field, or retuning the live bar itself (all need human playtesting).
+
 ## Hardening and accessibility pass — COMPLETE, 2026-10-18
 
 Five changes from a repo audit follow-up:
@@ -32,8 +59,6 @@ Five changes from a repo audit follow-up:
 
 Still open (recorded, not done here): keyboard access to the in-battle sheets and
 the portrait-phone `ScrollSheet` rows; in-battle sheets need their own design.
-The level 21–30 Campaign `mastery.scoreTarget` reconciliation stays
-REQUIRES-HUMAN and deferred pending human playtesting.
 
 ## Codex elite concept art — COMPLETE, 2026-10-18
 

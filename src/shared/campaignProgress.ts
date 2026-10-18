@@ -1,5 +1,5 @@
 import { getCampaignLevel } from '../game/campaign/config.ts';
-import { CAMPAIGN_SCORE_VERSION, campaignScoreMetadata } from './campaignScoring.ts';
+import { CAMPAIGN_SCORE_VERSION, campaignScoreMetadata, legacyCampaignScoreTarget } from './campaignScoring.ts';
 import type { CampaignLevelProgress } from '../game/campaign/types.ts';
 
 function plain(value: unknown): value is Record<string, unknown> {
@@ -32,7 +32,7 @@ export function validateCampaignLevelProgress(value: unknown, level: number): Ca
     campaignScore = { version: CAMPAIGN_SCORE_VERSION, bestScore: score.bestScore };
   }
 
-  if (scoreStar && bestScore < definition.mastery.scoreTarget
+  if (scoreStar && bestScore < legacyCampaignScoreTarget(level)
     && (campaignScore?.bestScore ?? 0) < campaignScoreMetadata(level).scoreTarget) return null;
   return {
     completed,
@@ -81,7 +81,7 @@ export function applyCampaignClear(
     completed: true,
     completionStar: true,
     livesStar: !!old?.livesStar || lives >= definition.mastery.minimumLivesForStar,
-    scoreStar: !!old?.scoreStar || (old?.bestScore ?? 0) >= definition.mastery.scoreTarget || bestScore >= campaignScore.scoreTarget,
+    scoreStar: !!old?.scoreStar || (old?.bestScore ?? 0) >= legacyCampaignScoreTarget(level) || bestScore >= campaignScore.scoreTarget,
     bestScore: old?.bestScore ?? 0,
     bestRemainingLives: Math.max(old?.bestRemainingLives ?? 0, lives),
     campaignScore: { version: CAMPAIGN_SCORE_VERSION, bestScore }
