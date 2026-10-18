@@ -2561,9 +2561,9 @@ export class GameScene extends Phaser.Scene {
     this.bossBarText.setWordWrapWidth(nameWidth).setPosition(12,0);
     const lineHeight=Math.max(this.bossBarText.height,this.bossBarHp.height);
     const statusHeight=Math.max(24,lineHeight+8);
-    if(this.layout.minimal){
-      // Minimal HUD keeps its geometry and camera for boss waves: the bar floats over the
-      // top edge of the board instead of re-laying out the screen when the boss spawns.
+    if(this.layout.minimal||this.layout.roomyPortrait){
+      // Minimal HUD and roomy portrait keep their geometry and camera for boss waves: the bar
+      // floats in the empty band above the width-limited board instead of re-laying out the screen.
       this.bossBar?.setPosition(this.layout.field.x+8,this.layout.field.y+6);
     }else{
       const regular=gameLayout(this.layout.width,this.layout.height,this.layout.safe);
@@ -2579,7 +2579,7 @@ export class GameScene extends Phaser.Scene {
     this.bossBarFill?.setPosition(12,trackY).setDisplaySize((width-24)*pct,4);
     this.bossPanelHeight=trackY+7;
     this.bossBarBackdrop.setSize(width,this.bossPanelHeight);
-    this.bossBarBackdrop.setFillStyle(C.bgPanel,this.layout.minimal?0.88:1);
+    this.bossBarBackdrop.setFillStyle(C.bgPanel,this.layout.minimal||this.layout.roomyPortrait?0.88:1);
     if(!this.layout.minimal)this.hudStatus?.setVisible(false);
     this.repositionBossFloaters(boss);
   }

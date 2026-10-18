@@ -13,6 +13,8 @@ export interface GameLayout {
   minimal: boolean;
   /** Short landscape: Build/Wave/More live in a right-edge rail instead of a bottom bar. */
   rail: boolean;
+  /** Portrait whose width-limited board fits with vertical slack, so chrome keeps full size. */
+  roomyPortrait: boolean;
   portraitBossCommands: boolean;
   bossStatusHeight: number;
   safe: Insets;
@@ -44,7 +46,7 @@ export function gameLayout(width: number, height: number, safe: Insets = {top:0,
   const roomyPortrait = width < height && available * 584 / 1040 + 24 <= field.height;
   const minimal = !roomyPortrait && (compact || (width < height && width < 1180));
   const inspectorBounds=inspector?{x:width-safe.right-inspector,y:hud,width:inspector,height:field.height}:null;
-  return {width,height,hud,tray,inspector,compact,narrow,stackedHud,minimal,portraitBossCommands,bossStatusHeight,safe,trayBounds,waveBounds,inspectorBounds,field,rail:false};
+  return {width,height,hud,tray,inspector,compact,narrow,stackedHud,minimal,portraitBossCommands,bossStatusHeight,safe,trayBounds,waveBounds,inspectorBounds,field,rail:false,roomyPortrait};
 }
 
 /**

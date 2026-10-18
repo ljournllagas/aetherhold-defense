@@ -214,7 +214,7 @@ it('reprojects a detached boss death across field restoration without restarting
   const boss: any = { id:1, name:'Mireheart Hydra', alive:true, isBoss:true, hp:100, maxHp:100 };
   const level = getCampaignLevel(40);
   if (!level) throw new Error('Campaign level 40 fixture is missing');
-  const run = makeBossRun(390,844,boss,{top:0,right:0,bottom:0,left:0},(scene,enemy) => {
+  const run = makeBossRun(1280,720,boss,{top:0,right:0,bottom:0,left:0},(scene,enemy) => {
     scene.map = resolveCampaignMap(level);
     attachResponsiveBossArt(scene,enemy);
   });
@@ -258,14 +258,20 @@ it('reprojects a detached boss death across field restoration without restarting
   expect(death.view.destroyed).toBe(true);
 });
 
-it.each([[360,640],[390,844],[768,1024],[1024,768],[1366,768]])('keeps boss information above the reserved field at %ix%i', (w,h) => {
+it.each([[360,640],[390,844],[768,1024],[1024,768],[1366,768]])('keeps boss information clear of the field at %ix%i', (w,h) => {
   const run = makeBossRun(w,h);
   const panel = panelBounds(run), field = run.layout.field;
   expect(panel.x).toBeGreaterThanOrEqual(0);
   expect(panel.x + panel.width).toBeLessThanOrEqual(w);
   expect(panel.y).toBeGreaterThanOrEqual(run.layout.compact ? run.layout.safe.top : run.layout.hud);
   expect(panel.y + panel.height).toBeLessThanOrEqual(h - run.layout.tray);
-  expect(panel.y + panel.height).toBeLessThanOrEqual(field.y - 8);
+  if (run.layout.compact && (run.layout.minimal || run.layout.roomyPortrait)) {
+    // Floating overlay: inside the field's empty top band, above the board.
+    expect(panel.y).toBeGreaterThanOrEqual(field.y);
+    expect(panel.y + panel.height).toBeLessThan(field.y + field.height * 0.5);
+  } else {
+    expect(panel.y + panel.height).toBeLessThanOrEqual(field.y - 8);
+  }
   expect(run.bossBarTrack.width).toBe(panel.width - 24);
   expect(run.bossBarText.text).toBe('The Hollow Warden');
   expect(run.bossBarHp.text).toContain('HP 25%');
@@ -318,7 +324,7 @@ it.each([[768,540]])('keeps the boss panel fixed above the battlefield through c
   expect(run.bossBarHp.text).toContain('HP 100%');
 });
 
-it('keeps the Hydra callout clear by reserving the top strip after a tall-portrait resize', () => {
+it('keeps the Hydra callout clear by floating the boss bar after a tall-portrait resize', () => {
   const run = makeBossRun(844,390,{ id:'mireheart_hydra', name:'Mireheart Hydra', alive:true, isBoss:true, hp:100, maxHp:100 });
   run.campaign = {};
   run.campaignBosses = { phase: () => 2 };
@@ -335,9 +341,12 @@ it('keeps the Hydra callout clear by reserving the top strip after a tall-portra
 
   const panel = panelBounds(run), callout = run.campaignCalloutView.getBounds(), field = run.layout.field;
   expect(run.layout.portraitBossCommands).toBe(false);
-  expect(run.bossHudReservedHeight).toBeGreaterThan(0);
-  expect(panel.y).toBe(run.layout.compact ? run.layout.safe.top + (run.layout.stackedHud ? 49 : 21) : run.layout.hud + 8);
-  expect(panel.y+panel.height).toBeLessThanOrEqual(field.y-8);
+  expect(run.layout.roomyPortrait).toBe(true);
+  expect(run.bossHudReservedHeight).toBe(0);
+  expect(field).toEqual(gameLayout(390,844).field);
+  // Floating overlay: the bar sits in the empty band above the width-limited board.
+  expect(panel.y).toBe(field.y + 6);
+  expect(panel.y + panel.height).toBeLessThan(field.y + field.height * 0.5);
   expect(intersects(panel,callout)).toBe(false);
   expect(!run.hudStatus.visible || !intersects(panel,run.hudStatus.getBounds())).toBe(true);
   expect(run.campaignCallout).toEqual(expectedCallout);
@@ -516,17 +525,45 @@ it.each([[1440,900],[1280,720],[1024,768],[768,540]])('keeps the visible top-roa
   if (roadVisible) expect(roadY).toBeGreaterThanOrEqual(panel.y + panel.height + 9);
 });
 
-it('reserves the boss strip in roomy portrait without replacing the full command tray', () => {
+it('floats the boss bar in roomy portrait without replacing the full command tray or refitting the camera', () => {
   const run = makeBossRun(360,640,{ id:'mireheart_hydra', name:'Mireheart Hydra', alive:true, isBoss:true, hp:100, maxHp:100 });
   const panel = panelBounds(run), field = run.layout.field;
+  expect(run.layout.roomyPortrait).toBe(true);
   expect(run.layout.portraitBossCommands).toBe(false);
   expect(run.layout.tray).toBe(128);
-  expect(run.bossHudReservedHeight).toBe(run.layout.compact ? run.layout.bossStatusHeight : Math.ceil(panel.height + 18));
-  expect(field.y).toBe(gameLayout(360,640).field.y + run.bossHudReservedHeight);
-  expect(panel.y + panel.height).toBeLessThanOrEqual(field.y - 8);
+  expect(run.bossHudReservedHeight).toBe(0);
+  expect(field).toEqual(gameLayout(360,640).field);
+  expect(run.cameraView.field).toEqual(field);
+  expect(panel.y).toBe(field.y + 6);
+  expect(panel.y + panel.height).toBeLessThan(field.y + field.height * 0.5);
 });
 
-it('keeps a long label readable and reflows the stable strip across landscape-to-portrait resize', () => {
+it.each([[360,640],[390,844]])('keeps the roomy-portrait layout and camera identical when a boss spawns at %ix%i', (w,h) => {
+  const boss:any={ id:'mireheart_hydra', name:'Mireheart Hydra', alive:true, isBoss:true, hp:100, maxHp:100 };
+  const run = makeBossRun(w,h,boss);
+  const base = toMinimalLayout(gameLayout(w,h));
+  expect(base.roomyPortrait).toBe(true);
+  expect(run.layout).toEqual(base);
+  expect(run.cameraView.field).toEqual(base.field);
+  expect(run.cameraView.zoom).toBe(1);
+  expect(run.bossHudReservedHeight).toBe(0);
+  expect(run.layout.bossStatusHeight).toBe(0);
+
+  // HP and phase changes only touch the bar, never the layout or camera.
+  const center = {...run.cameraView.center}, scale = run.cameraView.fitScale;
+  run.campaign = {}; run.campaignBosses = { phase: () => 7 };
+  boss.hp = 42; run.updateBossBar();
+  expect(run.layout).toEqual(base);
+  expect(run.cameraView.center).toEqual(center);
+  expect(run.cameraView.fitScale).toBe(scale);
+  expect(run.bossBarHp.text).toContain('Phase 7');
+
+  run.enemies = []; run.updateBossBar();
+  expect(run.bossBar.visible).toBe(false);
+  expect(run.layout).toEqual(base);
+});
+
+it('keeps a long label readable and reflows the floating boss bar across landscape-to-portrait resize', () => {
   const longName = 'The Hollow Warden, Keeper of the Whisperfen';
   const run = makeBossRun(1280,720,{ id:'hollow_warden', name:longName, alive:true, isBoss:true, hp:18, maxHp:100 });
   run.campaign = {};
@@ -547,10 +584,12 @@ it('keeps a long label readable and reflows the stable strip across landscape-to
   run.cameraView.resize(run.layout.field);
   run.updateBossBar();
   panel = panelBounds(run); field = run.layout.field;
+  expect(run.layout.roomyPortrait).toBe(true);
   expect(run.layout.portraitBossCommands).toBe(false);
-  expect(run.bossHudReservedHeight).toBe(run.layout.compact ? run.layout.bossStatusHeight : Math.ceil(panel.height + 18));
-  expect(field.y).toBe(gameLayout(390,844).field.y + run.bossHudReservedHeight);
-  expect(panel.y + panel.height).toBeLessThanOrEqual(field.y - 8);
+  expect(run.bossHudReservedHeight).toBe(0);
+  expect(field).toEqual(gameLayout(390,844).field);
+  expect(panel.y).toBe(field.y + 6);
+  expect(panel.y + panel.height).toBeLessThan(field.y + field.height * 0.5);
   expect(panel.x).toBeGreaterThanOrEqual(field.x);
   expect(panel.x + panel.width).toBeLessThanOrEqual(field.x + field.width);
   expect(run.bossBarText.text).toBe(longName);

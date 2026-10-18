@@ -1,5 +1,21 @@
 # Project progress
 
+## Roomy-portrait boss overlay — COMPLETE, 2026-10-18
+
+Extends the 2026-10-15 compact boss fix to roomy portrait phones. `gameLayout`
+now exposes `roomyPortrait`; `GameScene.updateCompactBossBar` floats the boss bar
+in the empty band above the width-limited board on roomy portrait instead of
+reserving a strip and refitting the camera. The layout, HUD, tray and camera now
+stay identical across a boss spawn on those sizes, and the bar is a translucent
+overlay inside the field. Desktop and tablet (non-compact) sizes keep the
+reserved strip. `tests/boss-panel-placement.test.ts` updated: the roomy-portrait
+reservation tests now assert a floating overlay, and a new matrix asserts the
+layout and camera are unchanged at 360x640 and 390x844.
+
+Full suite: 2,351 passed, 11 configured skips. `npm run deploy` published Worker
+`e0bcdc49-07fe-4131-9701-d9281ad7fdd3` serving `index-DmT8au5N.js`; live HTML,
+bundle SHA-256 and `/api/health` matched `dist`.
+
 ## Accessible main-menu controls — COMPLETE, 2026-10-18
 
 Adds a keyboard and screen-reader layer for the main-menu destinations, the
