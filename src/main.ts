@@ -6,6 +6,7 @@ import '@fontsource/inter/700.css';
 import './style.css';
 import Phaser from 'phaser';
 import { initPWA } from './pwa.ts';
+import { initRotateHint } from './rotateHint.ts';
 import { BootScene } from './game/scenes/BootScene.ts';
 import { LoginScene } from './game/scenes/LoginScene.ts';
 import { PreloadScene } from './game/scenes/PreloadScene.ts';
@@ -21,6 +22,7 @@ import { HelpScene } from './game/scenes/HelpScene.ts';
 
 document.title = 'Aegis of the Borderkeep';
 initPWA();
+initRotateHint();
 const host = document.getElementById('game-root')!;
 
 const config: Phaser.Types.Core.GameConfig = {

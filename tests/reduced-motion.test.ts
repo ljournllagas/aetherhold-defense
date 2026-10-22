@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest';
-import { prefersReducedMotion } from '../src/game/art/reducedMotion.ts';
+import { cycleMotionPreference, motionPreference, prefersReducedMotion } from '../src/game/art/reducedMotion.ts';
 import { paintVista } from '../src/game/art/menubg.ts';
 
 afterEach(() => { vi.unstubAllGlobals(); });
@@ -44,4 +44,14 @@ it('skips the drifting menu motes when motion is reduced', () => {
   const calm = fakeVistaScene();
   paintVista(calm as never, 'gameover');
   expect(calm.tweens.add).not.toHaveBeenCalled();
+});
+
+it('lets the Settings override win over the platform preference', () => {
+  const store = new Map<string, string>();
+  vi.stubGlobal('localStorage', { getItem: (k: string) => store.get(k) ?? null, setItem: (k: string, v: string) => void store.set(k, v) });
+  stubMotion(true);
+  expect([motionPreference(), prefersReducedMotion()]).toEqual(['auto', true]);
+  expect([cycleMotionPreference(), prefersReducedMotion()]).toEqual(['reduced', true]);
+  expect([cycleMotionPreference(), prefersReducedMotion()]).toEqual(['full', false]);
+  expect([cycleMotionPreference(), prefersReducedMotion()]).toEqual(['auto', true]);
 });

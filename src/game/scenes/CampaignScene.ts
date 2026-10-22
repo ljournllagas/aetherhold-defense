@@ -1,3 +1,4 @@
+import { loadCrowns } from '../campaign/crowns.ts';
 import {campaignHeaderActions} from '../ui/campaignHeader.ts';
 import {formatCount} from '../../shared/displayNumbers.ts';
 import Phaser from 'phaser';
@@ -71,6 +72,9 @@ const BOSS_CODEX_GUIDANCE: Readonly<Record<string, string>> = {
   rift_sovereign: 'A portal ring signals a short route advance. Cover the later bend before it crosses the gate.',
   aether_devourer: 'Its four phases are Normal, Resistance, Rift, and Exposed Core. Hold damage for the core opening.'
 };
+
+/** Remembered across scene restarts so a Hard player does not re-toggle it for every level. */
+let hardPreference = false;
 
 interface CampaignSceneData { selectedLevel?: number; result?: CampaignClearResult; mapScroll?: number; }
 
@@ -344,9 +348,10 @@ export class CampaignScene extends Phaser.Scene {
     const compact = boxH < 220;
     const veryCompact = boxH < 180;
     const best = detail.bestScore === null ? 'Best score: Not scored yet' : `Best score: ${formatCount(detail.bestScore)} pts · Best lives: ${detail.bestLives === null ? '—' : formatCount(detail.bestLives)}`;
-    const meta = width < 520
+    const crown = loadCrowns().has(detail.level) ? '  ·  Crown earned' : '';
+    const meta = (width < 520
       ? campaignCompactDetailMeta(detail)
-      : `${detail.worldName}  ·  Layout ${layoutLabel}  ·  Difficulty ${detail.difficulty}/5  ·  ${starsText}  ·  ${best}`;
+      : `${detail.worldName}  ·  Layout ${layoutLabel}  ·  Difficulty ${detail.difficulty}/5  ·  ${starsText}  ·  ${best}`) + crown;
     const metaText = this.add.text(x + 16, top + (compact ? 32 : 36), meta, style(12, C.textSecondary)).setWordWrapWidth(panelW - 32);
     root.add(metaText);
 
@@ -385,10 +390,11 @@ export class CampaignScene extends Phaser.Scene {
     const enemyNameText = this.add.text(x + 10, namesY, enemyNames, style(12, detail.boss ? C.goldBright : C.textSecondary, true)).setWordWrapWidth(panelW - 20);
     root.add(enemyNameText);
     const buttonY = top + contentLayout.buttonY, gap = 8, innerW = panelW - 32;
-    const classicW = Math.min(140, innerW * 0.34), scoringW = 58, startW = innerW - classicW - scoringW - gap * 2;
-    addAction(this, root, x + 16, buttonY, startW, detail.canStart ? 'Start Battle' : 'Clear previous level first', () => this.startBattle(detail.level), 'primary', detail.canStart);
-    addAction(this, root, x + 16 + startW + gap, buttonY, scoringW, 'Scoring', () => this.openMissionScoring());
-    addAction(this, root, x + 16 + startW + scoringW + gap * 2, buttonY, classicW, 'Classic Siege', () => this.scene.start('Difficulty'));
+    const classicW = Math.min(120, innerW * 0.28), scoringW = 58, hardW = 62, startW = innerW - classicW - scoringW - hardW - gap * 3;
+    addAction(this, root, x + 16, buttonY, startW, detail.canStart ? (hardPreference ? 'Start Hard' : 'Start Battle') : 'Clear previous level first', () => this.startBattle(detail.level), 'primary', detail.canStart);
+    addAction(this, root, x + 16 + startW + gap, buttonY, hardW, hardPreference ? 'Hard ✓' : 'Hard', () => { hardPreference = !hardPreference; this.draw(); }, hardPreference ? 'primary' : 'secondary');
+    addAction(this, root, x + 16 + startW + hardW + gap * 2, buttonY, scoringW, 'Scoring', () => this.openMissionScoring());
+    addAction(this, root, x + 16 + startW + hardW + scoringW + gap * 3, buttonY, classicW, 'Classic Siege', () => this.scene.start('Difficulty'));
     if (compact) {
       const compactCopy = resultStatus
         ? resultStatus.compactMessage
@@ -417,7 +423,7 @@ export class CampaignScene extends Phaser.Scene {
     if (!detail?.canStart) return;
     this.scene.start('Preload', {
       stage: 'gameplay', destination: 'Game',
-      data: { difficulty: 'medium', playerName: accountSystem.currentPlayerName(), mode: 'campaign', campaignLevel: level }
+      data: { difficulty: 'medium', playerName: accountSystem.currentPlayerName(), mode: 'campaign', campaignLevel: level, campaignHard: hardPreference }
     });
   }
 

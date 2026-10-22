@@ -12,7 +12,7 @@ import { campaignVisualTier } from '../campaign/battle.ts';
 import { campaignRepository } from '../campaign/progress.ts';
 import type { CampaignVisualTier } from '../campaign/types.ts';
 
-export interface GameStartData { difficulty: DifficultyId; playerName: string; mode?: 'classic' | 'campaign'; campaignLevel?: number; campaignVisualTier?: CampaignVisualTier; qaCampaignFixture?: QACampaignFixture; }
+export interface GameStartData { difficulty: DifficultyId; playerName: string; mode?: 'classic' | 'campaign'; campaignLevel?: number; campaignHard?: boolean; campaignVisualTier?: CampaignVisualTier; qaCampaignFixture?: QACampaignFixture; }
 export type LoadingRequest =
   | { stage: 'menu'; destination: 'MainMenu'; data?: undefined }
   | { stage: 'campaign'; destination: 'Campaign'; data?: undefined }

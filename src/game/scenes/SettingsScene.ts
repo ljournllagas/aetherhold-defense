@@ -1,3 +1,4 @@
+import { MOTION_LABEL, cycleMotionPreference, motionPreference, prefersReducedMotion } from '../art/reducedMotion.ts';
 import Phaser from 'phaser';
 import {button} from '../ui/components.ts';
 import { mountAccountButton } from '../ui/accountControls.ts';
@@ -34,7 +35,7 @@ export class SettingsScene extends Phaser.Scene {
     if (W < 768 || H < 360) { this.createPhone(); return; }
     const compact = H < 560 || W < 850;
     paintVista(this, 'board');
-    if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) this.tweens.getTweens().forEach((tween) => tween.stop());
+    if (prefersReducedMotion()) this.tweens.getTweens().forEach((tween) => tween.stop());
 
     const crest = compact ? 30 : 46;
     const titleY = compact ? 28 : 76;
@@ -156,8 +157,13 @@ export class SettingsScene extends Phaser.Scene {
       });
     });
 
-    const backWidth = Math.min(220, W - 48);
-    const back = drawControl(this, (W - backWidth) / 2, actionY, backWidth, 48, 'Back to Keep', true, () => {
+    const backWidth = Math.min(220, W - 48), motionWidth = 190, pairWidth = backWidth + 12 + motionWidth;
+    drawControl(this, (W - pairWidth) / 2 + backWidth + 12, actionY, motionWidth, 48, `Motion  ·  ${MOTION_LABEL[motionPreference()]}`, false, () => {
+      cycleMotionPreference();
+      SoundManager.get().click();
+      this.scene.restart();
+    });
+    const back = drawControl(this, (W - pairWidth) / 2, actionY, backWidth, 48, 'Back to Keep', true, () => {
       SoundManager.get().click();
       this.scene.start('MainMenu');
     });
@@ -181,7 +187,8 @@ export class SettingsScene extends Phaser.Scene {
     sheet.action(324, `SFX · ${settings.sfxOn ? 'ON' : 'OFF'}`, () => { settings.sfxOn = !settings.sfxOn; apply(); });
     sheet.text(380, `Preferred run speed · ${settings.gameSpeed}×`);
     sheet.action(408, 'Change speed', () => { settings.gameSpeed = settings.gameSpeed === 3 ? 1 : settings.gameSpeed + 1; apply(); });
-    sheet.action(460, 'Back to Keep', () => this.scene.start('MainMenu'), 'primary');
+    sheet.action(460, `Motion · ${MOTION_LABEL[motionPreference()]} (tap to change)`, () => { this.savedScroll = sheet.scrollOffset; cycleMotionPreference(); this.scene.restart(); });
+    sheet.action(512, 'Back to Keep', () => this.scene.start('MainMenu'), 'primary');
     sheet.scrollTo(this.savedScroll);
     this.scale.on(Phaser.Scale.Events.RESIZE, this.handleResize, this);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => { sheet.destroy(); this.scale.off(Phaser.Scale.Events.RESIZE, this.handleResize, this); });

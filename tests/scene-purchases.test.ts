@@ -17,7 +17,7 @@ interface Run {
   gold: number; waveActive: boolean; ended: boolean; towers: Tower[]; selectedTower: Tower | null; occupied: Set<number>;
   siege: SiegeSystem; evolutionCombat: EvolutionCombat; runUnlocks: ReadonlySet<BranchId>; pauseState: PauseState;
   floatText: ReturnType<typeof vi.fn>; showBanner: ReturnType<typeof vi.fn>;
-  purchaseSelected(intent: PurchaseIntent, towerId: number, revision: number): void; upgradeSelected(): void; sellSelected(): void; confirmSell(): boolean; tryBuild(id: string, plot: number): void;
+  purchaseSelected(intent: PurchaseIntent, towerId: number, revision: number): void; upgradeSelected(): void; sellSelected(): void; confirmSell(): boolean; startMove(): boolean; placingTowerId: string | null; tryBuild(id: string, plot: number): void;
 }
 const PRESENTATION = ['updateHUD', 'refreshInfoPanel', 'drawSheet', 'drawPowerupBar', 'refreshPlots', 'refreshPlacePanel', 'hideGhost', 'floatTextForEnemy', 'drawCatalog', 'refreshTowerVisual', 'updateNextPreview'];
 function sceneFixture() {
@@ -89,6 +89,15 @@ describe('scene purchase transactions', () => {
     const { run } = sceneFixture(); (run as unknown as { time: unknown }).time = { delayedCall: vi.fn() };
     expect(run.confirmSell()).toBe(false); expect(run.towers).toHaveLength(1);
     expect(run.confirmSell()).toBe(true); expect(run.towers).toHaveLength(0); expect(run.gold).toBeGreaterThan(1490);
+  });
+  it('moves a tower between waves for 25% of its spend and frees the old plot', () => {
+    const { run, tower } = sceneFixture(), chain = { setPosition: () => chain, setDepth: () => chain };
+    Object.assign(run, { world: (v: unknown) => v, projectEntity: () => {} });
+    tower.view = chain as never;
+    run.waveActive = true; expect(run.startMove()).toBe(false);
+    run.waveActive = false; expect(run.startMove()).toBe(true);
+    run.tryBuild('longbow', 1);
+    expect([tower.plotIndex, [...run.occupied], run.gold, run.towers.length, run.placingTowerId]).toEqual([1, [1], 2000 - 178, 1, null]);
   });
   it('rejects building and selling while blocked', () => {
     const { run } = sceneFixture(); run.siege.phase = 'victory';
