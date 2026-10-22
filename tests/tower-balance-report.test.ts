@@ -1,4 +1,3 @@
-import { writeFileSync } from 'node:fs';
 import { describe, it, vi } from 'vitest';
 
 vi.mock('phaser', () => ({ default: { Scene: class {}, Scenes: { Events: { SHUTDOWN: 'shutdown' } }, Scale: { Events: { RESIZE: 'resize' } } } }));
@@ -20,17 +19,19 @@ function plan(ids: readonly TowerId[]): PlannedPurchase[] {
 
 /** Opt-in tower-dominance report: `TOWER_REPORT=<out.md> npx vitest run tests/tower-balance-report.test.ts`. Not an acceptance gate. */
 describe.skipIf(!process.env.TOWER_REPORT)('tower balance report (Classic, Medium, seed 1)', () => {
-  const all = TOWER_LIST.map((t) => t.id);
+  const all = TOWER_LIST.map((t) => t.id) as TowerId[];
   const rows: string[] = ['| Lineup | Outcome | Waves | Lives | Score |', '| --- | --- | ---: | ---: | ---: |'];
   const run = (label: string, ids: readonly TowerId[]) => {
     const trace = runSimulation({ label, difficulty: 'medium', seed: 1, unlockAll: false, throughWave: 30, continueEndless: false, plan: plan(ids) });
     rows.push(`| ${label} | ${trace.outcome} | ${trace.wavesCompleted} | ${trace.finalLives} | ${trace.terminalPayload?.finalScore ?? '-'} |`);
   };
-  it('runs every lineup', () => {
+  it('runs every lineup', async () => {
     run('all 7', all);
     for (const id of all) run(`all 7 minus ${id}`, all.filter((x) => x !== id));
     for (const id of all) run(`${id} alone`, [id]);
     for (const id of all) run(`${id} + longbow + glacier`, [...new Set<TowerId>([id, 'longbow', 'glacier'])]);
+    const moduleName = 'node:fs'; // no @types/node; same trick as balance-acceptance
+    const { writeFileSync } = await import(moduleName);
     writeFileSync(process.env.TOWER_REPORT!, rows.join('\n') + '\n');
   }, 1_800_000);
 });
