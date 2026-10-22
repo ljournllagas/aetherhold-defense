@@ -509,7 +509,12 @@ export class GameScene extends Phaser.Scene {
       this.refreshPreviewPanel();this.refreshInfoPanel();this.refreshPlots();this.refreshPlacePanel();
       this.showBanner(`${t.cfg.name} · level ${t.level} · ${t.targeting}`,C.gold);return;
     }
+    const hot=event.key.toLowerCase();
+    if(hot==='s'){this.cycleSpeed();this.showBanner(`Speed ${this.speed}×`,C.gold);return;}
+    if(hot==='v'){this.cancelGesture();this.cameraView.reset();this.cameraTouched=true;this.applyView();this.showBanner('Overview',C.gold);return;}
+    if(hot==='r'&&!this.placingTowerId){this.openSheet('relics');return;}
     const picked=this.selectedTower&&this.towers.includes(this.selectedTower)?this.selectedTower:null;
+    if(hot==='d'&&picked&&!this.placingTowerId){this.openDetails('tower');return;}
     if(picked&&!this.placingTowerId){
       const key=event.key.toLowerCase();
       if(key==='u'){this.upgradeSelected();return;}
@@ -2150,7 +2155,7 @@ export class GameScene extends Phaser.Scene {
     const wrap = inspector.width - 32;
     c.add(this.add.text(16, 16, 'Command Post', style(16, C.gold, true, FONT_DISPLAY)).setWordWrapWidth(wrap));
     c.add(this.add.text(16, 46, 'Select a tower to inspect, upgrade, retarget or sell it. Tap an empty build circle to raise a new tower.', style(13, C.textSecondary)).setWordWrapWidth(wrap).setLineSpacing(3));
-    const keys = ['1–7   choose a tower', '←↑→↓   pick a circle', 'Enter   build or confirm', '[ ]   select a built tower', 'U upgrade · T target · M move · X sell', 'Esc   cancel'];
+    const keys = ['1–7   choose a tower', '←↑→↓   pick a circle', 'Enter   build or confirm', '[ ]   select a built tower', 'U upgrade · T target · M move · X sell', 'D details · R relics · S speed · V overview', 'Esc   cancel'];
     c.add(this.add.text(16, 156, 'Keyboard', style(12, C.textMuted, true)).setWordWrapWidth(wrap));
     c.add(this.add.text(16, 178, keys.join('\n'), style(13, C.textSecondary)).setWordWrapWidth(wrap).setLineSpacing(6));
   }
