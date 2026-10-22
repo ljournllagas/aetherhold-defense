@@ -26,7 +26,7 @@ export const TOWERS: Record<string, TowerConfig> = {
   ember: {
     id: 'ember',
     name: 'Bombard',
-    description: 'Slow siege shells, splash damage. Crushes packs.',
+    description: 'Slow siege shells. Splash crushes packs but fades toward its edge.',
     role: 'AOE',
     color: 0xff7043,
     damageType: 'physical',

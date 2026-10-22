@@ -51,6 +51,16 @@ describe('scene combat', () => {
     const status = run.evolutionCombat.statuses(e.id, run.gameTimeMs);
     expect(status.frozen).toBe(true); expect(e.effectiveSpeed(run.gameTimeMs, 0, status)).toBe(0);
   });
+  it('Classic splash deals full damage at the impact and half at the edge', () => {
+    const run = sceneFixture(), owner = evolved('ember', 'siegebreaker'), shot = run.evolutionCombat.makeShot(owner, [owner], 1);
+    const radius = shot.stats.splashRadius!, target = enemyAt(100, 100), edge = enemyAt(100 + radius, 100), outside = enemyAt(100 + radius + 1, 100);
+    run.towers = [owner]; run.enemies = [target, edge, outside];
+    const damage = vi.spyOn(run, 'damageEnemy');
+    run.flights.push(flightFor(shot, target)); run.updateFlights(0);
+    expect(damage).toHaveBeenCalledWith(target, shot.rawDamage, shot.stats.damageType, shot);
+    expect(damage).toHaveBeenCalledWith(edge, shot.rawDamage * 0.5, shot.stats.damageType, shot);
+    expect(damage).not.toHaveBeenCalledWith(outside, expect.anything(), expect.anything(), expect.anything());
+  });
   it('chains with x0.85 per jump and x0.75 per secondary impact without repeats', () => {
     const run = sceneFixture(), storm = evolved('tempest', 'stormcaller'), a = enemyAt(100, 100), b = enemyAt(150, 100);
     run.towers = [storm]; run.enemies = [a, b];

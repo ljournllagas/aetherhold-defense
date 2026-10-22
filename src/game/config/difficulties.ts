@@ -34,7 +34,7 @@ export const DIFFICULTIES: Record<DifficultyId, DifficultyConfig> = {
     startingGold: 500,
     startingLives: 15,
     maxLives: 15,
-    enemyHpMultiplier: 1.3,
+    enemyHpMultiplier: 1.2,
     enemySpeedMultiplier: 1.1,
     enemyCountMultiplier: 1.1,
     goldRewardMultiplier: 0.9,

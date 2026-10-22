@@ -114,6 +114,7 @@ function announce(text: string): void {
 }
 
 const MOVE_FEE_RATE = 0.25;
+const SPLASH_EDGE_FALLOFF = 0.5;
 const HARD_CAMPAIGN_HP = 1.25;
 const TARGET_MODES: TargetingMode[] = ['first', 'last', 'strongest', 'weakest', 'closest'];
 
@@ -3441,7 +3442,12 @@ Targeting: ${tower.targeting}`;
       const st = shot.stats;
       if (st.splashRadius) {
         const blast = this.world(this.add.circle(target.x, target.y, st.splashRadius, 0xde8742, 0.16).setDepth(6)); this.addEffect(blast, 220);
-        for (const enemy of this.enemies) if (enemy.alive && Math.hypot(enemy.x - target.x, enemy.y - target.y) <= st.splashRadius) this.damageEnemy(enemy, shot.rawDamage, st.damageType, shot);
+        for (const enemy of this.enemies) {
+          const distance = Math.hypot(enemy.x - target.x, enemy.y - target.y);
+          if (!enemy.alive || distance > st.splashRadius) continue;
+          // Classic only: splash falls off toward its edge so dense packs stop making AOE strictly dominant; Campaign gates are tuned to flat splash.
+          this.damageEnemy(enemy, shot.rawDamage * (this.campaign ? 1 : 1 - SPLASH_EDGE_FALLOFF * distance / st.splashRadius), st.damageType, shot);
+        }
         this.evolutionCombat.primaryHit(shot, target, this.gameTimeMs, !target.alive);
         if (this.towers.some(t => t.id === shot.ownerId)) this.evolutionCombat.addField(shot, target.x, target.y, this.gameTimeMs, shot.specialization?.burnDurationMs, shot.specialization?.burnDamageMultiplier);
       } else {
