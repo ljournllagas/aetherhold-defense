@@ -73,7 +73,7 @@ it('publishes acknowledged progress and preserves its score after a stale sync',
       campaignScoreVersion: 1, missionCount: 100, starCount: 300,
       scores: [{ playerId: 'a', nickname: 'Name a', missionsCompleted: 1, totalStars: 3, totalScore: campaignScoreMetadata(1).perfectScore }]
     });
-    expect(response.headers.get('Cache-Control')).toBe('no-store');
+    expect(response.headers.get('Cache-Control')).toBe('public, max-age=15');
     expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
     expect(response.headers.get('X-Frame-Options')).toBe('DENY');
     expect(JSON.stringify(body)).not.toMatch(/generation|subject|csrf|progress_json|email/);

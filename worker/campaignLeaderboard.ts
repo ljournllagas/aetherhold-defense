@@ -144,6 +144,12 @@ export async function handleCampaignLeaderboard(request: Request, env: Pick<Auth
     if (!integer(limit) || limit < 1 || limit > 100) return invalidLimit();
   }
 
+  // Edge-cache successes for 15s so repeat reads skip the heavy ranking query; the key ignores stray query params.
+  const edge = (globalThis as unknown as { caches?: { default: Cache } }).caches?.default;
+  const cacheKey = new Request(`${url.origin}${url.pathname}?limit=${limit}`);
+  const cached = await edge?.match(cacheKey).catch(() => undefined);
+  if (cached) return cached;
+
   try {
     const scores: CampaignLeaderboardRow[] = [];
     const seen = new Set<string>();
@@ -191,7 +197,10 @@ export async function handleCampaignLeaderboard(request: Request, env: Pick<Auth
       scores
     }, limit);
     if (!result) throw new Error('Campaign leaderboard response failed shared validation');
-    return response(result);
+    const ok = response(result);
+    ok.headers.set('Cache-Control', 'public, max-age=15');
+    await edge?.put(cacheKey, ok.clone()).catch(() => undefined);
+    return ok;
   } catch {
     return response({ ok: false, error: { code: 'API_UNAVAILABLE', message: 'Campaign leaderboard is temporarily unavailable.' } }, 503);
   }

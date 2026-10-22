@@ -2111,7 +2111,7 @@ export class GameScene extends Phaser.Scene {
     const wrap = inspector.width - 32;
     c.add(this.add.text(16, 16, 'Command Post', style(16, C.gold, true, FONT_DISPLAY)).setWordWrapWidth(wrap));
     c.add(this.add.text(16, 46, 'Select a tower to inspect, upgrade, retarget or sell it. Tap an empty build circle to raise a new tower.', style(13, C.textSecondary)).setWordWrapWidth(wrap).setLineSpacing(3));
-    const keys = ['1–5   choose a tower', '←↑→↓   pick a circle', 'Enter   build or confirm', 'Esc   cancel'];
+    const keys = ['1–7   choose a tower', '←↑→↓   pick a circle', 'Enter   build or confirm', 'Esc   cancel'];
     c.add(this.add.text(16, 156, 'Keyboard', style(12, C.textMuted, true)).setWordWrapWidth(wrap));
     c.add(this.add.text(16, 178, keys.join('\n'), style(13, C.textSecondary)).setWordWrapWidth(wrap).setLineSpacing(6));
   }
