@@ -99,6 +99,19 @@ interface Floater {
   until: number;
 }
 
+/** Mirror transient canvas banners into a polite live region for screen readers. */
+function announce(text: string): void {
+  if (typeof document === 'undefined') return;
+  let region = document.getElementById('sr-live');
+  if (!region) {
+    region = document.createElement('div');
+    region.id = 'sr-live'; region.setAttribute('role', 'status'); region.setAttribute('aria-live', 'polite');
+    region.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap';
+    document.body.appendChild(region);
+  }
+  region.textContent = text;
+}
+
 const TARGET_MODES: TargetingMode[] = ['first', 'last', 'strongest', 'weakest', 'closest'];
 
 export class GameScene extends Phaser.Scene {
@@ -483,6 +496,21 @@ export class GameScene extends Phaser.Scene {
       this.towerPreviewId=null;this.refreshPreviewPanel();
       this.refreshInfoPanel();this.refreshPlots();this.refreshPlacePanel();this.showTouchPreview();return;
     }
+    if(event.key==='['||event.key===']'){
+      if(!this.towers.length)return;
+      const at=this.selectedTower?this.towers.indexOf(this.selectedTower):-1;
+      const t=this.towers[(at+(event.key===']'?1:-1)+this.towers.length)%this.towers.length];
+      this.cancelGesture();this.placingTowerId=null;this.touchPreview=null;this.selectedTower=t;this.towerPreviewId=null;
+      this.refreshPreviewPanel();this.refreshInfoPanel();this.refreshPlots();this.refreshPlacePanel();
+      this.showBanner(`${t.cfg.name} · level ${t.level} · ${t.targeting}`,C.gold);return;
+    }
+    const picked=this.selectedTower&&this.towers.includes(this.selectedTower)?this.selectedTower:null;
+    if(picked&&!this.placingTowerId){
+      const key=event.key.toLowerCase();
+      if(key==='u'){this.upgradeSelected();return;}
+      if(key==='x'){this.confirmSell();return;}
+      if(key==='t'){picked.targeting=TARGET_MODES[(TARGET_MODES.indexOf(picked.targeting)+1)%TARGET_MODES.length];this.refreshInfoPanel();this.showBanner(`Targeting: ${picked.targeting}`,C.gold);return;}
+    }
     if(!this.placingTowerId)return;
     if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){
       event.preventDefault();
@@ -748,16 +776,16 @@ export class GameScene extends Phaser.Scene {
     if (hintTopics) {
       // First-play hints hug their text and sit low, so they never bury the board they describe.
       const measure = (value: string, size: number): number => { const t = this.add.text(0, 0, value, style(size, C.textSecondary)).setWordWrapWidth(bounds.width - 24); const h = t.height; t.destroy(); return h; };
-      const content = hintTopics.reduce((n, t) => n + measure(t.title, 18) + 8 + measure(t.hint ?? t.body, 15) + 12, 0);
+      const content = hintTopics.reduce((n, t) => n + measure(t.hint ?? t.body, 15) + 12, 0);
       const fitted = Math.min(bounds.height, 48 + content + 44 + 12);
       bounds = { ...bounds, y: bounds.y + bounds.height - fitted, height: fitted };
     }
-    const title = { build: 'Build Towers', tower: 'Selected Tower', more: 'Battle Controls', relics: 'Relics', next: 'Next Wave', evolve: 'Tower Progression',help:'How to play',progression:'Progression' }[kind];
+    const title = { build: 'Build Towers', tower: 'Selected Tower', more: 'Battle Controls', relics: 'Relics', next: 'Next Wave', evolve: 'Tower Progression',help:hintTopics?.[0]?.title??'How to play',progression:'Progression' }[kind];
     const sheet = new ScrollSheet(this, this.uiRoot, bounds, title, () => { this.closeDetails();this.showTouchPreview(); }); this.sheet = sheet;
     sheet.root.setData('progressionContext', context);
     if(kind==='help'){
       let y=0;const topics=this.guideStep?HELP_TOPICS.filter(t=>t.id===this.guideStep):HELP_TOPICS;
-      for(const t of topics){const title=sheet.text(y,t.title,C.gold,18);y+=title.height+8;const body=sheet.text(y,this.guideStep?t.hint??t.body:t.body,C.textSecondary,this.guideStep?15:16);y+=body.height+(this.guideStep?12:20);}
+      for(const t of topics){if(!this.guideStep){const title=sheet.text(y,t.title,C.gold,18);y+=title.height+8;}const body=sheet.text(y,this.guideStep?t.hint??t.body:t.body,C.textSecondary,this.guideStep?15:16);y+=body.height+(this.guideStep?12:20);}
       const dismiss=()=>this.closeDetails(),skipOrReplay=()=>{if(this.guideStep)this.guide.skip();else this.guide.replay();this.closeDetails();};
       if(this.guideStep)sheet.pair(y,'Got it','Skip hints',dismiss,skipOrReplay);
       else{sheet.action(y,'Back to battle',dismiss);sheet.action(y+52,'Replay hints',skipOrReplay);}
@@ -833,7 +861,7 @@ export class GameScene extends Phaser.Scene {
     } else if (kind === 'tower' && this.selectedTower) {
       const t = this.selectedTower;
       let y = this.drawProgressionModel(sheet, t, 0);
-      sheet.action(y, `Sell · ${formatCount(investedRefund(t.progression))} gold`, () => this.performDetailedAction(()=>this.sellSelected()), 'danger',!this.detailsPurchaseContext().blocked); y += 60;
+      sheet.action(y, this.sellLabel(t), () => this.performDetailedAction(()=>this.confirmSell()), 'danger',!this.detailsPurchaseContext().blocked); y += 60;
       sheet.text(y, 'Targeting'); y += 28;
       TARGET_MODES.forEach((mode, i) => sheet.action(y + i * 52, `${t.targeting === mode ? '✓ ' : ''}${mode[0].toUpperCase() + mode.slice(1)}`, () => this.performDetailedAction(()=>{if(this.selectedTower!==t||!this.towers.includes(t))return false;t.targeting=mode;return true;}),'secondary',!this.detailsPurchaseContext().blocked));
     } else if (kind === 'more') {
@@ -2111,7 +2139,7 @@ export class GameScene extends Phaser.Scene {
     const wrap = inspector.width - 32;
     c.add(this.add.text(16, 16, 'Command Post', style(16, C.gold, true, FONT_DISPLAY)).setWordWrapWidth(wrap));
     c.add(this.add.text(16, 46, 'Select a tower to inspect, upgrade, retarget or sell it. Tap an empty build circle to raise a new tower.', style(13, C.textSecondary)).setWordWrapWidth(wrap).setLineSpacing(3));
-    const keys = ['1–7   choose a tower', '←↑→↓   pick a circle', 'Enter   build or confirm', 'Esc   cancel'];
+    const keys = ['1–7   choose a tower', '←↑→↓   pick a circle', 'Enter   build or confirm', '[ ]   select a built tower', 'U upgrade · T target · X sell', 'Esc   cancel'];
     c.add(this.add.text(16, 156, 'Keyboard', style(12, C.textMuted, true)).setWordWrapWidth(wrap));
     c.add(this.add.text(16, 178, keys.join('\n'), style(13, C.textSecondary)).setWordWrapWidth(wrap).setLineSpacing(6));
   }
@@ -2159,7 +2187,7 @@ export class GameScene extends Phaser.Scene {
       const commandWidth = this.layout.width - 440;
       const bw = (commandWidth - 8) / 2;
       button(this, commands, 0, 0, bw, this.inspectorPrimaryLabel(t), () => this.inspectorPrimaryAction(), 'primary', 44);
-      button(this, commands, bw + 8, 0, bw, `Sell · ${formatCount(investedRefund(t.progression))} gold`, () => this.sellSelected(), 'danger', 44);
+      button(this, commands, bw + 8, 0, bw, this.sellLabel(t), () => this.confirmSell(), 'danger', 44);
       return;
     }
     c.add(this.add.image(40, 40, towerPortraitKey(t.towerId)).setDisplaySize(56, 56));
@@ -2275,6 +2303,20 @@ export class GameScene extends Phaser.Scene {
     return !!t&&this.purchaseSelected({ kind: 'foundation-upgrade' }, t.id, t.progression.revision);
   }
 
+  private sellArmedId: number | null = null;
+  private sellLabel(t: Tower): string { return `${this.sellArmedId === t.id ? 'Confirm sell' : 'Sell'} · ${formatCount(investedRefund(t.progression))} gold`; }
+  // Selling is irreversible, so the first tap only arms it for 3s; a second tap on the same tower sells.
+  private confirmSell(): boolean {
+    const t = this.selectedTower;
+    if (!t || !this.towers.includes(t)) return false;
+    if (this.sellArmedId === t.id) { this.sellArmedId = null; return this.sellSelected(); }
+    this.sellArmedId = t.id;
+    this.showBanner(`Sell again to confirm · +${formatCount(investedRefund(t.progression))} gold`, C.gold, 2600);
+    this.time.delayedCall(3000, () => { if (this.sellArmedId !== t.id) return; this.sellArmedId = null; if (this.selectedTower === t) this.refreshInfoPanel(); });
+    this.refreshInfoPanel();
+    return false;
+  }
+
   private sellSelected(): boolean {
     if (this.isRunBlocked()) return false;
     const t = this.selectedTower;
@@ -2371,6 +2413,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private showBanner(text: string, color: string, holdMs = 1300): void {
+    announce(text);
     const b = this.add.text(this.layout.field.x + this.layout.field.width / 2, this.layout.hud + 32, text, { ...style(this.layout.compact ? (holdMs > 1300 ? 16 : 14) : 22, color, true, FONT_DISPLAY), backgroundColor: '#121920', padding: { x: 12, y: 8 }, wordWrap: { width: this.layout.field.width - 48 } }).setOrigin(0.5).setAlign('center').setDepth(1500);
     this.addEffect(b, holdMs);
   }

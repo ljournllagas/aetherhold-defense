@@ -17,7 +17,7 @@ interface Run {
   gold: number; waveActive: boolean; ended: boolean; towers: Tower[]; selectedTower: Tower | null; occupied: Set<number>;
   siege: SiegeSystem; evolutionCombat: EvolutionCombat; runUnlocks: ReadonlySet<BranchId>; pauseState: PauseState;
   floatText: ReturnType<typeof vi.fn>; showBanner: ReturnType<typeof vi.fn>;
-  purchaseSelected(intent: PurchaseIntent, towerId: number, revision: number): void; upgradeSelected(): void; sellSelected(): void; tryBuild(id: string, plot: number): void;
+  purchaseSelected(intent: PurchaseIntent, towerId: number, revision: number): void; upgradeSelected(): void; sellSelected(): void; confirmSell(): boolean; tryBuild(id: string, plot: number): void;
 }
 const PRESENTATION = ['updateHUD', 'refreshInfoPanel', 'drawSheet', 'drawPowerupBar', 'refreshPlots', 'refreshPlacePanel', 'hideGhost', 'floatTextForEnemy', 'drawCatalog', 'refreshTowerVisual', 'updateNextPreview'];
 function sceneFixture() {
@@ -84,6 +84,11 @@ describe('scene purchase transactions', () => {
     const remove = vi.spyOn(run.evolutionCombat, 'removeOwner');
     run.sellSelected();
     expect(run.gold).toBe(1490 + 854); expect(run.towers).toHaveLength(0); expect(remove).toHaveBeenCalledWith(tower.id);
+  });
+  it('arms on the first sell tap and sells on the second', () => {
+    const { run } = sceneFixture(); (run as unknown as { time: unknown }).time = { delayedCall: vi.fn() };
+    expect(run.confirmSell()).toBe(false); expect(run.towers).toHaveLength(1);
+    expect(run.confirmSell()).toBe(true); expect(run.towers).toHaveLength(0); expect(run.gold).toBeGreaterThan(1490);
   });
   it('rejects building and selling while blocked', () => {
     const { run } = sceneFixture(); run.siege.phase = 'victory';
