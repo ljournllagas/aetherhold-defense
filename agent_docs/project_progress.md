@@ -13,6 +13,12 @@ The working tree is ~570 MB over 1,352 tracked files while `src/`, `worker/` and
 size, and `artifacts/` (178 MB) plus `output/` (14 MB) stay tracked for now: untracking
 them is the repo-size item, and 30 files under `docs/` link to `artifacts/` as evidence.
 
+The first run exposed pre-existing lockfile drift: `overrides.miniflare.sharp = 0.35.5`
+was never recorded, so `npm ci` refused to install. Regenerated with
+`npm install --package-lock-only`; the only change is `sharp` hoisting from
+`miniflare/node_modules/sharp@0.35.4` to `node_modules/sharp@0.35.5` plus its platform
+packages — 54 entries, no other version moved.
+
 ## Boss-fit test de-flaked — COMPLETE, 2026-10-27
 
 Full-suite runs failed intermittently on `tests/boss-panel-placement.test.ts`
