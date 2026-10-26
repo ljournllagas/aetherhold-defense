@@ -1,5 +1,25 @@
 # Project progress
 
+## Boss-fit test de-flaked — COMPLETE, 2026-10-27
+
+Full-suite runs failed intermittently on `tests/boss-panel-placement.test.ts`
+("fits every campaign road capsule…"), which had left `npm run deploy` — gated on
+`npm test` — randomly red. Reproducing on an idle machine did not fail, so the cost
+was measured instead: the three cases ran 2.9–3.8 s against Vitest's 5 s default,
+which a loaded 224-file run tipped over. Profiling showed the loops were not the
+problem (map resolution 250 ms, boss refit 13 ms); `check()` called four `expect()`
+per projected point across 100 campaign levels, roughly 480k assertions per case.
+That was the actual cost.
+
+Two changes in the test only, with no timeout change and no coverage change: the
+authored support corners (`towerArtGeometry` for 7 towers × 4 levels, invariant) are
+built once at module scope instead of once per buildable plot per campaign level,
+and out-of-field projections are collected and asserted once per level, with the
+offending level and viewport in the failure message. Cases now run 272/279/295 ms
+(≈13× faster), leaving ~17× headroom against the default timeout. Teeth checked by
+forcing an escape, which fails with `borderkeep level 1 at 844x390`. Verification:
+full suite green three times in a row (2,381 passed / 12 skipped, 84–90 s).
+
 ## Campaign legacy score target reconciled — COMPLETE, 2026-10-18
 
 The authored `mastery.scoreTarget` bars were unreachable on **98 of the 100**

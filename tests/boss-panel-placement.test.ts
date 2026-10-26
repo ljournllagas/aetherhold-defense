@@ -620,25 +620,32 @@ it('offers details without automatically reopening a closed sheet when the inspe
   expect(details).toHaveBeenCalledTimes(1);
 });
 
+// Authored support corners are invariant per tower/level, so they are built once at module
+// scope instead of once per buildable plot per campaign level (which dominated this test).
+const TOWER_SUPPORT_CORNERS = ['longbow','ember','glacier','starfire','tempest','sentinel','cinder'].flatMap(id=>
+  [1,2,3,4].flatMap(level=>{const g=towerArtGeometry(id,level,1);
+    return [{dx:g.left*1.25,dy:(g.top-34)*1.25},{dx:(g.left+g.width)*1.25,dy:(g.top+g.height)*1.25}];}));
+
 it.each([[844,390],[320,390],[320,360]])('fits every campaign road capsule, plot rim and authored tower support at %ix%i',(w,h)=>{
   const boss:any={id:1,name:'Mireheart Hydra',alive:true,isBoss:true,hp:100,maxHp:100};
   const run=makeBossRun(w,h,boss);
   for(const definition of CAMPAIGN_LEVELS){
     run.map=resolveCampaignMap(definition);run.refreshBossFit(boss);
-    const f=run.layout.field,check=(point:{x:number;y:number})=>{
+    const f=run.layout.field;
+    // Collect out-of-field projections and assert once per level: four expect() per point over
+    // 100 levels is ~480k assertions, which is what made this file time out under full-suite load.
+    const escapes:{level:number;point:{x:number;y:number};projected:{x:number;y:number}}[]=[];
+    const check=(point:{x:number;y:number})=>{
       const p=run.cameraView.project(point);
-      expect(p.x).toBeGreaterThanOrEqual(f.x-1e-6);expect(p.x).toBeLessThanOrEqual(f.x+f.width+1e-6);
-      expect(p.y).toBeGreaterThanOrEqual(f.y-1e-6);expect(p.y).toBeLessThanOrEqual(f.y+f.height+1e-6);
+      if(p.x<f.x-1e-6||p.x>f.x+f.width+1e-6||p.y<f.y-1e-6||p.y>f.y+f.height+1e-6)
+        escapes.push({level:definition.level,point,projected:p});
     };
     for(const p of run.map.waypoints)for(const dx of [-25,25])for(const dy of [-25,25])check({x:p.x+dx,y:p.y+dy});
     for(const p of run.map.buildable){
       for(const dx of [-23.5,23.5])for(const dy of [-23.5,23.5])check({x:p.x+dx,y:p.y+dy});
-      for(const id of ['longbow','ember','glacier','starfire','tempest','sentinel','cinder'])for(const level of [1,2,3,4]){
-        const g=towerArtGeometry(id,level,1);
-        check({x:p.x+g.left*1.25,y:p.y+(g.top-34)*1.25});
-        check({x:p.x+(g.left+g.width)*1.25,y:p.y+(g.top+g.height)*1.25});
-      }
+      for(const corner of TOWER_SUPPORT_CORNERS)check({x:p.x+corner.dx,y:p.y+corner.dy});
     }
+    expect(escapes,`${definition.worldId} level ${definition.level} at ${w}x${h}`).toEqual([]);
   }
 });
 
