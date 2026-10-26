@@ -42,7 +42,7 @@ function realCombat(parts: number[], speed: number, seed: number, kind: 'volley'
   vi.spyOn(Math, 'random').mockImplementation(mulberry32(seed));
   const math = Phaser as unknown as { Math?: { Vector2: unknown } };
   math.Math = { Vector2: class { constructor(public x: number, public y: number) {} } };
-  const { run, loose } = autoScene();
+  const { run, loose } = autoScene(); loose.runRandom = mulberry32(seed);
   loose.renderFrame = vi.fn(); loose.presentReward = vi.fn();
   const tower = new Tower(kind === 'chain' ? 'tempest' : kind === 'ground' ? 'ember' : 'longbow', 300, 300, 0);
   tower.progression = { ...tower.progression, foundationLevel: 4, branchId: kind === 'chain' ? 'stormcaller' : kind === 'ground' ? 'flame-mortar' : 'volley', rank: 3 };
@@ -116,7 +116,7 @@ it('commits all current-tick impacts and opens the overflow dialog before anothe
   const { run, loose } = autoScene(); loose.renderFrame = vi.fn();
   run.vault.stored.push('battle_cry', 'gold_rush', 'time_freeze');
   // Force a real drop and stub only its visual dialog, retaining the blocker state.
-  vi.spyOn(Math, 'random').mockReturnValue(0);
+  loose.runRandom = () => 0;
   loose.showInventoryFullModal = vi.fn(() => { loose.modal = {}; loose.pausedByModal = true; });
   const tower = new Tower('longbow', 300, 300, 0);
   const enemies = [1, 2].map(() => { const e = new Enemy('thornling', 1, 0, 8); e.x = e.y = 300; return e; });

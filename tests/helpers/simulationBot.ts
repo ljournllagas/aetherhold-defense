@@ -86,7 +86,7 @@ export function mulberry32(seed: number): () => number {
 
 /** GameScene members reached through a structural cast, as tests/scene-siege.test.ts does. */
 interface Run {
-  init(data: { difficulty?: DifficultyId; playerName?: string }): void;
+  init(data: { difficulty?: DifficultyId; playerName?: string; runSeed?: number }): void;
   update(time: number, deltaMs: number): void;
   tryBuild(towerId: string, plotIndex: number): void;
   purchaseSelected(intent: PurchaseIntent, expectedTowerId: number, expectedRevision: number): void;
@@ -156,7 +156,7 @@ function simulate(options: SimulationOptions): SimulationTrace {
   const run = instance as unknown as Run, loose = instance as unknown as Record<string, unknown>;
   run.unlockRepository = new UnlockRepository(null, () => '2026-10-08T00:00:00Z');
   if (unlockAll) run.unlockRepository.earn(Object.values(ALTERNATIVE_BRANCH));
-  run.init({ difficulty, playerName: 'Simulation Bot' });
+  run.init({ difficulty, playerName: 'Simulation Bot', runSeed: options.seed });
   for (const name of PRESENTATION) loose[name] = () => {};
   loose.add = anyStub(); loose.world = (value: unknown) => value; run.speed = 1;
   // Capture the actual scene-produced result: GameOver receives it directly unless a

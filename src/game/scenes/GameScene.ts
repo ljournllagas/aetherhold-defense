@@ -49,6 +49,7 @@ import { button, panel, statRow } from '../ui/components.ts';
 import { calculateLiveScore, calculateScore } from '../systems/ScoreSystem.ts';
 import { killReward, waveClearBonus, canAfford } from '../systems/EconomySystem.ts';
 import { rollPowerUp, shouldDropOnKill } from '../systems/PowerUpSystem.ts';
+import { createRunSeed, mulberry32 } from '../systems/runRandom.ts';
 import { pickTarget } from '../systems/CombatSystem.ts';
 import { loadSettings, saveSettings, loadBest, saveBest } from '../systems/Settings.ts';
 import { runPlayerName } from '../../shared/playerName.ts';
@@ -138,6 +139,9 @@ export class GameScene extends Phaser.Scene {
   private runAccount: AccountRef | null = null;
   private runOwner:RunOwner|null=null;
   private runId = '';
+  /** Seed for this run's gameplay rolls; see docs/specs/2026-10-27-seeded-run-randomness.md. */
+  private runSeed = 0;
+  private runRandom: () => number = Math.random;
   private gold = 600;
   private lives = 20;
   private maxLives = 20;
@@ -570,6 +574,10 @@ export class GameScene extends Phaser.Scene {
     if (this.speed !== 1 && this.speed !== 2 && this.speed !== 3) this.speed = 1;
     // Full transient reset — replay must start clean (AI_AGENT_INSTRUCTIONS.md §39).
     this.runId = newRunId();
+    this.runSeed = data.runSeed ?? createRunSeed();
+    this.runRandom = mulberry32(this.runSeed);
+    // Debug aid only: a reported run can be reproduced from this seed.
+    if (import.meta.env.MODE !== 'test') console.info('[run] seed', this.runSeed);
     this.wave = 0;
     this.wavesCompleted = 0;
     this.campaignScheduledIds.clear();
@@ -3208,7 +3216,7 @@ Targeting: ${tower.targeting}`;
     }, () => { this.vault.resolve('replace-oldest'); this.closeModal(); this.drawPowerupBar(); this.presentReward(); }, false, () => this.useNewFromFull());
   }
 
-  private rollReward(): PowerUpId { return this.campaign ? this.campaign.rollReward() : rollPowerUp(); }
+  private rollReward(): PowerUpId { return this.campaign ? this.campaign.rollReward(this.runRandom) : rollPowerUp(this.runRandom); }
 
   private canRerollReward(id: PowerUpId, reason: string): boolean {
     const reward = this.vault.pending[0];
@@ -3218,7 +3226,7 @@ Targeting: ${tower.targeting}`;
   private rerollReward(id: PowerUpId, reason: string): void {
     if (!this.canRerollReward(id, reason) || this.pauseState.has('background')) return;
     const reward = this.vault.pending[0];
-    const replacement = this.campaign!.reroll(id, reward.reveal);
+    const replacement = this.campaign!.reroll(id, reward.reveal, this.runRandom);
     if (!replacement) return;
     reward.id = replacement; this.vault.revision++;
     this.closeModal(); this.presentReward();
@@ -3285,13 +3293,13 @@ Targeting: ${tower.targeting}`;
         break;
       case 'tower_overcharge': {
         if (this.towers.length === 0) return;
-        const t = this.towers[Math.floor(Math.random() * this.towers.length)];
+        const t = this.towers[Math.floor(this.runRandom() * this.towers.length)];
         t.overchargeUntil = this.gameTimeMs + POWERUP_EFFECTS.overcharge.durationMs;
         this.floatText(t.x, t.y - 30, 'OVERCHARGED', C.mana, 16);
         break;
       }
       case 'ancient_blessing': {
-        const roll = Math.random();
+        const roll = this.runRandom();
         if (roll < POWERUP_EFFECTS.blessing.coinChance) { const g = POWERUP_EFFECTS.blessing.goldBase + this.wave * POWERUP_EFFECTS.blessing.goldPerWave; this.gold += g; this.floatText(this.map.width / 2, 160, `Blessing of Coin: +${formatCount(g)} gold`, C.gold, 20); }
         else if (roll < POWERUP_EFFECTS.blessing.repairThreshold) { this.lives = Math.min(d.maxLives, this.lives + POWERUP_EFFECTS.blessing.repairLives); this.floatText(this.map.width / 2, 160, 'Blessing of Stone: +2 lives', C.health, 20); }
         else { this.surgeUntil = this.gameTimeMs + POWERUP_EFFECTS.surge.durationMs; this.floatText(this.map.width / 2, 160, 'Blessing of Stars: Surge', C.arcane, 20); }
@@ -3590,7 +3598,7 @@ Targeting: ${tower.targeting}`;
       this.bossesKilled++;
       this.gold += waveClearBonus(this.wave);
       this.grantPowerup(this.rollReward(), 'Boss defeated', true);
-    } else if (shouldDropOnKill(Math.random, POWERUP_DROP_CHANCE_PER_KILL)) {
+    } else if (shouldDropOnKill(this.runRandom, POWERUP_DROP_CHANCE_PER_KILL)) {
       // Rare drops never interrupt combat: store + toast (SPEC §26, no long block).
       this.grantPowerup(this.rollReward(), 'Relic Found', false);
     }

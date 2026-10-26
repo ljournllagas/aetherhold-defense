@@ -102,12 +102,12 @@ it('applies real repair, random Overcharge and one Pilferer without duplicates',
 });
 it.each([0.1,0.5,0.9])('keeps the existing Blessing outcome for roll %s',(roll)=>{
   const {run}=autoScene();combat(run);run.lives=16;run.setAutoEnabled(true);run.vault.offer('ancient_blessing','gift',false);
-  const gold=run.gold;vi.spyOn(Math,'random').mockReturnValue(roll);run.tickAuto(0,false);
+  const gold=run.gold;run.runRandom=()=>roll;run.tickAuto(0,false);
   expect([run.gold,run.lives,run.surgeUntil]).toEqual(roll===0.1?[gold+160,16,0]:roll===0.5?[gold,18,0]:[gold,16,13000]);
   expect(run.vault.stored).toEqual([]);
 });
 it('Auto Meteor deals real damage once without closing a build/tower preview',()=>{
-  const {run}=autoScene();combat(run);vi.spyOn(Math,'random').mockReturnValue(0.99);
+  const {run}=autoScene();combat(run);run.runRandom=()=>0.99;
   run.enemies=[300,310,320].map(x=>{const e=new Enemy('thornling',1,0,8);e.x=x;e.y=300;return e;});
   run.selectedTower=run.towers[0];run.placingTowerId='longbow';const preview={point:{x:100,y:100},plot:1};run.touchPreview=preview;
   run.sheetKind='evolve';const sheet={scrollOffset:40} as unknown as ScrollSheet;run.sheet=sheet;

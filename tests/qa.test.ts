@@ -111,6 +111,7 @@ describe('GameScene replay lifecycle', () => {
       vault: { pending: unknown[]; stored: unknown[] };
     };
     scene.init({ difficulty: 'hard' });
+    (scene as any).runRandom = () => 0.5;
     run.floatText = run.impactBurst = run.startDeathAnim = run.updateHUD = run.drawPowerupBar = () => {};
     const basic = new Enemy('thornling', 60, 70, ENEMIES.thornling.baseReward);
     run.killEnemy(basic);

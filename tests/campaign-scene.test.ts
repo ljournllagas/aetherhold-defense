@@ -43,7 +43,7 @@ function fixture(level = 1, through = 30, completionOnly = false): any {
   vi.spyOn(campaignRepository,'recordClear').mockImplementation((id,score,lives) => repository.recordClear(id,score,lives));
   vi.spyOn(SoundManager,'get').mockReturnValue(anyStub());
   vi.spyOn(Math,'random').mockReturnValue(0.99);
-  const run: any = new GameScene(); run.init({ mode: 'campaign', campaignLevel: level, difficulty: 'hard', playerName: 'Campaign Bot' });
+  const run: any = new GameScene(); run.init({ mode: 'campaign', campaignLevel: level, difficulty: 'hard', playerName: 'Campaign Bot' }); run.runRandom = () => 0.99;
   for (const key of PRESENTATION) run[key] = () => {};
   run.add = anyStub(); run.world = (object: unknown) => object;
   run.scene = { start: vi.fn(), restart: vi.fn() };

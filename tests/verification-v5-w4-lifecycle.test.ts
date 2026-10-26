@@ -26,7 +26,7 @@ function w4Run(): { run: any; repository: CampaignRepository } {
   vi.spyOn(SoundManager, 'get').mockReturnValue(anyStub());
   vi.spyOn(Math, 'random').mockReturnValue(0.99);
   const run: any = new GameScene();
-  run.init({ mode: 'campaign', campaignLevel: 40, difficulty: 'hard', playerName: 'W4 lifecycle fixture' });
+  run.init({ mode: 'campaign', campaignLevel: 40, difficulty: 'hard', playerName: 'W4 lifecycle fixture' }); run.runRandom = () => 0.99;
   for (const name of PRESENTATION) run[name] = () => {};
   run.add = anyStub();
   run.world = (object: unknown) => object;
@@ -67,7 +67,7 @@ it('retries World 4 on Level 40 and clears Hydra telegraph, summons, rewards, an
 
   run.restartRun();
   expect(run.scene.restart).toHaveBeenCalledWith(expect.objectContaining({ mode: 'campaign', campaignLevel: 40 }));
-  run.init({ mode: 'campaign', campaignLevel: 40, difficulty: 'hard', playerName: 'W4 lifecycle fixture' });
+  run.init({ mode: 'campaign', campaignLevel: 40, difficulty: 'hard', playerName: 'W4 lifecycle fixture' }); run.runRandom = () => 0.99;
 
   expect(run.campaign.definition.level).toBe(40);
   expect([run.gold, run.lives, run.wave, run.gameTimeMs, run.enemies.length, run.flights.length, run.effects.length, run.vault.stored.length, run.vault.target, run.ended]).toEqual([600, 20, 0, 0, 0, 0, 0, 0, null, false]);

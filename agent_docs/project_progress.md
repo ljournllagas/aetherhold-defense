@@ -1,5 +1,28 @@
 # Project progress
 
+## Seeded gameplay randomness — COMPLETE, 2026-10-27
+
+Every gameplay roll called `Math.random`, so a run could not be reproduced and the
+simulation harness could not control rewards at all. `GameScene` now creates one 32-bit
+seed per run (`crypto.getRandomValues`) and a mulberry32 generator from it
+(`src/game/systems/runRandom.ts`); all five gameplay sites consume that generator:
+`rollReward`, `rerollReward`, the overcharge target pick, the ancient-blessing roll and
+drop-on-kill. Cosmetic randomness (walk phase, menu embers, particles, sound pitch,
+retry jitter, run ids) deliberately stays on `Math.random`.
+
+The handoff named only two direct sites. The primary reward path (`rollReward`,
+`rerollReward`) and drop-on-kill were also using defaults, which would have made the
+determinism acceptance impossible. `GameStartData.runSeed` was added so a harness or a
+test can pin a run; `restartRun` omits it, so a restart reseeds. The seed is logged once
+at run start outside tests. No score payload, `SCORE_VERSION` or D1 schema change.
+
+Seven suites stubbed `Math.random` to force a roll (`scene-timing`, `scene-auto`, `qa`,
+`campaign-scene`, `campaign-v5-expansion-paid-resource`, `verification-v5-w4-lifecycle`,
+`simulationBot`); they now pin `runRandom` or pass `runSeed`, so they keep controlling
+gameplay rather than only cosmetics. Spec:
+`docs/specs/2026-10-27-seeded-run-randomness.md`. Tests:
+`tests/seeded-run-randomness.test.ts`.
+
 ## Continuous integration — COMPLETE, 2026-10-27
 
 The only gate was the local `npm run deploy` script, so nothing checked `main` after a

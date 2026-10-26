@@ -56,7 +56,7 @@ function battleScene(level: number, unlockedThrough: number, completionOnly: boo
   vi.spyOn(SoundManager, 'get').mockReturnValue(anyStub());
   vi.spyOn(Math, 'random').mockReturnValue(0.99);
   const run: any = new GameScene();
-  run.init({ mode: 'campaign', campaignLevel: level, difficulty: 'hard', playerName: 'Paid Resource Simulation' });
+  run.init({ mode: 'campaign', campaignLevel: level, difficulty: 'hard', playerName: 'Paid Resource Simulation' }); run.runRandom = () => 0.99;
   for (const name of PRESENTATION) run[name] = () => {};
   run.add = anyStub(); run.world = (value: unknown) => value;
   run.scene = { start: vi.fn(), restart: vi.fn() };

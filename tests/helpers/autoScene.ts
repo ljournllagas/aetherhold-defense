@@ -29,6 +29,8 @@ export interface AutoRun {
   autoButton:ReturnType<typeof button>|null;pauseAutoButton:ReturnType<typeof button>|null;autoDetailText:Phaser.GameObjects.Text|null;
   autoShortStatus():string;autoDetail():string;refreshAutoDisplay():void;handleAutoKey(event:KeyboardEvent):void;cancelGesture():void;
   startBtn:Phaser.GameObjects.Rectangle|null;
+  /** Gameplay PRNG; replaced in tests to force a roll. */
+  runRandom:() => number;
 }
 function chain():any {
   const p:any=new Proxy(function(){return p;},{get:(target,key)=>Reflect.has(target,key)?Reflect.get(target,key):key==='then'?undefined:key===Symbol.toPrimitive?()=>0:p,apply:()=>p});return p;
