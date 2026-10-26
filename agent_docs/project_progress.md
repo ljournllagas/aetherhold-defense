@@ -1,5 +1,18 @@
 # Project progress
 
+## Continuous integration — COMPLETE, 2026-10-27
+
+The only gate was the local `npm run deploy` script, so nothing checked `main` after a
+push. Added `.github/workflows/ci.yml`: on `push` to `main` and on `pull_request` to
+`main`, run `npm ci` → `npm run typecheck` → `npm test` → `npm run build` on Node 24,
+with a shallow checkout, the npm cache and cancel-in-progress concurrency. No deploy
+step — publishing stays local and authorized.
+
+The working tree is ~570 MB over 1,352 tracked files while `src/`, `worker/` and
+`tests/` together are under 3 MB. `fetch-depth: 1` limits history but not checkout
+size, and `artifacts/` (178 MB) plus `output/` (14 MB) stay tracked for now: untracking
+them is the repo-size item, and 30 files under `docs/` link to `artifacts/` as evidence.
+
 ## Boss-fit test de-flaked — COMPLETE, 2026-10-27
 
 Full-suite runs failed intermittently on `tests/boss-panel-placement.test.ts`
