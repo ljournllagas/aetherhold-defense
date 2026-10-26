@@ -7,6 +7,7 @@ import './style.css';
 import Phaser from 'phaser';
 import { initPWA } from './pwa.ts';
 import { initRotateHint } from './rotateHint.ts';
+import { installClientErrorReporting } from './api/clientErrors.ts';
 import { BootScene } from './game/scenes/BootScene.ts';
 import { LoginScene } from './game/scenes/LoginScene.ts';
 import { PreloadScene } from './game/scenes/PreloadScene.ts';
@@ -23,6 +24,7 @@ import { HelpScene } from './game/scenes/HelpScene.ts';
 document.title = 'Aegis of the Borderkeep';
 initPWA();
 initRotateHint();
+installClientErrorReporting();
 const host = document.getElementById('game-root')!;
 
 const config: Phaser.Types.Core.GameConfig = {

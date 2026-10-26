@@ -1,5 +1,24 @@
 # Project progress
 
+## Production error reporting — COMPLETE, 2026-10-27
+
+`wrangler.toml` had no `[observability]` block and the client had no global error
+handler, so a browser crash left no trace anywhere: server failures reached
+`console.error` and were discarded with the request.
+
+`[observability] enabled = true` turns on Workers Logs. `POST /api/client-error`
+(`worker/clientErrors.ts`) accepts only the bounded shape the client sends — message,
+stack, source and pathname — within the 4096-byte cap, throttled by
+`consumeRateLimit` on a `clienterr:` key. Keys are namespaced per bucket, so a crashing
+client cannot starve score submission. The sink is the log only: no D1 table, no player
+identity, 204 on success. `src/api/clientErrors.ts` installs `error` and
+`unhandledrejection` handlers in `src/main.ts`, caps at five reports per session, sends
+the pathname rather than the full URL, and swallows every send failure so a broken
+reporter cannot break the game. `compatibility_date` is unchanged.
+
+The body guard and `readBoundedBody` moved to `worker/body.ts` so both endpoints share
+one implementation. Tests: `tests/client-error.test.ts`.
+
 ## Seeded gameplay randomness — COMPLETE, 2026-10-27
 
 Every gameplay roll called `Math.random`, so a run could not be reproduced and the

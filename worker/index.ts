@@ -5,38 +5,13 @@ import { handleAccountScore } from './accountScores.ts';
 import { handleCampaignLeaderboard } from './campaignLeaderboard.ts';
 import { apiError, json } from './response.ts';
 import { consumeRateLimit } from './rateLimit.ts';
+import { handleClientError } from './clientErrors.ts';
+import { MAX_BODY_BYTES, readBoundedBody } from './body.ts';
 
 export interface Env extends AuthEnv {
   DB: D1Database;
   /** Native per-location score limiter binding (`[[ratelimits]]` in wrangler.toml). */
   SCORE_RATE_LIMITER: RateLimit;
-}
-
-const MAX_BODY_BYTES = 4096;
-
-type BoundedBody = { ok: true; text: string } | { ok: false; tooLarge: boolean };
-
-async function readBoundedBody(request: Request): Promise<BoundedBody> {
-  const reader = request.body?.getReader();
-  if (!reader) return { ok: true, text: '' };
-  const decoder = new TextDecoder('utf-8', { fatal: true });
-  let bytes = 0;
-  let text = '';
-  try {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      bytes += value.byteLength;
-      if (bytes > MAX_BODY_BYTES) {
-        try { await reader.cancel(); } catch { /* response is already bounded */ }
-        return { ok: false, tooLarge: true };
-      }
-      text += decoder.decode(value, { stream: true });
-    }
-    return { ok: true, text: text + decoder.decode() };
-  } catch {
-    return { ok: false, tooLarge: false };
-  }
 }
 
 // Scores are throttled by the native rate-limit binding, whose counters are
@@ -75,6 +50,9 @@ export default {
 
     const campaignLeaderboard = await handleCampaignLeaderboard(request, env);
     if (campaignLeaderboard) return campaignLeaderboard;
+
+    const clientError = await handleClientError(request, env);
+    if (clientError) return clientError;
 
     try {
       const accountResponse = await handleAuth(request, env) ?? await handleAccountScore(request, env) ?? await handleAccount(request, env);
